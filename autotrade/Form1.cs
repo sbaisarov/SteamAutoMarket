@@ -16,5 +16,34 @@ namespace autotrade
         {
             InitializeComponent();
         }
+
+        private void appExitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void leftPanelHideShowButton_Click(object sender, EventArgs e)
+        {
+            if(leftHeaderPanel.Height == 529 & leftHeaderPanel.Width == 166)
+            {
+                leftHeaderPanel.Height = 529;
+                leftHeaderPanel.Width = 45;
+                leftPanelHideShowButton.Left = 10;
+            }
+            else
+            {
+                leftHeaderPanel.Height = 529;
+                leftHeaderPanel.Width = 166;
+                leftPanelHideShowButton.Left = 128;
+            }
+
+
+
+        }
     }
 }
