@@ -40,11 +40,13 @@
             this.appExitButton = new System.Windows.Forms.Button();
             this.leftHeaderPanel = new System.Windows.Forms.Panel();
             this.leftPanelHideShowButton = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buyLinkButton = new System.Windows.Forms.Button();
+            this.saleLinkButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.sidePanel = new System.Windows.Forms.Panel();
+            this.saleControl1 = new autotrade.SaleControl();
+            this.buyControl1 = new autotrade.BuyControl();
             this.panel1.SuspendLayout();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -98,6 +100,9 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(910, 31);
             this.panel1.TabIndex = 2;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.move_MouseDown);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.move_MouseMove);
+            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.move_MouseUp);
             // 
             // label1
             // 
@@ -152,10 +157,11 @@
             // 
             this.leftHeaderPanel.BackColor = System.Drawing.Color.RoyalBlue;
             this.leftHeaderPanel.Controls.Add(this.leftPanelHideShowButton);
-            this.leftHeaderPanel.Controls.Add(this.button2);
-            this.leftHeaderPanel.Controls.Add(this.button1);
+            this.leftHeaderPanel.Controls.Add(this.buyLinkButton);
+            this.leftHeaderPanel.Controls.Add(this.saleLinkButton);
             this.leftHeaderPanel.Controls.Add(this.label2);
             this.leftHeaderPanel.Controls.Add(this.pictureBox1);
+            this.leftHeaderPanel.Controls.Add(this.sidePanel);
             this.leftHeaderPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.leftHeaderPanel.Location = new System.Drawing.Point(1, 32);
             this.leftHeaderPanel.Name = "leftHeaderPanel";
@@ -177,37 +183,40 @@
             this.leftPanelHideShowButton.UseVisualStyleBackColor = true;
             this.leftPanelHideShowButton.Click += new System.EventHandler(this.leftPanelHideShowButton_Click);
             // 
-            // button2
+            // buyLinkButton
             // 
-            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(-2, 170);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(151, 38);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "  Покупка";
-            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button2.UseVisualStyleBackColor = true;
+            this.buyLinkButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buyLinkButton.FlatAppearance.BorderSize = 0;
+            this.buyLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buyLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buyLinkButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.buyLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("buyLinkButton.Image")));
+            this.buyLinkButton.Location = new System.Drawing.Point(11, 170);
+            this.buyLinkButton.Name = "buyLinkButton";
+            this.buyLinkButton.Size = new System.Drawing.Size(119, 36);
+            this.buyLinkButton.TabIndex = 9;
+            this.buyLinkButton.Text = "  Покупка";
+            this.buyLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buyLinkButton.UseVisualStyleBackColor = true;
+            this.buyLinkButton.Click += new System.EventHandler(this.buyLinkButton_Click);
             // 
-            // button1
+            // saleLinkButton
             // 
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(0, 128);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(157, 36);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "  Продажа";
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button1.UseVisualStyleBackColor = true;
+            this.saleLinkButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.saleLinkButton.FlatAppearance.BorderSize = 0;
+            this.saleLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saleLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.saleLinkButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.saleLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("saleLinkButton.Image")));
+            this.saleLinkButton.Location = new System.Drawing.Point(11, 128);
+            this.saleLinkButton.Name = "saleLinkButton";
+            this.saleLinkButton.Size = new System.Drawing.Size(127, 36);
+            this.saleLinkButton.TabIndex = 8;
+            this.saleLinkButton.Text = "  Продажа";
+            this.saleLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.saleLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.saleLinkButton.UseVisualStyleBackColor = true;
+            this.saleLinkButton.Click += new System.EventHandler(this.saleLinkButton_Click);
             // 
             // label2
             // 
@@ -229,17 +238,43 @@
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
+            // sidePanel
+            // 
+            this.sidePanel.BackColor = System.Drawing.Color.AliceBlue;
+            this.sidePanel.Location = new System.Drawing.Point(-2, 128);
+            this.sidePanel.Name = "sidePanel";
+            this.sidePanel.Size = new System.Drawing.Size(10, 36);
+            this.sidePanel.TabIndex = 4;
+            // 
+            // saleControl1
+            // 
+            this.saleControl1.BackColor = System.Drawing.Color.Silver;
+            this.saleControl1.Location = new System.Drawing.Point(169, 33);
+            this.saleControl1.Name = "saleControl1";
+            this.saleControl1.Size = new System.Drawing.Size(742, 528);
+            this.saleControl1.TabIndex = 5;
+            // 
+            // buyControl1
+            // 
+            this.buyControl1.BackColor = System.Drawing.Color.Gold;
+            this.buyControl1.Location = new System.Drawing.Point(169, 33);
+            this.buyControl1.Name = "buyControl1";
+            this.buyControl1.Size = new System.Drawing.Size(742, 528);
+            this.buyControl1.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(912, 562);
+            this.Controls.Add(this.saleControl1);
             this.Controls.Add(this.leftHeaderPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.borderLeftPanel);
             this.Controls.Add(this.borderRightPanel);
             this.Controls.Add(this.borderBottomPanel);
             this.Controls.Add(this.borderTopPanel);
+            this.Controls.Add(this.buyControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -266,10 +301,12 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buyLinkButton;
+        private System.Windows.Forms.Button saleLinkButton;
         private System.Windows.Forms.Button leftPanelHideShowButton;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Panel sidePanel;
+        private BuyControl buyControl1;
+        private SaleControl saleControl1;
     }
 }
 

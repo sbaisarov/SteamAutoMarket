@@ -169,10 +169,10 @@
         GDcgSIAAAQIECHwo8AByp3f5Ox0tPwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="buyLinkButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABHNCSVQICAgIfAhkiAAAAAFzUkdCAK7O
-        HOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAA3RAAAN0QHCK9/jAAAAGXRFWHRTb2Z0d2FyZQB3d3cu
+        HOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAA3QAAAN0AEQbD0HAAAAGXRFWHRTb2Z0d2FyZQB3d3cu
         aW5rc2NhcGUub3Jnm+48GgAAAZFJREFUSEtj+P///yMgRgbfgJyrQBzOQE2AxSKYpX+BDGdq2oViFtBw
         TiCuh9q2nWYWgQwGWiIIxL+B+CcQ89Lasn1QX4XQ2qJiqEVzaW2RFtQiUBD+QkuZxHL/ABXeBWJXvI4F
         KrhHrIkE1O0nZNFkqAGHkBUCxTSg4hrQxIPCh6kFqkmCqttJyCIPqEJQENgDsTEUB0PFQTRIDJ0PU3cN
@@ -183,10 +183,10 @@
         AM9vNKAvPbijAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="button1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="saleLinkButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAFzUkdCAK7O
-        HOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAA3RAAAN0QHCK9/jAAAAGXRFWHRTb2Z0d2FyZQB3d3cu
+        HOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAA3QAAAN0AEQbD0HAAAAGXRFWHRTb2Z0d2FyZQB3d3cu
         aW5rc2NhcGUub3Jnm+48GgAAAapJREFUSEvllc8rRFEUxydhYxaYEk0aUxKhppDFqCFJyT8hZqHsUCL/
         gIUpUcbCCnsLJTYsUJYs7PzYsfMrv1Ljc3RfTePcO/PMSm59um/OPef7ffee994EAv9mZDKZStiFM4gW
         vXFEEtAJQQgbYabvcQURsyY5MV+GFPR7SmZ+zfktP3NjfQWbUDytCOYLTfkxWMunpqyn8xqYM51lvs8S
@@ -281,7 +281,4 @@
         AElFTkSuQmCC
 </value>
   </data>
-  <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
 </root>
