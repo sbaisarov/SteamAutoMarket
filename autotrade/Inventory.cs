@@ -33,10 +33,22 @@ namespace autotrade
         public Flags flags { get; set; }
         public int id_parent { get; set; }
         public int added_time { get; set; }
-        public string offer_id { get; set; }
+        public string Offer_id { get; set; }
         public Boolean offer_untradable { get; set; }
         public Boolean requires_support { get; set; }
         public string can_repair { get; set; }
+
+    }
+
+    class Prices
+    {
+        public int price { get; set; }
+        public int quantity { get; set; }
+        public int normalized_mean { get; set; }
+        public int normalized_max { get; set; }
+        public int normalized_min { get; set; }
+        public int normalized_count { get; set; }
+        public int std_dev { get; set; }
 
     }
 }
