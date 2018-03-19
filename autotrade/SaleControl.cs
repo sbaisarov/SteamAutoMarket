@@ -19,7 +19,6 @@ namespace autotrade
         public SaleControl()
         {
             InitializeComponent();
-
         }
         
         private async void SaleControl_Load(object sender, EventArgs e)
@@ -27,36 +26,36 @@ namespace autotrade
             //List from inventory
             List<Inventory> inventList = await services.getInventoryAll();
 
-            
-            //image get from url
-            /*WebRequest req = WebRequest.Create(inventList[0].img);
+            //foreach for imageList images get from url
+            foreach (Inventory invent in inventList)
+            {
+                imageList1.Images.Add(LoadImage(invent.img));
+            }
+            listView2.LargeImageList = imageList1;
+            listView1.LargeImageList = imageList1;
+
+            //foreach for listView
+            int i = 0;
+            foreach (Inventory invent in inventList)
+            {
+                ListViewItem listViewItem = new ListViewItem();
+                listViewItem.ImageIndex = i++;
+                listViewItem.Text = invent.market_name;
+                listViewItem.BackColor = Color.Azure;
+                this.listView2.Items.Add(listViewItem);
+            }
+        }
+
+        private Image LoadImage(string url)
+        {
+            WebRequest req = WebRequest.Create(url);
             WebResponse res = req.GetResponse();
             Stream imgStream = res.GetResponseStream();
             Image img1 = Image.FromStream(imgStream);
             imgStream.Close();
-            //jsonLabel1.Image = img1;
-
-            Image img2 = LoadImage(img1, 120, 100);
-            button1.BackgroundImage = img2;
-            Button btn = new Button();
-            btn.Text = "btn";
-            Padding padding = new Padding();
-            padding.Top = 200;
-            btn.Margin = padding;
-            btn.BackgroundImage = img2;
-            */
-            
-
-            foreach(Inventory invent in inventList)
-            {
-                ListViewItem listViewItem = new ListViewItem();
-                listViewItem.Text = "Item" + invent.market_name;
-                this.listView1.Items.Add(listViewItem);
-            }
-            
+            return img1;
         }
-
-        static Image LoadImage(Image img, int width, int height)
+        static Image ImageSize(Image img, int width, int height)
         {
             var res = new Bitmap(width, height);
             res.SetResolution(img.HorizontalResolution, img.VerticalResolution);
@@ -68,6 +67,20 @@ namespace autotrade
             return res;
         }
 
+        public void onclickListItemView1(Object sender, EventArgs e)
+        {
+            ListViewItem viewItem = new ListViewItem();
+            viewItem = listView1.SelectedItems[0];
+            listView1.Items.Remove(viewItem);
+            listView2.Items.Add(viewItem);
+        }
 
+        public void onclickListItemView2(Object sender, EventArgs e)
+        {
+            ListViewItem viewItem = new ListViewItem();
+            viewItem = listView2.SelectedItems[0];
+            listView2.Items.Remove(viewItem);
+            listView1.Items.Add(viewItem);
+        }
     }
 }
