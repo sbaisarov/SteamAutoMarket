@@ -14,6 +14,7 @@ namespace autotrade
     {
         ApiService services = new ApiService();
 
+
         private bool dragging = false;
         private Point dragCursorPoint;
         private Point dragFormPoint;
@@ -37,38 +38,26 @@ namespace autotrade
 
         private void leftPanelHideShowButton_Click(object sender, EventArgs e)
         {
-            //Left panel hide and show
             if(leftHeaderPanel.Height == 529 & leftHeaderPanel.Width == 166)
             {
+                leftHeaderPanel.Height = 529;
                 leftHeaderPanel.Width = 45;
                 leftPanelHideShowButton.Left = 10;
-                //buy controll size
                 buyControl1.Width = 865;
                 buyControl1.Left = 47;
-                //sale controll size
                 saleControl1.Width = 865;
                 saleControl1.Left = 47;
-                saleControl1.setSizeListView1(480, 500);
-                saleControl1.setSizeListView2(360, 500);
-                //width and heigth
-                saleControl1.setSizeTabControll(860, 530);
-                saleControl1.setPoint(490, 3);
             }
             else
             {
+                leftHeaderPanel.Height = 529;
                 leftHeaderPanel.Width = 166;
                 leftPanelHideShowButton.Left = 128;
-                //buy controll size
                 buyControl1.Width = 742;
                 buyControl1.Left = 168;
-                //sale controll size
                 saleControl1.Width = 742;
                 saleControl1.Left = 168;
-                saleControl1.setSizeListView1(380, 500);
-                saleControl1.setSizeListView2(342, 500);
-                saleControl1.setPoint(390, 3);
             }
-            
 
 
 

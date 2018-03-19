@@ -249,12 +249,9 @@
             // saleControl1
             // 
             this.saleControl1.BackColor = System.Drawing.Color.Silver;
-            this.saleControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.saleControl1.Location = new System.Drawing.Point(169, 32);
-            this.saleControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.saleControl1.Location = new System.Drawing.Point(169, 33);
             this.saleControl1.Name = "saleControl1";
-            this.saleControl1.Padding = new System.Windows.Forms.Padding(100, 0, 0, 0);
-            this.saleControl1.Size = new System.Drawing.Size(742, 529);
+            this.saleControl1.Size = new System.Drawing.Size(742, 528);
             this.saleControl1.TabIndex = 5;
             // 
             // buyControl1
