@@ -37,6 +37,7 @@ namespace autotrade
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listView2 = new System.Windows.Forms.ListView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.nextButton = new System.Windows.Forms.Button();
             this.inventTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -69,6 +70,7 @@ namespace autotrade
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.nextButton);
             this.tabPage1.Controls.Add(this.listView2);
             this.tabPage1.Controls.Add(this.listView1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -84,7 +86,7 @@ namespace autotrade
             this.listView2.BackColor = System.Drawing.Color.PaleGoldenrod;
             this.listView2.Location = new System.Drawing.Point(297, 3);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(250, 406);
+            this.listView2.Size = new System.Drawing.Size(250, 361);
             this.listView2.TabIndex = 5;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.Click += new System.EventHandler(this.onclickListItemView2);
@@ -98,6 +100,15 @@ namespace autotrade
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "obskins";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // nextButton
+            // 
+            this.nextButton.Location = new System.Drawing.Point(456, 383);
+            this.nextButton.Name = "nextButton";
+            this.nextButton.Size = new System.Drawing.Size(75, 23);
+            this.nextButton.TabIndex = 6;
+            this.nextButton.Text = "next";
+            this.nextButton.UseVisualStyleBackColor = true;
             // 
             // SaleControl
             // 
@@ -141,5 +152,6 @@ namespace autotrade
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListView listView2;
+        private Button nextButton;
     }
 }

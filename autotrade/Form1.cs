@@ -110,7 +110,5 @@ namespace autotrade
         {
             dragging = false;
         }
-        
-        
     }
 }

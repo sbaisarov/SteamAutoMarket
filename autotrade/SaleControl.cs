@@ -29,17 +29,19 @@ namespace autotrade
             //foreach for imageList images get from url
             foreach (Inventory invent in inventList)
             {
-                imageList1.Images.Add(LoadImage(invent.img));
+
+                imageList1.Images.Add(""+ invent.market_name +"", LoadImage(invent.img));
             }
             listView2.LargeImageList = imageList1;
             listView1.LargeImageList = imageList1;
 
             //foreach for listView
             int i = 0;
+        
             foreach (Inventory invent in inventList)
             {
                 ListViewItem listViewItem = new ListViewItem();
-                listViewItem.ImageIndex = i++;
+                listViewItem.ImageKey = invent.market_name;
                 listViewItem.Text = invent.market_name;
                 listViewItem.BackColor = Color.Azure;
                 this.listView2.Items.Add(listViewItem);

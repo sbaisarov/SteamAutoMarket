@@ -15,8 +15,17 @@ namespace autotrade
         const string API_URL = "https://api.opskins.com/{0}/{1}/v{2}?key={3}";
         HttpClient client = new HttpClient();
         List<Inventory> invent = new List<Inventory>();
+        string apiKey;
+
+        public ApiService()
+        {
+
+        }
 
         public ApiService(string apiKey)
+        {
+            this.apiKey = apiKey;
+        }
 
 
         public async Task<List<Inventory>> getInventoryAll()
@@ -50,9 +59,9 @@ namespace autotrade
 
         }
 
-        public async Task<List<Prices>> getPrices(int inverval)
-        {
-            HttpResponseMessage response = await client.GetAsync("http://5a9e4c92b1404b0014cfe19f.mockapi.io/api/GetInventory");
-        }
+        //public async Task<List<Prices>> getPrices(int inverval)
+        //{
+            //HttpResponseMessage response = await client.GetAsync("http://5a9e4c92b1404b0014cfe19f.mockapi.io/api/GetInventory");
+        //}
     }
 }
