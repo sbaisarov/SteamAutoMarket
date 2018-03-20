@@ -15,6 +15,7 @@ namespace autotrade
     public partial class SaleControl : UserControl
     {
         ApiService services = new ApiService();
+        List<Inventory> inventList;
 
         public SaleControl()
         {
@@ -25,8 +26,8 @@ namespace autotrade
         private async void SaleControl_Load(object sender, EventArgs e)
         {
             //List from inventory
-            List<Inventory> inventList = await services.getInventoryAll();
-
+            inventList = await services.GetInventoryAll();
+            
             
             //image get from url
             /*WebRequest req = WebRequest.Create(inventList[0].img);
@@ -46,12 +47,14 @@ namespace autotrade
             btn.BackgroundImage = img2;
             */
             
-
-            foreach(Inventory invent in inventList)
+            if (inventList != null)
             {
-                ListViewItem listViewItem = new ListViewItem();
-                listViewItem.Text = "Item" + invent.market_name;
-                this.listView1.Items.Add(listViewItem);
+                foreach(Inventory invent in inventList)
+                {
+                    ListViewItem listViewItem = new ListViewItem();
+                    listViewItem.Text = "Item" + invent.market_name;
+                    this.listView1.Items.Add(listViewItem);
+                }
             }
             
         }
