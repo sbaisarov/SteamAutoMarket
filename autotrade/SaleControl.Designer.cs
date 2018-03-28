@@ -31,26 +31,28 @@ namespace autotrade
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.inventTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.toolStripPaging = new System.Windows.Forms.ToolStrip();
+            this.btnBackward = new System.Windows.Forms.ToolStripButton();
+            this.btnFirst = new System.Windows.Forms.ToolStripButton();
+            this.button1 = new System.Windows.Forms.ToolStripButton();
+            this.button2 = new System.Windows.Forms.ToolStripButton();
+            this.button3 = new System.Windows.Forms.ToolStripButton();
+            this.button4 = new System.Windows.Forms.ToolStripButton();
+            this.button5 = new System.Windows.Forms.ToolStripButton();
+            this.btnLast = new System.Windows.Forms.ToolStripButton();
+            this.btnForward = new System.Windows.Forms.ToolStripButton();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.listView2 = new System.Windows.Forms.ListView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.nextButton = new System.Windows.Forms.Button();
             this.inventTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.toolStripPaging.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // listView1
-            // 
-            this.listView1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.listView1.Location = new System.Drawing.Point(3, 3);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(288, 406);
-            this.listView1.TabIndex = 4;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.Click += new System.EventHandler(this.onclickListItemView1);
             // 
             // imageList1
             // 
@@ -70,9 +72,10 @@ namespace autotrade
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.nextButton);
+            this.tabPage1.Controls.Add(this.panel1);
+            this.tabPage1.Controls.Add(this.toolStripPaging);
+            this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Controls.Add(this.listView2);
-            this.tabPage1.Controls.Add(this.listView1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -81,15 +84,125 @@ namespace autotrade
             this.tabPage1.Text = "steam";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel1.Location = new System.Drawing.Point(319, 25);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(201, 158);
+            this.panel1.TabIndex = 8;
+            // 
+            // toolStripPaging
+            // 
+            this.toolStripPaging.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.toolStripPaging.BackColor = System.Drawing.Color.RoyalBlue;
+            this.toolStripPaging.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.toolStripPaging.CanOverflow = false;
+            this.toolStripPaging.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripPaging.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStripPaging.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnBackward,
+            this.btnFirst,
+            this.button1,
+            this.button2,
+            this.button3,
+            this.button4,
+            this.button5,
+            this.btnLast,
+            this.btnForward});
+            this.toolStripPaging.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.toolStripPaging.Location = new System.Drawing.Point(22, 381);
+            this.toolStripPaging.Name = "toolStripPaging";
+            this.toolStripPaging.ShowItemToolTips = false;
+            this.toolStripPaging.Size = new System.Drawing.Size(218, 25);
+            this.toolStripPaging.TabIndex = 0;
+            this.toolStripPaging.Text = "toolStrip1";
+            // 
+            // btnBackward
+            // 
+            this.btnBackward.Name = "btnBackward";
+            this.btnBackward.Size = new System.Drawing.Size(23, 22);
+            this.btnBackward.Text = "<";
+            this.btnBackward.Click += new System.EventHandler(this.ToolStripButtonClick);
+            // 
+            // btnFirst
+            // 
+            this.btnFirst.Name = "btnFirst";
+            this.btnFirst.Size = new System.Drawing.Size(27, 22);
+            this.btnFirst.Text = "<<";
+            this.btnFirst.Click += new System.EventHandler(this.ToolStripButtonClick);
+            // 
+            // button1
+            // 
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(23, 22);
+            this.button1.Text = "1";
+            this.button1.Click += new System.EventHandler(this.ToolStripButtonClick);
+            // 
+            // button2
+            // 
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(23, 22);
+            this.button2.Text = "2";
+            this.button2.Click += new System.EventHandler(this.ToolStripButtonClick);
+            // 
+            // button3
+            // 
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(23, 22);
+            this.button3.Text = "3";
+            this.button3.Click += new System.EventHandler(this.ToolStripButtonClick);
+            // 
+            // button4
+            // 
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(23, 22);
+            this.button4.Text = "4";
+            this.button4.Click += new System.EventHandler(this.ToolStripButtonClick);
+            // 
+            // button5
+            // 
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(23, 22);
+            this.button5.Text = "5";
+            this.button5.Click += new System.EventHandler(this.ToolStripButtonClick);
+            // 
+            // btnLast
+            // 
+            this.btnLast.Name = "btnLast";
+            this.btnLast.Size = new System.Drawing.Size(27, 22);
+            this.btnLast.Text = ">>";
+            this.btnLast.Click += new System.EventHandler(this.ToolStripButtonClick);
+            // 
+            // btnForward
+            // 
+            this.btnForward.Name = "btnForward";
+            this.btnForward.Size = new System.Drawing.Size(23, 22);
+            this.btnForward.Text = ">";
+            this.btnForward.Click += new System.EventHandler(this.ToolStripButtonClick);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.GridColor = System.Drawing.Color.White;
+            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(288, 375);
+            this.dataGridView1.TabIndex = 7;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.mouseHoverDataGridView1);
+            this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.mouseKeyDataGrid);
+            // 
             // listView2
             // 
-            this.listView2.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.listView2.BackColor = System.Drawing.Color.White;
             this.listView2.Location = new System.Drawing.Point(297, 3);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(250, 361);
+            this.listView2.Size = new System.Drawing.Size(250, 375);
             this.listView2.TabIndex = 5;
             this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.Click += new System.EventHandler(this.onclickListItemView2);
             // 
             // tabPage2
             // 
@@ -100,15 +213,6 @@ namespace autotrade
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "obskins";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // nextButton
-            // 
-            this.nextButton.Location = new System.Drawing.Point(456, 383);
-            this.nextButton.Name = "nextButton";
-            this.nextButton.Size = new System.Drawing.Size(75, 23);
-            this.nextButton.TabIndex = 6;
-            this.nextButton.Text = "next";
-            this.nextButton.UseVisualStyleBackColor = true;
             // 
             // SaleControl
             // 
@@ -121,13 +225,18 @@ namespace autotrade
             this.Load += new System.EventHandler(this.SaleControl_Load);
             this.inventTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.toolStripPaging.ResumeLayout(false);
+            this.toolStripPaging.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
         
         public void setSizeListView1(int width, int height)
         {
-            this.listView1.Size = new System.Drawing.Size(width, height);
+           // this.listView1.Size = new System.Drawing.Size(width, height);
+           this.dataGridView1.Size = new System.Drawing.Size(width, height);
         }
 
         public void setSizeListView2(int width, int height)
@@ -146,12 +255,22 @@ namespace autotrade
         }
 
         #endregion
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.TabControl inventTabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListView listView2;
-        private Button nextButton;
+        private DataGridView dataGridView1;
+        private ToolStripButton button1;
+        private ToolStripButton btnLast;
+        private ToolStripButton btnFirst;
+        private ToolStripButton btnBackward;
+        private ToolStripButton button5;
+        private ToolStripButton button4;
+        private ToolStripButton button3;
+        private ToolStripButton button2;
+        private ToolStripButton btnForward;
+        private ToolStrip toolStripPaging;
+        private Panel panel1;
     }
 }

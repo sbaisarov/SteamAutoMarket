@@ -48,7 +48,7 @@ namespace autotrade
                 //sale controll size
                 saleControl1.Width = 865;
                 saleControl1.Left = 47;
-                saleControl1.setSizeListView1(480, 500);
+                saleControl1.setSizeListView1(480, 462);
                 saleControl1.setSizeListView2(360, 500);
                 //width and heigth
                 saleControl1.setSizeTabControll(860, 530);
@@ -64,7 +64,7 @@ namespace autotrade
                 //sale controll size
                 saleControl1.Width = 742;
                 saleControl1.Left = 168;
-                saleControl1.setSizeListView1(380, 500);
+                saleControl1.setSizeListView1(380, 462);
                 saleControl1.setSizeListView2(342, 500);
                 saleControl1.setPoint(390, 3);
             }
