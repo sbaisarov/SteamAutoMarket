@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "autotrade", "autotrade\autotrade.csproj", "{58A5F142-1DC6-49F9-ADB5-C9EF08F2B600}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrade", "autotrade\AutoTrade.csproj", "{58A5F142-1DC6-49F9-ADB5-C9EF08F2B600}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
