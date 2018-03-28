@@ -12,8 +12,6 @@ namespace autotrade
 {
     public partial class Form1 : Form
     {
-        ApiService services;
-        
 
         private bool dragging = false;
         private Point dragCursorPoint;
