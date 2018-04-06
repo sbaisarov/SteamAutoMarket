@@ -8,9 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>autotrade</RootNamespace>
     <AssemblyName>autotrade</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -23,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -92,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiServices.cs" />
     <Compile Include="BuyControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -108,18 +112,32 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\Steam\Inventory.cs" />
+    <Compile Include="Inventory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interfaces\Steam\TradeOffer\OfferSession.cs" />
+    <Compile Include="Interfaces\Steam\TradeOffer\TradeOffer.cs" />
+    <Compile Include="Interfaces\Steam\TradeOffer\TradeOfferManager.cs" />
+    <Compile Include="Interfaces\Steam\TradeOffer\TradeOfferWebAPI.cs" />
     <Compile Include="SaleControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SaleControl.Designer.cs">
       <DependentUpon>SaleControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\Steam\TradeOffer\OfferSession.cs" />
-    <Compile Include="Interfaces\Steam\TradeOffer\TradeOffer.cs" />
-    <Compile Include="Interfaces\Steam\TradeOffer\TradeOfferManager.cs" />
-    <Compile Include="Interfaces\Steam\TradeOffer\TradeOfferWebAPI.cs" />
+    <Compile Include="SaleObskinsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SaleObskinsControl.Designer.cs">
+      <DependentUpon>SaleObskinsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaleSteamControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SaleSteamControl.Designer.cs">
+      <DependentUpon>SaleSteamControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestApiServices.cs" />
     <EmbeddedResource Include="BuyControl.resx">
       <DependentUpon>BuyControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -134,9 +152,16 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="SaleControl.resx">
       <DependentUpon>SaleControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaleObskinsControl.resx">
+      <DependentUpon>SaleObskinsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaleSteamControl.resx">
+      <DependentUpon>SaleSteamControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
