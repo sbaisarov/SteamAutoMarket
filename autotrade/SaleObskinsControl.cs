@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace autotrade
 {
-    public partial class SaleControl : UserControl
+    public partial class SaleObskinsControl : UserControl
     {
-        public SaleControl()
+        public SaleObskinsControl()
         {
             InitializeComponent();
         }

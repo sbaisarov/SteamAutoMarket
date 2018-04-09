@@ -12,8 +12,6 @@ namespace autotrade
 {
     public partial class Form1 : Form
     {
-        ApiService services = new ApiService();
-
         private bool dragging = false;
         private Point dragCursorPoint;
         private Point dragFormPoint;
@@ -48,11 +46,6 @@ namespace autotrade
                 //sale controll size
                 saleControl1.Width = 865;
                 saleControl1.Left = 47;
-                saleControl1.setSizeListView1(480, 462);
-                saleControl1.setSizeListView2(360, 500);
-                //width and heigth
-                saleControl1.setSizeTabControll(860, 530);
-                saleControl1.setPoint(490, 3);
             }
             else
             {
@@ -64,9 +57,6 @@ namespace autotrade
                 //sale controll size
                 saleControl1.Width = 742;
                 saleControl1.Left = 168;
-                saleControl1.setSizeListView1(380, 462);
-                saleControl1.setSizeListView2(342, 500);
-                saleControl1.setPoint(390, 3);
             }
             
 
@@ -109,6 +99,16 @@ namespace autotrade
         private void move_MouseUp(object sender, MouseEventArgs e)
         {
             dragging = false;
+        }
+
+        private void appExpandButton_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Maximized;
+        }
+
+        private void appCurtailButton_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }
