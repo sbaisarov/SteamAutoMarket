@@ -102,8 +102,6 @@
     <Compile Include="BuyControl.Designer.cs">
       <DependentUpon>BuyControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\Steam\Exceptions\InventoryFetchException.cs" />
-    <Compile Include="Interfaces\Steam\Exceptions\TradeException.cs" />
     <Compile Include="Flags.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -112,6 +110,63 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\Steam\Manager.cs" />
+    <Compile Include="Interfaces\Steam\Market\AppIds.cs" />
+    <Compile Include="Interfaces\Steam\Market\Auth.cs" />
+    <Compile Include="Interfaces\Steam\Market\Enums\ECancelBuyOrderStatus.cs" />
+    <Compile Include="Interfaces\Steam\Market\Enums\ECreateBuyOrderStatus.cs" />
+    <Compile Include="Interfaces\Steam\Market\Enums\ELanguage.cs" />
+    <Compile Include="Interfaces\Steam\Market\Enums\EMarketSearchSortColumns.cs" />
+    <Compile Include="Interfaces\Steam\Market\Enums\EMyHistoryActionType.cs" />
+    <Compile Include="Interfaces\Steam\Market\Enums\ESort.cs" />
+    <Compile Include="Interfaces\Steam\Market\Exceptions\AuthorizationRequiredException.cs" />
+    <Compile Include="Interfaces\Steam\Market\Exceptions\RequestException.cs" />
+    <Compile Include="Interfaces\Steam\Market\Exceptions\SteamException.cs" />
+    <Compile Include="Interfaces\Steam\Market\Interface\Client.cs" />
+    <Compile Include="Interfaces\Steam\Market\Interface\Games\CounterStrikeGlobalOffensive.cs" />
+    <Compile Include="Interfaces\Steam\Market\Interface\Games\Games.cs" />
+    <Compile Include="Interfaces\Steam\Market\Invertory.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\AuthProcess.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\CreateBuyOrder.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\HistoryItem.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\HistoryItemHover.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\ItemOrdersHistogram.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JCreateBuyOrder.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JDescription.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JInvertory.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JInvertoryAsset.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JItemOrdersHistogram.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JLogin.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JMarketAppFilter.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JMarketAppFilterCsgoFacets.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JMarketAppFilterFacet.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JMarketAppFilterTag.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JMarketSearch.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JMyHistory.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JMyListings.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JPriceHistory.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JRsa.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JSellItem.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JSuccess.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JSuccessInt.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\JWalletInfo.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\SteamStatus\JBaseService.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\SteamStatus\JServices.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\Json\SteamStatus\JSteamStatus.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\MarketItemInfo.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\MarketProfile.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\MarketSearch.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\MarketSearchItem.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\MyListings.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\MyListingsOrdersItem.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\OrderGraph.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\OrderGraphItem.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\PriceHistoryDay.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\PriceHistoryItem.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\SteamResponse.cs" />
+    <Compile Include="Interfaces\Steam\Market\Models\WalletInfo.cs" />
+    <Compile Include="Interfaces\Steam\Market\Steam.cs" />
+    <Compile Include="Interfaces\Steam\Market\Urls.cs" />
+    <Compile Include="Interfaces\Steam\Market\Utils.cs" />
     <Compile Include="Interfaces\Steam\TradeOffer\Inventory.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="Program.cs" />
