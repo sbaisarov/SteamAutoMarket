@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using SteamAuth;
 using SteamKit2;
 
-namespace Interfaces.Steam
+namespace autotrade.Steam
 {
     public class Inventory
     {
@@ -16,13 +16,13 @@ namespace Interfaces.Steam
         /// <param name='steamId'>Steam identifier.</param>
         /// <param name='apiKey'>The needed Steam API key.</param>
         /// <param name="steamWeb">The SteamWeb instance for this Bot</param>
-        public static Inventory FetchInventory(ulong steamId, string apiKey, SteamWeb steamWeb)
+        public static Inventory FetchInventory(ulong steamId, string apiKey, int appid, SteamWeb steamWeb)
         {
             int attempts = 1;
             InventoryResponse result = null;
             while ((result == null || result.result.items == null) && attempts <= 3)
             {
-                var url = "http://api.steampowered.com/IEconItems_440/GetPlayerItems/v0001/?key=" + apiKey + "&steamid=" + steamId;
+                var url = $"http://api.steampowered.com/IEconItems_{appid}/GetPlayerItems/v0001/?key={apiKey}&steamid={steamId}";
                 string response = SteamWeb.Request(url, "GET", data: null, referer: "http://api.steampowered.com");
                 result = JsonConvert.DeserializeObject<InventoryResponse>(response);
                 attempts++;
@@ -36,11 +36,11 @@ namespace Interfaces.Steam
         /// <returns>The inventory for the given user. </returns>
         /// <param name='steamid'>The Steam identifier. </param>
         /// <param name="steamWeb">The SteamWeb instance for this Bot</param>
-        public static dynamic GetInventory(SteamID steamid)
+        public static dynamic GetInventory(SteamID steamid, int appid, int contextid)
         {
             string url = String.Format(
-                "http://steamcommunity.com/profiles/{0}/inventory/json/440/2/?trading=1",
-                steamid.ConvertToUInt64()
+                "http://steamcommunity.com/profiles/{0}/inventory/json/{1}/{2}/?trading=1",
+                steamid.ConvertToUInt64(), appid, contextid
             );
 
             try

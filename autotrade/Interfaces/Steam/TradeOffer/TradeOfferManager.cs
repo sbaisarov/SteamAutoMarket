@@ -14,7 +14,7 @@ namespace autotrade.Steam
         private readonly Dictionary<string, TradeOfferState> knownTradeOffers = new Dictionary<string, TradeOfferState>();
         private readonly OfferSession session;
         private readonly TradeOfferWebAPI webApi;
-        private readonly Queue<Offer> unhandledTradeOfferUpdates; 
+        private readonly Queue<Offer> unhandledTradeOfferUpdates;
 
         public DateTime LastTimeCheckedOffers { get; private set; }
 
