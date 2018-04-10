@@ -9,6 +9,7 @@ namespace autotrade.Interfaces.Steam.TradeOffer
 {
     public class Inventory
     {
+        public Inventory() { }
         /// <summary>
         /// Fetches the inventory for the given Steam ID using the Steam API.
         /// </summary>
@@ -16,7 +17,7 @@ namespace autotrade.Interfaces.Steam.TradeOffer
         /// <param name='steamId'>Steam identifier.</param>
         /// <param name='apiKey'>The needed Steam API key.</param>
         /// <param name="steamWeb">The SteamWeb instance for this Bot</param>
-        public Inventory FetchInventory(ulong steamId, string apiKey, int appid, SteamWeb steamWeb)
+        public Inventory FetchInventory(ulong steamId, string apiKey, int appid)
         {
             int attempts = 1;
             InventoryResponse result = null;
@@ -36,21 +37,22 @@ namespace autotrade.Interfaces.Steam.TradeOffer
         /// <returns>The inventory for the given user. </returns>
         /// <param name='steamid'>The Steam identifier. </param>
         /// <param name="steamWeb">The SteamWeb instance for this Bot</param>
-        public dynamic GetInventory(SteamID steamid, int appid, int contextid)
+        public InventoryRootOModel GetInventory(SteamID steamid, int appid, int contextid)
         {
             string url = String.Format(
-                "http://steamcommunity.com/profiles/{0}/inventory/json/{1}/{2}/?trading=1",
+                "http://steamcommunity.com/profiles/{0}/inventory/json/{1}/{2}",
                 steamid.ConvertToUInt64(), appid, contextid
             );
 
             try
             {
-                string response = SteamWeb.Request(url, "GET", data: null);
-                return JsonConvert.DeserializeObject(response);
+                string response =  SteamWeb.Request(url, "GET", dataString: null);
+                return JsonConvert.DeserializeObject<InventoryRootOModel>(response);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return JsonConvert.DeserializeObject("{\"success\":\"false\"}");
+                Console.WriteLine(e.Message);
+                return null;
             }
         }
 
@@ -176,5 +178,71 @@ namespace autotrade.Interfaces.Steam.TradeOffer
         {
             public InventoryResult result;
         }
+
+
+
+        //Get All Inventory
+        public partial class RgInventory
+        {
+            public int id { get; set; }
+            public int classid { get; set; }
+            public int instanceid { get; set; }
+            public string amount { get; set; }
+            public int pos { get; set; }
+        }
+
+        public class AppData
+        {
+            public int limited { get; set; }
+            public int def_index { get; set; }
+            public int? is_itemset_name { get; set; }
+        }
+
+        public class Description
+        {
+            public string type { get; set; }
+            public string value { get; set; }
+            public string color { get; set; }
+            public AppData app_data { get; set; }
+        }
+
+        public class Tag
+        {
+            public string internal_name { get; set; }
+            public string name { get; set; }
+            public string category { get; set; }
+            public string color { get; set; }
+            public string category_name { get; set; }
+        }
+
+        public class RgDescription
+        {
+            public int appid { get; set; }
+            public int classid { get; set; }
+            public int instanceid { get; set; }
+            public string icon_url { get; set; }
+            public string icon_url_large { get; set; }
+            public string icon_drag_url { get; set; }
+            public string name { get; set; }
+            public string market_hash_name { get; set; }
+            public string market_name { get; set; }
+            public string name_color { get; set; }
+            public string background_color { get; set; }
+            public string type { get; set; }
+            public bool tradable { get; set; }
+            public bool marketable { get; set; }
+            public List<Description> descriptions { get; set; }
+            public List<Tag> tags { get; set; }
+        }
+
+        public class InventoryRootOModel
+        {
+            public bool success { get; set; }
+            public List<RgInventory> rgInventory { get; set; }
+            public List<object> rgCurrency { get; set; }
+            public List<RgDescription> rgDescriptions { get; set; }
+        }
+
+
     }
 }

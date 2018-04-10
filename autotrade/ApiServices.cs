@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using OPSkins;
 using OPSkins.Model.Inventory;
+using autotrade.Interfaces.Steam.TradeOffer;
 using SteamAuth;
 using SteamKit2;
 using System;
@@ -8,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace autotrade
 {
     class ApiServices
@@ -17,7 +17,7 @@ namespace autotrade
         OPSkinsClient opsClient = new OPSkinsClient("0c60904c51f9a9c38a6439da2cad21");
         OPSkins.Interfaces.IInventory obskinsInventoryList;
         //Steam
-        Interfaces.Steam.Manager steamManager;
+        Interfaces.Steam.Manager steamManager = new Interfaces.Steam.Manager();
 
 
         SteamID steamid = new SteamID(76561198177211015);
@@ -29,10 +29,10 @@ namespace autotrade
             obskinsInventoryList = new OPSkins.Interfaces.IInventory(opsClient);
             return obskinsInventoryList.GetInventory().Items;
         }
-
-        public async Task<List<InventorySale>> steamAllInventory()
+        Interfaces.Steam.TradeOffer.Inventory.InventoryRootOModel invList;
+        public Interfaces.Steam.TradeOffer.Inventory.InventoryRootOModel steamAllInventory()
         {
-            var invList = steamManager.inventory.GetInventory(steamid, 730, 2);
+            invList = steamManager.inventory.GetInventory(steamid, 730, 2);
             if ( invList!= null )
             {
                 return invList;
@@ -44,5 +44,20 @@ namespace autotrade
             }
 
         }
+
+        /*
+        public async Task<List<Inventory>> steamFetchInventory()
+        {
+            Inventory invList = steamManager.inventory.FetchInventory(76561198313282396, "C708FBA4244D5874370AB7BC57C8FFCE", 730);
+            if (invList != null)
+            {
+                return invList;
+
+            }
+            else
+            {
+                return null;
+            }
+        }*/
     }
 }

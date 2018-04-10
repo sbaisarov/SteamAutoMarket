@@ -20,10 +20,12 @@ namespace autotrade.Interfaces.Steam
         public string apiKey;
         public CookieContainer cookies;
         public static TradeOffer.OfferSession offerSession;
-        public TradeOffer.Inventory inventory = null;
+        public TradeOffer.Inventory inventory = new TradeOffer.Inventory();
         public static UserLogin steamClient;
         public Market.Interface.Client marketClient;
         SteamGuardAccount guard = new SteamGuardAccount();
+
+        public Manager() { }
 
         public Manager(string login, string password, string guardPath, string apiKey = null)
         {
