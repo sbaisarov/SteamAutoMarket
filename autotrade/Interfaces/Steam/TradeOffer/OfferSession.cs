@@ -7,7 +7,7 @@ using System.IO;
 using System.Net;
 using SteamAuth;
 
-namespace autotrade.Steam
+namespace autotrade.Interfaces.Steam.TradeOffer
 {
     public class OfferSession
     {

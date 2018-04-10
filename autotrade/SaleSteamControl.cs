@@ -17,10 +17,10 @@ namespace autotrade
         int PagesCount = 1;
         int pageRows = 19;
 
-        List<Inventory> baseInvList = null;
-        List<Inventory> tempInvList = null;
+        List<Item> baseInvList = null;
+        List<Item> tempInvList = null;
 
-        List<Inventory> saleInvList = new List<Inventory>();
+        List<Item> saleInvList = new List<Item>();
 
         public SaleSteamControl()
         {
@@ -72,7 +72,7 @@ namespace autotrade
         {
             //Rebinding the Datagridview with data
             int datasourcestartIndex = (CurrentPage - 1) * pageRows;
-            tempInvList = new List<Inventory>();
+            tempInvList = new List<Item>();
             dataGridView1.Rows.Clear();
             DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
             btn.HeaderText = "Click Data";

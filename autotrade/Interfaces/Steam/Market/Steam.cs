@@ -17,7 +17,7 @@ namespace Market
         public Settings Settings { get; }
         public Auth Auth { get; }
         public Invertory Invertory { get; }
-        public Market.Market Market { get; }
+        public Interface.Client Client { get; }
 
         private readonly object _requestsPerSecondLock;
         private float _requestsPerSecond;
@@ -59,7 +59,7 @@ namespace Market
                 Language = language,
             };
             Auth = new Auth(this);
-            Market = new Market.Market(this);
+            Client = new Interface.Client(this);
             Invertory = new Invertory(this);
 
             _requestsPerSecondLock = new object();

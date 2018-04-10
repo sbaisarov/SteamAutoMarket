@@ -7,7 +7,7 @@ using Market.Exceptions;
 using Market.Models;
 using Market.Models.Json;
 
-namespace Market.Market.Games
+namespace Market.Interface.Games
 {
     public class CounterStrikeGlobalOffensive
     {
@@ -25,7 +25,7 @@ namespace Market.Market.Games
                 {"category_730_Type[]", "tag_CSGO_Type_WeaponCase" }
             };
 
-            var search = _steam.Market.Search(count: 100, appId: AppIds.CounterStrikeGlobalOffensive, sortColumn: EMarketSearchSortColumns.Quantity, custom: tag);
+            var search = _steam.Client.Search(count: 100, appId: AppIds.CounterStrikeGlobalOffensive, sortColumn: EMarketSearchSortColumns.Quantity, custom: tag);
 
             if (!search.Items.Any())
                 throw new SteamException("Not found any cases");
@@ -38,7 +38,7 @@ namespace Market.Market.Games
 
             while (tempCount < search.TotalCount)
             {
-                var searchPlus = _steam.Market.Search(count: 100, appId: AppIds.CounterStrikeGlobalOffensive, sortColumn: EMarketSearchSortColumns.Quantity, custom: tag, start: tempCount);
+                var searchPlus = _steam.Client.Search(count: 100, appId: AppIds.CounterStrikeGlobalOffensive, sortColumn: EMarketSearchSortColumns.Quantity, custom: tag, start: tempCount);
                 list.AddRange(searchPlus.Items);
                 tempCount = tempCount + searchPlus.Items.Count;
             }
@@ -48,7 +48,7 @@ namespace Market.Market.Games
 
         public JMarketAppFilterCsgoFacets Tags()
         {
-            var resp = _steam.Market.AppFilters(AppIds.CounterStrikeGlobalOffensive);
+            var resp = _steam.Client.AppFilters(AppIds.CounterStrikeGlobalOffensive);
             var respDes = JsonConvert.DeserializeObject<JMarketAppFilter<JMarketAppFilterCsgoFacets>>(resp);
             return respDes.Facets;
         }
@@ -88,7 +88,7 @@ namespace Market.Market.Games
 
             var tag = new Dictionary<string, string> { { tagPair.Key, tagPair.Value } };
 
-            var search = _steam.Market.Search(count: 100, appId: AppIds.CounterStrikeGlobalOffensive, sortColumn: EMarketSearchSortColumns.Quantity, custom: tag);
+            var search = _steam.Client.Search(count: 100, appId: AppIds.CounterStrikeGlobalOffensive, sortColumn: EMarketSearchSortColumns.Quantity, custom: tag);
 
             if (!search.Items.Any())
                 throw new SteamException("Not found items. Wrong collection tag?");
@@ -103,7 +103,7 @@ namespace Market.Market.Games
 
                 while (tempCount < search.TotalCount)
                 {
-                    var searchPlus = _steam.Market.Search(count: 100, appId: AppIds.CounterStrikeGlobalOffensive, sortColumn: EMarketSearchSortColumns.Quantity, custom: tag, start: tempCount);
+                    var searchPlus = _steam.Client.Search(count: 100, appId: AppIds.CounterStrikeGlobalOffensive, sortColumn: EMarketSearchSortColumns.Quantity, custom: tag, start: tempCount);
                     list.AddRange(searchPlus.Items);
                     tempCount = tempCount + searchPlus.Items.Count;
                 }

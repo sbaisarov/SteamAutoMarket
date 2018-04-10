@@ -1,7 +1,7 @@
 using System;
 using SteamKit2;
 
-namespace Interfaces.Steam
+namespace autotrade.Interfaces.Steam.TradeOffer.Exceptions
 {
     public class InventoryFetchException : TradeException
     {

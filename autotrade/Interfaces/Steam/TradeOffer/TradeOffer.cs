@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace autotrade.Steam
+namespace autotrade.Interfaces.Steam.TradeOffer
 {
     public class TradeOffer
     {

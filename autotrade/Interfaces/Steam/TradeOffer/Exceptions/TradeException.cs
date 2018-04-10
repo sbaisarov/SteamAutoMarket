@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Interfaces.Steam
+namespace autotrade.Interfaces.Steam.TradeOffer.Exceptions
 {
     /// <summary>
     /// A basic exception that occurs in the trading library.

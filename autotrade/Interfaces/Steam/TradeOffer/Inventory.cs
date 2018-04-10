@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using SteamAuth;
 using SteamKit2;
 
-namespace autotrade.Steam
+namespace autotrade.Interfaces.Steam.TradeOffer
 {
     public class Inventory
     {
@@ -16,7 +16,7 @@ namespace autotrade.Steam
         /// <param name='steamId'>Steam identifier.</param>
         /// <param name='apiKey'>The needed Steam API key.</param>
         /// <param name="steamWeb">The SteamWeb instance for this Bot</param>
-        public static Inventory FetchInventory(ulong steamId, string apiKey, int appid, SteamWeb steamWeb)
+        public Inventory FetchInventory(ulong steamId, string apiKey, int appid, SteamWeb steamWeb)
         {
             int attempts = 1;
             InventoryResponse result = null;
@@ -36,7 +36,7 @@ namespace autotrade.Steam
         /// <returns>The inventory for the given user. </returns>
         /// <param name='steamid'>The Steam identifier. </param>
         /// <param name="steamWeb">The SteamWeb instance for this Bot</param>
-        public static dynamic GetInventory(SteamID steamid, int appid, int contextid)
+        public dynamic GetInventory(SteamID steamid, int appid, int contextid)
         {
             string url = String.Format(
                 "http://steamcommunity.com/profiles/{0}/inventory/json/{1}/{2}/?trading=1",
@@ -80,7 +80,7 @@ namespace autotrade.Steam
         {
             // Check for Private Inventory
             if (this.IsPrivate)
-                throw new TradeException("Unable to access Inventory: Inventory is Private!");
+                throw new Exceptions.TradeException("Unable to access Inventory: Inventory is Private!");
 
             return (Items == null ? null : Items.FirstOrDefault(item => item.Id == id));
         }
@@ -89,7 +89,7 @@ namespace autotrade.Steam
         {
             // Check for Private Inventory
             if (this.IsPrivate)
-                throw new TradeException("Unable to access Inventory: Inventory is Private!");
+                throw new Exceptions.TradeException("Unable to access Inventory: Inventory is Private!");
 
             return Items.Where(item => item.Defindex == defindex).ToList();
         }

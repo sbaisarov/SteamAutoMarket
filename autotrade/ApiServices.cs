@@ -17,12 +17,8 @@ namespace autotrade
         OPSkinsClient opsClient = new OPSkinsClient("0c60904c51f9a9c38a6439da2cad21");
         OPSkins.Interfaces.IInventory obskinsInventoryList;
         //Steam
-        UserLogin steamClient = new UserLogin("", "");
-        SteamGuardAccount guard = new SteamGuardAccount();
+        Interfaces.Steam.Manager steamManager;
 
-        //guard = JsonConvert.DeserializeObject<SteamGuardAccount>(File.ReadAllText(@""));
-        //steamClient.TwoFactorCode = guard.GenerateSteamGuardCode();
-        //steamClient.DoLogin();
 
         SteamID steamid = new SteamID(76561198177211015);
         
@@ -36,7 +32,7 @@ namespace autotrade
 
         public async Task<List<InventorySale>> steamAllInventory()
         {
-            List<InventorySale> invList = await Interfaces.Steam.Inventory.GetInventory(steamid);
+            var invList = steamManager.inventory.GetInventory(steamid, 730, 2);
             if ( invList!= null )
             {
                 return invList;
