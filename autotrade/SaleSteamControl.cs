@@ -7,6 +7,7 @@ using System.IO;
 using System.Globalization;
 using OPSkins.Model.Inventory;
 using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
+using SteamKit2;
 
 namespace autotrade
 {
@@ -19,31 +20,32 @@ namespace autotrade
         int PagesCount = 1;
         int pageRows = 19;
 
-        InventoryRootOModel baseInvList = null;
-        InventoryRootOModel tempInvList = null;
+        InventoryRootModel baseInvList = new InventoryRootModel();
 
-        InventoryRootOModel saleInvList = null;
+        InventoryRootModel saleInvList = new InventoryRootModel();
 
         public SaleSteamControl()
         {
             InitializeComponent();
         }
 
+
+        Interfaces.Steam.TradeOffer.Inventory inventory = new Interfaces.Steam.TradeOffer.Inventory();
+
+        
         private void SaleControl_Load(object sender, EventArgs e)
         {
             //List from inventory
-            baseInvList = services.steamAllInventory();
+            this.baseInvList = services.steamAllInventory();
 
-            
 
-            PagesCount = Convert.ToInt32(Math.Ceiling(baseInvList.rgDescriptions.Count * 1.0 / pageRows));
+
+            PagesCount = Convert.ToInt32(Math.Ceiling(baseInvList.descriptions.Count * 1.0 / pageRows));
 
             // Set the column header names.
-            dataGridView1.ColumnCount = 4;
-            dataGridView1.Columns[0].Name = "1";
-            dataGridView1.Columns[1].Name = "2";
-            dataGridView1.Columns[2].Name = "3";
-            dataGridView1.Columns[3].Name = "img";
+            dataGridView1.ColumnCount = 2;
+            dataGridView1.Columns[0].Name = "Name";
+            dataGridView1.Columns[1].Name = "No. to Sell";
 
             CurrentPage = 1;
             RefreshPagination();
@@ -76,7 +78,6 @@ namespace autotrade
         {
             //Rebinding the Datagridview with data
             int datasourcestartIndex = (CurrentPage - 1) * pageRows;
-            tempInvList = new InventoryRootOModel();
             dataGridView1.Rows.Clear();
             DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
             btn.HeaderText = "Click Data";
@@ -86,17 +87,47 @@ namespace autotrade
             btn.DefaultCellStyle.BackColor = Color.Green;
             btn.Width = 40;
             btn.FlatStyle = FlatStyle.Popup;
+
+            ICollection<KeyValuePair<String, InventoryRootModel>> inventCollectionsTemp = new Dictionary<String, InventoryRootModel>();
+            RgDescription rgDescription = new RgDescription();
+
             for (int i = datasourcestartIndex; i < datasourcestartIndex + pageRows; i++)
             {
-                if (i >= baseInvList.rgDescriptions.Count)
+                if (i >= baseInvList.descriptions.Count)
                     break;
 
-                tempInvList.rgDescriptions.Add(baseInvList.rgDescriptions[i]);
-                dataGridView1.Rows.Add(baseInvList.rgDescriptions[i].classid, baseInvList.rgDescriptions[i].appid, baseInvList.rgDescriptions[i].icon_url_large, "https://png.icons8.com/metro/1600/home.png");
+                for(int k = 0; k < baseInvList.descriptions.Count; k++)
+                {
+                    rgDescription = this.baseInvList.descriptions[k];
+                    InventoryRootModel tempInvList = new InventoryRootModel();
+                    tempInvList.descriptions.Add(rgDescription);
+
+                    //inventCollectionsTemp.Add(new KeyValuePair <string, InventoryRootModel>("sd", this.baseInvList.descriptions[i]));
+                    //this.tempInvList.descriptions.Add(baseInvList.descriptions[i]);
+                    for (int y = 0; y < this.baseInvList.assets.Count; y++)
+                    {
+                        string desc_key_value = getDescription_key(this.baseInvList.assets[y]);
+                        if (desc_key_value == rgDescription.classid + "_" + rgDescription.instanceid)
+                        {
+                            tempInvList.assets.Add(this.baseInvList.assets[y]);
+                        }
+                    }
+                    inventCollectionsTemp.Add(new KeyValuePair<string, InventoryRootModel>(i + "", tempInvList));
+                }
             }
+            foreach(KeyValuePair<string, InventoryRootModel> keyValInv in inventCollectionsTemp)
+            {
+                dataGridView1.Rows.Add(keyValInv.Value.descriptions[0].market_name, keyValInv.Value.assets.Count);
+            }
+            //dataGridView1.DataSource = inventCollectionsTemp;
             dataGridView1.Columns.Add(btn);
             dataGridView1.Refresh();
-            dataGridView1.Rows[0].Selected = true;
+            //dataGridView1.Rows[0].Selected = true;
+        }
+
+        public string getDescription_key(RgInventory rgInventory)
+        {
+            return rgInventory.classid + "_" + rgInventory.instanceid;
         }
 
         private void RefreshPagination()
@@ -230,9 +261,9 @@ namespace autotrade
 
                 this.dataGridView1.Rows[row].Selected = true;
             DataGridViewRow viewRow = this.dataGridView1.Rows[row];
-            Image image = LoadImage(viewRow.Cells["img"].Value.ToString());
+            //Image image = LoadImage(viewRow.Cells["img"].Value.ToString());
 
-            this.panel1.BackgroundImage = image;
+            //this.panel1.BackgroundImage = image;
         }
 
         public void mouseKeyDataGrid(Object sender, KeyEventArgs e)
@@ -260,13 +291,13 @@ namespace autotrade
             if (this.dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor == Color.Green && e.ColumnIndex == 4)
             {
                 dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor = Color.Red;
-                this.saleInvList.rgDescriptions.Add(this.baseInvList.rgDescriptions[e.RowIndex]);
-                openWith.Add(new KeyValuePair<String, RgDescription>(e.RowIndex + "", this.baseInvList.rgDescriptions[e.RowIndex]));
+                this.saleInvList.descriptions.Add(this.baseInvList.descriptions[e.RowIndex]);
+                openWith.Add(new KeyValuePair<String, RgDescription>(e.RowIndex + "", this.baseInvList.descriptions[e.RowIndex]));
                 ItemsLength.Text = openWith.Count +"";
             }
             else if(this.dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor == Color.Red  && e.ColumnIndex == 4)
             {
-                openWith.Remove(new KeyValuePair<String, RgDescription>(e.RowIndex +"", this.baseInvList.rgDescriptions[e.RowIndex]));
+                openWith.Remove(new KeyValuePair<String, RgDescription>(e.RowIndex +"", this.baseInvList.descriptions[e.RowIndex]));
                 ItemsLength.Text = openWith.Count + "";
                 dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor = Color.Green;
             }

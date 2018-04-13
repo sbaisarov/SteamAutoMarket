@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
+
 namespace autotrade
 {
     class ApiServices
@@ -17,7 +19,7 @@ namespace autotrade
         OPSkinsClient opsClient = new OPSkinsClient("0c60904c51f9a9c38a6439da2cad21");
         OPSkins.Interfaces.IInventory obskinsInventoryList;
         //Steam
-        Interfaces.Steam.Manager steamManager = new Interfaces.Steam.Manager();
+        Interfaces.Steam.TradeOffer.Inventory inventory = new Interfaces.Steam.TradeOffer.Inventory();
 
 
         SteamID steamid = new SteamID(76561198177211015);
@@ -29,10 +31,12 @@ namespace autotrade
             obskinsInventoryList = new OPSkins.Interfaces.IInventory(opsClient);
             return obskinsInventoryList.GetInventory().Items;
         }
-        Interfaces.Steam.TradeOffer.Inventory.InventoryRootOModel invList;
-        public Interfaces.Steam.TradeOffer.Inventory.InventoryRootOModel steamAllInventory()
+
+        InventoryRootModel invList = new InventoryRootModel();
+
+        public InventoryRootModel steamAllInventory()
         {
-            invList = steamManager.inventory.GetInventory(steamid, 730, 2);
+            invList = inventory.GetInventory(steamid, 730, 2);
             if ( invList!= null )
             {
                 return invList;

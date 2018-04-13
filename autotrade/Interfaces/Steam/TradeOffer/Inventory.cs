@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SteamAuth;
 using SteamKit2;
 
@@ -37,17 +40,63 @@ namespace autotrade.Interfaces.Steam.TradeOffer
         /// <returns>The inventory for the given user. </returns>
         /// <param name='steamid'>The Steam identifier. </param>
         /// <param name="steamWeb">The SteamWeb instance for this Bot</param>
-        public InventoryRootOModel GetInventory(SteamID steamid, int appid, int contextid)
+        /// 
+
+        /*
+    HttpClient client = new HttpClient();
+    public async Task<InventoryRootModel> GetInventory(SteamID steamid, int appid, int contextid)
+    {
+        string url = String.Format(
+            "http://steamcommunity.com/profiles/{0}/inventory/json/{1}/{2}",
+            steamid.ConvertToUInt64(), appid, contextid
+        );
+
+        HttpResponseMessage response = await client.GetAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+
+            string res = await response.Content.ReadAsStringAsync();
+            InventoryRootModel rootOModel = JsonConvert.DeserializeObject<InventoryRootModel>(res);
+
+
+            //invent = JsonConvert.DeserializeObject<List<Inventory>>(res);
+
+            return rootOModel;
+
+        }
+        else
+        {
+            return null;
+        }
+
+        try
+        {
+            string response =  SteamWeb.Request(url, "GET", dataString: null);
+            return JsonConvert.DeserializeObject<InventoryRootOModel>(response);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+
+    }
+    */
+        InventoryRootModel inventoryRoot = new InventoryRootModel();
+        public InventoryRootModel GetInventory(SteamID steamid, int appid, int contextid)
         {
             string url = String.Format(
-                "http://steamcommunity.com/profiles/{0}/inventory/json/{1}/{2}",
+                "https://steamcommunity.com/inventory/{0}/{1}/{2}",
+                //"https://steamcommunity.com/profiles/76561198177211015/inventory/json/730/2",
                 steamid.ConvertToUInt64(), appid, contextid
             );
-
             try
             {
-                string response =  SteamWeb.Request(url, "GET", dataString: null);
-                return JsonConvert.DeserializeObject<InventoryRootOModel>(response);
+                string response = SteamWeb.Request(url, "GET", dataString: null);
+                inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
+                Console.WriteLine(inventoryRoot.success + " "+ inventoryRoot.assets);
+                return inventoryRoot;
             }
             catch (Exception e)
             {
@@ -184,11 +233,12 @@ namespace autotrade.Interfaces.Steam.TradeOffer
         //Get All Inventory
         public partial class RgInventory
         {
-            public int id { get; set; }
-            public int classid { get; set; }
-            public int instanceid { get; set; }
+            public int appid { get; set; }
+            public string classid { get; set; }
+            public string instanceid { get; set; }
             public string amount { get; set; }
-            public int pos { get; set; }
+            public string contextid { get; set; }
+            public string assetid { get; set; }
         }
 
         public class AppData
@@ -202,24 +252,21 @@ namespace autotrade.Interfaces.Steam.TradeOffer
         {
             public string type { get; set; }
             public string value { get; set; }
-            public string color { get; set; }
-            public AppData app_data { get; set; }
         }
 
         public class Tag
         {
             public string internal_name { get; set; }
-            public string name { get; set; }
             public string category { get; set; }
-            public string color { get; set; }
-            public string category_name { get; set; }
+            public string localized_tag_name { get; set; }
+            public string localized_category_name { get; set; }
         }
 
         public class RgDescription
         {
             public int appid { get; set; }
-            public int classid { get; set; }
-            public int instanceid { get; set; }
+            public string classid { get; set; }
+            public string instanceid { get; set; }
             public string icon_url { get; set; }
             public string icon_url_large { get; set; }
             public string icon_drag_url { get; set; }
@@ -230,17 +277,19 @@ namespace autotrade.Interfaces.Steam.TradeOffer
             public string background_color { get; set; }
             public string type { get; set; }
             public bool tradable { get; set; }
+            public bool commodity { get; set; }
             public bool marketable { get; set; }
+            public int market_tradable_restriction { get; set; }
             public List<Description> descriptions { get; set; }
             public List<Tag> tags { get; set; }
         }
 
-        public class InventoryRootOModel
+        public class InventoryRootModel
         {
             public bool success { get; set; }
-            public List<RgInventory> rgInventory { get; set; }
-            public List<object> rgCurrency { get; set; }
-            public List<RgDescription> rgDescriptions { get; set; }
+            public List<RgInventory> assets = new List<RgInventory>();
+            //public List<object> rgCurrency { get; set; }
+            public List<RgDescription> descriptions = new List<RgDescription>();
         }
 
 
