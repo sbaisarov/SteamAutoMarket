@@ -8,6 +8,7 @@ using System.Globalization;
 using OPSkins.Model.Inventory;
 using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
 using SteamKit2;
+using System.Collections;
 
 namespace autotrade
 {
@@ -23,6 +24,15 @@ namespace autotrade
         InventoryRootModel baseInvList = new InventoryRootModel();
 
         InventoryRootModel saleInvList = new InventoryRootModel();
+
+
+        ICollection<KeyValuePair<String, InventoryRootModel>> inventCollectionsTemp = new Dictionary<String, InventoryRootModel>();
+        ICollection<KeyValuePair<String, InventoryRootModel>> inventCollectionsBasket = new Dictionary<String, InventoryRootModel>();
+        List<RgInventory> listInvent = new List<RgInventory>();
+
+        ArrayList row;
+
+        DataGridViewButtonColumn btn;
 
         public SaleSteamControl()
         {
@@ -45,7 +55,7 @@ namespace autotrade
             // Set the column header names.
             dataGridView1.ColumnCount = 2;
             dataGridView1.Columns[0].Name = "Name";
-            dataGridView1.Columns[1].Name = "No. to Sell";
+            dataGridView1.Columns[1].Name = "Inventory counts";
 
             CurrentPage = 1;
             RefreshPagination();
@@ -79,16 +89,16 @@ namespace autotrade
             //Rebinding the Datagridview with data
             int datasourcestartIndex = (CurrentPage - 1) * pageRows;
             dataGridView1.Rows.Clear();
-            DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
-            btn.HeaderText = "Click Data";
-            btn.Text = "";
+
+            btn = new DataGridViewButtonColumn();
+            btn.HeaderText = "add";
+            btn.Text = "add to items";
             btn.UseColumnTextForButtonValue = true;
-            btn.Name = "+";
-            btn.DefaultCellStyle.BackColor = Color.Green;
-            btn.Width = 40;
+            btn.Name = "add";
+            btn.DefaultCellStyle.BackColor = Color.Blue;
+            btn.Width = 70;
             btn.FlatStyle = FlatStyle.Popup;
 
-            ICollection<KeyValuePair<String, InventoryRootModel>> inventCollectionsTemp = new Dictionary<String, InventoryRootModel>();
             RgDescription rgDescription = new RgDescription();
 
             for (int i = datasourcestartIndex; i < datasourcestartIndex + pageRows; i++)
@@ -117,19 +127,32 @@ namespace autotrade
             }
             foreach(KeyValuePair<string, InventoryRootModel> keyValInv in inventCollectionsTemp)
             {
+                DataGridViewComboBoxColumn cmb = new DataGridViewComboBoxColumn();
+                cmb.Name = "items";
+
+
+                int s = 1;
+                for (; s <= keyValInv.Value.assets.Count; s++)
+                {
+                    cmb.Items.Add(""+s);
+                }
+                
                 dataGridView1.Rows.Add(keyValInv.Value.descriptions[0].market_name, keyValInv.Value.assets.Count);
+                dataGridView1.Columns.Add(cmb);
+                dataGridView1.Columns.Add(btn);
             }
             //dataGridView1.DataSource = inventCollectionsTemp;
-            dataGridView1.Columns.Add(btn);
-            dataGridView1.Refresh();
+            //dataGridView1.Refresh();
             //dataGridView1.Rows[0].Selected = true;
         }
-
+        
+        //Get Jey from Inventory
         public string getDescription_key(RgInventory rgInventory)
         {
             return rgInventory.classid + "_" + rgInventory.instanceid;
         }
 
+        //Pagination
         private void RefreshPagination()
         {
             ToolStripButton[] btnNumberItems = new ToolStripButton[] { button1, button2, button3, button4, button5 };
@@ -215,6 +238,72 @@ namespace autotrade
         }
 
 
+        
+        /* hello world
+        public void onclickListItemView1(Object sender, EventArgs e)
+        {
+            ListViewItem viewItem = new ListViewItem();
+            viewItem = listView1.SelectedItems[0];
+            listView1.Items.Remove(viewItem);
+            listView2.Items.Add(viewItem);
+        }
+
+        public void onclickListItemView2(Object sender, EventArgs e)
+        {
+            ListViewItem viewItem = new ListViewItem();
+            viewItem = listView2.SelectedItems[0];
+            listView2.Items.Remove(viewItem);
+            listView1.Items.Add(viewItem);
+        }
+        */
+        
+        //Logo view
+        public void keyboardKeyDataGrid(Object sender, KeyEventArgs e)
+        {
+            this.setInventLogoToPanel(this.dataGridView1.CurrentCell.RowIndex);
+        }
+
+        KeyValuePair<string, InventoryRootModel>[] keyValInvView = new KeyValuePair<string, InventoryRootModel>[1];
+        private void dataGridView1_CellContentClick(Object sender, DataGridViewCellEventArgs e)
+        {
+            int row = e.RowIndex;
+            int column = e.ColumnIndex;
+
+            if(this.dataGridView1.Rows[row].Cells[3].Selected == true)
+            {
+                string result = this.dataGridView1.Rows[row].Cells[2].Value.ToString();
+                this.inventCollectionsTemp.CopyTo(keyValInvView, row);
+                KeyValuePair<string, InventoryRootModel> res = keyValInvView[0];
+                //InventoryRootModel tempInvList = new InventoryRootModel();
+                for (int c = 0 ; c < Convert.ToInt32(result) ; c++)
+                {
+                    //tempInvList.assets.Add(res.Value.assets[c]);
+                    listInvent.Add(res.Value.assets[c]);
+                    res.Value.assets.RemoveAt(c);
+                }
+                //inventCollectionsTemp.Remove(res);
+                //inventCollectionsBasket.Add(new KeyValuePair<string, InventoryRootModel>(row + "", tempInvList));
+                
+                this.ItemsCount.Text = "" + listInvent.Count;
+            }
+
+            this.setInventLogoToPanel(e.RowIndex);
+        }
+
+        //Set logo to panel
+        public void setInventLogoToPanel(int row)
+        {
+            Image image;
+            int column = this.dataGridView1.CurrentCell.ColumnIndex;
+
+            KeyValuePair<string, InventoryRootModel>[] keyValInvViewImg = new KeyValuePair<string, InventoryRootModel>[1];
+            this.inventCollectionsTemp.CopyTo(keyValInvViewImg, row);
+
+            KeyValuePair<string, InventoryRootModel> res = keyValInvViewImg[0];
+                image = LoadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + res.Value.descriptions[0].icon_url + "/192fx192f");
+
+                this.panel1.BackgroundImage = image;
+        }
         private Image LoadImage(string url)
         {
             WebRequest req = WebRequest.Create(url);
@@ -235,74 +324,5 @@ namespace autotrade
             }
             return res;
         }
-        /*
-        public void onclickListItemView1(Object sender, EventArgs e)
-        {
-            ListViewItem viewItem = new ListViewItem();
-            viewItem = listView1.SelectedItems[0];
-            listView1.Items.Remove(viewItem);
-            listView2.Items.Add(viewItem);
-        }
-
-        public void onclickListItemView2(Object sender, EventArgs e)
-        {
-            ListViewItem viewItem = new ListViewItem();
-            viewItem = listView2.SelectedItems[0];
-            listView2.Items.Remove(viewItem);
-            listView1.Items.Add(viewItem);
-        }
-        */
-
-        public void mouseHoverDataGridView1(Object sender, EventArgs e)
-        {
-            int row = this.dataGridView1.CurrentCell.RowIndex;
-
-            if (row > 0)
-
-                this.dataGridView1.Rows[row].Selected = true;
-            DataGridViewRow viewRow = this.dataGridView1.Rows[row];
-            //Image image = LoadImage(viewRow.Cells["img"].Value.ToString());
-
-            //this.panel1.BackgroundImage = image;
-        }
-
-        public void mouseKeyDataGrid(Object sender, KeyEventArgs e)
-        {
-            int row = this.dataGridView1.CurrentCell.RowIndex;
-            int column = this.dataGridView1.CurrentCell.ColumnIndex;
-            this.dataGridView1.ColumnHeadersVisible = true;
-            if (row > 0)
-
-                this.dataGridView1.Rows[row].Cells[column].Selected = true;
-            DataGridViewRow viewRow = this.dataGridView1.Rows[row];
-            Image image = LoadImage(viewRow.Cells["img"].Value.ToString());
-
-            this.panel1.BackgroundImage = image;
-        }
-
-        private void dataGridView1_CellContentClick(Object sender, DataGridViewCellEventArgs e)
-        { 
-            //Is bool gren and red
-            if(this.dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor != Color.Green && this.dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor != Color.Red)
-            {
-                this.dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor = Color.Green;
-            }
-
-            if (this.dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor == Color.Green && e.ColumnIndex == 4)
-            {
-                dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor = Color.Red;
-                this.saleInvList.descriptions.Add(this.baseInvList.descriptions[e.RowIndex]);
-                openWith.Add(new KeyValuePair<String, RgDescription>(e.RowIndex + "", this.baseInvList.descriptions[e.RowIndex]));
-                ItemsLength.Text = openWith.Count +"";
-            }
-            else if(this.dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor == Color.Red  && e.ColumnIndex == 4)
-            {
-                openWith.Remove(new KeyValuePair<String, RgDescription>(e.RowIndex +"", this.baseInvList.descriptions[e.RowIndex]));
-                ItemsLength.Text = openWith.Count + "";
-                dataGridView1.Rows[e.RowIndex].Cells[4].Style.BackColor = Color.Green;
-            }
-            
-        }
-        ICollection<KeyValuePair<String, RgDescription>> openWith = new Dictionary<String, RgDescription>();
     }
 }

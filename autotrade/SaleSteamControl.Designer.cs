@@ -45,7 +45,7 @@ namespace autotrade
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.titleSelectedItemsLength = new System.Windows.Forms.Label();
-            this.ItemsLength = new System.Windows.Forms.Label();
+            this.ItemsCount = new System.Windows.Forms.Label();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.toolStripPaging.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -148,6 +148,7 @@ namespace autotrade
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.GridColor = System.Drawing.Color.White;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
@@ -156,9 +157,8 @@ namespace autotrade
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(491, 464);
             this.dataGridView1.TabIndex = 7;
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.mouseHoverDataGridView1);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.mouseKeyDataGrid);
+            this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyboardKeyDataGrid);
             // 
             // panel1
             // 
@@ -166,7 +166,7 @@ namespace autotrade
             this.panel1.ForeColor = System.Drawing.Color.CornflowerBlue;
             this.panel1.Location = new System.Drawing.Point(531, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(220, 164);
+            this.panel1.Size = new System.Drawing.Size(210, 164);
             this.panel1.TabIndex = 8;
             // 
             // titleSelectedItemsLength
@@ -179,15 +179,15 @@ namespace autotrade
             this.titleSelectedItemsLength.TabIndex = 9;
             this.titleSelectedItemsLength.Text = "Количество выбранных:";
             // 
-            // ItemsLength
+            // ItemsCount
             // 
-            this.ItemsLength.AutoSize = true;
-            this.ItemsLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ItemsLength.Location = new System.Drawing.Point(718, 206);
-            this.ItemsLength.Name = "ItemsLength";
-            this.ItemsLength.Size = new System.Drawing.Size(52, 18);
-            this.ItemsLength.TabIndex = 10;
-            this.ItemsLength.Text = "label1";
+            this.ItemsCount.AutoSize = true;
+            this.ItemsCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ItemsCount.Location = new System.Drawing.Point(718, 206);
+            this.ItemsCount.Name = "ItemsCount";
+            this.ItemsCount.Size = new System.Drawing.Size(52, 18);
+            this.ItemsCount.TabIndex = 10;
+            this.ItemsCount.Text = "label1";
             // 
             // checkInvent
             // 
@@ -198,7 +198,7 @@ namespace autotrade
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
-            this.Controls.Add(this.ItemsLength);
+            this.Controls.Add(this.ItemsCount);
             this.Controls.Add(this.titleSelectedItemsLength);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStripPaging);
@@ -248,7 +248,7 @@ namespace autotrade
         private DataGridView dataGridView1;
         private Panel panel1;
         private Label titleSelectedItemsLength;
-        private Label ItemsLength;
+        private Label ItemsCount;
         private DataGridViewCheckBoxColumn checkInvent;
     }
 }
