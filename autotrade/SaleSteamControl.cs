@@ -9,6 +9,7 @@ using OPSkins.Model.Inventory;
 using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
 using SteamKit2;
 using System.Collections;
+using System.Threading.Tasks;
 
 namespace autotrade
 {
@@ -29,9 +30,9 @@ namespace autotrade
 
         List<RgInventory> listInvent = new List<RgInventory>();
 
-        ArrayList row;
+        InventoryRootModel keyValInvView = new InventoryRootModel();
 
-        DataGridViewButtonColumn btn;
+        DataGridViewComboBoxColumn cmb = new DataGridViewComboBoxColumn();
 
         public SaleSteamControl()
         {
@@ -44,40 +45,29 @@ namespace autotrade
             //List from inventory
             this.baseInvList = services.steamAllInventory();
 
-
-
             PagesCount = Convert.ToInt32(Math.Ceiling(baseInvList.descriptions.Count * 1.0 / pageRows));
 
+            DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
+            btn.HeaderText = "add";
+            btn.Text = "add to items";
+            btn.UseColumnTextForButtonValue = true;
+            btn.Name = "add";
+            btn.DefaultCellStyle.BackColor = Color.Blue;
+            btn.Width = 70;
 
-            dataGridView1.ColumnCount = 4;
+            //DATAGRIDVIEWCOLUMNS
+            dataGridView1.ColumnCount = 2;
             dataGridView1.Columns[0].Name = "Name";
             dataGridView1.Columns[1].Name = "Inventory counts";
+
+            //Add comboBox and button
+            cmb.Name = "items";
+            dataGridView1.Columns.Add(cmb);
+            dataGridView1.Columns.Add(btn);
 
             CurrentPage = 1;
             RefreshPagination();
             RebindGridForPageChange();
-
-            //foreach for imageList images get from url
-            /*
-            foreach (Inventory invent in baseInvList)
-            {
-
-                imageList1.Images.Add(""+ invent.market_name +"", LoadImage(invent.img));
-            }
-            listView2.LargeImageList = imageList1;
-            listView1.LargeImageList = imageList1;
-            
-            //foreach for listView
-            int i = 0;
-        
-            foreach (Inventory invent in inventList)
-            {
-                ListViewItem listViewItem = new ListViewItem();
-                listViewItem.ImageKey = invent.market_name;
-                listViewItem.Text = invent.market_name;
-                listViewItem.BackColor = Color.Azure;
-                this.listView2.Items.Add(listViewItem);
-            }*/
         }
 
         private void RebindGridForPageChange()
@@ -87,7 +77,8 @@ namespace autotrade
             //dataGridView1.Rows.Clear();
 
             RgDescription rgDescription = new RgDescription();
-            for (int i = datasourcestartIndex; i < datasourcestartIndex + pageRows; i++)
+            //datasourcestartIndex + pageRows
+            for (int i = datasourcestartIndex; i < 1; i++)
             {
                 if (i >= baseInvList.descriptions.Count)
                     break;
@@ -108,61 +99,34 @@ namespace autotrade
                             tempInvList.assets.Add(this.baseInvList.assets[y]);
                         }
                     }
-                    inventCollectionsTemp.Add(i, tempInvList);
+                    inventCollectionsTemp.Add(k, tempInvList);
                 }
             }
             this.addingGridViewItems();
         }
 
+        #region Adding inventory to the DataGridView and DataGridViewComboBoxColumn
         public void addingGridViewItems()
         {
             dataGridView1.Rows.Clear();
-            btn = new DataGridViewButtonColumn();
-            btn.HeaderText = "add";
-            btn.Text = "add to items";
-            btn.UseColumnTextForButtonValue = true;
-            btn.Name = "add";
-            btn.DefaultCellStyle.BackColor = Color.Blue;
-            btn.Width = 70;
-
+            int rowIndex = 0;
             foreach (InventoryRootModel keyValInv in this.inventCollectionsTemp.Values)
             {
-                DataGridViewComboBoxColumn cmb = new DataGridViewComboBoxColumn();
-                cmb.Name = "items";
-
-
-                int s = 1;
-                if (keyValInv.assets.Count != 0)
-                {
-                    for (; s <= keyValInv.assets.Count; s++)
-                    {
-                        cmb.Items.Add("" + s);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("no Data");
-                }
-                
                 dataGridView1.Rows.Add(keyValInv.descriptions[0].market_name, keyValInv.assets.Count);
-
-                dataGridView1.Columns.RemoveAt(2);
-                dataGridView1.Columns.Insert(2, cmb);
-                if (dataGridView1.Columns[3].Name != "add")
-                {
-                    dataGridView1.Columns.RemoveAt(3);
-                    dataGridView1.Columns.Insert(3, btn);
-                }
+                setCellComboBoxItems(dataGridView1, rowIndex, 2, keyValInv);
+                rowIndex++;
             }
         }
-        
-        //Get Jey from Inventory
+        #endregion
+
+        #region Get identify from Inventory
         public string getDescription_key(RgInventory rgInventory)
         {
             return rgInventory.classid + "_" + rgInventory.instanceid;
         }
+        #endregion
 
-        //Pagination
+        #region Pagination
         private void RefreshPagination()
         {
             ToolStripButton[] btnNumberItems = new ToolStripButton[] { button1, button2, button3, button4, button5 };
@@ -213,8 +177,9 @@ namespace autotrade
             else
                 btnForward.Enabled = btnLast.Enabled = true;
         }
+        #endregion
 
-        //Method that handles the pagination button clicks
+        #region Method that handles the pagination button clicks
         private void ToolStripButtonClick(object sender, EventArgs e)
         {
             try
@@ -246,43 +211,23 @@ namespace autotrade
             }
             catch (Exception) { }
         }
+        #endregion
 
-
-        
-        /* hello world
-        public void onclickListItemView1(Object sender, EventArgs e)
-        {
-            ListViewItem viewItem = new ListViewItem();
-            viewItem = listView1.SelectedItems[0];
-            listView1.Items.Remove(viewItem);
-            listView2.Items.Add(viewItem);
-        }
-
-        public void onclickListItemView2(Object sender, EventArgs e)
-        {
-            ListViewItem viewItem = new ListViewItem();
-            viewItem = listView2.SelectedItems[0];
-            listView2.Items.Remove(viewItem);
-            listView1.Items.Add(viewItem);
-        }
-        */
-        
-        //Logo view
+        #region Event to add icons to the panel
         public void keyboardKeyDataGrid(Object sender, KeyEventArgs e)
         {
             this.setInventLogoToPanel(this.dataGridView1.CurrentCell.RowIndex);
         }
+        #endregion
 
-        InventoryRootModel keyValInvView = new InventoryRootModel();
         private void dataGridView1_CellContentClick(Object sender, DataGridViewCellEventArgs e)
         {
-            int row = e.RowIndex;
             int column = e.ColumnIndex;
-            
-            if (this.dataGridView1.Rows[row].Cells[2].Value != null & this.dataGridView1.Rows[row].Cells[3].Selected == true)
+
+            if (this.dataGridView1.Rows[e.RowIndex].Cells[2].Value != null & this.dataGridView1.Rows[e.RowIndex].Cells[3].Selected == true)
             {
-                string result = this.dataGridView1.Rows[row].Cells[2].Value.ToString();
-                keyValInvView = this.inventCollectionsTemp[row];
+                string result = this.dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+                keyValInvView = this.inventCollectionsTemp[e.RowIndex];
                 int c = Convert.ToInt32(result) - 1;
                 for (; c >= 0; c--)
                 {
@@ -294,7 +239,7 @@ namespace autotrade
                 this.ItemsCount.Text = "" + listInvent.Count;
                 this.addingGridViewItems();
             }
-            else if(this.dataGridView1.Rows[row].Cells[2].Value == null & this.dataGridView1.Rows[row].Cells[3].Selected == true)
+            else if(this.dataGridView1.Rows[e.RowIndex].Cells[2].Value == null & this.dataGridView1.Rows[e.RowIndex].Cells[3].Selected == true)
             {
                 MessageBox.Show("No data");
             }
@@ -302,7 +247,7 @@ namespace autotrade
             this.setInventLogoToPanel(e.RowIndex);
         }
 
-        //Set logo to panel
+        #region Work with the logo of the inventory
         public void setInventLogoToPanel(int row)
         {
             Image image;
@@ -330,5 +275,19 @@ namespace autotrade
             }
             return res;
         }
+        #endregion
+
+        #region Adding items to Combo box from dataGrid View
+        private void setCellComboBoxItems(DataGridView dataGrid, int rowIndex, int colIndex, InventoryRootModel itemsToAdd)
+        {
+            DataGridViewComboBoxCell dgvcbc = (DataGridViewComboBoxCell)dataGrid.Rows[rowIndex].Cells[colIndex];
+            // You might pass a boolean to determine whether to clear or not.
+            dgvcbc.Items.Clear();
+            for ( int count = 1; count <= itemsToAdd.assets.Count; count++)
+            {
+                dgvcbc.Items.Add(""+ count);
+            }
+        }
+        #endregion
     }
 }
