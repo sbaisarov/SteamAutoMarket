@@ -22,11 +22,11 @@ namespace autotrade
         Interfaces.Steam.TradeOffer.Inventory inventory = new Interfaces.Steam.TradeOffer.Inventory();
 
 
-        SteamID steamid = new SteamID(76561198177211015);
+        SteamID steamid = new SteamID(76561198074672128);
         
 
         //GET obskins all inventorys
-        public List<InventorySale> obskinsAllInventory()
+        public List<InventorySale> ObskinsAllInventory()
         {
             obskinsInventoryList = new OPSkins.Interfaces.IInventory(opsClient);
             return obskinsInventoryList.GetInventory().Items;
@@ -34,9 +34,9 @@ namespace autotrade
 
         InventoryRootModel invList = new InventoryRootModel();
 
-        public InventoryRootModel steamAllInventory()
+        public InventoryRootModel SteamAllInventory()
         {
-            invList = inventory.GetInventory(steamid, 730, 2);
+            invList = inventory.GetInventory(steamid, 753, 6);
             if ( invList!= null )
             {
                 return invList;

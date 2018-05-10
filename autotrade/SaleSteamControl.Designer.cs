@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace autotrade
 {
@@ -31,6 +32,7 @@ namespace autotrade
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripPaging = new System.Windows.Forms.ToolStrip();
             this.btnBackward = new System.Windows.Forms.ToolStripButton();
@@ -43,6 +45,10 @@ namespace autotrade
             this.btnLast = new System.Windows.Forms.ToolStripButton();
             this.btnForward = new System.Windows.Forms.ToolStripButton();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CountToAddColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.titleSelectedItemsLength = new System.Windows.Forms.Label();
             this.ItemsCount = new System.Windows.Forms.Label();
@@ -76,7 +82,7 @@ namespace autotrade
             this.btnLast,
             this.btnForward});
             this.toolStripPaging.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.toolStripPaging.Location = new System.Drawing.Point(105, 470);
+            this.toolStripPaging.Location = new System.Drawing.Point(117, 470);
             this.toolStripPaging.Name = "toolStripPaging";
             this.toolStripPaging.ShowItemToolTips = false;
             this.toolStripPaging.Size = new System.Drawing.Size(218, 25);
@@ -149,22 +155,56 @@ namespace autotrade
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NameColumn,
+            this.CountColumn,
+            this.CountToAddColumn,
+            this.AddButtonColumn});
             this.dataGridView1.GridColor = System.Drawing.Color.White;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(491, 464);
+            this.dataGridView1.Size = new System.Drawing.Size(476, 464);
             this.dataGridView1.TabIndex = 7;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyboardKeyDataGrid);
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
+            this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyboardKeyDataGrid);
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.DataPropertyName = "SaleSteamControl";
+            this.NameColumn.HeaderText = "Name";
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.ToolTipText = "Item name";
+            // 
+            // CountColumn
+            // 
+            this.CountColumn.HeaderText = "Count";
+            this.CountColumn.Name = "CountColumn";
+            // 
+            // CountToAddColumn
+            // 
+            this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.CountToAddColumn.HeaderText = "Count to add";
+            this.CountToAddColumn.Name = "CountToAddColumn";
+            // 
+            // AddButtonColumn
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Blue;
+            this.AddButtonColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            this.AddButtonColumn.HeaderText = "Add";
+            this.AddButtonColumn.Name = "AddButtonColumn";
+            this.AddButtonColumn.Text = "Add";
+            this.AddButtonColumn.UseColumnTextForButtonValue = true;
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.panel1.Location = new System.Drawing.Point(531, 24);
+            this.panel1.Location = new System.Drawing.Point(529, 23);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(210, 164);
             this.panel1.TabIndex = 8;
@@ -173,7 +213,7 @@ namespace autotrade
             // 
             this.titleSelectedItemsLength.AutoSize = true;
             this.titleSelectedItemsLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.titleSelectedItemsLength.Location = new System.Drawing.Point(513, 206);
+            this.titleSelectedItemsLength.Location = new System.Drawing.Point(508, 206);
             this.titleSelectedItemsLength.Name = "titleSelectedItemsLength";
             this.titleSelectedItemsLength.Size = new System.Drawing.Size(199, 18);
             this.titleSelectedItemsLength.TabIndex = 9;
@@ -183,11 +223,11 @@ namespace autotrade
             // 
             this.ItemsCount.AutoSize = true;
             this.ItemsCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ItemsCount.Location = new System.Drawing.Point(718, 206);
+            this.ItemsCount.Location = new System.Drawing.Point(722, 206);
             this.ItemsCount.Name = "ItemsCount";
-            this.ItemsCount.Size = new System.Drawing.Size(52, 18);
+            this.ItemsCount.Size = new System.Drawing.Size(17, 18);
             this.ItemsCount.TabIndex = 10;
-            this.ItemsCount.Text = "label1";
+            this.ItemsCount.Text = "0";
             // 
             // checkInvent
             // 
@@ -250,5 +290,9 @@ namespace autotrade
         private Label titleSelectedItemsLength;
         private Label ItemsCount;
         private DataGridViewCheckBoxColumn checkInvent;
+        private DataGridViewTextBoxColumn NameColumn;
+        private DataGridViewTextBoxColumn CountColumn;
+        private DataGridViewComboBoxColumn CountToAddColumn;
+        private DataGridViewButtonColumn AddButtonColumn;
     }
 }

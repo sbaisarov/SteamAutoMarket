@@ -30,8 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.saleSteamControl1 = new autotrade.SaleSteamControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.saleSteamControl1 = new autotrade.SaleSteamControl();
             this.saleObskinsControl = new autotrade.SaleObskinsControl();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -59,13 +59,6 @@
             this.tabPage1.Text = "steam";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // saleSteamControl1
-            // 
-            this.saleSteamControl1.BackColor = System.Drawing.Color.Silver;
-            this.saleSteamControl1.Location = new System.Drawing.Point(3, 3);
-            this.saleSteamControl1.Name = "saleSteamControl1";
-            this.saleSteamControl1.TabIndex = 0;
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.saleObskinsControl);
@@ -76,6 +69,15 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "obskins";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // saleSteamControl1
+            // 
+            this.saleSteamControl1.BackColor = System.Drawing.Color.Silver;
+            this.saleSteamControl1.Location = new System.Drawing.Point(3, 3);
+            this.saleSteamControl1.Name = "saleSteamControl1";
+            this.saleSteamControl1.Size = new System.Drawing.Size(782, 495);
+            this.saleSteamControl1.TabIndex = 0;
+            this.saleSteamControl1.Load += new System.EventHandler(this.saleSteamControl1_Load);
             // 
             // saleObskinsControl
             // 
