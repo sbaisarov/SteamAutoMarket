@@ -32,7 +32,6 @@ namespace autotrade
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStripPaging = new System.Windows.Forms.ToolStrip();
             this.btnBackward = new System.Windows.Forms.ToolStripButton();
@@ -44,17 +43,20 @@ namespace autotrade
             this.button5 = new System.Windows.Forms.ToolStripButton();
             this.btnLast = new System.Windows.Forms.ToolStripButton();
             this.btnForward = new System.Windows.Forms.ToolStripButton();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.SteamSaleDataGridView = new System.Windows.Forms.DataGridView();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountToAddColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.AddAllButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.titleSelectedItemsLength = new System.Windows.Forms.Label();
             this.ItemsCount = new System.Windows.Forms.Label();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ItemsToSaleListBox = new System.Windows.Forms.ListBox();
+            this.DeleteItemButton = new System.Windows.Forms.Button();
             this.toolStripPaging.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SteamSaleDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -82,7 +84,7 @@ namespace autotrade
             this.btnLast,
             this.btnForward});
             this.toolStripPaging.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.toolStripPaging.Location = new System.Drawing.Point(117, 470);
+            this.toolStripPaging.Location = new System.Drawing.Point(117, 542);
             this.toolStripPaging.Name = "toolStripPaging";
             this.toolStripPaging.ShowItemToolTips = false;
             this.toolStripPaging.Size = new System.Drawing.Size(218, 25);
@@ -152,25 +154,30 @@ namespace autotrade
             this.btnForward.Text = ">";
             this.btnForward.Click += new System.EventHandler(this.ToolStripButtonClick);
             // 
-            // dataGridView1
+            // SteamSaleDataGridView
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.SteamSaleDataGridView.AllowUserToAddRows = false;
+            this.SteamSaleDataGridView.AllowUserToDeleteRows = false;
+            this.SteamSaleDataGridView.AllowUserToOrderColumns = true;
+            this.SteamSaleDataGridView.AllowUserToResizeColumns = false;
+            this.SteamSaleDataGridView.AllowUserToResizeRows = false;
+            this.SteamSaleDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.SteamSaleDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.SteamSaleDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.SteamSaleDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NameColumn,
             this.CountColumn,
             this.CountToAddColumn,
-            this.AddButtonColumn});
-            this.dataGridView1.GridColor = System.Drawing.Color.White;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(476, 464);
-            this.dataGridView1.TabIndex = 7;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
-            this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyboardKeyDataGrid);
+            this.AddButtonColumn,
+            this.AddAllButtonColumn});
+            this.SteamSaleDataGridView.GridColor = System.Drawing.Color.White;
+            this.SteamSaleDataGridView.Location = new System.Drawing.Point(3, 3);
+            this.SteamSaleDataGridView.MultiSelect = false;
+            this.SteamSaleDataGridView.Name = "SteamSaleDataGridView";
+            this.SteamSaleDataGridView.RowHeadersVisible = false;
+            this.SteamSaleDataGridView.Size = new System.Drawing.Size(444, 535);
+            this.SteamSaleDataGridView.TabIndex = 7;
+            this.SteamSaleDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SteamSaleDataGridView_CellClick);
             // 
             // NameColumn
             // 
@@ -192,38 +199,42 @@ namespace autotrade
             // 
             // AddButtonColumn
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Blue;
-            this.AddButtonColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.AddButtonColumn.HeaderText = "Add";
             this.AddButtonColumn.Name = "AddButtonColumn";
             this.AddButtonColumn.Text = "Add";
             this.AddButtonColumn.UseColumnTextForButtonValue = true;
             // 
+            // AddAllButtonColumn
+            // 
+            this.AddAllButtonColumn.HeaderText = "Add all";
+            this.AddAllButtonColumn.Name = "AddAllButtonColumn";
+            this.AddAllButtonColumn.Text = "Add all";
+            this.AddAllButtonColumn.UseColumnTextForButtonValue = true;
+            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.panel1.Location = new System.Drawing.Point(529, 23);
+            this.panel1.Location = new System.Drawing.Point(517, 31);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(210, 164);
+            this.panel1.Size = new System.Drawing.Size(206, 185);
             this.panel1.TabIndex = 8;
             // 
             // titleSelectedItemsLength
             // 
             this.titleSelectedItemsLength.AutoSize = true;
-            this.titleSelectedItemsLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.titleSelectedItemsLength.Location = new System.Drawing.Point(508, 206);
+            this.titleSelectedItemsLength.Font = new System.Drawing.Font("Open Sans", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.titleSelectedItemsLength.Location = new System.Drawing.Point(495, 297);
             this.titleSelectedItemsLength.Name = "titleSelectedItemsLength";
-            this.titleSelectedItemsLength.Size = new System.Drawing.Size(199, 18);
+            this.titleSelectedItemsLength.Size = new System.Drawing.Size(197, 20);
             this.titleSelectedItemsLength.TabIndex = 9;
-            this.titleSelectedItemsLength.Text = "Количество выбранных:";
+            this.titleSelectedItemsLength.Text = "Выбранные предметы:";
             // 
             // ItemsCount
             // 
             this.ItemsCount.AutoSize = true;
             this.ItemsCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ItemsCount.Location = new System.Drawing.Point(722, 206);
+            this.ItemsCount.Location = new System.Drawing.Point(687, 297);
             this.ItemsCount.Name = "ItemsCount";
             this.ItemsCount.Size = new System.Drawing.Size(17, 18);
             this.ItemsCount.TabIndex = 10;
@@ -233,22 +244,51 @@ namespace autotrade
             // 
             this.checkInvent.Name = "checkInvent";
             // 
+            // ItemsToSaleListBox
+            // 
+            this.ItemsToSaleListBox.BackColor = System.Drawing.Color.LightGray;
+            this.ItemsToSaleListBox.Font = new System.Drawing.Font("Open Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ItemsToSaleListBox.ItemHeight = 15;
+            this.ItemsToSaleListBox.Location = new System.Drawing.Point(498, 321);
+            this.ItemsToSaleListBox.Name = "ItemsToSaleListBox";
+            this.ItemsToSaleListBox.ScrollAlwaysVisible = true;
+            this.ItemsToSaleListBox.Size = new System.Drawing.Size(225, 184);
+            this.ItemsToSaleListBox.TabIndex = 11;
+            this.ItemsToSaleListBox.SelectedIndexChanged += new System.EventHandler(this.ItemsToSaleListBox_SelectedIndexChanged);
+            // 
+            // DeleteItemButton
+            // 
+            this.DeleteItemButton.BackColor = System.Drawing.Color.RoyalBlue;
+            this.DeleteItemButton.Enabled = false;
+            this.DeleteItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.DeleteItemButton.Font = new System.Drawing.Font("Open Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.DeleteItemButton.Location = new System.Drawing.Point(543, 512);
+            this.DeleteItemButton.Name = "DeleteItemButton";
+            this.DeleteItemButton.Size = new System.Drawing.Size(132, 27);
+            this.DeleteItemButton.TabIndex = 12;
+            this.DeleteItemButton.Text = "Удалить предмет";
+            this.DeleteItemButton.UseVisualStyleBackColor = false;
+            this.DeleteItemButton.Click += new System.EventHandler(this.DeleteItemButton_Click);
+            // 
             // SaleSteamControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
+            this.Controls.Add(this.DeleteItemButton);
+            this.Controls.Add(this.ItemsToSaleListBox);
             this.Controls.Add(this.ItemsCount);
             this.Controls.Add(this.titleSelectedItemsLength);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStripPaging);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.SteamSaleDataGridView);
+            this.Font = new System.Drawing.Font("Open Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "SaleSteamControl";
-            this.Size = new System.Drawing.Size(785, 495);
+            this.Size = new System.Drawing.Size(785, 571);
             this.Load += new System.EventHandler(this.SaleControl_Load);
             this.toolStripPaging.ResumeLayout(false);
             this.toolStripPaging.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SteamSaleDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -257,7 +297,7 @@ namespace autotrade
         public void setSizeListView1(int width, int height)
         {
             // this.listView1.Size = new System.Drawing.Size(width, height);
-            this.dataGridView1.Size = new System.Drawing.Size(width, height);
+            this.SteamSaleDataGridView.Size = new System.Drawing.Size(width, height);
         }
 
         public void setSizeListView2(int width, int height)
@@ -285,7 +325,7 @@ namespace autotrade
         private ToolStripButton button5;
         private ToolStripButton btnLast;
         private ToolStripButton btnForward;
-        private DataGridView dataGridView1;
+        private DataGridView SteamSaleDataGridView;
         private Panel panel1;
         private Label titleSelectedItemsLength;
         private Label ItemsCount;
@@ -294,5 +334,8 @@ namespace autotrade
         private DataGridViewTextBoxColumn CountColumn;
         private DataGridViewComboBoxColumn CountToAddColumn;
         private DataGridViewButtonColumn AddButtonColumn;
+        private DataGridViewButtonColumn AddAllButtonColumn;
+        private ListBox ItemsToSaleListBox;
+        private Button DeleteItemButton;
     }
 }

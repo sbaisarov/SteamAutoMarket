@@ -67,7 +67,7 @@
             this.borderLeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.borderLeftPanel.Location = new System.Drawing.Point(0, 1);
             this.borderLeftPanel.Name = "borderLeftPanel";
-            this.borderLeftPanel.Size = new System.Drawing.Size(1, 560);
+            this.borderLeftPanel.Size = new System.Drawing.Size(1, 631);
             this.borderLeftPanel.TabIndex = 1;
             // 
             // borderRightPanel
@@ -76,14 +76,14 @@
             this.borderRightPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.borderRightPanel.Location = new System.Drawing.Point(961, 1);
             this.borderRightPanel.Name = "borderRightPanel";
-            this.borderRightPanel.Size = new System.Drawing.Size(1, 560);
+            this.borderRightPanel.Size = new System.Drawing.Size(1, 631);
             this.borderRightPanel.TabIndex = 1;
             // 
             // borderBottomPanel
             // 
             this.borderBottomPanel.BackColor = System.Drawing.Color.RoyalBlue;
             this.borderBottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.borderBottomPanel.Location = new System.Drawing.Point(0, 561);
+            this.borderBottomPanel.Location = new System.Drawing.Point(0, 632);
             this.borderBottomPanel.Name = "borderBottomPanel";
             this.borderBottomPanel.Size = new System.Drawing.Size(962, 1);
             this.borderBottomPanel.TabIndex = 1;
@@ -167,7 +167,7 @@
             this.leftHeaderPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.leftHeaderPanel.Location = new System.Drawing.Point(1, 32);
             this.leftHeaderPanel.Name = "leftHeaderPanel";
-            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 529);
+            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 600);
             this.leftHeaderPanel.TabIndex = 3;
             this.leftHeaderPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
@@ -251,9 +251,9 @@
             // saleControl1
             // 
             this.saleControl1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.saleControl1.Location = new System.Drawing.Point(162, 31);
+            this.saleControl1.Location = new System.Drawing.Point(162, 32);
             this.saleControl1.Name = "saleControl1";
-            this.saleControl1.Size = new System.Drawing.Size(799, 530);
+            this.saleControl1.Size = new System.Drawing.Size(799, 599);
             this.saleControl1.TabIndex = 5;
             // 
             // buyControl1
@@ -268,7 +268,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(962, 562);
+            this.ClientSize = new System.Drawing.Size(962, 633);
             this.Controls.Add(this.leftHeaderPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.borderLeftPanel);

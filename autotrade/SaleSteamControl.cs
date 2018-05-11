@@ -10,11 +10,82 @@ using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
 using SteamKit2;
 using System.Collections;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace autotrade {
     public partial class SaleSteamControl : UserControl {
         ApiServices services = new ApiServices();
+        List<RgFullItem> AllItemsList = new List<RgFullItem>();
+        Dictionary<string, int> TableItemsCount = new Dictionary<string, int>();
 
+        public SaleSteamControl() {
+            InitializeComponent();
+            this.CountColumn.Width = 60;
+            this.AddButtonColumn.Width = 50;
+            this.AddAllButtonColumn.Width = 60;
+            this.CountColumn.Width = 150;
+            this.NameColumn.ReadOnly = true;
+            this.CountColumn.ReadOnly = true;
+        }
+
+        private void SaleControl_Load(object sender, EventArgs e) {
+            var allItemsInventory = services.SteamAllInventory();
+
+            foreach (var item in allItemsInventory.assets) {
+                RgFullItem rgFullItem = new RgFullItem();
+                rgFullItem.Asset = item;
+                rgFullItem.Description = InventoryRootModel.GetDescription(item, allItemsInventory.descriptions);
+                AllItemsList.Add(rgFullItem);
+            }
+
+            AllItemsList
+                .GroupBy(item => item.Description.market_hash_name)
+                .ToList()
+                .ForEach(item => TableItemsCount.Add(
+                    allItemsInventory.descriptions.First(description => item.Key == description.market_hash_name).name,
+                    item.Sum(sum => int.Parse(sum.Asset.amount))));
+
+            int currentRowNumber = 0;
+            foreach (var item in TableItemsCount) {
+                SteamSaleDataGridView.Rows.Add(item.Key, item.Value);
+                DataGridViewComboBoxCell comboBoxCell = (DataGridViewComboBoxCell)this.SteamSaleDataGridView.Rows[currentRowNumber].Cells[2];
+                FillComboBoxCellFromMinToMaxValues(comboBoxCell, 0, item.Value);
+                comboBoxCell.Value = "0";
+                currentRowNumber++;
+            }
+        }
+
+        private void SteamSaleDataGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) {
+                return;
+            }
+
+            if (e.ColumnIndex == 2) {
+                DataGridViewComboBoxCell comboBoxCell = (DataGridViewComboBoxCell)SteamSaleDataGridView.Rows[e.RowIndex].Cells[2];
+                SteamSaleDataGridView.BeginEdit(true);
+                comboBoxCell.Selected = true;
+                ((DataGridViewComboBoxEditingControl)SteamSaleDataGridView.EditingControl).DroppedDown = true;
+            }
+            else if (e.ColumnIndex == 4) {
+                DataGridViewComboBoxCell comboBoxCell = (DataGridViewComboBoxCell)SteamSaleDataGridView.Rows[e.RowIndex].Cells[2];
+                DataGridViewTextBoxCell textBoxCell = (DataGridViewTextBoxCell)SteamSaleDataGridView.Rows[e.RowIndex].Cells[0];
+                string itemsCount = TableItemsCount[textBoxCell.Value.ToString()].ToString();
+                comboBoxCell.Value = itemsCount;
+                ItemsToSaleListBox.Items.Add($"{itemsCount} - {textBoxCell.Value.ToString()}");
+
+            }
+        }
+
+        #region utils
+        private void FillComboBoxCellFromMinToMaxValues(DataGridViewComboBoxCell comboBoxCell, int minValue, int maxValue) {
+            if (minValue > maxValue) return;
+            for (int i = minValue; i <= maxValue; i++) {
+                comboBoxCell.Items.Add(i.ToString());
+            }
+        }
+        #endregion
+
+        #region old
         private int CurrentPage = 1;
         int PagesCount = 1;
         int pageRows = 19;
@@ -31,20 +102,18 @@ namespace autotrade {
 
         DataGridViewComboBoxColumn cmb = new DataGridViewComboBoxColumn();
 
-        public SaleSteamControl() {
-            InitializeComponent();
-        }
 
-        private void SaleControl_Load(object sender, EventArgs e) {
-            //List from inventory
-            this.baseInvList = services.SteamAllInventory();
 
-            PagesCount = Convert.ToInt32(Math.Ceiling(baseInvList.descriptions.Count * 1.0 / pageRows));
-            this.AddButtonColumn.Width = 60;
-            CurrentPage = 1;
-            RefreshPagination();
-            RebindGridForPageChange();
-        }
+        //private void SaleControl_Load(object sender, EventArgs e) {
+        //    //List from inventory
+        //    this.baseInvList = services.SteamAllInventory();
+
+        //    PagesCount = Convert.ToInt32(Math.Ceiling(baseInvList.descriptions.Count * 1.0 / pageRows));
+        //    this.AddButtonColumn.Width = 60;
+        //    CurrentPage = 1;
+        //    RefreshPagination();
+        //    RebindGridForPageChange();
+        //}
 
         private void RebindGridForPageChange() {
             //Rebinding the Datagridview with data
@@ -69,16 +138,16 @@ namespace autotrade {
                     inventCollectionsTemp.Add(k, tempInvList);
                 }
             }
-            this.addingGridViewItems();
+            this.AddingGridViewItems();
         }
 
         #region Adding inventory to the DataGridView and DataGridViewComboBoxColumn
-        public void addingGridViewItems() {
-            dataGridView1.Rows.Clear();
+        public void AddingGridViewItems() {
+            SteamSaleDataGridView.Rows.Clear();
             int rowIndex = 0;
             foreach (InventoryRootModel keyValInv in this.inventCollectionsTemp.Values) {
-                dataGridView1.Rows.Add(keyValInv.descriptions[0].market_name, keyValInv.assets.Count);
-                SetCellComboBoxItems(dataGridView1, rowIndex, 2, keyValInv);
+                SteamSaleDataGridView.Rows.Add(keyValInv.descriptions[0].market_name, keyValInv.assets.Count);
+                SetCellComboBoxItems(SteamSaleDataGridView, rowIndex, 2, keyValInv);
                 rowIndex++;
             }
         }
@@ -170,38 +239,49 @@ namespace autotrade {
 
         #region Event to add icons to the panel
         public void KeyboardKeyDataGrid(Object sender, KeyEventArgs e) {
-            this.SetInventLogoToPanel(this.dataGridView1.CurrentCell.RowIndex);
+            this.SetInventLogoToPanel(this.SteamSaleDataGridView.CurrentCell.RowIndex);
         }
         #endregion
 
-        private void DataGridView1_CellContentClick(Object sender, DataGridViewCellEventArgs e) {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            if (this.dataGridView1.Rows[e.RowIndex].Cells[2].Value != null & this.dataGridView1.Rows[e.RowIndex].Cells[3].Selected == true) {
-                string result = this.dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
-                keyValInvView = this.inventCollectionsTemp[e.RowIndex];
-                int c = Convert.ToInt32(result) - 1;
-                for (; c >= 0; c--) {
-                    //tempInvList.assets.Add(res.Value.assets[c]);
-                    listInvent.Add(keyValInvView.assets[c]);
-                    keyValInvView.assets.RemoveAt(c);
-                }
-                //keyValInvView.assets.ForEach( number => Console.WriteLine(number));
-                this.ItemsCount.Text = "" + listInvent.Count;
-                this.addingGridViewItems();
-            }
-            else if (this.dataGridView1.Rows[e.RowIndex].Cells[2].Value == null & this.dataGridView1.Rows[e.RowIndex].Cells[3].Selected == true) {
-                MessageBox.Show("No data");
-            }
+        //private void DataGridView1_CellContentClick(Object sender, DataGridViewCellEventArgs e) {
+        //    if (e.RowIndex < 0 || e.ColumnIndex < 0) {
+        //        return;
+        //    }
 
-            this.SetInventLogoToPanel(e.RowIndex);
-        }
+        //    if (e.ColumnIndex == 2) {
+        //        //DataGridViewComboBoxCell comboBoxCell = (DataGridViewComboBoxCell)this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
+        //        //DataGridViewCell itemCountCell = this.dataGridView1.Rows[e.RowIndex].Cells[1];
+        //        //for (int i = 0; i < itemCountCell.Value; i++) {
+
+        //        //}
+        //        //comboBoxCell.Items =
+        //    }
+        //    if (this.dataGridView1.Rows[e.RowIndex].Cells[2].Value != null & this.dataGridView1.Rows[e.RowIndex].Cells[3].Selected == true) {
+        //        string result = this.dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+        //        keyValInvView = this.inventCollectionsTemp[e.RowIndex];
+        //        int c = Convert.ToInt32(result) - 1;
+        //        for (; c >= 0; c--) {
+        //            //tempInvList.assets.Add(res.Value.assets[c]);
+        //            listInvent.Add(keyValInvView.assets[c]);
+        //            keyValInvView.assets.RemoveAt(c);
+        //        }
+        //        //keyValInvView.assets.ForEach( number => Console.WriteLine(number));
+        //        this.ItemsCount.Text = "" + listInvent.Count;
+        //        //this.addingGridViewItems();
+        //    }
+        //    else if (this.dataGridView1.Rows[e.RowIndex].Cells[2].Value == null & this.dataGridView1.Rows[e.RowIndex].Cells[3].Selected == true) {
+        //        MessageBox.Show("No data");
+        //    }
+
+        //    this.SetInventLogoToPanel(e.RowIndex);
+        //}
 
         #region Work with the logo of the inventory
         public void SetInventLogoToPanel(int row) {
-            Image image;
-            int column = this.dataGridView1.CurrentCell.ColumnIndex;
-            image = LoadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + this.inventCollectionsTemp[row].descriptions[0].icon_url + "/192fx192f");
-            this.panel1.BackgroundImage = image;
+            //Image image;
+            //int column = this.dataGridView1.CurrentCell.ColumnIndex;
+            //image = LoadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + this.inventCollectionsTemp[row].descriptions[0].icon_url + "/192fx192f");
+            //this.panel1.BackgroundImage = image;
         }
 
         private Image LoadImage(string url) {
@@ -227,12 +307,24 @@ namespace autotrade {
         #region Adding items to Combo box from dataGrid View
         private void SetCellComboBoxItems(DataGridView dataGrid, int rowIndex, int colIndex, InventoryRootModel itemsToAdd) {
             DataGridViewComboBoxCell dgvcbc = (DataGridViewComboBoxCell)dataGrid.Rows[rowIndex].Cells[colIndex];
-            // You might pass a boolean to determine whether to clear or not.
+            //You might pass a boolean to determine whether to clear or not.
             dgvcbc.Items.Clear();
             for (int count = 1; count <= itemsToAdd.assets.Count; count++) {
                 dgvcbc.Items.Add("" + count);
             }
         }
         #endregion
+
+        #endregion
+
+        private void ItemsToSaleListBox_SelectedIndexChanged(object sender, EventArgs e) {
+            if (ItemsToSaleListBox.SelectedItem.ToString() == "0") DeleteItemButton.Enabled = false;
+            else DeleteItemButton.Enabled = true;
+
+        }
+
+        private void DeleteItemButton_Click(object sender, EventArgs e) {
+            string selectedName = ItemsToSaleListBox.SelectedItem.ToString();
+        }
     }
 }

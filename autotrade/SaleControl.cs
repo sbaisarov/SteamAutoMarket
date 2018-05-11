@@ -16,9 +16,5 @@ namespace autotrade
         {
             InitializeComponent();
         }
-
-        private void saleSteamControl1_Load(object sender, EventArgs e) {
-
-        }
     }
 }

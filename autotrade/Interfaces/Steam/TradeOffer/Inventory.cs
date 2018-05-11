@@ -8,10 +8,8 @@ using Newtonsoft.Json.Linq;
 using SteamAuth;
 using SteamKit2;
 
-namespace autotrade.Interfaces.Steam.TradeOffer
-{
-    public class Inventory
-    {
+namespace autotrade.Interfaces.Steam.TradeOffer {
+    public class Inventory {
         public Inventory() { }
         /// <summary>
         /// Fetches the inventory for the given Steam ID using the Steam API.
@@ -20,12 +18,10 @@ namespace autotrade.Interfaces.Steam.TradeOffer
         /// <param name='steamId'>Steam identifier.</param>
         /// <param name='apiKey'>The needed Steam API key.</param>
         /// <param name="steamWeb">The SteamWeb instance for this Bot</param>
-        public Inventory FetchInventory(ulong steamId, string apiKey, int appid)
-        {
+        public Inventory FetchInventory(ulong steamId, string apiKey, int appid) {
             int attempts = 1;
             InventoryResponse result = null;
-            while ((result == null || result.result.items == null) && attempts <= 3)
-            {
+            while ((result == null || result.result.items == null) && attempts <= 3) {
                 var url = $"http://api.steampowered.com/IEconItems_{appid}/GetPlayerItems/v0001/?key={apiKey}&steamid={steamId}";
                 string response = SteamWeb.Request(url, "GET", data: null, referer: "http://api.steampowered.com");
                 result = JsonConvert.DeserializeObject<InventoryResponse>(response);
@@ -84,22 +80,18 @@ namespace autotrade.Interfaces.Steam.TradeOffer
     }
     */
         InventoryRootModel inventoryRoot = new InventoryRootModel();
-        public InventoryRootModel GetInventory(SteamID steamid, int appid, int contextid)
-        {
+        public InventoryRootModel GetInventory(SteamID steamid, int appid, int contextid) {
             string url = String.Format(
                 "https://steamcommunity.com/inventory/{0}/{1}/{2}",
                 //"https://steamcommunity.com/profiles/76561198177211015/inventory/json/730/2",
                 steamid.ConvertToUInt64(), appid, contextid
             );
-            try
-            {
+            try {
                 string response = SteamWeb.Request(url, "GET", dataString: null);
                 inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
-                Console.WriteLine(inventoryRoot.success + " "+ inventoryRoot.assets);
+                Console.WriteLine(inventoryRoot.success + " " + inventoryRoot.assets);
                 return inventoryRoot;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 return null;
             }
@@ -110,8 +102,7 @@ namespace autotrade.Interfaces.Steam.TradeOffer
         public bool IsPrivate { get; private set; }
         public bool IsGood { get; private set; }
 
-        protected Inventory(InventoryResult apiInventory)
-        {
+        protected Inventory(InventoryResult apiInventory) {
             NumSlots = apiInventory.num_backpack_slots;
             Items = apiInventory.items;
             IsPrivate = (apiInventory.status == "15");
@@ -122,22 +113,19 @@ namespace autotrade.Interfaces.Steam.TradeOffer
         /// Check to see if user is Free to play
         /// </summary>
         /// <returns>Yes or no</returns>
-        public bool IsFreeToPlay()
-        {
+        public bool IsFreeToPlay() {
             return this.NumSlots % 100 == 50;
         }
 
-        public Item GetItem(ulong id)
-        {
+        public Item GetItem(ulong id) {
             // Check for Private Inventory
             if (this.IsPrivate)
                 throw new Exceptions.TradeException("Unable to access Inventory: Inventory is Private!");
 
-            return (Items == null ? null : Items.FirstOrDefault(item => item.Id == id));
+            return (Items?.FirstOrDefault(item => item.Id == id));
         }
 
-        public List<Item> GetItemsByDefindex(int defindex)
-        {
+        public List<Item> GetItemsByDefindex(int defindex) {
             // Check for Private Inventory
             if (this.IsPrivate)
                 throw new Exceptions.TradeException("Unable to access Inventory: Inventory is Private!");
@@ -145,8 +133,7 @@ namespace autotrade.Interfaces.Steam.TradeOffer
             return Items.Where(item => item.Defindex == defindex).ToList();
         }
 
-        public class Item
-        {
+        public class Item {
             public int AppId = 440;
             public long ContextId = 2;
 
@@ -190,8 +177,7 @@ namespace autotrade.Interfaces.Steam.TradeOffer
             public Item ContainedItem { get; set; }
         }
 
-        public class ItemAttribute
-        {
+        public class ItemAttribute {
             [JsonProperty("defindex")]
             public ushort Defindex { get; set; }
 
@@ -205,8 +191,7 @@ namespace autotrade.Interfaces.Steam.TradeOffer
             public AccountInfo AccountInfo { get; set; }
         }
 
-        public class AccountInfo
-        {
+        public class AccountInfo {
             [JsonProperty("steamid")]
             public ulong SteamID { get; set; }
 
@@ -214,8 +199,7 @@ namespace autotrade.Interfaces.Steam.TradeOffer
             public string PersonaName { get; set; }
         }
 
-        protected class InventoryResult
-        {
+        protected class InventoryResult {
             public string status { get; set; }
 
             public uint num_backpack_slots { get; set; }
@@ -223,16 +207,12 @@ namespace autotrade.Interfaces.Steam.TradeOffer
             public Item[] items { get; set; }
         }
 
-        protected class InventoryResponse
-        {
+        protected class InventoryResponse {
             public InventoryResult result;
         }
 
-
-
         //Get All Inventory
-        public partial class RgInventory
-        {
+        public partial class RgInventory {
             public int appid { get; set; }
             public string classid { get; set; }
             public string instanceid { get; set; }
@@ -241,29 +221,25 @@ namespace autotrade.Interfaces.Steam.TradeOffer
             public string assetid { get; set; }
         }
 
-        public class AppData
-        {
+        public class AppData {
             public int limited { get; set; }
             public int def_index { get; set; }
             public int? is_itemset_name { get; set; }
         }
 
-        public class Description
-        {
+        public class Description {
             public string type { get; set; }
             public string value { get; set; }
         }
 
-        public class Tag
-        {
+        public class Tag {
             public string internal_name { get; set; }
             public string category { get; set; }
             public string localized_tag_name { get; set; }
             public string localized_category_name { get; set; }
         }
 
-        public class RgDescription
-        {
+        public class RgDescription {
             public int appid { get; set; }
             public string classid { get; set; }
             public string instanceid { get; set; }
@@ -284,14 +260,30 @@ namespace autotrade.Interfaces.Steam.TradeOffer
             public List<Tag> tags { get; set; }
         }
 
-        public class InventoryRootModel
-        {
+        public class InventoryRootModel {
             public bool success { get; set; }
             public List<RgInventory> assets = new List<RgInventory>();
             //public List<object> rgCurrency { get; set; }
             public List<RgDescription> descriptions = new List<RgDescription>();
+
+            public static RgDescription GetDescription(RgInventory asset, List<RgDescription> descriptions) {
+                RgDescription description = null;
+                try {
+                    description = descriptions
+                        .First(item =>
+                            item.instanceid == asset.instanceid
+                            && item.classid == asset.classid);
+
+                } catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException) {
+                    Logger.Error("Description not found");
+                }
+                return description;
+            }
         }
 
-
+        public class RgFullItem {
+            public RgInventory Asset { get; set; }
+            public RgDescription Description { get; set; }
+        }
     }
 }
