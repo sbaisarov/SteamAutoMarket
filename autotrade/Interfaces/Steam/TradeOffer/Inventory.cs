@@ -284,6 +284,21 @@ namespace autotrade.Interfaces.Steam.TradeOffer {
         public class RgFullItem {
             public RgInventory Asset { get; set; }
             public RgDescription Description { get; set; }
+
+            public RgFullItem CloneAsset() {
+                var item = new RgFullItem {
+                    Asset = new RgInventory {
+                        amount = Asset.amount,
+                        appid = Asset.appid,
+                        assetid = Asset.assetid,
+                        classid = Asset.classid,
+                        contextid = Asset.contextid,
+                        instanceid = Asset.instanceid
+                    },
+                    Description = Description
+                };
+                return item;
+            }
         }
     }
 }
