@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.borderTopPanel = new System.Windows.Forms.Panel();
             this.borderLeftPanel = new System.Windows.Forms.Panel();
-            this.borderRightPanel = new System.Windows.Forms.Panel();
             this.borderBottomPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -45,8 +44,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.sidePanel = new System.Windows.Forms.Panel();
-            this.saleControl1 = new autotrade.SaleControl();
-            this.buyControl1 = new autotrade.BuyControl();
+            this.saleSteamControl1 = new autotrade.SaleControl();
             this.panel1.SuspendLayout();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -58,7 +56,7 @@
             this.borderTopPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.borderTopPanel.Location = new System.Drawing.Point(0, 0);
             this.borderTopPanel.Name = "borderTopPanel";
-            this.borderTopPanel.Size = new System.Drawing.Size(962, 1);
+            this.borderTopPanel.Size = new System.Drawing.Size(929, 1);
             this.borderTopPanel.TabIndex = 0;
             // 
             // borderLeftPanel
@@ -67,25 +65,16 @@
             this.borderLeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.borderLeftPanel.Location = new System.Drawing.Point(0, 1);
             this.borderLeftPanel.Name = "borderLeftPanel";
-            this.borderLeftPanel.Size = new System.Drawing.Size(1, 631);
+            this.borderLeftPanel.Size = new System.Drawing.Size(1, 630);
             this.borderLeftPanel.TabIndex = 1;
-            // 
-            // borderRightPanel
-            // 
-            this.borderRightPanel.BackColor = System.Drawing.Color.RoyalBlue;
-            this.borderRightPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.borderRightPanel.Location = new System.Drawing.Point(961, 1);
-            this.borderRightPanel.Name = "borderRightPanel";
-            this.borderRightPanel.Size = new System.Drawing.Size(1, 631);
-            this.borderRightPanel.TabIndex = 1;
             // 
             // borderBottomPanel
             // 
             this.borderBottomPanel.BackColor = System.Drawing.Color.RoyalBlue;
             this.borderBottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.borderBottomPanel.Location = new System.Drawing.Point(0, 632);
+            this.borderBottomPanel.Location = new System.Drawing.Point(0, 631);
             this.borderBottomPanel.Name = "borderBottomPanel";
-            this.borderBottomPanel.Size = new System.Drawing.Size(962, 1);
+            this.borderBottomPanel.Size = new System.Drawing.Size(929, 1);
             this.borderBottomPanel.TabIndex = 1;
             // 
             // panel1
@@ -98,7 +87,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(1, 1);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(960, 31);
+            this.panel1.Size = new System.Drawing.Size(928, 31);
             this.panel1.TabIndex = 2;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.move_MouseDown);
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.move_MouseMove);
@@ -121,7 +110,7 @@
             this.appCurtailButton.FlatAppearance.BorderSize = 0;
             this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appCurtailButton.Image = ((System.Drawing.Image)(resources.GetObject("appCurtailButton.Image")));
-            this.appCurtailButton.Location = new System.Drawing.Point(844, 9);
+            this.appCurtailButton.Location = new System.Drawing.Point(797, 8);
             this.appCurtailButton.Name = "appCurtailButton";
             this.appCurtailButton.Size = new System.Drawing.Size(26, 17);
             this.appCurtailButton.TabIndex = 6;
@@ -135,7 +124,7 @@
             this.appExpandButton.FlatAppearance.BorderSize = 0;
             this.appExpandButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appExpandButton.Image = ((System.Drawing.Image)(resources.GetObject("appExpandButton.Image")));
-            this.appExpandButton.Location = new System.Drawing.Point(885, 6);
+            this.appExpandButton.Location = new System.Drawing.Point(838, 5);
             this.appExpandButton.Name = "appExpandButton";
             this.appExpandButton.Size = new System.Drawing.Size(25, 20);
             this.appExpandButton.TabIndex = 5;
@@ -148,7 +137,7 @@
             this.appExitButton.FlatAppearance.BorderSize = 0;
             this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appExitButton.Image = ((System.Drawing.Image)(resources.GetObject("appExitButton.Image")));
-            this.appExitButton.Location = new System.Drawing.Point(928, 4);
+            this.appExitButton.Location = new System.Drawing.Point(881, 3);
             this.appExitButton.Name = "appExitButton";
             this.appExitButton.Size = new System.Drawing.Size(21, 22);
             this.appExitButton.TabIndex = 4;
@@ -167,7 +156,7 @@
             this.leftHeaderPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.leftHeaderPanel.Location = new System.Drawing.Point(1, 32);
             this.leftHeaderPanel.Name = "leftHeaderPanel";
-            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 600);
+            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 599);
             this.leftHeaderPanel.TabIndex = 3;
             this.leftHeaderPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
@@ -248,35 +237,26 @@
             this.sidePanel.Size = new System.Drawing.Size(10, 36);
             this.sidePanel.TabIndex = 4;
             // 
-            // saleControl1
+            // saleSteamControl1
             // 
-            this.saleControl1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.saleControl1.Location = new System.Drawing.Point(162, 32);
-            this.saleControl1.Name = "saleControl1";
-            this.saleControl1.Size = new System.Drawing.Size(799, 599);
-            this.saleControl1.TabIndex = 5;
-            // 
-            // buyControl1
-            // 
-            this.buyControl1.BackColor = System.Drawing.Color.Gold;
-            this.buyControl1.Location = new System.Drawing.Point(162, 31);
-            this.buyControl1.Name = "buyControl1";
-            this.buyControl1.Size = new System.Drawing.Size(799, 530);
-            this.buyControl1.TabIndex = 4;
+            this.saleSteamControl1.BackColor = System.Drawing.Color.Silver;
+            this.saleSteamControl1.Font = new System.Drawing.Font("Open Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saleSteamControl1.Location = new System.Drawing.Point(168, 32);
+            this.saleSteamControl1.Name = "saleSteamControl1";
+            this.saleSteamControl1.Size = new System.Drawing.Size(761, 599);
+            this.saleSteamControl1.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(962, 633);
+            this.ClientSize = new System.Drawing.Size(929, 632);
+            this.Controls.Add(this.saleSteamControl1);
             this.Controls.Add(this.leftHeaderPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.borderLeftPanel);
-            this.Controls.Add(this.borderRightPanel);
             this.Controls.Add(this.borderBottomPanel);
             this.Controls.Add(this.borderTopPanel);
-            this.Controls.Add(this.saleControl1);
-            this.Controls.Add(this.buyControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -293,7 +273,6 @@
 
         private System.Windows.Forms.Panel borderTopPanel;
         private System.Windows.Forms.Panel borderLeftPanel;
-        private System.Windows.Forms.Panel borderRightPanel;
         private System.Windows.Forms.Panel borderBottomPanel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel leftHeaderPanel;
@@ -307,8 +286,7 @@
         private System.Windows.Forms.Button saleLinkButton;
         private System.Windows.Forms.Button leftPanelHideShowButton;
         private System.Windows.Forms.Panel sidePanel;
-        private BuyControl buyControl1;
-        private SaleControl saleControl1;
+        private autotrade.SaleControl saleSteamControl1;
     }
 }
 

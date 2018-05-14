@@ -106,15 +106,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiServices.cs" />
-    <Compile Include="BuyControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BuyControl.Designer.cs">
-      <DependentUpon>BuyControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomElements\SaleSteamControlItemsToSaleGrid.cs" />
+    <Compile Include="CustomElements\SaleControlItemsToSaleGrid.cs" />
     <Compile Include="Utils\ImageUtils.cs" />
-    <Compile Include="CustomElements\SaleSteamControlGrid.cs" />
+    <Compile Include="CustomElements\SaleControlGrid.cs" />
     <Compile Include="Flags.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -197,22 +191,7 @@
     <Compile Include="CustomElements\SaleControl.Designer.cs">
       <DependentUpon>SaleControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomElements\SaleObskinsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomElements\SaleObskinsControl.Designer.cs">
-      <DependentUpon>SaleObskinsControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomElements\SaleSteamControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomElements\SaleSteamControl.Designer.cs">
-      <DependentUpon>SaleSteamControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="TestApiServices.cs" />
-    <EmbeddedResource Include="BuyControl.resx">
-      <DependentUpon>BuyControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -228,12 +207,6 @@
     </Compile>
     <EmbeddedResource Include="CustomElements\SaleControl.resx">
       <DependentUpon>SaleControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomElements\SaleObskinsControl.resx">
-      <DependentUpon>SaleObskinsControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomElements\SaleSteamControl.resx">
-      <DependentUpon>SaleSteamControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

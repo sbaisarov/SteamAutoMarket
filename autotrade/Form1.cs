@@ -29,26 +29,31 @@ namespace autotrade {
         }
 
         private void leftPanelHideShowButton_Click(object sender, EventArgs e) {
-            //Left panel hide and show
-            if (leftHeaderPanel.Height == 529 & leftHeaderPanel.Width == 166) {
+            //913; 632
+            if (this.Height == 632) {
                 leftHeaderPanel.Width = 45;
                 leftPanelHideShowButton.Left = 10;
-                //buy controll size
-                buyControl1.Width = 865;
-                buyControl1.Left = 47;
-                //sale controll size
-                saleControl1.Width = 865;
-                saleControl1.Left = 47;
+
+
+                ////buy controll size
+                //buyControl1.Width = 865;
+                //buyControl1.Left = 10;
+
+                ////sale controll size
+                //saleControl1.Width = 865;
+                //saleControl1.Left = 10;
+
+                this.Width = 400;
             }
             else {
                 leftHeaderPanel.Width = 166;
                 leftPanelHideShowButton.Left = 128;
                 //buy controll size
-                buyControl1.Width = 742;
-                buyControl1.Left = 168;
+                //buyControl1.Width = 742;
+                //buyControl1.Left = 168;
                 //sale controll size
-                saleControl1.Width = 742;
-                saleControl1.Left = 168;
+                //saleControl1.Width = 742;
+                //saleControl1.Left = 168;
             }
 
 
@@ -59,14 +64,14 @@ namespace autotrade {
         private void saleLinkButton_Click(object sender, EventArgs e) {
             sidePanel.Height = saleLinkButton.Height;
             sidePanel.Top = saleLinkButton.Top;
-            saleControl1.BringToFront();
+            //saleControl1.BringToFront();
 
         }
 
         private void buyLinkButton_Click(object sender, EventArgs e) {
             sidePanel.Height = buyLinkButton.Height;
             sidePanel.Top = buyLinkButton.Top;
-            buyControl1.BringToFront();
+            //buyControl1.BringToFront();
         }
 
         //enabled move work space application

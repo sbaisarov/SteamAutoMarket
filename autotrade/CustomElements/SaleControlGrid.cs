@@ -23,44 +23,46 @@ namespace autotrade.CustomElements {
             return null;
         }
 
-        public static Dictionary<string, RgDescription> FillSteamSaleDataGrid(DataGridView allItemsGrid, List<RgFullItem> itemsToAddList) {
-            var groupedItems = itemsToAddList.GroupBy(item => item.Description.market_hash_name);
-            var descriptions = new Dictionary<string, RgDescription>();
+        public static void FillSteamSaleDataGrid(DataGridView allItemsGrid, List<RgFullItem> itemsToAddList) {
 
-            int currentRowNumber = 0;
+            var groupedItems = itemsToAddList.GroupBy(item => item.Description.market_hash_name);
+
             foreach (var itemsGroup in groupedItems) {
-                allItemsGrid.Rows.Add();
+                AddNewItemCellAllItemsDataGridView(allItemsGrid, itemsGroup.ToList());
 
                 var firstItem = itemsGroup.First();
-                string itemName = firstItem.Description.name;
-                int totalAmount = itemsGroup.Sum(sum => int.Parse(sum.Asset.amount));
-
-                descriptions.Add(firstItem.Description.market_hash_name, firstItem.Description);
-
-                var nameCell = GetGridNameTextBoxCell(allItemsGrid, currentRowNumber);
-                var countCell = GetGridCountTextBoxCell(allItemsGrid, currentRowNumber);
-                var comboBoxCell = GetGridCountToAddComboBoxCell(allItemsGrid, currentRowNumber);
-                var hidenItemsListCell = GetGridHidenItemsListCell(allItemsGrid, currentRowNumber);
-                var hidenMarketHashNameCell = GetGridHidenItemMarketHashNameCell(allItemsGrid, currentRowNumber);
-
-                nameCell.Value = itemName;
-                countCell.Value = totalAmount;
-                SetDefaultAmountToAddComboBoxCellValue(comboBoxCell);
-                hidenItemsListCell.Value = itemsGroup.ToList();
-                hidenMarketHashNameCell.Value = itemsGroup.First().Description.market_hash_name;
-
-                currentRowNumber++;
+                if (!SaleControl.AllDescriptionsDictionary.ContainsKey(firstItem.Description.market_hash_name)) {
+                    SaleControl.AllDescriptionsDictionary.Add(firstItem.Description.market_hash_name, firstItem.Description);
+                }
             }
-
-            return descriptions;
         }
 
-        public static void UpdateItemDescription(DataGridView allItemsGrid, int row, Dictionary<string, RgDescription> descriptions, RichTextBox textBox, Panel imageBox, Label label) {
-            var marketHashName = GetGridHidenItemMarketHashNameCell(allItemsGrid, row).Value.ToString();
-            var description = descriptions[marketHashName];
+        public static void AddNewItemCellAllItemsDataGridView(DataGridView allItemsGrid, List<RgFullItem> itemsToAddList) {
+            int currentRowNumber = allItemsGrid.Rows.Add();
 
-            UpdateItemTextDescription(allItemsGrid, description, textBox, label);
-            UpdateItemImage(allItemsGrid, row, description, imageBox);
+            var nameCell = GetGridNameTextBoxCell(allItemsGrid, currentRowNumber);
+            var countCell = GetGridCountTextBoxCell(allItemsGrid, currentRowNumber);
+            var comboBoxCell = GetGridCountToAddComboBoxCell(allItemsGrid, currentRowNumber);
+            var hidenItemsListCell = GetGridHidenItemsListCell(allItemsGrid, currentRowNumber);
+            var hidenMarketHashNameCell = GetGridHidenItemMarketHashNameCell(allItemsGrid, currentRowNumber);
+
+            var firstItem = itemsToAddList.First();
+
+            nameCell.Value = firstItem.Description.name;
+            countCell.Value = itemsToAddList.Sum(item => int.Parse(item.Asset.amount));
+            SetDefaultAmountToAddComboBoxCellValue(comboBoxCell);
+            hidenItemsListCell.Value = itemsToAddList;
+            hidenMarketHashNameCell.Value = firstItem.Description.market_hash_name;
+        }
+
+        public static void UpdateItemDescription(DataGridView allItemsGrid, int row, RichTextBox textBox, Panel imageBox, Label label) {
+            var hidenItemsList = (List<RgFullItem>)GetGridHidenItemsListCell(allItemsGrid, row).Value;
+            UpdateItemDescription(SaleControl.AllDescriptionsDictionary[hidenItemsList.First().Description.market_hash_name], textBox, imageBox, label);
+        }
+
+        public static void UpdateItemDescription(RgDescription description, RichTextBox textBox, Panel imageBox, Label label) {
+            UpdateItemTextDescription(description, textBox, label);
+            UpdateItemImage(description, imageBox);
         }
 
         public static void GridComboBoxClick(DataGridView allItemsGrid, int row) {
@@ -113,15 +115,17 @@ namespace autotrade.CustomElements {
                 if (addedCount == itemsToAddCount) break;
             }
 
-            itemsToSaleGrid.Rows.Add( //добавление предмета в список к продаже
-                nameTextBoxCell.Value.ToString(),
-                itemsToAddCount,
-                itemsToSell);
+            SaleControlItemsToSaleGrid.AddItemsToSale(itemsToSaleGrid, itemsToSell);
 
             int totalAmount = int.Parse(countTextBoxCell.Value.ToString()); //изменение ячейки Общее количество
-            countTextBoxCell.Value = totalAmount - itemsToAddCount;
-            amountToAddComboBoxCell.Items.Add(0);
-            amountToAddComboBoxCell.Value = 0;
+            if (itemsToAddCount == totalAmount) {
+                allItemsGrid.Rows.RemoveAt(row);
+            }
+            else {
+                countTextBoxCell.Value = totalAmount - itemsToAddCount;
+                amountToAddComboBoxCell.Items.Add(0);
+                amountToAddComboBoxCell.Value = 0;
+            }
         }
 
         public static void GridAddAllButtonClick(DataGridView allItemsGrid, int row, DataGridView itemsToSaleGrid) {
@@ -135,13 +139,12 @@ namespace autotrade.CustomElements {
 
             var amountToAddComboBoxCell = GetGridCountToAddComboBoxCell(allItemsGrid, row);
 
-            itemsToSaleGrid.Rows.Add(nameTextBoxCell.Value.ToString(), itemsCount, hidenItemsList);
-            hidenItemsListCell.Value = null;
+            SaleControlItemsToSaleGrid.AddItemsToSale(itemsToSaleGrid, hidenItemsList);
 
-            SetDefaultAmountToAddComboBoxCellValue(amountToAddComboBoxCell);
+            allItemsGrid.Rows.RemoveAt(row);
         }
 
-        public static void AddItemsToRow(DataGridView allItemsGrid, int row, List<RgFullItem> items) {
+        public static void AddItemsToExistRow(DataGridView allItemsGrid, int row, List<RgFullItem> items) {
             var countTextBoxCell = GetGridCountTextBoxCell(allItemsGrid, row);
             var hidenItemsListCell = GetGridHidenItemsListCell(allItemsGrid, row);
             var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
@@ -179,7 +182,7 @@ namespace autotrade.CustomElements {
             comboBoxCell.Value = "0";
         }
 
-        private static void UpdateItemTextDescription(DataGridView allItemsGrid, RgDescription description, RichTextBox textBox, Label label) {
+        private static void UpdateItemTextDescription(RgDescription description, RichTextBox textBox, Label label) {
             textBox.Clear();
 
             label.Text = description.name;
@@ -191,19 +194,17 @@ namespace autotrade.CustomElements {
                 $"Продаваемый: {((description.tradable) ? "Да" : "Нет")}");
         }
 
-        private static void UpdateItemImage(DataGridView allItemsGrid, int row, RgDescription description, Panel imageBox) {
+        private static void UpdateItemImage(RgDescription description, Panel imageBox) {
             Task.Run(() => {
-                Image image;
-                var imageCell = GetGridHidenItemImageCell(allItemsGrid, row);
+                SaleControl.ImageDictionary.TryGetValue(description.market_hash_name, out Image image);
 
-                if (imageCell.Value != null) {
-                    image = (Image)imageCell.Value;
+                if (image != null) {
                     imageBox.BackgroundImage = ImageUtils.ResizeImage(image, 100, 100);
                 }
                 else {
                     image = ImageUtils.DownloadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + description.icon_url + "/192fx192f");
                     if (image != null) {
-                        imageCell.Value = image;
+                        SaleControl.ImageDictionary.Add(description.market_hash_name, image);
                         imageBox.BackgroundImage = ImageUtils.ResizeImage(image, 100, 100);
                     }
                 }
