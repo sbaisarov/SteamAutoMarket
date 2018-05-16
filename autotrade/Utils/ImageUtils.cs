@@ -1,10 +1,12 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace autotrade.Utils {
@@ -30,6 +32,22 @@ namespace autotrade.Utils {
                 g.DrawImage(img, dst);
             }
             return res;
+        }
+
+        public static Image GetSteamProfileSMallImage(ulong steamId) {
+            try {
+                var client = new RestClient("https://steamcommunity.com");
+                var request = new RestRequest($"/profiles/{steamId}/?xml=1", Method.GET);
+                IRestResponse response = client.Execute(request);
+                var content = response.Content;
+
+                Match result = Regex.Match(content, @"<avatarIcon><!\[CDATA\[(.*)\]\]></avatarIcon>");
+                var imageUrl = result.Groups[1].ToString();
+
+                return DownloadImage(imageUrl);
+            } catch {
+                return null;
+            }
         }
     }
 }

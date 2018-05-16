@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
 
 namespace autotrade.CustomElements {
-    class SaleControlItemsToSaleGrid {
+    class ItemsToSaleGridUtils {
 
         public static void AddItemsToSale(DataGridView itemsToSaleGrid, List<RgFullItem> items) {
             var row = GetDataGridViewRowByMarketHashName(itemsToSaleGrid, items.First().Description.market_hash_name);
@@ -51,7 +51,7 @@ namespace autotrade.CustomElements {
             var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
             var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
 
-            SaleSteamControlAllItemsListGrid.UpdateItemDescription(SaleControl.AllDescriptionsDictionary[itemMarketHashName], textBox, imageBox, lable);
+            AllItemsListGridUtils.UpdateItemDescription(SaleControl.AllDescriptionsDictionary[itemMarketHashName], textBox, imageBox, lable);
         }
 
         public static void DeleteButtonClick(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
@@ -60,12 +60,12 @@ namespace autotrade.CustomElements {
             var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
             var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
 
-            var allItemsGridRow = SaleSteamControlAllItemsListGrid.GetRowByItemMarketHashName(allItemsGrid, itemMarketHashName);
+            var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, itemMarketHashName);
             if (allItemsGridRow != null) {
-                SaleSteamControlAllItemsListGrid.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, hidenItemsList);
+                AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, hidenItemsList);
             }
             else {
-                SaleSteamControlAllItemsListGrid.AddNewItemCellAllItemsDataGridView(allItemsGrid, hidenItemsList);
+                AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, hidenItemsList);
             }
 
             itemsToSaleGrid.Rows.RemoveAt(selectedRow.Index);

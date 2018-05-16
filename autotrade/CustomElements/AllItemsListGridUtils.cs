@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
 
 namespace autotrade.CustomElements {
-    class SaleSteamControlAllItemsListGrid {
+    class AllItemsListGridUtils {
 
         public static DataGridViewRow GetRowByItemMarketHashName(DataGridView allItemsGrid, string marketHashName) {
             for (int i = 0; i < allItemsGrid.RowCount; i++) {
@@ -61,6 +61,8 @@ namespace autotrade.CustomElements {
         }
 
         public static void UpdateItemDescription(RgDescription description, RichTextBox textBox, Panel imageBox, Label label) {
+            SaleControl.LastSelectedItemDescription = description;
+
             UpdateItemTextDescription(description, textBox, label);
             UpdateItemImage(description, imageBox);
         }
@@ -115,7 +117,7 @@ namespace autotrade.CustomElements {
                 if (addedCount == itemsToAddCount) break;
             }
 
-            SaleControlItemsToSaleGrid.AddItemsToSale(itemsToSaleGrid, itemsToSell);
+            ItemsToSaleGridUtils.AddItemsToSale(itemsToSaleGrid, itemsToSell);
 
             int totalAmount = int.Parse(countTextBoxCell.Value.ToString()); //изменение ячейки Общее количество
             if (itemsToAddCount == totalAmount) {
@@ -139,7 +141,7 @@ namespace autotrade.CustomElements {
 
             var amountToAddComboBoxCell = GetGridCountToAddComboBoxCell(allItemsGrid, row);
 
-            SaleControlItemsToSaleGrid.AddItemsToSale(itemsToSaleGrid, hidenItemsList);
+            ItemsToSaleGridUtils.AddItemsToSale(itemsToSaleGrid, hidenItemsList);
 
             allItemsGrid.Rows.RemoveAt(row);
         }
@@ -204,7 +206,9 @@ namespace autotrade.CustomElements {
                 else {
                     image = ImageUtils.DownloadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + description.icon_url + "/192fx192f");
                     if (image != null) {
-                        SaleControl.ImageDictionary.Add(description.market_hash_name, image);
+                        if (!SaleControl.ImageDictionary.ContainsKey(description.market_hash_name)) {
+                            SaleControl.ImageDictionary.Add(description.market_hash_name, image);
+                        }
                         imageBox.BackgroundImage = ImageUtils.ResizeImage(image, 100, 100);
                     }
                 }

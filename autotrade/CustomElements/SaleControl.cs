@@ -18,6 +18,7 @@ namespace autotrade {
         ApiServices services = new ApiServices();
 
         public static Dictionary<string, RgDescription> AllDescriptionsDictionary { get; set; }
+        public static RgDescription LastSelectedItemDescription { get; set; }
         public static Dictionary<string, Image> ImageDictionary { get; set; }
 
 
@@ -28,9 +29,11 @@ namespace autotrade {
         private void SaleControl_Load(object sender, EventArgs e) {
             AllDescriptionsDictionary = new Dictionary<string, RgDescription>();
             ImageDictionary = new Dictionary<string, Image>();
+        }
 
+        public void LoadInventory() {
             List<RgFullItem> allItemsList = ProcessSteamInventory();
-            SaleSteamControlAllItemsListGrid.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
+            AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
         }
 
         private void SteamSaleDataGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
@@ -38,16 +41,16 @@ namespace autotrade {
                 return;
             }
 
-            SaleSteamControlAllItemsListGrid.UpdateItemDescription(AllSteamItemsGridView, e.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, e.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
 
             if (e.ColumnIndex == 2) {
-                SaleSteamControlAllItemsListGrid.GridComboBoxClick(AllSteamItemsGridView, e.RowIndex);
+                AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsGridView, e.RowIndex);
             }
             else if (e.ColumnIndex == 3) {
-                SaleSteamControlAllItemsListGrid.GridAddButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
+                AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
             }
             else if (e.ColumnIndex == 4) {
-                SaleSteamControlAllItemsListGrid.GridAddAllButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
+                AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
             }
         }
 
@@ -74,22 +77,22 @@ namespace autotrade {
         }
 
         private void DeleteItemButton_Click(object sender, EventArgs e) {
-            SaleControlItemsToSaleGrid.DeleteButtonClick(AllSteamItemsGridView, ItemsToSaleGridView);
+            ItemsToSaleGridUtils.DeleteButtonClick(AllSteamItemsGridView, ItemsToSaleGridView);
         }
 
-        
+
 
         private void ItemsToSaleGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) {
                 return;
             }
 
-            SaleControlItemsToSaleGrid.RowClick(ItemsToSaleGridView, e.RowIndex, AllDescriptionsDictionary, AllSteamItemsGridView, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            ItemsToSaleGridUtils.RowClick(ItemsToSaleGridView, e.RowIndex, AllDescriptionsDictionary, AllSteamItemsGridView, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
         }
 
         private void AddAllPanel_Click(object sender, EventArgs e) {
             while (AllSteamItemsGridView.RowCount > 0) {
-                SaleSteamControlAllItemsListGrid.GridAddAllButtonClick(AllSteamItemsGridView, 0, ItemsToSaleGridView);
+                AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsGridView, 0, ItemsToSaleGridView);
             }
         }
 
@@ -98,7 +101,7 @@ namespace autotrade {
             ItemsToSaleGridView.Rows.Clear();
 
             List<RgFullItem> allItemsList = ProcessSteamInventory();
-            SaleSteamControlAllItemsListGrid.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
+            AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
         }
 
         #region Items to sale design
@@ -193,5 +196,17 @@ namespace autotrade {
         }
         #endregion
 
+        private void SteamPanel_Click(object sender, EventArgs e) {
+            if (LastSelectedItemDescription == null) return;
+            System.Diagnostics.Process.Start("https://" +
+                $"steamcommunity.com/market/listings/{LastSelectedItemDescription.appid}/" +
+                LastSelectedItemDescription.market_hash_name);
+        }
+
+        private void OpskinsPanel_Click(object sender, EventArgs e) {
+            if (LastSelectedItemDescription == null) return;
+            System.Diagnostics.Process.Start("https://" +
+                $"opskins.com/?loc=shop_search&search_item={LastSelectedItemDescription.name}&sort=lh");
+        }
     }
 }

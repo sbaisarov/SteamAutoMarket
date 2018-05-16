@@ -16,19 +16,14 @@ namespace autotrade {
 
         public Form1() {
             InitializeComponent();
-            sidePanel.Height = saleLinkButton.Height;
-            sidePanel.Top = saleLinkButton.Top;
+            FocusSidePanelToMenuElement(sidePanel, settingsLinkButton);
         }
 
-        private void appExitButton_Click(object sender, EventArgs e) {
+        private void AppExitButton_Click(object sender, EventArgs e) {
             Application.Exit();
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e) {
-
-        }
-
-        private void leftPanelHideShowButton_Click(object sender, EventArgs e) {
+        private void LeftPanelHideShowButton_Click(object sender, EventArgs e) {
             //913; 632
             if (this.Height == 632) {
                 leftHeaderPanel.Width = 45;
@@ -55,44 +50,40 @@ namespace autotrade {
                 //saleControl1.Width = 742;
                 //saleControl1.Left = 168;
             }
-
-
-
-
         }
 
-        private void saleLinkButton_Click(object sender, EventArgs e) {
-            sidePanel.Height = saleLinkButton.Height;
-            sidePanel.Top = saleLinkButton.Top;
-            //saleControl1.BringToFront();
-
+        private void SettingsLinkButton_Click(object sender, EventArgs e) {
+            OpenSettingsMenu();
         }
 
-        private void buyLinkButton_Click(object sender, EventArgs e) {
-            sidePanel.Height = buyLinkButton.Height;
-            sidePanel.Top = buyLinkButton.Top;
+        private void SaleLinkButton_Click(object sender, EventArgs e) {
+            OpenSaleMenu();
+        }
+
+        private void BuyLinkButton_Click(object sender, EventArgs e) {
+            FocusSidePanelToMenuElement(sidePanel, buyLinkButton);
             //buyControl1.BringToFront();
         }
 
-        //enabled move work space application
-        private void move_MouseDown(object sender, MouseEventArgs e) {
+        
+        private void Move_MouseDown(object sender, MouseEventArgs e) {
             dragging = true;
             dragCursorPoint = Cursor.Position;
             dragFormPoint = this.Location;
         }
 
-        private void move_MouseMove(object sender, MouseEventArgs e) {
+        private void Move_MouseMove(object sender, MouseEventArgs e) {
             if (dragging) {
                 Point dif = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
                 this.Location = Point.Add(dragFormPoint, new Size(dif));
             }
         }
 
-        private void move_MouseUp(object sender, MouseEventArgs e) {
+        private void Move_MouseUp(object sender, MouseEventArgs e) {
             dragging = false;
         }
 
-        private void appExpandButton_Click(object sender, EventArgs e) {
+        private void AppExpandButton_Click(object sender, EventArgs e) {
             if (this.WindowState != FormWindowState.Maximized) {
                 this.WindowState = FormWindowState.Maximized;
             }
@@ -102,8 +93,31 @@ namespace autotrade {
 
         }
 
-        private void appCurtailButton_Click(object sender, EventArgs e) {
+        private void AppCurtailButton_Click(object sender, EventArgs e) {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void FocusSidePanelToMenuElement(Panel sidePanel, Button button) {
+            sidePanel.Height = button.Height;
+            sidePanel.Top = button.Top;
+        }
+
+        public void OpenSettingsMenu() {
+            FocusSidePanelToMenuElement(sidePanel, settingsLinkButton);
+            settingsControl.BringToFront();
+            settingsControl.Enabled = true;
+            saleControl.Enabled = false;
+        }
+
+        public void OpenSaleMenu() {
+            FocusSidePanelToMenuElement(sidePanel, saleLinkButton);
+            saleControl.BringToFront();
+            saleControl.Enabled = true;
+            settingsControl.Enabled = false;
+        }
+
+        public void LoadInventory() {
+            saleControl.LoadInventory();
         }
     }
 }
