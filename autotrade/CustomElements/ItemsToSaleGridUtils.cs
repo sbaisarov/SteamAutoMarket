@@ -49,6 +49,8 @@ namespace autotrade.CustomElements {
         public static void RowClick(DataGridView itemsToSaleGrid, int row, Dictionary<string, RgDescription> descriptions, DataGridView allItemsGrid, RichTextBox textBox, Panel imageBox, Label lable) {
             var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, row);
             var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
+            if (hidenItemsList == null) return;
+
             var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
 
             AllItemsListGridUtils.UpdateItemDescription(SaleControl.AllDescriptionsDictionary[itemMarketHashName], textBox, imageBox, lable);

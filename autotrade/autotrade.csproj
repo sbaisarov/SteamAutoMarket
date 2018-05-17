@@ -68,8 +68,8 @@
     <Reference Include="protobuf-net, Version=2.3.7.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\packages\protobuf-net.2.3.7\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=106.2.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.2.2\lib\net452\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=106.2.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.2.1\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="SteamAuth, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SteamAuth.3.0.0\lib\net45\SteamAuth.dll</HintPath>
@@ -109,12 +109,14 @@
     <Compile Include="CustomElements\AccountsDataGridUtils.cs" />
     <Compile Include="CustomElements\MainFormUtils.cs" />
     <Compile Include="CustomElements\ItemsToSaleGridUtils.cs" />
+    <Compile Include="CustomElements\SettingsContainer.cs" />
     <Compile Include="CustomElements\SettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CustomElements\SettingsControl.Designer.cs">
       <DependentUpon>SettingsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Dispatcher.cs" />
     <Compile Include="Utils\ImageUtils.cs" />
     <Compile Include="CustomElements\AllItemsListGridUtils.cs" />
     <Compile Include="Flags.cs" />

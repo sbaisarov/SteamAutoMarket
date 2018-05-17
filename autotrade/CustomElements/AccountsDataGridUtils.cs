@@ -19,8 +19,12 @@ namespace autotrade.CustomElements {
             return (DataGridViewTextBoxCell)accountsDataGridView.Rows[row].Cells[2];
         }
 
-        public static DataGridViewTextBoxCell GetDataGridViewMafileHidenCell(DataGridView accountsDataGridView, int row) {
+        public static DataGridViewTextBoxCell GetDataGridViewOpskinsApiCell(DataGridView accountsDataGridView, int row) {
             return (DataGridViewTextBoxCell)accountsDataGridView.Rows[row].Cells[3];
+        }
+
+        public static DataGridViewTextBoxCell GetDataGridViewMafileHidenCell(DataGridView accountsDataGridView, int row) {
+            return (DataGridViewTextBoxCell)accountsDataGridView.Rows[row].Cells[4];
         }
 
     }

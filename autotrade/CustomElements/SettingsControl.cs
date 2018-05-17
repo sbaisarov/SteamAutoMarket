@@ -14,12 +14,26 @@ using autotrade.Utils;
 
 namespace autotrade.CustomElements {
     public partial class SettingsControl : UserControl {
+        private string accountsFilePath = "accounts.ini";
+
         public SettingsControl() {
             InitializeComponent();
-            AccountsDataGridView.Rows.Add(Image.FromFile(@"C:\Users\shatulsky\Downloads\5ad66b40513b4b02a305198717d7853ef018f169.jpg"), "addcheckbox", "testSTRONGpassword1");
-            AccountsDataGridView.Rows.Add(Image.FromFile(@"C:\Users\shatulsky\Downloads\5ad66b40513b4b02a305198717d7853ef018f169.jpg"), "IHORIHORIHOR", "IHORIHORIHOR");
-            AccountsDataGridView.Rows.Add();
-            AccountsDataGridView.Rows.Add();
+            if (File.Exists(accountsFilePath)) {
+                var accounts = JsonConvert.DeserializeObject<List<SavedSteamAccount>>(File.ReadAllText(accountsFilePath));
+                foreach (var acc in accounts) {
+                    int row = AccountsDataGridView.Rows.Add();
+                    AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = acc.Login;
+                    AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = acc.Password;
+                    AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value = acc.OpskinsApi;
+                    AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = acc.Mafile;
+
+                    Task.Run(() => {
+                        var profileImage = ImageUtils.GetSteamProfileSMallImage(acc.Mafile.Session.SteamID);
+                        if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
+                    });
+
+                }
+            };
         }
 
         private void Button1_Click(object sender, EventArgs e) {
@@ -49,16 +63,52 @@ namespace autotrade.CustomElements {
             }
 
             int row = AccountsDataGridView.Rows.Add();
-            AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = LoginTextBox.Text;
-            AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = PasswordTextBox.Text;
+            AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = LoginTextBox.Text.Trim();
+            AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = PasswordTextBox.Text.Trim();
+            AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value = OpskinsApiTextBox.Text.Trim();
             AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = account;
 
-            var profileImage = ImageUtils.GetSteamProfileSMallImage(account.Session.SteamID);
-            if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
+            Task.Run(() => {
+                var profileImage = ImageUtils.GetSteamProfileSMallImage(account.Session.SteamID);
+                if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
+            });
 
             LoginTextBox.Clear();
             PasswordTextBox.Clear();
             MafilePathTextBox.Clear();
+            OpskinsApiTextBox.Clear();
+
+            UpdateAccountsFile();
+        }
+
+
+        private void Button2_Click(object sender, EventArgs e) {
+            var currentCell = AccountsDataGridView.CurrentCell;
+            if (currentCell == null) return;
+
+            int row = currentCell.RowIndex;
+            if (row < 0) return;
+
+            Program.MainForm.OpenSaleMenu();
+            Program.MainForm.LoadInventory();
+        }
+
+        private void UpdateAccountsFile() {
+            var accounts = new List<SavedSteamAccount>();
+            for (int i = 0; i < AccountsDataGridView.RowCount; i++) {
+                var login = (String)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, i).Value;
+                var password = (String)AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, i).Value;
+                var opskinsApi = (String)AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, i).Value;
+                var mafile = (SteamGuardAccount)AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, i).Value;
+
+                accounts.Add(new SavedSteamAccount {
+                    Login = login,
+                    Password = password,
+                    OpskinsApi = opskinsApi,
+                    Mafile = mafile
+                });
+            }
+            File.WriteAllText(accountsFilePath, JsonConvert.SerializeObject(accounts));
         }
 
         private void DeleteAccountButton_Click(object sender, EventArgs e) {
@@ -77,17 +127,20 @@ namespace autotrade.CustomElements {
             if (confirmResult == DialogResult.Yes) {
                 AccountsDataGridView.Rows.RemoveAt(row);
             }
+
+            UpdateAccountsFile();
         }
 
-        private void Button2_Click(object sender, EventArgs e) {
+        private void EditAccountButton_Click(object sender, EventArgs e) {
             var currentCell = AccountsDataGridView.CurrentCell;
             if (currentCell == null) return;
 
             int row = currentCell.RowIndex;
             if (row < 0) return;
 
-            Program.MainForm.OpenSaleMenu();
-            Program.MainForm.LoadInventory();
+            LoginTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
+            PasswordTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value;
+            OpskinsApiTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value;
         }
     }
 }

@@ -56,7 +56,12 @@ namespace autotrade.CustomElements {
         }
 
         public static void UpdateItemDescription(DataGridView allItemsGrid, int row, RichTextBox textBox, Panel imageBox, Label label) {
-            var hidenItemsList = (List<RgFullItem>)GetGridHidenItemsListCell(allItemsGrid, row).Value;
+            var cell = GetGridHidenItemsListCell(allItemsGrid, row);
+            if (cell == null) return;
+
+            var hidenItemsList = (List<RgFullItem>)cell.Value;
+            if (hidenItemsList == null) return;
+
             UpdateItemDescription(SaleControl.AllDescriptionsDictionary[hidenItemsList.First().Description.market_hash_name], textBox, imageBox, label);
         }
 
@@ -189,11 +194,50 @@ namespace autotrade.CustomElements {
 
             label.Text = description.name;
 
-            textBox.AppendText($"Игра: {description.appid}\n" +
-                $"Название: {description.market_hash_name}\n" +
-                $"Тип: {description.type}\n" +
-                $"Передаваемый: {((description.tradable) ? "Да" : "Нет")}\n" +
-                $"Продаваемый: {((description.tradable) ? "Да" : "Нет")}");
+            var descriptionText = "";
+            foreach (var item in description.descriptions) {
+                string text = item.value.Trim();
+                if (!string.IsNullOrWhiteSpace(text)) descriptionText += text + ", ";
+            }
+            if (descriptionText.EndsWith(", ")) descriptionText = descriptionText.Substring(0, descriptionText.Length - 2);
+
+            var tagsText = "";
+            foreach (var item in description.tags) {
+                string text = item.localized_tag_name.Trim();
+                if (!string.IsNullOrWhiteSpace(text)) tagsText += text + ", ";
+            }
+            if (tagsText.EndsWith(", ")) tagsText = tagsText.Substring(0, tagsText.Length - 2);
+
+            appendBoldText(textBox, "Игра: ");
+            textBox.AppendText(description.appid.ToString());
+
+            appendBoldText(textBox, "\nНазвание: ");
+            textBox.AppendText(description.market_hash_name);
+
+            appendBoldText(textBox, "\nТип: ");
+            textBox.AppendText(description.type);
+
+            appendBoldText(textBox, "\nПередаваемый: ");
+            textBox.AppendText(((description.tradable) ? "Да" : "Нет"));
+
+            appendBoldText(textBox, "\nПродаваемый: ");
+            textBox.AppendText(((description.tradable) ? "Да" : "Нет"));
+
+            if (!string.IsNullOrWhiteSpace(descriptionText)) {
+                appendBoldText(textBox, "\nОписание: ");
+                textBox.AppendText(descriptionText);
+            }
+
+            if (!string.IsNullOrWhiteSpace(tagsText)) {
+                appendBoldText(textBox, "\nТеги: ");
+                textBox.AppendText(tagsText);
+            }
+        }
+
+        private static void appendBoldText(RichTextBox textBox, string text) {
+            textBox.SelectionFont = new Font(textBox.Font, FontStyle.Bold);
+            textBox.AppendText(text);
+            textBox.SelectionFont = new Font(textBox.Font, FontStyle.Regular);
         }
 
         private static void UpdateItemImage(RgDescription description, Panel imageBox) {

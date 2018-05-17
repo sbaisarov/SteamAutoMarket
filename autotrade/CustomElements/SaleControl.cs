@@ -12,6 +12,8 @@ using System.Collections;
 using System.Threading.Tasks;
 using System.Linq;
 using autotrade.CustomElements;
+using System.Threading;
+using autotrade.Utils;
 
 namespace autotrade {
     public partial class SaleControl : UserControl {
@@ -32,16 +34,52 @@ namespace autotrade {
         }
 
         public void LoadInventory() {
-            List<RgFullItem> allItemsList = ProcessSteamInventory();
-            AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
+            ManualResetEvent dialogLoadedFlag = new ManualResetEvent(false);
+            Task.Run(() => {
+                Form waitDialog = new Form() {
+                    Name = "Загрузка инвентаря",
+                    Text = "Идет загрузка инвентаря, пожалуйста подождите...",
+                    ControlBox = false,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    StartPosition = FormStartPosition.CenterParent,
+                    Width = 300,
+                    Height = 70,
+                    Enabled = true
+                };
+
+                ProgressBar ScrollingBar = new ProgressBar() {
+                    Style = ProgressBarStyle.Marquee,
+                    Parent = waitDialog,
+                    Dock = DockStyle.Fill,
+                    Enabled = true
+                };
+
+                waitDialog.Load += new EventHandler((x, y) => {
+                    dialogLoadedFlag.Set();
+                });
+
+                waitDialog.Shown += new EventHandler((x, y) => {
+                    Task.Run(() => {
+                        List<RgFullItem> allItemsList = ProcessSteamInventory();
+                        Dispatcher.Invoke(Program.MainForm, () => {
+                            AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
+                        });
+                        this.Invoke((MethodInvoker)(() => waitDialog.Close()));
+                    });
+                });
+
+                this.Invoke((MethodInvoker)(() => waitDialog.ShowDialog(this)));
+            });
+
+            while (dialogLoadedFlag.WaitOne(100, true) == false)
+                Application.DoEvents();
         }
 
         private void SteamSaleDataGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) {
                 return;
             }
-
-            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, e.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, AllSteamItemsGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
 
             if (e.ColumnIndex == 2) {
                 AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsGridView, e.RowIndex);
@@ -52,6 +90,26 @@ namespace autotrade {
             else if (e.ColumnIndex == 4) {
                 AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
             }
+        }
+
+        private void AllSteamItemsGridView_CurrentCellChanged(object sender, EventArgs e) {
+            var cell = AllSteamItemsGridView.CurrentCell;
+            if (cell == null) return;
+
+            var row = cell.RowIndex;
+            if (row < 0) return;
+
+            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, AllSteamItemsGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+        }
+
+        private void ItemsToSaleGridView_CurrentCellChanged(object sender, EventArgs e) {
+            var cell = ItemsToSaleGridView.CurrentCell;
+            if (cell == null) return;
+
+            var row = cell.RowIndex;
+            if (row < 0) return;
+
+            ItemsToSaleGridUtils.RowClick(ItemsToSaleGridView, row, AllDescriptionsDictionary, AllSteamItemsGridView, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
         }
 
         private void SteamSaleDataGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e) {
@@ -80,28 +138,23 @@ namespace autotrade {
             ItemsToSaleGridUtils.DeleteButtonClick(AllSteamItemsGridView, ItemsToSaleGridView);
         }
 
-
-
-        private void ItemsToSaleGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) {
-                return;
-            }
-
-            ItemsToSaleGridUtils.RowClick(ItemsToSaleGridView, e.RowIndex, AllDescriptionsDictionary, AllSteamItemsGridView, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
-        }
-
         private void AddAllPanel_Click(object sender, EventArgs e) {
+            this.AllSteamItemsGridView.CurrentCellChanged -= new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
+
             while (AllSteamItemsGridView.RowCount > 0) {
                 AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsGridView, 0, ItemsToSaleGridView);
             }
+
+            this.AllSteamItemsGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
+            ItemsToSaleGridView_CurrentCellChanged(null, null);
         }
 
         private void RefreshPanel_Click(object sender, EventArgs e) {
             AllSteamItemsGridView.Rows.Clear();
             ItemsToSaleGridView.Rows.Clear();
 
-            List<RgFullItem> allItemsList = ProcessSteamInventory();
-            AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
+            LoadInventory();
+            AllSteamItemsGridView_CurrentCellChanged(null, null);
         }
 
         #region Items to sale design

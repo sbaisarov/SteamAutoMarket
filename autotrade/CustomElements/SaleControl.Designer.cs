@@ -121,6 +121,7 @@ namespace autotrade {
             this.AllSteamItemsGridView.Size = new System.Drawing.Size(479, 293);
             this.AllSteamItemsGridView.TabIndex = 7;
             this.AllSteamItemsGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SteamSaleDataGridView_CellClick);
+            this.AllSteamItemsGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             this.AllSteamItemsGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.SteamSaleDataGridView_EditingControlShowing);
             // 
             // NameColumn
@@ -255,7 +256,7 @@ namespace autotrade {
             this.ItemsToSaleGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ItemsToSaleGridView.Size = new System.Drawing.Size(473, 219);
             this.ItemsToSaleGridView.TabIndex = 13;
-            this.ItemsToSaleGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridView_CellClick);
+            this.ItemsToSaleGridView.CurrentCellChanged += new System.EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
             this.ItemsToSaleGridView.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.ItemsToSaleGrid_RowsAdded);
             this.ItemsToSaleGridView.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.ItemsToSaleGrid_RowsRemoved);
             // 

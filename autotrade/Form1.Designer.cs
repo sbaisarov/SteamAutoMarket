@@ -35,18 +35,18 @@
             this.leftPanelHideShowButton = new System.Windows.Forms.Button();
             this.buyLinkButton = new System.Windows.Forms.Button();
             this.saleLinkButton = new System.Windows.Forms.Button();
-            this.menuTitleLable = new System.Windows.Forms.Label();
             this.logoImageBox = new System.Windows.Forms.PictureBox();
             this.appExitButton = new System.Windows.Forms.Button();
-            this.appExpandButton = new System.Windows.Forms.Button();
             this.appCurtailButton = new System.Windows.Forms.Button();
             this.headerPanel = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.titleLable = new System.Windows.Forms.Label();
             this.settingsControl = new autotrade.CustomElements.SettingsControl();
             this.saleControl = new autotrade.SaleControl();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoImageBox)).BeginInit();
             this.headerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // leftHeaderPanel
@@ -57,7 +57,6 @@
             this.leftHeaderPanel.Controls.Add(this.leftPanelHideShowButton);
             this.leftHeaderPanel.Controls.Add(this.buyLinkButton);
             this.leftHeaderPanel.Controls.Add(this.saleLinkButton);
-            this.leftHeaderPanel.Controls.Add(this.menuTitleLable);
             this.leftHeaderPanel.Controls.Add(this.logoImageBox);
             this.leftHeaderPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.leftHeaderPanel.Location = new System.Drawing.Point(0, 31);
@@ -68,7 +67,7 @@
             // sidePanel
             // 
             this.sidePanel.BackColor = System.Drawing.Color.AliceBlue;
-            this.sidePanel.Location = new System.Drawing.Point(0, 132);
+            this.sidePanel.Location = new System.Drawing.Point(0, 172);
             this.sidePanel.Name = "sidePanel";
             this.sidePanel.Size = new System.Drawing.Size(10, 45);
             this.sidePanel.TabIndex = 4;
@@ -81,10 +80,10 @@
             this.settingsLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.settingsLinkButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.settingsLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("settingsLinkButton.Image")));
-            this.settingsLinkButton.Location = new System.Drawing.Point(11, 132);
+            this.settingsLinkButton.Location = new System.Drawing.Point(11, 172);
             this.settingsLinkButton.Name = "settingsLinkButton";
             this.settingsLinkButton.Size = new System.Drawing.Size(143, 45);
-            this.settingsLinkButton.TabIndex = 10;
+            this.settingsLinkButton.TabIndex = 1;
             this.settingsLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.settingsLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.settingsLinkButton.UseVisualStyleBackColor = true;
@@ -96,10 +95,10 @@
             this.leftPanelHideShowButton.FlatAppearance.BorderSize = 0;
             this.leftPanelHideShowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.leftPanelHideShowButton.Image = ((System.Drawing.Image)(resources.GetObject("leftPanelHideShowButton.Image")));
-            this.leftPanelHideShowButton.Location = new System.Drawing.Point(128, 3);
+            this.leftPanelHideShowButton.Location = new System.Drawing.Point(132, 4);
             this.leftPanelHideShowButton.Name = "leftPanelHideShowButton";
-            this.leftPanelHideShowButton.Size = new System.Drawing.Size(26, 27);
-            this.leftPanelHideShowButton.TabIndex = 8;
+            this.leftPanelHideShowButton.Size = new System.Drawing.Size(27, 27);
+            this.leftPanelHideShowButton.TabIndex = 4;
             this.leftPanelHideShowButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.leftPanelHideShowButton.UseVisualStyleBackColor = true;
             this.leftPanelHideShowButton.Click += new System.EventHandler(this.LeftPanelHideShowButton_Click);
@@ -112,10 +111,10 @@
             this.buyLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buyLinkButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.buyLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("buyLinkButton.Image")));
-            this.buyLinkButton.Location = new System.Drawing.Point(14, 254);
+            this.buyLinkButton.Location = new System.Drawing.Point(11, 294);
             this.buyLinkButton.Name = "buyLinkButton";
             this.buyLinkButton.Size = new System.Drawing.Size(143, 45);
-            this.buyLinkButton.TabIndex = 9;
+            this.buyLinkButton.TabIndex = 3;
             this.buyLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buyLinkButton.UseVisualStyleBackColor = true;
             this.buyLinkButton.Click += new System.EventHandler(this.BuyLinkButton_Click);
@@ -128,32 +127,22 @@
             this.saleLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.saleLinkButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.saleLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("saleLinkButton.Image")));
-            this.saleLinkButton.Location = new System.Drawing.Point(11, 193);
+            this.saleLinkButton.Location = new System.Drawing.Point(11, 233);
             this.saleLinkButton.Name = "saleLinkButton";
             this.saleLinkButton.Size = new System.Drawing.Size(143, 45);
-            this.saleLinkButton.TabIndex = 8;
+            this.saleLinkButton.TabIndex = 2;
             this.saleLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.saleLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.saleLinkButton.UseVisualStyleBackColor = true;
             this.saleLinkButton.Click += new System.EventHandler(this.SaleLinkButton_Click);
             // 
-            // menuTitleLable
-            // 
-            this.menuTitleLable.AutoSize = true;
-            this.menuTitleLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.menuTitleLable.ForeColor = System.Drawing.Color.White;
-            this.menuTitleLable.Location = new System.Drawing.Point(42, 87);
-            this.menuTitleLable.Name = "menuTitleLable";
-            this.menuTitleLable.Size = new System.Drawing.Size(70, 18);
-            this.menuTitleLable.TabIndex = 8;
-            this.menuTitleLable.Text = "Opskins";
-            // 
             // logoImageBox
             // 
             this.logoImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logoImageBox.BackgroundImage")));
-            this.logoImageBox.Location = new System.Drawing.Point(50, 6);
+            this.logoImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.logoImageBox.Location = new System.Drawing.Point(1, 11);
             this.logoImageBox.Name = "logoImageBox";
-            this.logoImageBox.Size = new System.Drawing.Size(62, 78);
+            this.logoImageBox.Size = new System.Drawing.Size(164, 161);
             this.logoImageBox.TabIndex = 4;
             this.logoImageBox.TabStop = false;
             // 
@@ -163,25 +152,12 @@
             this.appExitButton.FlatAppearance.BorderSize = 0;
             this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appExitButton.Image = ((System.Drawing.Image)(resources.GetObject("appExitButton.Image")));
-            this.appExitButton.Location = new System.Drawing.Point(881, 3);
+            this.appExitButton.Location = new System.Drawing.Point(899, 4);
             this.appExitButton.Name = "appExitButton";
-            this.appExitButton.Size = new System.Drawing.Size(21, 22);
-            this.appExitButton.TabIndex = 4;
+            this.appExitButton.Size = new System.Drawing.Size(23, 23);
+            this.appExitButton.TabIndex = 6;
             this.appExitButton.UseVisualStyleBackColor = true;
             this.appExitButton.Click += new System.EventHandler(this.AppExitButton_Click);
-            // 
-            // appExpandButton
-            // 
-            this.appExpandButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.appExpandButton.FlatAppearance.BorderSize = 0;
-            this.appExpandButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.appExpandButton.Image = ((System.Drawing.Image)(resources.GetObject("appExpandButton.Image")));
-            this.appExpandButton.Location = new System.Drawing.Point(838, 5);
-            this.appExpandButton.Name = "appExpandButton";
-            this.appExpandButton.Size = new System.Drawing.Size(25, 20);
-            this.appExpandButton.TabIndex = 5;
-            this.appExpandButton.UseVisualStyleBackColor = true;
-            this.appExpandButton.Click += new System.EventHandler(this.AppExpandButton_Click);
             // 
             // appCurtailButton
             // 
@@ -189,10 +165,10 @@
             this.appCurtailButton.FlatAppearance.BorderSize = 0;
             this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appCurtailButton.Image = ((System.Drawing.Image)(resources.GetObject("appCurtailButton.Image")));
-            this.appCurtailButton.Location = new System.Drawing.Point(797, 8);
+            this.appCurtailButton.Location = new System.Drawing.Point(865, 4);
             this.appCurtailButton.Name = "appCurtailButton";
-            this.appCurtailButton.Size = new System.Drawing.Size(26, 17);
-            this.appCurtailButton.TabIndex = 6;
+            this.appCurtailButton.Size = new System.Drawing.Size(23, 23);
+            this.appCurtailButton.TabIndex = 5;
             this.appCurtailButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.appCurtailButton.UseVisualStyleBackColor = true;
             this.appCurtailButton.Click += new System.EventHandler(this.AppCurtailButton_Click);
@@ -200,9 +176,9 @@
             // headerPanel
             // 
             this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.headerPanel.Controls.Add(this.pictureBox1);
             this.headerPanel.Controls.Add(this.titleLable);
             this.headerPanel.Controls.Add(this.appCurtailButton);
-            this.headerPanel.Controls.Add(this.appExpandButton);
             this.headerPanel.Controls.Add(this.appExitButton);
             this.headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.headerPanel.Location = new System.Drawing.Point(0, 0);
@@ -213,12 +189,22 @@
             this.headerPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
             this.headerPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Move_MouseUp);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox1.Location = new System.Drawing.Point(8, 4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(24, 24);
+            this.pictureBox1.TabIndex = 11;
+            this.pictureBox1.TabStop = false;
+            // 
             // titleLable
             // 
             this.titleLable.AutoSize = true;
             this.titleLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.titleLable.ForeColor = System.Drawing.Color.White;
-            this.titleLable.Location = new System.Drawing.Point(11, 6);
+            this.titleLable.Location = new System.Drawing.Point(43, 6);
             this.titleLable.Name = "titleLable";
             this.titleLable.Size = new System.Drawing.Size(169, 18);
             this.titleLable.TabIndex = 7;
@@ -227,10 +213,11 @@
             // settingsControl
             // 
             this.settingsControl.BackColor = System.Drawing.Color.Silver;
+            this.settingsControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.settingsControl.Location = new System.Drawing.Point(167, 32);
             this.settingsControl.Name = "settingsControl";
             this.settingsControl.Size = new System.Drawing.Size(761, 598);
-            this.settingsControl.TabIndex = 4;
+            this.settingsControl.TabIndex = 0;
             // 
             // saleControl
             // 
@@ -251,13 +238,14 @@
             this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.saleControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Form1";
             this.leftHeaderPanel.ResumeLayout(false);
-            this.leftHeaderPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoImageBox)).EndInit();
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -272,13 +260,12 @@
         private autotrade.SaleControl saleSteamControl1;
         private System.Windows.Forms.Button settingsLinkButton;
         private CustomElements.SettingsControl settingsControl;
-        private System.Windows.Forms.Label menuTitleLable;
         private System.Windows.Forms.Button appExitButton;
-        private System.Windows.Forms.Button appExpandButton;
         private System.Windows.Forms.Button appCurtailButton;
         private System.Windows.Forms.Panel headerPanel;
         private System.Windows.Forms.Label titleLable;
         private SaleControl saleControl;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

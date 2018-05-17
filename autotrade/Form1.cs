@@ -24,31 +24,26 @@ namespace autotrade {
         }
 
         private void LeftPanelHideShowButton_Click(object sender, EventArgs e) {
-            //913; 632
-            if (this.Height == 632) {
-                leftHeaderPanel.Width = 45;
-                leftPanelHideShowButton.Left = 10;
-
-
-                ////buy controll size
-                //buyControl1.Width = 865;
-                //buyControl1.Left = 10;
-
-                ////sale controll size
-                //saleControl1.Width = 865;
-                //saleControl1.Left = 10;
-
-                this.Width = 400;
+            //929; 632
+            if (this.Width == 929) {
+                leftHeaderPanel.Width -= 120;
+                leftPanelHideShowButton.Left = 9;
+                saleControl.Left -= 120;
+                settingsControl.Left -= 120;
+                appCurtailButton.Left -= 120;
+                appExitButton.Left -= 120;
+                this.Width -= 120;
+                logoImageBox.Visible = false;
             }
             else {
-                leftHeaderPanel.Width = 166;
-                leftPanelHideShowButton.Left = 128;
-                //buy controll size
-                //buyControl1.Width = 742;
-                //buyControl1.Left = 168;
-                //sale controll size
-                //saleControl1.Width = 742;
-                //saleControl1.Left = 168;
+                leftHeaderPanel.Width += 120;
+                leftPanelHideShowButton.Left = 132;
+                saleControl.Left += 120;
+                settingsControl.Left += 120;
+                appCurtailButton.Left += 120;
+                appExitButton.Left += 120;
+                this.Width += 120;
+                logoImageBox.Visible = true;
             }
         }
 
