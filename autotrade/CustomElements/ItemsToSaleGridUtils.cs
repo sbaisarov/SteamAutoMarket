@@ -9,6 +9,12 @@ using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
 namespace autotrade.CustomElements {
     class ItemsToSaleGridUtils {
 
+        public static void CellClick(DataGridView itemsToSaleGrid, int row) {
+            var cell = GetGridPriceTextBoxCell(itemsToSaleGrid, row);
+            itemsToSaleGrid.CurrentCell = cell;
+            itemsToSaleGrid.BeginEdit(true);
+        }
+
         public static void AddItemsToSale(DataGridView itemsToSaleGrid, List<RgFullItem> items) {
             var row = GetDataGridViewRowByMarketHashName(itemsToSaleGrid, items.First().Description.market_hash_name);
             if (row != null) {
@@ -56,8 +62,7 @@ namespace autotrade.CustomElements {
             AllItemsListGridUtils.UpdateItemDescription(SaleControl.AllDescriptionsDictionary[itemMarketHashName], textBox, imageBox, lable);
         }
 
-        public static void DeleteButtonClick(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
-            var selectedRow = itemsToSaleGrid.CurrentCell.RowIndex;
+        public static void DeleteButtonClick(DataGridView allItemsGrid, DataGridView itemsToSaleGrid, int selectedRow) {
             var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, selectedRow);
             var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
             var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
@@ -71,6 +76,69 @@ namespace autotrade.CustomElements {
             }
 
             itemsToSaleGrid.Rows.RemoveAt(selectedRow);
+        }
+
+        public static void DeleteUnmarketable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
+            for (int rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++) {
+                var hidenItemsCell = GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex);
+                if (hidenItemsCell == null || hidenItemsCell.Value == null) continue;
+
+                var items = ((List<RgFullItem>)hidenItemsCell.Value);
+                var stastCount = items.Count;
+
+                var unmarketableList = new List<RgFullItem>();
+                for (int i = 0; i < items.Count; i++) {
+                    var item = items[i];
+                    if (!item.Description.marketable) {
+                        unmarketableList.Add(item);
+                        items.RemoveAt(i--);
+                    }
+                }
+                if (unmarketableList.Count > 0) {
+                    var untradableItem = unmarketableList.First();
+                    var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, untradableItem.Description.market_hash_name);
+                    if (allItemsGridRow != null) {
+                        AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, unmarketableList);
+                    }
+                    else {
+                        AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, unmarketableList);
+                    }
+                }
+                if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);
+                else if (stastCount != items.Count) GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
+            }
+        }
+
+        public static void DeleteUntradable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
+            for (int rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++) {
+                var hidenItemsCell = GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex);
+                if (hidenItemsCell == null || hidenItemsCell.Value == null) continue;
+
+                var items = ((List<RgFullItem>)hidenItemsCell.Value);
+                var stastCount = items.Count;
+
+                var untradableList = new List<RgFullItem>();
+                for (int i = 0; i < items.Count; i++) {
+                    var item = items[i];
+                    if (!item.Description.tradable) {
+                        untradableList.Add(item);
+                        items.RemoveAt(i--);
+                    }
+                }
+                if (untradableList.Count > 0) {
+                    var untradableItem = untradableList.First();
+                    var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, untradableItem.Description.market_hash_name);
+                    if (allItemsGridRow != null) {
+                        AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, untradableList);
+                    }
+                    else {
+                        AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, untradableList);
+                    }
+                }
+
+                if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);
+                else if (stastCount != items.Count) GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
+            }
         }
 
         #region Cells getters

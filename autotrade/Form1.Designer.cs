@@ -41,8 +41,8 @@
             this.headerPanel = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.titleLable = new System.Windows.Forms.Label();
-            this.settingsControl = new autotrade.CustomElements.SettingsControl();
             this.saleControl = new autotrade.SaleControl();
+            this.settingsControl = new autotrade.CustomElements.SettingsControl();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoImageBox)).BeginInit();
             this.headerPanel.SuspendLayout();
@@ -61,7 +61,7 @@
             this.leftHeaderPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.leftHeaderPanel.Location = new System.Drawing.Point(0, 31);
             this.leftHeaderPanel.Name = "leftHeaderPanel";
-            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 601);
+            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 599);
             this.leftHeaderPanel.TabIndex = 3;
             // 
             // sidePanel
@@ -152,7 +152,7 @@
             this.appExitButton.FlatAppearance.BorderSize = 0;
             this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appExitButton.Image = ((System.Drawing.Image)(resources.GetObject("appExitButton.Image")));
-            this.appExitButton.Location = new System.Drawing.Point(899, 4);
+            this.appExitButton.Location = new System.Drawing.Point(894, 4);
             this.appExitButton.Name = "appExitButton";
             this.appExitButton.Size = new System.Drawing.Size(23, 23);
             this.appExitButton.TabIndex = 6;
@@ -165,7 +165,7 @@
             this.appCurtailButton.FlatAppearance.BorderSize = 0;
             this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appCurtailButton.Image = ((System.Drawing.Image)(resources.GetObject("appCurtailButton.Image")));
-            this.appCurtailButton.Location = new System.Drawing.Point(865, 4);
+            this.appCurtailButton.Location = new System.Drawing.Point(859, 4);
             this.appCurtailButton.Name = "appCurtailButton";
             this.appCurtailButton.Size = new System.Drawing.Size(23, 23);
             this.appCurtailButton.TabIndex = 5;
@@ -183,7 +183,7 @@
             this.headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.headerPanel.Location = new System.Drawing.Point(0, 0);
             this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(929, 31);
+            this.headerPanel.Size = new System.Drawing.Size(925, 31);
             this.headerPanel.TabIndex = 2;
             this.headerPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Move_MouseDown);
             this.headerPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
@@ -210,32 +210,32 @@
             this.titleLable.TabIndex = 7;
             this.titleLable.Text = "\"Opskins\" Auto trade ";
             // 
+            // saleControl
+            // 
+            this.saleControl.BackColor = System.Drawing.Color.Silver;
+            this.saleControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saleControl.Location = new System.Drawing.Point(166, 31);
+            this.saleControl.Name = "saleControl";
+            this.saleControl.Size = new System.Drawing.Size(759, 599);
+            this.saleControl.TabIndex = 4;
+            // 
             // settingsControl
             // 
             this.settingsControl.BackColor = System.Drawing.Color.Silver;
             this.settingsControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.settingsControl.Location = new System.Drawing.Point(167, 32);
+            this.settingsControl.Location = new System.Drawing.Point(166, 31);
             this.settingsControl.Name = "settingsControl";
-            this.settingsControl.Size = new System.Drawing.Size(761, 598);
+            this.settingsControl.Size = new System.Drawing.Size(759, 599);
             this.settingsControl.TabIndex = 0;
-            // 
-            // saleControl
-            // 
-            this.saleControl.BackColor = System.Drawing.Color.Silver;
-            this.saleControl.Font = new System.Drawing.Font("Open Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saleControl.Location = new System.Drawing.Point(167, 32);
-            this.saleControl.Name = "saleControl";
-            this.saleControl.Size = new System.Drawing.Size(759, 599);
-            this.saleControl.TabIndex = 5;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(929, 632);
-            this.Controls.Add(this.settingsControl);
+            this.ClientSize = new System.Drawing.Size(925, 630);
             this.Controls.Add(this.leftHeaderPanel);
             this.Controls.Add(this.headerPanel);
+            this.Controls.Add(this.settingsControl);
             this.Controls.Add(this.saleControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -264,8 +264,8 @@
         private System.Windows.Forms.Button appCurtailButton;
         private System.Windows.Forms.Panel headerPanel;
         private System.Windows.Forms.Label titleLable;
-        private SaleControl saleControl;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private SaleControl saleControl;
     }
 }
 

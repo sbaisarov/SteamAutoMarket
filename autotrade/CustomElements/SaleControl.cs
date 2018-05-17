@@ -246,12 +246,34 @@ namespace autotrade {
 
             if (cell.RowIndex < 0) return;
 
-            ItemsToSaleGridUtils.DeleteButtonClick(AllSteamItemsGridView, ItemsToSaleGridView);
+            ItemsToSaleGridUtils.DeleteButtonClick(AllSteamItemsGridView, ItemsToSaleGridView, cell.RowIndex);
+        }
+
+        private void DeleteUnmarketableSteamButton_Click(object sender, EventArgs e) {
+            ItemsToSaleGridUtils.DeleteUnmarketable(AllSteamItemsGridView, ItemsToSaleGridView);
+        }
+
+        private void DeleteUntradableSteamButton_Click(object sender, EventArgs e) {
+            ItemsToSaleGridUtils.DeleteUntradable(AllSteamItemsGridView, ItemsToSaleGridView);
         }
 
         private void HalfAutoPriceRadioButton_CheckedChanged(object sender, EventArgs e) {
             if (HalfAutoPriceRadioButton.Checked) CurrentPriceNumericUpDown.Enabled = true;
             else CurrentPriceNumericUpDown.Enabled = false;
+        }
+
+        private void ItemsToSaleGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
+            if (e.RowIndex < 0) return;
+            if (e.ColumnIndex != 2) return;
+            if (!ManualPriceRadioButton.Checked) return;
+
+            ItemToSalePriceColumn.ReadOnly = false;
+
+            ItemsToSaleGridUtils.CellClick(ItemsToSaleGridView, e.RowIndex);
+        }
+
+        private void ItemsToSaleGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e) {
+            ItemsToSaleGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
     }
 }

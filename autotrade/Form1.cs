@@ -24,8 +24,8 @@ namespace autotrade {
         }
 
         private void LeftPanelHideShowButton_Click(object sender, EventArgs e) {
-            //929; 632
-            if (this.Width == 929) {
+            //925; 630
+            if (this.Width == 925) {
                 leftHeaderPanel.Width -= 120;
                 leftPanelHideShowButton.Left = 9;
                 saleControl.Left -= 120;

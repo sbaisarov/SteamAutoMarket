@@ -195,33 +195,30 @@ namespace autotrade.CustomElements {
             label.Text = description.name;
 
             var descriptionText = "";
-            foreach (var item in description.descriptions) {
-                string text = item.value.Trim();
-                if (!string.IsNullOrWhiteSpace(text)) descriptionText += text + ", ";
+            if (description.descriptions != null) {
+                foreach (var item in description.descriptions) {
+                    string text = item.value.Trim();
+                    if (!string.IsNullOrWhiteSpace(text)) descriptionText += text + ", ";
+                }
+                if (descriptionText.EndsWith(", ")) descriptionText = descriptionText.Substring(0, descriptionText.Length - 2);
             }
-            if (descriptionText.EndsWith(", ")) descriptionText = descriptionText.Substring(0, descriptionText.Length - 2);
 
             var tagsText = "";
-            foreach (var item in description.tags) {
-                string text = item.localized_tag_name.Trim();
-                if (!string.IsNullOrWhiteSpace(text)) tagsText += text + ", ";
+            if (description.tags != null) {
+                foreach (var item in description.tags) {
+                    string text = item.localized_tag_name.Trim();
+                    if (!string.IsNullOrWhiteSpace(text)) tagsText += text + ", ";
+                }
+                if (tagsText.EndsWith(", ")) tagsText = tagsText.Substring(0, tagsText.Length - 2);
             }
-            if (tagsText.EndsWith(", ")) tagsText = tagsText.Substring(0, tagsText.Length - 2);
-
             appendBoldText(textBox, "Игра: ");
             textBox.AppendText(description.appid.ToString() + "\n");
-            
+
             appendBoldText(textBox, "Название: ");
             textBox.AppendText(description.market_hash_name + "\n");
 
             appendBoldText(textBox, "Тип: ");
-            textBox.AppendText(description.type + "\n");
-
-            appendBoldText(textBox, "Передаваемый: ");
-            textBox.AppendText(((description.tradable) ? "Да" : "Нет") + "\n");
-
-            appendBoldText(textBox, "Продаваемый: ");
-            textBox.AppendText(((description.marketable) ? "Да" : "Нет"));
+            textBox.AppendText(description.type);
 
             if (!string.IsNullOrWhiteSpace(descriptionText)) {
                 textBox.AppendText("\n");
