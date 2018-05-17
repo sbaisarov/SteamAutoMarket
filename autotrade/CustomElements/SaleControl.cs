@@ -134,10 +134,6 @@ namespace autotrade {
             return allItemsList;
         }
 
-        private void DeleteItemButton_Click(object sender, EventArgs e) {
-            ItemsToSaleGridUtils.DeleteButtonClick(AllSteamItemsGridView, ItemsToSaleGridView);
-        }
-
         private void AddAllPanel_Click(object sender, EventArgs e) {
             this.AllSteamItemsGridView.CurrentCellChanged -= new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
 
@@ -156,24 +152,6 @@ namespace autotrade {
             LoadInventory();
             AllSteamItemsGridView_CurrentCellChanged(null, null);
         }
-
-        #region Items to sale design
-        private void DeleteItemButton_MouseLeave(object sender, EventArgs e) {
-            DeleteItemButton.BackColor = Color.RoyalBlue;
-        }
-
-        private void DeleteItemButton_MouseEnter(object sender, EventArgs e) {
-            DeleteItemButton.BackColor = Color.DodgerBlue;
-        }
-
-        private void ItemsToSaleGrid_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e) {
-            if (!DeleteItemButton.Enabled) DeleteItemButton.Enabled = true;
-        }
-
-        private void ItemsToSaleGrid_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e) {
-            DeleteItemButton.Enabled = (ItemsToSaleGridView.RowCount > 0) ? true : false;
-        }
-        #endregion
 
         #region GridMenu buttuns design
         private void AddAllPanel_MouseEnter(object sender, EventArgs e) {
@@ -260,6 +238,20 @@ namespace autotrade {
             if (LastSelectedItemDescription == null) return;
             System.Diagnostics.Process.Start("https://" +
                 $"opskins.com/?loc=shop_search&search_item={LastSelectedItemDescription.name}&sort=lh");
+        }
+
+        private void DeleteAccountButton_Click(object sender, EventArgs e) {
+            var cell = ItemsToSaleGridView.CurrentCell;
+            if (cell == null) return;
+
+            if (cell.RowIndex < 0) return;
+
+            ItemsToSaleGridUtils.DeleteButtonClick(AllSteamItemsGridView, ItemsToSaleGridView);
+        }
+
+        private void HalfAutoPriceRadioButton_CheckedChanged(object sender, EventArgs e) {
+            if (HalfAutoPriceRadioButton.Checked) CurrentPriceNumericUpDown.Enabled = true;
+            else CurrentPriceNumericUpDown.Enabled = false;
         }
     }
 }

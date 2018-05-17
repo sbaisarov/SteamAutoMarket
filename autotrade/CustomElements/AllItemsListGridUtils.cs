@@ -209,27 +209,29 @@ namespace autotrade.CustomElements {
             if (tagsText.EndsWith(", ")) tagsText = tagsText.Substring(0, tagsText.Length - 2);
 
             appendBoldText(textBox, "Игра: ");
-            textBox.AppendText(description.appid.ToString());
+            textBox.AppendText(description.appid.ToString() + "\n");
+            
+            appendBoldText(textBox, "Название: ");
+            textBox.AppendText(description.market_hash_name + "\n");
 
-            appendBoldText(textBox, "\nНазвание: ");
-            textBox.AppendText(description.market_hash_name);
+            appendBoldText(textBox, "Тип: ");
+            textBox.AppendText(description.type + "\n");
 
-            appendBoldText(textBox, "\nТип: ");
-            textBox.AppendText(description.type);
+            appendBoldText(textBox, "Передаваемый: ");
+            textBox.AppendText(((description.tradable) ? "Да" : "Нет") + "\n");
 
-            appendBoldText(textBox, "\nПередаваемый: ");
-            textBox.AppendText(((description.tradable) ? "Да" : "Нет"));
-
-            appendBoldText(textBox, "\nПродаваемый: ");
-            textBox.AppendText(((description.tradable) ? "Да" : "Нет"));
+            appendBoldText(textBox, "Продаваемый: ");
+            textBox.AppendText(((description.marketable) ? "Да" : "Нет"));
 
             if (!string.IsNullOrWhiteSpace(descriptionText)) {
-                appendBoldText(textBox, "\nОписание: ");
+                textBox.AppendText("\n");
+                appendBoldText(textBox, "Описание: ");
                 textBox.AppendText(descriptionText);
             }
 
             if (!string.IsNullOrWhiteSpace(tagsText)) {
-                appendBoldText(textBox, "\nТеги: ");
+                textBox.AppendText("\n");
+                appendBoldText(textBox, "Теги: ");
                 textBox.AppendText(tagsText);
             }
         }

@@ -57,8 +57,8 @@ namespace autotrade.CustomElements {
         }
 
         public static void DeleteButtonClick(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
-            var selectedRow = itemsToSaleGrid.SelectedRows[0];
-            var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, selectedRow.Index);
+            var selectedRow = itemsToSaleGrid.CurrentCell.RowIndex;
+            var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, selectedRow);
             var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
             var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
 
@@ -70,7 +70,7 @@ namespace autotrade.CustomElements {
                 AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, hidenItemsList);
             }
 
-            itemsToSaleGrid.Rows.RemoveAt(selectedRow.Index);
+            itemsToSaleGrid.Rows.RemoveAt(selectedRow);
         }
 
         #region Cells getters
