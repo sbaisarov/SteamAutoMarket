@@ -36,9 +36,10 @@ namespace autotrade {
         public void LoadInventory() {
             ManualResetEvent dialogLoadedFlag = new ManualResetEvent(false);
             Task.Run(() => {
+                Logger.Info("Inventory loading started");
                 Form waitDialog = new Form() {
-                    Name = "Загрузка инвентаря",
-                    Text = "Идет загрузка инвентаря, пожалуйста подождите...",
+                    Name = "Inventory loading",
+                    Text = "Loading inventory, please wait...",
                     ControlBox = false,
                     FormBorderStyle = FormBorderStyle.FixedDialog,
                     StartPosition = FormStartPosition.CenterParent,
@@ -73,12 +74,15 @@ namespace autotrade {
 
             while (dialogLoadedFlag.WaitOne(100, true) == false)
                 Application.DoEvents();
+
+            Logger.Info("Inventory loading done");
         }
 
         private void SteamSaleDataGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) {
                 return;
             }
+
             AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, AllSteamItemsGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
 
             if (e.ColumnIndex == 2) {
@@ -120,6 +124,8 @@ namespace autotrade {
         }
 
         private List<RgFullItem> ProcessSteamInventory() {
+            Logger.Info("Inventory processing started");
+
             var allItemsInventory = services.SteamAllInventory();
             var allItemsList = new List<RgFullItem>();
 
@@ -131,21 +137,26 @@ namespace autotrade {
                 allItemsList.Add(rgFullItem);
             }
 
+            Logger.Info("Inventory processing done");
             return allItemsList;
         }
 
         private void AddAllPanel_Click(object sender, EventArgs e) {
-            this.AllSteamItemsGridView.CurrentCellChanged -= new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
+            this.AllSteamItemsGridView.CurrentCellChanged -= new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
 
             while (AllSteamItemsGridView.RowCount > 0) {
                 AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsGridView, 0, ItemsToSaleGridView);
             }
 
-            this.AllSteamItemsGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
+            this.AllSteamItemsGridView.CurrentCellChanged += new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             ItemsToSaleGridView_CurrentCellChanged(null, null);
+
+            Logger.Info("All items was added to sale list");
         }
 
         private void RefreshPanel_Click(object sender, EventArgs e) {
+            Logger.Info("Refreshing inventory");
+
             AllSteamItemsGridView.Rows.Clear();
             ItemsToSaleGridView.Rows.Clear();
 
@@ -242,7 +253,10 @@ namespace autotrade {
 
         private void DeleteAccountButton_Click(object sender, EventArgs e) {
             var cell = ItemsToSaleGridView.CurrentCell;
-            if (cell == null) return;
+            if (cell == null) {
+                Logger.Warning("No accounts selected");
+                return;
+            }
 
             if (cell.RowIndex < 0) return;
 

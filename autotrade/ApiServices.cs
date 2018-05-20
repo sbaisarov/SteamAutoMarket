@@ -36,7 +36,7 @@ namespace autotrade
 
         public InventoryRootModel SteamAllInventory()
         {
-            invList = inventory.GetInventory(steamid, 440, 2);
+            invList = inventory.GetInventory(steamid, 753, 6);
             if ( invList!= null )
             {
                 return invList;

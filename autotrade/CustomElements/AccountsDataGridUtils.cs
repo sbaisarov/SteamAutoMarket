@@ -7,6 +7,15 @@ using System.Windows.Forms;
 
 namespace autotrade.CustomElements {
     class AccountsDataGridUtils {
+        public static bool IsAccountAreadyExist(DataGridView accountsDataGridView, string login) {
+            for (int i = 0; i < accountsDataGridView.RowCount; i++) {
+                if ((string)GetDataGridViewLoginCell(accountsDataGridView, i).Value == login) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static DataGridViewImageCell GetDataGridViewImageCell(DataGridView accountsDataGridView, int row) {
             return (DataGridViewImageCell)accountsDataGridView.Rows[row].Cells[0];
         }

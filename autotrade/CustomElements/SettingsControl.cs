@@ -14,12 +14,12 @@ using autotrade.Utils;
 
 namespace autotrade.CustomElements {
     public partial class SettingsControl : UserControl {
-        private string accountsFilePath = "accounts.ini";
+
 
         public SettingsControl() {
             InitializeComponent();
-            if (File.Exists(accountsFilePath)) {
-                var accounts = JsonConvert.DeserializeObject<List<SavedSteamAccount>>(File.ReadAllText(accountsFilePath));
+            if (File.Exists(SettingsContainer.ACCOUNTS_FILE_PATH)) {
+                var accounts = SavedSteamAccount.Get();
                 foreach (var acc in accounts) {
                     int row = AccountsDataGridView.Rows.Add();
                     AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = acc.Login;
@@ -31,46 +31,62 @@ namespace autotrade.CustomElements {
                         var profileImage = ImageUtils.GetSteamProfileSMallImage(acc.Mafile.Session.SteamID);
                         if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
                     });
-
                 }
             };
         }
 
-        private void Button1_Click(object sender, EventArgs e) {
+        private void BrowseMafilePath_Click(object sender, EventArgs e) {
             using (var openFileDialog = new OpenFileDialog()) {
                 openFileDialog.Filter = "Mobile auth file (*.maFile)|*.mafile";
                 openFileDialog.Multiselect = false;
-                openFileDialog.Title = "Выбор мафайла";
+                openFileDialog.Title = "MaFile path selecting";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK) {
                     MafilePathTextBox.Text = openFileDialog.FileName;
+                    Logger.Info($"{MafilePathTextBox.Text} mafile selected");
                 }
             }
         }
 
         private void AddNewAccountButton_Click(object sender, EventArgs e) {
             if (string.IsNullOrEmpty(LoginTextBox.Text) || string.IsNullOrEmpty(MafilePathTextBox.Text) || string.IsNullOrEmpty(PasswordTextBox.Text)) {
-                MessageBox.Show("Поля заполнены - некорректно", "Ошибка при добавлении аккаунта", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Some fields are filled - incorrectly", "Error adding account", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error adding account. Some fields are filled - incorrectly");
                 return;
             }
-
+            if (AccountsDataGridUtils.IsAccountAreadyExist(AccountsDataGridView, LoginTextBox.Text.Trim())) {
+                Logger.Error($"{LoginTextBox.Text.Trim()} already exist in accounts list");
+                MessageBox.Show($"{LoginTextBox.Text.Trim()} already exist in accounts list", "Error on the account add", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             SteamGuardAccount account = null;
             try {
                 account = JsonConvert.DeserializeObject<SteamGuardAccount>(File.ReadAllText(MafilePathTextBox.Text));
             } catch (Exception ex) {
-                MessageBox.Show(ex.Message, "Ошибка при обработке мафайла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error processing MaFile", ex);
+                MessageBox.Show(ex.Message, "Error processing MaFile", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (account == null) {
+                Logger.Error("Error processing MaFile");
                 return;
             }
 
             int row = AccountsDataGridView.Rows.Add();
-            AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = LoginTextBox.Text.Trim();
+
+            var login = LoginTextBox.Text.Trim();
+            AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = login;
             AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = PasswordTextBox.Text.Trim();
             AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value = OpskinsApiTextBox.Text.Trim();
             AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = account;
+            Logger.Info($"{login} added to accounts list");
 
             Task.Run(() => {
-                var profileImage = ImageUtils.GetSteamProfileSMallImage(account.Session.SteamID);
-                if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
+                if (account.Session != null) {
+                    var profileImage = ImageUtils.GetSteamProfileSMallImage(account.Session.SteamID);
+                    if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
+                }
             });
 
             LoginTextBox.Clear();
@@ -81,17 +97,6 @@ namespace autotrade.CustomElements {
             UpdateAccountsFile();
         }
 
-
-        private void Button2_Click(object sender, EventArgs e) {
-            var currentCell = AccountsDataGridView.CurrentCell;
-            if (currentCell == null) return;
-
-            int row = currentCell.RowIndex;
-            if (row < 0) return;
-
-            Program.MainForm.OpenSaleMenu();
-            Program.MainForm.LoadInventory();
-        }
 
         private void UpdateAccountsFile() {
             var accounts = new List<SavedSteamAccount>();
@@ -108,24 +113,29 @@ namespace autotrade.CustomElements {
                     Mafile = mafile
                 });
             }
-            File.WriteAllText(accountsFilePath, JsonConvert.SerializeObject(accounts));
+
+            SavedSteamAccount.UpdateAll(accounts);
         }
 
         private void DeleteAccountButton_Click(object sender, EventArgs e) {
             var currentCell = AccountsDataGridView.CurrentCell;
-            if (currentCell == null) return;
+            if (currentCell == null) {
+                Logger.Warning("No accounts selected");
+                return;
+            }
 
             int row = currentCell.RowIndex;
             if (row < 0) return;
 
             var accName = AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
 
-            var confirmResult = MessageBox.Show($"Вы уверены что хотите удалить аккаунт {accName}?",
-                                      "Подтвердить удаление?",
+            var confirmResult = MessageBox.Show($"Are you sure you want to delete the account - {accName}?",
+                                      "Confirm deletion?",
                                       MessageBoxButtons.YesNo);
 
             if (confirmResult == DialogResult.Yes) {
                 AccountsDataGridView.Rows.RemoveAt(row);
+                Logger.Info($"Account {accName} was deleted from accounts list");
             }
 
             UpdateAccountsFile();
@@ -133,7 +143,10 @@ namespace autotrade.CustomElements {
 
         private void EditAccountButton_Click(object sender, EventArgs e) {
             var currentCell = AccountsDataGridView.CurrentCell;
-            if (currentCell == null) return;
+            if (currentCell == null) {
+                Logger.Warning("No accounts selected");
+                return;
+            }
 
             int row = currentCell.RowIndex;
             if (row < 0) return;
@@ -141,6 +154,30 @@ namespace autotrade.CustomElements {
             LoginTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
             PasswordTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value;
             OpskinsApiTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value;
+        }
+
+        private void LogTextBox_TextChanged(object sender, EventArgs e) {
+            LogTextBox.SelectionStart = LogTextBox.Text.Length;
+            LogTextBox.ScrollToCaret();
+        }
+
+        private void LoginButton_Click(object sender, EventArgs e) {
+            var currentCell = AccountsDataGridView.CurrentCell;
+            if (currentCell == null) {
+                Logger.Warning("No accounts selected");
+                return;
+            }
+
+            int row = currentCell.RowIndex;
+            if (row < 0) return;
+        }
+
+        private void LoggingLevelComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+            Logger.LoggerLevel = LoggingLevelComboBox.SelectedIndex;
+
+            var settings = SavedSettings.Get();
+            settings.LOGGER_LEVEL = LoggingLevelComboBox.SelectedIndex;
+            SavedSettings.UpdateAll(settings);
         }
     }
 }

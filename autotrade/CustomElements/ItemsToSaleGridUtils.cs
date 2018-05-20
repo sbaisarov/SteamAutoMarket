@@ -1,4 +1,5 @@
-﻿using System;
+﻿using autotrade.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,7 @@ namespace autotrade.CustomElements {
                 hidenMarketHashNameCell.Value = firstItem.Description.market_hash_name;
                 hidenItemsListCell.Value = items;
             }
+            Logger.Info($"{items.Count} of {items.First().Description.name} was added to sale list");
         }
 
         private static DataGridViewRow GetDataGridViewRowByMarketHashName(DataGridView itemsToSaleGrid, string marketHashName) {
@@ -55,7 +57,9 @@ namespace autotrade.CustomElements {
         public static void RowClick(DataGridView itemsToSaleGrid, int row, Dictionary<string, RgDescription> descriptions, DataGridView allItemsGrid, RichTextBox textBox, Panel imageBox, Label lable) {
             var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, row);
             var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
-            if (hidenItemsList == null) return;
+            if (hidenItemsList == null) {
+                return;
+            }
 
             var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
 
@@ -76,9 +80,13 @@ namespace autotrade.CustomElements {
             }
 
             itemsToSaleGrid.Rows.RemoveAt(selectedRow);
+
+            Logger.Info($"{hidenItemsList.Count} of {hidenItemsList.First().Description.name} was deleted from sale list");
         }
 
         public static void DeleteUnmarketable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
+            int totalDeletedItemsCount = 0;
+
             for (int rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++) {
                 var hidenItemsCell = GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex);
                 if (hidenItemsCell == null || hidenItemsCell.Value == null) continue;
@@ -95,6 +103,7 @@ namespace autotrade.CustomElements {
                     }
                 }
                 if (unmarketableList.Count > 0) {
+                    totalDeletedItemsCount += unmarketableList.Count;
                     var untradableItem = unmarketableList.First();
                     var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, untradableItem.Description.market_hash_name);
                     if (allItemsGridRow != null) {
@@ -107,9 +116,12 @@ namespace autotrade.CustomElements {
                 if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);
                 else if (stastCount != items.Count) GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
             }
+            Logger.Info($"{totalDeletedItemsCount} unmarketable items was deleted from sale list");
         }
 
         public static void DeleteUntradable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
+            int totalDeletedItemsCount = 0;
+
             for (int rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++) {
                 var hidenItemsCell = GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex);
                 if (hidenItemsCell == null || hidenItemsCell.Value == null) continue;
@@ -126,6 +138,7 @@ namespace autotrade.CustomElements {
                     }
                 }
                 if (untradableList.Count > 0) {
+                    totalDeletedItemsCount += untradableList.Count;
                     var untradableItem = untradableList.First();
                     var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, untradableItem.Description.market_hash_name);
                     if (allItemsGridRow != null) {
@@ -139,6 +152,7 @@ namespace autotrade.CustomElements {
                 if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);
                 else if (stastCount != items.Count) GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
             }
+            Logger.Info($"{totalDeletedItemsCount} unmarketable items was deleted from sale list");
         }
 
         #region Cells getters

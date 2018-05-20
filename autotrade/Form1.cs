@@ -1,4 +1,6 @@
-﻿using System;
+﻿using autotrade.CustomElements;
+using autotrade.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,42 +27,60 @@ namespace autotrade {
 
         private void LeftPanelHideShowButton_Click(object sender, EventArgs e) {
             //925; 630
+            int sizeChange = 115;
+
             if (this.Width == 925) {
-                leftHeaderPanel.Width -= 120;
-                leftPanelHideShowButton.Left = 9;
-                saleControl.Left -= 120;
-                settingsControl.Left -= 120;
-                appCurtailButton.Left -= 120;
-                appExitButton.Left -= 120;
-                this.Width -= 120;
+                leftHeaderPanel.Width -= sizeChange;
+                LeftEdge2.Left -= sizeChange;
+                BotEdge.Left -= sizeChange;
+                RightEdge.Left -= sizeChange;
+                leftPanelHideShowButton.Left = 13;
+                SaleControl.Left -= sizeChange;
+                SettingsControl.Left -= sizeChange;
+                BuyControl.Left -= sizeChange;
+                appCurtailButton.Left -= sizeChange;
+                appExitButton.Left -= sizeChange;
+                this.Width -= sizeChange;
                 logoImageBox.Visible = false;
             }
             else {
-                leftHeaderPanel.Width += 120;
+                leftHeaderPanel.Width += sizeChange;
+                LeftEdge2.Left += sizeChange;
+                BotEdge.Left += sizeChange;
+                RightEdge.Left += sizeChange;
                 leftPanelHideShowButton.Left = 132;
-                saleControl.Left += 120;
-                settingsControl.Left += 120;
-                appCurtailButton.Left += 120;
-                appExitButton.Left += 120;
-                this.Width += 120;
+                SaleControl.Left += sizeChange;
+                SettingsControl.Left += sizeChange;
+                BuyControl.Left += sizeChange;
+                appCurtailButton.Left += sizeChange;
+                appExitButton.Left += sizeChange;
+                this.Width += sizeChange;
                 logoImageBox.Visible = true;
             }
         }
 
         private void SettingsLinkButton_Click(object sender, EventArgs e) {
-            OpenSettingsMenu();
+            FocusSidePanelToMenuElement(sidePanel, settingsLinkButton);
+            SettingsControl.Visible = true;
+            SaleControl.Visible = false;
+            BuyControl.Visible = false;
         }
 
         private void SaleLinkButton_Click(object sender, EventArgs e) {
-            OpenSaleMenu();
+            FocusSidePanelToMenuElement(sidePanel, saleLinkButton);
+            SaleControl.Visible = true;
+            SettingsControl.Visible = false;
+            BuyControl.Visible = false;
         }
 
         private void BuyLinkButton_Click(object sender, EventArgs e) {
             FocusSidePanelToMenuElement(sidePanel, buyLinkButton);
-            //buyControl1.BringToFront();
+            BuyControl.Visible = true;
+            SettingsControl.Visible = false;
+            SaleControl.Visible = false;
         }
 
-        
+
         private void Move_MouseDown(object sender, MouseEventArgs e) {
             dragging = true;
             dragCursorPoint = Cursor.Position;
@@ -78,16 +98,6 @@ namespace autotrade {
             dragging = false;
         }
 
-        private void AppExpandButton_Click(object sender, EventArgs e) {
-            if (this.WindowState != FormWindowState.Maximized) {
-                this.WindowState = FormWindowState.Maximized;
-            }
-            else {
-                this.WindowState = FormWindowState.Normal;
-            }
-
-        }
-
         private void AppCurtailButton_Click(object sender, EventArgs e) {
             this.WindowState = FormWindowState.Minimized;
         }
@@ -97,22 +107,13 @@ namespace autotrade {
             sidePanel.Top = button.Top;
         }
 
-        public void OpenSettingsMenu() {
-            FocusSidePanelToMenuElement(sidePanel, settingsLinkButton);
-            settingsControl.BringToFront();
-            settingsControl.Enabled = true;
-            saleControl.Enabled = false;
-        }
-
-        public void OpenSaleMenu() {
-            FocusSidePanelToMenuElement(sidePanel, saleLinkButton);
-            saleControl.BringToFront();
-            saleControl.Enabled = true;
-            settingsControl.Enabled = false;
-        }
-
         public void LoadInventory() {
-            saleControl.LoadInventory();
+            SaleControl.LoadInventory();
+        }
+
+        private void Form1_Load(object sender, EventArgs e) {
+            SavedSettings settings = SavedSettings.Get();
+            this.SettingsControl.LoggingLevelComboBox.SelectedIndex = settings.LOGGER_LEVEL;
         }
     }
 }

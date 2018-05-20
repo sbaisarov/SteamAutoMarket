@@ -20,7 +20,7 @@ namespace autotrade.Utils {
                 Image img1 = Image.FromStream(imgStream);
                 imgStream.Close();
                 return img1;
-            } catch (WebException e) {
+            } catch (WebException) {
                 return null;
             }
         }
