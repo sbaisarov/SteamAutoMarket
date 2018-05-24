@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 using SteamAuth;
 using SteamKit2;
 
-namespace autotrade.Interfaces.Steam.TradeOffer {
+namespace autotrade.Steam.TradeOffer {
     public class Inventory {
         public Inventory() { }
         /// <summary>

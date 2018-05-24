@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using OPSkins;
 using OPSkins.Model.Inventory;
-using autotrade.Interfaces.Steam.TradeOffer;
 using SteamAuth;
 using SteamKit2;
 using System;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
+using autotrade.Steam;
 
 namespace autotrade
 {
@@ -19,11 +18,14 @@ namespace autotrade
         OPSkinsClient opsClient = new OPSkinsClient("0c60904c51f9a9c38a6439da2cad21");
         OPSkins.Interfaces.IInventory obskinsInventoryList;
         //Steam
-        Interfaces.Steam.TradeOffer.Inventory inventory = new Interfaces.Steam.TradeOffer.Inventory();
-
-
+        SteamManager steamManager = new SteamManager();
         SteamID steamid = new SteamID(76561198074672128);
-        
+        Steam.TradeOffer.Inventory.InventoryRootModel steamInv;
+
+        public ApiServices()
+        {
+            
+        }
 
         //GET obskins all inventorys
         public List<InventorySale> ObskinsAllInventory()
@@ -32,14 +34,12 @@ namespace autotrade
             return obskinsInventoryList.GetInventory().Items;
         }
 
-        InventoryRootModel invList = new InventoryRootModel();
-
-        public InventoryRootModel SteamAllInventory()
+        public Steam.TradeOffer.Inventory.InventoryRootModel SteamAllInventory()
         {
-            invList = inventory.GetInventory(steamid, 753, 6);
-            if ( invList!= null )
+            steamInv = steamManager.inventory.GetInventory(steamid, 753, 6);
+            if (steamInv != null )
             {
-                return invList;
+                return steamInv;
 
             }
             else
@@ -48,20 +48,5 @@ namespace autotrade
             }
 
         }
-
-        /*
-        public async Task<List<Inventory>> steamFetchInventory()
-        {
-            Inventory invList = steamManager.inventory.FetchInventory(76561198313282396, "C708FBA4244D5874370AB7BC57C8FFCE", 730);
-            if (invList != null)
-            {
-                return invList;
-
-            }
-            else
-            {
-                return null;
-            }
-        }*/
     }
 }

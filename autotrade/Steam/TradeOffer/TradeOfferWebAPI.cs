@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using SteamAuth;
 
-namespace autotrade.Interfaces.Steam.TradeOffer
+namespace autotrade.Steam.TradeOffer
 {
     public class TradeOfferWebAPI
     {

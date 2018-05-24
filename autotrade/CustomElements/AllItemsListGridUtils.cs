@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
+using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.CustomElements {
     class AllItemsListGridUtils {

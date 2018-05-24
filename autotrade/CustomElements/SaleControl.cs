@@ -6,7 +6,7 @@ using System.Net;
 using System.IO;
 using System.Globalization;
 using OPSkins.Model.Inventory;
-using static autotrade.Interfaces.Steam.TradeOffer.Inventory;
+using static autotrade.Steam.TradeOffer.Inventory;
 using SteamKit2;
 using System.Collections;
 using System.Threading.Tasks;

@@ -7,7 +7,7 @@ using System.Net;
 using SteamAuth;
 using System.Threading.Tasks;
 
-namespace autotrade.Interfaces.Steam.TradeOffer
+namespace autotrade.Steam.TradeOffer
 {
     public class TradeOfferManager
     {

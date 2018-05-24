@@ -13,9 +13,9 @@ using Market.Models.Json;
 using Market.Exceptions;
 using Market.Enums;
 
-namespace autotrade.Interfaces.Steam
+namespace autotrade.Steam
 {
-    class Manager
+    public class SteamManager
     {
         public string apiKey;
         public CookieContainer cookies;
@@ -25,9 +25,11 @@ namespace autotrade.Interfaces.Steam
         public Market.Interface.Client marketClient;
         SteamGuardAccount guard = new SteamGuardAccount();
 
-        public Manager() { }
+        public SteamManager()
+        {
+        }
 
-        public Manager(string login, string password, string guardPath, string apiKey = null)
+        public SteamManager(string login, string password, string guardPath, string apiKey = null)
         {
             guard = JsonConvert.DeserializeObject<SteamGuardAccount>(File.ReadAllText(guardPath));
             steamClient = new UserLogin(login, password);
