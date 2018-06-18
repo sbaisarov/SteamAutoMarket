@@ -14,9 +14,9 @@ namespace autotrade
 {
     class ApiServices
     {
-        //Obskins
+        //Opskins
         OPSkinsClient opsClient = new OPSkinsClient("0c60904c51f9a9c38a6439da2cad21");
-        OPSkins.Interfaces.IInventory obskinsInventoryList;
+        OPSkins.Interfaces.IInventory opskinsInventoryList;
         //Steam
         SteamManager steamManager = new SteamManager();
         SteamID steamid = new SteamID(76561198074672128);
@@ -27,25 +27,16 @@ namespace autotrade
             
         }
 
-        //GET obskins all inventorys
-        public List<InventorySale> ObskinsAllInventory()
+        public List<InventorySale> OpskinsAllInventory()
         {
-            obskinsInventoryList = new OPSkins.Interfaces.IInventory(opsClient);
-            return obskinsInventoryList.GetInventory().Items;
+            opskinsInventoryList = new OPSkins.Interfaces.IInventory(opsClient);
+            return opskinsInventoryList.GetInventory().Items;
         }
 
         public Steam.TradeOffer.Inventory.InventoryRootModel SteamAllInventory()
         {
             steamInv = steamManager.inventory.GetInventory(steamid, 753, 6);
-            if (steamInv != null )
-            {
-                return steamInv;
-
-            }
-            else
-            {
-                return null;
-            }
+            return steamInv;
 
         }
     }

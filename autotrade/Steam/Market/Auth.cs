@@ -17,14 +17,14 @@ namespace Market
     {
         private readonly Steam _steam;
 
-        public bool IsAuthorized { get; private set; }
+        public bool IsAuthorized { get; set; }
 
         public CookieContainer CookieContainer { get; private set; }
 
-        public Auth(Steam steam)
+        public Auth(Steam steam, CookieContainer cookies = null)
         {
             _steam = steam;
-            CookieContainer = new CookieContainer();
+            CookieContainer = cookies;
         }
 
         public void ResetAuth()

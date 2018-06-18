@@ -18,7 +18,6 @@ namespace autotrade.Steam
     public class SteamManager
     {
         public string apiKey;
-        public CookieContainer cookies;
         public static TradeOffer.OfferSession offerSession;
         public TradeOffer.Inventory inventory = new TradeOffer.Inventory();
         public static UserLogin steamClient;
@@ -32,12 +31,22 @@ namespace autotrade.Steam
         public SteamManager(string login, string password, string guardPath, string apiKey = null)
         {
             guard = JsonConvert.DeserializeObject<SteamGuardAccount>(File.ReadAllText(guardPath));
-            steamClient = new UserLogin(login, password);
-            steamClient.TwoFactorCode = guard.GenerateSteamGuardCode();
+            steamClient = new UserLogin(login, password)
+            {
+                TwoFactorCode = guard.GenerateSteamGuardCode()
+            };
             steamClient.DoLogin();
+            CookieContainer cookies = new CookieContainer();
             steamClient.Session.AddCookies(cookies);
             this.apiKey = apiKey;
-            offerSession = new TradeOffer.OfferSession(new TradeOffer.TradeOfferWebAPI(this.apiKey), cookies, steamClient.Session.SessionID);
+            // offerSession = new TradeOffer.OfferSession(new TradeOffer.TradeOfferWebAPI(this.apiKey), cookies, steamClient.Session.SessionID);
+            Market.Steam market = new Market.Steam(ELanguage.English, "user-agent");
+            Auth auth = new Auth(market, cookies)
+            {
+                IsAuthorized = true
+            };
+            market.Auth = auth;
+            marketClient = new Market.Interface.Client(market);
         }
     }
 }

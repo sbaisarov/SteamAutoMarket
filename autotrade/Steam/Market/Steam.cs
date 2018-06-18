@@ -15,7 +15,7 @@ namespace Market
     public class Steam
     {
         public Settings Settings { get; }
-        public Auth Auth { get; }
+        public Auth Auth { get; set; }
         public Invertory Invertory { get; }
         public Interface.Client Client { get; }
 
