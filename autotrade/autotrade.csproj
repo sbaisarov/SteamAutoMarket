@@ -144,7 +144,7 @@
     <Compile Include="Steam\Market\Exceptions\AuthorizationRequiredException.cs" />
     <Compile Include="Steam\Market\Exceptions\RequestException.cs" />
     <Compile Include="Steam\Market\Exceptions\SteamException.cs" />
-    <Compile Include="Steam\Market\Interface\Client.cs" />
+    <Compile Include="Steam\Market\Interface\MarketClient.cs" />
     <Compile Include="Steam\Market\Interface\Games\CounterStrikeGlobalOffensive.cs" />
     <Compile Include="Steam\Market\Interface\Games\Games.cs" />
     <Compile Include="Steam\Market\Invertory.cs" />
@@ -188,7 +188,7 @@
     <Compile Include="Steam\Market\Models\SteamResponse.cs" />
     <Compile Include="Steam\Market\Models\WalletInfo.cs" />
     <Compile Include="Steam\Market\Settings.cs" />
-    <Compile Include="Steam\Market\Steam.cs" />
+    <Compile Include="Steam\Market\SteamMarketHandler.cs" />
     <Compile Include="Steam\Market\Urls.cs" />
     <Compile Include="Steam\Market\Utils.cs" />
     <Compile Include="Steam\TradeOffer\Exceptions\InventoryFetchException.cs" />
@@ -207,6 +207,7 @@
       <DependentUpon>SaleControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\Logger.cs" />
+    <Compile Include="WorkingProcess\CurrentSession.cs" />
     <EmbeddedResource Include="CustomElements\BuyControl.resx">
       <DependentUpon>BuyControl.cs</DependentUpon>
     </EmbeddedResource>

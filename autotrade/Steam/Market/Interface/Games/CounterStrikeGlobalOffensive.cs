@@ -11,9 +11,9 @@ namespace Market.Interface.Games
 {
     public class CounterStrikeGlobalOffensive
     {
-        private readonly Steam _steam;
+        private readonly SteamMarketHandler _steam;
 
-        public CounterStrikeGlobalOffensive(Steam steam)
+        public CounterStrikeGlobalOffensive(SteamMarketHandler steam)
         {
             _steam = steam;
         }

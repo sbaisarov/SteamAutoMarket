@@ -324,7 +324,6 @@
         private System.Windows.Forms.Panel headerPanel;
         private System.Windows.Forms.Label titleLable;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private SaleControl SaleControl;
         public CustomElements.SettingsControl SettingsControl;
         private System.Windows.Forms.Panel LeftEdge;
         private System.Windows.Forms.Panel BottomEdge1;
@@ -332,6 +331,7 @@
         private System.Windows.Forms.Panel RightEdge;
         private System.Windows.Forms.Panel BotEdge;
         private CustomElements.BuyControl BuyControl;
+        public SaleControl SaleControl;
     }
 }
 

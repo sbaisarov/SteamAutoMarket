@@ -35,7 +35,7 @@ namespace autotrade
 
         public Steam.TradeOffer.Inventory.InventoryRootModel SteamAllInventory()
         {
-            steamInv = steamManager.inventory.GetInventory(steamid, 753, 6);
+            steamInv = steamManager.Inventory.GetInventory(steamid, 753, 6);
             return steamInv;
 
         }

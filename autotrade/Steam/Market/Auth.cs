@@ -15,13 +15,13 @@ namespace Market
 {
     public class Auth
     {
-        private readonly Steam _steam;
+        private readonly SteamMarketHandler _steam;
 
         public bool IsAuthorized { get; set; }
 
         public CookieContainer CookieContainer { get; private set; }
 
-        public Auth(Steam steam, CookieContainer cookies = null)
+        public Auth(SteamMarketHandler steam, CookieContainer cookies = null)
         {
             _steam = steam;
             CookieContainer = cookies;

@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Market;
+using Market.Enums;
+using Market.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Market.SteamMarketHandler;
 
-namespace autotrade
-{
-    static class Program
-    {
+namespace autotrade {
+    static class Program {
         static int mainThreadId;
         public static bool IsMainThread {
             get { return System.Threading.Thread.CurrentThread.ManagedThreadId == mainThreadId; }
@@ -17,8 +20,7 @@ namespace autotrade
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
-        {
+        static void Main() {
             mainThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

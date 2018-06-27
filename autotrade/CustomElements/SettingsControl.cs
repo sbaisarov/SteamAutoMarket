@@ -11,6 +11,8 @@ using System.IO;
 using SteamAuth;
 using Newtonsoft.Json;
 using autotrade.Utils;
+using autotrade.Steam;
+using autotrade.WorkingProcess;
 
 namespace autotrade.CustomElements {
     public partial class SettingsControl : UserControl {
@@ -106,7 +108,8 @@ namespace autotrade.CustomElements {
                 var opskinsApi = (String)AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, i).Value;
                 var mafile = (SteamGuardAccount)AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, i).Value;
 
-                accounts.Add(new SavedSteamAccount {
+                accounts.Add(new SavedSteamAccount
+                {
                     Login = login,
                     Password = password,
                     OpskinsApi = opskinsApi,
@@ -170,6 +173,22 @@ namespace autotrade.CustomElements {
 
             int row = currentCell.RowIndex;
             if (row < 0) return;
+
+            var login = (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, currentCell.RowIndex).Value;
+            var password = (string)AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, currentCell.RowIndex).Value;
+            var mafile = (SteamGuardAccount)AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
+            var image = (Image)AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, currentCell.RowIndex).Value;
+
+            Dispatcher.Invoke(Program.MainForm, () => {
+                Utils.Logger.Info("Steam authentication started");
+                this.Enabled = false;
+                CurrentSession.CurrentUser = new SteamManager(login, password, mafile);
+                this.Enabled = true;
+                Utils.Logger.Info("Steam authentication successful");
+                CurrentSession.AccountImage = image;
+                Program.MainForm.SaleLinkButton_Click(null, null);
+                Program.MainForm.SaleControl.AuthCurrentAccount();
+            });
         }
 
         private void LoggingLevelComboBox_SelectedIndexChanged(object sender, EventArgs e) {

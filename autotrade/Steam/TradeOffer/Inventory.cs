@@ -31,6 +31,7 @@ namespace autotrade.Steam.TradeOffer {
             return new Inventory(result.result);
         }
 
+        #region deprecated
         /// <summary>
         /// Gets the inventory for the given Steam ID using the Steam Community website.
         /// </summary>
@@ -80,13 +81,12 @@ namespace autotrade.Steam.TradeOffer {
 
     }
     */
+        #endregion
+
         InventoryRootModel inventoryRoot = new InventoryRootModel();
+
         public InventoryRootModel GetInventory(SteamID steamid, int appid, int contextid) {
-            string url = String.Format(
-                "https://steamcommunity.com/inventory/{0}/{1}/{2}",
-                //"https://steamcommunity.com/profiles/76561198177211015/inventory/json/730/2",
-                steamid.ConvertToUInt64(), appid, contextid
-            );
+            string url = "https://" + $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{appid}";
             try {
                 string response = SteamWeb.Request(url, "GET", dataString: null);
                 inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
@@ -287,8 +287,10 @@ namespace autotrade.Steam.TradeOffer {
             public RgDescription Description { get; set; }
 
             public RgFullItem CloneAsset() {
-                var item = new RgFullItem {
-                    Asset = new RgInventory {
+                var item = new RgFullItem
+                {
+                    Asset = new RgInventory
+                    {
                         amount = Asset.amount,
                         appid = Asset.appid,
                         assetid = Asset.assetid,

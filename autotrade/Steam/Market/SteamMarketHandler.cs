@@ -12,12 +12,12 @@ using Market.Models.Json.SteamStatus;
  
 namespace Market
 {
-    public class Steam
+    public class SteamMarketHandler
     {
         public Settings Settings { get; }
         public Auth Auth { get; set; }
         public Invertory Invertory { get; }
-        public Interface.Client Client { get; }
+        public Interface.MarketClient Client { get; }
 
         private readonly object _requestsPerSecondLock;
         private float _requestsPerSecond;
@@ -45,7 +45,7 @@ namespace Market
             }
         }
 
-        public Steam(ELanguage language, string userAgent)
+        public SteamMarketHandler(ELanguage language, string userAgent)
         {
 
             if (string.IsNullOrEmpty(userAgent))
@@ -59,7 +59,7 @@ namespace Market
                 Language = language,
             };
             Auth = new Auth(this);
-            Client = new Interface.Client(this);
+            Client = new Interface.MarketClient(this);
             Invertory = new Invertory(this);
 
             _requestsPerSecondLock = new object();

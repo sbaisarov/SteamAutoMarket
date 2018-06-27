@@ -33,11 +33,17 @@ namespace autotrade {
             ImageDictionary = new Dictionary<string, Image>();
         }
 
+        public void AuthCurrentAccount() {
+            this.AccountNameLable.Text = WorkingProcess.CurrentSession.CurrentUser.Guard.AccountName;
+            this.SplitterPanel.BackgroundImage = WorkingProcess.CurrentSession.AccountImage;
+        }
+
         public void LoadInventory() {
             ManualResetEvent dialogLoadedFlag = new ManualResetEvent(false);
             Task.Run(() => {
                 Logger.Info("Inventory loading started");
-                Form waitDialog = new Form() {
+                Form waitDialog = new Form()
+                {
                     Name = "Inventory loading",
                     Text = "Loading inventory, please wait...",
                     ControlBox = false,
@@ -48,7 +54,8 @@ namespace autotrade {
                     Enabled = true
                 };
 
-                ProgressBar ScrollingBar = new ProgressBar() {
+                ProgressBar ScrollingBar = new ProgressBar()
+                {
                     Style = ProgressBarStyle.Marquee,
                     Parent = waitDialog,
                     Dock = DockStyle.Fill,
@@ -87,11 +94,9 @@ namespace autotrade {
 
             if (e.ColumnIndex == 2) {
                 AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsGridView, e.RowIndex);
-            }
-            else if (e.ColumnIndex == 3) {
+            } else if (e.ColumnIndex == 3) {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
-            }
-            else if (e.ColumnIndex == 4) {
+            } else if (e.ColumnIndex == 4) {
                 AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
             }
         }
@@ -130,7 +135,8 @@ namespace autotrade {
             var allItemsList = new List<RgFullItem>();
 
             foreach (var item in allItemsInventory.assets) {
-                RgFullItem rgFullItem = new RgFullItem {
+                RgFullItem rgFullItem = new RgFullItem
+                {
                     Asset = item,
                     Description = InventoryRootModel.GetDescription(item, allItemsInventory.descriptions)
                 };
@@ -288,6 +294,39 @@ namespace autotrade {
 
         private void ItemsToSaleGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e) {
             ItemsToSaleGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        }
+
+        private void InventoryAppIdComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+            switch (InventoryAppIdComboBox.Text) {
+                case "STEAM": { InventoryContextIdComboBox.Text = "6"; break; }
+                case "TF": { InventoryContextIdComboBox.Text = "2"; break; }
+                case "CS:GO": { InventoryContextIdComboBox.Text = "2"; break; }
+                case "PUBG": { InventoryContextIdComboBox.Text = "2"; break; }
+            }
+        }
+
+        private void LoadInventoryButton_Click(object sender, EventArgs e) {
+            if (WorkingProcess.CurrentSession.CurrentUser == null) {
+                MessageBox.Show("You should login first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error on inventory loading. No logined account found.");
+                return;
+            }
+            LoadInventoryButton.Enabled = false;
+
+            string appid;
+            switch (InventoryAppIdComboBox.Text) {
+                case "STEAM": appid = "753"; break;
+                case "TF": appid = "440"; break;
+                case "CS:GO": appid = "730"; break;
+                case "PUBG": appid = "578080"; break;
+                default: appid = InventoryAppIdComboBox.Text; break;
+            }
+            string contextId = InventoryContextIdComboBox.Text;
+            Logger.Info($"Inventory {appid} - {contextId} loading started");
+
+
+            Logger.Info($"Inventory {appid} - {contextId} loading started");
+            LoadInventoryButton.Enabled = true;
         }
     }
 }

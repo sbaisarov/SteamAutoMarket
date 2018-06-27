@@ -15,30 +15,25 @@ using Market.Models;
 using Market.Models.Json;
 using Market.Interface.Games;
 
-namespace Market.Interface
-{
-    public class Client
-    {
-        private readonly Steam _steam;
+namespace Market.Interface {
+    public class MarketClient {
+        private readonly SteamMarketHandler _steam;
         public readonly AvailableGames Games;
         public const int PublisherFeePercentDefault = 10;
         public const int SteamFeePercent = 5;
 
-        public Client(Steam steam)
-        {
+        public MarketClient(SteamMarketHandler steam) {
             _steam = steam;
             Games = new AvailableGames(_steam);
         }
 
-        public Task<MarketProfile> ProfileAsync()
-        {
+        public Task<MarketProfile> ProfileAsync() {
             var result = new Task<MarketProfile>(Profile);
             result.Start();
             return result;
         }
 
-        public WalletInfo WalletInfo()
-        {
+        public WalletInfo WalletInfo() {
             var resp = _steam.Request(Urls.Market, Method.GET, Urls.Market, useAuthCookie: true);
 
             var walletInfoMatch = Regex.Match(resp.Data.Content, "(?<=g_rgWalletInfo = )(.*)(?=;)").Value;
@@ -49,8 +44,7 @@ namespace Market.Interface
             return WalletInfo(walletInfoMatch);
         }
 
-        public WalletInfo WalletInfo(string json)
-        {
+        public WalletInfo WalletInfo(string json) {
             var walletInfoDes = JsonConvert.DeserializeObject<JWalletInfo>(json);
 
             var walletInfo = new WalletInfo
@@ -69,8 +63,7 @@ namespace Market.Interface
             return walletInfo;
         }
 
-        public MarketProfile Profile()
-        {
+        public MarketProfile Profile() {
             var resp = _steam.Request(Urls.Market, Method.GET, Urls.Market, useAuthCookie: true);
             var content = resp.Data.Content;
 
@@ -79,7 +72,7 @@ namespace Market.Interface
 
             var userLoginNode = doc.DocumentNode.SelectSingleNode("//span[@id='market_buynow_dialog_myaccountname']");
 
-            if(userLoginNode == null)
+            if (userLoginNode == null)
                 throw new SteamException("Unable to load profile");
 
             var userLogin = userLoginNode.InnerText;
@@ -133,8 +126,7 @@ namespace Market.Interface
         /// </summary>
         public MarketSearch Search(string query = "", int start = 0, int count = 10, bool searchInDescriptions = false,
             int appId = 0, EMarketSearchSortColumns sortColumn = EMarketSearchSortColumns.Name, ESort sort = ESort.Desc,
-            IDictionary<string, string> custom = null)
-        {
+            IDictionary<string, string> custom = null) {
             var urlQuery = new Dictionary<string, string>
             {
                 {"query", query},
@@ -146,23 +138,20 @@ namespace Market.Interface
                 {"sort_dir", Utils.FirstCharacterToLower(sort.ToString()) }
             };
 
-            if (custom != null && custom.Count > 0)
-            {
+            if (custom != null && custom.Count > 0) {
                 urlQuery = urlQuery.Concat(custom).ToDictionary(x => x.Key, x => x.Value);
             }
 
             var resp = _steam.Request(Urls.Market + "/search/render/", Method.GET, Urls.Market, urlQuery, true);
             var respDes = JsonConvert.DeserializeObject<JMarketSearch>(resp.Data.Content);
 
-            if (!respDes.Success)
-            {
+            if (!respDes.Success) {
                 throw new SteamException("Failed Search");
             }
 
             var marketSearch = new MarketSearch();
 
-            if (respDes.TotalCount <= 0)
-            {
+            if (respDes.TotalCount <= 0) {
                 return marketSearch;
             }
 
@@ -179,8 +168,7 @@ namespace Market.Interface
 
             int tempIndex = 0;
 
-            foreach (var item in itemNodes)
-            {
+            foreach (var item in itemNodes) {
                 tempIndex++;
 
                 var nameNode = item.SelectSingleNode(".//span[@class='market_listing_item_name']");
@@ -237,9 +225,8 @@ namespace Market.Interface
             return marketSearch;
         }
 
-        public MarketItemInfo ItemPage(int appId, string hashName)
-        {
-            if(string.IsNullOrEmpty(hashName))
+        public MarketItemInfo ItemPage(int appId, string hashName) {
+            if (string.IsNullOrEmpty(hashName))
                 throw new SteamException("HashName should not be empty");
 
             var resp = _steam.Request(Urls.Market + $"/listings/{appId}/{hashName}", Method.GET, Urls.Market, null, true);
@@ -248,23 +235,20 @@ namespace Market.Interface
             int nameId;
             var nameIdParse = int.TryParse(Regex.Match(content, @"(?<=Market_LoadOrderSpread\()(.*)(?=\);)").Value.Trim(), out nameId);
 
-            if(!nameIdParse)
+            if (!nameIdParse)
                 throw new SteamException("Unable to find name ID");
 
             var publisherFeePercentMatch = Regex.Match(content, "(?<=\"publisher_fee_percent\":\")(.*?)(?=\")").Value;
 
             int publisherFeePercent;
-            if (string.IsNullOrEmpty(publisherFeePercentMatch))
-            {
+            if (string.IsNullOrEmpty(publisherFeePercentMatch)) {
                 publisherFeePercent = PublisherFeePercentDefault;
-            }
-            else
-            {
+            } else {
                 decimal publisherFeePercentOut;
                 var publisherFeePercentParse = decimal.TryParse(publisherFeePercentMatch, NumberStyles.AllowDecimalPoint,
                     CultureInfo.InvariantCulture, out publisherFeePercentOut);
 
-                if(!publisherFeePercentParse)
+                if (!publisherFeePercentParse)
                     throw new SteamException("Cannot to parse publisher fee percent");
 
                 publisherFeePercent = (int)Math.Round(publisherFeePercentOut * 100);
@@ -279,15 +263,13 @@ namespace Market.Interface
             return item;
         }
 
-        public Task<ECancelBuyOrderStatus> CancelBuyOrderAsync(long orderId)
-        {
+        public Task<ECancelBuyOrderStatus> CancelBuyOrderAsync(long orderId) {
             var result = new Task<ECancelBuyOrderStatus>(() => CancelBuyOrder(orderId));
             result.Start();
             return result;
         }
 
-        public ECancelBuyOrderStatus CancelBuyOrder(long orderId)
-        {
+        public ECancelBuyOrderStatus CancelBuyOrder(long orderId) {
             var data = new Dictionary<string, string>
             {
                 {"sessionid", _steam.Auth.SessionId() },
@@ -298,8 +280,7 @@ namespace Market.Interface
 
             var respDes = JsonConvert.DeserializeObject<JSuccessInt>(resp.Data.Content);
 
-            switch (respDes.Success)
-            {
+            switch (respDes.Success) {
                 case 1:
                     return ECancelBuyOrderStatus.Canceled;
                 case 29:
@@ -309,15 +290,13 @@ namespace Market.Interface
             }
         }
 
-        public Task<CreateBuyOrder> CreateBuyOrderAsync(string hashName, int appId, int currency, double totalPrice, int quantity = 1)
-        {
+        public Task<CreateBuyOrder> CreateBuyOrderAsync(string hashName, int appId, int currency, double totalPrice, int quantity = 1) {
             var result = new Task<CreateBuyOrder>(() => CreateBuyOrder(hashName, appId, currency, totalPrice, quantity));
             result.Start();
             return result;
         }
 
-        public CreateBuyOrder CreateBuyOrder(string hashName, int appId, int currency, double totalPrice, int quantity = 1)
-        {
+        public CreateBuyOrder CreateBuyOrder(string hashName, int appId, int currency, double totalPrice, int quantity = 1) {
             var data = new Dictionary<string, string>
             {
                 {"sessionid", _steam.Auth.SessionId() },
@@ -333,8 +312,7 @@ namespace Market.Interface
 
             var order = new CreateBuyOrder();
 
-            switch (respDes.Success)
-            {
+            switch (respDes.Success) {
                 case 1:
                     order.Status = ECreateBuyOrderStatus.Success;
                     order.OrderId = respDes.BuyOrderId;
@@ -360,15 +338,13 @@ namespace Market.Interface
             return order;
         }
 
-        public Task<ItemOrdersHistogram> ItemOrdersHistogramAsync(int nameId, string country, ELanguage lang, int currency)
-        {
+        public Task<ItemOrdersHistogram> ItemOrdersHistogramAsync(int nameId, string country, ELanguage lang, int currency) {
             var result = new Task<ItemOrdersHistogram>(() => ItemOrdersHistogram(nameId, country, lang, currency));
             result.Start();
             return result;
         }
 
-        public ItemOrdersHistogram ItemOrdersHistogram(int nameId, string country, ELanguage lang, int currency)
-        {
+        public ItemOrdersHistogram ItemOrdersHistogram(int nameId, string country, ELanguage lang, int currency) {
             var url = Urls.Market +
                 $"/itemordershistogram?country={country}&language={lang}&currency={currency}&item_nameid={nameId}";
             var resp = _steam.Request(url, Method.GET, Urls.Market, null, true);
@@ -379,24 +355,22 @@ namespace Market.Interface
 
             var histogram = new ItemOrdersHistogram
             {
-                SellOrderGraph = ConvertOrderGraph(respDes.SellOrderGraph), 
+                SellOrderGraph = ConvertOrderGraph(respDes.SellOrderGraph),
             };
 
-            if (respDes.BuyOrderGraph != null)
-            {
+            if (respDes.BuyOrderGraph != null) {
                 histogram.BuyOrderGraph = ConvertOrderGraph(respDes.BuyOrderGraph);
             }
 
             if (respDes.MinSellPrice != null)
-                histogram.MinSellPrice = (double)respDes.MinSellPrice/100;
+                histogram.MinSellPrice = (double)respDes.MinSellPrice / 100;
             if (respDes.HighBuyOrder != null)
-                histogram.HighBuyOrder = (double) respDes.HighBuyOrder/100;
+                histogram.HighBuyOrder = (double)respDes.HighBuyOrder / 100;
 
             return histogram;
         }
 
-        public OrderGraph ConvertOrderGraph(List<dynamic[]> collection)
-        {
+        public OrderGraph ConvertOrderGraph(List<dynamic[]> collection) {
             var graph = new OrderGraph
             {
                 Orders = new List<OrderGraphItem>()
@@ -408,26 +382,24 @@ namespace Market.Interface
                 return graph;
 
             int tempCount = 0;
-            var list = collection.Select(x =>
-            {
+            var list = collection.Select(x => {
                 var item = new OrderGraphItem
                 {
-                    Count = (int) x[1] - tempCount,
-                    Price = (double) x[0],
-                    Title = (string) x[2]
+                    Count = (int)x[1] - tempCount,
+                    Price = (double)x[0],
+                    Title = (string)x[2]
                 };
                 tempCount = item.Count;
                 return item;
             }).ToList();
 
             graph.Orders = list;
-            graph.Total = (int) collection.Last()[1];
+            graph.Total = (int)collection.Last()[1];
 
             return graph;
         }
 
-        public Task<MyListings> MyListingsAsync()
-        {
+        public Task<MyListings> MyListingsAsync() {
             var result = new Task<MyListings>(MyListings);
             result.Start();
             return result;
@@ -538,21 +510,19 @@ namespace Market.Interface
         //    return history;
         //}
 
-        public MyListings MyListings()
-        {
+        public MyListings MyListings() {
             var resp = _steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, null, true);
 
             var respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
 
-            if (respDes.Success)
-            {
+            if (respDes.Success) {
                 var html = respDes.ResultsHtml;
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
                 var root = doc.DocumentNode;
 
                 var ordersCountNode = root.SelectSingleNode(".//span[@id='my_market_buylistings_number']");
-                if(ordersCountNode == null)
+                if (ordersCountNode == null)
                     throw new SteamException("Cannot find buy listings node");
                 int ordersCount;
                 var ordersCountParse = int.TryParse(ordersCountNode.InnerText, out ordersCount);
@@ -570,8 +540,7 @@ namespace Market.Interface
 
                 var confirmCountNode = root.SelectSingleNode(".//span[@id='my_market_listingstoconfirm_number']");
                 int confirmCount = 0;
-                if (confirmCountNode != null)
-                {
+                if (confirmCountNode != null) {
                     var confirmCountParse = int.TryParse(confirmCountNode.InnerText, out confirmCount);
                     if (!confirmCountParse)
                         throw new SteamException("Cannot parse confirm listings node value");
@@ -585,18 +554,16 @@ namespace Market.Interface
                     Orders = new List<MyListingsOrdersItem>()
                 };
 
-                if (ordersCount > 0)
-                {
+                if (ordersCount > 0) {
                     var ordersNodes = root.SelectNodes("//div[contains(@id,'mybuyorder_')]");
-                    if(ordersNodes == null)
+                    if (ordersNodes == null)
                         throw new SteamException("Cannot parse orders listings nodes");
 
                     int tempIndex = 0;
-                    foreach (var item in ordersNodes)
-                    {
+                    foreach (var item in ordersNodes) {
                         var priceAndQuantityNode = item.SelectSingleNode(".//span[@class='market_listing_price']");
 
-                        if(priceAndQuantityNode == null)
+                        if (priceAndQuantityNode == null)
                             throw new SteamException($"Cannot parse order listing price and quantity node. Item index [{tempIndex}]");
 
                         var priceAndQuantityString = priceAndQuantityNode.InnerText
@@ -620,17 +587,17 @@ namespace Market.Interface
 
                         var orderIdMatch = Regex.Match(item.InnerHtml, "(?<=mbuyorder_)([0-9]*)(?=_name)");
 
-                        if(!orderIdMatch.Success)
+                        if (!orderIdMatch.Success)
                             throw new SteamException($"Cannot find order listing ID. Item index [{tempIndex}]");
 
                         long orderId;
                         var odderIdParse = long.TryParse(orderIdMatch.Value, out orderId);
 
-                        if(!odderIdParse)
+                        if (!odderIdParse)
                             throw new SteamException($"Cannot parse order listing ID. Item index [{tempIndex}]");
 
                         var urlNode = item.SelectSingleNode(".//a[@class='market_listing_item_name_link']");
-                        if(urlNode == null)
+                        if (urlNode == null)
                             throw new SteamException($"Cannot find order listing url. Item index [{tempIndex}]");
 
                         var url = urlNode.Attributes["href"].Value;
@@ -658,15 +625,12 @@ namespace Market.Interface
                 myListings.SumOrderPricesToBuy = Math.Round(myListings.Orders.Sum(s => s.Price), 2);
 
                 return myListings;
-            }
-            else
-            {
+            } else {
                 throw new SteamException("Cannot load market listings");
             }
         }
 
-        public JSellItem SellItem(int appId, int contextId, long assetId, int amount, double priceWithoutFee)
-        {
+        public JSellItem SellItem(int appId, int contextId, long assetId, int amount, double priceWithoutFee) {
             var data = new Dictionary<string, string>
             {
                 { "appid", appId.ToString() },
@@ -681,22 +645,20 @@ namespace Market.Interface
             return JsonConvert.DeserializeObject<JSellItem>(resp.Data.Content);
         }
 
-        public List<PriceHistoryDay> PriceHistory(int appId, string hashName)
-        {
+        public List<PriceHistoryDay> PriceHistory(int appId, string hashName) {
             var url = Urls.Market + $"/pricehistory/?appid={appId}&market_hash_name={hashName}";
 
             var resp = _steam.Request(url, Method.GET, Urls.Market, null, true);
 
             var respDes = JsonConvert.DeserializeObject<JPriceHistory>(resp.Data.Content);
 
-            if(!respDes.Success)
+            if (!respDes.Success)
                 throw new SteamException($"Connot get price history for [{hashName}]");
 
             IEnumerable<dynamic> prices = Enumerable.ToList(respDes.Prices);
 
             var list = prices
-                .Select((g, index) =>
-                {
+                .Select((g, index) => {
                     int count = 0;
                     if (g[2] != null && !int.TryParse(g[2].ToString(), out count))
                         throw new SteamException($"Cannot parse items count in price history. Index: {index}");
@@ -723,12 +685,11 @@ namespace Market.Interface
             return list;
         }
 
-        public string AppFilters(int appId)
-        {
+        public string AppFilters(int appId) {
             var resp = _steam.Request(Urls.Market + "/appfilters/" + appId, Method.GET, Urls.Market, useAuthCookie: true);
             var respDes = JsonConvert.DeserializeObject<JSuccess>(resp.Data.Content);
 
-            if(!respDes.Success)
+            if (!respDes.Success)
                 throw new SteamException("Cannot load app filters");
 
             return resp.Data.Content;

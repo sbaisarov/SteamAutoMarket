@@ -4,7 +4,7 @@
     {
         public readonly CounterStrikeGlobalOffensive CounterStrikeGlobalOffensive;
 
-        public AvailableGames(Steam steam)
+        public AvailableGames(SteamMarketHandler steam)
         {
             CounterStrikeGlobalOffensive = new CounterStrikeGlobalOffensive(steam);
         }

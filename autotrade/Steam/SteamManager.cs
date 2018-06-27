@@ -12,41 +12,49 @@ using Market.Models;
 using Market.Models.Json;
 using Market.Exceptions;
 using Market.Enums;
+using System.Threading;
 
-namespace autotrade.Steam
-{
-    public class SteamManager
-    {
-        public string apiKey;
-        public static TradeOffer.OfferSession offerSession;
-        public TradeOffer.Inventory inventory = new TradeOffer.Inventory();
-        public static UserLogin steamClient;
-        public Market.Interface.Client marketClient;
-        SteamGuardAccount guard = new SteamGuardAccount();
+namespace autotrade.Steam {
+    public class SteamManager {
+        public string ApiKey { get; set; }
+        public static TradeOffer.OfferSession OfferSession { get; set; }
+        public TradeOffer.Inventory Inventory { get; set; }
+        public static UserLogin SteamClient { get; set; }
+        public Market.Interface.MarketClient MarketClient { get; set; }
+        public SteamGuardAccount Guard { get; set; }
 
-        public SteamManager()
-        {
+        public SteamManager() {
         }
 
-        public SteamManager(string login, string password, string guardPath, string apiKey = null)
-        {
-            guard = JsonConvert.DeserializeObject<SteamGuardAccount>(File.ReadAllText(guardPath));
-            steamClient = new UserLogin(login, password)
+        public SteamManager(string login, string password, SteamGuardAccount mafile, string apiKey = null) {
+            Guard = mafile;
+            SteamClient = new UserLogin(login, password)
             {
-                TwoFactorCode = guard.GenerateSteamGuardCode()
+                TwoFactorCode = Guard.GenerateSteamGuardCode()
             };
-            steamClient.DoLogin();
+
+            LoginResult loginResult;
+            do {
+                loginResult = SteamClient.DoLogin();
+                if (loginResult != LoginResult.LoginOkay) {
+                    Utils.Logger.Warning($"Login status is - {loginResult}");
+                    Thread.Sleep(3000);
+                }
+            }
+            while (loginResult != LoginResult.LoginOkay);
+
             CookieContainer cookies = new CookieContainer();
-            steamClient.Session.AddCookies(cookies);
-            this.apiKey = apiKey;
+            SteamClient.Session.AddCookies(cookies);
+            this.ApiKey = apiKey;
             // offerSession = new TradeOffer.OfferSession(new TradeOffer.TradeOfferWebAPI(this.apiKey), cookies, steamClient.Session.SessionID);
-            Market.Steam market = new Market.Steam(ELanguage.English, "user-agent");
+            Market.SteamMarketHandler market = new SteamMarketHandler(ELanguage.English, "user-agent");
             Auth auth = new Auth(market, cookies)
             {
                 IsAuthorized = true
             };
             market.Auth = auth;
-            marketClient = new Market.Interface.Client(market);
+            MarketClient = new Market.Interface.MarketClient(market);
+            Inventory = new TradeOffer.Inventory();
         }
     }
 }

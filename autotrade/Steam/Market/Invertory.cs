@@ -8,9 +8,9 @@ namespace Market
 {
     public class Invertory
     {
-        private readonly Steam _steam;
+        private readonly SteamMarketHandler _steam;
 
-        public Invertory(Steam steam)
+        public Invertory(SteamMarketHandler steam)
         {
             _steam = steam;
         }
