@@ -181,9 +181,9 @@ namespace autotrade.CustomElements {
 
             Dispatcher.Invoke(Program.MainForm, () => {
                 Utils.Logger.Info("Steam authentication started");
-                this.Enabled = false;
-                CurrentSession.CurrentUser = new SteamManager(login, password, mafile);
-                this.Enabled = true;
+                LoginButton.Enabled = false;
+                CurrentSession.SteamManager = new SteamManager(login, password, mafile);
+                LoginButton.Enabled = true;
                 Utils.Logger.Info("Steam authentication successful");
                 CurrentSession.AccountImage = image;
                 Program.MainForm.SaleLinkButton_Click(null, null);

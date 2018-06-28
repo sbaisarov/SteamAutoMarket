@@ -83,28 +83,48 @@ namespace autotrade.Steam.TradeOffer {
     */
         #endregion
 
-        InventoryRootModel inventoryRoot = new InventoryRootModel();
+
 
         public List<RgFullItem> GetInventory(SteamID steamid, int appid, int contextid) {
-            string url = "https://" + $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{appid}";
+            var items = new List<RgFullItem>();
+            try {
+                InventoryRootModel inventoryPage;
+                var startAssetid = "";
+                do {
+                    inventoryPage = LoadInventoryPage(steamid, appid, contextid, startAssetid);
+                    startAssetid = inventoryPage.last_assetid;
+                    items.AddRange(ProcessInventoryPage(inventoryPage));
+                }
+                while (inventoryPage.more_items == 1);
+            } catch (Exception e) {
+                Logger.Error(e.Message, e);
+            }
+            return items;
+        }
+
+        private InventoryRootModel LoadInventoryPage(SteamID steamid, int appid, int contextid, string startAssetid = "", int count = 5000) {
+            string url = "https://" + $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{contextid}?l=english&count=5000&start_assetid={startAssetid}";
             try {
                 string response = SteamWeb.Request(url, "GET", dataString: null);
-                inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
-                List<RgFullItem> result = new List<RgFullItem>();
-                RgFullItem resultItem = new RgFullItem();
-                foreach (RgInventory item in inventoryRoot.assets)
-                {
-                    RgDescription description = InventoryRootModel.GetDescription(item, inventoryRoot.descriptions);
-                    resultItem.Asset = item;
-                    resultItem.Description = description;
-                    result.Add(resultItem);
-                }
-                Console.WriteLine(inventoryRoot.success + " " + inventoryRoot.assets);
-                return result;
+                InventoryRootModel inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
+                return inventoryRoot;
             } catch (Exception e) {
-                Console.WriteLine(e.Message);
+                Logger.Error(e.Message, e);
                 return null;
             }
+        }
+
+        private static List<RgFullItem> ProcessInventoryPage(InventoryRootModel inventoryRoot) {
+            List<RgFullItem> result = new List<RgFullItem>();
+
+            foreach (RgInventory item in inventoryRoot.assets) {
+                RgFullItem resultItem = new RgFullItem();
+                RgDescription description = InventoryRootModel.GetDescription(item, inventoryRoot.descriptions);
+                resultItem.Asset = item;
+                resultItem.Description = description;
+                result.Add(resultItem);
+            }
+            return result;
         }
 
         public uint NumSlots { get; set; }
@@ -271,18 +291,19 @@ namespace autotrade.Steam.TradeOffer {
         }
 
         public class InventoryRootModel {
-            public bool success { get; set; }
-            public List<RgInventory> assets = new List<RgInventory>();
-            //public List<object> rgCurrency { get; set; }
-            public List<RgDescription> descriptions = new List<RgDescription>();
+            public List<RgInventory> assets { get; set; }
+            public List<RgDescription> descriptions { get; set; }
+            public int more_items { get; set; }
+            public string last_assetid { get; set; }
+            public int total_inventory_count { get; set; }
+            public int success { get; set; }
+            public int rwgrsn { get; set; }
 
             public static RgDescription GetDescription(RgInventory asset, List<RgDescription> descriptions) {
                 RgDescription description = null;
                 try {
                     description = descriptions
-                        .First(item =>
-                            item.instanceid == asset.instanceid
-                            && item.classid == asset.classid);
+                        .First(item => (asset.instanceid == item.instanceid && asset.classid == item.classid));
 
                 } catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException) {
                     Logger.Error("Description not found");

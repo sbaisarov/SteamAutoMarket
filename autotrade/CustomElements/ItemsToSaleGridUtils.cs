@@ -24,8 +24,7 @@ namespace autotrade.CustomElements {
 
                 hidenItemsList.AddRange(items);
                 countCell.Value = hidenItemsList.Sum(item => int.Parse(item.Asset.amount));
-            }
-            else {
+            } else {
                 var rowIndex = itemsToSaleGrid.Rows.Add();
 
                 var nameCell = GetGridNameTextBoxCell(itemsToSaleGrid, rowIndex);
@@ -74,8 +73,7 @@ namespace autotrade.CustomElements {
             var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, itemMarketHashName);
             if (allItemsGridRow != null) {
                 AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, hidenItemsList);
-            }
-            else {
+            } else {
                 AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, hidenItemsList);
             }
 
@@ -108,8 +106,7 @@ namespace autotrade.CustomElements {
                     var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, untradableItem.Description.market_hash_name);
                     if (allItemsGridRow != null) {
                         AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, unmarketableList);
-                    }
-                    else {
+                    } else {
                         AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, unmarketableList);
                     }
                 }
@@ -143,8 +140,7 @@ namespace autotrade.CustomElements {
                     var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, untradableItem.Description.market_hash_name);
                     if (allItemsGridRow != null) {
                         AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, untradableList);
-                    }
-                    else {
+                    } else {
                         AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, untradableList);
                     }
                 }
@@ -153,6 +149,10 @@ namespace autotrade.CustomElements {
                 else if (stastCount != items.Count) GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
             }
             Logger.Info($"{totalDeletedItemsCount} unmarketable items was deleted from sale list");
+        }
+
+        public static List<RgFullItem> GetRowItemsList(DataGridView itemsToSaleGrid, int rowIndex) {
+            return (List<RgFullItem>)GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex).Value;
         }
 
         #region Cells getters

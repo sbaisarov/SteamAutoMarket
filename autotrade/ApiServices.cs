@@ -32,12 +32,5 @@ namespace autotrade
             opskinsInventoryList = new OPSkins.Interfaces.IInventory(opsClient);
             return opskinsInventoryList.GetInventory().Items;
         }
-
-        public Steam.TradeOffer.Inventory.InventoryRootModel SteamAllInventory()
-        {
-            steamInv = steamManager.Inventory.GetInventory(steamid, 753, 6);
-            return steamInv;
-
-        }
     }
 }

@@ -14,6 +14,7 @@ using System.Linq;
 using autotrade.CustomElements;
 using System.Threading;
 using autotrade.Utils;
+using autotrade.WorkingProcess;
 
 namespace autotrade {
     public partial class SaleControl : UserControl {
@@ -34,11 +35,11 @@ namespace autotrade {
         }
 
         public void AuthCurrentAccount() {
-            this.AccountNameLable.Text = WorkingProcess.CurrentSession.CurrentUser.Guard.AccountName;
+            this.AccountNameLable.Text = WorkingProcess.CurrentSession.SteamManager.Guard.AccountName;
             this.SplitterPanel.BackgroundImage = WorkingProcess.CurrentSession.AccountImage;
         }
 
-        public void LoadInventory() {
+        public void LoadInventory(string steamid, string appid, string contextid) {
             ManualResetEvent dialogLoadedFlag = new ManualResetEvent(false);
             Task.Run(() => {
                 Logger.Info("Inventory loading started");
@@ -68,7 +69,7 @@ namespace autotrade {
 
                 waitDialog.Shown += new EventHandler((x, y) => {
                     Task.Run(() => {
-                        List<RgFullItem> allItemsList = ProcessSteamInventory();
+                        List<RgFullItem> allItemsList = CurrentSession.SteamManager.LoadInventory(steamid, appid, contextid);
                         Dispatcher.Invoke(Program.MainForm, () => {
                             AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
                         });
@@ -92,11 +93,11 @@ namespace autotrade {
 
             AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, AllSteamItemsGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
 
-            if (e.ColumnIndex == 2) {
+            if (e.ColumnIndex == 3) {
                 AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsGridView, e.RowIndex);
-            } else if (e.ColumnIndex == 3) {
-                AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
             } else if (e.ColumnIndex == 4) {
+                AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
+            } else if (e.ColumnIndex == 5) {
                 AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
             }
         }
@@ -128,36 +129,16 @@ namespace autotrade {
             }
         }
 
-        private List<RgFullItem> ProcessSteamInventory() {
-            Logger.Info("Inventory processing started");
-
-            var allItemsInventory = services.SteamAllInventory();
-            var allItemsList = new List<RgFullItem>();
-
-            foreach (var item in allItemsInventory.assets) {
-                RgFullItem rgFullItem = new RgFullItem
-                {
-                    Asset = item,
-                    Description = InventoryRootModel.GetDescription(item, allItemsInventory.descriptions)
-                };
-                allItemsList.Add(rgFullItem);
-            }
-
-            Logger.Info("Inventory processing done");
-            return allItemsList;
-        }
-
         private void AddAllPanel_Click(object sender, EventArgs e) {
             this.AllSteamItemsGridView.CurrentCellChanged -= new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
+            this.ItemsToSaleGridView.CurrentCellChanged -= new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
 
-            while (AllSteamItemsGridView.RowCount > 0) {
-                AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsGridView, 0, ItemsToSaleGridView);
-            }
+            AllItemsListGridUtils.AddCellListToSale(AllSteamItemsGridView, ItemsToSaleGridView, AllSteamItemsGridView.SelectedRows.Cast<DataGridViewRow>().ToArray());
 
             this.AllSteamItemsGridView.CurrentCellChanged += new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
-            ItemsToSaleGridView_CurrentCellChanged(null, null);
+            this.ItemsToSaleGridView.CurrentCellChanged += new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
 
-            Logger.Info("All items was added to sale list");
+            Logger.Info("All selected items was added to sale list");
         }
 
         private void RefreshPanel_Click(object sender, EventArgs e) {
@@ -166,7 +147,7 @@ namespace autotrade {
             AllSteamItemsGridView.Rows.Clear();
             ItemsToSaleGridView.Rows.Clear();
 
-            LoadInventory();
+            LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), CurrentSession.InventoryAppId, CurrentSession.InventoryContextId);
             AllSteamItemsGridView_CurrentCellChanged(null, null);
         }
 
@@ -306,9 +287,14 @@ namespace autotrade {
         }
 
         private void LoadInventoryButton_Click(object sender, EventArgs e) {
-            if (WorkingProcess.CurrentSession.CurrentUser == null) {
+            if (CurrentSession.SteamManager == null) {
                 MessageBox.Show("You should login first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Error("Error on inventory loading. No logined account found.");
+                return;
+            }
+            if (String.IsNullOrEmpty(InventoryAppIdComboBox.Text) || String.IsNullOrEmpty(InventoryContextIdComboBox.Text)) {
+                MessageBox.Show("You should chose inventory type first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error on inventory loading. No inventory type chosed.");
                 return;
             }
             LoadInventoryButton.Enabled = false;
@@ -322,11 +308,60 @@ namespace autotrade {
                 default: appid = InventoryAppIdComboBox.Text; break;
             }
             string contextId = InventoryContextIdComboBox.Text;
+            CurrentSession.InventoryAppId = appid;
+            CurrentSession.InventoryContextId = contextId;
             Logger.Info($"Inventory {appid} - {contextId} loading started");
 
+            LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), appid, contextId);
 
-            Logger.Info($"Inventory {appid} - {contextId} loading started");
+            Logger.Info($"Inventory {appid} - {contextId} loading finished");
             LoadInventoryButton.Enabled = true;
+        }
+
+        private void StartSteamSellButton_Click(object sender, EventArgs e) {
+            MarketSaleType marketSaleType;
+            if (RecomendedPriceRadioButton.Checked) marketSaleType = MarketSaleType.RECOMENDED;
+            else if (ManualPriceRadioButton.Checked) marketSaleType = MarketSaleType.MANUAL;
+            else if (HalfAutoPriceRadioButton.Checked) marketSaleType = MarketSaleType.LOWER_THEN_CURRENT;
+            else return;
+
+            var itemsToSale = new Dictionary<RgFullItem, double>();
+
+            if (marketSaleType == MarketSaleType.MANUAL) {
+                for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
+                    var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);
+                    double.TryParse((string)ItemsToSaleGridView.Rows[i].Cells[2].Value, out double price);
+                    if (price <= 0) {
+                        MessageBox.Show($"Incorrect price of {itemsList.First().Description.name}", "Error price converting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Logger.Error($"Incorrect price of {itemsList.First().Description.name} found");
+                        return;
+                    }
+                    foreach (var item in itemsList) {
+                        itemsToSale.Add(item, price);
+                    }
+                }
+            }
+
+            if (marketSaleType == MarketSaleType.RECOMENDED) {
+                for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
+                    var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);
+                    foreach (var item in itemsList) {
+                        itemsToSale.Add(item, 0);
+                    }
+                }
+            }
+
+            if (marketSaleType == MarketSaleType.LOWER_THEN_CURRENT) {
+                double lowerAmount = (double)CurrentPriceNumericUpDown.Value;
+                for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
+                    var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);
+                    foreach (var item in itemsList) {
+                        itemsToSale.Add(item, lowerAmount);
+                    }
+                }
+            }
+
+            CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType);
         }
     }
 }

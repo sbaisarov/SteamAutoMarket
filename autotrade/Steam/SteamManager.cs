@@ -9,6 +9,8 @@ using SteamAuth;
 using Market;
 using Market.Enums;
 using System.Threading;
+using SteamKit2;
+using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.Steam {
     public class SteamManager {
@@ -43,7 +45,7 @@ namespace autotrade.Steam {
             SteamClient.Session.AddCookies(cookies);
             this.ApiKey = apiKey;
             // offerSession = new TradeOffer.OfferSession(new TradeOffer.TradeOfferWebAPI(this.apiKey), cookies, steamClient.Session.SessionID);
-            Market.SteamMarketHandler market = new SteamMarketHandler(ELanguage.English, "user-agent");
+            SteamMarketHandler market = new SteamMarketHandler(ELanguage.English, "user-agent");
             Auth auth = new Auth(market, cookies)
             {
                 IsAuthorized = true
@@ -53,9 +55,12 @@ namespace autotrade.Steam {
             Inventory = new TradeOffer.Inventory();
         }
 
-        public RgFullItem(string steamid, string appid, string contextid)
-        {
+        public List<RgFullItem> LoadInventory(string steamid, string appid, string contextid) {
+            return Inventory.GetInventory(new SteamID(ulong.Parse(steamid)), int.Parse(appid), int.Parse(contextid));
+        }
 
+        public void SellOnMarket(Dictionary<RgFullItem, double> items, WorkingProcess.MarketSaleType saleType) {
+            //some logic
         }
     }
 }

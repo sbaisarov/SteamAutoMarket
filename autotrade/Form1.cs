@@ -106,10 +106,6 @@ namespace autotrade {
             sidePanel.Top = button.Top;
         }
 
-        public void LoadInventory() {
-            SaleControl.LoadInventory();
-        }
-
         public void Form1_Load(object sender, EventArgs e) {
             SavedSettings settings = SavedSettings.Get();
             this.SettingsControl.LoggingLevelComboBox.SelectedIndex = settings.LOGGER_LEVEL;

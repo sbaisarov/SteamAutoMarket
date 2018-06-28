@@ -208,6 +208,7 @@
     </Compile>
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="WorkingProcess\CurrentSession.cs" />
+    <Compile Include="WorkingProcess\MarketSaleType.cs" />
     <EmbeddedResource Include="CustomElements\BuyControl.resx">
       <DependentUpon>BuyControl.cs</DependentUpon>
     </EmbeddedResource>
