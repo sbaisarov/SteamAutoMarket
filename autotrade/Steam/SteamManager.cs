@@ -5,12 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Net;
-using Newtonsoft.Json;
 using SteamAuth;
 using Market;
-using Market.Models;
-using Market.Models.Json;
-using Market.Exceptions;
 using Market.Enums;
 using System.Threading;
 
@@ -55,6 +51,11 @@ namespace autotrade.Steam {
             market.Auth = auth;
             MarketClient = new Market.Interface.MarketClient(market);
             Inventory = new TradeOffer.Inventory();
+        }
+
+        public RgFullItem(string steamid, string appid, string contextid)
+        {
+
         }
     }
 }

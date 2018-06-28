@@ -85,13 +85,22 @@ namespace autotrade.Steam.TradeOffer {
 
         InventoryRootModel inventoryRoot = new InventoryRootModel();
 
-        public InventoryRootModel GetInventory(SteamID steamid, int appid, int contextid) {
+        public List<RgFullItem> GetInventory(SteamID steamid, int appid, int contextid) {
             string url = "https://" + $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{appid}";
             try {
                 string response = SteamWeb.Request(url, "GET", dataString: null);
                 inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
+                List<RgFullItem> result = new List<RgFullItem>();
+                RgFullItem resultItem = new RgFullItem();
+                foreach (RgInventory item in inventoryRoot.assets)
+                {
+                    RgDescription description = InventoryRootModel.GetDescription(item, inventoryRoot.descriptions);
+                    resultItem.Asset = item;
+                    resultItem.Description = description;
+                    result.Add(resultItem);
+                }
                 Console.WriteLine(inventoryRoot.success + " " + inventoryRoot.assets);
-                return inventoryRoot;
+                return result;
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 return null;
