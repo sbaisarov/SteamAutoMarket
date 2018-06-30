@@ -60,23 +60,24 @@ namespace autotrade {
 
         public void SettingsLinkButton_Click(object sender, EventArgs e) {
             FocusSidePanelToMenuElement(sidePanel, settingsLinkButton);
-            SettingsControl.Visible = true;
-            SaleControl.Visible = false;
-            BuyControl.Visible = false;
+            SettingsControl.BringToFront();
         }
 
         public void SaleLinkButton_Click(object sender, EventArgs e) {
             FocusSidePanelToMenuElement(sidePanel, saleLinkButton);
-            SaleControl.Visible = true;
-            SettingsControl.Visible = false;
-            BuyControl.Visible = false;
+            SaleControl.ActivateSellMode();
+            SaleControl.BringToFront();
         }
 
         public void BuyLinkButton_Click(object sender, EventArgs e) {
             FocusSidePanelToMenuElement(sidePanel, buyLinkButton);
-            BuyControl.Visible = true;
-            SettingsControl.Visible = false;
-            SaleControl.Visible = false;
+            BuyControl.BringToFront();
+        }
+
+        private void TradeLinkButton_Click(object sender, EventArgs e) {
+            FocusSidePanelToMenuElement(sidePanel, TradeLinkButton);
+            SaleControl.ActivateTradeMode();
+            SaleControl.BringToFront();
         }
 
 
@@ -109,6 +110,10 @@ namespace autotrade {
         public void Form1_Load(object sender, EventArgs e) {
             SavedSettings settings = SavedSettings.Get();
             this.SettingsControl.LoggingLevelComboBox.SelectedIndex = settings.LOGGER_LEVEL;
+        }
+
+        private void SettingsControl_Load(object sender, EventArgs e) {
+
         }
     }
 }

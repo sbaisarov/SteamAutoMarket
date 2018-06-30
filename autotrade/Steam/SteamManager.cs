@@ -32,10 +32,16 @@ namespace autotrade.Steam {
             };
 
             LoginResult loginResult;
+            int tryCount = 0;
             do {
                 loginResult = SteamClient.DoLogin();
                 if (loginResult != LoginResult.LoginOkay) {
                     Utils.Logger.Warning($"Login status is - {loginResult}");
+
+                    if (++tryCount == 3) {
+                        throw new WebException("Login failed after 3 attempts!");
+                    }
+
                     Thread.Sleep(3000);
                 }
             }
@@ -60,6 +66,10 @@ namespace autotrade.Steam {
         }
 
         public void SellOnMarket(Dictionary<RgFullItem, double> items, WorkingProcess.MarketSaleType saleType) {
+            //some logic
+        }
+
+        public void SendTradeOffer(List<RgFullItem> items, string partherId, string tradeToken) {
             //some logic
         }
     }

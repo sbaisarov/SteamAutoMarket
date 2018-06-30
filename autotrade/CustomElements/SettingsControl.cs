@@ -165,6 +165,7 @@ namespace autotrade.CustomElements {
         }
 
         private void LoginButton_Click(object sender, EventArgs e) {
+            LoginButton.Enabled = false;
             var currentCell = AccountsDataGridView.CurrentCell;
             if (currentCell == null) {
                 Logger.Warning("No accounts selected");
@@ -179,16 +180,23 @@ namespace autotrade.CustomElements {
             var mafile = (SteamGuardAccount)AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var image = (Image)AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, currentCell.RowIndex).Value;
 
+            Logger.Info($"Steam authentication for {login} started");
+
             Dispatcher.Invoke(Program.MainForm, () => {
-                Utils.Logger.Info("Steam authentication started");
-                LoginButton.Enabled = false;
-                CurrentSession.SteamManager = new SteamManager(login, password, mafile);
-                LoginButton.Enabled = true;
-                Utils.Logger.Info("Steam authentication successful");
+                try {
+                    CurrentSession.SteamManager = new SteamManager(login, password, mafile);
+                } catch (Exception ex) {
+                    Logger.Error("Login failed!", ex);
+                    LoginButton.Enabled = true;
+                    return;
+                }
                 CurrentSession.AccountImage = image;
                 Program.MainForm.SaleLinkButton_Click(null, null);
                 Program.MainForm.SaleControl.AuthCurrentAccount();
             });
+
+            Logger.Info("Steam authentication successful");
+            LoginButton.Enabled = true;
         }
 
         private void LoggingLevelComboBox_SelectedIndexChanged(object sender, EventArgs e) {
