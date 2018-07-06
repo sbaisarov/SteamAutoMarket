@@ -320,9 +320,9 @@ namespace autotrade {
 
         private void StartSteamSellButton_Click(object sender, EventArgs e) {
             MarketSaleType marketSaleType;
-            if (RecomendedPriceRadioButton.Checked) marketSaleType = MarketSaleType.RECOMENDED;
+            if (RecomendedPriceRadioButton.Checked) marketSaleType = MarketSaleType.RECOMMENDED;
             else if (ManualPriceRadioButton.Checked) marketSaleType = MarketSaleType.MANUAL;
-            else if (HalfAutoPriceRadioButton.Checked) marketSaleType = MarketSaleType.LOWER_THEN_CURRENT;
+            else if (HalfAutoPriceRadioButton.Checked) marketSaleType = MarketSaleType.LOWER_THAN_CURRENT;
             else return;
 
             var itemsToSale = new Dictionary<RgFullItem, double>();
@@ -342,7 +342,7 @@ namespace autotrade {
                 }
             }
 
-            if (marketSaleType == MarketSaleType.RECOMENDED) {
+            if (marketSaleType == MarketSaleType.RECOMMENDED) {
                 for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
                     var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);
                     foreach (var item in itemsList) {
@@ -351,7 +351,7 @@ namespace autotrade {
                 }
             }
 
-            if (marketSaleType == MarketSaleType.LOWER_THEN_CURRENT) {
+            if (marketSaleType == MarketSaleType.LOWER_THAN_CURRENT) {
                 double lowerAmount = (double)CurrentPriceNumericUpDown.Value;
                 for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
                     var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);

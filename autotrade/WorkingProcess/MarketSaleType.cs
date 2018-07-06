@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace autotrade.WorkingProcess {
     public enum MarketSaleType {
         MANUAL,
-        RECOMENDED,
-        LOWER_THEN_CURRENT
+        RECOMMENDED,
+        LOWER_THAN_CURRENT
     }
 }

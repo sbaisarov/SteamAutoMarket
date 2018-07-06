@@ -89,7 +89,8 @@ namespace Market
 
             var client = new RestClient(url)
             {
-                UserAgent = Settings.UserAgent
+                UserAgent = Settings.UserAgent,
+                Timeout = 30 * 1000
             };
 
             if (useAuthCookie)

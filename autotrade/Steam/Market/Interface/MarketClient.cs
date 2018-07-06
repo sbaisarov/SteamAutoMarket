@@ -630,7 +630,7 @@ namespace Market.Interface {
             }
         }
 
-        public JSellItem SellItem(int appId, int contextId, long assetId, int amount, double priceWithoutFee) {
+        public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithoutFee) {
             var data = new Dictionary<string, string>
             {
                 { "appid", appId.ToString() },
@@ -641,10 +641,10 @@ namespace Market.Interface {
                 { "price", (Math.Round(priceWithoutFee, 2)*100).ToString(CultureInfo.InvariantCulture) }
             };
 
-            var resp = _steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true);
-            return JsonConvert.DeserializeObject<JSellItem>(resp.Data.Content);
+            var resp = _steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true).Data.Content;
+            return JsonConvert.DeserializeObject<JSellItem>(resp);
         }
-
+        
         public List<PriceHistoryDay> PriceHistory(int appId, string hashName) {
             var url = Urls.Market + $"/pricehistory/?appid={appId}&market_hash_name={hashName}";
 

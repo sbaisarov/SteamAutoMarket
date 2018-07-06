@@ -15,5 +15,8 @@ namespace Market.Models.Json
 
         [JsonProperty("email_domain")]
         public string EmailDomain { get; set; }
+
+        [JsonProperty("message", NullValueHandling=NullValueHandling.Include)]
+        public string Message { get; set; }
     }
 }

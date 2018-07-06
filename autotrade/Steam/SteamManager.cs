@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using System.IO;
 using System.Net;
 using SteamAuth;
 using Market;
 using Market.Enums;
+using Market.Models;
+using Market.Models.Json;
+using Market.Exceptions;
 using System.Threading;
 using SteamKit2;
 using static autotrade.Steam.TradeOffer.Inventory;
@@ -43,9 +47,10 @@ namespace autotrade.Steam {
 
             CookieContainer cookies = new CookieContainer();
             SteamClient.Session.AddCookies(cookies);
+            Guard.RefreshSession();
             this.ApiKey = apiKey;
             // offerSession = new TradeOffer.OfferSession(new TradeOffer.TradeOfferWebAPI(this.apiKey), cookies, steamClient.Session.SessionID);
-            SteamMarketHandler market = new SteamMarketHandler(ELanguage.English, "user-agent");
+            var market = new SteamMarketHandler(ELanguage.English, "user-agent");
             Auth auth = new Auth(market, cookies)
             {
                 IsAuthorized = true
@@ -60,7 +65,121 @@ namespace autotrade.Steam {
         }
 
         public void SellOnMarket(Dictionary<RgFullItem, double> items, WorkingProcess.MarketSaleType saleType) {
-            //some logic
+            RgInventory asset;
+            RgDescription description;
+            foreach (KeyValuePair<RgFullItem, double> item in items)
+            {
+                double? price = null;
+                double amount;
+                asset = item.Key.Asset;
+                description = item.Key.Description;
+                amount = item.Value;
+                MarketItemInfo itemPageInfo = MarketClient.ItemPage(asset.appid, description.market_hash_name);
+                switch (saleType)
+                {
+                    case WorkingProcess.MarketSaleType.LOWER_THAN_CURRENT:
+                        ItemOrdersHistogram histogram = MarketClient.ItemOrdersHistogram(
+                            itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
+                        price = histogram.MinSellPrice as double?;
+                        if (price is null)
+                        {
+                            // Log error on ui
+                            continue;
+                        }
+                        price -= amount;
+                        break;
+
+                    case WorkingProcess.MarketSaleType.MANUAL:
+                        price = amount;
+                        break;
+
+                    case WorkingProcess.MarketSaleType.RECOMMENDED:
+                        try
+                        {
+                            List<PriceHistoryDay> history = MarketClient
+                                .PriceHistory(asset.appid, description.market_hash_name);
+                            price = CountAveragePrice(history);
+                        }
+                        catch (SteamException err)
+                        {
+                            // Log error on ui
+                            continue;
+                        }
+                        break;
+                }
+                if (price is null) continue;
+
+                while (true)
+                {
+                    try
+                    {
+                        JSellItem resp = MarketClient.SellItem(description.appid, int.Parse(asset.contextid),
+                                            long.Parse(asset.assetid), 1, (double)price * 0.87);
+
+                        string message = resp.Message; // error message
+                        if (message != null)
+                        {
+                            // log error message
+                            Thread.Sleep(5000);
+                            continue;
+                        }
+                        break;
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        // log error
+                        continue;
+                    }
+                }
+            }
+
+            // log confirming process
+            Confirmation[] confirmations = Guard.FetchConfirmations();
+            var marketConfirmations = confirmations
+                .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction)
+                .ToArray();
+            Guard.AcceptMultipleConfirmations(marketConfirmations);
+        }
+
+        private double CountAveragePrice(List<PriceHistoryDay> history)
+        {
+            double average = 0;
+            // days are sorted from oldest to newest, we need the contrary
+            history.Reverse();
+            var FirstSevenDays = history.GetRange(0, 7);
+            average = IterateHistory(FirstSevenDays, average);
+            average = IterateHistory(FirstSevenDays, average);
+            return average;
+        }
+
+        private double IterateHistory(List<PriceHistoryDay> history, double average)
+        {
+            double sum = 0;
+            int count = 0;
+            foreach (var item in history)
+             {
+                foreach (PriceHistoryItem data in item.History)
+                {
+                    if (average > 0)
+                    {
+                        // skip lowball or highball prices
+                        if (data.Price < average / 2 || data.Price > average * 2)
+                        {
+                            continue;
+                        }
+                    }
+                    sum += data.Price * data.Count;
+                    count += data.Count;
+                }
+             }
+            try
+            {
+                average = sum / count;
+            } catch (DivideByZeroException)
+            {
+                average = 0;
+            }
+            return average;
         }
     }
 }
