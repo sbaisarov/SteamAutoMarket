@@ -39,15 +39,16 @@
             this.buyLinkButton = new System.Windows.Forms.Button();
             this.saleLinkButton = new System.Windows.Forms.Button();
             this.logoImageBox = new System.Windows.Forms.PictureBox();
+            this.TradeLinkButton = new System.Windows.Forms.Button();
             this.appExitButton = new System.Windows.Forms.Button();
             this.appCurtailButton = new System.Windows.Forms.Button();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.titleLable = new System.Windows.Forms.Label();
-            this.SaleControl = new autotrade.SaleControl();
-            this.SettingsControl = new autotrade.CustomElements.SettingsControl();
             this.RightEdge = new System.Windows.Forms.Panel();
             this.BotEdge = new System.Windows.Forms.Panel();
+            this.SettingsControl = new autotrade.CustomElements.SettingsControl();
+            this.SaleControl = new autotrade.SaleControl();
             this.BuyControl = new autotrade.CustomElements.BuyControl();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoImageBox)).BeginInit();
@@ -67,6 +68,7 @@
             this.leftHeaderPanel.Controls.Add(this.buyLinkButton);
             this.leftHeaderPanel.Controls.Add(this.saleLinkButton);
             this.leftHeaderPanel.Controls.Add(this.logoImageBox);
+            this.leftHeaderPanel.Controls.Add(this.TradeLinkButton);
             this.leftHeaderPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.leftHeaderPanel.Location = new System.Drawing.Point(0, 31);
             this.leftHeaderPanel.Name = "leftHeaderPanel";
@@ -179,6 +181,23 @@
             this.logoImageBox.TabIndex = 4;
             this.logoImageBox.TabStop = false;
             // 
+            // TradeLinkButton
+            // 
+            this.TradeLinkButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.TradeLinkButton.FlatAppearance.BorderSize = 0;
+            this.TradeLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TradeLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.TradeLinkButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.TradeLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("TradeLinkButton.Image")));
+            this.TradeLinkButton.Location = new System.Drawing.Point(0, 357);
+            this.TradeLinkButton.Name = "TradeLinkButton";
+            this.TradeLinkButton.Size = new System.Drawing.Size(166, 45);
+            this.TradeLinkButton.TabIndex = 7;
+            this.TradeLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TradeLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.TradeLinkButton.UseVisualStyleBackColor = true;
+            this.TradeLinkButton.Click += new System.EventHandler(this.TradeLinkButton_Click);
+            // 
             // appExitButton
             // 
             this.appExitButton.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -243,24 +262,6 @@
             this.titleLable.TabIndex = 7;
             this.titleLable.Text = "\"Opskins\" Auto trade ";
             // 
-            // SaleControl
-            // 
-            this.SaleControl.BackColor = System.Drawing.Color.Silver;
-            this.SaleControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SaleControl.Location = new System.Drawing.Point(166, 31);
-            this.SaleControl.Name = "SaleControl";
-            this.SaleControl.Size = new System.Drawing.Size(759, 599);
-            this.SaleControl.TabIndex = 4;
-            // 
-            // SettingsControl
-            // 
-            this.SettingsControl.BackColor = System.Drawing.Color.Silver;
-            this.SettingsControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SettingsControl.Location = new System.Drawing.Point(166, 31);
-            this.SettingsControl.Name = "SettingsControl";
-            this.SettingsControl.Size = new System.Drawing.Size(759, 599);
-            this.SettingsControl.TabIndex = 0;
-            // 
             // RightEdge
             // 
             this.RightEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -276,6 +277,25 @@
             this.BotEdge.Name = "BotEdge";
             this.BotEdge.Size = new System.Drawing.Size(759, 2);
             this.BotEdge.TabIndex = 7;
+            // 
+            // SettingsControl
+            // 
+            this.SettingsControl.BackColor = System.Drawing.Color.Silver;
+            this.SettingsControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SettingsControl.Location = new System.Drawing.Point(166, 31);
+            this.SettingsControl.Name = "SettingsControl";
+            this.SettingsControl.Size = new System.Drawing.Size(759, 599);
+            this.SettingsControl.TabIndex = 0;
+            this.SettingsControl.Load += new System.EventHandler(this.SettingsControl_Load);
+            // 
+            // SaleControl
+            // 
+            this.SaleControl.BackColor = System.Drawing.Color.Silver;
+            this.SaleControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SaleControl.Location = new System.Drawing.Point(166, 31);
+            this.SaleControl.Name = "SaleControl";
+            this.SaleControl.Size = new System.Drawing.Size(759, 599);
+            this.SaleControl.TabIndex = 4;
             // 
             // BuyControl
             // 
@@ -332,6 +352,7 @@
         private System.Windows.Forms.Panel BotEdge;
         private CustomElements.BuyControl BuyControl;
         public SaleControl SaleControl;
+        private System.Windows.Forms.Button TradeLinkButton;
     }
 }
 

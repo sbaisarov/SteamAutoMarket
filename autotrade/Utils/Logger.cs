@@ -36,10 +36,10 @@ namespace autotrade.Utils {
 
             message = $"{GetCurrentDate()} [ERROR] - {message}";
             if (e != null) {
-                message += $". {e.Message} {e.StackTrace}";
+                message += $". {e.Message}";
             }
 
-            File.AppendAllText("error.log", message);
+            File.AppendAllText("error.log", message + " " + e.StackTrace);
             LogToLogBox(message);
         }
 
@@ -57,8 +57,7 @@ namespace autotrade.Utils {
         public static void LogToLogBox(string s) {
             if (Program.IsMainThread) {
                 AppendTextToLogTextBox(s);
-            }
-            else {
+            } else {
                 Dispatcher.Invoke(Program.MainForm, () => {
                     AppendTextToLogTextBox(s);
                 });

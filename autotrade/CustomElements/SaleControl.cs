@@ -29,6 +29,16 @@ namespace autotrade {
             InitializeComponent();
         }
 
+        public void ActivateTradeMode() {
+            TradeGroupBox.BringToFront();
+            TradeSendGroupBox.BringToFront();
+        }
+
+        public void ActivateSellMode() {
+            PriceSettingsGroupBox.BringToFront();
+            SellGroupBox.BringToFront();
+        }
+
         private void SaleControl_Load(object sender, EventArgs e) {
             AllDescriptionsDictionary = new Dictionary<string, RgDescription>();
             ImageDictionary = new Dictionary<string, Image>();
@@ -142,6 +152,17 @@ namespace autotrade {
         }
 
         private void RefreshPanel_Click(object sender, EventArgs e) {
+            if (CurrentSession.SteamManager == null) {
+                MessageBox.Show("You should login first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error on inventory loading. No logined account found.");
+                return;
+            }
+            if (String.IsNullOrEmpty(CurrentSession.InventoryAppId) || String.IsNullOrEmpty(CurrentSession.InventoryContextId)) {
+                MessageBox.Show("You load inventory first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error on inventory loading. No inventory type chosed.");
+                return;
+            }
+
             Logger.Info("Refreshing inventory");
 
             AllSteamItemsGridView.Rows.Clear();
@@ -362,6 +383,30 @@ namespace autotrade {
             }
 
             CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType);
+        }
+
+        private void SendTradeButton_Click(object sender, EventArgs e) {
+            if (CurrentSession.SteamManager == null) {
+                MessageBox.Show("You should login first", "Error sending trade offer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error on inventory loading. No logined account found.");
+                return;
+            }
+            if (String.IsNullOrEmpty(TradeParthenIdTextBox.Text) || String.IsNullOrEmpty(TradeTokenTextBox.Text)) {
+                MessageBox.Show("You should chose target parthner first", "Error sending trade offer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error sending trade offer. No target parthner selected.");
+                return;
+            }
+
+            var itemsToSale = new List<RgFullItem>();
+
+            for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
+                var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);
+                foreach (var item in itemsList) {
+                    itemsToSale.Add(item);
+                }
+            }
+
+            CurrentSession.SteamManager.SendTradeOffer(itemsToSale, TradeParthenIdTextBox.Text, TradeTokenTextBox.Text);
         }
     }
 }

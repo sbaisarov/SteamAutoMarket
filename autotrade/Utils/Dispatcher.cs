@@ -13,8 +13,7 @@ namespace autotrade.Utils {
         public static void Invoke(Form1 form, AsyncAction action) {
             if (!form.InvokeRequired) {
                 action();
-            }
-            else {
+            } else {
                 form.Invoke((DispatcherInvoker)Invoke, form, action);
             }
         }
