@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace autotrade.Utils {
     class Dispatcher {
         public delegate void AsyncAction();
 
-        public delegate void DispatcherInvoker(Form1 form, AsyncAction a);
+        public delegate void DispatcherInvoker(Form form, AsyncAction a);
 
-        public static void Invoke(Form1 form, AsyncAction action) {
+        public static void Invoke(Form form, AsyncAction action) {
             if (!form.InvokeRequired) {
                 action();
             } else {

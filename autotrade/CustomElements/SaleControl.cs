@@ -158,7 +158,7 @@ namespace autotrade {
                 return;
             }
             if (String.IsNullOrEmpty(CurrentSession.InventoryAppId) || String.IsNullOrEmpty(CurrentSession.InventoryContextId)) {
-                MessageBox.Show("You load inventory first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You should load inventory first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Error("Error on inventory loading. No inventory type chosed.");
                 return;
             }
@@ -340,6 +340,8 @@ namespace autotrade {
         }
 
         private void StartSteamSellButton_Click(object sender, EventArgs e) {
+            Program.WorkingProcessForm.SellItems();
+
             MarketSaleType marketSaleType;
             if (RecomendedPriceRadioButton.Checked) marketSaleType = MarketSaleType.RECOMMENDED;
             else if (ManualPriceRadioButton.Checked) marketSaleType = MarketSaleType.MANUAL;
@@ -382,7 +384,7 @@ namespace autotrade {
                 }
             }
 
-            CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType);
+            //CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType);
         }
 
         private void SendTradeButton_Click(object sender, EventArgs e) {

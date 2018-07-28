@@ -10,7 +10,14 @@ using System.Windows.Forms;
 namespace autotrade.Utils {
     class Logger {
         public static int LoggerLevel { get; set; } = 0;// 0 info + errors, 1 errors, 2 none
-        private const string DATE_FROMAT = "HH:mm:ss"; //dd-MM-yy H:mm:ss
+        public const string DATE_FROMAT = "HH:mm:ss"; //dd-MM-yy H:mm:ss
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static void Working(string message) {
+            message = $"{GetCurrentDate()} [WORKING] - {message}";
+            File.AppendAllText("log.log", message);
+            LogToLogBox(message);
+        }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void Info(string message) {
@@ -39,12 +46,12 @@ namespace autotrade.Utils {
                 message += $". {e.Message}";
             }
 
-            File.AppendAllText("error.log", message + " " + e.StackTrace);
+            File.AppendAllText("error.log", message + " " + ((e != null)? e.StackTrace : ""));
             LogToLogBox(message);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void Critical(string message, Exception e = null) {
+        public static void Critical(string message, Exception e) {
             message = $"{GetCurrentDate()} [CRITICAL] - {message}. {e.Message} {e.StackTrace}";
             File.AppendAllText("error.log", message);
 

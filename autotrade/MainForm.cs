@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace autotrade {
-    public partial class Form1 : Form {
+    public partial class MainForm : Form {
         public bool dragging = false;
         public Point dragCursorPoint;
         public Point dragFormPoint;
 
-        public Form1() {
+        public MainForm() {
             InitializeComponent();
             FocusSidePanelToMenuElement(sidePanel, settingsLinkButton);
         }
