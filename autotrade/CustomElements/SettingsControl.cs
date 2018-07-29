@@ -193,9 +193,9 @@ namespace autotrade.CustomElements {
                 CurrentSession.AccountImage = image;
                 Program.MainForm.SaleLinkButton_Click(null, null);
                 Program.MainForm.SaleControl.AuthCurrentAccount();
+                Logger.Info("Steam authentication successful");
             });
 
-            Logger.Info("Steam authentication successful");
             LoginButton.Enabled = true;
         }
 

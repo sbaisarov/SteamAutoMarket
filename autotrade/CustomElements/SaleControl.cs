@@ -50,6 +50,9 @@ namespace autotrade {
         }
 
         public void LoadInventory(string steamid, string appid, string contextid) {
+            AllSteamItemsGridView.Rows.Clear();
+            ItemsToSaleGridView.Rows.Clear();
+
             ManualResetEvent dialogLoadedFlag = new ManualResetEvent(false);
             Task.Run(() => {
                 Logger.Info("Inventory loading started");
@@ -280,18 +283,27 @@ namespace autotrade {
         }
 
         private void HalfAutoPriceRadioButton_CheckedChanged(object sender, EventArgs e) {
-            if (HalfAutoPriceRadioButton.Checked) CurrentPriceNumericUpDown.Enabled = true;
-            else CurrentPriceNumericUpDown.Enabled = false;
+            if (HalfAutoPriceRadioButton.Checked) {
+                CurrentPriceNumericUpDown.Enabled = true;
+                CurrentPricePercentNumericUpDown.Enabled = true;
+            } else {
+                CurrentPriceNumericUpDown.Enabled = false;
+                CurrentPricePercentNumericUpDown.Enabled = false;
+            }
         }
 
         private void ItemsToSaleGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
             if (e.RowIndex < 0) return;
             if (e.ColumnIndex != 2) return;
-            if (!ManualPriceRadioButton.Checked) return;
+            if (!ManualPriceRadioButton.Checked) {
+                ItemToSalePriceColumn.ReadOnly = true;
+                return;
+            } else {
+                ItemToSalePriceColumn.ReadOnly = false;
+                ItemsToSaleGridUtils.CellClick(ItemsToSaleGridView, e.RowIndex);
+            }
 
-            ItemToSalePriceColumn.ReadOnly = false;
 
-            ItemsToSaleGridUtils.CellClick(ItemsToSaleGridView, e.RowIndex);
         }
 
         private void ItemsToSaleGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e) {
@@ -340,7 +352,16 @@ namespace autotrade {
         }
 
         private void StartSteamSellButton_Click(object sender, EventArgs e) {
-            Program.WorkingProcessForm.SellItems();
+            if (CurrentSession.SteamManager == null) {
+                MessageBox.Show("You should login first", "Error sending trade offer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error on inventory loading. No logined account found.");
+                return;
+            }
+            if (String.IsNullOrEmpty(TradeParthenIdTextBox.Text) || String.IsNullOrEmpty(TradeTokenTextBox.Text)) {
+                MessageBox.Show("You should chose target parthner first", "Error sending trade offer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error sending trade offer. No target parthner selected.");
+                return;
+            }
 
             MarketSaleType marketSaleType;
             if (RecomendedPriceRadioButton.Checked) marketSaleType = MarketSaleType.RECOMMENDED;
@@ -409,6 +430,22 @@ namespace autotrade {
             }
 
             CurrentSession.SteamManager.SendTradeOffer(itemsToSale, TradeParthenIdTextBox.Text, TradeTokenTextBox.Text);
+        }
+
+        private void CurrentPricePercentNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            if (CurrentPriceNumericUpDown.Value != 0) {
+                var tmp = CurrentPricePercentNumericUpDown.Value;
+                CurrentPriceNumericUpDown.Value = 0;
+                CurrentPricePercentNumericUpDown.Value = tmp;
+            }
+        }
+
+        private void CurrentPriceNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            if (CurrentPricePercentNumericUpDown.Value != 0) {
+                var tmp = CurrentPriceNumericUpDown.Value;
+                CurrentPricePercentNumericUpDown.Value = 0;
+                CurrentPriceNumericUpDown.Value = tmp;
+            }
         }
     }
 }
