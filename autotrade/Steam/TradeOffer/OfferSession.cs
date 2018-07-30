@@ -14,6 +14,7 @@ namespace autotrade.Steam.TradeOffer
         private readonly TradeOfferWebAPI webApi;
         private readonly string sessionid;
         private CookieContainer cookies;
+        public string Error { get; private set; } = null;
 
         internal JsonSerializerSettings JsonSerializerSettings { get; set; }
 
@@ -234,7 +235,8 @@ namespace autotrade.Steam.TradeOffer
             return Request(SendUrl, data, referer, null, out newTradeOfferId);
         }
 
-        internal bool Request(string url, NameValueCollection data, string referer, string tradeOfferId, out string newTradeOfferId)
+        internal bool Request(string url, NameValueCollection data, string referer,
+            string tradeOfferId, out string newTradeOfferId)
         {
             newTradeOfferId = "";
 
@@ -251,7 +253,7 @@ namespace autotrade.Steam.TradeOffer
                     }
                     else
                     {
-                        //todo: log possible error
+                        Error = offerResponse.TradeError;
                         Debug.WriteLine(offerResponse.TradeError);
                     }
                 }
@@ -271,6 +273,8 @@ namespace autotrade.Steam.TradeOffer
 
         [JsonProperty("strError")]
         public string TradeError { get; set; }
+
+        public bool Status { get; set; }
     }
 
     public class OfferAccessToken

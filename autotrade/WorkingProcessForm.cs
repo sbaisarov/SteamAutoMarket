@@ -15,13 +15,10 @@ namespace autotrade {
     public partial class WorkingProcessForm : Form {
         private Thread workingThread;
 
-        public void SellItems() {
+        public void InitProcess(Action process) {
             _activate();
             workingThread = new Thread(() => {
-                this.AppendWorkingProcessInfo("test1");
-                Thread.Sleep(10000);
-                this.AppendWorkingProcessInfo("test2");
-                Thread.Sleep(5000);
+                process();
                 _disactivate();
             });
             workingThread.Start();

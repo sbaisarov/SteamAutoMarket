@@ -353,13 +353,13 @@ namespace autotrade {
 
         private void StartSteamSellButton_Click(object sender, EventArgs e) {
             if (CurrentSession.SteamManager == null) {
-                MessageBox.Show("You should login first", "Error sending trade offer", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Logger.Error("Error on inventory loading. No logined account found.");
+                MessageBox.Show("You should log in first", "Error sending trade offer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error on inventory loading. No logged in accounts found.");
                 return;
             }
             if (String.IsNullOrEmpty(TradeParthenIdTextBox.Text) || String.IsNullOrEmpty(TradeTokenTextBox.Text)) {
-                MessageBox.Show("You should chose target parthner first", "Error sending trade offer", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Logger.Error("Error sending trade offer. No target parthner selected.");
+                MessageBox.Show("You should choose target partner first", "Error sending trade offer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error("Error sending trade offer. No target partner selected.");
                 return;
             }
 
@@ -404,8 +404,7 @@ namespace autotrade {
                     }
                 }
             }
-
-            //CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType);
+            Program.WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType));
         }
 
         private void SendTradeButton_Click(object sender, EventArgs e) {

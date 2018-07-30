@@ -14,13 +14,13 @@ using Market.Models.Json;
 using Market.Exceptions;
 using System.Threading;
 using SteamKit2;
-using static autotrade.Steam.TradeOffer.Inventory;
+using autotrade.Steam.TradeOffer;
 
 namespace autotrade.Steam {
     public class SteamManager {
         public string ApiKey { get; set; }
-        public static TradeOffer.OfferSession OfferSession { get; set; }
-        public TradeOffer.Inventory Inventory { get; set; }
+        public static OfferSession OfferSession { get; set; }
+        public Inventory Inventory { get; set; }
         public static UserLogin SteamClient { get; set; }
         public Market.Interface.MarketClient MarketClient { get; set; }
         public SteamGuardAccount Guard { get; set; }
@@ -35,27 +35,34 @@ namespace autotrade.Steam {
                 TwoFactorCode = Guard.GenerateSteamGuardCode()
             };
 
-            LoginResult loginResult;
-            int tryCount = 0;
-            do {
-                loginResult = SteamClient.DoLogin();
-                if (loginResult != LoginResult.LoginOkay) {
-                    Utils.Logger.Warning($"Login status is - {loginResult}");
+            bool isSessionActive = Guard.RefreshSession();
+            if (isSessionActive == false)
+            {
+                LoginResult loginResult;
+                int tryCount = 0;
+                do {
+                    loginResult = SteamClient.DoLogin();
+                    if (loginResult != LoginResult.LoginOkay) {
+                        Utils.Logger.Warning($"Login status is - {loginResult}");
 
-                    if (++tryCount == 3) {
-                        throw new WebException("Login failed after 3 attempts!");
+                        if (++tryCount == 3) {
+                            throw new WebException("Login failed after 3 attempts!");
+                        }
+
+                        Thread.Sleep(3000);
                     }
-
-                    Thread.Sleep(3000);
                 }
+                while (loginResult != LoginResult.LoginOkay);
             }
-            while (loginResult != LoginResult.LoginOkay);
+
+            Guard.RefreshSession();
+            SaveAccount(Guard);
+
+            this.ApiKey = apiKey;
 
             CookieContainer cookies = new CookieContainer();
+            OfferSession = new OfferSession(new TradeOfferWebAPI(apiKey), cookies, SteamClient.Session.SessionID);
             SteamClient.Session.AddCookies(cookies);
-            Guard.RefreshSession();
-            this.ApiKey = apiKey;
-            // offerSession = new TradeOffer.OfferSession(new TradeOffer.TradeOfferWebAPI(this.apiKey), cookies, steamClient.Session.SessionID);
             var market = new SteamMarketHandler(ELanguage.English, "user-agent");
             Auth auth = new Auth(market, cookies)
             {
@@ -63,35 +70,28 @@ namespace autotrade.Steam {
             };
             market.Auth = auth;
             MarketClient = new Market.Interface.MarketClient(market);
-            Inventory = new TradeOffer.Inventory();
+            Inventory = new Inventory();
         }
 
-        public List<RgFullItem> LoadInventory(string steamid, string appid, string contextid) {
+        public List<Inventory.RgFullItem> LoadInventory(string steamid, string appid, string contextid) {
             return Inventory.GetInventory(new SteamID(ulong.Parse(steamid)), int.Parse(appid), int.Parse(contextid));
         }
 
-        public void SellOnMarket(Dictionary<RgFullItem, double> items, WorkingProcess.MarketSaleType saleType) {
-            RgInventory asset;
-            RgDescription description;
-            foreach (KeyValuePair<RgFullItem, double> item in items)
+        public void SellOnMarket(Dictionary<Inventory.RgFullItem, double> items, WorkingProcess.MarketSaleType saleType) {
+            Inventory.RgInventory asset;
+            Inventory.RgDescription description;
+            foreach (KeyValuePair<Inventory.RgFullItem, double> item in items)
             {
-                double? price = null;
+                double? price;
                 double amount;
                 asset = item.Key.Asset;
                 description = item.Key.Description;
                 amount = item.Value;
-                MarketItemInfo itemPageInfo = MarketClient.ItemPage(asset.appid, description.market_hash_name);
                 switch (saleType)
                 {
                     case WorkingProcess.MarketSaleType.LOWER_THAN_CURRENT:
-                        ItemOrdersHistogram histogram = MarketClient.ItemOrdersHistogram(
-                            itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
-                        price = histogram.MinSellPrice as double?;
-                        if (price is null)
-                        {
-                            // Log error on ui
-                            continue;
-                        }
+                        GetCurrentPrice(out price, asset, description);
+                        if (price == null) continue;
                         price -= amount;
                         break;
 
@@ -100,20 +100,15 @@ namespace autotrade.Steam {
                         break;
 
                     case WorkingProcess.MarketSaleType.RECOMMENDED:
-                        try
-                        {
-                            List<PriceHistoryDay> history = MarketClient
-                                .PriceHistory(asset.appid, description.market_hash_name);
-                            price = CountAveragePrice(history);
-                        }
-                        catch (SteamException err)
-                        {
-                            // Log error on ui
-                            continue;
-                        }
+                        GetAveragePrice(out price, asset, description);
+                        break;
+
+                    default:
+                        price = null;
                         break;
                 }
-                if (price is null) continue;
+
+                if (price == null) continue;
 
                 while (true)
                 {
@@ -145,6 +140,34 @@ namespace autotrade.Steam {
                 .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction)
                 .ToArray();
             Guard.AcceptMultipleConfirmations(marketConfirmations);
+        }
+
+        public void GetAveragePrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description)
+        {
+            try
+            {
+                List<PriceHistoryDay> history = MarketClient
+                    .PriceHistory(asset.appid, description.market_hash_name);
+                price = CountAveragePrice(history);
+            }
+            catch (SteamException err)
+            {
+                // Log error on ui
+                price = null;
+            }
+        }
+
+        public void GetCurrentPrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description)
+        {
+            MarketItemInfo itemPageInfo = MarketClient.ItemPage(asset.appid, description.market_hash_name);
+            ItemOrdersHistogram histogram = MarketClient.ItemOrdersHistogram(
+                            itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
+            price = histogram.MinSellPrice as double?;
+            if (price is null)
+            {
+                // Log error on ui
+                price = null;
+            }
         }
 
         private double CountAveragePrice(List<PriceHistoryDay> history)
@@ -188,8 +211,37 @@ namespace autotrade.Steam {
             return average;
         }
 
-        public void SendTradeOffer(List<RgFullItem> items, string partherId, string tradeToken) {
-            //some logic
+        public void SendTradeOffer(List<Inventory.RgFullItem> items, string partnerId, string tradeToken) {
+            TradeOffer.TradeOffer offer = new TradeOffer.TradeOffer(OfferSession, new SteamID(ulong.Parse(partnerId)));
+            bool status = offer.SendWithToken(out string offerId, tradeToken);
+            if (status is false)
+            {
+                // log error offer.Session.Error if exists
+                return;
+            }
+            Confirmation[] confirmations = Guard.FetchConfirmations();
+            var conf = confirmations
+                .Where(item => item.ConfType == Confirmation.ConfirmationType.Trade
+                        && item.Creator == ulong.Parse(offerId))
+                .ToArray()[0];
+            Guard.AcceptConfirmation(conf);
+        }
+
+        public bool SaveAccount(SteamGuardAccount account)
+        {
+            string jsonAccount = JsonConvert.SerializeObject(account);
+
+            string maDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/maFiles/";
+            string filename = account.Session.SteamID.ToString() + ".maFile";
+            try
+            {
+                File.WriteAllText(maDir + filename, jsonAccount);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
