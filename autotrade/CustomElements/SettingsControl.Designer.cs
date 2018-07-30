@@ -220,6 +220,7 @@
             this.PasswordTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PasswordTextBox.Location = new System.Drawing.Point(3, 16);
             this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.Size = new System.Drawing.Size(139, 20);
             this.PasswordTextBox.TabIndex = 3;
             // 

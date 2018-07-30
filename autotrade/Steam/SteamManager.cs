@@ -28,7 +28,7 @@ namespace autotrade.Steam {
         public SteamManager() {
         }
 
-        public SteamManager(string login, string password, SteamGuardAccount mafile, string apiKey = null) {
+        public SteamManager(string login, string password, SteamGuardAccount mafile, string apiKey = "B763C3FD17EC886BD7D3C35DEB49CF35") {
             Guard = mafile;
             SteamClient = new UserLogin(login, password)
             {
@@ -61,8 +61,8 @@ namespace autotrade.Steam {
             this.ApiKey = apiKey;
 
             CookieContainer cookies = new CookieContainer();
-            OfferSession = new OfferSession(new TradeOfferWebAPI(apiKey), cookies, SteamClient.Session.SessionID);
-            SteamClient.Session.AddCookies(cookies);
+            OfferSession = new OfferSession(new TradeOfferWebAPI(apiKey), cookies, Guard.Session.SessionID);
+            Guard.Session.AddCookies(cookies);
             var market = new SteamMarketHandler(ELanguage.English, "user-agent");
             Auth auth = new Auth(market, cookies)
             {
@@ -232,14 +232,17 @@ namespace autotrade.Steam {
             string jsonAccount = JsonConvert.SerializeObject(account);
 
             string maDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/maFiles/";
+            Directory.CreateDirectory(maDir);
+
             string filename = account.Session.SteamID.ToString() + ".maFile";
             try
             {
                 File.WriteAllText(maDir + filename, jsonAccount);
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Utils.Logger.Error("Erron on session save", e);
                 return false;
             }
         }
