@@ -238,7 +238,8 @@
             this.PasswordTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.PasswordTextBox.Location = new System.Drawing.Point(3, 16);
             this.PasswordTextBox.Name = "PasswordTextBox";
-            this.PasswordTextBox.Size = new System.Drawing.Size(163, 20);
+            this.PasswordTextBox.PasswordChar = '*';
+            this.PasswordTextBox.Size = new System.Drawing.Size(139, 20);
             this.PasswordTextBox.TabIndex = 3;
             // 
             // LoginGroupBox
