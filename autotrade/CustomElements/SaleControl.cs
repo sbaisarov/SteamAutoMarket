@@ -177,75 +177,75 @@ namespace autotrade {
 
         #region GridMenu buttuns design
         private void AddAllPanel_MouseEnter(object sender, EventArgs e) {
-            AddAllPanel.BackColor = Color.LightGray;
+            //AddAllPanel.BackColor = Color.LightGray;
         }
 
         private void AddAllPanel_MouseLeave(object sender, EventArgs e) {
-            AddAllPanel.BackColor = Color.Silver;
+            //AddAllPanel.BackColor = Color.Silver;
         }
 
         private void AddAllPanel_MouseDown(object sender, MouseEventArgs e) {
-            AddAllPanel.BackColor = SystemColors.ControlLight;
-            AddAllPanel.BorderStyle = BorderStyle.FixedSingle;
+            //AddAllPanel.BackColor = SystemColors.ControlLight;
+            //AddAllPanel.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void AddAllPanel_MouseUp(object sender, MouseEventArgs e) {
-            AddAllPanel.BackColor = Color.LightGray;
-            AddAllPanel.BorderStyle = BorderStyle.None;
+            //AddAllPanel.BackColor = Color.LightGray;
+            //AddAllPanel.BorderStyle = BorderStyle.None;
         }
 
         private void RefreshPanel_MouseDown(object sender, MouseEventArgs e) {
-            RefreshPanel.BackColor = SystemColors.ControlLight;
-            RefreshPanel.BorderStyle = BorderStyle.FixedSingle;
+            //RefreshPanel.BackColor = SystemColors.ControlLight;
+            //RefreshPanel.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void RefreshPanel_MouseEnter(object sender, EventArgs e) {
-            RefreshPanel.BackColor = Color.LightGray;
+            //RefreshPanel.BackColor = Color.LightGray;
         }
 
         private void RefreshPanel_MouseLeave(object sender, EventArgs e) {
-            RefreshPanel.BackColor = Color.Silver;
+            //RefreshPanel.BackColor = Color.Silver;
         }
 
         private void RefreshPanel_MouseUp(object sender, MouseEventArgs e) {
-            RefreshPanel.BackColor = Color.LightGray;
-            RefreshPanel.BorderStyle = BorderStyle.None;
+            //RefreshPanel.BackColor = Color.LightGray;
+            //RefreshPanel.BorderStyle = BorderStyle.None;
         }
 
         private void SteamPanel_MouseDown(object sender, MouseEventArgs e) {
-            SteamPanel.BackColor = SystemColors.ControlLight;
-            SteamPanel.BorderStyle = BorderStyle.FixedSingle;
+            //SteamPanel.BackColor = SystemColors.ControlLight;
+            //SteamPanel.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void SteamPanel_MouseEnter(object sender, EventArgs e) {
-            SteamPanel.BackColor = Color.LightGray;
+            //SteamPanel.BackColor = Color.LightGray;
         }
 
         private void SteamPanel_MouseLeave(object sender, EventArgs e) {
-            SteamPanel.BackColor = Color.Silver;
+            //SteamPanel.BackColor = Color.Silver;
         }
 
         private void SteamPanel_MouseUp(object sender, MouseEventArgs e) {
-            SteamPanel.BackColor = Color.LightGray;
-            SteamPanel.BorderStyle = BorderStyle.None;
+            //SteamPanel.BackColor = Color.LightGray;
+            //SteamPanel.BorderStyle = BorderStyle.None;
         }
 
         private void OpskinsPanel_MouseDown(object sender, MouseEventArgs e) {
-            OpskinsPanel.BackColor = SystemColors.ControlLight;
-            OpskinsPanel.BorderStyle = BorderStyle.FixedSingle;
+            //OpskinsPanel.BackColor = SystemColors.ControlLight;
+           // OpskinsPanel.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void OpskinsPanel_MouseEnter(object sender, EventArgs e) {
-            OpskinsPanel.BackColor = Color.LightGray;
+            //OpskinsPanel.BackColor = Color.LightGray;
         }
 
         private void OpskinsPanel_MouseLeave(object sender, EventArgs e) {
-            OpskinsPanel.BackColor = Color.Silver;
+            //OpskinsPanel.BackColor = Color.Silver;
         }
 
         private void OpskinsPanel_MouseUp(object sender, MouseEventArgs e) {
-            OpskinsPanel.BackColor = Color.LightGray;
-            OpskinsPanel.BorderStyle = BorderStyle.None;
+           // OpskinsPanel.BackColor = Color.LightGray;
+            //OpskinsPanel.BorderStyle = BorderStyle.None;
         }
         #endregion
 

@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="CustomElements\MainFormUtils.cs" />
     <Compile Include="CustomElements\ItemsToSaleGridUtils.cs" />
+    <Compile Include="Utils\FormComponents.cs" />
     <Compile Include="WorkingProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>

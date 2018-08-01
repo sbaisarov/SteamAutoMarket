@@ -24,8 +24,9 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsControl));
             this.AccountsDataGridView = new System.Windows.Forms.DataGridView();
             this.AvatarColumn = new System.Windows.Forms.DataGridViewImageColumn();
@@ -74,15 +75,16 @@
             this.AccountsDataGridView.AllowUserToResizeColumns = false;
             this.AccountsDataGridView.AllowUserToResizeRows = false;
             this.AccountsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.AccountsDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.AccountsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.AccountsDataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AccountsDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.AccountsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.AccountsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.AccountsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AvatarColumn,
@@ -90,20 +92,29 @@
             this.PasswordColumn,
             this.OpskinsApiColumn,
             this.AccountObjectHidenColumn});
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AccountsDataGridView.DefaultCellStyle = dataGridViewCellStyle11;
             this.AccountsDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AccountsDataGridView.EnableHeadersVisualStyles = false;
+            this.AccountsDataGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.AccountsDataGridView.Location = new System.Drawing.Point(3, 16);
             this.AccountsDataGridView.MultiSelect = false;
             this.AccountsDataGridView.Name = "AccountsDataGridView";
             this.AccountsDataGridView.ReadOnly = true;
             this.AccountsDataGridView.RowHeadersVisible = false;
             this.AccountsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.AccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle12;
             this.AccountsDataGridView.RowTemplate.Height = 34;
             this.AccountsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.AccountsDataGridView.Size = new System.Drawing.Size(364, 330);
+            this.AccountsDataGridView.Size = new System.Drawing.Size(426, 330);
             this.AccountsDataGridView.TabIndex = 7;
             // 
             // AvatarColumn
@@ -149,9 +160,10 @@
             // AccountGroupBox
             // 
             this.AccountGroupBox.Controls.Add(this.AccountsDataGridView);
-            this.AccountGroupBox.Location = new System.Drawing.Point(6, 4);
+            this.AccountGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.AccountGroupBox.Location = new System.Drawing.Point(7, 4);
             this.AccountGroupBox.Name = "AccountGroupBox";
-            this.AccountGroupBox.Size = new System.Drawing.Size(370, 349);
+            this.AccountGroupBox.Size = new System.Drawing.Size(432, 349);
             this.AccountGroupBox.TabIndex = 8;
             this.AccountGroupBox.TabStop = false;
             this.AccountGroupBox.Text = "Steam Accounts";
@@ -160,11 +172,11 @@
             // 
             this.AddNewAccountButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.AddNewAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddNewAccountButton.ForeColor = System.Drawing.Color.Silver;
+            this.AddNewAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.AddNewAccountButton.Image = ((System.Drawing.Image)(resources.GetObject("AddNewAccountButton.Image")));
-            this.AddNewAccountButton.Location = new System.Drawing.Point(314, 49);
+            this.AddNewAccountButton.Location = new System.Drawing.Point(366, 49);
             this.AddNewAccountButton.Name = "AddNewAccountButton";
-            this.AddNewAccountButton.Size = new System.Drawing.Size(40, 40);
+            this.AddNewAccountButton.Size = new System.Drawing.Size(47, 40);
             this.AddNewAccountButton.TabIndex = 5;
             this.AddAllToolTip.SetToolTip(this.AddNewAccountButton, "Add account to the list");
             this.AddNewAccountButton.UseVisualStyleBackColor = true;
@@ -175,9 +187,10 @@
             this.MafilePathGroupBox.Controls.Add(this.BrowseMafilePathButton);
             this.MafilePathGroupBox.Controls.Add(this.MafilePathTextBox);
             this.MafilePathGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MafilePathGroupBox.Location = new System.Drawing.Point(157, 19);
+            this.MafilePathGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.MafilePathGroupBox.Location = new System.Drawing.Point(183, 19);
             this.MafilePathGroupBox.Name = "MafilePathGroupBox";
-            this.MafilePathGroupBox.Size = new System.Drawing.Size(145, 39);
+            this.MafilePathGroupBox.Size = new System.Drawing.Size(169, 39);
             this.MafilePathGroupBox.TabIndex = 10;
             this.MafilePathGroupBox.TabStop = false;
             this.MafilePathGroupBox.Text = "Mafile path";
@@ -186,11 +199,11 @@
             // 
             this.BrowseMafilePathButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.BrowseMafilePathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseMafilePathButton.ForeColor = System.Drawing.Color.Silver;
+            this.BrowseMafilePathButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.BrowseMafilePathButton.Image = ((System.Drawing.Image)(resources.GetObject("BrowseMafilePathButton.Image")));
-            this.BrowseMafilePathButton.Location = new System.Drawing.Point(116, 11);
+            this.BrowseMafilePathButton.Location = new System.Drawing.Point(135, 11);
             this.BrowseMafilePathButton.Name = "BrowseMafilePathButton";
-            this.BrowseMafilePathButton.Size = new System.Drawing.Size(25, 25);
+            this.BrowseMafilePathButton.Size = new System.Drawing.Size(29, 25);
             this.BrowseMafilePathButton.TabIndex = 11;
             this.AddAllToolTip.SetToolTip(this.BrowseMafilePathButton, "Mafile path selecting dialog");
             this.BrowseMafilePathButton.UseVisualStyleBackColor = true;
@@ -198,59 +211,67 @@
             // 
             // MafilePathTextBox
             // 
+            this.MafilePathTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.MafilePathTextBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.MafilePathTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.MafilePathTextBox.Location = new System.Drawing.Point(3, 16);
             this.MafilePathTextBox.Name = "MafilePathTextBox";
-            this.MafilePathTextBox.Size = new System.Drawing.Size(112, 20);
+            this.MafilePathTextBox.Size = new System.Drawing.Size(130, 20);
             this.MafilePathTextBox.TabIndex = 2;
             // 
             // PasswordGroupBox
             // 
             this.PasswordGroupBox.Controls.Add(this.PasswordTextBox);
             this.PasswordGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PasswordGroupBox.Location = new System.Drawing.Point(6, 69);
+            this.PasswordGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.PasswordGroupBox.Location = new System.Drawing.Point(7, 69);
             this.PasswordGroupBox.Name = "PasswordGroupBox";
-            this.PasswordGroupBox.Size = new System.Drawing.Size(145, 39);
+            this.PasswordGroupBox.Size = new System.Drawing.Size(169, 39);
             this.PasswordGroupBox.TabIndex = 10;
             this.PasswordGroupBox.TabStop = false;
             this.PasswordGroupBox.Text = "Password";
             // 
             // PasswordTextBox
             // 
+            this.PasswordTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.PasswordTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PasswordTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.PasswordTextBox.Location = new System.Drawing.Point(3, 16);
             this.PasswordTextBox.Name = "PasswordTextBox";
-            this.PasswordTextBox.Size = new System.Drawing.Size(139, 20);
+            this.PasswordTextBox.Size = new System.Drawing.Size(163, 20);
             this.PasswordTextBox.TabIndex = 3;
             // 
             // LoginGroupBox
             // 
             this.LoginGroupBox.Controls.Add(this.LoginTextBox);
             this.LoginGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoginGroupBox.Location = new System.Drawing.Point(6, 19);
+            this.LoginGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.LoginGroupBox.Location = new System.Drawing.Point(7, 19);
             this.LoginGroupBox.Name = "LoginGroupBox";
-            this.LoginGroupBox.Size = new System.Drawing.Size(145, 39);
+            this.LoginGroupBox.Size = new System.Drawing.Size(169, 39);
             this.LoginGroupBox.TabIndex = 9;
             this.LoginGroupBox.TabStop = false;
             this.LoginGroupBox.Text = "Login";
             // 
             // LoginTextBox
             // 
+            this.LoginTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.LoginTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.LoginTextBox.Location = new System.Drawing.Point(3, 16);
             this.LoginTextBox.Name = "LoginTextBox";
-            this.LoginTextBox.Size = new System.Drawing.Size(139, 20);
+            this.LoginTextBox.Size = new System.Drawing.Size(163, 20);
             this.LoginTextBox.TabIndex = 1;
             // 
             // EditAccountButton
             // 
             this.EditAccountButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.EditAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EditAccountButton.ForeColor = System.Drawing.Color.Silver;
+            this.EditAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.EditAccountButton.Image = ((System.Drawing.Image)(resources.GetObject("EditAccountButton.Image")));
-            this.EditAccountButton.Location = new System.Drawing.Point(9, 116);
+            this.EditAccountButton.Location = new System.Drawing.Point(10, 116);
             this.EditAccountButton.Name = "EditAccountButton";
-            this.EditAccountButton.Size = new System.Drawing.Size(40, 40);
+            this.EditAccountButton.Size = new System.Drawing.Size(47, 40);
             this.EditAccountButton.TabIndex = 6;
             this.AddAllToolTip.SetToolTip(this.EditAccountButton, "Edit selected account");
             this.EditAccountButton.UseVisualStyleBackColor = true;
@@ -269,12 +290,12 @@
             // LoginButton
             // 
             this.LoginButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoginButton.ForeColor = System.Drawing.Color.Silver;
+            this.LoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LoginButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.LoginButton.Image = ((System.Drawing.Image)(resources.GetObject("LoginButton.Image")));
-            this.LoginButton.Location = new System.Drawing.Point(0, 533);
+            this.LoginButton.Location = new System.Drawing.Point(-1, 533);
             this.LoginButton.Name = "LoginButton";
-            this.LoginButton.Size = new System.Drawing.Size(759, 66);
+            this.LoginButton.Size = new System.Drawing.Size(885, 66);
             this.LoginButton.TabIndex = 0;
             this.AddAllToolTip.SetToolTip(this.LoginButton, "Login using selected account");
             this.LoginButton.UseVisualStyleBackColor = true;
@@ -284,11 +305,11 @@
             // 
             this.DeleteAccountButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DeleteAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteAccountButton.ForeColor = System.Drawing.Color.Silver;
+            this.DeleteAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.DeleteAccountButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteAccountButton.Image")));
-            this.DeleteAccountButton.Location = new System.Drawing.Point(57, 116);
+            this.DeleteAccountButton.Location = new System.Drawing.Point(66, 116);
             this.DeleteAccountButton.Name = "DeleteAccountButton";
-            this.DeleteAccountButton.Size = new System.Drawing.Size(40, 40);
+            this.DeleteAccountButton.Size = new System.Drawing.Size(47, 40);
             this.DeleteAccountButton.TabIndex = 12;
             this.AddAllToolTip.SetToolTip(this.DeleteAccountButton, "Remove the selected account from the list");
             this.DeleteAccountButton.UseVisualStyleBackColor = true;
@@ -296,11 +317,13 @@
             // 
             // LoggingLevelGroupBox
             // 
+            this.LoggingLevelGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
             this.LoggingLevelGroupBox.Controls.Add(this.LoggingLevelComboBox);
             this.LoggingLevelGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoggingLevelGroupBox.Location = new System.Drawing.Point(6, 19);
+            this.LoggingLevelGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.LoggingLevelGroupBox.Location = new System.Drawing.Point(7, 19);
             this.LoggingLevelGroupBox.Name = "LoggingLevelGroupBox";
-            this.LoggingLevelGroupBox.Size = new System.Drawing.Size(145, 40);
+            this.LoggingLevelGroupBox.Size = new System.Drawing.Size(169, 40);
             this.LoggingLevelGroupBox.TabIndex = 10;
             this.LoggingLevelGroupBox.TabStop = false;
             this.LoggingLevelGroupBox.Text = "Logging detailing";
@@ -308,10 +331,11 @@
             // 
             // LoggingLevelComboBox
             // 
-            this.LoggingLevelComboBox.BackColor = System.Drawing.SystemColors.Window;
+            this.LoggingLevelComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.LoggingLevelComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoggingLevelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.LoggingLevelComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoggingLevelComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.LoggingLevelComboBox.FormattingEnabled = true;
             this.LoggingLevelComboBox.Items.AddRange(new object[] {
             "Info + Errors",
@@ -319,7 +343,7 @@
             "None"});
             this.LoggingLevelComboBox.Location = new System.Drawing.Point(3, 16);
             this.LoggingLevelComboBox.Name = "LoggingLevelComboBox";
-            this.LoggingLevelComboBox.Size = new System.Drawing.Size(139, 21);
+            this.LoggingLevelComboBox.Size = new System.Drawing.Size(163, 21);
             this.LoggingLevelComboBox.TabIndex = 0;
             this.AddAllToolTip.SetToolTip(this.LoggingLevelComboBox, "With large amounts of work, disabling logs will speed up the program");
             this.LoggingLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.LoggingLevelComboBox_SelectedIndexChanged);
@@ -333,9 +357,10 @@
             this.groupBox1.Controls.Add(this.LoginGroupBox);
             this.groupBox1.Controls.Add(this.PasswordGroupBox);
             this.groupBox1.Controls.Add(this.MafilePathGroupBox);
-            this.groupBox1.Location = new System.Drawing.Point(8, 359);
+            this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.groupBox1.Location = new System.Drawing.Point(9, 359);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(367, 174);
+            this.groupBox1.Size = new System.Drawing.Size(428, 174);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Accounts Settings";
@@ -344,83 +369,93 @@
             // 
             this.OpskinsApiGroupBox.Controls.Add(this.OpskinsApiTextBox);
             this.OpskinsApiGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpskinsApiGroupBox.Location = new System.Drawing.Point(157, 69);
+            this.OpskinsApiGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.OpskinsApiGroupBox.Location = new System.Drawing.Point(183, 69);
             this.OpskinsApiGroupBox.Name = "OpskinsApiGroupBox";
-            this.OpskinsApiGroupBox.Size = new System.Drawing.Size(145, 39);
+            this.OpskinsApiGroupBox.Size = new System.Drawing.Size(169, 39);
             this.OpskinsApiGroupBox.TabIndex = 11;
             this.OpskinsApiGroupBox.TabStop = false;
             this.OpskinsApiGroupBox.Text = "OPSKINS API";
             // 
             // OpskinsApiTextBox
             // 
+            this.OpskinsApiTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.OpskinsApiTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OpskinsApiTextBox.Location = new System.Drawing.Point(3, 16);
             this.OpskinsApiTextBox.Name = "OpskinsApiTextBox";
-            this.OpskinsApiTextBox.Size = new System.Drawing.Size(139, 20);
+            this.OpskinsApiTextBox.Size = new System.Drawing.Size(163, 20);
             this.OpskinsApiTextBox.TabIndex = 4;
             // 
             // LogGroupBox
             // 
+            this.LogGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
             this.LogGroupBox.Controls.Add(this.LogTextBox);
-            this.LogGroupBox.Location = new System.Drawing.Point(381, 3);
+            this.LogGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.LogGroupBox.Location = new System.Drawing.Point(444, 3);
             this.LogGroupBox.Name = "LogGroupBox";
-            this.LogGroupBox.Size = new System.Drawing.Size(370, 350);
+            this.LogGroupBox.Size = new System.Drawing.Size(432, 350);
             this.LogGroupBox.TabIndex = 9;
             this.LogGroupBox.TabStop = false;
             this.LogGroupBox.Text = "Logging";
             // 
             // LogTextBox
             // 
-            this.LogTextBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.LogTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.LogTextBox.DetectUrls = false;
             this.LogTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LogTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LogTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.LogTextBox.Location = new System.Drawing.Point(3, 16);
             this.LogTextBox.Name = "LogTextBox";
             this.LogTextBox.ReadOnly = true;
             this.LogTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.LogTextBox.Size = new System.Drawing.Size(364, 331);
+            this.LogTextBox.Size = new System.Drawing.Size(426, 331);
             this.LogTextBox.TabIndex = 0;
             this.LogTextBox.Text = "";
             this.LogTextBox.TextChanged += new System.EventHandler(this.LogTextBox_TextChanged);
             // 
             // SettingsGroupBox
             // 
+            this.SettingsGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.SettingsGroupBox.Controls.Add(this.UpdateButton);
             this.SettingsGroupBox.Controls.Add(this.LoggingLevelGroupBox);
-            this.SettingsGroupBox.Location = new System.Drawing.Point(381, 359);
+            this.SettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.SettingsGroupBox.Location = new System.Drawing.Point(444, 359);
             this.SettingsGroupBox.Name = "SettingsGroupBox";
-            this.SettingsGroupBox.Size = new System.Drawing.Size(367, 174);
+            this.SettingsGroupBox.Size = new System.Drawing.Size(428, 174);
             this.SettingsGroupBox.TabIndex = 13;
             this.SettingsGroupBox.TabStop = false;
             this.SettingsGroupBox.Text = "Settings";
             // 
             // UpdateButton
             // 
-            this.UpdateButton.BackColor = System.Drawing.Color.RoyalBlue;
+            this.UpdateButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
             this.UpdateButton.Enabled = false;
             this.UpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.UpdateButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.UpdateButton.Location = new System.Drawing.Point(96, 130);
+            this.UpdateButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.UpdateButton.Location = new System.Drawing.Point(112, 130);
             this.UpdateButton.Name = "UpdateButton";
-            this.UpdateButton.Size = new System.Drawing.Size(174, 33);
+            this.UpdateButton.Size = new System.Drawing.Size(203, 33);
             this.UpdateButton.TabIndex = 15;
             this.UpdateButton.Text = "Check for updates";
             this.UpdateButton.UseVisualStyleBackColor = false;
             // 
             // SettingsControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Silver;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.Controls.Add(this.SettingsGroupBox);
             this.Controls.Add(this.LogGroupBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.LoginButton);
             this.Controls.Add(this.AccountGroupBox);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.Name = "SettingsControl";
-            this.Size = new System.Drawing.Size(759, 599);
+            this.Size = new System.Drawing.Size(885, 599);
             ((System.ComponentModel.ISupportInitialize)(this.AccountsDataGridView)).EndInit();
             this.AccountGroupBox.ResumeLayout(false);
             this.MafilePathGroupBox.ResumeLayout(false);
@@ -454,7 +489,6 @@
         private System.Windows.Forms.ToolTip AddAllToolTip;
         private System.Windows.Forms.Button AddNewAccountButton;
         private System.Windows.Forms.Button LoginButton;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox OpskinsApiGroupBox;
         private System.Windows.Forms.TextBox OpskinsApiTextBox;
         private System.Windows.Forms.Button DeleteAccountButton;
@@ -469,5 +503,6 @@
         private System.Windows.Forms.GroupBox LoggingLevelGroupBox;
         private System.Windows.Forms.Button UpdateButton;
         public System.Windows.Forms.ComboBox LoggingLevelComboBox;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
