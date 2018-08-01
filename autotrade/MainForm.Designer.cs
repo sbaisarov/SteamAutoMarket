@@ -59,9 +59,9 @@
             // leftHeaderPanel
             // 
             this.leftHeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.leftHeaderPanel.Controls.Add(this.LeftEdge);
             this.leftHeaderPanel.Controls.Add(this.LeftEdge2);
             this.leftHeaderPanel.Controls.Add(this.BottomEdge1);
-            this.leftHeaderPanel.Controls.Add(this.LeftEdge);
             this.leftHeaderPanel.Controls.Add(this.sidePanel);
             this.leftHeaderPanel.Controls.Add(this.settingsLinkButton);
             this.leftHeaderPanel.Controls.Add(this.leftPanelHideShowButton);
@@ -78,7 +78,7 @@
             // LeftEdge2
             // 
             this.LeftEdge2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.LeftEdge2.Location = new System.Drawing.Point(164, 0);
+            this.LeftEdge2.Location = new System.Drawing.Point(191, 0);
             this.LeftEdge2.Name = "LeftEdge2";
             this.LeftEdge2.Size = new System.Drawing.Size(2, 599);
             this.LeftEdge2.TabIndex = 6;
@@ -88,7 +88,7 @@
             this.BottomEdge1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.BottomEdge1.Location = new System.Drawing.Point(1, 597);
             this.BottomEdge1.Name = "BottomEdge1";
-            this.BottomEdge1.Size = new System.Drawing.Size(166, 2);
+            this.BottomEdge1.Size = new System.Drawing.Size(194, 2);
             this.BottomEdge1.TabIndex = 6;
             // 
             // LeftEdge
@@ -101,10 +101,10 @@
             // 
             // sidePanel
             // 
-            this.sidePanel.BackColor = System.Drawing.Color.AliceBlue;
+            this.sidePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.sidePanel.Location = new System.Drawing.Point(0, 172);
             this.sidePanel.Name = "sidePanel";
-            this.sidePanel.Size = new System.Drawing.Size(10, 45);
+            this.sidePanel.Size = new System.Drawing.Size(12, 45);
             this.sidePanel.TabIndex = 4;
             // 
             // settingsLinkButton
@@ -115,7 +115,7 @@
             this.settingsLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.settingsLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.settingsLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("settingsLinkButton.Image")));
-            this.settingsLinkButton.Location = new System.Drawing.Point(0, 172);
+            this.settingsLinkButton.Location = new System.Drawing.Point(3, 172);
             this.settingsLinkButton.Name = "settingsLinkButton";
             this.settingsLinkButton.Size = new System.Drawing.Size(166, 45);
             this.settingsLinkButton.TabIndex = 1;
@@ -204,9 +204,9 @@
             this.appExitButton.FlatAppearance.BorderSize = 0;
             this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appExitButton.Image = ((System.Drawing.Image)(resources.GetObject("appExitButton.Image")));
-            this.appExitButton.Location = new System.Drawing.Point(894, 4);
+            this.appExitButton.Location = new System.Drawing.Point(1012, 3);
             this.appExitButton.Name = "appExitButton";
-            this.appExitButton.Size = new System.Drawing.Size(23, 23);
+            this.appExitButton.Size = new System.Drawing.Size(27, 23);
             this.appExitButton.TabIndex = 6;
             this.appExitButton.UseVisualStyleBackColor = true;
             this.appExitButton.Click += new System.EventHandler(this.AppExitButton_Click);
@@ -217,9 +217,9 @@
             this.appCurtailButton.FlatAppearance.BorderSize = 0;
             this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appCurtailButton.Image = ((System.Drawing.Image)(resources.GetObject("appCurtailButton.Image")));
-            this.appCurtailButton.Location = new System.Drawing.Point(859, 4);
+            this.appCurtailButton.Location = new System.Drawing.Point(981, 3);
             this.appCurtailButton.Name = "appCurtailButton";
-            this.appCurtailButton.Size = new System.Drawing.Size(23, 23);
+            this.appCurtailButton.Size = new System.Drawing.Size(27, 23);
             this.appCurtailButton.TabIndex = 5;
             this.appCurtailButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.appCurtailButton.UseVisualStyleBackColor = true;
@@ -246,9 +246,9 @@
             // 
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.Location = new System.Drawing.Point(8, 4);
+            this.pictureBox1.Location = new System.Drawing.Point(8, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(24, 24);
+            this.pictureBox1.Size = new System.Drawing.Size(28, 24);
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
             // 
@@ -256,12 +256,12 @@
             // 
             this.titleLable.AutoSize = true;
             this.titleLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.titleLable.ForeColor = System.Drawing.Color.White;
-            this.titleLable.Location = new System.Drawing.Point(43, 6);
+            this.titleLable.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.titleLable.Location = new System.Drawing.Point(50, 6);
             this.titleLable.Name = "titleLable";
-            this.titleLable.Size = new System.Drawing.Size(169, 18);
+            this.titleLable.Size = new System.Drawing.Size(418, 18);
             this.titleLable.TabIndex = 7;
-            this.titleLable.Text = "\"Opskins\" Auto trade ";
+            this.titleLable.Text = "S.BEAR - Steam Best Effective Automation Resources";
             // 
             // RightEdge
             // 
@@ -274,15 +274,16 @@
             // BotEdge
             // 
             this.BotEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.BotEdge.Location = new System.Drawing.Point(166, 628);
+            this.BotEdge.Location = new System.Drawing.Point(0, 628);
             this.BotEdge.Name = "BotEdge";
-            this.BotEdge.Size = new System.Drawing.Size(885, 2);
+            this.BotEdge.Size = new System.Drawing.Size(1051, 2);
             this.BotEdge.TabIndex = 7;
             // 
             // SettingsControl
             // 
             this.SettingsControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.SettingsControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SettingsControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SettingsControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.SettingsControl.Location = new System.Drawing.Point(166, 31);
             this.SettingsControl.Name = "SettingsControl";
@@ -293,11 +294,10 @@
             // SaleControl
             // 
             this.SaleControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.SaleControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaleControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.SaleControl.Location = new System.Drawing.Point(166, 31);
             this.SaleControl.Name = "SaleControl";
-            this.SaleControl.Size = new System.Drawing.Size(759, 599);
+            this.SaleControl.Size = new System.Drawing.Size(885, 599);
             this.SaleControl.TabIndex = 4;
             // 
             // BuyControl
@@ -311,17 +311,18 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.ClientSize = new System.Drawing.Size(1051, 630);
+            this.Controls.Add(this.leftHeaderPanel);
             this.Controls.Add(this.BotEdge);
             this.Controls.Add(this.RightEdge);
-            this.Controls.Add(this.leftHeaderPanel);
             this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.SettingsControl);
             this.Controls.Add(this.SaleControl);
             this.Controls.Add(this.BuyControl);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

@@ -27,14 +27,15 @@ namespace autotrade {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaleControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.AllSteamItemsGridView = new System.Windows.Forms.DataGridView();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -110,19 +111,18 @@ namespace autotrade {
             this.AllSteamItemsGridView.AllowUserToDeleteRows = false;
             this.AllSteamItemsGridView.AllowUserToResizeColumns = false;
             this.AllSteamItemsGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Menu;
-            this.AllSteamItemsGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle15;
             this.AllSteamItemsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.AllSteamItemsGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AllSteamItemsGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.AllSteamItemsGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = Utils.FormComponents.SIMPLE_TEXT_COLOR;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.AllSteamItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.AllSteamItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.AllSteamItemsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.AllSteamItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NameColumn,
@@ -134,15 +134,24 @@ namespace autotrade {
             this.HidenItemsListColumn,
             this.HidenItemImageColumn,
             this.HidenItemMarketHashName});
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AllSteamItemsGridView.DefaultCellStyle = dataGridViewCellStyle4;
             this.AllSteamItemsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AllSteamItemsGridView.GridColor = System.Drawing.Color.White;
+            this.AllSteamItemsGridView.EnableHeadersVisualStyles = false;
+            this.AllSteamItemsGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.AllSteamItemsGridView.Location = new System.Drawing.Point(3, 16);
             this.AllSteamItemsGridView.Name = "AllSteamItemsGridView";
             this.AllSteamItemsGridView.RowHeadersVisible = false;
             this.AllSteamItemsGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.AllSteamItemsGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.AllSteamItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.AllSteamItemsGridView.Size = new System.Drawing.Size(479, 295);
+            this.AllSteamItemsGridView.Size = new System.Drawing.Size(560, 295);
             this.AllSteamItemsGridView.TabIndex = 7;
             this.AllSteamItemsGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SteamSaleDataGridView_CellClick);
             this.AllSteamItemsGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
@@ -163,8 +172,8 @@ namespace autotrade {
             // CountColumn
             // 
             this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.CountColumn.FillWeight = 35F;
             this.CountColumn.Frozen = true;
             this.CountColumn.HeaderText = "#";
@@ -182,8 +191,8 @@ namespace autotrade {
             // 
             // CountToAddColumn
             // 
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
             this.CountToAddColumn.FillWeight = 35F;
             this.CountToAddColumn.HeaderText = "Amount for sale";
@@ -234,7 +243,7 @@ namespace autotrade {
             this.ItemImageBox.ForeColor = System.Drawing.Color.CornflowerBlue;
             this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
             this.ItemImageBox.Name = "ItemImageBox";
-            this.ItemImageBox.Size = new System.Drawing.Size(120, 120);
+            this.ItemImageBox.Size = new System.Drawing.Size(139, 120);
             this.ItemImageBox.TabIndex = 8;
             // 
             // checkInvent
@@ -247,17 +256,19 @@ namespace autotrade {
             this.ItemsToSaleGridView.AllowUserToDeleteRows = false;
             this.ItemsToSaleGridView.AllowUserToResizeColumns = false;
             this.ItemsToSaleGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Menu;
-            this.ItemsToSaleGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Menu;
+            this.ItemsToSaleGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.ItemsToSaleGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle20.ForeColor = Utils.FormComponents.SIMPLE_TEXT_COLOR;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ItemsToSaleGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle20;
+            this.ItemsToSaleGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemsToSaleGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ItemsToSaleGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.ItemsToSaleGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ItemsToSaleGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AddedToSaleListItemName,
@@ -266,8 +277,17 @@ namespace autotrade {
             this.HidenMarketHashNameColumn,
             this.AddedToSaleListHidenItemsList,
             this.AveragePrice});
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ItemsToSaleGridView.DefaultCellStyle = dataGridViewCellStyle8;
             this.ItemsToSaleGridView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ItemsToSaleGridView.GridColor = System.Drawing.Color.White;
+            this.ItemsToSaleGridView.EnableHeadersVisualStyles = false;
+            this.ItemsToSaleGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.ItemsToSaleGridView.Location = new System.Drawing.Point(3, 16);
             this.ItemsToSaleGridView.MultiSelect = false;
             this.ItemsToSaleGridView.Name = "ItemsToSaleGridView";
@@ -276,7 +296,7 @@ namespace autotrade {
             this.ItemsToSaleGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.ItemsToSaleGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.ItemsToSaleGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.ItemsToSaleGridView.Size = new System.Drawing.Size(473, 201);
+            this.ItemsToSaleGridView.Size = new System.Drawing.Size(553, 201);
             this.ItemsToSaleGridView.TabIndex = 13;
             this.ItemsToSaleGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridView_CellClick);
             this.ItemsToSaleGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridView_CellEndEdit);
@@ -291,8 +311,8 @@ namespace autotrade {
             // 
             // AddedToSaleListItemsCount
             // 
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AddedToSaleListItemsCount.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AddedToSaleListItemsCount.DefaultCellStyle = dataGridViewCellStyle7;
             this.AddedToSaleListItemsCount.FillWeight = 35F;
             this.AddedToSaleListItemsCount.HeaderText = "Amount for sale";
             this.AddedToSaleListItemsCount.Name = "AddedToSaleListItemsCount";
@@ -330,9 +350,9 @@ namespace autotrade {
             this.ItemDescriptionGroupBox.Controls.Add(this.ItemNameLable);
             this.ItemDescriptionGroupBox.Controls.Add(this.ItemDescriptionTextBox);
             this.ItemDescriptionGroupBox.Controls.Add(this.ItemImageBox);
-            this.ItemDescriptionGroupBox.Location = new System.Drawing.Point(497, 155);
+            this.ItemDescriptionGroupBox.Location = new System.Drawing.Point(580, 155);
             this.ItemDescriptionGroupBox.Name = "ItemDescriptionGroupBox";
-            this.ItemDescriptionGroupBox.Size = new System.Drawing.Size(254, 224);
+            this.ItemDescriptionGroupBox.Size = new System.Drawing.Size(296, 224);
             this.ItemDescriptionGroupBox.TabIndex = 14;
             this.ItemDescriptionGroupBox.TabStop = false;
             this.ItemDescriptionGroupBox.Text = "Item description";
@@ -340,9 +360,9 @@ namespace autotrade {
             // ItemNameLable
             // 
             this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ItemNameLable.Location = new System.Drawing.Point(129, 15);
+            this.ItemNameLable.Location = new System.Drawing.Point(150, 15);
             this.ItemNameLable.Name = "ItemNameLable";
-            this.ItemNameLable.Size = new System.Drawing.Size(119, 120);
+            this.ItemNameLable.Size = new System.Drawing.Size(139, 120);
             this.ItemNameLable.TabIndex = 10;
             // 
             // ItemDescriptionTextBox
@@ -355,7 +375,7 @@ namespace autotrade {
             this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
             this.ItemDescriptionTextBox.ReadOnly = true;
             this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(248, 80);
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
             this.ItemDescriptionTextBox.TabIndex = 9;
             this.ItemDescriptionTextBox.Text = "";
             // 
@@ -365,9 +385,10 @@ namespace autotrade {
             this.ItemsToSaleGroupBox.Controls.Add(this.DeleteSelectedItemButton);
             this.ItemsToSaleGroupBox.Controls.Add(this.DeleteUntradableSteamButton);
             this.ItemsToSaleGroupBox.Controls.Add(this.DeleteUnmarketableSteamButton);
-            this.ItemsToSaleGroupBox.Location = new System.Drawing.Point(9, 323);
+            this.ItemsToSaleGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemsToSaleGroupBox.Location = new System.Drawing.Point(10, 323);
             this.ItemsToSaleGroupBox.Name = "ItemsToSaleGroupBox";
-            this.ItemsToSaleGroupBox.Size = new System.Drawing.Size(479, 267);
+            this.ItemsToSaleGroupBox.Size = new System.Drawing.Size(559, 267);
             this.ItemsToSaleGroupBox.TabIndex = 15;
             this.ItemsToSaleGroupBox.TabStop = false;
             this.ItemsToSaleGroupBox.Text = "Items for sale";
@@ -376,11 +397,11 @@ namespace autotrade {
             // 
             this.DeleteSelectedItemButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DeleteSelectedItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteSelectedItemButton.ForeColor = Utils.FormComponents.SIMPLE_TEXT_COLOR;
+            this.DeleteSelectedItemButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.DeleteSelectedItemButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteSelectedItemButton.Image")));
-            this.DeleteSelectedItemButton.Location = new System.Drawing.Point(432, 221);
+            this.DeleteSelectedItemButton.Location = new System.Drawing.Point(504, 221);
             this.DeleteSelectedItemButton.Name = "DeleteSelectedItemButton";
-            this.DeleteSelectedItemButton.Size = new System.Drawing.Size(40, 40);
+            this.DeleteSelectedItemButton.Size = new System.Drawing.Size(47, 40);
             this.DeleteSelectedItemButton.TabIndex = 22;
             this.AddAllToolTip.SetToolTip(this.DeleteSelectedItemButton, "Remove selected item from sale list");
             this.DeleteSelectedItemButton.UseVisualStyleBackColor = true;
@@ -392,9 +413,9 @@ namespace autotrade {
             this.DeleteUntradableSteamButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteUntradableSteamButton.ForeColor = System.Drawing.Color.Silver;
             this.DeleteUntradableSteamButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteUntradableSteamButton.Image")));
-            this.DeleteUntradableSteamButton.Location = new System.Drawing.Point(330, 221);
+            this.DeleteUntradableSteamButton.Location = new System.Drawing.Point(385, 221);
             this.DeleteUntradableSteamButton.Name = "DeleteUntradableSteamButton";
-            this.DeleteUntradableSteamButton.Size = new System.Drawing.Size(40, 40);
+            this.DeleteUntradableSteamButton.Size = new System.Drawing.Size(47, 40);
             this.DeleteUntradableSteamButton.TabIndex = 23;
             this.AddAllToolTip.SetToolTip(this.DeleteUntradableSteamButton, "Remove from list items, that can not be traded");
             this.DeleteUntradableSteamButton.UseVisualStyleBackColor = true;
@@ -404,11 +425,11 @@ namespace autotrade {
             // 
             this.DeleteUnmarketableSteamButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DeleteUnmarketableSteamButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteUnmarketableSteamButton.ForeColor = Utils.FormComponents.SIMPLE_TEXT_COLOR;
+            this.DeleteUnmarketableSteamButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.DeleteUnmarketableSteamButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteUnmarketableSteamButton.Image")));
-            this.DeleteUnmarketableSteamButton.Location = new System.Drawing.Point(381, 221);
+            this.DeleteUnmarketableSteamButton.Location = new System.Drawing.Point(444, 221);
             this.DeleteUnmarketableSteamButton.Name = "DeleteUnmarketableSteamButton";
-            this.DeleteUnmarketableSteamButton.Size = new System.Drawing.Size(40, 40);
+            this.DeleteUnmarketableSteamButton.Size = new System.Drawing.Size(47, 40);
             this.DeleteUnmarketableSteamButton.TabIndex = 24;
             this.AddAllToolTip.SetToolTip(this.DeleteUnmarketableSteamButton, "Remove from list items, that can not be sold on STEAM Market");
             this.DeleteUnmarketableSteamButton.UseVisualStyleBackColor = true;
@@ -419,9 +440,9 @@ namespace autotrade {
             this.StartSteamSellButton.BackColor = System.Drawing.Color.RoyalBlue;
             this.StartSteamSellButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.StartSteamSellButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.StartSteamSellButton.Location = new System.Drawing.Point(46, 33);
+            this.StartSteamSellButton.Location = new System.Drawing.Point(54, 33);
             this.StartSteamSellButton.Name = "StartSteamSellButton";
-            this.StartSteamSellButton.Size = new System.Drawing.Size(174, 35);
+            this.StartSteamSellButton.Size = new System.Drawing.Size(203, 35);
             this.StartSteamSellButton.TabIndex = 14;
             this.StartSteamSellButton.Text = "Sell on STEAM Market";
             this.StartSteamSellButton.UseVisualStyleBackColor = false;
@@ -430,9 +451,10 @@ namespace autotrade {
             // AllSteamItemsGroupBox
             // 
             this.AllSteamItemsGroupBox.Controls.Add(this.AllSteamItemsGridView);
-            this.AllSteamItemsGroupBox.Location = new System.Drawing.Point(6, 3);
+            this.AllSteamItemsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AllSteamItemsGroupBox.Location = new System.Drawing.Point(7, 3);
             this.AllSteamItemsGroupBox.Name = "AllSteamItemsGroupBox";
-            this.AllSteamItemsGroupBox.Size = new System.Drawing.Size(485, 314);
+            this.AllSteamItemsGroupBox.Size = new System.Drawing.Size(566, 314);
             this.AllSteamItemsGroupBox.TabIndex = 16;
             this.AllSteamItemsGroupBox.TabStop = false;
             this.AllSteamItemsGroupBox.Text = "All items";
@@ -444,9 +466,9 @@ namespace autotrade {
             this.PriceSettingsGroupBox.Controls.Add(this.ManualPriceRadioButton);
             this.PriceSettingsGroupBox.Controls.Add(this.HalfAutoPriceRadioButton);
             this.PriceSettingsGroupBox.Controls.Add(this.RecomendedPriceRadioButton);
-            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(497, 385);
+            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(580, 385);
             this.PriceSettingsGroupBox.Name = "PriceSettingsGroupBox";
-            this.PriceSettingsGroupBox.Size = new System.Drawing.Size(254, 107);
+            this.PriceSettingsGroupBox.Size = new System.Drawing.Size(296, 107);
             this.PriceSettingsGroupBox.TabIndex = 17;
             this.PriceSettingsGroupBox.TabStop = false;
             this.PriceSettingsGroupBox.Text = "The price formation setting ";
@@ -462,7 +484,7 @@ namespace autotrade {
             0,
             0,
             131072});
-            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(183, 70);
+            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(213, 70);
             this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
             -727379969,
             232,
@@ -474,7 +496,7 @@ namespace autotrade {
             0,
             -2147483648});
             this.CurrentPricePercentNumericUpDown.Name = "CurrentPricePercentNumericUpDown";
-            this.CurrentPricePercentNumericUpDown.Size = new System.Drawing.Size(65, 22);
+            this.CurrentPricePercentNumericUpDown.Size = new System.Drawing.Size(76, 22);
             this.CurrentPricePercentNumericUpDown.TabIndex = 4;
             this.CurrentPricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.AddAllToolTip.SetToolTip(this.CurrentPricePercentNumericUpDown, "Only one value type can be chosen");
@@ -492,7 +514,7 @@ namespace autotrade {
             0,
             0,
             131072});
-            this.CurrentPriceNumericUpDown.Location = new System.Drawing.Point(112, 70);
+            this.CurrentPriceNumericUpDown.Location = new System.Drawing.Point(131, 70);
             this.CurrentPriceNumericUpDown.Maximum = new decimal(new int[] {
             -727379969,
             232,
@@ -504,7 +526,7 @@ namespace autotrade {
             0,
             -2147483648});
             this.CurrentPriceNumericUpDown.Name = "CurrentPriceNumericUpDown";
-            this.CurrentPriceNumericUpDown.Size = new System.Drawing.Size(65, 22);
+            this.CurrentPriceNumericUpDown.Size = new System.Drawing.Size(76, 22);
             this.CurrentPriceNumericUpDown.TabIndex = 3;
             this.CurrentPriceNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.AddAllToolTip.SetToolTip(this.CurrentPriceNumericUpDown, "Only one value type can be chosen");
@@ -520,7 +542,7 @@ namespace autotrade {
             this.ManualPriceRadioButton.AutoSize = true;
             this.ManualPriceRadioButton.Checked = true;
             this.ManualPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ManualPriceRadioButton.Location = new System.Drawing.Point(10, 44);
+            this.ManualPriceRadioButton.Location = new System.Drawing.Point(12, 44);
             this.ManualPriceRadioButton.Name = "ManualPriceRadioButton";
             this.ManualPriceRadioButton.Size = new System.Drawing.Size(80, 20);
             this.ManualPriceRadioButton.TabIndex = 2;
@@ -532,7 +554,7 @@ namespace autotrade {
             // 
             this.HalfAutoPriceRadioButton.AutoSize = true;
             this.HalfAutoPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HalfAutoPriceRadioButton.Location = new System.Drawing.Point(10, 70);
+            this.HalfAutoPriceRadioButton.Location = new System.Drawing.Point(12, 70);
             this.HalfAutoPriceRadioButton.Name = "HalfAutoPriceRadioButton";
             this.HalfAutoPriceRadioButton.Size = new System.Drawing.Size(101, 20);
             this.HalfAutoPriceRadioButton.TabIndex = 1;
@@ -545,7 +567,7 @@ namespace autotrade {
             // 
             this.RecomendedPriceRadioButton.AutoSize = true;
             this.RecomendedPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RecomendedPriceRadioButton.Location = new System.Drawing.Point(10, 19);
+            this.RecomendedPriceRadioButton.Location = new System.Drawing.Point(12, 19);
             this.RecomendedPriceRadioButton.Name = "RecomendedPriceRadioButton";
             this.RecomendedPriceRadioButton.Size = new System.Drawing.Size(153, 20);
             this.RecomendedPriceRadioButton.TabIndex = 0;
@@ -558,25 +580,25 @@ namespace autotrade {
             this.TradeGroupBox.Controls.Add(this.TradeTokenLable);
             this.TradeGroupBox.Controls.Add(this.TradeParthenIdTextBox);
             this.TradeGroupBox.Controls.Add(this.PartnerIdLable);
-            this.TradeGroupBox.Location = new System.Drawing.Point(497, 385);
+            this.TradeGroupBox.Location = new System.Drawing.Point(580, 385);
             this.TradeGroupBox.Name = "TradeGroupBox";
-            this.TradeGroupBox.Size = new System.Drawing.Size(254, 107);
+            this.TradeGroupBox.Size = new System.Drawing.Size(296, 107);
             this.TradeGroupBox.TabIndex = 18;
             this.TradeGroupBox.TabStop = false;
             this.TradeGroupBox.Text = "Trade setting ";
             // 
             // TradeTokenTextBox
             // 
-            this.TradeTokenTextBox.Location = new System.Drawing.Point(132, 66);
+            this.TradeTokenTextBox.Location = new System.Drawing.Point(154, 66);
             this.TradeTokenTextBox.Name = "TradeTokenTextBox";
-            this.TradeTokenTextBox.Size = new System.Drawing.Size(106, 20);
+            this.TradeTokenTextBox.Size = new System.Drawing.Size(123, 20);
             this.TradeTokenTextBox.TabIndex = 29;
             // 
             // TradeTokenLable
             // 
             this.TradeTokenLable.AutoSize = true;
             this.TradeTokenLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.TradeTokenLable.Location = new System.Drawing.Point(10, 67);
+            this.TradeTokenLable.Location = new System.Drawing.Point(12, 67);
             this.TradeTokenLable.Name = "TradeTokenLable";
             this.TradeTokenLable.Size = new System.Drawing.Size(118, 16);
             this.TradeTokenLable.TabIndex = 28;
@@ -584,16 +606,16 @@ namespace autotrade {
             // 
             // TradeParthenIdTextBox
             // 
-            this.TradeParthenIdTextBox.Location = new System.Drawing.Point(132, 31);
+            this.TradeParthenIdTextBox.Location = new System.Drawing.Point(154, 31);
             this.TradeParthenIdTextBox.Name = "TradeParthenIdTextBox";
-            this.TradeParthenIdTextBox.Size = new System.Drawing.Size(106, 20);
+            this.TradeParthenIdTextBox.Size = new System.Drawing.Size(123, 20);
             this.TradeParthenIdTextBox.TabIndex = 27;
             // 
             // PartnerIdLable
             // 
             this.PartnerIdLable.AutoSize = true;
             this.PartnerIdLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.PartnerIdLable.Location = new System.Drawing.Point(10, 32);
+            this.PartnerIdLable.Location = new System.Drawing.Point(12, 32);
             this.PartnerIdLable.Name = "PartnerIdLable";
             this.PartnerIdLable.Size = new System.Drawing.Size(107, 16);
             this.PartnerIdLable.TabIndex = 26;
@@ -602,9 +624,9 @@ namespace autotrade {
             // SellGroupBox
             // 
             this.SellGroupBox.Controls.Add(this.StartSteamSellButton);
-            this.SellGroupBox.Location = new System.Drawing.Point(497, 498);
+            this.SellGroupBox.Location = new System.Drawing.Point(580, 498);
             this.SellGroupBox.Name = "SellGroupBox";
-            this.SellGroupBox.Size = new System.Drawing.Size(254, 92);
+            this.SellGroupBox.Size = new System.Drawing.Size(296, 92);
             this.SellGroupBox.TabIndex = 18;
             this.SellGroupBox.TabStop = false;
             this.SellGroupBox.Text = "Sell";
@@ -612,9 +634,9 @@ namespace autotrade {
             // TradeSendGroupBox
             // 
             this.TradeSendGroupBox.Controls.Add(this.SendTradeButton);
-            this.TradeSendGroupBox.Location = new System.Drawing.Point(497, 498);
+            this.TradeSendGroupBox.Location = new System.Drawing.Point(580, 498);
             this.TradeSendGroupBox.Name = "TradeSendGroupBox";
-            this.TradeSendGroupBox.Size = new System.Drawing.Size(254, 92);
+            this.TradeSendGroupBox.Size = new System.Drawing.Size(296, 92);
             this.TradeSendGroupBox.TabIndex = 19;
             this.TradeSendGroupBox.TabStop = false;
             this.TradeSendGroupBox.Text = "Sell";
@@ -624,9 +646,9 @@ namespace autotrade {
             this.SendTradeButton.BackColor = System.Drawing.Color.RoyalBlue;
             this.SendTradeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SendTradeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SendTradeButton.Location = new System.Drawing.Point(46, 33);
+            this.SendTradeButton.Location = new System.Drawing.Point(54, 33);
             this.SendTradeButton.Name = "SendTradeButton";
-            this.SendTradeButton.Size = new System.Drawing.Size(174, 35);
+            this.SendTradeButton.Size = new System.Drawing.Size(203, 35);
             this.SendTradeButton.TabIndex = 14;
             this.SendTradeButton.Text = "Send trade offer";
             this.SendTradeButton.UseVisualStyleBackColor = false;
@@ -637,9 +659,9 @@ namespace autotrade {
             this.RefreshPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RefreshPanel.BackgroundImage")));
             this.RefreshPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.RefreshPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RefreshPanel.Location = new System.Drawing.Point(543, 10);
+            this.RefreshPanel.Location = new System.Drawing.Point(633, 10);
             this.RefreshPanel.Name = "RefreshPanel";
-            this.RefreshPanel.Size = new System.Drawing.Size(38, 38);
+            this.RefreshPanel.Size = new System.Drawing.Size(44, 38);
             this.RefreshPanel.TabIndex = 19;
             this.AddAllToolTip.SetToolTip(this.RefreshPanel, "Reload current inventory");
             this.RefreshPanel.Click += new System.EventHandler(this.RefreshPanel_Click);
@@ -654,9 +676,9 @@ namespace autotrade {
             this.AddAllPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("AddAllPanel.BackgroundImage")));
             this.AddAllPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.AddAllPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AddAllPanel.Location = new System.Drawing.Point(497, 10);
+            this.AddAllPanel.Location = new System.Drawing.Point(580, 10);
             this.AddAllPanel.Name = "AddAllPanel";
-            this.AddAllPanel.Size = new System.Drawing.Size(38, 38);
+            this.AddAllPanel.Size = new System.Drawing.Size(44, 38);
             this.AddAllPanel.TabIndex = 20;
             this.AddAllToolTip.SetToolTip(this.AddAllPanel, "Add selected items for sale");
             this.AddAllPanel.Click += new System.EventHandler(this.AddAllPanel_Click);
@@ -670,9 +692,9 @@ namespace autotrade {
             this.SteamPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SteamPanel.BackgroundImage")));
             this.SteamPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SteamPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.SteamPanel.Location = new System.Drawing.Point(667, 10);
+            this.SteamPanel.Location = new System.Drawing.Point(778, 10);
             this.SteamPanel.Name = "SteamPanel";
-            this.SteamPanel.Size = new System.Drawing.Size(38, 38);
+            this.SteamPanel.Size = new System.Drawing.Size(44, 38);
             this.SteamPanel.TabIndex = 20;
             this.AddAllToolTip.SetToolTip(this.SteamPanel, "Find selected item on STEAM Market");
             this.SteamPanel.Click += new System.EventHandler(this.SteamPanel_Click);
@@ -686,9 +708,9 @@ namespace autotrade {
             this.OpskinsPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("OpskinsPanel.BackgroundImage")));
             this.OpskinsPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.OpskinsPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.OpskinsPanel.Location = new System.Drawing.Point(713, 10);
+            this.OpskinsPanel.Location = new System.Drawing.Point(832, 10);
             this.OpskinsPanel.Name = "OpskinsPanel";
-            this.OpskinsPanel.Size = new System.Drawing.Size(38, 38);
+            this.OpskinsPanel.Size = new System.Drawing.Size(44, 38);
             this.OpskinsPanel.TabIndex = 21;
             this.AddAllToolTip.SetToolTip(this.OpskinsPanel, "Find selected item on TODO!");
             this.OpskinsPanel.Click += new System.EventHandler(this.OpskinsPanel_Click);
@@ -701,9 +723,9 @@ namespace autotrade {
             // 
             this.SplitterPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SplitterPanel.BackgroundImage")));
             this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SplitterPanel.Location = new System.Drawing.Point(591, 10);
+            this.SplitterPanel.Location = new System.Drawing.Point(689, 10);
             this.SplitterPanel.Name = "SplitterPanel";
-            this.SplitterPanel.Size = new System.Drawing.Size(66, 36);
+            this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
             this.SplitterPanel.TabIndex = 20;
             // 
             // AddAllToolTip
@@ -720,11 +742,11 @@ namespace autotrade {
             // 
             this.LoadInventoryButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.LoadInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadInventoryButton.ForeColor = Utils.FormComponents.SIMPLE_TEXT_COLOR;
+            this.LoadInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.LoadInventoryButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadInventoryButton.Image")));
-            this.LoadInventoryButton.Location = new System.Drawing.Point(174, 9);
+            this.LoadInventoryButton.Location = new System.Drawing.Point(203, 9);
             this.LoadInventoryButton.Name = "LoadInventoryButton";
-            this.LoadInventoryButton.Size = new System.Drawing.Size(65, 65);
+            this.LoadInventoryButton.Size = new System.Drawing.Size(76, 65);
             this.LoadInventoryButton.TabIndex = 25;
             this.AddAllToolTip.SetToolTip(this.LoadInventoryButton, "Load selected inventory");
             this.LoadInventoryButton.UseVisualStyleBackColor = true;
@@ -737,9 +759,9 @@ namespace autotrade {
             this.InventoryGroupBox.Controls.Add(this.InventoryContextIdComboBox);
             this.InventoryGroupBox.Controls.Add(this.InventoryAppIdLabel);
             this.InventoryGroupBox.Controls.Add(this.InventoryAppIdComboBox);
-            this.InventoryGroupBox.Location = new System.Drawing.Point(497, 70);
+            this.InventoryGroupBox.Location = new System.Drawing.Point(580, 70);
             this.InventoryGroupBox.Name = "InventoryGroupBox";
-            this.InventoryGroupBox.Size = new System.Drawing.Size(248, 79);
+            this.InventoryGroupBox.Size = new System.Drawing.Size(289, 79);
             this.InventoryGroupBox.TabIndex = 18;
             this.InventoryGroupBox.TabStop = false;
             this.InventoryGroupBox.Text = "Inventory settings";
@@ -748,7 +770,7 @@ namespace autotrade {
             // 
             this.InventoryContextIdLabel.AutoSize = true;
             this.InventoryContextIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.InventoryContextIdLabel.Location = new System.Drawing.Point(7, 49);
+            this.InventoryContextIdLabel.Location = new System.Drawing.Point(8, 49);
             this.InventoryContextIdLabel.Name = "InventoryContextIdLabel";
             this.InventoryContextIdLabel.Size = new System.Drawing.Size(66, 16);
             this.InventoryContextIdLabel.TabIndex = 3;
@@ -757,16 +779,16 @@ namespace autotrade {
             // InventoryContextIdComboBox
             // 
             this.InventoryContextIdComboBox.FormattingEnabled = true;
-            this.InventoryContextIdComboBox.Location = new System.Drawing.Point(79, 46);
+            this.InventoryContextIdComboBox.Location = new System.Drawing.Point(92, 46);
             this.InventoryContextIdComboBox.Name = "InventoryContextIdComboBox";
-            this.InventoryContextIdComboBox.Size = new System.Drawing.Size(84, 21);
+            this.InventoryContextIdComboBox.Size = new System.Drawing.Size(97, 21);
             this.InventoryContextIdComboBox.TabIndex = 2;
             // 
             // InventoryAppIdLabel
             // 
             this.InventoryAppIdLabel.AutoSize = true;
             this.InventoryAppIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.InventoryAppIdLabel.Location = new System.Drawing.Point(7, 22);
+            this.InventoryAppIdLabel.Location = new System.Drawing.Point(8, 22);
             this.InventoryAppIdLabel.Name = "InventoryAppIdLabel";
             this.InventoryAppIdLabel.Size = new System.Drawing.Size(47, 16);
             this.InventoryAppIdLabel.TabIndex = 1;
@@ -780,26 +802,26 @@ namespace autotrade {
             "CS:GO",
             "PUBG",
             "TF"});
-            this.InventoryAppIdComboBox.Location = new System.Drawing.Point(79, 19);
+            this.InventoryAppIdComboBox.Location = new System.Drawing.Point(92, 19);
             this.InventoryAppIdComboBox.Name = "InventoryAppIdComboBox";
-            this.InventoryAppIdComboBox.Size = new System.Drawing.Size(84, 21);
+            this.InventoryAppIdComboBox.Size = new System.Drawing.Size(97, 21);
             this.InventoryAppIdComboBox.TabIndex = 0;
             this.InventoryAppIdComboBox.SelectedIndexChanged += new System.EventHandler(this.InventoryAppIdComboBox_SelectedIndexChanged);
             // 
             // AccountNameLable
             // 
             this.AccountNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AccountNameLable.Location = new System.Drawing.Point(564, 49);
+            this.AccountNameLable.Location = new System.Drawing.Point(658, 49);
             this.AccountNameLable.Name = "AccountNameLable";
-            this.AccountNameLable.Size = new System.Drawing.Size(120, 18);
+            this.AccountNameLable.Size = new System.Drawing.Size(140, 18);
             this.AccountNameLable.TabIndex = 11;
             this.AccountNameLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SaleControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Silver;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
             this.Controls.Add(this.AccountNameLable);
             this.Controls.Add(this.InventoryGroupBox);
             this.Controls.Add(this.SplitterPanel);
@@ -814,10 +836,10 @@ namespace autotrade {
             this.Controls.Add(this.ItemsToSaleGroupBox);
             this.Controls.Add(this.TradeGroupBox);
             this.Controls.Add(this.TradeSendGroupBox);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ForeColor = Utils.FormComponents.SIMPLE_TEXT_COLOR;
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.Name = "SaleControl";
-            this.Size = new System.Drawing.Size(759, 599);
+            this.Size = new System.Drawing.Size(885, 599);
             this.Load += new System.EventHandler(this.SaleControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToSaleGridView)).EndInit();
