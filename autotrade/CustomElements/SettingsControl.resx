@@ -157,6 +157,9 @@
   <metadata name="AccountObjectHidenColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="TruePassword.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="AddNewAccountButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAABGdBTUEAALGeYUxB9wAAACBjSFJNAACH
@@ -194,19 +197,19 @@
   </metadata>
   <data name="BrowseMafilePathButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAiEIAAIhCAT5lfukAAAKMSURBVEhL1VXLi1JhFL/EMEgMrWRatGrTvlXQpkX/QEQQ
-        Qf+A+EbBx/gE0YWjoobp6EhulHBh4otxIfl+4OvuioqaIGg1ixY1Nnhv53cZSQetnJlNix/fdz/O+Z1z
-        ft/5zmV0Op08lUodtdttrtPpLKBUKv202+0RlmWZdcEkk8kj2vCrkM/nj7Va7WOJRLJBEP0JZP+buNVq
-        cTOSVYjH419cLlfO7Xa/XoEqoWI2m31SqfQm+TAMlcyPx2O+2WxytVptugQcgsNuXqaz6Ha7fL/f571e
-        b5uyFzM4QLlWq/WZ0Wg0E6zngNlkMrnS6fS3SqUyJemeImMuGo1+QvoXhcfjaTYaDc5gMBgF4v39/c+U
-        /sYy43Xg8/na9XodxIbLJu78X8TBYJBFM1w6sdPpfFWtVqc7Ozv2CxGTz5ZKpbqvVqvv0X6TILJYLEGN
-        RvPgXMRke4X6/nkikfiay+WOs9nsD3CQAqaZzdrEyGp3d7cGLel7Aehhh8PxEnZrE6PU4XAoEI1GIx5B
-        /H7/AHucYQQgc+FJ7+3tfZx3XgUKvo3yac+DHKNAqVTeJk0f0X4yGAwE8lgsdihMt0wm853mshSiEx7O
-        AyMTKypSKBR3oCmc6fk2iPQuzglb2IdCobcYaAjCBAKBMaIjAFrlLDDhsKKFiECMiwIx/E7n9DWZTHYD
-        g4dmziGIEZyhLG7RX+IFokUikQ+E9/OATBhSer1eBTngDOLTqThBFVTRk0KhMOn1eoIU4XD43bx+YsL2
-        Msjl8uu0XoUdxiNuHwS4MEroDQIjU5wdHBycUBKKhcv5F1AAEb2wDCSib4F8Rloul09sNluYbDaXOv8N
-        IEdLQZZisThBd6B8yAVSlmWZXxKyuMSXjLFBAAAAAElFTkSuQmCC
+        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
+        BVKWZZlfErK4xJeMsUEAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="EditAccountButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

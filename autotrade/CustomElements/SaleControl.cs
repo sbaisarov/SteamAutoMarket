@@ -18,6 +18,7 @@ using autotrade.WorkingProcess;
 
 namespace autotrade {
     public partial class SaleControl : UserControl {
+        bool isMousePressed = false;
         ApiServices services = new ApiServices();
 
         public static Dictionary<string, RgDescription> AllDescriptionsDictionary { get; set; }
@@ -122,7 +123,11 @@ namespace autotrade {
             var row = cell.RowIndex;
             if (row < 0) return;
 
-            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, AllSteamItemsGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            if (AllSteamItemsGridView.SelectedRows.Count > 1) {
+                AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, AllSteamItemsGridView.SelectedRows[AllSteamItemsGridView.SelectedRows.Count - 1].Cells[0].RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            } else {
+                AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, AllSteamItemsGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            }
         }
 
         private void ItemsToSaleGridView_CurrentCellChanged(object sender, EventArgs e) {
@@ -132,7 +137,11 @@ namespace autotrade {
             var row = cell.RowIndex;
             if (row < 0) return;
 
-            ItemsToSaleGridUtils.RowClick(ItemsToSaleGridView, row, AllDescriptionsDictionary, AllSteamItemsGridView, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            if (ItemsToSaleGridView.SelectedRows.Count > 1) {
+                ItemsToSaleGridUtils.RowClick(ItemsToSaleGridView, ItemsToSaleGridView.SelectedRows[ItemsToSaleGridView.SelectedRows.Count - 1].Cells[0].RowIndex, AllDescriptionsDictionary, AllSteamItemsGridView, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            } else {
+                ItemsToSaleGridUtils.RowClick(ItemsToSaleGridView, row, AllDescriptionsDictionary, AllSteamItemsGridView, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            }
         }
 
         private void SteamSaleDataGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e) {
@@ -232,7 +241,7 @@ namespace autotrade {
 
         private void OpskinsPanel_MouseDown(object sender, MouseEventArgs e) {
             //OpskinsPanel.BackColor = SystemColors.ControlLight;
-           // OpskinsPanel.BorderStyle = BorderStyle.FixedSingle;
+            // OpskinsPanel.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void OpskinsPanel_MouseEnter(object sender, EventArgs e) {
@@ -244,7 +253,7 @@ namespace autotrade {
         }
 
         private void OpskinsPanel_MouseUp(object sender, MouseEventArgs e) {
-           // OpskinsPanel.BackColor = Color.LightGray;
+            // OpskinsPanel.BackColor = Color.LightGray;
             //OpskinsPanel.BorderStyle = BorderStyle.None;
         }
         #endregion
@@ -445,6 +454,14 @@ namespace autotrade {
                 CurrentPricePercentNumericUpDown.Value = 0;
                 CurrentPriceNumericUpDown.Value = tmp;
             }
+        }
+
+        private void SaleControl_MouseDown(object sender, MouseEventArgs e) {
+
+        }
+
+        private void SaleControl_MouseUp(object sender, MouseEventArgs e) {
+
         }
     }
 }

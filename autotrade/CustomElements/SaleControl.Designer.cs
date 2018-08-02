@@ -27,15 +27,15 @@ namespace autotrade {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaleControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
             this.AllSteamItemsGridView = new System.Windows.Forms.DataGridView();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -115,14 +115,14 @@ namespace autotrade {
             this.AllSteamItemsGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AllSteamItemsGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.AllSteamItemsGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.AllSteamItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle41.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle41.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle41.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle41.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle41.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle41.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.AllSteamItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle41;
             this.AllSteamItemsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.AllSteamItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NameColumn,
@@ -134,14 +134,14 @@ namespace autotrade {
             this.HidenItemsListColumn,
             this.HidenItemImageColumn,
             this.HidenItemMarketHashName});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.AllSteamItemsGridView.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle44.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle44.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle44.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle44.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle44.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AllSteamItemsGridView.DefaultCellStyle = dataGridViewCellStyle44;
             this.AllSteamItemsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AllSteamItemsGridView.EnableHeadersVisualStyles = false;
             this.AllSteamItemsGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -172,8 +172,8 @@ namespace autotrade {
             // CountColumn
             // 
             this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle42;
             this.CountColumn.FillWeight = 35F;
             this.CountColumn.Frozen = true;
             this.CountColumn.HeaderText = "#";
@@ -191,8 +191,8 @@ namespace autotrade {
             // 
             // CountToAddColumn
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle43;
             this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
             this.CountToAddColumn.FillWeight = 35F;
             this.CountToAddColumn.HeaderText = "Amount for sale";
@@ -236,11 +236,10 @@ namespace autotrade {
             // 
             // ItemImageBox
             // 
-            this.ItemImageBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.ItemImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ItemImageBox.BackgroundImage")));
             this.ItemImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ItemImageBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ItemImageBox.ForeColor = System.Drawing.Color.CornflowerBlue;
             this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
             this.ItemImageBox.Name = "ItemImageBox";
             this.ItemImageBox.Size = new System.Drawing.Size(139, 120);
@@ -256,19 +255,19 @@ namespace autotrade {
             this.ItemsToSaleGridView.AllowUserToDeleteRows = false;
             this.ItemsToSaleGridView.AllowUserToResizeColumns = false;
             this.ItemsToSaleGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Menu;
-            this.ItemsToSaleGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle45.BackColor = System.Drawing.SystemColors.Menu;
+            this.ItemsToSaleGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle45;
             this.ItemsToSaleGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ItemsToSaleGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.ItemsToSaleGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ItemsToSaleGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle46.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle46.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle46.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle46.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle46.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle46.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle46.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ItemsToSaleGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle46;
             this.ItemsToSaleGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ItemsToSaleGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AddedToSaleListItemName,
@@ -277,14 +276,14 @@ namespace autotrade {
             this.HidenMarketHashNameColumn,
             this.AddedToSaleListHidenItemsList,
             this.AveragePrice});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ItemsToSaleGridView.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle48.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle48.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle48.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle48.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle48.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle48.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle48.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ItemsToSaleGridView.DefaultCellStyle = dataGridViewCellStyle48;
             this.ItemsToSaleGridView.Dock = System.Windows.Forms.DockStyle.Top;
             this.ItemsToSaleGridView.EnableHeadersVisualStyles = false;
             this.ItemsToSaleGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -311,8 +310,8 @@ namespace autotrade {
             // 
             // AddedToSaleListItemsCount
             // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AddedToSaleListItemsCount.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle47.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AddedToSaleListItemsCount.DefaultCellStyle = dataGridViewCellStyle47;
             this.AddedToSaleListItemsCount.FillWeight = 35F;
             this.AddedToSaleListItemsCount.HeaderText = "Amount for sale";
             this.AddedToSaleListItemsCount.Name = "AddedToSaleListItemsCount";
@@ -350,7 +349,8 @@ namespace autotrade {
             this.ItemDescriptionGroupBox.Controls.Add(this.ItemNameLable);
             this.ItemDescriptionGroupBox.Controls.Add(this.ItemDescriptionTextBox);
             this.ItemDescriptionGroupBox.Controls.Add(this.ItemImageBox);
-            this.ItemDescriptionGroupBox.Location = new System.Drawing.Point(580, 155);
+            this.ItemDescriptionGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionGroupBox.Location = new System.Drawing.Point(579, 3);
             this.ItemDescriptionGroupBox.Name = "ItemDescriptionGroupBox";
             this.ItemDescriptionGroupBox.Size = new System.Drawing.Size(296, 224);
             this.ItemDescriptionGroupBox.TabIndex = 14;
@@ -367,10 +367,11 @@ namespace autotrade {
             // 
             // ItemDescriptionTextBox
             // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.ItemDescriptionTextBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.ItemDescriptionTextBox.DetectUrls = false;
             this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
             this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
             this.ItemDescriptionTextBox.ReadOnly = true;
@@ -396,6 +397,7 @@ namespace autotrade {
             // DeleteSelectedItemButton
             // 
             this.DeleteSelectedItemButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DeleteSelectedItemButton.FlatAppearance.BorderSize = 0;
             this.DeleteSelectedItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteSelectedItemButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.DeleteSelectedItemButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteSelectedItemButton.Image")));
@@ -410,6 +412,7 @@ namespace autotrade {
             // DeleteUntradableSteamButton
             // 
             this.DeleteUntradableSteamButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DeleteUntradableSteamButton.FlatAppearance.BorderSize = 0;
             this.DeleteUntradableSteamButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteUntradableSteamButton.ForeColor = System.Drawing.Color.Silver;
             this.DeleteUntradableSteamButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteUntradableSteamButton.Image")));
@@ -424,10 +427,11 @@ namespace autotrade {
             // DeleteUnmarketableSteamButton
             // 
             this.DeleteUnmarketableSteamButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DeleteUnmarketableSteamButton.FlatAppearance.BorderSize = 0;
             this.DeleteUnmarketableSteamButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteUnmarketableSteamButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.DeleteUnmarketableSteamButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteUnmarketableSteamButton.Image")));
-            this.DeleteUnmarketableSteamButton.Location = new System.Drawing.Point(444, 221);
+            this.DeleteUnmarketableSteamButton.Location = new System.Drawing.Point(446, 221);
             this.DeleteUnmarketableSteamButton.Name = "DeleteUnmarketableSteamButton";
             this.DeleteUnmarketableSteamButton.Size = new System.Drawing.Size(47, 40);
             this.DeleteUnmarketableSteamButton.TabIndex = 24;
@@ -437,9 +441,10 @@ namespace autotrade {
             // 
             // StartSteamSellButton
             // 
-            this.StartSteamSellButton.BackColor = System.Drawing.Color.RoyalBlue;
+            this.StartSteamSellButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
             this.StartSteamSellButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.StartSteamSellButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.StartSteamSellButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.StartSteamSellButton.Location = new System.Drawing.Point(54, 33);
             this.StartSteamSellButton.Name = "StartSteamSellButton";
             this.StartSteamSellButton.Size = new System.Drawing.Size(203, 35);
@@ -466,7 +471,8 @@ namespace autotrade {
             this.PriceSettingsGroupBox.Controls.Add(this.ManualPriceRadioButton);
             this.PriceSettingsGroupBox.Controls.Add(this.HalfAutoPriceRadioButton);
             this.PriceSettingsGroupBox.Controls.Add(this.RecomendedPriceRadioButton);
-            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(580, 385);
+            this.PriceSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(580, 384);
             this.PriceSettingsGroupBox.Name = "PriceSettingsGroupBox";
             this.PriceSettingsGroupBox.Size = new System.Drawing.Size(296, 107);
             this.PriceSettingsGroupBox.TabIndex = 17;
@@ -475,10 +481,12 @@ namespace autotrade {
             // 
             // CurrentPricePercentNumericUpDown
             // 
+            this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
             this.CurrentPricePercentNumericUpDown.Enabled = false;
             this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
             1,
             0,
@@ -505,10 +513,12 @@ namespace autotrade {
             // 
             // CurrentPriceNumericUpDown
             // 
+            this.CurrentPriceNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.CurrentPriceNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CurrentPriceNumericUpDown.DecimalPlaces = 2;
             this.CurrentPriceNumericUpDown.Enabled = false;
             this.CurrentPriceNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentPriceNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.CurrentPriceNumericUpDown.Increment = new decimal(new int[] {
             1,
             0,
@@ -624,6 +634,7 @@ namespace autotrade {
             // SellGroupBox
             // 
             this.SellGroupBox.Controls.Add(this.StartSteamSellButton);
+            this.SellGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.SellGroupBox.Location = new System.Drawing.Point(580, 498);
             this.SellGroupBox.Name = "SellGroupBox";
             this.SellGroupBox.Size = new System.Drawing.Size(296, 92);
@@ -659,7 +670,7 @@ namespace autotrade {
             this.RefreshPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RefreshPanel.BackgroundImage")));
             this.RefreshPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.RefreshPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RefreshPanel.Location = new System.Drawing.Point(633, 10);
+            this.RefreshPanel.Location = new System.Drawing.Point(632, 242);
             this.RefreshPanel.Name = "RefreshPanel";
             this.RefreshPanel.Size = new System.Drawing.Size(44, 38);
             this.RefreshPanel.TabIndex = 19;
@@ -672,11 +683,10 @@ namespace autotrade {
             // 
             // AddAllPanel
             // 
-            this.AddAllPanel.BackColor = System.Drawing.Color.Silver;
             this.AddAllPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("AddAllPanel.BackgroundImage")));
             this.AddAllPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.AddAllPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AddAllPanel.Location = new System.Drawing.Point(580, 10);
+            this.AddAllPanel.Location = new System.Drawing.Point(579, 242);
             this.AddAllPanel.Name = "AddAllPanel";
             this.AddAllPanel.Size = new System.Drawing.Size(44, 38);
             this.AddAllPanel.TabIndex = 20;
@@ -692,7 +702,7 @@ namespace autotrade {
             this.SteamPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SteamPanel.BackgroundImage")));
             this.SteamPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SteamPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.SteamPanel.Location = new System.Drawing.Point(778, 10);
+            this.SteamPanel.Location = new System.Drawing.Point(777, 242);
             this.SteamPanel.Name = "SteamPanel";
             this.SteamPanel.Size = new System.Drawing.Size(44, 38);
             this.SteamPanel.TabIndex = 20;
@@ -708,7 +718,7 @@ namespace autotrade {
             this.OpskinsPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("OpskinsPanel.BackgroundImage")));
             this.OpskinsPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.OpskinsPanel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.OpskinsPanel.Location = new System.Drawing.Point(832, 10);
+            this.OpskinsPanel.Location = new System.Drawing.Point(831, 242);
             this.OpskinsPanel.Name = "OpskinsPanel";
             this.OpskinsPanel.Size = new System.Drawing.Size(44, 38);
             this.OpskinsPanel.TabIndex = 21;
@@ -723,7 +733,7 @@ namespace autotrade {
             // 
             this.SplitterPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SplitterPanel.BackgroundImage")));
             this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SplitterPanel.Location = new System.Drawing.Point(689, 10);
+            this.SplitterPanel.Location = new System.Drawing.Point(688, 237);
             this.SplitterPanel.Name = "SplitterPanel";
             this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
             this.SplitterPanel.TabIndex = 20;
@@ -741,10 +751,11 @@ namespace autotrade {
             // LoadInventoryButton
             // 
             this.LoadInventoryButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LoadInventoryButton.FlatAppearance.BorderSize = 0;
             this.LoadInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.LoadInventoryButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadInventoryButton.Image")));
-            this.LoadInventoryButton.Location = new System.Drawing.Point(203, 9);
+            this.LoadInventoryButton.Location = new System.Drawing.Point(206, 9);
             this.LoadInventoryButton.Name = "LoadInventoryButton";
             this.LoadInventoryButton.Size = new System.Drawing.Size(76, 65);
             this.LoadInventoryButton.TabIndex = 25;
@@ -759,9 +770,10 @@ namespace autotrade {
             this.InventoryGroupBox.Controls.Add(this.InventoryContextIdComboBox);
             this.InventoryGroupBox.Controls.Add(this.InventoryAppIdLabel);
             this.InventoryGroupBox.Controls.Add(this.InventoryAppIdComboBox);
-            this.InventoryGroupBox.Location = new System.Drawing.Point(580, 70);
+            this.InventoryGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.InventoryGroupBox.Location = new System.Drawing.Point(580, 296);
             this.InventoryGroupBox.Name = "InventoryGroupBox";
-            this.InventoryGroupBox.Size = new System.Drawing.Size(289, 79);
+            this.InventoryGroupBox.Size = new System.Drawing.Size(296, 79);
             this.InventoryGroupBox.TabIndex = 18;
             this.InventoryGroupBox.TabStop = false;
             this.InventoryGroupBox.Text = "Inventory settings";
@@ -778,6 +790,9 @@ namespace autotrade {
             // 
             // InventoryContextIdComboBox
             // 
+            this.InventoryContextIdComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.InventoryContextIdComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InventoryContextIdComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.InventoryContextIdComboBox.FormattingEnabled = true;
             this.InventoryContextIdComboBox.Location = new System.Drawing.Point(92, 46);
             this.InventoryContextIdComboBox.Name = "InventoryContextIdComboBox";
@@ -796,6 +811,9 @@ namespace autotrade {
             // 
             // InventoryAppIdComboBox
             // 
+            this.InventoryAppIdComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.InventoryAppIdComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InventoryAppIdComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.InventoryAppIdComboBox.FormattingEnabled = true;
             this.InventoryAppIdComboBox.Items.AddRange(new object[] {
             "STEAM",
@@ -811,7 +829,7 @@ namespace autotrade {
             // AccountNameLable
             // 
             this.AccountNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AccountNameLable.Location = new System.Drawing.Point(658, 49);
+            this.AccountNameLable.Location = new System.Drawing.Point(659, 275);
             this.AccountNameLable.Name = "AccountNameLable";
             this.AccountNameLable.Size = new System.Drawing.Size(140, 18);
             this.AccountNameLable.TabIndex = 11;
@@ -822,7 +840,6 @@ namespace autotrade {
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
-            this.Controls.Add(this.AccountNameLable);
             this.Controls.Add(this.InventoryGroupBox);
             this.Controls.Add(this.SplitterPanel);
             this.Controls.Add(this.OpskinsPanel);
@@ -836,6 +853,7 @@ namespace autotrade {
             this.Controls.Add(this.ItemsToSaleGroupBox);
             this.Controls.Add(this.TradeGroupBox);
             this.Controls.Add(this.TradeSendGroupBox);
+            this.Controls.Add(this.AccountNameLable);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.Name = "SaleControl";

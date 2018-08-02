@@ -25,7 +25,8 @@ namespace autotrade.CustomElements {
                 foreach (var acc in accounts) {
                     int row = AccountsDataGridView.Rows.Add();
                     AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = acc.Login;
-                    AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = acc.Password;
+                    AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = getPasswordStars(acc.Password.Count());
+                    AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value = acc.Password;
                     AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value = acc.OpskinsApi;
                     AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = acc.Mafile;
 
@@ -50,6 +51,13 @@ namespace autotrade.CustomElements {
             }
         }
 
+        private string getPasswordStars(int Count) {
+            String result = "";
+            for (int i = 0; i < Count; i++) {
+                result += "*";
+            }
+            return result;
+        }
         private void AddNewAccountButton_Click(object sender, EventArgs e) {
             if (string.IsNullOrEmpty(LoginTextBox.Text) || string.IsNullOrEmpty(MafilePathTextBox.Text) || string.IsNullOrEmpty(PasswordTextBox.Text)) {
                 MessageBox.Show("Some fields are filled - incorrectly", "Error adding account", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -79,9 +87,10 @@ namespace autotrade.CustomElements {
 
             var login = LoginTextBox.Text.Trim();
             AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = login;
-            AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = PasswordTextBox.Text.Trim();
+            AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = getPasswordStars(PasswordTextBox.Text.Trim().Count());
             AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value = OpskinsApiTextBox.Text.Trim();
             AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = account;
+            AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value = PasswordTextBox.Text.Trim();
             Logger.Info($"{login} added to accounts list");
 
             Task.Run(() => {
@@ -104,7 +113,7 @@ namespace autotrade.CustomElements {
             var accounts = new List<SavedSteamAccount>();
             for (int i = 0; i < AccountsDataGridView.RowCount; i++) {
                 var login = (String)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, i).Value;
-                var password = (String)AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, i).Value;
+                var password = (String)AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, i).Value;
                 var opskinsApi = (String)AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, i).Value;
                 var mafile = (SteamGuardAccount)AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, i).Value;
 
@@ -176,7 +185,7 @@ namespace autotrade.CustomElements {
             if (row < 0) return;
 
             var login = (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, currentCell.RowIndex).Value;
-            var password = (string)AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, currentCell.RowIndex).Value;
+            var password = (string)AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var mafile = (SteamGuardAccount)AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var image = (Image)AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, currentCell.RowIndex).Value;
 

@@ -36,5 +36,9 @@ namespace autotrade.CustomElements {
             return (DataGridViewTextBoxCell)accountsDataGridView.Rows[row].Cells[4];
         }
 
+        public static DataGridViewTextBoxCell GetDataGridViewTruePasswordHidenCell(DataGridView accountsDataGridView, int row) {
+            return (DataGridViewTextBoxCell)accountsDataGridView.Rows[row].Cells[5];
+        }
+
     }
 }
