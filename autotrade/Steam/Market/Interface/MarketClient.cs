@@ -644,7 +644,7 @@ namespace Market.Interface {
             var resp = _steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true).Data.Content;
             return JsonConvert.DeserializeObject<JSellItem>(resp);
         }
-        
+
         public List<PriceHistoryDay> PriceHistory(int appId, string hashName) {
             var url = Urls.Market + $"/pricehistory/?appid={appId}&market_hash_name={hashName}";
 

@@ -30,9 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.leftHeaderPanel = new System.Windows.Forms.Panel();
+            this.LeftEdge = new System.Windows.Forms.Panel();
             this.LeftEdge2 = new System.Windows.Forms.Panel();
             this.BottomEdge1 = new System.Windows.Forms.Panel();
-            this.LeftEdge = new System.Windows.Forms.Panel();
             this.sidePanel = new System.Windows.Forms.Panel();
             this.settingsLinkButton = new System.Windows.Forms.Button();
             this.leftPanelHideShowButton = new System.Windows.Forms.Button();
@@ -50,6 +50,7 @@
             this.SettingsControl = new autotrade.CustomElements.SettingsControl();
             this.SaleControl = new autotrade.SaleControl();
             this.BuyControl = new autotrade.CustomElements.BuyControl();
+            this.TradeControl = new autotrade.CustomElements.TradeControl();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoImageBox)).BeginInit();
             this.headerPanel.SuspendLayout();
@@ -75,6 +76,14 @@
             this.leftHeaderPanel.Size = new System.Drawing.Size(166, 599);
             this.leftHeaderPanel.TabIndex = 3;
             // 
+            // LeftEdge
+            // 
+            this.LeftEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.LeftEdge.Location = new System.Drawing.Point(0, 0);
+            this.LeftEdge.Name = "LeftEdge";
+            this.LeftEdge.Size = new System.Drawing.Size(2, 599);
+            this.LeftEdge.TabIndex = 5;
+            // 
             // LeftEdge2
             // 
             this.LeftEdge2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -90,14 +99,6 @@
             this.BottomEdge1.Name = "BottomEdge1";
             this.BottomEdge1.Size = new System.Drawing.Size(194, 2);
             this.BottomEdge1.TabIndex = 6;
-            // 
-            // LeftEdge
-            // 
-            this.LeftEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.LeftEdge.Location = new System.Drawing.Point(0, 0);
-            this.LeftEdge.Name = "LeftEdge";
-            this.LeftEdge.Size = new System.Drawing.Size(2, 599);
-            this.LeftEdge.TabIndex = 5;
             // 
             // sidePanel
             // 
@@ -289,11 +290,11 @@
             this.SettingsControl.Name = "SettingsControl";
             this.SettingsControl.Size = new System.Drawing.Size(885, 599);
             this.SettingsControl.TabIndex = 0;
-            this.SettingsControl.Load += new System.EventHandler(this.SettingsControl_Load);
             // 
             // SaleControl
             // 
             this.SaleControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.SaleControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SaleControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.SaleControl.Location = new System.Drawing.Point(166, 31);
             this.SaleControl.Name = "SaleControl";
@@ -306,8 +307,18 @@
             this.BuyControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.BuyControl.Location = new System.Drawing.Point(166, 31);
             this.BuyControl.Name = "BuyControl";
-            this.BuyControl.Size = new System.Drawing.Size(759, 599);
+            this.BuyControl.Size = new System.Drawing.Size(885, 599);
             this.BuyControl.TabIndex = 8;
+            // 
+            // TradeControl
+            // 
+            this.TradeControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
+            this.TradeControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.TradeControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.TradeControl.Location = new System.Drawing.Point(166, 31);
+            this.TradeControl.Name = "TradeControl";
+            this.TradeControl.Size = new System.Drawing.Size(885, 599);
+            this.TradeControl.TabIndex = 9;
             // 
             // MainForm
             // 
@@ -322,13 +333,13 @@
             this.Controls.Add(this.SettingsControl);
             this.Controls.Add(this.SaleControl);
             this.Controls.Add(this.BuyControl);
+            this.Controls.Add(this.TradeControl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.leftHeaderPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.logoImageBox)).EndInit();
             this.headerPanel.ResumeLayout(false);
@@ -360,6 +371,7 @@
         private CustomElements.BuyControl BuyControl;
         public SaleControl SaleControl;
         private System.Windows.Forms.Button TradeLinkButton;
+        public CustomElements.TradeControl TradeControl;
     }
 }
 

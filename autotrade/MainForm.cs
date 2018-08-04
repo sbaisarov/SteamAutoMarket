@@ -65,7 +65,6 @@ namespace autotrade {
 
         public void SaleLinkButton_Click(object sender, EventArgs e) {
             FocusSidePanelToMenuElement(sidePanel, saleLinkButton);
-            SaleControl.ActivateSellMode();
             SaleControl.BringToFront();
         }
 
@@ -76,8 +75,7 @@ namespace autotrade {
 
         private void TradeLinkButton_Click(object sender, EventArgs e) {
             FocusSidePanelToMenuElement(sidePanel, TradeLinkButton);
-            SaleControl.ActivateTradeMode();
-            SaleControl.BringToFront();
+            TradeControl.BringToFront();
         }
 
 
@@ -105,15 +103,6 @@ namespace autotrade {
         public void FocusSidePanelToMenuElement(Panel sidePanel, Button button) {
             sidePanel.Height = button.Height;
             sidePanel.Top = button.Top;
-        }
-
-        public void Form1_Load(object sender, EventArgs e) {
-            SavedSettings settings = SavedSettings.Get();
-            this.SettingsControl.LoggingLevelComboBox.SelectedIndex = settings.LOGGER_LEVEL;
-        }
-
-        private void SettingsControl_Load(object sender, EventArgs e) {
-
         }
     }
 }

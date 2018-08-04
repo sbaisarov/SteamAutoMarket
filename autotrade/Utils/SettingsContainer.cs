@@ -26,17 +26,17 @@ namespace autotrade.CustomElements {
             if (cached != null) return cached;
             if (!File.Exists(SettingsContainer.SETTINGS_FILE_PATH)) {
                 cached = new SavedSettings();
-                UpdateAll(cached);
+                UpdateAll();
                 return cached;
             }
-            return JsonConvert.DeserializeObject<SavedSettings>(
+            cached = JsonConvert.DeserializeObject<SavedSettings>(
                 File.ReadAllText(SettingsContainer.SETTINGS_FILE_PATH));
+            return cached;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void UpdateAll(SavedSettings settings) {
-            cached = settings;
-            File.WriteAllText(SettingsContainer.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(settings));
+        public static void UpdateAll() {
+            File.WriteAllText(SettingsContainer.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(cached));
         }
     }
 
@@ -56,8 +56,9 @@ namespace autotrade.CustomElements {
                 UpdateAll(cached);
                 return cached;
             }
-            return JsonConvert.DeserializeObject<List<SavedSteamAccount>>(
+            cached = JsonConvert.DeserializeObject<List<SavedSteamAccount>>(
                 File.ReadAllText(SettingsContainer.ACCOUNTS_FILE_PATH));
+            return cached;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -76,6 +77,20 @@ namespace autotrade.CustomElements {
             }
             else {
                 allAccounts[foundAccount] = account;
+            }
+
+            UpdateAll(allAccounts);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static void UpdateByLogin(String login, SteamGuardAccount account) {
+            var allAccounts = Get();
+            int foundAccount = allAccounts.FindIndex(all => all.Login.Equals(login));
+
+            if (foundAccount == -1) {
+                return;
+            } else {
+                allAccounts[foundAccount].Mafile = account;
             }
 
             UpdateAll(allAccounts);

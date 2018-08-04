@@ -15,6 +15,7 @@ using Market.Exceptions;
 using System.Threading;
 using SteamKit2;
 using autotrade.Steam.TradeOffer;
+using autotrade.CustomElements;
 
 namespace autotrade.Steam {
     public class SteamManager {
@@ -35,9 +36,9 @@ namespace autotrade.Steam {
                 TwoFactorCode = Guard.GenerateSteamGuardCode()
             };
 
-            bool isSessionActive = Guard.RefreshSession();
-            if (isSessionActive == false)
-            {
+            bool isSessionAExpired = Guard.RefreshSession();
+            if (isSessionAExpired == true) {
+                Utils.Logger.Debug($"Saved steam session for ${login} is expired. Refreshing session.");
                 LoginResult loginResult;
                 int tryCount = 0;
                 do {
@@ -53,10 +54,9 @@ namespace autotrade.Steam {
                     }
                 }
                 while (loginResult != LoginResult.LoginOkay);
+                SaveAccount(Guard);
             }
 
-            Guard.RefreshSession();
-            SaveAccount(Guard);
 
             this.ApiKey = apiKey;
 
@@ -80,15 +80,13 @@ namespace autotrade.Steam {
         public void SellOnMarket(Dictionary<Inventory.RgFullItem, double> items, WorkingProcess.MarketSaleType saleType) {
             Inventory.RgInventory asset;
             Inventory.RgDescription description;
-            foreach (KeyValuePair<Inventory.RgFullItem, double> item in items)
-            {
+            foreach (KeyValuePair<Inventory.RgFullItem, double> item in items) {
                 double? price;
                 double amount;
                 asset = item.Key.Asset;
                 description = item.Key.Description;
                 amount = item.Value;
-                switch (saleType)
-                {
+                switch (saleType) {
                     case WorkingProcess.MarketSaleType.LOWER_THAN_CURRENT:
                         GetCurrentPrice(out price, asset, description);
                         if (price == null) continue;
@@ -110,24 +108,19 @@ namespace autotrade.Steam {
 
                 if (price == null) continue;
 
-                while (true)
-                {
-                    try
-                    {
+                while (true) {
+                    try {
                         JSellItem resp = MarketClient.SellItem(description.appid, int.Parse(asset.contextid),
                                             long.Parse(asset.assetid), 1, (double)price * 0.87);
 
                         string message = resp.Message; // error message
-                        if (message != null)
-                        {
+                        if (message != null) {
                             // log error message
                             Thread.Sleep(5000);
                             continue;
                         }
                         break;
-                    }
-                    catch (JsonSerializationException)
-                    {
+                    } catch (JsonSerializationException) {
                         // log error
                         continue;
                     }
@@ -142,36 +135,29 @@ namespace autotrade.Steam {
             Guard.AcceptMultipleConfirmations(marketConfirmations);
         }
 
-        public void GetAveragePrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description)
-        {
-            try
-            {
+        public void GetAveragePrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description) {
+            try {
                 List<PriceHistoryDay> history = MarketClient
                     .PriceHistory(asset.appid, description.market_hash_name);
                 price = CountAveragePrice(history);
-            }
-            catch (SteamException err)
-            {
-                // Log error on ui
+            } catch (SteamException e) {
+                Utils.Logger.Warning($"Error on geting average price of ${description.market_hash_name}", e);
                 price = null;
             }
         }
 
-        public void GetCurrentPrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description)
-        {
+        public void GetCurrentPrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description) {
             MarketItemInfo itemPageInfo = MarketClient.ItemPage(asset.appid, description.market_hash_name);
             ItemOrdersHistogram histogram = MarketClient.ItemOrdersHistogram(
                             itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
             price = histogram.MinSellPrice as double?;
-            if (price is null)
-            {
-                // Log error on ui
+            if (price is null) {
+                Utils.Logger.Warning($"Error on geting current price of ${description.market_hash_name}");
                 price = null;
             }
         }
 
-        private double CountAveragePrice(List<PriceHistoryDay> history)
-        {
+        private double CountAveragePrice(List<PriceHistoryDay> history) {
             double average = 0;
             // days are sorted from oldest to newest, we need the contrary
             history.Reverse();
@@ -181,31 +167,24 @@ namespace autotrade.Steam {
             return average;
         }
 
-        private double IterateHistory(List<PriceHistoryDay> history, double average)
-        {
+        private double IterateHistory(List<PriceHistoryDay> history, double average) {
             double sum = 0;
             int count = 0;
-            foreach (var item in history)
-             {
-                foreach (PriceHistoryItem data in item.History)
-                {
-                    if (average > 0)
-                    {
+            foreach (var item in history) {
+                foreach (PriceHistoryItem data in item.History) {
+                    if (average > 0) {
                         // skip lowball or highball prices
-                        if (data.Price < average / 2 || data.Price > average * 2)
-                        {
+                        if (data.Price < average / 2 || data.Price > average * 2) {
                             continue;
                         }
                     }
                     sum += data.Price * data.Count;
                     count += data.Count;
                 }
-             }
-            try
-            {
+            }
+            try {
                 average = sum / count;
-            } catch (DivideByZeroException)
-            {
+            } catch (DivideByZeroException) {
                 average = 0;
             }
             return average;
@@ -214,8 +193,7 @@ namespace autotrade.Steam {
         public void SendTradeOffer(List<Inventory.RgFullItem> items, string partnerId, string tradeToken) {
             TradeOffer.TradeOffer offer = new TradeOffer.TradeOffer(OfferSession, new SteamID(ulong.Parse(partnerId)));
             bool status = offer.SendWithToken(out string offerId, tradeToken);
-            if (status is false)
-            {
+            if (status is false) {
                 // log error offer.Session.Error if exists
                 return;
             }
@@ -227,21 +205,11 @@ namespace autotrade.Steam {
             Guard.AcceptConfirmation(conf);
         }
 
-        public bool SaveAccount(SteamGuardAccount account)
-        {
-            string jsonAccount = JsonConvert.SerializeObject(account);
-
-            string maDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/maFiles/";
-            Directory.CreateDirectory(maDir);
-
-            string filename = account.Session.SteamID.ToString() + ".maFile";
-            try
-            {
-                File.WriteAllText(maDir + filename, jsonAccount);
+        public bool SaveAccount(SteamGuardAccount account) {
+            try {
+                SavedSteamAccount.UpdateByLogin(account.AccountName, account);
                 return true;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Utils.Logger.Error("Erron on session save", e);
                 return false;
             }

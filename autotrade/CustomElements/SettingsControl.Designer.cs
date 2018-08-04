@@ -29,6 +29,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsControl));
             this.AccountsDataGridView = new System.Windows.Forms.DataGridView();
+            this.AvatarColumn = new System.Windows.Forms.DataGridViewImageColumn();
+            this.LoginColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PasswordColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OpskinsApiColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AccountObjectHidenColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TruePassword = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AccountGroupBox = new System.Windows.Forms.GroupBox();
             this.AddNewAccountButton = new System.Windows.Forms.Button();
             this.MafilePathGroupBox = new System.Windows.Forms.GroupBox();
@@ -51,12 +57,6 @@
             this.LogTextBox = new System.Windows.Forms.RichTextBox();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.UpdateButton = new System.Windows.Forms.Button();
-            this.AvatarColumn = new System.Windows.Forms.DataGridViewImageColumn();
-            this.LoginColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PasswordColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OpskinsApiColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AccountObjectHidenColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TruePassword = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.AccountsDataGridView)).BeginInit();
             this.AccountGroupBox.SuspendLayout();
             this.MafilePathGroupBox.SuspendLayout();
@@ -118,6 +118,53 @@
             this.AccountsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.AccountsDataGridView.Size = new System.Drawing.Size(426, 330);
             this.AccountsDataGridView.TabIndex = 7;
+            // 
+            // AvatarColumn
+            // 
+            this.AvatarColumn.FillWeight = 0.2428631F;
+            this.AvatarColumn.HeaderText = "";
+            this.AvatarColumn.Image = ((System.Drawing.Image)(resources.GetObject("AvatarColumn.Image")));
+            this.AvatarColumn.MinimumWidth = 32;
+            this.AvatarColumn.Name = "AvatarColumn";
+            this.AvatarColumn.ReadOnly = true;
+            this.AvatarColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // LoginColumn
+            // 
+            this.LoginColumn.FillWeight = 119F;
+            this.LoginColumn.HeaderText = "Login";
+            this.LoginColumn.Name = "LoginColumn";
+            this.LoginColumn.ReadOnly = true;
+            // 
+            // PasswordColumn
+            // 
+            this.PasswordColumn.FillWeight = 119F;
+            this.PasswordColumn.HeaderText = "Password";
+            this.PasswordColumn.Name = "PasswordColumn";
+            this.PasswordColumn.ReadOnly = true;
+            // 
+            // OpskinsApiColumn
+            // 
+            this.OpskinsApiColumn.FillWeight = 119F;
+            this.OpskinsApiColumn.HeaderText = "OPSKINS API";
+            this.OpskinsApiColumn.Name = "OpskinsApiColumn";
+            this.OpskinsApiColumn.ReadOnly = true;
+            // 
+            // AccountObjectHidenColumn
+            // 
+            this.AccountObjectHidenColumn.FillWeight = 2F;
+            this.AccountObjectHidenColumn.HeaderText = "AccountObjectHidenColumn";
+            this.AccountObjectHidenColumn.MinimumWidth = 2;
+            this.AccountObjectHidenColumn.Name = "AccountObjectHidenColumn";
+            this.AccountObjectHidenColumn.ReadOnly = true;
+            this.AccountObjectHidenColumn.Visible = false;
+            // 
+            // TruePassword
+            // 
+            this.TruePassword.HeaderText = "TruePassword";
+            this.TruePassword.Name = "TruePassword";
+            this.TruePassword.ReadOnly = true;
+            this.TruePassword.Visible = false;
             // 
             // AccountGroupBox
             // 
@@ -306,6 +353,7 @@
             this.LoggingLevelComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.LoggingLevelComboBox.FormattingEnabled = true;
             this.LoggingLevelComboBox.Items.AddRange(new object[] {
+            "Debug",
             "Info + Errors",
             "Errors",
             "None"});
@@ -410,53 +458,6 @@
             this.UpdateButton.TabIndex = 15;
             this.UpdateButton.Text = "Check for updates";
             this.UpdateButton.UseVisualStyleBackColor = false;
-            // 
-            // AvatarColumn
-            // 
-            this.AvatarColumn.FillWeight = 0.2428631F;
-            this.AvatarColumn.HeaderText = "";
-            this.AvatarColumn.Image = ((System.Drawing.Image)(resources.GetObject("AvatarColumn.Image")));
-            this.AvatarColumn.MinimumWidth = 32;
-            this.AvatarColumn.Name = "AvatarColumn";
-            this.AvatarColumn.ReadOnly = true;
-            this.AvatarColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // LoginColumn
-            // 
-            this.LoginColumn.FillWeight = 119F;
-            this.LoginColumn.HeaderText = "Login";
-            this.LoginColumn.Name = "LoginColumn";
-            this.LoginColumn.ReadOnly = true;
-            // 
-            // PasswordColumn
-            // 
-            this.PasswordColumn.FillWeight = 119F;
-            this.PasswordColumn.HeaderText = "Password";
-            this.PasswordColumn.Name = "PasswordColumn";
-            this.PasswordColumn.ReadOnly = true;
-            // 
-            // OpskinsApiColumn
-            // 
-            this.OpskinsApiColumn.FillWeight = 119F;
-            this.OpskinsApiColumn.HeaderText = "OPSKINS API";
-            this.OpskinsApiColumn.Name = "OpskinsApiColumn";
-            this.OpskinsApiColumn.ReadOnly = true;
-            // 
-            // AccountObjectHidenColumn
-            // 
-            this.AccountObjectHidenColumn.FillWeight = 2F;
-            this.AccountObjectHidenColumn.HeaderText = "AccountObjectHidenColumn";
-            this.AccountObjectHidenColumn.MinimumWidth = 2;
-            this.AccountObjectHidenColumn.Name = "AccountObjectHidenColumn";
-            this.AccountObjectHidenColumn.ReadOnly = true;
-            this.AccountObjectHidenColumn.Visible = false;
-            // 
-            // TruePassword
-            // 
-            this.TruePassword.HeaderText = "TruePassword";
-            this.TruePassword.Name = "TruePassword";
-            this.TruePassword.ReadOnly = true;
-            this.TruePassword.Visible = false;
             // 
             // SettingsControl
             // 

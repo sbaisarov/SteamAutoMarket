@@ -20,12 +20,14 @@ namespace autotrade.CustomElements {
 
         public SettingsControl() {
             InitializeComponent();
+            LoggingLevelComboBox.SelectedIndex = SavedSettings.Get().LOGGER_LEVEL;
+
             if (File.Exists(SettingsContainer.ACCOUNTS_FILE_PATH)) {
                 var accounts = SavedSteamAccount.Get();
                 foreach (var acc in accounts) {
                     int row = AccountsDataGridView.Rows.Add();
                     AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = acc.Login;
-                    AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = getPasswordStars(acc.Password.Count());
+                    AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = GetPasswordStars(acc.Password.Count());
                     AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value = acc.Password;
                     AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value = acc.OpskinsApi;
                     AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = acc.Mafile;
@@ -46,12 +48,12 @@ namespace autotrade.CustomElements {
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK) {
                     MafilePathTextBox.Text = openFileDialog.FileName;
-                    Logger.Info($"{MafilePathTextBox.Text} mafile selected");
+                    Logger.Debug($"{MafilePathTextBox.Text} mafile selected");
                 }
             }
         }
 
-        private string getPasswordStars(int Count) {
+        private string GetPasswordStars(int Count) {
             String result = "";
             for (int i = 0; i < Count; i++) {
                 result += "*";
@@ -87,11 +89,11 @@ namespace autotrade.CustomElements {
 
             var login = LoginTextBox.Text.Trim();
             AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = login;
-            AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = getPasswordStars(PasswordTextBox.Text.Trim().Count());
+            AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = GetPasswordStars(PasswordTextBox.Text.Trim().Count());
             AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value = OpskinsApiTextBox.Text.Trim();
             AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = account;
             AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value = PasswordTextBox.Text.Trim();
-            Logger.Info($"{login} added to accounts list");
+            Logger.Debug($"{login} added to accounts list");
 
             Task.Run(() => {
                 if (account.Session != null) {
@@ -147,7 +149,7 @@ namespace autotrade.CustomElements {
 
             if (confirmResult == DialogResult.Yes) {
                 AccountsDataGridView.Rows.RemoveAt(row);
-                Logger.Info($"Account {accName} was deleted from accounts list");
+                Logger.Debug($"Account {accName} was deleted from accounts list");
             }
 
             UpdateAccountsFile();
@@ -182,7 +184,10 @@ namespace autotrade.CustomElements {
             }
 
             int row = currentCell.RowIndex;
-            if (row < 0) return;
+            if (row < 0) {
+                Logger.Warning("No accounts selected");
+                return;
+            }
 
             var login = (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var password = (string)AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
@@ -200,8 +205,8 @@ namespace autotrade.CustomElements {
                     return;
                 }
                 CurrentSession.AccountImage = image;
-                Program.MainForm.SaleLinkButton_Click(null, null);
                 Program.MainForm.SaleControl.AuthCurrentAccount();
+                Program.MainForm.TradeControl.AuthCurrentAccount();
                 Logger.Info("Steam authentication successful");
             });
 
@@ -209,11 +214,19 @@ namespace autotrade.CustomElements {
         }
 
         private void LoggingLevelComboBox_SelectedIndexChanged(object sender, EventArgs e) {
-            Logger.LoggerLevel = LoggingLevelComboBox.SelectedIndex;
+            var selectedLevel = LoggingLevelComboBox.SelectedValue;
 
-            var settings = SavedSettings.Get();
-            settings.LOGGER_LEVEL = LoggingLevelComboBox.SelectedIndex;
-            SavedSettings.UpdateAll(settings);
+            LoggerLevel level = LoggerLevel.INFO;
+            switch (selectedLevel) {
+                case "Debug": level = LoggerLevel.DEBUG; break;
+                case "Info + Errors": level = LoggerLevel.INFO; break;
+                case "Errors": level = LoggerLevel.ERROR; break;
+                case "None": level = LoggerLevel.NONE; break;
+            }
+            Logger.LOGGER_LEVEL = level;
+
+            SavedSettings.Get().LOGGER_LEVEL = LoggingLevelComboBox.SelectedIndex;
+            SavedSettings.UpdateAll();
         }
     }
 }

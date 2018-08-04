@@ -29,10 +29,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = Utils.FormComponents.SIMPLE_BACK_COLOR;
-            this.ForeColor = Utils.FormComponents.SIMPLE_TEXT_COLOR;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.Name = "BuyControl";
-            this.Size = new System.Drawing.Size(759, 599);
+            this.Size = new System.Drawing.Size(885, 599);
             this.ResumeLayout(false);
 
         }

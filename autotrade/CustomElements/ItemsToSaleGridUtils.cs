@@ -41,12 +41,14 @@ namespace autotrade.CustomElements {
                 hidenMarketHashNameCell.Value = firstItem.Description.market_hash_name;
                 hidenItemsListCell.Value = items;
             }
-            Logger.Info($"{items.Count} of {items.First().Description.name} was added to sale list");
+            Logger.Debug($"{items.Count} of {items.First().Description.name} was added to sale list");
         }
 
         private static DataGridViewRow GetDataGridViewRowByMarketHashName(DataGridView itemsToSaleGrid, string marketHashName) {
             for (int i = 0; i < itemsToSaleGrid.RowCount; i++) {
-                if (GetGridHidenItemsMarketHashName(itemsToSaleGrid, i).Value.Equals(marketHashName)) {
+                var row = GetGridHidenItemsMarketHashName(itemsToSaleGrid, i);
+                if (row == null) continue;
+                if (row.Value.Equals(marketHashName)) {
                     return itemsToSaleGrid.Rows[i];
                 }
             }
@@ -62,7 +64,7 @@ namespace autotrade.CustomElements {
 
             var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
 
-            AllItemsListGridUtils.UpdateItemDescription(SaleControl.AllDescriptionsDictionary[itemMarketHashName], textBox, imageBox, lable);
+            AllItemsListGridUtils.UpdateItemDescription(TradeControl.AllDescriptionsDictionary[itemMarketHashName], textBox, imageBox, lable);
         }
 
         public static void DeleteButtonClick(DataGridView allItemsGrid, DataGridView itemsToSaleGrid, int selectedRow) {
@@ -79,7 +81,7 @@ namespace autotrade.CustomElements {
 
             itemsToSaleGrid.Rows.RemoveAt(selectedRow);
 
-            Logger.Info($"{hidenItemsList.Count} of {hidenItemsList.First().Description.name} was deleted from sale list");
+            Logger.Debug($"{hidenItemsList.Count} of {hidenItemsList.First().Description.name} was deleted from sale list");
         }
 
         public static void DeleteUnmarketable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
@@ -113,7 +115,7 @@ namespace autotrade.CustomElements {
                 if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);
                 else if (stastCount != items.Count) GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
             }
-            Logger.Info($"{totalDeletedItemsCount} unmarketable items was deleted from sale list");
+            Logger.Debug($"{totalDeletedItemsCount} unmarketable items was deleted from sale list");
         }
 
         public static void DeleteUntradable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
@@ -148,32 +150,60 @@ namespace autotrade.CustomElements {
                 if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);
                 else if (stastCount != items.Count) GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
             }
-            Logger.Info($"{totalDeletedItemsCount} unmarketable items was deleted from sale list");
+            Logger.Debug($"{totalDeletedItemsCount} unmarketable items was deleted from sale list");
         }
 
         public static List<RgFullItem> GetRowItemsList(DataGridView itemsToSaleGrid, int rowIndex) {
             return (List<RgFullItem>)GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex).Value;
         }
 
+        public static double? GetRowItemPrice(DataGridView itemsToSaleGrid, int rowIndex) {
+            var row = GetGridPriceTextBoxCell(itemsToSaleGrid, rowIndex);
+            if (row == null && row.Value == null) {
+                return null;
+            }
+            return (double?)row.Value;
+        }
+
+        public static double? GetRowAveragePrice(DataGridView itemsToSaleGrid, int rowIndex) {
+            var row = GetGridAveragePrice(itemsToSaleGrid, rowIndex);
+            if (row == null && row.Value == null) {
+                return null;
+            }
+            return (double?)row.Value;
+        }
+
+        public static List<RgFullItem> GetRgFullItems(DataGridView grid, int rowIndex) {
+            var hidenItemsListCell = GetGridHidenItemsListCell(grid, rowIndex);
+            if (hidenItemsListCell == null) {
+                return new List<RgFullItem>();
+            }
+            return (List<RgFullItem>)hidenItemsListCell.Value;
+        }
+
         #region Cells getters
-        private static DataGridViewTextBoxCell GetGridNameTextBoxCell(DataGridView grid, int rowIndex) {
+        public static DataGridViewTextBoxCell GetGridNameTextBoxCell(DataGridView grid, int rowIndex) {
             return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[0];
         }
 
-        private static DataGridViewTextBoxCell GetGridCountTextBoxCell(DataGridView grid, int rowIndex) {
+        public static DataGridViewTextBoxCell GetGridCountTextBoxCell(DataGridView grid, int rowIndex) {
             return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[1];
         }
 
-        private static DataGridViewTextBoxCell GetGridPriceTextBoxCell(DataGridView grid, int rowIndex) {
+        public static DataGridViewTextBoxCell GetGridPriceTextBoxCell(DataGridView grid, int rowIndex) {
             return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[2];
         }
 
-        private static DataGridViewTextBoxCell GetGridHidenItemsMarketHashName(DataGridView grid, int rowIndex) {
+        public static DataGridViewTextBoxCell GetGridHidenItemsMarketHashName(DataGridView grid, int rowIndex) {
             return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[3];
         }
 
-        private static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex) {
+        public static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex) {
             return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[4];
+        }
+
+        public static DataGridViewTextBoxCell GetGridAveragePrice(DataGridView grid, int rowIndex) {
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[5];
         }
         #endregion
     }

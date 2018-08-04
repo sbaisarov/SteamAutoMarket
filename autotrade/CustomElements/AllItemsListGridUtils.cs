@@ -30,8 +30,8 @@ namespace autotrade.CustomElements {
                 AddNewItemCellAllItemsDataGridView(allItemsGrid, itemsGroup.ToList());
 
                 var firstItem = itemsGroup.First();
-                if (!SaleControl.AllDescriptionsDictionary.ContainsKey(firstItem.Description.market_hash_name)) {
-                    SaleControl.AllDescriptionsDictionary.Add(firstItem.Description.market_hash_name, firstItem.Description);
+                if (!TradeControl.AllDescriptionsDictionary.ContainsKey(firstItem.Description.market_hash_name)) {
+                    TradeControl.AllDescriptionsDictionary.Add(firstItem.Description.market_hash_name, firstItem.Description);
                 }
             }
         }
@@ -74,11 +74,11 @@ namespace autotrade.CustomElements {
             var hidenItemsList = (List<RgFullItem>)cell.Value;
             if (hidenItemsList == null) return;
 
-            UpdateItemDescription(SaleControl.AllDescriptionsDictionary[hidenItemsList.First().Description.market_hash_name], textBox, imageBox, label);
+            UpdateItemDescription(TradeControl.AllDescriptionsDictionary[hidenItemsList.First().Description.market_hash_name], textBox, imageBox, label);
         }
 
         public static void UpdateItemDescription(RgDescription description, RichTextBox textBox, Panel imageBox, Label label) {
-            SaleControl.LastSelectedItemDescription = description;
+            TradeControl.LastSelectedItemDescription = description;
 
             UpdateItemTextDescription(description, textBox, label);
             UpdateItemImage(description, imageBox);
@@ -255,20 +255,28 @@ namespace autotrade.CustomElements {
 
         private static void UpdateItemImage(RgDescription description, Panel imageBox) {
             Task.Run(() => {
-                SaleControl.ImageDictionary.TryGetValue(description.market_hash_name, out Image image);
+                TradeControl.ImageDictionary.TryGetValue(description.market_hash_name, out Image image);
 
                 if (image != null) {
                     imageBox.BackgroundImage = ImageUtils.ResizeImage(image, 100, 100);
                 } else {
                     image = ImageUtils.DownloadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + description.icon_url + "/192fx192f");
                     if (image != null) {
-                        if (!SaleControl.ImageDictionary.ContainsKey(description.market_hash_name)) {
-                            SaleControl.ImageDictionary.Add(description.market_hash_name, image);
+                        if (!TradeControl.ImageDictionary.ContainsKey(description.market_hash_name)) {
+                            TradeControl.ImageDictionary.Add(description.market_hash_name, image);
                         }
                         imageBox.BackgroundImage = ImageUtils.ResizeImage(image, 100, 100);
                     }
                 }
             });
+        }
+
+        public static List<RgFullItem> GetRgFullItems(DataGridView grid, int rowIndex) {
+            var hidenItemsListCell = GetGridHidenItemsListCell(grid, rowIndex);
+            if (hidenItemsListCell == null) {
+                return new List<RgFullItem>();
+            }
+            return (List<RgFullItem>)hidenItemsListCell.Value;
         }
 
         #region Cells getters
