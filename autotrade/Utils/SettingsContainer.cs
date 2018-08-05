@@ -21,6 +21,16 @@ namespace autotrade.CustomElements {
 
         public int LOGGER_LEVEL { get; set; } = 0;
 
+        public string MARKET_INVENTORY_APP_ID { get; set; } = "";
+        public string MARKET_INVENTORY_CONTEX_ID { get; set; } = "";
+        public string MARKET_CURRENT_PRICE_MINUS_VALUE { get; set; } = "";
+        public string MARKET_CURRENT_PRICE_MINUS_PERCENT { get; set; } = "";
+
+        public string TRADE_INVENTORY_APP_ID { get; set; } = "";
+        public string TRADE_INVENTORY_CONTEX_ID { get; set; } = "";
+        public string TRADE_CURRENT_PRICE_MINUS_VALUE { get; set; } = "";
+        public string TRADE_CURRENT_PRICE_MINUS_PERCENT { get; set; } = "";
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static SavedSettings Get() {
             if (cached != null) return cached;

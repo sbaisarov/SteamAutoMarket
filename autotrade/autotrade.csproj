@@ -117,11 +117,20 @@
     </Compile>
     <Compile Include="CustomElements\MainFormUtils.cs" />
     <Compile Include="CustomElements\ItemsToSaleGridUtils.cs" />
+    <Compile Include="CustomElements\RichTextBoxWithNoPaint.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CustomElements\TradeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CustomElements\TradeControl.Designer.cs">
       <DependentUpon>TradeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryLoadingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InventoryLoadingForm.Designer.cs">
+      <DependentUpon>InventoryLoadingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\FormComponents.cs" />
     <Compile Include="WorkingProcessForm.cs">
@@ -223,6 +232,7 @@
     </Compile>
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="WorkingProcess\CurrentSession.cs" />
+    <Compile Include="WorkingProcess\ImagesCache.cs" />
     <Compile Include="WorkingProcess\MarketSaleType.cs" />
     <Compile Include="WorkingProcess\PriceLoader.cs" />
     <EmbeddedResource Include="CustomElements\BuyControl.resx">
@@ -234,6 +244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomElements\TradeControl.resx">
       <DependentUpon>TradeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryLoadingForm.resx">
+      <DependentUpon>InventoryLoadingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

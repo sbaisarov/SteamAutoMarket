@@ -58,7 +58,7 @@ namespace autotrade.WorkingProcess {
                 //todo cashe here
                 return price;
             } catch (Exception e) {
-                Utils.Logger.Debug($"Error on parsing ${item.Description.market_hash_name} - ${e.Message}");
+                Utils.Logger.Debug($"Error on parsing {item.Description.market_hash_name} - {e.Message}");
                 return 0;
             }
         }

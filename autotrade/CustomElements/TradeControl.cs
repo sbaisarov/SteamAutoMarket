@@ -18,74 +18,38 @@ using autotrade.WorkingProcess;
 
 namespace autotrade.CustomElements {
     public partial class TradeControl : UserControl {
-
-
         public static Dictionary<string, RgDescription> AllDescriptionsDictionary { get; set; }
         public static RgDescription LastSelectedItemDescription { get; set; }
-        public static Dictionary<string, Image> ImageDictionary { get; set; }
 
         public TradeControl() {
             InitializeComponent();
+            InventoryAppIdComboBox.Text = SavedSettings.Get().TRADE_INVENTORY_APP_ID;
+            InventoryContextIdComboBox.Text = SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID;
         }
 
         private void SaleControl_Load(object sender, EventArgs e) {
             AllDescriptionsDictionary = new Dictionary<string, RgDescription>();
-            ImageDictionary = new Dictionary<string, Image>();
         }
 
         public void AuthCurrentAccount() {
-            this.AccountNameLable.Text = WorkingProcess.CurrentSession.SteamManager.Guard.AccountName;
-            this.SplitterPanel.BackgroundImage = WorkingProcess.CurrentSession.AccountImage;
+            this.AccountNameLable.Text = CurrentSession.SteamManager.Guard.AccountName;
+            this.SplitterPanel.BackgroundImage = CurrentSession.AccountImage;
         }
 
         public void LoadInventory(string steamid, string appid, string contextid) {
-            AllSteamItemsToTradeGridView.Rows.Clear();
-            ItemsToTradeGridView.Rows.Clear();
-
-            ManualResetEvent dialogLoadedFlag = new ManualResetEvent(false);
-            Task.Run(() => {
-                Form waitDialog = new Form()
-                {
-                    Name = "Inventory loading",
-                    Text = "Loading inventory, please wait...",
-                    ControlBox = false,
-                    FormBorderStyle = FormBorderStyle.FixedDialog,
-                    StartPosition = FormStartPosition.CenterParent,
-                    Width = 300,
-                    Height = 70,
-                    Enabled = true
-                };
-
-                ProgressBar ScrollingBar = new ProgressBar()
-                {
-                    Style = ProgressBarStyle.Marquee,
-                    Parent = waitDialog,
-                    Dock = DockStyle.Fill,
-                    Enabled = true
-                };
-
-                waitDialog.Load += new EventHandler((x, y) => {
-                    dialogLoadedFlag.Set();
-                });
-
-                waitDialog.Shown += new EventHandler((x, y) => {
-                    Task.Run(() => {
-                        List<RgFullItem> allItemsList = CurrentSession.SteamManager.LoadInventory(steamid, appid, contextid);
-
-                        allItemsList.RemoveAll(item => item.Description.tradable == false);
-
-                        Dispatcher.Invoke(Program.MainForm, () => {
-                            AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsToTradeGridView, allItemsList);
-                        });
-                        this.Invoke((MethodInvoker)(() => waitDialog.Close()));
-                    });
-                });
-
-                this.Invoke((MethodInvoker)(() => waitDialog.ShowDialog(this)));
+            Dispatcher.Invoke(Program.MainForm, () => {
+                AllSteamItemsToTradeGridView.Rows.Clear();
+                ItemsToTradeGridView.Rows.Clear();
             });
 
-            while (dialogLoadedFlag.WaitOne(100, true) == false)
-                Application.DoEvents();
+            Program.InventoryLoadingForm.InitProcess();
+            List<RgFullItem> allItemsList = Program.InventoryLoadingForm.GetLoadedItems();
+
+            allItemsList.RemoveAll(item => item.Description.tradable == false);
+
+            Dispatcher.Invoke(Program.MainForm, () => {
+                AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsToTradeGridView, allItemsList);
+            });
         }
 
         private void SteamSaleDataGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
@@ -217,15 +181,6 @@ namespace autotrade.CustomElements {
             ItemsToTradeGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
-        private void InventoryAppIdComboBox_SelectedIndexChanged(object sender, EventArgs e) {
-            switch (InventoryAppIdComboBox.Text) {
-                case "STEAM": { InventoryContextIdComboBox.Text = "6"; break; }
-                case "TF": { InventoryContextIdComboBox.Text = "2"; break; }
-                case "CS:GO": { InventoryContextIdComboBox.Text = "2"; break; }
-                case "PUBG": { InventoryContextIdComboBox.Text = "2"; break; }
-            }
-        }
-
         private void LoadInventoryButton_Click(object sender, EventArgs e) {
             if (CurrentSession.SteamManager == null) {
                 MessageBox.Show("You should login first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -252,10 +207,13 @@ namespace autotrade.CustomElements {
             CurrentSession.InventoryContextId = contextId;
             Logger.Debug($"Inventory {appid} - {contextId} loading started");
 
-            LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), appid, contextId);
-
-            Logger.Debug($"Inventory {appid} - {contextId} loading finished");
-            LoadInventoryButton.Enabled = true;
+            Task.Run(() => {
+                LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), appid, contextId);
+                Logger.Info($"Inventory {appid} - {contextId} loading finished");
+                Dispatcher.Invoke(Program.MainForm, () => {
+                    LoadInventoryButton.Enabled = true;
+                });
+            });
         }
 
 
@@ -327,6 +285,22 @@ namespace autotrade.CustomElements {
             if (LastSelectedItemDescription == null) return;
             System.Diagnostics.Process.Start("https://" + $"steamcommunity.com/profiles/{CurrentSession.SteamManager.Guard.Session.SteamID}" +
                 $"/inventory/#{CurrentSession.InventoryAppId}_{CurrentSession.InventoryContextId}");
+        }
+
+        private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e) {
+            SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID = InventoryContextIdComboBox.Text;
+            SavedSettings.UpdateAll();
+        }
+
+        private void InventoryAppIdComboBox_TextChanged(object sender, EventArgs e) {
+            switch (InventoryAppIdComboBox.Text) {
+                case "STEAM": { InventoryContextIdComboBox.Text = "6"; break; }
+                case "TF": { InventoryContextIdComboBox.Text = "2"; break; }
+                case "CS:GO": { InventoryContextIdComboBox.Text = "2"; break; }
+                case "PUBG": { InventoryContextIdComboBox.Text = "2"; break; }
+            }
+            SavedSettings.Get().TRADE_INVENTORY_APP_ID = InventoryAppIdComboBox.Text;
+            SavedSettings.UpdateAll();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -255,21 +256,21 @@ namespace autotrade.CustomElements {
 
         private static void UpdateItemImage(RgDescription description, Panel imageBox) {
             Task.Run(() => {
-                TradeControl.ImageDictionary.TryGetValue(description.market_hash_name, out Image image);
+                Image image = WorkingProcess.ImagesCache.GetImage(description.market_hash_name);
 
                 if (image != null) {
                     imageBox.BackgroundImage = ImageUtils.ResizeImage(image, 100, 100);
                 } else {
                     image = ImageUtils.DownloadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + description.icon_url + "/192fx192f");
                     if (image != null) {
-                        if (!TradeControl.ImageDictionary.ContainsKey(description.market_hash_name)) {
-                            TradeControl.ImageDictionary.Add(description.market_hash_name, image);
-                        }
+                        WorkingProcess.ImagesCache.CacheImage(description.market_hash_name, image);
                         imageBox.BackgroundImage = ImageUtils.ResizeImage(image, 100, 100);
                     }
                 }
             });
         }
+
+       
 
         public static List<RgFullItem> GetRgFullItems(DataGridView grid, int rowIndex) {
             var hidenItemsListCell = GetGridHidenItemsListCell(grid, rowIndex);

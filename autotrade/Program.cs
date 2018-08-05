@@ -14,10 +14,11 @@ namespace autotrade {
     static class Program {
         static int mainThreadId;
         public static bool IsMainThread {
-            get { return System.Threading.Thread.CurrentThread.ManagedThreadId == mainThreadId; }
+            get { return Thread.CurrentThread.ManagedThreadId == mainThreadId; }
         }
         public static MainForm MainForm;
         public static WorkingProcessForm WorkingProcessForm;
+        public static InventoryLoadingForm InventoryLoadingForm;
 
         /// <summary>
         /// Главная точка входа для приложения.
@@ -30,6 +31,7 @@ namespace autotrade {
 
             MainForm = new MainForm();
             WorkingProcessForm = new WorkingProcessForm();
+            InventoryLoadingForm = new InventoryLoadingForm();
 
             Application.Run(MainForm);
         }

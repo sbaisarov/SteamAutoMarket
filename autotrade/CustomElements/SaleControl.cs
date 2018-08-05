@@ -21,16 +21,17 @@ namespace autotrade {
 
         public static Dictionary<string, RgDescription> AllDescriptionsDictionary { get; set; }
         public static RgDescription LastSelectedItemDescription { get; set; }
-        public static Dictionary<string, Image> ImageDictionary { get; set; }
 
         public SaleControl() {
             InitializeComponent();
             PriceLoader.Init(this.ItemsToSaleGridView);
+
+            InventoryAppIdComboBox.Text = SavedSettings.Get().MARKET_INVENTORY_APP_ID;
+            InventoryContextIdComboBox.Text = SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID;
         }
 
         private void SaleControl_Load(object sender, EventArgs e) {
             AllDescriptionsDictionary = new Dictionary<string, RgDescription>();
-            ImageDictionary = new Dictionary<string, Image>();
         }
 
         public void AuthCurrentAccount() {
@@ -39,53 +40,20 @@ namespace autotrade {
         }
 
         public void LoadInventory(string steamid, string appid, string contextid) {
-            AllSteamItemsGridView.Rows.Clear();
-            ItemsToSaleGridView.Rows.Clear();
-
-            ManualResetEvent dialogLoadedFlag = new ManualResetEvent(false);
-            Task.Run(() => {
-                Form waitDialog = new Form()
-                {
-                    Name = "Inventory loading",
-                    Text = "Loading inventory, please wait...",
-                    ControlBox = false,
-                    FormBorderStyle = FormBorderStyle.FixedDialog,
-                    StartPosition = FormStartPosition.CenterParent,
-                    Width = 300,
-                    Height = 70,
-                    Enabled = true
-                };
-
-                ProgressBar ScrollingBar = new ProgressBar()
-                {
-                    Style = ProgressBarStyle.Marquee,
-                    Parent = waitDialog,
-                    Dock = DockStyle.Fill,
-                    Enabled = true
-                };
-
-                waitDialog.Load += new EventHandler((x, y) => {
-                    dialogLoadedFlag.Set();
-                });
-
-                waitDialog.Shown += new EventHandler((x, y) => {
-                    Task.Run(() => {
-                        List<RgFullItem> allItemsList = CurrentSession.SteamManager.LoadInventory(steamid, appid, contextid);
-
-                        allItemsList.RemoveAll(item => item.Description.marketable == false);
-
-                        Dispatcher.Invoke(Program.MainForm, () => {
-                            AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
-                        });
-                        this.Invoke((MethodInvoker)(() => waitDialog.Close()));
-                    });
-                });
-
-                this.Invoke((MethodInvoker)(() => waitDialog.ShowDialog(this)));
+            Dispatcher.Invoke(Program.MainForm, () => {
+                AllSteamItemsGridView.Rows.Clear();
+                ItemsToSaleGridView.Rows.Clear();
             });
+          
+            Program.InventoryLoadingForm.InitProcess();
+            List<RgFullItem> allItemsList = Program.InventoryLoadingForm.GetLoadedItems();
+            Program.InventoryLoadingForm.Disactivate();
 
-            while (dialogLoadedFlag.WaitOne(100, true) == false)
-                Application.DoEvents();
+            allItemsList.RemoveAll(item => item.Description.marketable == false);
+
+            Dispatcher.Invoke(Program.MainForm, () => {
+                AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsGridView, allItemsList);
+            });
         }
 
         private void SteamSaleDataGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
@@ -175,9 +143,13 @@ namespace autotrade {
 
         private void HalfAutoPriceRadioButton_CheckedChanged(object sender, EventArgs e) {
             if (HalfAutoPriceRadioButton.Checked) {
+                CurrentPriceNumericUpDown.Visible = true;
+                CurrentPricePercentNumericUpDown.Visible = true;
                 CurrentPriceNumericUpDown.Enabled = true;
                 CurrentPricePercentNumericUpDown.Enabled = true;
             } else {
+                CurrentPriceNumericUpDown.Visible = false;
+                CurrentPricePercentNumericUpDown.Visible = false;
                 CurrentPriceNumericUpDown.Enabled = false;
                 CurrentPricePercentNumericUpDown.Enabled = false;
             }
@@ -206,6 +178,8 @@ namespace autotrade {
                 case "CS:GO": { InventoryContextIdComboBox.Text = "2"; break; }
                 case "PUBG": { InventoryContextIdComboBox.Text = "2"; break; }
             }
+            SavedSettings.Get().MARKET_INVENTORY_APP_ID = InventoryAppIdComboBox.Text;
+            SavedSettings.UpdateAll();
         }
 
         private void LoadInventoryButton_Click(object sender, EventArgs e) {
@@ -234,10 +208,13 @@ namespace autotrade {
             CurrentSession.InventoryContextId = contextId;
             Logger.Info($"Inventory {appid} - {contextId} loading started");
 
-            LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), appid, contextId);
-
-            Logger.Info($"Inventory {appid} - {contextId} loading finished");
-            LoadInventoryButton.Enabled = true;
+            Task.Run(() => {
+                LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), appid, contextId);
+                Logger.Info($"Inventory {appid} - {contextId} loading finished");
+                Dispatcher.Invoke(Program.MainForm, () => {
+                    LoadInventoryButton.Enabled = true;
+                });
+            });
         }
 
         private void StartSteamSellButton_Click(object sender, EventArgs e) {
@@ -355,6 +332,11 @@ namespace autotrade {
             if (LastSelectedItemDescription == null) return;
             System.Diagnostics.Process.Start("https://" + $"steamcommunity.com/profiles/{CurrentSession.SteamManager.Guard.Session.SteamID}" +
                 $"/inventory/#{CurrentSession.InventoryAppId}_{CurrentSession.InventoryContextId}");
+        }
+
+        private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e) {
+            SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID = InventoryContextIdComboBox.Text;
+            SavedSettings.UpdateAll();
         }
     }
 }

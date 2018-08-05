@@ -73,8 +73,12 @@ namespace autotrade.Steam {
             Inventory = new Inventory();
         }
 
-        public List<Inventory.RgFullItem> LoadInventory(string steamid, string appid, string contextid) {
-            return Inventory.GetInventory(new SteamID(ulong.Parse(steamid)), int.Parse(appid), int.Parse(contextid));
+        public List<Inventory.RgFullItem> LoadInventory(string steamid, string appid, string contextid, bool withLogs = false) {
+            if (withLogs) {
+                return Inventory.GetInventoryWithLogs(new SteamID(ulong.Parse(steamid)), int.Parse(appid), int.Parse(contextid));
+            } else {
+                return Inventory.GetInventory(new SteamID(ulong.Parse(steamid)), int.Parse(appid), int.Parse(contextid));
+            }
         }
 
         public void SellOnMarket(Dictionary<Inventory.RgFullItem, double> items, WorkingProcess.MarketSaleType saleType) {

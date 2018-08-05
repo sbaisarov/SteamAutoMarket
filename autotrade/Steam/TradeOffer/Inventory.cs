@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using autotrade.Utils;
 using Newtonsoft.Json;
@@ -102,16 +103,33 @@ namespace autotrade.Steam.TradeOffer {
             return items;
         }
 
+        public List<RgFullItem> GetInventoryWithLogs(SteamID steamid, int appid, int contextid) {
+            var items = new List<RgFullItem>();
+            try {
+                var startAssetid = "";
+                InventoryRootModel inventoryPage = LoadInventoryPage(steamid, appid, contextid, startAssetid);
+                Program.InventoryLoadingForm.SetTotalItemsCount(inventoryPage.total_inventory_count);
+
+                do {
+                    inventoryPage = LoadInventoryPage(steamid, appid, contextid, startAssetid);
+                    startAssetid = inventoryPage.last_assetid;
+                    items.AddRange(ProcessInventoryPage(inventoryPage));
+                    Program.InventoryLoadingForm.TrackLoadedPage();
+                }
+                while (inventoryPage.more_items == 1);
+            } catch (Exception e) {
+                if (e.GetType() != typeof(ThreadAbortException)) {
+                    Logger.Error("Error on loading inventory", e);
+                }
+            }
+            return items;
+        }
+
         private InventoryRootModel LoadInventoryPage(SteamID steamid, int appid, int contextid, string startAssetid = "", int count = 5000) {
             string url = "https://" + $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{contextid}?l=english&count=5000&start_assetid={startAssetid}";
-            try {
-                string response = SteamWeb.Request(url, "GET", dataString: null);
-                InventoryRootModel inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
-                return inventoryRoot;
-            } catch (Exception e) {
-                Logger.Error(e.Message, e);
-                return null;
-            }
+            string response = SteamWeb.Request(url, "GET", dataString: null);
+            InventoryRootModel inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
+            return inventoryRoot;
         }
 
         private static List<RgFullItem> ProcessInventoryPage(InventoryRootModel inventoryRoot) {

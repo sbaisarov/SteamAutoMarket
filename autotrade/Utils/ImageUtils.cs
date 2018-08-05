@@ -38,6 +38,9 @@ namespace autotrade.Utils {
 
         public static Image GetSteamProfileSMallImage(ulong steamId) {
             try {
+                Image image = WorkingProcess.ImagesCache.GetImage($"{steamId}");
+                if (image != null) return image;
+
                 var client = new RestClient("https://steamcommunity.com");
                 var request = new RestRequest($"/profiles/{steamId}/?xml=1", Method.GET);
                 IRestResponse response = client.Execute(request);
@@ -46,8 +49,11 @@ namespace autotrade.Utils {
                 Match result = Regex.Match(content, @"<avatarIcon><!\[CDATA\[(.*)\]\]></avatarIcon>");
                 var imageUrl = result.Groups[1].ToString();
 
-                return DownloadImage(imageUrl);
-            } catch {
+                image = DownloadImage(imageUrl);
+                WorkingProcess.ImagesCache.CacheImage($"{steamId}", image);
+                return image;
+            } catch (Exception e) {
+                Logger.Error("Error on geting profile image", e);
                 return null;
             }
         }

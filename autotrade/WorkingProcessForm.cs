@@ -14,6 +14,7 @@ using System.Windows.Forms;
 namespace autotrade {
     public partial class WorkingProcessForm : Form {
         private Thread workingThread;
+        private bool stopButtonPressed = false;
 
         public void InitProcess(Action process) {
             _activate();
@@ -54,14 +55,14 @@ namespace autotrade {
         }
 
         private void StopWorkingProcessButton_Click(object sender, EventArgs e) {
+            stopButtonPressed = true;
             workingThread.Abort();
             _disactivate();
         }
 
         private void WorkingProcessForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if ((sender as Button) != null && string.Equals((sender as Button).Name, @"CloseButton")) {
-                workingThread.Abort();
-                _disactivate();
+            if (!stopButtonPressed) {
+                StopWorkingProcessButton_Click(sender, e);
             }
         }
     }
