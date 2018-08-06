@@ -131,7 +131,7 @@
             this.leftPanelHideShowButton.FlatAppearance.BorderSize = 0;
             this.leftPanelHideShowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.leftPanelHideShowButton.Image = ((System.Drawing.Image)(resources.GetObject("leftPanelHideShowButton.Image")));
-            this.leftPanelHideShowButton.Location = new System.Drawing.Point(132, 4);
+            this.leftPanelHideShowButton.Location = new System.Drawing.Point(134, 4);
             this.leftPanelHideShowButton.Name = "leftPanelHideShowButton";
             this.leftPanelHideShowButton.Size = new System.Drawing.Size(27, 27);
             this.leftPanelHideShowButton.TabIndex = 4;
@@ -176,7 +176,7 @@
             // 
             this.logoImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logoImageBox.BackgroundImage")));
             this.logoImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.logoImageBox.Location = new System.Drawing.Point(1, 11);
+            this.logoImageBox.Location = new System.Drawing.Point(1, 7);
             this.logoImageBox.Name = "logoImageBox";
             this.logoImageBox.Size = new System.Drawing.Size(164, 161);
             this.logoImageBox.TabIndex = 4;
@@ -246,7 +246,9 @@
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.ErrorImage = null;
+            this.pictureBox1.InitialImage = null;
             this.pictureBox1.Location = new System.Drawing.Point(8, 2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(28, 24);
@@ -260,9 +262,9 @@
             this.titleLable.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.titleLable.Location = new System.Drawing.Point(50, 6);
             this.titleLable.Name = "titleLable";
-            this.titleLable.Size = new System.Drawing.Size(418, 18);
+            this.titleLable.Size = new System.Drawing.Size(154, 18);
             this.titleLable.TabIndex = 7;
-            this.titleLable.Text = "S.BEAR - Steam Best Effective Automation Resources";
+            this.titleLable.Text = "Steam-Auto-Market";
             // 
             // RightEdge
             // 

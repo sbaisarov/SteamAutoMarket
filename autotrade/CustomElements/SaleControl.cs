@@ -15,6 +15,7 @@ using autotrade.CustomElements;
 using System.Threading;
 using autotrade.Utils;
 using autotrade.WorkingProcess;
+using System.Runtime.CompilerServices;
 
 namespace autotrade {
     public partial class SaleControl : UserControl {
@@ -206,7 +207,7 @@ namespace autotrade {
             string contextId = InventoryContextIdComboBox.Text;
             CurrentSession.InventoryAppId = appid;
             CurrentSession.InventoryContextId = contextId;
-            Logger.Info($"Inventory {appid} - {contextId} loading started");
+            Logger.Debug($"Inventory {appid} - {contextId} loading started");
 
             Task.Run(() => {
                 LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), appid, contextId);
@@ -297,7 +298,7 @@ namespace autotrade {
             this.AllSteamItemsGridView.CurrentCellChanged += new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             this.ItemsToSaleGridView.CurrentCellChanged += new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
 
-            Logger.Debug("All selected items was added to sale list");
+            //Logger.Debug("All selected items was added to sale list");
         }
 
         private void RefreshInventoryButton_Click(object sender, EventArgs e) {

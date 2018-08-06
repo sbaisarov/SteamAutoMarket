@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -41,9 +42,10 @@ namespace autotrade.CustomElements {
                 hidenMarketHashNameCell.Value = firstItem.Description.market_hash_name;
                 hidenItemsListCell.Value = items;
             }
-            Logger.Debug($"{items.Count} of {items.First().Description.name} was added to sale list");
+            //Logger.Debug($"{items.Count} of {items.First().Description.name} was added to sale list");
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private static DataGridViewRow GetDataGridViewRowByMarketHashName(DataGridView itemsToSaleGrid, string marketHashName) {
             for (int i = 0; i < itemsToSaleGrid.RowCount; i++) {
                 var row = GetGridHidenItemsMarketHashName(itemsToSaleGrid, i);

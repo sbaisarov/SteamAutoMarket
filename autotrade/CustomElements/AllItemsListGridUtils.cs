@@ -151,15 +151,12 @@ namespace autotrade.CustomElements {
 
         public static void AddCellListToSale(DataGridView allItemsGrid, DataGridView itemsToSaleGrid, params DataGridViewRow[] rows) {
             foreach (DataGridViewRow row in rows) {
-                var nameTextBoxCell = GetGridNameTextBoxCell(allItemsGrid, row.Index);
                 var countTextBoxCell = GetGridCountTextBoxCell(allItemsGrid, row.Index);
                 var hidenItemsListCell = GetGridHidenItemsListCell(allItemsGrid, row.Index);
                 var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
 
                 int itemsCount = int.Parse(countTextBoxCell.Value.ToString());
                 if (itemsCount <= 0) return;
-
-                var amountToAddComboBoxCell = GetGridCountToAddComboBoxCell(allItemsGrid, row.Index);
 
                 ItemsToSaleGridUtils.AddItemsToSale(itemsToSaleGrid, hidenItemsList);
 
@@ -301,20 +298,16 @@ namespace autotrade.CustomElements {
             return (DataGridViewButtonCell)grid.Rows[rowIndex].Cells[4];
         }
 
-        private static DataGridViewButtonCell GetGridAddAllButtonCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewButtonCell)grid.Rows[rowIndex].Cells[5];
-        }
-
         private static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[6];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[5];
         }
 
         private static DataGridViewTextBoxCell GetGridHidenItemImageCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[7];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[6];
         }
 
         private static DataGridViewTextBoxCell GetGridHidenItemMarketHashNameCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[8];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[7];
         }
         #endregion
     }

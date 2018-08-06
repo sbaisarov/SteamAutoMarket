@@ -42,7 +42,7 @@ namespace autotrade.Utils {
         public static void Warning(string message, Exception e = null) {
             if (_ignoreLogs(LoggerLevel.INFO)) return;
 
-            message = $"{GetCurrentDate()} [WARN] - {message} " + ((e != null) ? e.StackTrace : "");
+            message = $"{GetCurrentDate()} [WARN] - {message} " + ((e != null) ? e.Message + " " + e.StackTrace : "");
             File.AppendAllText("log.log", message + "\n");
             LogToLogBox(message);
         }
@@ -56,7 +56,7 @@ namespace autotrade.Utils {
                 message += $". {e.Message}";
             }
 
-            File.AppendAllText("error.log", message + " " + ((e != null) ? e.StackTrace : "") + "\n");
+            File.AppendAllText("error.log", message + " " + ((e != null) ? e.Message + " " + e.StackTrace : "") + "\n");
             LogToLogBox(message);
         }
 

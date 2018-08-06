@@ -26,10 +26,10 @@ namespace autotrade {
         }
 
         public void LeftPanelHideShowButton_Click(object sender, EventArgs e) {
-            //925; 630
+            //1051; 630
             int sizeChange = 115;
 
-            if (this.Width == 925) {
+            if (this.Width == 1051) {
                 leftHeaderPanel.Width -= sizeChange;
                 LeftEdge2.Left -= sizeChange;
                 BotEdge.Left -= sizeChange;
@@ -40,8 +40,10 @@ namespace autotrade {
                 BuyControl.Left -= sizeChange;
                 appCurtailButton.Left -= sizeChange;
                 appExitButton.Left -= sizeChange;
+                TradeControl.Left -= sizeChange;
                 this.Width -= sizeChange;
                 logoImageBox.Visible = false;
+                
             } else {
                 leftHeaderPanel.Width += sizeChange;
                 LeftEdge2.Left += sizeChange;
@@ -53,6 +55,7 @@ namespace autotrade {
                 BuyControl.Left += sizeChange;
                 appCurtailButton.Left += sizeChange;
                 appExitButton.Left += sizeChange;
+                TradeControl.Left += sizeChange;
                 this.Width += sizeChange;
                 logoImageBox.Visible = true;
             }

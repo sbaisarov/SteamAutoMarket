@@ -23,8 +23,12 @@ namespace autotrade.CustomElements {
 
         public TradeControl() {
             InitializeComponent();
-            InventoryAppIdComboBox.Text = SavedSettings.Get().TRADE_INVENTORY_APP_ID;
-            InventoryContextIdComboBox.Text = SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID;
+
+            SavedSettings settings = SavedSettings.Get();
+            InventoryAppIdComboBox.Text = settings.TRADE_INVENTORY_APP_ID;
+            InventoryContextIdComboBox.Text = settings.TRADE_INVENTORY_CONTEX_ID;
+            TradeParthenIdTextBox.Text = settings.TRADE_PARTNER_ID;
+            TradeTokenTextBox.Text = settings.TRADE_TOKEN;
         }
 
         private void SaleControl_Load(object sender, EventArgs e) {
@@ -44,6 +48,7 @@ namespace autotrade.CustomElements {
 
             Program.InventoryLoadingForm.InitProcess();
             List<RgFullItem> allItemsList = Program.InventoryLoadingForm.GetLoadedItems();
+            Program.InventoryLoadingForm.Disactivate();
 
             allItemsList.RemoveAll(item => item.Description.tradable == false);
 
@@ -216,7 +221,6 @@ namespace autotrade.CustomElements {
             });
         }
 
-
         private void SendTradeButton_Click(object sender, EventArgs e) {
             if (CurrentSession.SteamManager == null) {
                 MessageBox.Show("You should login first", "Error sending trade offer", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -300,6 +304,16 @@ namespace autotrade.CustomElements {
                 case "PUBG": { InventoryContextIdComboBox.Text = "2"; break; }
             }
             SavedSettings.Get().TRADE_INVENTORY_APP_ID = InventoryAppIdComboBox.Text;
+            SavedSettings.UpdateAll();
+        }
+
+        private void TradeParthenIdTextBox_TextChanged(object sender, EventArgs e) {
+            SavedSettings.Get().TRADE_PARTNER_ID = TradeParthenIdTextBox.Text;
+            SavedSettings.UpdateAll();
+        }
+
+        private void TradeTokenTextBox_TextChanged(object sender, EventArgs e) {
+            SavedSettings.Get().TRADE_TOKEN = TradeTokenTextBox.Text;
             SavedSettings.UpdateAll();
         }
     }

@@ -30,6 +30,8 @@ namespace autotrade.CustomElements {
         public string TRADE_INVENTORY_CONTEX_ID { get; set; } = "";
         public string TRADE_CURRENT_PRICE_MINUS_VALUE { get; set; } = "";
         public string TRADE_CURRENT_PRICE_MINUS_PERCENT { get; set; } = "";
+        public string TRADE_TOKEN { get; set; } = "";
+        public string TRADE_PARTNER_ID { get; set; } = "";
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static SavedSettings Get() {

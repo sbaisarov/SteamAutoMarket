@@ -139,7 +139,7 @@
     <Compile Include="WorkingProcessForm.Designer.cs">
       <DependentUpon>WorkingProcessForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\SettingsContainer.cs" />
+    <Compile Include="WorkingProcess\SettingsContainer.cs" />
     <Compile Include="CustomElements\SettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
