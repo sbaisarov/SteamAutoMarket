@@ -61,7 +61,7 @@ namespace autotrade.WorkingProcess {
             RgFullItem item = new RgFullItem();
             try {
                 var cell = ItemsToSaleGridUtils.GetGridHidenItemsListCell(ITEM_GRID, row.Index);
-                if (cell == null) return -1;
+                if (cell == null || cell.Value == null) return -1;
 
                 item = ItemsToSaleGridUtils.GetRowItemsList(ITEM_GRID, row.Index).FirstOrDefault();
                 if (item == null) return -1;
