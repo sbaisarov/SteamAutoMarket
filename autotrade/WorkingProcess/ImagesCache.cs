@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace autotrade.WorkingProcess {
     class ImagesCache {
-        public static Dictionary<string, Image> imageCache { get; set; } = new Dictionary<string, Image>();
+        public static Dictionary<string, Image> ImageCache { get; set; } = new Dictionary<string, Image>();
         private static readonly string imagesPath = $"{Environment.CurrentDirectory}/images";
 
         public static Image GetImage(string hashName) {
-            imageCache.TryGetValue(hashName, out Image image);
+            ImageCache.TryGetValue(hashName, out Image image);
             if (image != null) return image;
 
             string fileName = $"{imagesPath}/{MakeValidFileName(hashName)}.jpg";
             if (File.Exists(fileName)) {
                 image = Image.FromFile(fileName);
-                imageCache.Add(hashName, image);
+                ImageCache.Add(hashName, image);
                 return image;
             }
 
@@ -29,8 +29,8 @@ namespace autotrade.WorkingProcess {
         public static void CacheImage(string hashName, Image image) {
             if (image == null) return;
 
-            if (!imageCache.ContainsKey(hashName)) {
-                imageCache.Add(hashName, image);
+            if (!ImageCache.ContainsKey(hashName)) {
+                ImageCache.Add(hashName, image);
             }
             Directory.CreateDirectory(imagesPath);
             image.Save($"{imagesPath}/{MakeValidFileName(hashName)}.jpg");
