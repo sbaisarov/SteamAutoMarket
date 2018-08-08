@@ -48,7 +48,7 @@ namespace autotrade.CustomElements {
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateAll() {
-            File.WriteAllText(SettingsContainer.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(cached));
+            File.WriteAllText(SettingsContainer.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(cached, Formatting.Indented));
         }
     }
 
@@ -76,7 +76,7 @@ namespace autotrade.CustomElements {
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateAll(List<SavedSteamAccount> accounts) {
             cached = accounts;
-            File.WriteAllText(SettingsContainer.ACCOUNTS_FILE_PATH, JsonConvert.SerializeObject(accounts));
+            File.WriteAllText(SettingsContainer.ACCOUNTS_FILE_PATH, JsonConvert.SerializeObject(accounts, Formatting.Indented));
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]

@@ -48,8 +48,8 @@ namespace autotrade.WorkingProcess {
                 }
             }
 
-            rows = _getRowsWithNoPrice();
             Thread.Sleep(1000);
+            rows = _getRowsWithNoPrice();
             if (rows.Count() != 0) _loadItemsPrice(sender, ev);
         }
 
@@ -119,14 +119,11 @@ namespace autotrade.WorkingProcess {
 
         public LoadedItemPrice Get(RgFullItem item) {
             Get().TryGetValue(item.Description.market_hash_name, out LoadedItemPrice cached);
-            if (cached == null) {
-                return null;
-            }
             return cached;
         }
 
         public void Cache(string hashName, double price) {
-            Get().Add(hashName, new LoadedItemPrice(DateTime.Now, price));
+            Get()[hashName] = new LoadedItemPrice(DateTime.Now, price);
             UpdateAll();
         }
 

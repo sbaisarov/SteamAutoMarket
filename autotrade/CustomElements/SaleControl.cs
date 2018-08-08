@@ -158,6 +158,7 @@ namespace autotrade {
 
         private void ItemsToSaleGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
             if (e.RowIndex < 0) return;
+            if (ItemsToSaleGridView.Rows.Count == 1) ItemsToSaleGridView_CurrentCellChanged(sender, e);
             if (e.ColumnIndex != 2) return;
             if (!ManualPriceRadioButton.Checked) {
                 ItemToSalePriceColumn.ReadOnly = true;
@@ -285,20 +286,17 @@ namespace autotrade {
             }
         }
 
-        private void ItemsToSaleGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e) {
-            PriceLoader.StartPriceLoading();
-        }
-
         private void AddAllButton_Click(object sender, EventArgs e) {
             this.AllSteamItemsGridView.CurrentCellChanged -= new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             this.ItemsToSaleGridView.CurrentCellChanged -= new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
 
             AllItemsListGridUtils.AddCellListToSale(AllSteamItemsGridView, ItemsToSaleGridView, AllSteamItemsGridView.SelectedRows.Cast<DataGridViewRow>().ToArray());
-
+            
             this.AllSteamItemsGridView.CurrentCellChanged += new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             this.ItemsToSaleGridView.CurrentCellChanged += new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
 
-            //Logger.Debug("All selected items was added to sale list");
+            Logger.Debug("All selected items was added to sale list");
+            PriceLoader.StartPriceLoading();
         }
 
         private void RefreshInventoryButton_Click(object sender, EventArgs e) {

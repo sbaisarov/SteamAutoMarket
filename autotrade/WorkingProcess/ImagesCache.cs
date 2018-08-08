@@ -19,7 +19,7 @@ namespace autotrade.WorkingProcess {
             string fileName = $"{imagesPath}/{MakeValidFileName(hashName)}.jpg";
             if (File.Exists(fileName)) {
                 image = Image.FromFile(fileName);
-                ImageCache.Add(hashName, image);
+                ImageCache[hashName] = image;
                 return image;
             }
 

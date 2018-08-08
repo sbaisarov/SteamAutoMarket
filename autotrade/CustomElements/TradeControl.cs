@@ -316,5 +316,10 @@ namespace autotrade.CustomElements {
             SavedSettings.Get().TRADE_TOKEN = TradeTokenTextBox.Text;
             SavedSettings.UpdateAll();
         }
+
+        private void ItemsToTradeGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
+            if (e.RowIndex < 0) return;
+            if (ItemsToTradeGridView.Rows.Count == 1) ItemsToSaleGridView_CurrentCellChanged(sender, e);
+        }
     }
 }

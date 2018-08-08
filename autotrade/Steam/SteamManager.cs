@@ -16,6 +16,8 @@ using System.Threading;
 using SteamKit2;
 using autotrade.Steam.TradeOffer;
 using autotrade.CustomElements;
+using Market.Interface;
+using autotrade.Steam.Market;
 
 namespace autotrade.Steam {
     public class SteamManager {
@@ -23,7 +25,7 @@ namespace autotrade.Steam {
         public static OfferSession OfferSession { get; set; }
         public Inventory Inventory { get; set; }
         public static UserLogin SteamClient { get; set; }
-        public Market.Interface.MarketClient MarketClient { get; set; }
+        public MarketClient MarketClient { get; set; }
         public SteamGuardAccount Guard { get; set; }
 
         public SteamManager() {
@@ -69,7 +71,7 @@ namespace autotrade.Steam {
                 IsAuthorized = true
             };
             market.Auth = auth;
-            MarketClient = new Market.Interface.MarketClient(market);
+            MarketClient = new MarketClient(market);
             Inventory = new Inventory();
         }
 
@@ -151,7 +153,13 @@ namespace autotrade.Steam {
         }
 
         public void GetCurrentPrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description) {
-            MarketItemInfo itemPageInfo = MarketClient.ItemPage(asset.appid, description.market_hash_name);
+            MarketItemInfo itemPageInfo = MarketInfoCache.Get(asset.appid, description.market_hash_name);
+
+            if (itemPageInfo == null) {
+                itemPageInfo = MarketClient.ItemPage(asset.appid, description.market_hash_name);
+                MarketInfoCache.Cache(asset.appid, description.market_hash_name, itemPageInfo);
+            }
+
             ItemOrdersHistogram histogram = MarketClient.ItemOrdersHistogram(
                             itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
             price = histogram.MinSellPrice as double?;

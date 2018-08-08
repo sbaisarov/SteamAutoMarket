@@ -132,6 +132,7 @@
     <Compile Include="InventoryLoadingForm.Designer.cs">
       <DependentUpon>InventoryLoadingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Steam\Market\MarketInfoCache.cs" />
     <Compile Include="Utils\FormComponents.cs" />
     <Compile Include="WorkingProcessForm.cs">
       <SubType>Form</SubType>

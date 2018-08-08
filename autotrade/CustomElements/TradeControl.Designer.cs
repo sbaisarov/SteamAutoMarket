@@ -28,13 +28,21 @@ namespace autotrade.CustomElements {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TradeControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.AllSteamItemsToTradeGridView = new System.Windows.Forms.DataGridView();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CountToAddColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.HidenItemsListColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HidenItemImageColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ItemsToTradeGridView = new System.Windows.Forms.DataGridView();
@@ -70,14 +78,6 @@ namespace autotrade.CustomElements {
             this.InventoryAppIdLabel = new System.Windows.Forms.Label();
             this.InventoryAppIdComboBox = new System.Windows.Forms.ComboBox();
             this.AccountNameLable = new System.Windows.Forms.Label();
-            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CountToAddColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.HidenItemsListColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HidenItemImageColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsToTradeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToTradeGridView)).BeginInit();
             this.ItemDescriptionGroupBox.SuspendLayout();
@@ -139,6 +139,75 @@ namespace autotrade.CustomElements {
             this.AllSteamItemsToTradeGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             this.AllSteamItemsToTradeGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.SteamSaleDataGridView_EditingControlShowing);
             // 
+            // NameColumn
+            // 
+            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NameColumn.DataPropertyName = "SaleSteamControl";
+            this.NameColumn.FillWeight = 85.5619F;
+            this.NameColumn.Frozen = true;
+            this.NameColumn.HeaderText = "Item name";
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.ReadOnly = true;
+            this.NameColumn.ToolTipText = "Item name";
+            this.NameColumn.Width = 181;
+            // 
+            // CountColumn
+            // 
+            this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            this.CountColumn.FillWeight = 35F;
+            this.CountColumn.Frozen = true;
+            this.CountColumn.HeaderText = "#";
+            this.CountColumn.Name = "CountColumn";
+            this.CountColumn.ReadOnly = true;
+            this.CountColumn.Width = 35;
+            // 
+            // ItemTypeColumn
+            // 
+            this.ItemTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ItemTypeColumn.Frozen = true;
+            this.ItemTypeColumn.HeaderText = "Type";
+            this.ItemTypeColumn.Name = "ItemTypeColumn";
+            this.ItemTypeColumn.ReadOnly = true;
+            // 
+            // CountToAddColumn
+            // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.CountToAddColumn.FillWeight = 35F;
+            this.CountToAddColumn.HeaderText = "Amount for trade";
+            this.CountToAddColumn.MaxDropDownItems = 10;
+            this.CountToAddColumn.Name = "CountToAddColumn";
+            this.CountToAddColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // AddButtonColumn
+            // 
+            this.AddButtonColumn.FillWeight = 35F;
+            this.AddButtonColumn.HeaderText = "Add";
+            this.AddButtonColumn.Name = "AddButtonColumn";
+            this.AddButtonColumn.Text = "Add";
+            this.AddButtonColumn.UseColumnTextForButtonValue = true;
+            // 
+            // HidenItemsListColumn
+            // 
+            this.HidenItemsListColumn.HeaderText = "HidenItemsList";
+            this.HidenItemsListColumn.Name = "HidenItemsListColumn";
+            this.HidenItemsListColumn.Visible = false;
+            // 
+            // HidenItemImageColumn
+            // 
+            this.HidenItemImageColumn.HeaderText = "HidenItemImage";
+            this.HidenItemImageColumn.Name = "HidenItemImageColumn";
+            this.HidenItemImageColumn.Visible = false;
+            // 
+            // HidenItemMarketHashName
+            // 
+            this.HidenItemMarketHashName.HeaderText = "HidenItemMarketHashNameColumn";
+            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
+            this.HidenItemMarketHashName.Visible = false;
+            // 
             // ItemImageBox
             // 
             this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -199,6 +268,7 @@ namespace autotrade.CustomElements {
             this.ItemsToTradeGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ItemsToTradeGridView.Size = new System.Drawing.Size(553, 201);
             this.ItemsToTradeGridView.TabIndex = 13;
+            this.ItemsToTradeGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToTradeGridView_CellClick);
             this.ItemsToTradeGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridView_CellEndEdit);
             this.ItemsToTradeGridView.CurrentCellChanged += new System.EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
             // 
@@ -565,75 +635,6 @@ namespace autotrade.CustomElements {
             this.AccountNameLable.Size = new System.Drawing.Size(140, 18);
             this.AccountNameLable.TabIndex = 11;
             this.AccountNameLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // NameColumn
-            // 
-            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.NameColumn.DataPropertyName = "SaleSteamControl";
-            this.NameColumn.FillWeight = 85.5619F;
-            this.NameColumn.Frozen = true;
-            this.NameColumn.HeaderText = "Item name";
-            this.NameColumn.Name = "NameColumn";
-            this.NameColumn.ReadOnly = true;
-            this.NameColumn.ToolTipText = "Item name";
-            this.NameColumn.Width = 181;
-            // 
-            // CountColumn
-            // 
-            this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
-            this.CountColumn.FillWeight = 35F;
-            this.CountColumn.Frozen = true;
-            this.CountColumn.HeaderText = "#";
-            this.CountColumn.Name = "CountColumn";
-            this.CountColumn.ReadOnly = true;
-            this.CountColumn.Width = 35;
-            // 
-            // ItemTypeColumn
-            // 
-            this.ItemTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ItemTypeColumn.Frozen = true;
-            this.ItemTypeColumn.HeaderText = "Type";
-            this.ItemTypeColumn.Name = "ItemTypeColumn";
-            this.ItemTypeColumn.ReadOnly = true;
-            // 
-            // CountToAddColumn
-            // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
-            this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            this.CountToAddColumn.FillWeight = 35F;
-            this.CountToAddColumn.HeaderText = "Amount for trade";
-            this.CountToAddColumn.MaxDropDownItems = 10;
-            this.CountToAddColumn.Name = "CountToAddColumn";
-            this.CountToAddColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // AddButtonColumn
-            // 
-            this.AddButtonColumn.FillWeight = 35F;
-            this.AddButtonColumn.HeaderText = "Add";
-            this.AddButtonColumn.Name = "AddButtonColumn";
-            this.AddButtonColumn.Text = "Add";
-            this.AddButtonColumn.UseColumnTextForButtonValue = true;
-            // 
-            // HidenItemsListColumn
-            // 
-            this.HidenItemsListColumn.HeaderText = "HidenItemsList";
-            this.HidenItemsListColumn.Name = "HidenItemsListColumn";
-            this.HidenItemsListColumn.Visible = false;
-            // 
-            // HidenItemImageColumn
-            // 
-            this.HidenItemImageColumn.HeaderText = "HidenItemImage";
-            this.HidenItemImageColumn.Name = "HidenItemImageColumn";
-            this.HidenItemImageColumn.Visible = false;
-            // 
-            // HidenItemMarketHashName
-            // 
-            this.HidenItemMarketHashName.HeaderText = "HidenItemMarketHashNameColumn";
-            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
-            this.HidenItemMarketHashName.Visible = false;
             // 
             // TradeControl
             // 
