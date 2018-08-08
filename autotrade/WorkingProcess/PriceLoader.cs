@@ -73,7 +73,7 @@ namespace autotrade.WorkingProcess {
                     price = cached.Price;
                 } else {
                     CurrentSession.SteamManager.GetCurrentPrice(out price, item.Asset, item.Description);
-                    if (price != null || price != 0) {
+                    if (price != null && price != 0) {
                         CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, price.Value);
                     }
                 }
@@ -87,19 +87,17 @@ namespace autotrade.WorkingProcess {
     }
 
     class LoadedItemPrice {
-        public string HashName { get; set; }
         public DateTime ParseTime { get; set; }
         public double Price { get; set; }
 
-        public LoadedItemPrice(string hashName, DateTime parseTime, double price) {
-            HashName = hashName;
+        public LoadedItemPrice(DateTime parseTime, double price) {
             ParseTime = parseTime;
             Price = price;
         }
     }
 
     class PricesCash {
-        private List<LoadedItemPrice> CACHE;
+        private Dictionary<string, LoadedItemPrice> CACHE;
         private string CACHE_PRICES_PATH;
         private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat };
 
@@ -107,12 +105,12 @@ namespace autotrade.WorkingProcess {
             CACHE_PRICES_PATH = filePath;
         }
 
-        private List<LoadedItemPrice> Get() {
+        private Dictionary<string, LoadedItemPrice> Get() {
             if (CACHE == null) {
                 if (File.Exists(CACHE_PRICES_PATH)) {
-                    CACHE = JsonConvert.DeserializeObject<List<LoadedItemPrice>>(File.ReadAllText(CACHE_PRICES_PATH), _jsonSettings);
+                    CACHE = JsonConvert.DeserializeObject<Dictionary<string, LoadedItemPrice>>(File.ReadAllText(CACHE_PRICES_PATH), _jsonSettings);
                 } else {
-                    CACHE = new List<LoadedItemPrice>();
+                    CACHE = new Dictionary<string, LoadedItemPrice>();
                     UpdateAll();
                 }
             }
@@ -120,7 +118,7 @@ namespace autotrade.WorkingProcess {
         }
 
         public LoadedItemPrice Get(RgFullItem item) {
-            var cached = Get().FirstOrDefault(x => x.HashName == item.Description.market_hash_name);
+            Get().TryGetValue(item.Description.market_hash_name, out LoadedItemPrice cached);
             if (cached == null) {
                 return null;
             }
@@ -128,7 +126,7 @@ namespace autotrade.WorkingProcess {
         }
 
         public void Cache(string hashName, double price) {
-            Get().Add(new LoadedItemPrice(hashName, DateTime.Now, price));
+            Get().Add(hashName, new LoadedItemPrice(DateTime.Now, price));
             UpdateAll();
         }
 
