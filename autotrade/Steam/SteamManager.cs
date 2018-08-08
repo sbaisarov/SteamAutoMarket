@@ -23,6 +23,7 @@ namespace autotrade.Steam {
     public class SteamManager {
         public string ApiKey { get; set; }
         public static OfferSession OfferSession { get; set; }
+        public TradeOfferWebAPI TradeOfferWeb { get; }
         public Inventory Inventory { get; set; }
         public static UserLogin SteamClient { get; set; }
         public MarketClient MarketClient { get; set; }
@@ -31,15 +32,15 @@ namespace autotrade.Steam {
         public SteamManager() {
         }
 
-        public SteamManager(string login, string password, SteamGuardAccount mafile, string apiKey = "B763C3FD17EC886BD7D3C35DEB49CF35") {
+        public SteamManager(string login, string password, SteamGuardAccount mafile, string apiKey = null) {
             Guard = mafile;
             SteamClient = new UserLogin(login, password)
             {
                 TwoFactorCode = Guard.GenerateSteamGuardCode()
             };
 
-            bool isSessionAExpired = Guard.RefreshSession();
-            if (isSessionAExpired == true) {
+            bool isSessionRefreshed = Guard.RefreshSession();
+            if (isSessionRefreshed == false) {
                 Utils.Logger.Debug($"Saved steam session for ${login} is expired. Refreshing session.");
                 LoginResult loginResult;
                 int tryCount = 0;
@@ -63,7 +64,8 @@ namespace autotrade.Steam {
             this.ApiKey = apiKey;
 
             CookieContainer cookies = new CookieContainer();
-            OfferSession = new OfferSession(new TradeOfferWebAPI(apiKey), cookies, Guard.Session.SessionID);
+            TradeOfferWeb = new TradeOfferWebAPI(apiKey);
+            OfferSession = new OfferSession(TradeOfferWeb, cookies, Guard.Session.SessionID);
             Guard.Session.AddCookies(cookies);
             var market = new SteamMarketHandler(ELanguage.English, "user-agent");
             Auth auth = new Auth(market, cookies)
@@ -104,7 +106,7 @@ namespace autotrade.Steam {
                         break;
 
                     case WorkingProcess.MarketSaleType.RECOMMENDED:
-                        GetAveragePrice(out price, asset, description);
+                        GetAveragePrice(out price, asset, description, amount);
                         break;
 
                     default:
@@ -121,31 +123,34 @@ namespace autotrade.Steam {
 
                         string message = resp.Message; // error message
                         if (message != null) {
-                            // log error message
+                            Utils.Logger.Warning(message);
                             Thread.Sleep(5000);
                             continue;
                         }
                         break;
-                    } catch (JsonSerializationException) {
-                        // log error
+                    } catch (JsonSerializationException e) {
+                        Utils.Logger.Warning(e.Message);
                         continue;
                     }
                 }
             }
 
-            // log confirming process
+            Utils.Logger.Info("Fetching confirmations...");
             Confirmation[] confirmations = Guard.FetchConfirmations();
             var marketConfirmations = confirmations
                 .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction)
                 .ToArray();
+            Utils.Logger.Info("Accepting confirmations...");
             Guard.AcceptMultipleConfirmations(marketConfirmations);
         }
 
-        public void GetAveragePrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description) {
+        public void GetAveragePrice(out double? price, Inventory.RgInventory asset, 
+            Inventory.RgDescription description, double amount) {
             try {
                 List<PriceHistoryDay> history = MarketClient
                     .PriceHistory(asset.appid, description.market_hash_name);
                 price = CountAveragePrice(history);
+                price -= amount;
             } catch (SteamException e) {
                 Utils.Logger.Warning($"Error on geting average price of ${description.market_hash_name}", e);
                 price = null;
@@ -173,13 +178,13 @@ namespace autotrade.Steam {
             double average = 0;
             // days are sorted from oldest to newest, we need the contrary
             history.Reverse();
-            var FirstSevenDays = history.GetRange(0, 7);
-            average = IterateHistory(FirstSevenDays, average);
-            average = IterateHistory(FirstSevenDays, average);
+            var firstSevenDays = history.GetRange(0, 7);
+            average = IterateHistory(firstSevenDays, average);
+            average = IterateHistory(firstSevenDays, average);
             return average;
         }
 
-        private double IterateHistory(List<PriceHistoryDay> history, double average) {
+        private double IterateHistory(List<PriceHistoryDay> history, double? average) {
             double sum = 0;
             int count = 0;
             foreach (var item in history) {
@@ -195,18 +200,17 @@ namespace autotrade.Steam {
                 }
             }
             try {
-                average = sum / count;
+                return sum / count;
             } catch (DivideByZeroException) {
-                average = 0;
+                throw new SteamException("No prices recorded during a week");
             }
-            return average;
         }
 
         public void SendTradeOffer(List<Inventory.RgFullItem> items, string partnerId, string tradeToken) {
             TradeOffer.TradeOffer offer = new TradeOffer.TradeOffer(OfferSession, new SteamID(ulong.Parse(partnerId)));
             bool status = offer.SendWithToken(out string offerId, tradeToken);
             if (status is false) {
-                // log error offer.Session.Error if exists
+                Utils.Logger.Info(offer.Session.Error);
                 return;
             }
             Confirmation[] confirmations = Guard.FetchConfirmations();
@@ -217,12 +221,25 @@ namespace autotrade.Steam {
             Guard.AcceptConfirmation(conf);
         }
 
+        public OffersResponse ReceiveTradeOffers()
+        {
+            return TradeOfferWeb.GetActiveTradeOffers(false, true, true);
+        }
+
+        public void AcceptOffers(IEnumerable<Offer> offers)
+        {
+            foreach (var offer in offers)
+            {
+                OfferSession.Accept(offer.TradeOfferId);
+            }
+        }
+
         public bool SaveAccount(SteamGuardAccount account) {
             try {
                 SavedSteamAccount.UpdateByLogin(account.AccountName, account);
                 return true;
             } catch (Exception e) {
-                Utils.Logger.Error("Erron on session save", e);
+                Utils.Logger.Error("Error on session save", e);
                 return false;
             }
         }

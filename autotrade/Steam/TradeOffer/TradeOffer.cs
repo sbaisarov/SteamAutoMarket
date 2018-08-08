@@ -9,7 +9,7 @@ namespace autotrade.Steam.TradeOffer
 {
     public class TradeOffer
     {
-        private OfferSession Session { get; set; }
+        public OfferSession Session { get; set; }
 
         public SteamID PartnerSteamId { get; private set; }
 
