@@ -27,9 +27,9 @@ namespace autotrade.CustomElements {
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TradeControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -42,23 +42,24 @@ namespace autotrade.CustomElements {
             this.TradeGroupBox = new System.Windows.Forms.GroupBox();
             this.DeleteSelectedItemButton = new System.Windows.Forms.Button();
             this.ItemsToSaleGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemsToTradeGridView = new System.Windows.Forms.DataGridView();
+            this.AddedToSaleListItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AddedToSaleListItemsCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemToSalePriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HidenMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AddedToSaleListHidenItemsList = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AveragePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TradeSendGroupBox = new System.Windows.Forms.GroupBox();
+            this.SendTradeButton = new System.Windows.Forms.Button();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemImageBox = new System.Windows.Forms.Panel();
             this.AllSteamItemsGroupBox = new System.Windows.Forms.GroupBox();
+            this.AllSteamItemsToTradeGridView = new System.Windows.Forms.DataGridView();
             this.AddAllButton = new System.Windows.Forms.Button();
             this.RefreshInventoryButton = new System.Windows.Forms.Button();
-            this.AveragePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AddedToSaleListHidenItemsList = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HidenMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemToSalePriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AddedToSaleListItemsCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AddedToSaleListItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemsToTradeGridView = new System.Windows.Forms.DataGridView();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ItemImageBox = new System.Windows.Forms.Panel();
-            this.AllSteamItemsToTradeGridView = new System.Windows.Forms.DataGridView();
             this.SplitterPanel = new System.Windows.Forms.Panel();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -74,16 +75,15 @@ namespace autotrade.CustomElements {
             this.InventoryContextIdComboBox = new System.Windows.Forms.ComboBox();
             this.InventoryContextIdLabel = new System.Windows.Forms.Label();
             this.InventoryGroupBox = new System.Windows.Forms.GroupBox();
-            this.OpenGameInventoryPageButton = new System.Windows.Forms.Button();
             this.LoadInventoryButton = new System.Windows.Forms.Button();
+            this.OpenGameInventoryPageButton = new System.Windows.Forms.Button();
             this.AddAllToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.SendTradeButton = new System.Windows.Forms.Button();
             this.TradeGroupBox.SuspendLayout();
             this.ItemsToSaleGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ItemsToTradeGridView)).BeginInit();
             this.TradeSendGroupBox.SuspendLayout();
             this.ItemDescriptionGroupBox.SuspendLayout();
             this.AllSteamItemsGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ItemsToTradeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsToTradeGridView)).BeginInit();
             this.InventoryGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -178,134 +178,6 @@ namespace autotrade.CustomElements {
             this.ItemsToSaleGroupBox.TabStop = false;
             this.ItemsToSaleGroupBox.Text = "Items for sale";
             // 
-            // TradeSendGroupBox
-            // 
-            this.TradeSendGroupBox.Controls.Add(this.SendTradeButton);
-            this.TradeSendGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.TradeSendGroupBox.Location = new System.Drawing.Point(580, 498);
-            this.TradeSendGroupBox.Name = "TradeSendGroupBox";
-            this.TradeSendGroupBox.Size = new System.Drawing.Size(296, 92);
-            this.TradeSendGroupBox.TabIndex = 19;
-            this.TradeSendGroupBox.TabStop = false;
-            this.TradeSendGroupBox.Text = "Trade";
-            // 
-            // ItemNameLable
-            // 
-            this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ItemNameLable.Location = new System.Drawing.Point(150, 15);
-            this.ItemNameLable.Name = "ItemNameLable";
-            this.ItemNameLable.Size = new System.Drawing.Size(139, 120);
-            this.ItemNameLable.TabIndex = 10;
-            // 
-            // ItemDescriptionTextBox
-            // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
-            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
-            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
-            this.ItemDescriptionTextBox.TabIndex = 12;
-            this.ItemDescriptionTextBox.Text = "";
-            // 
-            // ItemDescriptionGroupBox
-            // 
-            this.ItemDescriptionGroupBox.Controls.Add(this.ItemDescriptionTextBox);
-            this.ItemDescriptionGroupBox.Controls.Add(this.ItemNameLable);
-            this.ItemDescriptionGroupBox.Controls.Add(this.ItemImageBox);
-            this.ItemDescriptionGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionGroupBox.Location = new System.Drawing.Point(579, 3);
-            this.ItemDescriptionGroupBox.Name = "ItemDescriptionGroupBox";
-            this.ItemDescriptionGroupBox.Size = new System.Drawing.Size(296, 224);
-            this.ItemDescriptionGroupBox.TabIndex = 14;
-            this.ItemDescriptionGroupBox.TabStop = false;
-            this.ItemDescriptionGroupBox.Text = "Item description";
-            // 
-            // AllSteamItemsGroupBox
-            // 
-            this.AllSteamItemsGroupBox.Controls.Add(this.AllSteamItemsToTradeGridView);
-            this.AllSteamItemsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AllSteamItemsGroupBox.Location = new System.Drawing.Point(7, 3);
-            this.AllSteamItemsGroupBox.Name = "AllSteamItemsGroupBox";
-            this.AllSteamItemsGroupBox.Size = new System.Drawing.Size(566, 314);
-            this.AllSteamItemsGroupBox.TabIndex = 16;
-            this.AllSteamItemsGroupBox.TabStop = false;
-            this.AllSteamItemsGroupBox.Text = "All items";
-            // 
-            // AddAllButton
-            // 
-            this.AddAllButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AddAllButton.FlatAppearance.BorderSize = 0;
-            this.AddAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AddAllButton.Image = ((System.Drawing.Image)(resources.GetObject("AddAllButton.Image")));
-            this.AddAllButton.Location = new System.Drawing.Point(582, 240);
-            this.AddAllButton.Name = "AddAllButton";
-            this.AddAllButton.Size = new System.Drawing.Size(47, 40);
-            this.AddAllButton.TabIndex = 28;
-            this.AddAllButton.UseVisualStyleBackColor = true;
-            this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
-            // 
-            // RefreshInventoryButton
-            // 
-            this.RefreshInventoryButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RefreshInventoryButton.FlatAppearance.BorderSize = 0;
-            this.RefreshInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RefreshInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.RefreshInventoryButton.Image = ((System.Drawing.Image)(resources.GetObject("RefreshInventoryButton.Image")));
-            this.RefreshInventoryButton.Location = new System.Drawing.Point(635, 240);
-            this.RefreshInventoryButton.Name = "RefreshInventoryButton";
-            this.RefreshInventoryButton.Size = new System.Drawing.Size(47, 40);
-            this.RefreshInventoryButton.TabIndex = 27;
-            this.RefreshInventoryButton.UseVisualStyleBackColor = true;
-            this.RefreshInventoryButton.Click += new System.EventHandler(this.RefreshInventoryButton_Click);
-            // 
-            // AveragePrice
-            // 
-            this.AveragePrice.FillWeight = 35F;
-            this.AveragePrice.HeaderText = "Average price";
-            this.AveragePrice.Name = "AveragePrice";
-            this.AveragePrice.ReadOnly = true;
-            this.AveragePrice.Visible = false;
-            // 
-            // AddedToSaleListHidenItemsList
-            // 
-            this.AddedToSaleListHidenItemsList.HeaderText = "HidenItemsList";
-            this.AddedToSaleListHidenItemsList.Name = "AddedToSaleListHidenItemsList";
-            this.AddedToSaleListHidenItemsList.ReadOnly = true;
-            this.AddedToSaleListHidenItemsList.Visible = false;
-            // 
-            // HidenMarketHashNameColumn
-            // 
-            this.HidenMarketHashNameColumn.HeaderText = "HidenMarketHashName";
-            this.HidenMarketHashNameColumn.Name = "HidenMarketHashNameColumn";
-            this.HidenMarketHashNameColumn.ReadOnly = true;
-            this.HidenMarketHashNameColumn.Visible = false;
-            // 
-            // ItemToSalePriceColumn
-            // 
-            this.ItemToSalePriceColumn.FillWeight = 35F;
-            this.ItemToSalePriceColumn.HeaderText = "Unit price";
-            this.ItemToSalePriceColumn.Name = "ItemToSalePriceColumn";
-            this.ItemToSalePriceColumn.Visible = false;
-            // 
-            // AddedToSaleListItemsCount
-            // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AddedToSaleListItemsCount.DefaultCellStyle = dataGridViewCellStyle2;
-            this.AddedToSaleListItemsCount.FillWeight = 35F;
-            this.AddedToSaleListItemsCount.HeaderText = "Amount for sale";
-            this.AddedToSaleListItemsCount.Name = "AddedToSaleListItemsCount";
-            this.AddedToSaleListItemsCount.ReadOnly = true;
-            // 
-            // AddedToSaleListItemName
-            // 
-            this.AddedToSaleListItemName.FillWeight = 152.3472F;
-            this.AddedToSaleListItemName.HeaderText = "Item name";
-            this.AddedToSaleListItemName.Name = "AddedToSaleListItemName";
-            this.AddedToSaleListItemName.ReadOnly = true;
-            // 
             // ItemsToTradeGridView
             // 
             this.ItemsToTradeGridView.AllowUserToAddRows = false;
@@ -356,9 +228,108 @@ namespace autotrade.CustomElements {
             this.ItemsToTradeGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridView_CellEndEdit);
             this.ItemsToTradeGridView.CurrentCellChanged += new System.EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
             // 
-            // checkInvent
+            // AddedToSaleListItemName
             // 
-            this.checkInvent.Name = "checkInvent";
+            this.AddedToSaleListItemName.FillWeight = 152.3472F;
+            this.AddedToSaleListItemName.HeaderText = "Item name";
+            this.AddedToSaleListItemName.Name = "AddedToSaleListItemName";
+            this.AddedToSaleListItemName.ReadOnly = true;
+            // 
+            // AddedToSaleListItemsCount
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AddedToSaleListItemsCount.DefaultCellStyle = dataGridViewCellStyle2;
+            this.AddedToSaleListItemsCount.FillWeight = 35F;
+            this.AddedToSaleListItemsCount.HeaderText = "Amount for sale";
+            this.AddedToSaleListItemsCount.Name = "AddedToSaleListItemsCount";
+            this.AddedToSaleListItemsCount.ReadOnly = true;
+            // 
+            // ItemToSalePriceColumn
+            // 
+            this.ItemToSalePriceColumn.FillWeight = 35F;
+            this.ItemToSalePriceColumn.HeaderText = "Unit price";
+            this.ItemToSalePriceColumn.Name = "ItemToSalePriceColumn";
+            this.ItemToSalePriceColumn.Visible = false;
+            // 
+            // HidenMarketHashNameColumn
+            // 
+            this.HidenMarketHashNameColumn.HeaderText = "HidenMarketHashName";
+            this.HidenMarketHashNameColumn.Name = "HidenMarketHashNameColumn";
+            this.HidenMarketHashNameColumn.ReadOnly = true;
+            this.HidenMarketHashNameColumn.Visible = false;
+            // 
+            // AddedToSaleListHidenItemsList
+            // 
+            this.AddedToSaleListHidenItemsList.HeaderText = "HidenItemsList";
+            this.AddedToSaleListHidenItemsList.Name = "AddedToSaleListHidenItemsList";
+            this.AddedToSaleListHidenItemsList.ReadOnly = true;
+            this.AddedToSaleListHidenItemsList.Visible = false;
+            // 
+            // AveragePrice
+            // 
+            this.AveragePrice.FillWeight = 35F;
+            this.AveragePrice.HeaderText = "Average price";
+            this.AveragePrice.Name = "AveragePrice";
+            this.AveragePrice.ReadOnly = true;
+            this.AveragePrice.Visible = false;
+            // 
+            // TradeSendGroupBox
+            // 
+            this.TradeSendGroupBox.Controls.Add(this.SendTradeButton);
+            this.TradeSendGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.TradeSendGroupBox.Location = new System.Drawing.Point(580, 498);
+            this.TradeSendGroupBox.Name = "TradeSendGroupBox";
+            this.TradeSendGroupBox.Size = new System.Drawing.Size(296, 92);
+            this.TradeSendGroupBox.TabIndex = 19;
+            this.TradeSendGroupBox.TabStop = false;
+            this.TradeSendGroupBox.Text = "Trade";
+            // 
+            // SendTradeButton
+            // 
+            this.SendTradeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.SendTradeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.SendTradeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SendTradeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.SendTradeButton.Location = new System.Drawing.Point(54, 33);
+            this.SendTradeButton.Name = "SendTradeButton";
+            this.SendTradeButton.Size = new System.Drawing.Size(203, 35);
+            this.SendTradeButton.TabIndex = 14;
+            this.SendTradeButton.Text = "Send trade offer";
+            this.SendTradeButton.UseVisualStyleBackColor = false;
+            this.SendTradeButton.Click += new System.EventHandler(this.SendTradeButton_Click);
+            // 
+            // ItemNameLable
+            // 
+            this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ItemNameLable.Location = new System.Drawing.Point(150, 15);
+            this.ItemNameLable.Name = "ItemNameLable";
+            this.ItemNameLable.Size = new System.Drawing.Size(139, 120);
+            this.ItemNameLable.TabIndex = 10;
+            // 
+            // ItemDescriptionTextBox
+            // 
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
+            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
+            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
+            this.ItemDescriptionTextBox.TabIndex = 12;
+            this.ItemDescriptionTextBox.Text = "";
+            // 
+            // ItemDescriptionGroupBox
+            // 
+            this.ItemDescriptionGroupBox.Controls.Add(this.ItemDescriptionTextBox);
+            this.ItemDescriptionGroupBox.Controls.Add(this.ItemNameLable);
+            this.ItemDescriptionGroupBox.Controls.Add(this.ItemImageBox);
+            this.ItemDescriptionGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionGroupBox.Location = new System.Drawing.Point(579, 3);
+            this.ItemDescriptionGroupBox.Name = "ItemDescriptionGroupBox";
+            this.ItemDescriptionGroupBox.Size = new System.Drawing.Size(296, 224);
+            this.ItemDescriptionGroupBox.TabIndex = 14;
+            this.ItemDescriptionGroupBox.TabStop = false;
+            this.ItemDescriptionGroupBox.Text = "Item description";
             // 
             // ItemImageBox
             // 
@@ -369,6 +340,17 @@ namespace autotrade.CustomElements {
             this.ItemImageBox.Name = "ItemImageBox";
             this.ItemImageBox.Size = new System.Drawing.Size(139, 120);
             this.ItemImageBox.TabIndex = 8;
+            // 
+            // AllSteamItemsGroupBox
+            // 
+            this.AllSteamItemsGroupBox.Controls.Add(this.AllSteamItemsToTradeGridView);
+            this.AllSteamItemsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AllSteamItemsGroupBox.Location = new System.Drawing.Point(7, 3);
+            this.AllSteamItemsGroupBox.Name = "AllSteamItemsGroupBox";
+            this.AllSteamItemsGroupBox.Size = new System.Drawing.Size(566, 314);
+            this.AllSteamItemsGroupBox.TabIndex = 16;
+            this.AllSteamItemsGroupBox.TabStop = false;
+            this.AllSteamItemsGroupBox.Text = "All items";
             // 
             // AllSteamItemsToTradeGridView
             // 
@@ -412,6 +394,38 @@ namespace autotrade.CustomElements {
             this.AllSteamItemsToTradeGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SteamSaleDataGridView_CellClick);
             this.AllSteamItemsToTradeGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             this.AllSteamItemsToTradeGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.SteamSaleDataGridView_EditingControlShowing);
+            // 
+            // AddAllButton
+            // 
+            this.AddAllButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AddAllButton.FlatAppearance.BorderSize = 0;
+            this.AddAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AddAllButton.Image = ((System.Drawing.Image)(resources.GetObject("AddAllButton.Image")));
+            this.AddAllButton.Location = new System.Drawing.Point(582, 240);
+            this.AddAllButton.Name = "AddAllButton";
+            this.AddAllButton.Size = new System.Drawing.Size(47, 40);
+            this.AddAllButton.TabIndex = 28;
+            this.AddAllButton.UseVisualStyleBackColor = true;
+            this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
+            // 
+            // RefreshInventoryButton
+            // 
+            this.RefreshInventoryButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RefreshInventoryButton.FlatAppearance.BorderSize = 0;
+            this.RefreshInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RefreshInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.RefreshInventoryButton.Image = ((System.Drawing.Image)(resources.GetObject("RefreshInventoryButton.Image")));
+            this.RefreshInventoryButton.Location = new System.Drawing.Point(635, 240);
+            this.RefreshInventoryButton.Name = "RefreshInventoryButton";
+            this.RefreshInventoryButton.Size = new System.Drawing.Size(47, 40);
+            this.RefreshInventoryButton.TabIndex = 27;
+            this.RefreshInventoryButton.UseVisualStyleBackColor = true;
+            this.RefreshInventoryButton.Click += new System.EventHandler(this.RefreshInventoryButton_Click);
+            // 
+            // checkInvent
+            // 
+            this.checkInvent.Name = "checkInvent";
             // 
             // SplitterPanel
             // 
@@ -576,20 +590,6 @@ namespace autotrade.CustomElements {
             this.InventoryGroupBox.TabStop = false;
             this.InventoryGroupBox.Text = "Inventory settings";
             // 
-            // OpenGameInventoryPageButton
-            // 
-            this.OpenGameInventoryPageButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.OpenGameInventoryPageButton.FlatAppearance.BorderSize = 0;
-            this.OpenGameInventoryPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpenGameInventoryPageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.OpenGameInventoryPageButton.Image = ((System.Drawing.Image)(resources.GetObject("OpenGameInventoryPageButton.Image")));
-            this.OpenGameInventoryPageButton.Location = new System.Drawing.Point(828, 242);
-            this.OpenGameInventoryPageButton.Name = "OpenGameInventoryPageButton";
-            this.OpenGameInventoryPageButton.Size = new System.Drawing.Size(47, 40);
-            this.OpenGameInventoryPageButton.TabIndex = 30;
-            this.OpenGameInventoryPageButton.UseVisualStyleBackColor = true;
-            this.OpenGameInventoryPageButton.Click += new System.EventHandler(this.OpenGameInventoryPageButton_Click);
-            // 
             // LoadInventoryButton
             // 
             this.LoadInventoryButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -605,6 +605,20 @@ namespace autotrade.CustomElements {
             this.LoadInventoryButton.UseVisualStyleBackColor = true;
             this.LoadInventoryButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
             // 
+            // OpenGameInventoryPageButton
+            // 
+            this.OpenGameInventoryPageButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.OpenGameInventoryPageButton.FlatAppearance.BorderSize = 0;
+            this.OpenGameInventoryPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OpenGameInventoryPageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.OpenGameInventoryPageButton.Image = ((System.Drawing.Image)(resources.GetObject("OpenGameInventoryPageButton.Image")));
+            this.OpenGameInventoryPageButton.Location = new System.Drawing.Point(828, 242);
+            this.OpenGameInventoryPageButton.Name = "OpenGameInventoryPageButton";
+            this.OpenGameInventoryPageButton.Size = new System.Drawing.Size(47, 40);
+            this.OpenGameInventoryPageButton.TabIndex = 30;
+            this.OpenGameInventoryPageButton.UseVisualStyleBackColor = true;
+            this.OpenGameInventoryPageButton.Click += new System.EventHandler(this.OpenGameInventoryPageButton_Click);
+            // 
             // AddAllToolTip
             // 
             this.AddAllToolTip.AutomaticDelay = 100;
@@ -614,20 +628,6 @@ namespace autotrade.CustomElements {
             this.AddAllToolTip.ReshowDelay = 20;
             this.AddAllToolTip.UseAnimation = false;
             this.AddAllToolTip.UseFading = false;
-            // 
-            // SendTradeButton
-            // 
-            this.SendTradeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.SendTradeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SendTradeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SendTradeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.SendTradeButton.Location = new System.Drawing.Point(54, 33);
-            this.SendTradeButton.Name = "SendTradeButton";
-            this.SendTradeButton.Size = new System.Drawing.Size(203, 35);
-            this.SendTradeButton.TabIndex = 14;
-            this.SendTradeButton.Text = "Send trade offer";
-            this.SendTradeButton.UseVisualStyleBackColor = false;
-            this.SendTradeButton.Click += new System.EventHandler(this.SendTradeButton_Click);
             // 
             // TradeControl
             // 
@@ -654,10 +654,10 @@ namespace autotrade.CustomElements {
             this.TradeGroupBox.ResumeLayout(false);
             this.TradeGroupBox.PerformLayout();
             this.ItemsToSaleGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ItemsToTradeGridView)).EndInit();
             this.TradeSendGroupBox.ResumeLayout(false);
             this.ItemDescriptionGroupBox.ResumeLayout(false);
             this.AllSteamItemsGroupBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ItemsToTradeGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsToTradeGridView)).EndInit();
             this.InventoryGroupBox.ResumeLayout(false);
             this.InventoryGroupBox.PerformLayout();

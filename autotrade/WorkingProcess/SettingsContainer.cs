@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Web;
 using System.Windows.Forms;
 
 namespace autotrade.CustomElements {
@@ -33,7 +34,7 @@ namespace autotrade.CustomElements {
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static SavedSettings Get() {
             if (cached != null) return cached;
-            if (!File.Exists(SettingsContainer.SETTINGS_FILE_PATH)) {
+            if (!File.Exists(SettingsContainer.ACCOUNTS_FILE_PATH)) {
                 cached = new SavedSettings();
                 UpdateAll();
                 return cached;
@@ -45,7 +46,9 @@ namespace autotrade.CustomElements {
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateAll() {
-            File.WriteAllText(SettingsContainer.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(cached, Formatting.Indented));
+            try {
+                File.WriteAllText(SettingsContainer.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(cached, Formatting.Indented));
+            } finally { };
         }
     }
 

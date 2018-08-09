@@ -107,5 +107,9 @@ namespace autotrade {
             sidePanel.Height = button.Height;
             sidePanel.Top = button.Top;
         }
+
+        private void CustomTabControl1_DrawItem(object sender, DrawItemEventArgs e) {
+
+        }
     }
 }
