@@ -35,7 +35,7 @@ namespace autotrade {
                 BotEdge.Left -= sizeChange;
                 RightEdge.Left -= sizeChange;
                 leftPanelHideShowButton.Left = 13;
-                SaleControl.Left -= sizeChange;
+                this.SaleControl.Left -= sizeChange;
                 SettingsControl.Left -= sizeChange;
                 BuyControl.Left -= sizeChange;
                 appCurtailButton.Left -= sizeChange;
@@ -50,7 +50,7 @@ namespace autotrade {
                 BotEdge.Left += sizeChange;
                 RightEdge.Left += sizeChange;
                 leftPanelHideShowButton.Left = 132;
-                SaleControl.Left += sizeChange;
+                this.SaleControl.Left += sizeChange;
                 SettingsControl.Left += sizeChange;
                 BuyControl.Left += sizeChange;
                 appCurtailButton.Left += sizeChange;
@@ -68,7 +68,7 @@ namespace autotrade {
 
         public void SaleLinkButton_Click(object sender, EventArgs e) {
             FocusSidePanelToMenuElement(sidePanel, saleLinkButton);
-            SaleControl.BringToFront();
+           this.SaleControl.BringToFront();
         }
 
         public void BuyLinkButton_Click(object sender, EventArgs e) {

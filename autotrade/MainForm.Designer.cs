@@ -1,7 +1,5 @@
-﻿namespace autotrade
-{
-    partial class MainForm
-    {
+﻿namespace autotrade {
+    partial class MainForm {
         /// <summary>
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -11,10 +9,8 @@
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -26,8 +22,7 @@
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.leftHeaderPanel = new System.Windows.Forms.Panel();
             this.LeftEdge = new System.Windows.Forms.Panel();
@@ -377,4 +372,3 @@
         public CustomElements.TradeControl TradeControl;
     }
 }
-

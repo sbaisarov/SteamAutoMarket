@@ -1,19 +1,16 @@
-﻿using autotrade.Utils;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SteamAuth;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace autotrade.CustomElements {
     class SettingsContainer {
-        public const string ACCOUNTS_FILE_PATH = "accounts.ini";
-        public const string SETTINGS_FILE_PATH = "settings.ini";
+        public static string ACCOUNTS_FILE_PATH = AppDomain.CurrentDomain.BaseDirectory + "accounts.ini";
+        public static string SETTINGS_FILE_PATH = AppDomain.CurrentDomain.BaseDirectory + "settings.ini";
     }
 
     class SavedSettings {

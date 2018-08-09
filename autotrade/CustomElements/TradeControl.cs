@@ -68,9 +68,8 @@ namespace autotrade.CustomElements {
                 AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsToTradeGridView, e.RowIndex);
             } else if (e.ColumnIndex == 4) {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsToTradeGridView, e.RowIndex, ItemsToTradeGridView);
-            } else if (e.ColumnIndex == 5) {
-                AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsToTradeGridView, e.RowIndex, ItemsToTradeGridView);
-            }
+                PriceLoader.StartPriceLoading();
+            } 
         }
 
         private void AllSteamItemsGridView_CurrentCellChanged(object sender, EventArgs e) {
@@ -114,52 +113,6 @@ namespace autotrade.CustomElements {
                 cb.IntegralHeight = false;
                 cb.MaxDropDownItems = 10;
             }
-        }
-
-        private void AddAllPanel_Click(object sender, EventArgs e) {
-            this.AllSteamItemsToTradeGridView.CurrentCellChanged -= new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
-            this.ItemsToTradeGridView.CurrentCellChanged -= new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
-
-            AllItemsListGridUtils.AddCellListToSale(AllSteamItemsToTradeGridView, ItemsToTradeGridView, AllSteamItemsToTradeGridView.SelectedRows.Cast<DataGridViewRow>().ToArray());
-
-            this.AllSteamItemsToTradeGridView.CurrentCellChanged += new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
-            this.ItemsToTradeGridView.CurrentCellChanged += new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
-
-            Logger.Debug("All selected items was added to sale list");
-        }
-
-        private void RefreshPanel_Click(object sender, EventArgs e) {
-            if (CurrentSession.SteamManager == null) {
-                MessageBox.Show("You should login first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Logger.Error("Error on inventory loading. No logined account found.");
-                return;
-            }
-            if (String.IsNullOrEmpty(CurrentSession.InventoryAppId) || String.IsNullOrEmpty(CurrentSession.InventoryContextId)) {
-                MessageBox.Show("You should load inventory first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Logger.Error("Error on inventory loading. No inventory type chosed.");
-                return;
-            }
-
-            Logger.Debug("Refreshing inventory");
-
-            AllSteamItemsToTradeGridView.Rows.Clear();
-            ItemsToTradeGridView.Rows.Clear();
-
-            LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), CurrentSession.InventoryAppId, CurrentSession.InventoryContextId);
-            AllSteamItemsGridView_CurrentCellChanged(null, null);
-        }
-
-        private void SteamPanel_Click(object sender, EventArgs e) {
-            if (LastSelectedItemDescription == null) return;
-            System.Diagnostics.Process.Start("https://" +
-                $"steamcommunity.com/market/listings/{LastSelectedItemDescription.appid}/" +
-                LastSelectedItemDescription.market_hash_name);
-        }
-
-        private void OpskinsPanel_Click(object sender, EventArgs e) {
-            if (LastSelectedItemDescription == null) return;
-            System.Diagnostics.Process.Start("https://" +
-                $"opskins.com/?loc=shop_search&search_item={LastSelectedItemDescription.name}&sort=lh");
         }
 
         private void DeleteAccountButton_Click(object sender, EventArgs e) {
@@ -292,8 +245,10 @@ namespace autotrade.CustomElements {
         }
 
         private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e) {
-            SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID = InventoryContextIdComboBox.Text;
-            SavedSettings.UpdateAll();
+            if (SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID != InventoryContextIdComboBox.Text) {
+                SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID = InventoryContextIdComboBox.Text;
+                SavedSettings.UpdateAll();
+            }
         }
 
         private void InventoryAppIdComboBox_TextChanged(object sender, EventArgs e) {
@@ -303,18 +258,24 @@ namespace autotrade.CustomElements {
                 case "CS:GO": { InventoryContextIdComboBox.Text = "2"; break; }
                 case "PUBG": { InventoryContextIdComboBox.Text = "2"; break; }
             }
-            SavedSettings.Get().TRADE_INVENTORY_APP_ID = InventoryAppIdComboBox.Text;
-            SavedSettings.UpdateAll();
+            if (SavedSettings.Get().TRADE_INVENTORY_APP_ID != InventoryAppIdComboBox.Text) {
+                SavedSettings.Get().TRADE_INVENTORY_APP_ID = InventoryAppIdComboBox.Text;
+                SavedSettings.UpdateAll();
+            }
         }
 
         private void TradeParthenIdTextBox_TextChanged(object sender, EventArgs e) {
-            SavedSettings.Get().TRADE_PARTNER_ID = TradeParthenIdTextBox.Text;
-            SavedSettings.UpdateAll();
+            if (SavedSettings.Get().TRADE_PARTNER_ID != TradeParthenIdTextBox.Text) {
+                SavedSettings.Get().TRADE_PARTNER_ID = TradeParthenIdTextBox.Text;
+                SavedSettings.UpdateAll();
+            }
         }
 
         private void TradeTokenTextBox_TextChanged(object sender, EventArgs e) {
-            SavedSettings.Get().TRADE_TOKEN = TradeTokenTextBox.Text;
-            SavedSettings.UpdateAll();
+            if (SavedSettings.Get().TRADE_TOKEN != TradeTokenTextBox.Text) {
+                SavedSettings.Get().TRADE_TOKEN = TradeTokenTextBox.Text;
+                SavedSettings.UpdateAll();
+            }
         }
 
         private void ItemsToTradeGridView_CellClick(object sender, DataGridViewCellEventArgs e) {

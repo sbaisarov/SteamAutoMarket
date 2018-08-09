@@ -8,8 +8,8 @@ using System.Windows.Forms;
 
 namespace autotrade.CustomElements {
     class RichTextBoxWithNoPaint : RichTextBox {
-        private Color _backColorDisabled = Color.Gainsboro;
-        private Color _foreColorDisabled = SystemColors.ControlText;
+        private readonly Color _backColorDisabled = Color.Gainsboro;
+        private readonly Color _foreColorDisabled = SystemColors.ControlText;
 
         protected override void OnEnabledChanged(EventArgs e) {
             base.OnEnabledChanged(e);

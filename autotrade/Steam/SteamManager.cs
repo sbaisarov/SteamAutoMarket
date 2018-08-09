@@ -32,7 +32,7 @@ namespace autotrade.Steam {
         public SteamManager() {
         }
 
-        public SteamManager(string login, string password, SteamGuardAccount mafile, string apiKey = null) {
+        public SteamManager(string login, string password, SteamGuardAccount mafile, string apiKey) {
             Guard = mafile;
             SteamClient = new UserLogin(login, password)
             {
@@ -41,7 +41,7 @@ namespace autotrade.Steam {
 
             bool isSessionRefreshed = Guard.RefreshSession();
             if (isSessionRefreshed == false) {
-                Utils.Logger.Debug($"Saved steam session for ${login} is expired. Refreshing session.");
+                Utils.Logger.Debug($"Saved steam session for {login} is expired. Refreshing session.");
                 LoginResult loginResult;
                 int tryCount = 0;
                 do {

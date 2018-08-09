@@ -10,6 +10,7 @@ namespace autotrade.Utils {
         public static Color SIMPLE_TEXT_COLOR = Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
         public static Color SIMPLE_BACK_COLOR = Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
         public static Color SIMPLE_TABLE_BACK_COLOR = Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+        public static Color YELLOW_COLOR = Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
 
         /*
          Yellow - 

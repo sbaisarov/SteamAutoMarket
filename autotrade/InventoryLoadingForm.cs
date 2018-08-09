@@ -14,8 +14,7 @@ namespace autotrade {
         private int totalPages;
         private List<RgFullItem> items;
         bool stopButtonPressed = false;
-        bool workIsDone = true;
-
+        
         public void InitProcess() {
             this.Text = $"{CurrentSession.InventoryAppId}-{CurrentSession.InventoryContextId} inventory loading";
             _activate();

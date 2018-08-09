@@ -29,7 +29,7 @@ namespace autotrade.CustomElements {
                     AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = acc.Login;
                     AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = GetPasswordStars(acc.Password.Count());
                     AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value = acc.Password;
-                    AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value = acc.OpskinsApi;
+                    AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value = acc.OpskinsApi;
                     AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = acc.Mafile;
 
                     Task.Run(() => {
@@ -61,7 +61,7 @@ namespace autotrade.CustomElements {
             return result;
         }
         private void AddNewAccountButton_Click(object sender, EventArgs e) {
-            if (string.IsNullOrEmpty(LoginTextBox.Text) || string.IsNullOrEmpty(MafilePathTextBox.Text) || string.IsNullOrEmpty(PasswordTextBox.Text)) {
+            if (string.IsNullOrEmpty(LoginTextBox.Text) || string.IsNullOrEmpty(MafilePathTextBox.Text) || string.IsNullOrEmpty(PasswordTextBox.Text) || string.IsNullOrEmpty(SteamApiTextBox.Text)) {
                 MessageBox.Show("Some fields are filled - incorrectly", "Error adding account", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Error("Error adding account. Some fields are filled - incorrectly");
                 return;
@@ -90,7 +90,7 @@ namespace autotrade.CustomElements {
             var login = LoginTextBox.Text.Trim();
             AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = login;
             AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value = GetPasswordStars(PasswordTextBox.Text.Trim().Count());
-            AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value = OpskinsApiTextBox.Text.Trim();
+            AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value = SteamApiTextBox.Text.Trim();
             AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = account;
             AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value = PasswordTextBox.Text.Trim();
             Logger.Debug($"{login} added to accounts list");
@@ -105,7 +105,7 @@ namespace autotrade.CustomElements {
             LoginTextBox.Clear();
             PasswordTextBox.Clear();
             MafilePathTextBox.Clear();
-            OpskinsApiTextBox.Clear();
+            SteamApiTextBox.Clear();
 
             UpdateAccountsFile();
         }
@@ -116,7 +116,7 @@ namespace autotrade.CustomElements {
             for (int i = 0; i < AccountsDataGridView.RowCount; i++) {
                 var login = (String)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, i).Value;
                 var password = (String)AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, i).Value;
-                var opskinsApi = (String)AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, i).Value;
+                var opskinsApi = (String)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, i).Value;
                 var mafile = (SteamGuardAccount)AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, i).Value;
 
                 accounts.Add(new SavedSteamAccount
@@ -167,7 +167,7 @@ namespace autotrade.CustomElements {
 
             LoginTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
             PasswordTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value;
-            OpskinsApiTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewOpskinsApiCell(AccountsDataGridView, row).Value;
+            SteamApiTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value;
         }
 
         private void LogTextBox_TextChanged(object sender, EventArgs e) {
@@ -191,6 +191,7 @@ namespace autotrade.CustomElements {
 
             var login = (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var password = (string)AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
+            var api = (string)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var mafile = (SteamGuardAccount)AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var image = (Image)AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, currentCell.RowIndex).Value;
 
@@ -198,7 +199,7 @@ namespace autotrade.CustomElements {
 
             Dispatcher.Invoke(Program.MainForm, () => {
                 try {
-                    CurrentSession.SteamManager = new SteamManager(login, password, mafile);
+                    CurrentSession.SteamManager = new SteamManager(login, password, mafile, api);
                 } catch (Exception ex) {
                     Logger.Error("Login failed!", ex);
                     LoginButton.Enabled = true;
@@ -225,8 +226,10 @@ namespace autotrade.CustomElements {
             }
             Logger.LOGGER_LEVEL = level;
 
-            SavedSettings.Get().LOGGER_LEVEL = LoggingLevelComboBox.SelectedIndex;
-            SavedSettings.UpdateAll();
+            if (SavedSettings.Get().LOGGER_LEVEL != LoggingLevelComboBox.SelectedIndex) {
+                SavedSettings.Get().LOGGER_LEVEL = LoggingLevelComboBox.SelectedIndex;
+                SavedSettings.UpdateAll();
+            }
         }
     }
 }

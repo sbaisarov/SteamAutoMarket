@@ -41,6 +41,7 @@ namespace autotrade {
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemsToSaleGroupBox = new System.Windows.Forms.GroupBox();
             this.ForcePricesReloadButton = new System.Windows.Forms.Button();
@@ -62,6 +63,7 @@ namespace autotrade {
             this.RefreshInventoryButton = new System.Windows.Forms.Button();
             this.OpenMarketPageButtonClick = new System.Windows.Forms.Button();
             this.OpenGameInventoryPageButton = new System.Windows.Forms.Button();
+            this.CurrentPricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
             this.InventoryGroupBox = new System.Windows.Forms.GroupBox();
             this.InventoryContextIdLabel = new System.Windows.Forms.Label();
             this.InventoryContextIdComboBox = new System.Windows.Forms.ComboBox();
@@ -73,8 +75,6 @@ namespace autotrade {
             this.RecomendedPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.ManualPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
-            this.CurrentPricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -89,10 +89,10 @@ namespace autotrade {
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToSaleGridView)).BeginInit();
             this.AllSteamItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
             this.InventoryGroupBox.SuspendLayout();
             this.SellGroupBox.SuspendLayout();
             this.PriceSettingsGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // AllSteamItemsGridView
@@ -109,11 +109,12 @@ namespace autotrade {
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.AllSteamItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.AllSteamItemsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.AllSteamItemsGridView.ColumnHeadersHeight = 30;
+            this.AllSteamItemsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.AllSteamItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NameColumn,
             this.CountColumn,
@@ -174,6 +175,18 @@ namespace autotrade {
             this.ItemDescriptionGroupBox.TabStop = false;
             this.ItemDescriptionGroupBox.Text = "Item description";
             // 
+            // ItemDescriptionTextBox
+            // 
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
+            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
+            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
+            this.ItemDescriptionTextBox.TabIndex = 11;
+            this.ItemDescriptionTextBox.Text = "";
+            // 
             // ItemNameLable
             // 
             this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -222,8 +235,8 @@ namespace autotrade {
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.ItemsToSaleGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.ItemsToSaleGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -476,6 +489,39 @@ namespace autotrade {
             this.OpenGameInventoryPageButton.UseVisualStyleBackColor = true;
             this.OpenGameInventoryPageButton.Click += new System.EventHandler(this.OpenGameInventoryPageButton_Click);
             // 
+            // CurrentPricePercentNumericUpDown
+            // 
+            this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
+            this.CurrentPricePercentNumericUpDown.Enabled = false;
+            this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(213, 70);
+            this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.CurrentPricePercentNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.CurrentPricePercentNumericUpDown.Name = "CurrentPricePercentNumericUpDown";
+            this.CurrentPricePercentNumericUpDown.Size = new System.Drawing.Size(76, 22);
+            this.CurrentPricePercentNumericUpDown.TabIndex = 4;
+            this.CurrentPricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.CurrentPricePercentNumericUpDown, "Only one value type can be chosen");
+            this.CurrentPricePercentNumericUpDown.TrailingSign = "%";
+            this.CurrentPricePercentNumericUpDown.Visible = false;
+            this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDown_ValueChanged);
+            // 
             // InventoryGroupBox
             // 
             this.InventoryGroupBox.Controls.Add(this.LoadInventoryButton);
@@ -613,99 +659,59 @@ namespace autotrade {
             this.PriceSettingsGroupBox.TabStop = false;
             this.PriceSettingsGroupBox.Text = "The price formation setting ";
             // 
-            // ItemDescriptionTextBox
-            // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
-            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
-            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
-            this.ItemDescriptionTextBox.TabIndex = 11;
-            this.ItemDescriptionTextBox.Text = "";
-            // 
-            // CurrentPricePercentNumericUpDown
-            // 
-            this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
-            this.CurrentPricePercentNumericUpDown.Enabled = false;
-            this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(213, 70);
-            this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            0});
-            this.CurrentPricePercentNumericUpDown.Minimum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            -2147483648});
-            this.CurrentPricePercentNumericUpDown.Name = "CurrentPricePercentNumericUpDown";
-            this.CurrentPricePercentNumericUpDown.Size = new System.Drawing.Size(76, 22);
-            this.CurrentPricePercentNumericUpDown.TabIndex = 4;
-            this.CurrentPricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.AddAllToolTip.SetToolTip(this.CurrentPricePercentNumericUpDown, "Only one value type can be chosen");
-            this.CurrentPricePercentNumericUpDown.TrailingSign = "%";
-            this.CurrentPricePercentNumericUpDown.Visible = false;
-            this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDown_ValueChanged);
-            // 
             // NameColumn
             // 
             this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.NameColumn.DataPropertyName = "SaleSteamControl";
-            this.NameColumn.FillWeight = 85.5619F;
+            this.NameColumn.FillWeight = 250F;
             this.NameColumn.Frozen = true;
             this.NameColumn.HeaderText = "Item name";
+            this.NameColumn.MinimumWidth = 250;
             this.NameColumn.Name = "NameColumn";
             this.NameColumn.ReadOnly = true;
-            this.NameColumn.ToolTipText = "Item name";
-            this.NameColumn.Width = 181;
+            this.NameColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NameColumn.Width = 250;
             // 
             // CountColumn
             // 
             this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
-            this.CountColumn.FillWeight = 35F;
-            this.CountColumn.Frozen = true;
+            this.CountColumn.FillWeight = 40F;
             this.CountColumn.HeaderText = "#";
             this.CountColumn.Name = "CountColumn";
             this.CountColumn.ReadOnly = true;
-            this.CountColumn.Width = 35;
+            this.CountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.CountColumn.Width = 40;
             // 
             // ItemTypeColumn
             // 
             this.ItemTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ItemTypeColumn.Frozen = true;
+            this.ItemTypeColumn.FillWeight = 150F;
             this.ItemTypeColumn.HeaderText = "Type";
             this.ItemTypeColumn.Name = "ItemTypeColumn";
             this.ItemTypeColumn.ReadOnly = true;
+            this.ItemTypeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ItemTypeColumn.Width = 140;
             // 
             // CountToAddColumn
             // 
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            this.CountToAddColumn.FillWeight = 35F;
-            this.CountToAddColumn.HeaderText = "Amount for trade";
+            this.CountToAddColumn.FillWeight = 20F;
+            this.CountToAddColumn.HeaderText = "Amount to add";
             this.CountToAddColumn.MaxDropDownItems = 10;
+            this.CountToAddColumn.MinimumWidth = 20;
             this.CountToAddColumn.Name = "CountToAddColumn";
             this.CountToAddColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
             // AddButtonColumn
             // 
-            this.AddButtonColumn.FillWeight = 35F;
+            this.AddButtonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.AddButtonColumn.FillWeight = 60F;
             this.AddButtonColumn.HeaderText = "Add";
             this.AddButtonColumn.Name = "AddButtonColumn";
+            this.AddButtonColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.AddButtonColumn.Text = "Add";
             this.AddButtonColumn.UseColumnTextForButtonValue = true;
             // 
@@ -713,18 +719,21 @@ namespace autotrade {
             // 
             this.HidenItemsListColumn.HeaderText = "HidenItemsList";
             this.HidenItemsListColumn.Name = "HidenItemsListColumn";
+            this.HidenItemsListColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.HidenItemsListColumn.Visible = false;
             // 
             // HidenItemImageColumn
             // 
             this.HidenItemImageColumn.HeaderText = "HidenItemImage";
             this.HidenItemImageColumn.Name = "HidenItemImageColumn";
+            this.HidenItemImageColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.HidenItemImageColumn.Visible = false;
             // 
             // HidenItemMarketHashName
             // 
             this.HidenItemMarketHashName.HeaderText = "HidenItemMarketHashNameColumn";
             this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
+            this.HidenItemMarketHashName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.HidenItemMarketHashName.Visible = false;
             // 
             // SaleControl
@@ -755,12 +764,12 @@ namespace autotrade {
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToSaleGridView)).EndInit();
             this.AllSteamItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
             this.InventoryGroupBox.ResumeLayout(false);
             this.InventoryGroupBox.PerformLayout();
             this.SellGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }

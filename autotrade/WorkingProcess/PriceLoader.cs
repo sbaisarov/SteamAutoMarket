@@ -98,7 +98,7 @@ namespace autotrade.WorkingProcess {
 
     class PricesCash {
         private Dictionary<string, LoadedItemPrice> CACHE;
-        private string CACHE_PRICES_PATH;
+        private readonly string CACHE_PRICES_PATH;
         private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat };
 
         public PricesCash(string filePath) {

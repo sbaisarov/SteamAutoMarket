@@ -45,7 +45,7 @@ namespace autotrade {
                 AllSteamItemsGridView.Rows.Clear();
                 ItemsToSaleGridView.Rows.Clear();
             });
-          
+
             Program.InventoryLoadingForm.InitProcess();
             List<RgFullItem> allItemsList = Program.InventoryLoadingForm.GetLoadedItems();
             Program.InventoryLoadingForm.Disactivate();
@@ -68,8 +68,7 @@ namespace autotrade {
                 AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsGridView, e.RowIndex);
             } else if (e.ColumnIndex == 4) {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
-            } else if (e.ColumnIndex == 5) {
-                AllItemsListGridUtils.GridAddAllButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
+                PriceLoader.StartPriceLoading();
             }
         }
 
@@ -180,8 +179,10 @@ namespace autotrade {
                 case "CS:GO": { InventoryContextIdComboBox.Text = "2"; break; }
                 case "PUBG": { InventoryContextIdComboBox.Text = "2"; break; }
             }
-            SavedSettings.Get().MARKET_INVENTORY_APP_ID = InventoryAppIdComboBox.Text;
-            SavedSettings.UpdateAll();
+            if (SavedSettings.Get().MARKET_INVENTORY_APP_ID != InventoryAppIdComboBox.Text) {
+                SavedSettings.Get().MARKET_INVENTORY_APP_ID = InventoryAppIdComboBox.Text;
+                SavedSettings.UpdateAll();
+            }
         }
 
         private void LoadInventoryButton_Click(object sender, EventArgs e) {
@@ -291,7 +292,7 @@ namespace autotrade {
             this.ItemsToSaleGridView.CurrentCellChanged -= new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
 
             AllItemsListGridUtils.AddCellListToSale(AllSteamItemsGridView, ItemsToSaleGridView, AllSteamItemsGridView.SelectedRows.Cast<DataGridViewRow>().ToArray());
-            
+
             this.AllSteamItemsGridView.CurrentCellChanged += new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             this.ItemsToSaleGridView.CurrentCellChanged += new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
 
@@ -334,8 +335,10 @@ namespace autotrade {
         }
 
         private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e) {
-            SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID = InventoryContextIdComboBox.Text;
-            SavedSettings.UpdateAll();
+            if (SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID != InventoryContextIdComboBox.Text) {
+                SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID = InventoryContextIdComboBox.Text;
+                SavedSettings.UpdateAll();
+            }
         }
     }
 }
