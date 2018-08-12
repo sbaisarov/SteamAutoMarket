@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.TabControl = new System.Windows.Forms.TabControl();
             this.GeneralSettingsTab = new System.Windows.Forms.TabPage();
-            this.SettingsControl = new autotrade.CustomElements.SettingsControl();
+            this.SettingsControl = new autotrade.CustomElements.GeneralSettingsControl();
             this.TabControl.SuspendLayout();
             this.GeneralSettingsTab.SuspendLayout();
             this.SuspendLayout();
@@ -83,6 +83,6 @@
         #endregion
         private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.TabPage GeneralSettingsTab;
-        public SettingsControl SettingsControl;
+        public GeneralSettingsControl SettingsControl;
     }
 }

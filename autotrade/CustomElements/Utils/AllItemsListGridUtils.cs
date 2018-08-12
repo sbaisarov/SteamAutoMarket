@@ -31,8 +31,8 @@ namespace autotrade.CustomElements {
                 AddNewItemCellAllItemsDataGridView(allItemsGrid, itemsGroup.ToList());
 
                 var firstItem = itemsGroup.First();
-                if (!TradeControl.AllDescriptionsDictionary.ContainsKey(firstItem.Description.market_hash_name)) {
-                    TradeControl.AllDescriptionsDictionary.Add(firstItem.Description.market_hash_name, firstItem.Description);
+                if (!TradeSendControl.AllDescriptionsDictionary.ContainsKey(firstItem.Description.market_hash_name)) {
+                    TradeSendControl.AllDescriptionsDictionary.Add(firstItem.Description.market_hash_name, firstItem.Description);
                 }
             }
         }
@@ -75,11 +75,11 @@ namespace autotrade.CustomElements {
             var hidenItemsList = (List<RgFullItem>)cell.Value;
             if (hidenItemsList == null) return;
 
-            UpdateItemDescription(TradeControl.AllDescriptionsDictionary[hidenItemsList.First().Description.market_hash_name], textBox, imageBox, label);
+            UpdateItemDescription(TradeSendControl.AllDescriptionsDictionary[hidenItemsList.First().Description.market_hash_name], textBox, imageBox, label);
         }
 
         public static void UpdateItemDescription(RgDescription description, RichTextBox textBox, Panel imageBox, Label label) {
-            TradeControl.LastSelectedItemDescription = description;
+            TradeSendControl.LastSelectedItemDescription = description;
 
             UpdateItemTextDescription(description, textBox, label);
             UpdateItemImage(description, imageBox);

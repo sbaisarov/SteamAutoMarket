@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace autotrade.CustomElements {
-    public partial class BuyControl : UserControl {
-        public BuyControl() {
+namespace autotrade.CustomElements.Controls {
+    public partial class RecievedTradeManageControl : UserControl {
+        public RecievedTradeManageControl() {
             InitializeComponent();
         }
     }

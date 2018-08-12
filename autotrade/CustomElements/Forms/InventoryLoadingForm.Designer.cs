@@ -89,7 +89,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "InventoryLoadingForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Inventory loading";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InventoryLoadingForm_FormClosing);
             this.ResumeLayout(false);

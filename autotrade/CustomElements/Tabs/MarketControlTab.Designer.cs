@@ -27,7 +27,7 @@
             this.MarketSellTab = new System.Windows.Forms.TabPage();
             this.SaleControl = new autotrade.SaleControl();
             this.MarketBuyTab = new System.Windows.Forms.TabPage();
-            this.BuyControl = new autotrade.CustomElements.BuyControl();
+            this.BuyControl = new autotrade.CustomElements.MarketBuyControl();
             this.TabControl.SuspendLayout();
             this.MarketSellTab.SuspendLayout();
             this.MarketBuyTab.SuspendLayout();
@@ -110,6 +110,6 @@
         private System.Windows.Forms.TabPage MarketSellTab;
         private System.Windows.Forms.TabPage MarketBuyTab;
         public SaleControl SaleControl;
-        public BuyControl BuyControl;
+        public MarketBuyControl BuyControl;
     }
 }

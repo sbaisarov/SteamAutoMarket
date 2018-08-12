@@ -1,5 +1,5 @@
 ﻿namespace autotrade.CustomElements {
-    partial class SettingsControl {
+    partial class GeneralSettingsControl {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -24,10 +24,10 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsControl));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneralSettingsControl));
             this.AccountsDataGridView = new System.Windows.Forms.DataGridView();
             this.AvatarColumn = new System.Windows.Forms.DataGridViewImageColumn();
             this.LoginColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,10 +52,13 @@
             this.LoggingLevelComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SteamApiGroupBox = new System.Windows.Forms.GroupBox();
+            this.SteamApiLinkLable = new System.Windows.Forms.LinkLabel();
             this.SteamApiTextBox = new System.Windows.Forms.TextBox();
             this.LogGroupBox = new System.Windows.Forms.GroupBox();
             this.LogTextBox = new System.Windows.Forms.RichTextBox();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.AvrPriceGroupBox = new System.Windows.Forms.GroupBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.UpdateButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.AccountsDataGridView)).BeginInit();
             this.AccountGroupBox.SuspendLayout();
@@ -67,6 +70,8 @@
             this.SteamApiGroupBox.SuspendLayout();
             this.LogGroupBox.SuspendLayout();
             this.SettingsGroupBox.SuspendLayout();
+            this.AvrPriceGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // AccountsDataGridView
@@ -78,14 +83,14 @@
             this.AccountsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.AccountsDataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AccountsDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.AccountsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.AccountsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.AccountsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.AccountsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AvatarColumn,
@@ -94,14 +99,14 @@
             this.OpskinsApiColumn,
             this.AccountObjectHidenColumn,
             this.TruePassword});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.AccountsDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AccountsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             this.AccountsDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AccountsDataGridView.EnableHeadersVisualStyles = false;
             this.AccountsDataGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -111,9 +116,9 @@
             this.AccountsDataGridView.ReadOnly = true;
             this.AccountsDataGridView.RowHeadersVisible = false;
             this.AccountsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.AccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.AccountsDataGridView.RowTemplate.Height = 34;
             this.AccountsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.AccountsDataGridView.Size = new System.Drawing.Size(426, 331);
@@ -341,7 +346,7 @@
             this.LoggingLevelGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.LoggingLevelGroupBox.Location = new System.Drawing.Point(7, 19);
             this.LoggingLevelGroupBox.Name = "LoggingLevelGroupBox";
-            this.LoggingLevelGroupBox.Size = new System.Drawing.Size(169, 40);
+            this.LoggingLevelGroupBox.Size = new System.Drawing.Size(190, 40);
             this.LoggingLevelGroupBox.TabIndex = 10;
             this.LoggingLevelGroupBox.TabStop = false;
             this.LoggingLevelGroupBox.Text = "Logging detailing";
@@ -362,7 +367,7 @@
             "None"});
             this.LoggingLevelComboBox.Location = new System.Drawing.Point(3, 16);
             this.LoggingLevelComboBox.Name = "LoggingLevelComboBox";
-            this.LoggingLevelComboBox.Size = new System.Drawing.Size(163, 21);
+            this.LoggingLevelComboBox.Size = new System.Drawing.Size(184, 21);
             this.LoggingLevelComboBox.TabIndex = 0;
             this.AddAllToolTip.SetToolTip(this.LoggingLevelComboBox, "With large amounts of work, disabling logs will speed up the program");
             this.LoggingLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.LoggingLevelComboBox_SelectedIndexChanged);
@@ -387,6 +392,7 @@
             // 
             // SteamApiGroupBox
             // 
+            this.SteamApiGroupBox.Controls.Add(this.SteamApiLinkLable);
             this.SteamApiGroupBox.Controls.Add(this.SteamApiTextBox);
             this.SteamApiGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SteamApiGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
@@ -395,7 +401,21 @@
             this.SteamApiGroupBox.Size = new System.Drawing.Size(169, 39);
             this.SteamApiGroupBox.TabIndex = 11;
             this.SteamApiGroupBox.TabStop = false;
-            this.SteamApiGroupBox.Text = "Steam API";
+            this.SteamApiGroupBox.Text = "Steam API        ";
+            // 
+            // SteamApiLinkLable
+            // 
+            this.SteamApiLinkLable.ActiveLinkColor = System.Drawing.Color.Aqua;
+            this.SteamApiLinkLable.AutoSize = true;
+            this.SteamApiLinkLable.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.SteamApiLinkLable.Location = new System.Drawing.Point(68, 0);
+            this.SteamApiLinkLable.Name = "SteamApiLinkLable";
+            this.SteamApiLinkLable.Size = new System.Drawing.Size(39, 13);
+            this.SteamApiLinkLable.TabIndex = 16;
+            this.SteamApiLinkLable.TabStop = true;
+            this.SteamApiLinkLable.Text = "(Link)";
+            this.AddAllToolTip.SetToolTip(this.SteamApiLinkLable, "Open Steam API page on browser");
+            this.SteamApiLinkLable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SteamApiLinkLable_LinkClicked);
             // 
             // SteamApiTextBox
             // 
@@ -438,6 +458,7 @@
             // SettingsGroupBox
             // 
             this.SettingsGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.SettingsGroupBox.Controls.Add(this.AvrPriceGroupBox);
             this.SettingsGroupBox.Controls.Add(this.UpdateButton);
             this.SettingsGroupBox.Controls.Add(this.LoggingLevelGroupBox);
             this.SettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
@@ -447,6 +468,35 @@
             this.SettingsGroupBox.TabIndex = 13;
             this.SettingsGroupBox.TabStop = false;
             this.SettingsGroupBox.Text = "Settings";
+            // 
+            // AvrPriceGroupBox
+            // 
+            this.AvrPriceGroupBox.Controls.Add(this.numericUpDown1);
+            this.AvrPriceGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AvrPriceGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.AvrPriceGroupBox.Location = new System.Drawing.Point(232, 19);
+            this.AvrPriceGroupBox.Name = "AvrPriceGroupBox";
+            this.AvrPriceGroupBox.Size = new System.Drawing.Size(190, 40);
+            this.AvrPriceGroupBox.TabIndex = 16;
+            this.AvrPriceGroupBox.TabStop = false;
+            this.AvrPriceGroupBox.Text = "Averagge price days count";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.numericUpDown1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numericUpDown1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDown1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.numericUpDown1.Location = new System.Drawing.Point(3, 16);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(184, 20);
+            this.numericUpDown1.TabIndex = 0;
+            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
             // 
             // UpdateButton
             // 
@@ -462,7 +512,7 @@
             this.UpdateButton.Text = "Check for updates";
             this.UpdateButton.UseVisualStyleBackColor = false;
             // 
-            // SettingsControl
+            // GeneralSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -475,7 +525,7 @@
             this.Controls.Add(this.AccountGroupBox);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.Name = "SettingsControl";
+            this.Name = "GeneralSettingsControl";
             this.Size = new System.Drawing.Size(885, 599);
             ((System.ComponentModel.ISupportInitialize)(this.AccountsDataGridView)).EndInit();
             this.AccountGroupBox.ResumeLayout(false);
@@ -491,6 +541,8 @@
             this.SteamApiGroupBox.PerformLayout();
             this.LogGroupBox.ResumeLayout(false);
             this.SettingsGroupBox.ResumeLayout(false);
+            this.AvrPriceGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -527,5 +579,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn AccountObjectHidenColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn TruePassword;
         private System.Windows.Forms.DataGridViewTextBoxColumn OpskinsApiColumn;
+        private System.Windows.Forms.LinkLabel SteamApiLinkLable;
+        private System.Windows.Forms.GroupBox AvrPriceGroupBox;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }

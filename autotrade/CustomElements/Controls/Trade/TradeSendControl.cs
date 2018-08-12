@@ -15,13 +15,15 @@ using autotrade.CustomElements;
 using System.Threading;
 using autotrade.Utils;
 using autotrade.WorkingProcess;
+using autotrade.WorkingProcess.PriceLoader;
+using autotrade.WorkingProcess.Settings;
 
 namespace autotrade.CustomElements {
-    public partial class TradeControl : UserControl {
+    public partial class TradeSendControl : UserControl {
         public static Dictionary<string, RgDescription> AllDescriptionsDictionary { get; set; }
         public static RgDescription LastSelectedItemDescription { get; set; }
 
-        public TradeControl() {
+        public TradeSendControl() {
             InitializeComponent();
 
             SavedSettings settings = SavedSettings.Get();
@@ -161,8 +163,8 @@ namespace autotrade.CustomElements {
                 default: appid = InventoryAppIdComboBox.Text; break;
             }
             string contextId = InventoryContextIdComboBox.Text;
-            CurrentSession.InventoryAppId = appid;
-            CurrentSession.InventoryContextId = contextId;
+            CurrentSession.CurrentInventoryAppId = appid;
+            CurrentSession.CurrentInventoryContextId = contextId;
             Logger.Debug($"Inventory {appid} - {contextId} loading started");
 
             Task.Run(() => {
@@ -190,9 +192,7 @@ namespace autotrade.CustomElements {
 
             for (int i = 0; i < ItemsToTradeGridView.Rows.Count; i++) {
                 var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToTradeGridView, i);
-                foreach (var item in itemsList) {
-                    itemsToSale.Add(item);
-                }
+                itemsToSale.AddRange(itemsList);
             }
 
             CurrentSession.SteamManager.SendTradeOffer(itemsToSale, TradeParthenIdTextBox.Text, TradeTokenTextBox.Text);
@@ -216,18 +216,18 @@ namespace autotrade.CustomElements {
                 Logger.Warning("Error on inventory loading. No logined account found.");
                 return;
             }
-            if (String.IsNullOrEmpty(CurrentSession.InventoryAppId) || String.IsNullOrEmpty(CurrentSession.InventoryContextId)) {
+            if (String.IsNullOrEmpty(CurrentSession.CurrentInventoryAppId) || String.IsNullOrEmpty(CurrentSession.CurrentInventoryContextId)) {
                 MessageBox.Show("You should load inventory first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Warning("Error on inventory loading. No inventory type chosed.");
                 return;
             }
 
-            Logger.Debug($"Refreshing ${CurrentSession.InventoryAppId} - ${CurrentSession.InventoryContextId} inventory");
+            Logger.Debug($"Refreshing ${CurrentSession.CurrentInventoryAppId} - ${CurrentSession.CurrentInventoryContextId} inventory");
 
             AllSteamItemsToTradeGridView.Rows.Clear();
             ItemsToTradeGridView.Rows.Clear();
 
-            LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), CurrentSession.InventoryAppId, CurrentSession.InventoryContextId);
+            LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), CurrentSession.CurrentInventoryAppId, CurrentSession.CurrentInventoryContextId);
             AllSteamItemsGridView_CurrentCellChanged(null, null);
         }
 
@@ -241,7 +241,7 @@ namespace autotrade.CustomElements {
         private void OpenGameInventoryPageButton_Click(object sender, EventArgs e) {
             if (LastSelectedItemDescription == null) return;
             System.Diagnostics.Process.Start("https://" + $"steamcommunity.com/profiles/{CurrentSession.SteamManager.Guard.Session.SteamID}" +
-                $"/inventory/#{CurrentSession.InventoryAppId}_{CurrentSession.InventoryContextId}");
+                $"/inventory/#{CurrentSession.CurrentInventoryAppId}_{CurrentSession.CurrentInventoryContextId}");
         }
 
         private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e) {
@@ -281,6 +281,46 @@ namespace autotrade.CustomElements {
         private void ItemsToTradeGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
             if (e.RowIndex < 0) return;
             if (ItemsToTradeGridView.Rows.Count == 1) ItemsToSaleGridView_CurrentCellChanged(sender, e);
+        }
+
+        private void AllSteamItemsToTradeGridView_CurrentCellChanged(object sender, EventArgs e) {
+            var cell = AllSteamItemsToTradeGridView.CurrentCell;
+            if (cell == null) return;
+
+            var row = cell.RowIndex;
+            if (row < 0) return;
+
+            int rowIndex = 0;
+            if (AllSteamItemsToTradeGridView.SelectedRows.Count > 1) {
+                rowIndex = AllSteamItemsToTradeGridView.SelectedRows[AllSteamItemsToTradeGridView.SelectedRows.Count - 1].Cells[0].RowIndex;
+            } else {
+                rowIndex = AllSteamItemsToTradeGridView.CurrentCell.RowIndex;
+            }
+            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsToTradeGridView, rowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            var list = AllItemsListGridUtils.GetRgFullItems(AllSteamItemsToTradeGridView, rowIndex);
+            if (list != null && list.Count > 0) LastSelectedItemDescription = list[0].Description;
+        }
+
+        private void AllSteamItemsToTradeGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e) {
+            if (e.Control is ComboBox cb) {
+                cb.IntegralHeight = false;
+                cb.MaxDropDownItems = 10;
+            }
+        }
+
+        private void AllSteamItemsToTradeGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) {
+                return;
+            }
+
+            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsToTradeGridView, AllSteamItemsToTradeGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+
+            if (e.ColumnIndex == 5) {
+                AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsToTradeGridView, e.RowIndex);
+            } else if (e.ColumnIndex == 6) {
+                AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsToTradeGridView, e.RowIndex, ItemsToTradeGridView);
+                PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
+            }
         }
     }
 }

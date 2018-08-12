@@ -16,7 +16,7 @@ namespace autotrade {
         bool stopButtonPressed = false;
         
         public void InitProcess() {
-            this.Text = $"{CurrentSession.InventoryAppId}-{CurrentSession.InventoryContextId} inventory loading";
+            this.Text = $"{CurrentSession.CurrentInventoryAppId}-{CurrentSession.CurrentInventoryContextId} inventory loading";
             _activate();
             workingThread = new Thread(() => {
                 LoadCurrentInventory();
@@ -25,7 +25,7 @@ namespace autotrade {
         }
 
         public void LoadCurrentInventory() {
-            items = CurrentSession.SteamManager.LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), CurrentSession.InventoryAppId, CurrentSession.InventoryContextId, true);
+            items = CurrentSession.SteamManager.LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), CurrentSession.CurrentInventoryAppId, CurrentSession.CurrentInventoryContextId, true);
         }
 
         public void SetTotalItemsCount(int count) {
@@ -60,13 +60,13 @@ namespace autotrade {
         private void _activate() {
             Dispatcher.Invoke(Program.MainForm, () => {
                 this.Show();
-                Program.MainForm.Enabled = false;
+                //Program.MainForm.Enabled = false;
             });
         }
 
         public void Disactivate() {
             Dispatcher.Invoke(Program.MainForm, () => {
-                Program.MainForm.Enabled = true;
+                //Program.MainForm.Enabled = true;
                 this.Close();
                 Program.InventoryLoadingForm = new InventoryLoadingForm();
             });
@@ -75,7 +75,7 @@ namespace autotrade {
         private void StopWorkingProcessButton_Click(object sender, EventArgs e) {
             stopButtonPressed = true;
             Dispatcher.Invoke(Program.InventoryLoadingForm, () => {
-                Logger.Debug($"Inventory {CurrentSession.InventoryAppId}-{CurrentSession.InventoryContextId} loading process aborted");
+                Logger.Debug($"Inventory {CurrentSession.CurrentInventoryAppId}-{CurrentSession.CurrentInventoryContextId} loading process aborted");
                 items = new List<RgFullItem>();
                 workingThread.Abort();
                 Disactivate();

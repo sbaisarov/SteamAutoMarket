@@ -13,12 +13,13 @@ using Newtonsoft.Json;
 using autotrade.Utils;
 using autotrade.Steam;
 using autotrade.WorkingProcess;
+using autotrade.WorkingProcess.Settings;
 
 namespace autotrade.CustomElements {
-    public partial class SettingsControl : UserControl {
+    public partial class GeneralSettingsControl : UserControl {
 
 
-        public SettingsControl() {
+        public GeneralSettingsControl() {
             InitializeComponent();
             LoggingLevelComboBox.SelectedIndex = SavedSettings.Get().LOGGER_LEVEL;
 
@@ -33,7 +34,7 @@ namespace autotrade.CustomElements {
                     AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = acc.Mafile;
 
                     Task.Run(() => {
-                        var profileImage = ImageUtils.GetSteamProfileSMallImage(acc.Mafile.Session.SteamID);
+                        var profileImage = ImageUtils.GetSteamProfileSmallImage(acc.Mafile.Session.SteamID);
                         if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
                     });
                 }
@@ -97,7 +98,7 @@ namespace autotrade.CustomElements {
 
             Task.Run(() => {
                 if (account.Session != null) {
-                    var profileImage = ImageUtils.GetSteamProfileSMallImage(account.Session.SteamID);
+                    var profileImage = ImageUtils.GetSteamProfileSmallImage(account.Session.SteamID);
                     if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
                 }
             });
@@ -230,6 +231,10 @@ namespace autotrade.CustomElements {
                 SavedSettings.Get().LOGGER_LEVEL = LoggingLevelComboBox.SelectedIndex;
                 SavedSettings.UpdateAll();
             }
+        }
+
+        private void SteamApiLinkLable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            System.Diagnostics.Process.Start("https://steamcommunity.com/dev/apikey");
         }
     }
 }

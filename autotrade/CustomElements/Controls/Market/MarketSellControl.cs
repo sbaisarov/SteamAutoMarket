@@ -16,6 +16,8 @@ using System.Threading;
 using autotrade.Utils;
 using autotrade.WorkingProcess;
 using System.Runtime.CompilerServices;
+using autotrade.WorkingProcess.PriceLoader;
+using autotrade.WorkingProcess.Settings;
 
 namespace autotrade {
     public partial class SaleControl : UserControl {
@@ -64,9 +66,9 @@ namespace autotrade {
 
             AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsGridView, AllSteamItemsGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
 
-            if (e.ColumnIndex == 3) {
+            if (e.ColumnIndex == 5) {
                 AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsGridView, e.RowIndex);
-            } else if (e.ColumnIndex == 4) {
+            } else if (e.ColumnIndex == 6) {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
                 PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
             }
@@ -203,8 +205,10 @@ namespace autotrade {
                 default: appid = InventoryAppIdComboBox.Text; break;
             }
             string contextId = InventoryContextIdComboBox.Text;
-            CurrentSession.InventoryAppId = appid;
-            CurrentSession.InventoryContextId = contextId;
+            CurrentSession.CurrentInventoryAppId = appid;
+            CurrentSession.CurrentInventoryContextId = contextId;
+            PriceLoader.StopAll();
+
             Logger.Debug($"Inventory {appid} - {contextId} loading started");
 
             Task.Run(() => {
@@ -292,7 +296,7 @@ namespace autotrade {
         private void OpenGameInventoryPageButton_Click(object sender, EventArgs e) {
             if (LastSelectedItemDescription == null) return;
             System.Diagnostics.Process.Start("https://" + $"steamcommunity.com/profiles/{CurrentSession.SteamManager.Guard.Session.SteamID}" +
-                $"/inventory/#{CurrentSession.InventoryAppId}_{CurrentSession.InventoryContextId}");
+                $"/inventory/#{CurrentSession.CurrentInventoryAppId}_{CurrentSession.CurrentInventoryContextId}");
         }
 
         private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e) {

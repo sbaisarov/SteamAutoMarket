@@ -10,7 +10,7 @@ namespace autotrade.WorkingProcess {
     class CurrentSession {
         public static SteamManager SteamManager { get; set; }
         public static Image AccountImage { get; set; }
-        public static string InventoryAppId { get; set; }
-        public static string InventoryContextId { get; set; }
+        public static string CurrentInventoryAppId { get; set; }
+        public static string CurrentInventoryContextId { get; set; }
     }
 }

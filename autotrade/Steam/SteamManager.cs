@@ -18,6 +18,7 @@ using autotrade.Steam.TradeOffer;
 using autotrade.CustomElements;
 using Market.Interface;
 using autotrade.Steam.Market;
+using autotrade.WorkingProcess.Settings;
 
 namespace autotrade.Steam {
     public class SteamManager {

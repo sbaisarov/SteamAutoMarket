@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace autotrade.WorkingProcess {
     class ImagesCache {
         public static Dictionary<string, Image> ImageCache { get; set; } = new Dictionary<string, Image>();
-        private static readonly string imagesPath = $"{Environment.CurrentDirectory}/images";
+        private static readonly string imagesPath = AppDomain.CurrentDomain.BaseDirectory + "images";
 
         public static Image GetImage(string hashName) {
             ImageCache.TryGetValue(hashName, out Image image);

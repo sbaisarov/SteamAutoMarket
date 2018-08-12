@@ -104,19 +104,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomElements\AccountsDataGridUtils.cs" />
-    <Compile Include="CustomElements\BuyControl.cs">
+    <Compile Include="CustomElements\Controls\Trade\RecievedTradeManageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomElements\BuyControl.Designer.cs">
-      <DependentUpon>BuyControl.cs</DependentUpon>
+    <Compile Include="CustomElements\Controls\Trade\RecievedTradeManageControl.Designer.cs">
+      <DependentUpon>RecievedTradeManageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomElements\CustomNumericUpDown.cs">
+    <Compile Include="CustomElements\Utils\AccountsDataGridUtils.cs" />
+    <Compile Include="CustomElements\Controls\Market\MarketBuyControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomElements\Controls\Market\MarketBuyControl.Designer.cs">
+      <DependentUpon>MarketBuyControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomElements\Elements\CustomNumericUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomElements\MainFormUtils.cs" />
-    <Compile Include="CustomElements\ItemsToSaleGridUtils.cs" />
-    <Compile Include="CustomElements\RichTextBoxWithNoPaint.cs">
+    <Compile Include="CustomElements\Utils\MainFormUtils.cs" />
+    <Compile Include="CustomElements\Utils\ItemsToSaleGridUtils.cs" />
+    <Compile Include="CustomElements\Elements\RichTextBoxWithNoPaint.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CustomElements\Tabs\MarketControlTab.cs">
@@ -137,37 +143,41 @@
     <Compile Include="CustomElements\Tabs\TradeControlTab.Designer.cs">
       <DependentUpon>TradeControlTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomElements\TradeControl.cs">
+    <Compile Include="CustomElements\Controls\Trade\TradeSendControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomElements\TradeControl.Designer.cs">
-      <DependentUpon>TradeControl.cs</DependentUpon>
+    <Compile Include="CustomElements\Controls\Trade\TradeSendControl.Designer.cs">
+      <DependentUpon>TradeSendControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="InventoryLoadingForm.cs">
+    <Compile Include="CustomElements\Forms\InventoryLoadingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InventoryLoadingForm.Designer.cs">
+    <Compile Include="CustomElements\Forms\InventoryLoadingForm.Designer.cs">
       <DependentUpon>InventoryLoadingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Steam\Market\MarketInfoCache.cs" />
     <Compile Include="Utils\FormComponents.cs" />
-    <Compile Include="WorkingProcessForm.cs">
+    <Compile Include="CustomElements\Forms\WorkingProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WorkingProcessForm.Designer.cs">
+    <Compile Include="CustomElements\Forms\WorkingProcessForm.Designer.cs">
       <DependentUpon>WorkingProcessForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="WorkingProcess\SettingsContainer.cs" />
-    <Compile Include="CustomElements\SettingsControl.cs">
+    <Compile Include="WorkingProcess\PriceLoader\LoadedItemPrice.cs" />
+    <Compile Include="WorkingProcess\PriceLoader\PricesCache.cs" />
+    <Compile Include="WorkingProcess\PriceLoader\TableToLoad.cs" />
+    <Compile Include="WorkingProcess\Settings\SavedSettings.cs" />
+    <Compile Include="WorkingProcess\Settings\SavedSteamAccount.cs" />
+    <Compile Include="WorkingProcess\Settings\SettingsContainer.cs" />
+    <Compile Include="CustomElements\Controls\Settings\GeneralSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomElements\SettingsControl.Designer.cs">
-      <DependentUpon>SettingsControl.cs</DependentUpon>
+    <Compile Include="CustomElements\Controls\Settings\GeneralSettingsControl.Designer.cs">
+      <DependentUpon>GeneralSettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\Dispatcher.cs" />
     <Compile Include="Utils\ImageUtils.cs" />
-    <Compile Include="CustomElements\AllItemsListGridUtils.cs" />
-    <Compile Include="Flags.cs" />
+    <Compile Include="CustomElements\Utils\AllItemsListGridUtils.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,23 +252,26 @@
     <Compile Include="Steam\TradeOffer\TradeOffer.cs" />
     <Compile Include="Steam\TradeOffer\TradeOfferManager.cs" />
     <Compile Include="Steam\TradeOffer\TradeOfferWebAPI.cs" />
-    <Compile Include="CustomElements\SaleControl.cs">
+    <Compile Include="CustomElements\Controls\Market\MarketSellControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomElements\SaleControl.Designer.cs">
-      <DependentUpon>SaleControl.cs</DependentUpon>
+    <Compile Include="CustomElements\Controls\Market\MarketSellControl.Designer.cs">
+      <DependentUpon>MarketSellControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\Logger.cs" />
-    <Compile Include="WorkingProcess\CurrentSession.cs" />
-    <Compile Include="WorkingProcess\ImagesCache.cs" />
-    <Compile Include="WorkingProcess\MarketSaleType.cs" />
-    <Compile Include="WorkingProcess\PriceLoader.cs" />
-    <EmbeddedResource Include="CustomElements\BuyControl.resx">
-      <DependentUpon>BuyControl.cs</DependentUpon>
+    <Compile Include="WorkingProcess\Variables\CurrentSession.cs" />
+    <Compile Include="WorkingProcess\Caches\ImagesCache.cs" />
+    <Compile Include="WorkingProcess\Variables\MarketSaleType.cs" />
+    <Compile Include="WorkingProcess\PriceLoader\PriceLoader.cs" />
+    <EmbeddedResource Include="CustomElements\Controls\Market\MarketBuyControl.resx">
+      <DependentUpon>MarketBuyControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomElements\SettingsControl.resx">
-      <DependentUpon>SettingsControl.cs</DependentUpon>
+    <EmbeddedResource Include="CustomElements\Controls\Settings\GeneralSettingsControl.resx">
+      <DependentUpon>GeneralSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomElements\Controls\Trade\RecievedTradeManageControl.resx">
+      <DependentUpon>RecievedTradeManageControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomElements\Tabs\MarketControlTab.resx">
       <DependentUpon>MarketControlTab.cs</DependentUpon>
@@ -269,17 +282,17 @@
     <EmbeddedResource Include="CustomElements\Tabs\TradeControlTab.resx">
       <DependentUpon>TradeControlTab.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomElements\TradeControl.resx">
-      <DependentUpon>TradeControl.cs</DependentUpon>
+    <EmbeddedResource Include="CustomElements\Controls\Trade\TradeSendControl.resx">
+      <DependentUpon>TradeSendControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryLoadingForm.resx">
+    <EmbeddedResource Include="CustomElements\Forms\InventoryLoadingForm.resx">
       <DependentUpon>InventoryLoadingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="WorkingProcessForm.resx">
+    <EmbeddedResource Include="CustomElements\Forms\WorkingProcessForm.resx">
       <DependentUpon>WorkingProcessForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -292,8 +305,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="CustomElements\SaleControl.resx">
-      <DependentUpon>SaleControl.cs</DependentUpon>
+    <EmbeddedResource Include="CustomElements\Controls\Market\MarketSellControl.resx">
+      <DependentUpon>MarketSellControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -1,5 +1,5 @@
 ﻿namespace autotrade.CustomElements {
-    partial class BuyControl {
+    partial class MarketBuyControl {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>

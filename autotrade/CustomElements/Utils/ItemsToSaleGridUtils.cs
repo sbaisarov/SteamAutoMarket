@@ -65,7 +65,7 @@ namespace autotrade.CustomElements {
 
             var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
 
-            AllItemsListGridUtils.UpdateItemDescription(TradeControl.AllDescriptionsDictionary[itemMarketHashName], textBox, imageBox, lable);
+            AllItemsListGridUtils.UpdateItemDescription(TradeSendControl.AllDescriptionsDictionary[itemMarketHashName], textBox, imageBox, lable);
         }
 
         public static void DeleteButtonClick(DataGridView allItemsGrid, DataGridView itemsToSaleGrid, int selectedRow) {
