@@ -25,7 +25,7 @@ namespace autotrade {
 
         public SaleControl() {
             InitializeComponent();
-            PriceLoader.Init(this.ItemsToSaleGridView);
+            PriceLoader.Init(this.AllSteamItemsGridView, this.ItemsToSaleGridView);
 
             InventoryAppIdComboBox.Text = SavedSettings.Get().MARKET_INVENTORY_APP_ID;
             InventoryContextIdComboBox.Text = SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID;
@@ -68,7 +68,7 @@ namespace autotrade {
                 AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsGridView, e.RowIndex);
             } else if (e.ColumnIndex == 4) {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
-                PriceLoader.StartPriceLoading();
+                PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
             }
         }
 
@@ -142,16 +142,12 @@ namespace autotrade {
         }
 
         private void HalfAutoPriceRadioButton_CheckedChanged(object sender, EventArgs e) {
-            if (HalfAutoPriceRadioButton.Checked) {
+            if (CurrentMinusPriceRadioButton.Checked) {
                 CurrentPriceNumericUpDown.Visible = true;
                 CurrentPricePercentNumericUpDown.Visible = true;
-                CurrentPriceNumericUpDown.Enabled = true;
-                CurrentPricePercentNumericUpDown.Enabled = true;
             } else {
                 CurrentPriceNumericUpDown.Visible = false;
                 CurrentPricePercentNumericUpDown.Visible = false;
-                CurrentPriceNumericUpDown.Enabled = false;
-                CurrentPricePercentNumericUpDown.Enabled = false;
             }
         }
 
@@ -217,6 +213,7 @@ namespace autotrade {
                 Dispatcher.Invoke(Program.MainForm, () => {
                     LoadInventoryButton.Enabled = true;
                 });
+                PriceLoader.StartPriceLoading(TableToLoad.ALL_ITEMS_TABLE);
             });
         }
 
@@ -230,7 +227,7 @@ namespace autotrade {
             MarketSaleType marketSaleType;
             if (RecomendedPriceRadioButton.Checked) marketSaleType = MarketSaleType.RECOMMENDED;
             else if (ManualPriceRadioButton.Checked) marketSaleType = MarketSaleType.MANUAL;
-            else if (HalfAutoPriceRadioButton.Checked) marketSaleType = MarketSaleType.LOWER_THAN_CURRENT;
+            else if (CurrentMinusPriceRadioButton.Checked) marketSaleType = MarketSaleType.LOWER_THAN_CURRENT;
             else return;
 
             var itemsToSale = new Dictionary<RgFullItem, double>();
@@ -271,21 +268,6 @@ namespace autotrade {
             Program.WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType));
         }
 
-        private void CurrentPricePercentNumericUpDown_ValueChanged(object sender, EventArgs e) {
-            if (CurrentPriceNumericUpDown.Value != 0) {
-                var tmp = CurrentPricePercentNumericUpDown.Value;
-                CurrentPriceNumericUpDown.Value = 0;
-                CurrentPricePercentNumericUpDown.Value = tmp;
-            }
-        }
-
-        private void CurrentPriceNumericUpDown_ValueChanged(object sender, EventArgs e) {
-            if (CurrentPricePercentNumericUpDown.Value != 0) {
-                var tmp = CurrentPriceNumericUpDown.Value;
-                CurrentPricePercentNumericUpDown.Value = 0;
-                CurrentPriceNumericUpDown.Value = tmp;
-            }
-        }
 
         private void AddAllButton_Click(object sender, EventArgs e) {
             this.AllSteamItemsGridView.CurrentCellChanged -= new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
@@ -297,28 +279,7 @@ namespace autotrade {
             this.ItemsToSaleGridView.CurrentCellChanged += new EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
 
             Logger.Debug("All selected items was added to sale list");
-            PriceLoader.StartPriceLoading();
-        }
-
-        private void RefreshInventoryButton_Click(object sender, EventArgs e) {
-            if (CurrentSession.SteamManager == null) {
-                MessageBox.Show("You should login first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Logger.Warning("Error on inventory loading. No logined account found.");
-                return;
-            }
-            if (String.IsNullOrEmpty(CurrentSession.InventoryAppId) || String.IsNullOrEmpty(CurrentSession.InventoryContextId)) {
-                MessageBox.Show("You should load inventory first", "Error inventory loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Logger.Warning("Error on inventory loading. No inventory type chosed.");
-                return;
-            }
-
-            Logger.Debug($"Refreshing ${CurrentSession.InventoryAppId} - ${CurrentSession.InventoryContextId} inventory");
-
-            AllSteamItemsGridView.Rows.Clear();
-            ItemsToSaleGridView.Rows.Clear();
-
-            LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), CurrentSession.InventoryAppId, CurrentSession.InventoryContextId);
-            AllSteamItemsGridView_CurrentCellChanged(null, null);
+            PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
         }
 
         private void OpenMarketPageButtonClick_Click(object sender, EventArgs e) {
@@ -339,6 +300,58 @@ namespace autotrade {
                 SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID = InventoryContextIdComboBox.Text;
                 SavedSettings.UpdateAll();
             }
+        }
+
+
+        private void CurrentPricePercentNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            if (CurrentPriceNumericUpDown.Value != 0) {
+                var tmp = CurrentPricePercentNumericUpDown.Value;
+                CurrentPriceNumericUpDown.Value = 0;
+                CurrentPricePercentNumericUpDown.Value = tmp;
+            }
+        }
+
+        private void CurrentPriceNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            if (CurrentPricePercentNumericUpDown.Value != 0) {
+                var tmp = CurrentPriceNumericUpDown.Value;
+                CurrentPricePercentNumericUpDown.Value = 0;
+                CurrentPriceNumericUpDown.Value = tmp;
+            }
+        }
+
+        private void AveragePriceNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            if (AveragePricePercentNumericUpDown.Value != 0) {
+                var tmp = AveragePriceNumericUpDown.Value;
+                AveragePricePercentNumericUpDown.Value = 0;
+                AveragePriceNumericUpDown.Value = tmp;
+            }
+        }
+
+        private void AveragePricePercentNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            if (AveragePriceNumericUpDown.Value != 0) {
+                var tmp = AveragePricePercentNumericUpDown.Value;
+                AveragePriceNumericUpDown.Value = 0;
+                AveragePricePercentNumericUpDown.Value = tmp;
+            }
+        }
+
+        private void AveregeMinusPriceRadioButton_CheckedChanged(object sender, EventArgs e) {
+            if (AveregeMinusPriceRadioButton.Checked) {
+                AveragePriceNumericUpDown.Visible = true;
+                AveragePricePercentNumericUpDown.Visible = true;
+            } else {
+                AveragePriceNumericUpDown.Visible = false;
+                AveragePricePercentNumericUpDown.Visible = false;
+            }
+        }
+
+        private void RefreshPricesButton_Click(object sender, EventArgs e) {
+            PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE, true);
+            PriceLoader.StartPriceLoading(TableToLoad.ALL_ITEMS_TABLE, true);
+        }
+
+        private void ForcePricesReloadButton_Click(object sender, EventArgs e) {
+            PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE, true);
         }
     }
 }

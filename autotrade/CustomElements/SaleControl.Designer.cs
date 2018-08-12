@@ -29,15 +29,25 @@ namespace autotrade {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaleControl));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.AllSteamItemsGridView = new System.Windows.Forms.DataGridView();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AveragePriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CountToAddColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.HidenItemsListColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HidenItemImageColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
@@ -57,12 +67,15 @@ namespace autotrade {
             this.SplitterPanel = new System.Windows.Forms.Panel();
             this.AddAllToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.LoadInventoryButton = new System.Windows.Forms.Button();
-            this.HalfAutoPriceRadioButton = new System.Windows.Forms.RadioButton();
+            this.CurrentMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.CurrentPriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.AddAllButton = new System.Windows.Forms.Button();
-            this.RefreshInventoryButton = new System.Windows.Forms.Button();
+            this.RefreshPricesButton = new System.Windows.Forms.Button();
             this.OpenMarketPageButtonClick = new System.Windows.Forms.Button();
             this.OpenGameInventoryPageButton = new System.Windows.Forms.Button();
+            this.AveragePriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.AveregeMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
+            this.AveragePricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
             this.CurrentPricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
             this.InventoryGroupBox = new System.Windows.Forms.GroupBox();
             this.InventoryContextIdLabel = new System.Windows.Forms.Label();
@@ -75,20 +88,14 @@ namespace autotrade {
             this.RecomendedPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.ManualPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CountToAddColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.HidenItemsListColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HidenItemImageColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).BeginInit();
             this.ItemDescriptionGroupBox.SuspendLayout();
             this.ItemsToSaleGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToSaleGridView)).BeginInit();
             this.AllSteamItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
             this.InventoryGroupBox.SuspendLayout();
             this.SellGroupBox.SuspendLayout();
@@ -119,6 +126,8 @@ namespace autotrade {
             this.NameColumn,
             this.CountColumn,
             this.ItemTypeColumn,
+            this.CurrentPriceColumn,
+            this.AveragePriceColumn,
             this.CountToAddColumn,
             this.AddButtonColumn,
             this.HidenItemsListColumn,
@@ -146,6 +155,107 @@ namespace autotrade {
             this.AllSteamItemsGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SteamSaleDataGridView_CellClick);
             this.AllSteamItemsGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             this.AllSteamItemsGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.SteamSaleDataGridView_EditingControlShowing);
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NameColumn.FillWeight = 200F;
+            this.NameColumn.Frozen = true;
+            this.NameColumn.HeaderText = "Item name";
+            this.NameColumn.MinimumWidth = 200;
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.ReadOnly = true;
+            this.NameColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NameColumn.Width = 200;
+            // 
+            // CountColumn
+            // 
+            this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            this.CountColumn.FillWeight = 40F;
+            this.CountColumn.HeaderText = "#";
+            this.CountColumn.Name = "CountColumn";
+            this.CountColumn.ReadOnly = true;
+            this.CountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.CountColumn.Width = 40;
+            // 
+            // ItemTypeColumn
+            // 
+            this.ItemTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ItemTypeColumn.FillWeight = 150F;
+            this.ItemTypeColumn.HeaderText = "Type";
+            this.ItemTypeColumn.Name = "ItemTypeColumn";
+            this.ItemTypeColumn.ReadOnly = true;
+            this.ItemTypeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ItemTypeColumn.Width = 140;
+            // 
+            // CurrentPriceColumn
+            // 
+            this.CurrentPriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.CurrentPriceColumn.FillWeight = 20F;
+            this.CurrentPriceColumn.HeaderText = "Cur";
+            this.CurrentPriceColumn.MinimumWidth = 20;
+            this.CurrentPriceColumn.Name = "CurrentPriceColumn";
+            this.CurrentPriceColumn.ReadOnly = true;
+            this.CurrentPriceColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.CurrentPriceColumn.ToolTipText = "Current price";
+            this.CurrentPriceColumn.Width = 35;
+            // 
+            // AveragePriceColumn
+            // 
+            this.AveragePriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.AveragePriceColumn.FillWeight = 20F;
+            this.AveragePriceColumn.HeaderText = "Avr";
+            this.AveragePriceColumn.MinimumWidth = 20;
+            this.AveragePriceColumn.Name = "AveragePriceColumn";
+            this.AveragePriceColumn.ReadOnly = true;
+            this.AveragePriceColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AveragePriceColumn.ToolTipText = "Average price";
+            this.AveragePriceColumn.Width = 35;
+            // 
+            // CountToAddColumn
+            // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.CountToAddColumn.FillWeight = 20F;
+            this.CountToAddColumn.HeaderText = "Amount to add";
+            this.CountToAddColumn.MaxDropDownItems = 10;
+            this.CountToAddColumn.MinimumWidth = 20;
+            this.CountToAddColumn.Name = "CountToAddColumn";
+            this.CountToAddColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // AddButtonColumn
+            // 
+            this.AddButtonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.AddButtonColumn.FillWeight = 60F;
+            this.AddButtonColumn.HeaderText = "Add";
+            this.AddButtonColumn.Name = "AddButtonColumn";
+            this.AddButtonColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AddButtonColumn.Text = "Add";
+            this.AddButtonColumn.UseColumnTextForButtonValue = true;
+            // 
+            // HidenItemsListColumn
+            // 
+            this.HidenItemsListColumn.HeaderText = "HidenItemsList";
+            this.HidenItemsListColumn.Name = "HidenItemsListColumn";
+            this.HidenItemsListColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HidenItemsListColumn.Visible = false;
+            // 
+            // HidenItemImageColumn
+            // 
+            this.HidenItemImageColumn.HeaderText = "HidenItemImage";
+            this.HidenItemImageColumn.Name = "HidenItemImageColumn";
+            this.HidenItemImageColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HidenItemImageColumn.Visible = false;
+            // 
+            // HidenItemMarketHashName
+            // 
+            this.HidenItemMarketHashName.HeaderText = "HidenItemMarketHashNameColumn";
+            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
+            this.HidenItemMarketHashName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HidenItemMarketHashName.Visible = false;
             // 
             // ItemImageBox
             // 
@@ -221,6 +331,7 @@ namespace autotrade {
             this.ForcePricesReloadButton.TabIndex = 23;
             this.AddAllToolTip.SetToolTip(this.ForcePricesReloadButton, "Force prices reload");
             this.ForcePricesReloadButton.UseVisualStyleBackColor = true;
+            this.ForcePricesReloadButton.Click += new System.EventHandler(this.ForcePricesReloadButton_Click);
             // 
             // ItemsToSaleGridView
             // 
@@ -379,25 +490,24 @@ namespace autotrade {
             this.LoadInventoryButton.UseVisualStyleBackColor = true;
             this.LoadInventoryButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
             // 
-            // HalfAutoPriceRadioButton
+            // CurrentMinusPriceRadioButton
             // 
-            this.HalfAutoPriceRadioButton.AutoSize = true;
-            this.HalfAutoPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HalfAutoPriceRadioButton.Location = new System.Drawing.Point(12, 70);
-            this.HalfAutoPriceRadioButton.Name = "HalfAutoPriceRadioButton";
-            this.HalfAutoPriceRadioButton.Size = new System.Drawing.Size(101, 20);
-            this.HalfAutoPriceRadioButton.TabIndex = 1;
-            this.HalfAutoPriceRadioButton.Text = "Current price";
-            this.AddAllToolTip.SetToolTip(this.HalfAutoPriceRadioButton, "The value to add to the calculated price (minimum and maximum are respected)");
-            this.HalfAutoPriceRadioButton.UseVisualStyleBackColor = true;
-            this.HalfAutoPriceRadioButton.CheckedChanged += new System.EventHandler(this.HalfAutoPriceRadioButton_CheckedChanged);
+            this.CurrentMinusPriceRadioButton.AutoSize = true;
+            this.CurrentMinusPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurrentMinusPriceRadioButton.Location = new System.Drawing.Point(12, 75);
+            this.CurrentMinusPriceRadioButton.Name = "CurrentMinusPriceRadioButton";
+            this.CurrentMinusPriceRadioButton.Size = new System.Drawing.Size(101, 20);
+            this.CurrentMinusPriceRadioButton.TabIndex = 1;
+            this.CurrentMinusPriceRadioButton.Text = "Current price";
+            this.AddAllToolTip.SetToolTip(this.CurrentMinusPriceRadioButton, "The value to add to the calculated price (minimum and maximum are respected)");
+            this.CurrentMinusPriceRadioButton.UseVisualStyleBackColor = true;
+            this.CurrentMinusPriceRadioButton.CheckedChanged += new System.EventHandler(this.HalfAutoPriceRadioButton_CheckedChanged);
             // 
             // CurrentPriceNumericUpDown
             // 
             this.CurrentPriceNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.CurrentPriceNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CurrentPriceNumericUpDown.DecimalPlaces = 2;
-            this.CurrentPriceNumericUpDown.Enabled = false;
             this.CurrentPriceNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CurrentPriceNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.CurrentPriceNumericUpDown.Increment = new decimal(new int[] {
@@ -405,7 +515,7 @@ namespace autotrade {
             0,
             0,
             131072});
-            this.CurrentPriceNumericUpDown.Location = new System.Drawing.Point(131, 70);
+            this.CurrentPriceNumericUpDown.Location = new System.Drawing.Point(131, 75);
             this.CurrentPriceNumericUpDown.Maximum = new decimal(new int[] {
             -727379969,
             232,
@@ -444,20 +554,20 @@ namespace autotrade {
             this.AddAllButton.UseVisualStyleBackColor = true;
             this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
             // 
-            // RefreshInventoryButton
+            // RefreshPricesButton
             // 
-            this.RefreshInventoryButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RefreshInventoryButton.FlatAppearance.BorderSize = 0;
-            this.RefreshInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RefreshInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.RefreshInventoryButton.Image = ((System.Drawing.Image)(resources.GetObject("RefreshInventoryButton.Image")));
-            this.RefreshInventoryButton.Location = new System.Drawing.Point(635, 240);
-            this.RefreshInventoryButton.Name = "RefreshInventoryButton";
-            this.RefreshInventoryButton.Size = new System.Drawing.Size(47, 40);
-            this.RefreshInventoryButton.TabIndex = 24;
-            this.AddAllToolTip.SetToolTip(this.RefreshInventoryButton, "Force prices reload");
-            this.RefreshInventoryButton.UseVisualStyleBackColor = true;
-            this.RefreshInventoryButton.Click += new System.EventHandler(this.RefreshInventoryButton_Click);
+            this.RefreshPricesButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RefreshPricesButton.FlatAppearance.BorderSize = 0;
+            this.RefreshPricesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RefreshPricesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.RefreshPricesButton.Image = ((System.Drawing.Image)(resources.GetObject("RefreshPricesButton.Image")));
+            this.RefreshPricesButton.Location = new System.Drawing.Point(635, 240);
+            this.RefreshPricesButton.Name = "RefreshPricesButton";
+            this.RefreshPricesButton.Size = new System.Drawing.Size(47, 40);
+            this.RefreshPricesButton.TabIndex = 24;
+            this.AddAllToolTip.SetToolTip(this.RefreshPricesButton, "Force prices reload");
+            this.RefreshPricesButton.UseVisualStyleBackColor = true;
+            this.RefreshPricesButton.Click += new System.EventHandler(this.RefreshPricesButton_Click);
             // 
             // OpenMarketPageButtonClick
             // 
@@ -485,16 +595,96 @@ namespace autotrade {
             this.OpenGameInventoryPageButton.Name = "OpenGameInventoryPageButton";
             this.OpenGameInventoryPageButton.Size = new System.Drawing.Size(47, 40);
             this.OpenGameInventoryPageButton.TabIndex = 26;
-            this.AddAllToolTip.SetToolTip(this.OpenGameInventoryPageButton, "Open selected inventory");
+            this.AddAllToolTip.SetToolTip(this.OpenGameInventoryPageButton, "Open selected inventory on browser");
             this.OpenGameInventoryPageButton.UseVisualStyleBackColor = true;
             this.OpenGameInventoryPageButton.Click += new System.EventHandler(this.OpenGameInventoryPageButton_Click);
+            // 
+            // AveragePriceNumericUpDown
+            // 
+            this.AveragePriceNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AveragePriceNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AveragePriceNumericUpDown.DecimalPlaces = 2;
+            this.AveragePriceNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AveragePriceNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AveragePriceNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.AveragePriceNumericUpDown.Location = new System.Drawing.Point(131, 55);
+            this.AveragePriceNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.AveragePriceNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.AveragePriceNumericUpDown.Name = "AveragePriceNumericUpDown";
+            this.AveragePriceNumericUpDown.Size = new System.Drawing.Size(76, 22);
+            this.AveragePriceNumericUpDown.TabIndex = 6;
+            this.AveragePriceNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.AveragePriceNumericUpDown, "Only one value type can be chosen");
+            this.AveragePriceNumericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147352576});
+            this.AveragePriceNumericUpDown.Visible = false;
+            this.AveragePriceNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePriceNumericUpDown_ValueChanged);
+            // 
+            // AveregeMinusPriceRadioButton
+            // 
+            this.AveregeMinusPriceRadioButton.AutoSize = true;
+            this.AveregeMinusPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AveregeMinusPriceRadioButton.Location = new System.Drawing.Point(12, 55);
+            this.AveregeMinusPriceRadioButton.Name = "AveregeMinusPriceRadioButton";
+            this.AveregeMinusPriceRadioButton.Size = new System.Drawing.Size(111, 20);
+            this.AveregeMinusPriceRadioButton.TabIndex = 5;
+            this.AveregeMinusPriceRadioButton.Text = "Average price";
+            this.AddAllToolTip.SetToolTip(this.AveregeMinusPriceRadioButton, "The value to add to the calculated price (minimum and maximum are respected)");
+            this.AveregeMinusPriceRadioButton.UseVisualStyleBackColor = true;
+            this.AveregeMinusPriceRadioButton.CheckedChanged += new System.EventHandler(this.AveregeMinusPriceRadioButton_CheckedChanged);
+            // 
+            // AveragePricePercentNumericUpDown
+            // 
+            this.AveragePricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AveragePricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AveragePricePercentNumericUpDown.DecimalPlaces = 2;
+            this.AveragePricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AveragePricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AveragePricePercentNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.AveragePricePercentNumericUpDown.Location = new System.Drawing.Point(212, 55);
+            this.AveragePricePercentNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.AveragePricePercentNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.AveragePricePercentNumericUpDown.Name = "AveragePricePercentNumericUpDown";
+            this.AveragePricePercentNumericUpDown.Size = new System.Drawing.Size(76, 22);
+            this.AveragePricePercentNumericUpDown.TabIndex = 7;
+            this.AveragePricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.AveragePricePercentNumericUpDown, "Only one value type can be chosen");
+            this.AveragePricePercentNumericUpDown.TrailingSign = "%";
+            this.AveragePricePercentNumericUpDown.Visible = false;
+            this.AveragePricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePricePercentNumericUpDown_ValueChanged);
             // 
             // CurrentPricePercentNumericUpDown
             // 
             this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
-            this.CurrentPricePercentNumericUpDown.Enabled = false;
             this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
@@ -502,7 +692,7 @@ namespace autotrade {
             0,
             0,
             131072});
-            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(213, 70);
+            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(212, 75);
             this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
             -727379969,
             232,
@@ -625,7 +815,7 @@ namespace autotrade {
             this.RecomendedPriceRadioButton.AutoSize = true;
             this.RecomendedPriceRadioButton.Checked = true;
             this.RecomendedPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RecomendedPriceRadioButton.Location = new System.Drawing.Point(12, 19);
+            this.RecomendedPriceRadioButton.Location = new System.Drawing.Point(12, 15);
             this.RecomendedPriceRadioButton.Name = "RecomendedPriceRadioButton";
             this.RecomendedPriceRadioButton.Size = new System.Drawing.Size(153, 20);
             this.RecomendedPriceRadioButton.TabIndex = 0;
@@ -637,7 +827,7 @@ namespace autotrade {
             // 
             this.ManualPriceRadioButton.AutoSize = true;
             this.ManualPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ManualPriceRadioButton.Location = new System.Drawing.Point(12, 44);
+            this.ManualPriceRadioButton.Location = new System.Drawing.Point(12, 35);
             this.ManualPriceRadioButton.Name = "ManualPriceRadioButton";
             this.ManualPriceRadioButton.Size = new System.Drawing.Size(80, 20);
             this.ManualPriceRadioButton.TabIndex = 2;
@@ -646,10 +836,13 @@ namespace autotrade {
             // 
             // PriceSettingsGroupBox
             // 
+            this.PriceSettingsGroupBox.Controls.Add(this.AveragePricePercentNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.AveragePriceNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.AveregeMinusPriceRadioButton);
             this.PriceSettingsGroupBox.Controls.Add(this.CurrentPricePercentNumericUpDown);
             this.PriceSettingsGroupBox.Controls.Add(this.CurrentPriceNumericUpDown);
             this.PriceSettingsGroupBox.Controls.Add(this.ManualPriceRadioButton);
-            this.PriceSettingsGroupBox.Controls.Add(this.HalfAutoPriceRadioButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.CurrentMinusPriceRadioButton);
             this.PriceSettingsGroupBox.Controls.Add(this.RecomendedPriceRadioButton);
             this.PriceSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.PriceSettingsGroupBox.Location = new System.Drawing.Point(580, 385);
@@ -659,91 +852,14 @@ namespace autotrade {
             this.PriceSettingsGroupBox.TabStop = false;
             this.PriceSettingsGroupBox.Text = "The price formation setting ";
             // 
-            // NameColumn
-            // 
-            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.NameColumn.FillWeight = 250F;
-            this.NameColumn.Frozen = true;
-            this.NameColumn.HeaderText = "Item name";
-            this.NameColumn.MinimumWidth = 250;
-            this.NameColumn.Name = "NameColumn";
-            this.NameColumn.ReadOnly = true;
-            this.NameColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NameColumn.Width = 250;
-            // 
-            // CountColumn
-            // 
-            this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
-            this.CountColumn.FillWeight = 40F;
-            this.CountColumn.HeaderText = "#";
-            this.CountColumn.Name = "CountColumn";
-            this.CountColumn.ReadOnly = true;
-            this.CountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.CountColumn.Width = 40;
-            // 
-            // ItemTypeColumn
-            // 
-            this.ItemTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ItemTypeColumn.FillWeight = 150F;
-            this.ItemTypeColumn.HeaderText = "Type";
-            this.ItemTypeColumn.Name = "ItemTypeColumn";
-            this.ItemTypeColumn.ReadOnly = true;
-            this.ItemTypeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ItemTypeColumn.Width = 140;
-            // 
-            // CountToAddColumn
-            // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
-            this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            this.CountToAddColumn.FillWeight = 20F;
-            this.CountToAddColumn.HeaderText = "Amount to add";
-            this.CountToAddColumn.MaxDropDownItems = 10;
-            this.CountToAddColumn.MinimumWidth = 20;
-            this.CountToAddColumn.Name = "CountToAddColumn";
-            this.CountToAddColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // AddButtonColumn
-            // 
-            this.AddButtonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.AddButtonColumn.FillWeight = 60F;
-            this.AddButtonColumn.HeaderText = "Add";
-            this.AddButtonColumn.Name = "AddButtonColumn";
-            this.AddButtonColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AddButtonColumn.Text = "Add";
-            this.AddButtonColumn.UseColumnTextForButtonValue = true;
-            // 
-            // HidenItemsListColumn
-            // 
-            this.HidenItemsListColumn.HeaderText = "HidenItemsList";
-            this.HidenItemsListColumn.Name = "HidenItemsListColumn";
-            this.HidenItemsListColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HidenItemsListColumn.Visible = false;
-            // 
-            // HidenItemImageColumn
-            // 
-            this.HidenItemImageColumn.HeaderText = "HidenItemImage";
-            this.HidenItemImageColumn.Name = "HidenItemImageColumn";
-            this.HidenItemImageColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HidenItemImageColumn.Visible = false;
-            // 
-            // HidenItemMarketHashName
-            // 
-            this.HidenItemMarketHashName.HeaderText = "HidenItemMarketHashNameColumn";
-            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
-            this.HidenItemMarketHashName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HidenItemMarketHashName.Visible = false;
-            // 
             // SaleControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.Controls.Add(this.OpenGameInventoryPageButton);
             this.Controls.Add(this.OpenMarketPageButtonClick);
-            this.Controls.Add(this.RefreshInventoryButton);
+            this.Controls.Add(this.RefreshPricesButton);
             this.Controls.Add(this.AddAllButton);
             this.Controls.Add(this.InventoryGroupBox);
             this.Controls.Add(this.SplitterPanel);
@@ -764,6 +880,8 @@ namespace autotrade {
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToSaleGridView)).EndInit();
             this.AllSteamItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
             this.InventoryGroupBox.ResumeLayout(false);
             this.InventoryGroupBox.PerformLayout();
@@ -810,7 +928,7 @@ namespace autotrade {
         private Button StartSteamSellButton;
         private GroupBox SellGroupBox;
         private RadioButton RecomendedPriceRadioButton;
-        private RadioButton HalfAutoPriceRadioButton;
+        private RadioButton CurrentMinusPriceRadioButton;
         private RadioButton ManualPriceRadioButton;
         private NumericUpDown CurrentPriceNumericUpDown;
         private CustomElements.CustomNumericUpDown CurrentPricePercentNumericUpDown;
@@ -818,7 +936,7 @@ namespace autotrade {
         private DataGridView ItemsToSaleGridView;
         private Button ForcePricesReloadButton;
         private Button AddAllButton;
-        private Button RefreshInventoryButton;
+        private Button RefreshPricesButton;
         private Button OpenMarketPageButtonClick;
         private Button OpenGameInventoryPageButton;
         private DataGridViewTextBoxColumn AddedToSaleListItemName;
@@ -828,9 +946,14 @@ namespace autotrade {
         private DataGridViewTextBoxColumn AddedToSaleListHidenItemsList;
         private DataGridViewTextBoxColumn AveragePrice;
         private CustomElements.RichTextBoxWithNoPaint ItemDescriptionTextBox;
+        private CustomElements.CustomNumericUpDown AveragePricePercentNumericUpDown;
+        private NumericUpDown AveragePriceNumericUpDown;
+        private RadioButton AveregeMinusPriceRadioButton;
         private DataGridViewTextBoxColumn NameColumn;
         private DataGridViewTextBoxColumn CountColumn;
         private DataGridViewTextBoxColumn ItemTypeColumn;
+        private DataGridViewTextBoxColumn CurrentPriceColumn;
+        private DataGridViewTextBoxColumn AveragePriceColumn;
         private DataGridViewComboBoxColumn CountToAddColumn;
         private DataGridViewButtonColumn AddButtonColumn;
         private DataGridViewTextBoxColumn HidenItemsListColumn;

@@ -119,50 +119,29 @@
     <Compile Include="CustomElements\RichTextBoxWithNoPaint.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomElements\TabControl\CustomTabControl.cs">
-      <SubType>Component</SubType>
+    <Compile Include="CustomElements\Tabs\MarketControlTab.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomElements\TabControl\NativeMethods.cs" />
-    <Compile Include="CustomElements\TabControl\TabStyle.cs" />
-    <Compile Include="CustomElements\TabControl\TabStyleProvider.cs">
-      <SubType>Component</SubType>
+    <Compile Include="CustomElements\Tabs\MarketControlTab.Designer.cs">
+      <DependentUpon>MarketControlTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomElements\TabControl\TabStyleProviders\TabStyleAngledProvider.cs">
-      <SubType>Component</SubType>
+    <Compile Include="CustomElements\Tabs\SettingsControlTab.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomElements\TabControl\TabStyleProviders\TabStyleChromeProvider.cs">
-      <SubType>Component</SubType>
+    <Compile Include="CustomElements\Tabs\SettingsControlTab.Designer.cs">
+      <DependentUpon>SettingsControlTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomElements\TabControl\TabStyleProviders\TabStyleDefaultProvider.cs">
-      <SubType>Component</SubType>
+    <Compile Include="CustomElements\Tabs\TradeControlTab.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomElements\TabControl\TabStyleProviders\TabStyleIE8Provider.cs">
-      <SubType>Component</SubType>
+    <Compile Include="CustomElements\Tabs\TradeControlTab.Designer.cs">
+      <DependentUpon>TradeControlTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomElements\TabControl\TabStyleProviders\TabStyleNoneProvider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomElements\TabControl\TabStyleProviders\TabStyleRoundedProvider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomElements\TabControl\TabStyleProviders\TabStyleVisualStudioProvider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomElements\TabControl\TabStyleProviders\TabStyleVS2010Provider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomElements\TabControl\ThemedColors.cs" />
     <Compile Include="CustomElements\TradeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CustomElements\TradeControl.Designer.cs">
       <DependentUpon>TradeControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomElements\MarketTabs.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomElements\MarketTabs.Designer.cs">
-      <DependentUpon>MarketTabs.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryLoadingForm.cs">
       <SubType>Form</SubType>
@@ -281,11 +260,17 @@
       <DependentUpon>SettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="CustomElements\Tabs\MarketControlTab.resx">
+      <DependentUpon>MarketControlTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomElements\Tabs\SettingsControlTab.resx">
+      <DependentUpon>SettingsControlTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomElements\Tabs\TradeControlTab.resx">
+      <DependentUpon>TradeControlTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomElements\TradeControl.resx">
       <DependentUpon>TradeControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomElements\MarketTabs.resx">
-      <DependentUpon>MarketTabs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryLoadingForm.resx">
       <DependentUpon>InventoryLoadingForm.cs</DependentUpon>

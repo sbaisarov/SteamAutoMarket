@@ -167,7 +167,7 @@ namespace autotrade.CustomElements {
         }
 
         public static double? GetRowAveragePrice(DataGridView itemsToSaleGrid, int rowIndex) {
-            var row = GetGridAveragePrice(itemsToSaleGrid, rowIndex);
+            var row = GetGridAveragePriceTextBoxCell(itemsToSaleGrid, rowIndex);
             if (row == null && row.Value == null) {
                 return null;
             }
@@ -203,7 +203,7 @@ namespace autotrade.CustomElements {
             return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[4];
         }
 
-        public static DataGridViewTextBoxCell GetGridAveragePrice(DataGridView grid, int rowIndex) {
+        public static DataGridViewTextBoxCell GetGridAveragePriceTextBoxCell(DataGridView grid, int rowIndex) {
             return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[5];
         }
         #endregion

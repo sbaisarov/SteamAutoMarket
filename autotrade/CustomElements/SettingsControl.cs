@@ -166,7 +166,7 @@ namespace autotrade.CustomElements {
             if (row < 0) return;
 
             LoginTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
-            PasswordTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value;
+            PasswordTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value;
             SteamApiTextBox.Text = " " + (String)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value;
         }
 
@@ -206,8 +206,8 @@ namespace autotrade.CustomElements {
                     return;
                 }
                 CurrentSession.AccountImage = image;
-                Program.MainForm.SaleControl.AuthCurrentAccount();
-                Program.MainForm.TradeControl.AuthCurrentAccount();
+                Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
+                Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
                 Logger.Info("Steam authentication successful");
             });
 

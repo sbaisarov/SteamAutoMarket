@@ -8,14 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace autotrade.CustomElements {
-    public partial class MarketTabs : UserControl {
-        public MarketTabs() {
+namespace autotrade.CustomElements.Tabs {
+    public partial class MarketControlTab : UserControl {
+        public MarketControlTab() {
             InitializeComponent();
-        }
-
-        private void tabPage1_Click(object sender, EventArgs e) {
-
         }
     }
 }

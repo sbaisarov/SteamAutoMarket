@@ -1,4 +1,6 @@
-﻿namespace autotrade {
+﻿using autotrade.Utils;
+
+namespace autotrade {
     partial class MainForm {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -26,156 +28,118 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.leftHeaderPanel = new System.Windows.Forms.Panel();
             this.LeftEdge = new System.Windows.Forms.Panel();
-            this.LeftEdge2 = new System.Windows.Forms.Panel();
-            this.BottomEdge1 = new System.Windows.Forms.Panel();
-            this.sidePanel = new System.Windows.Forms.Panel();
-            this.settingsLinkButton = new System.Windows.Forms.Button();
-            this.leftPanelHideShowButton = new System.Windows.Forms.Button();
-            this.buyLinkButton = new System.Windows.Forms.Button();
-            this.saleLinkButton = new System.Windows.Forms.Button();
-            this.logoImageBox = new System.Windows.Forms.PictureBox();
+            this.SidePanel = new System.Windows.Forms.Panel();
+            this.SettingsLinkButton = new System.Windows.Forms.Button();
+            this.LeftPanelHideShowButton = new System.Windows.Forms.Button();
+            this.SaleLinkButton = new System.Windows.Forms.Button();
+            this.LogoImageBox = new System.Windows.Forms.PictureBox();
             this.TradeLinkButton = new System.Windows.Forms.Button();
+            this.BotEdge = new System.Windows.Forms.Panel();
+            this.BottomEdge1 = new System.Windows.Forms.Panel();
             this.appExitButton = new System.Windows.Forms.Button();
             this.appCurtailButton = new System.Windows.Forms.Button();
-            this.headerPanel = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.ProgramLogo = new System.Windows.Forms.PictureBox();
             this.titleLable = new System.Windows.Forms.Label();
             this.RightEdge = new System.Windows.Forms.Panel();
-            this.BotEdge = new System.Windows.Forms.Panel();
-            this.SettingsControl = new autotrade.CustomElements.SettingsControl();
-            this.SaleControl = new autotrade.SaleControl();
-            this.BuyControl = new autotrade.CustomElements.BuyControl();
-            this.TradeControl = new autotrade.CustomElements.TradeControl();
+            this.TradeControlTab = new autotrade.CustomElements.Tabs.TradeControlTab();
+            this.MarketControlTab = new autotrade.CustomElements.Tabs.MarketControlTab();
+            this.SettingsControlTab = new autotrade.CustomElements.SettingsControlTab();
             this.leftHeaderPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.logoImageBox)).BeginInit();
-            this.headerPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoImageBox)).BeginInit();
+            this.HeaderPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ProgramLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // leftHeaderPanel
             // 
             this.leftHeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
             this.leftHeaderPanel.Controls.Add(this.LeftEdge);
-            this.leftHeaderPanel.Controls.Add(this.LeftEdge2);
-            this.leftHeaderPanel.Controls.Add(this.BottomEdge1);
-            this.leftHeaderPanel.Controls.Add(this.sidePanel);
-            this.leftHeaderPanel.Controls.Add(this.settingsLinkButton);
-            this.leftHeaderPanel.Controls.Add(this.leftPanelHideShowButton);
-            this.leftHeaderPanel.Controls.Add(this.buyLinkButton);
-            this.leftHeaderPanel.Controls.Add(this.saleLinkButton);
-            this.leftHeaderPanel.Controls.Add(this.logoImageBox);
+            this.leftHeaderPanel.Controls.Add(this.SidePanel);
+            this.leftHeaderPanel.Controls.Add(this.SettingsLinkButton);
+            this.leftHeaderPanel.Controls.Add(this.LeftPanelHideShowButton);
+            this.leftHeaderPanel.Controls.Add(this.SaleLinkButton);
+            this.leftHeaderPanel.Controls.Add(this.LogoImageBox);
             this.leftHeaderPanel.Controls.Add(this.TradeLinkButton);
-            this.leftHeaderPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.leftHeaderPanel.Location = new System.Drawing.Point(0, 31);
             this.leftHeaderPanel.Name = "leftHeaderPanel";
-            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 599);
+            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 696);
             this.leftHeaderPanel.TabIndex = 3;
             // 
             // LeftEdge
             // 
-            this.LeftEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.LeftEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.LeftEdge.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftEdge.Location = new System.Drawing.Point(0, 0);
             this.LeftEdge.Name = "LeftEdge";
-            this.LeftEdge.Size = new System.Drawing.Size(2, 599);
+            this.LeftEdge.Size = new System.Drawing.Size(2, 696);
             this.LeftEdge.TabIndex = 5;
             // 
-            // LeftEdge2
+            // SidePanel
             // 
-            this.LeftEdge2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.LeftEdge2.Location = new System.Drawing.Point(191, 0);
-            this.LeftEdge2.Name = "LeftEdge2";
-            this.LeftEdge2.Size = new System.Drawing.Size(2, 599);
-            this.LeftEdge2.TabIndex = 6;
+            this.SidePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.SidePanel.Location = new System.Drawing.Point(0, 172);
+            this.SidePanel.Name = "SidePanel";
+            this.SidePanel.Size = new System.Drawing.Size(12, 45);
+            this.SidePanel.TabIndex = 4;
             // 
-            // BottomEdge1
+            // SettingsLinkButton
             // 
-            this.BottomEdge1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.BottomEdge1.Location = new System.Drawing.Point(1, 597);
-            this.BottomEdge1.Name = "BottomEdge1";
-            this.BottomEdge1.Size = new System.Drawing.Size(194, 2);
-            this.BottomEdge1.TabIndex = 6;
+            this.SettingsLinkButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.SettingsLinkButton.FlatAppearance.BorderSize = 0;
+            this.SettingsLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SettingsLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SettingsLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.SettingsLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("SettingsLinkButton.Image")));
+            this.SettingsLinkButton.Location = new System.Drawing.Point(3, 172);
+            this.SettingsLinkButton.Name = "SettingsLinkButton";
+            this.SettingsLinkButton.Size = new System.Drawing.Size(166, 45);
+            this.SettingsLinkButton.TabIndex = 1;
+            this.SettingsLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.SettingsLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.SettingsLinkButton.UseVisualStyleBackColor = true;
+            this.SettingsLinkButton.Click += new System.EventHandler(this.SettingsLinkButton_Click);
             // 
-            // sidePanel
+            // LeftPanelHideShowButton
             // 
-            this.sidePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.sidePanel.Location = new System.Drawing.Point(0, 172);
-            this.sidePanel.Name = "sidePanel";
-            this.sidePanel.Size = new System.Drawing.Size(12, 45);
-            this.sidePanel.TabIndex = 4;
+            this.LeftPanelHideShowButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LeftPanelHideShowButton.FlatAppearance.BorderSize = 0;
+            this.LeftPanelHideShowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LeftPanelHideShowButton.Image = ((System.Drawing.Image)(resources.GetObject("LeftPanelHideShowButton.Image")));
+            this.LeftPanelHideShowButton.Location = new System.Drawing.Point(134, 4);
+            this.LeftPanelHideShowButton.Name = "LeftPanelHideShowButton";
+            this.LeftPanelHideShowButton.Size = new System.Drawing.Size(27, 27);
+            this.LeftPanelHideShowButton.TabIndex = 4;
+            this.LeftPanelHideShowButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.LeftPanelHideShowButton.UseVisualStyleBackColor = true;
+            this.LeftPanelHideShowButton.Click += new System.EventHandler(this.LeftPanelHideShowButton_Click);
             // 
-            // settingsLinkButton
+            // SaleLinkButton
             // 
-            this.settingsLinkButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.settingsLinkButton.FlatAppearance.BorderSize = 0;
-            this.settingsLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingsLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.settingsLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.settingsLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("settingsLinkButton.Image")));
-            this.settingsLinkButton.Location = new System.Drawing.Point(3, 172);
-            this.settingsLinkButton.Name = "settingsLinkButton";
-            this.settingsLinkButton.Size = new System.Drawing.Size(166, 45);
-            this.settingsLinkButton.TabIndex = 1;
-            this.settingsLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.settingsLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.settingsLinkButton.UseVisualStyleBackColor = true;
-            this.settingsLinkButton.Click += new System.EventHandler(this.SettingsLinkButton_Click);
+            this.SaleLinkButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.SaleLinkButton.FlatAppearance.BorderSize = 0;
+            this.SaleLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaleLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SaleLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.SaleLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("SaleLinkButton.Image")));
+            this.SaleLinkButton.Location = new System.Drawing.Point(0, 233);
+            this.SaleLinkButton.Name = "SaleLinkButton";
+            this.SaleLinkButton.Size = new System.Drawing.Size(166, 45);
+            this.SaleLinkButton.TabIndex = 2;
+            this.SaleLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.SaleLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.SaleLinkButton.UseVisualStyleBackColor = true;
+            this.SaleLinkButton.Click += new System.EventHandler(this.SaleLinkButton_Click);
             // 
-            // leftPanelHideShowButton
+            // LogoImageBox
             // 
-            this.leftPanelHideShowButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.leftPanelHideShowButton.FlatAppearance.BorderSize = 0;
-            this.leftPanelHideShowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.leftPanelHideShowButton.Image = ((System.Drawing.Image)(resources.GetObject("leftPanelHideShowButton.Image")));
-            this.leftPanelHideShowButton.Location = new System.Drawing.Point(134, 4);
-            this.leftPanelHideShowButton.Name = "leftPanelHideShowButton";
-            this.leftPanelHideShowButton.Size = new System.Drawing.Size(27, 27);
-            this.leftPanelHideShowButton.TabIndex = 4;
-            this.leftPanelHideShowButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.leftPanelHideShowButton.UseVisualStyleBackColor = true;
-            this.leftPanelHideShowButton.Click += new System.EventHandler(this.LeftPanelHideShowButton_Click);
-            // 
-            // buyLinkButton
-            // 
-            this.buyLinkButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buyLinkButton.FlatAppearance.BorderSize = 0;
-            this.buyLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buyLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buyLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.buyLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("buyLinkButton.Image")));
-            this.buyLinkButton.Location = new System.Drawing.Point(0, 294);
-            this.buyLinkButton.Name = "buyLinkButton";
-            this.buyLinkButton.Size = new System.Drawing.Size(166, 45);
-            this.buyLinkButton.TabIndex = 3;
-            this.buyLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buyLinkButton.UseVisualStyleBackColor = true;
-            this.buyLinkButton.Click += new System.EventHandler(this.BuyLinkButton_Click);
-            // 
-            // saleLinkButton
-            // 
-            this.saleLinkButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.saleLinkButton.FlatAppearance.BorderSize = 0;
-            this.saleLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saleLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.saleLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.saleLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("saleLinkButton.Image")));
-            this.saleLinkButton.Location = new System.Drawing.Point(0, 233);
-            this.saleLinkButton.Name = "saleLinkButton";
-            this.saleLinkButton.Size = new System.Drawing.Size(166, 45);
-            this.saleLinkButton.TabIndex = 2;
-            this.saleLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.saleLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.saleLinkButton.UseVisualStyleBackColor = true;
-            this.saleLinkButton.Click += new System.EventHandler(this.SaleLinkButton_Click);
-            // 
-            // logoImageBox
-            // 
-            this.logoImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("logoImageBox.BackgroundImage")));
-            this.logoImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.logoImageBox.Location = new System.Drawing.Point(1, 7);
-            this.logoImageBox.Name = "logoImageBox";
-            this.logoImageBox.Size = new System.Drawing.Size(164, 161);
-            this.logoImageBox.TabIndex = 4;
-            this.logoImageBox.TabStop = false;
+            this.LogoImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LogoImageBox.BackgroundImage")));
+            this.LogoImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LogoImageBox.Location = new System.Drawing.Point(1, 7);
+            this.LogoImageBox.Name = "LogoImageBox";
+            this.LogoImageBox.Size = new System.Drawing.Size(164, 161);
+            this.LogoImageBox.TabIndex = 4;
+            this.LogoImageBox.TabStop = false;
             // 
             // TradeLinkButton
             // 
@@ -185,7 +149,7 @@
             this.TradeLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TradeLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.TradeLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("TradeLinkButton.Image")));
-            this.TradeLinkButton.Location = new System.Drawing.Point(0, 357);
+            this.TradeLinkButton.Location = new System.Drawing.Point(0, 294);
             this.TradeLinkButton.Name = "TradeLinkButton";
             this.TradeLinkButton.Size = new System.Drawing.Size(166, 45);
             this.TradeLinkButton.TabIndex = 7;
@@ -194,13 +158,31 @@
             this.TradeLinkButton.UseVisualStyleBackColor = true;
             this.TradeLinkButton.Click += new System.EventHandler(this.TradeLinkButton_Click);
             // 
+            // BotEdge
+            // 
+            this.BotEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.BotEdge.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.BotEdge.Location = new System.Drawing.Point(0, 670);
+            this.BotEdge.Name = "BotEdge";
+            this.BotEdge.Size = new System.Drawing.Size(1061, 2);
+            this.BotEdge.TabIndex = 7;
+            // 
+            // BottomEdge1
+            // 
+            this.BottomEdge1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BottomEdge1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.BottomEdge1.Location = new System.Drawing.Point(0, 668);
+            this.BottomEdge1.Name = "BottomEdge1";
+            this.BottomEdge1.Size = new System.Drawing.Size(1061, 2);
+            this.BottomEdge1.TabIndex = 6;
+            // 
             // appExitButton
             // 
             this.appExitButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.appExitButton.FlatAppearance.BorderSize = 0;
             this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appExitButton.Image = ((System.Drawing.Image)(resources.GetObject("appExitButton.Image")));
-            this.appExitButton.Location = new System.Drawing.Point(1012, 3);
+            this.appExitButton.Location = new System.Drawing.Point(1029, 3);
             this.appExitButton.Name = "appExitButton";
             this.appExitButton.Size = new System.Drawing.Size(27, 23);
             this.appExitButton.TabIndex = 6;
@@ -213,7 +195,7 @@
             this.appCurtailButton.FlatAppearance.BorderSize = 0;
             this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.appCurtailButton.Image = ((System.Drawing.Image)(resources.GetObject("appCurtailButton.Image")));
-            this.appCurtailButton.Location = new System.Drawing.Point(981, 3);
+            this.appCurtailButton.Location = new System.Drawing.Point(999, 3);
             this.appCurtailButton.Name = "appCurtailButton";
             this.appCurtailButton.Size = new System.Drawing.Size(27, 23);
             this.appCurtailButton.TabIndex = 5;
@@ -221,116 +203,101 @@
             this.appCurtailButton.UseVisualStyleBackColor = true;
             this.appCurtailButton.Click += new System.EventHandler(this.AppCurtailButton_Click);
             // 
-            // headerPanel
+            // HeaderPanel
             // 
-            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.headerPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.headerPanel.Controls.Add(this.pictureBox1);
-            this.headerPanel.Controls.Add(this.titleLable);
-            this.headerPanel.Controls.Add(this.appCurtailButton);
-            this.headerPanel.Controls.Add(this.appExitButton);
-            this.headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.headerPanel.Location = new System.Drawing.Point(0, 0);
-            this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(1051, 31);
-            this.headerPanel.TabIndex = 2;
-            this.headerPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Move_MouseDown);
-            this.headerPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
-            this.headerPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Move_MouseUp);
+            this.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.HeaderPanel.Controls.Add(this.ProgramLogo);
+            this.HeaderPanel.Controls.Add(this.titleLable);
+            this.HeaderPanel.Controls.Add(this.appCurtailButton);
+            this.HeaderPanel.Controls.Add(this.appExitButton);
+            this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
+            this.HeaderPanel.Name = "HeaderPanel";
+            this.HeaderPanel.Size = new System.Drawing.Size(1061, 31);
+            this.HeaderPanel.TabIndex = 2;
+            this.HeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Move_MouseDown);
+            this.HeaderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
+            this.HeaderPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Move_MouseUp);
             // 
-            // pictureBox1
+            // ProgramLogo
             // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.ErrorImage = null;
-            this.pictureBox1.InitialImage = null;
-            this.pictureBox1.Location = new System.Drawing.Point(8, 2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(28, 24);
-            this.pictureBox1.TabIndex = 11;
-            this.pictureBox1.TabStop = false;
+            this.ProgramLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProgramLogo.BackgroundImage")));
+            this.ProgramLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ProgramLogo.ErrorImage = null;
+            this.ProgramLogo.InitialImage = null;
+            this.ProgramLogo.Location = new System.Drawing.Point(8, 2);
+            this.ProgramLogo.Name = "ProgramLogo";
+            this.ProgramLogo.Size = new System.Drawing.Size(28, 24);
+            this.ProgramLogo.TabIndex = 11;
+            this.ProgramLogo.TabStop = false;
+            this.ProgramLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Move_MouseDown);
+            this.ProgramLogo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
+            this.ProgramLogo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Move_MouseUp);
             // 
             // titleLable
             // 
             this.titleLable.AutoSize = true;
             this.titleLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.titleLable.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.titleLable.Location = new System.Drawing.Point(50, 6);
+            this.titleLable.Location = new System.Drawing.Point(38, 8);
             this.titleLable.Name = "titleLable";
             this.titleLable.Size = new System.Drawing.Size(154, 18);
             this.titleLable.TabIndex = 7;
             this.titleLable.Text = "Steam-Auto-Market";
+            this.titleLable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Move_MouseDown);
+            this.titleLable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
+            this.titleLable.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Move_MouseUp);
             // 
             // RightEdge
             // 
-            this.RightEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.RightEdge.Location = new System.Drawing.Point(1049, 31);
+            this.RightEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.RightEdge.Dock = System.Windows.Forms.DockStyle.Right;
+            this.RightEdge.Location = new System.Drawing.Point(1058, 31);
             this.RightEdge.Name = "RightEdge";
-            this.RightEdge.Size = new System.Drawing.Size(2, 599);
+            this.RightEdge.Size = new System.Drawing.Size(3, 637);
             this.RightEdge.TabIndex = 6;
             // 
-            // BotEdge
+            // TradeControlTab
             // 
-            this.BotEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.BotEdge.Location = new System.Drawing.Point(0, 628);
-            this.BotEdge.Name = "BotEdge";
-            this.BotEdge.Size = new System.Drawing.Size(1051, 2);
-            this.BotEdge.TabIndex = 7;
+            this.TradeControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.TradeControlTab.Location = new System.Drawing.Point(165, 36);
+            this.TradeControlTab.Name = "TradeControlTab";
+            this.TradeControlTab.Size = new System.Drawing.Size(894, 632);
+            this.TradeControlTab.TabIndex = 9;
             // 
-            // SettingsControl
+            // MarketControlTab
             // 
-            this.SettingsControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.SettingsControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SettingsControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SettingsControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.SettingsControl.Location = new System.Drawing.Point(166, 31);
-            this.SettingsControl.Name = "SettingsControl";
-            this.SettingsControl.Size = new System.Drawing.Size(885, 599);
-            this.SettingsControl.TabIndex = 0;
+            this.MarketControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.MarketControlTab.Location = new System.Drawing.Point(165, 36);
+            this.MarketControlTab.Name = "MarketControlTab";
+            this.MarketControlTab.Size = new System.Drawing.Size(894, 632);
+            this.MarketControlTab.TabIndex = 8;
             // 
-            // SaleControl
+            // SettingsControlTab
             // 
-            this.SaleControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.SaleControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SaleControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.SaleControl.Location = new System.Drawing.Point(166, 31);
-            this.SaleControl.Name = "SaleControl";
-            this.SaleControl.Size = new System.Drawing.Size(885, 599);
-            this.SaleControl.TabIndex = 4;
-            // 
-            // BuyControl
-            // 
-            this.BuyControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.BuyControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.BuyControl.Location = new System.Drawing.Point(166, 31);
-            this.BuyControl.Name = "BuyControl";
-            this.BuyControl.Size = new System.Drawing.Size(885, 599);
-            this.BuyControl.TabIndex = 8;
-            // 
-            // TradeControl
-            // 
-            this.TradeControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
-            this.TradeControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.TradeControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.TradeControl.Location = new System.Drawing.Point(166, 31);
-            this.TradeControl.Name = "TradeControl";
-            this.TradeControl.Size = new System.Drawing.Size(885, 599);
-            this.TradeControl.TabIndex = 9;
+            this.SettingsControlTab.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
+            this.SettingsControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.SettingsControlTab.CausesValidation = false;
+            this.SettingsControlTab.Location = new System.Drawing.Point(165, 36);
+            this.SettingsControlTab.Margin = new System.Windows.Forms.Padding(0);
+            this.SettingsControlTab.Name = "SettingsControlTab";
+            this.SettingsControlTab.Size = new System.Drawing.Size(894, 632);
+            this.SettingsControlTab.TabIndex = 8;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.ClientSize = new System.Drawing.Size(1051, 630);
-            this.Controls.Add(this.leftHeaderPanel);
-            this.Controls.Add(this.BotEdge);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.ClientSize = new System.Drawing.Size(1061, 672);
             this.Controls.Add(this.RightEdge);
-            this.Controls.Add(this.headerPanel);
-            this.Controls.Add(this.SettingsControl);
-            this.Controls.Add(this.SaleControl);
-            this.Controls.Add(this.BuyControl);
-            this.Controls.Add(this.TradeControl);
+            this.Controls.Add(this.SettingsControlTab);
+            this.Controls.Add(this.BottomEdge1);
+            this.Controls.Add(this.BotEdge);
+            this.Controls.Add(this.leftHeaderPanel);
+            this.Controls.Add(this.HeaderPanel);
+            this.Controls.Add(this.TradeControlTab);
+            this.Controls.Add(this.MarketControlTab);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -339,36 +306,34 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.leftHeaderPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.logoImageBox)).EndInit();
-            this.headerPanel.ResumeLayout(false);
-            this.headerPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoImageBox)).EndInit();
+            this.HeaderPanel.ResumeLayout(false);
+            this.HeaderPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ProgramLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.Panel leftHeaderPanel;
-        private System.Windows.Forms.PictureBox logoImageBox;
-        private System.Windows.Forms.Button buyLinkButton;
-        private System.Windows.Forms.Button saleLinkButton;
-        private System.Windows.Forms.Button leftPanelHideShowButton;
-        private System.Windows.Forms.Panel sidePanel;
-        private System.Windows.Forms.Button settingsLinkButton;
+        private System.Windows.Forms.PictureBox LogoImageBox;
+        private System.Windows.Forms.Button SaleLinkButton;
+        private System.Windows.Forms.Button LeftPanelHideShowButton;
+        private System.Windows.Forms.Panel SidePanel;
+        private System.Windows.Forms.Button SettingsLinkButton;
         private System.Windows.Forms.Button appExitButton;
         private System.Windows.Forms.Button appCurtailButton;
-        private System.Windows.Forms.Panel headerPanel;
+        private System.Windows.Forms.Panel HeaderPanel;
         private System.Windows.Forms.Label titleLable;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        public CustomElements.SettingsControl SettingsControl;
+        private System.Windows.Forms.PictureBox ProgramLogo;
         private System.Windows.Forms.Panel LeftEdge;
         private System.Windows.Forms.Panel BottomEdge1;
-        private System.Windows.Forms.Panel LeftEdge2;
         private System.Windows.Forms.Panel RightEdge;
         private System.Windows.Forms.Panel BotEdge;
-        private CustomElements.BuyControl BuyControl;
-        public SaleControl SaleControl;
         private System.Windows.Forms.Button TradeLinkButton;
-        public CustomElements.TradeControl TradeControl;
+
+        public CustomElements.SettingsControlTab SettingsControlTab;
+        public CustomElements.Tabs.MarketControlTab MarketControlTab;
+        public CustomElements.Tabs.TradeControlTab TradeControlTab;
     }
 }

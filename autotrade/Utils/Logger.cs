@@ -82,7 +82,7 @@ namespace autotrade.Utils {
         }
 
         private static void AppendTextToLogTextBox(string s) {
-            var textBox = Program.MainForm.SettingsControl.LogTextBox;
+            var textBox = Program.MainForm.SettingsControlTab.SettingsControl.LogTextBox;
             if (textBox.Lines.Count() > 1000) {
                 var list = textBox.Lines.ToList();
                 list.RemoveRange(0, 500);

@@ -68,7 +68,7 @@ namespace autotrade.CustomElements {
                 AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsToTradeGridView, e.RowIndex);
             } else if (e.ColumnIndex == 4) {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsToTradeGridView, e.RowIndex, ItemsToTradeGridView);
-                PriceLoader.StartPriceLoading();
+                PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
             } 
         }
 
