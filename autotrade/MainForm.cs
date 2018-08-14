@@ -18,7 +18,7 @@ namespace autotrade {
 
         public MainForm() {
             InitializeComponent();
-            FocusSidePanelToMenuElement(sidePanel, settingsLinkButton);
+            FocusSidePanelToMenuElement(SidePanel, SettingsLinkButton);
         }
 
         public void AppExitButton_Click(object sender, EventArgs e) {
@@ -31,54 +31,57 @@ namespace autotrade {
 
             if (this.Width == 1051) {
                 leftHeaderPanel.Width -= sizeChange;
-                LeftEdge2.Left -= sizeChange;
                 BotEdge.Left -= sizeChange;
                 RightEdge.Left -= sizeChange;
-                leftPanelHideShowButton.Left = 13;
-                this.SaleControl.Left -= sizeChange;
-                SettingsControl.Left -= sizeChange;
-                BuyControl.Left -= sizeChange;
+                LeftPanelHideShowButton.Left = 13;
+                this.MarketControlTab.Left -= sizeChange;
+                SettingsControlTab.Left -= sizeChange;
                 appCurtailButton.Left -= sizeChange;
                 appExitButton.Left -= sizeChange;
-                TradeControl.Left -= sizeChange;
+                TradeControlTab.Left -= sizeChange;
                 this.Width -= sizeChange;
-                logoImageBox.Visible = false;
-                
+                LogoImageBox.Visible = false;
+
             } else {
                 leftHeaderPanel.Width += sizeChange;
-                LeftEdge2.Left += sizeChange;
                 BotEdge.Left += sizeChange;
                 RightEdge.Left += sizeChange;
-                leftPanelHideShowButton.Left = 132;
-                this.SaleControl.Left += sizeChange;
-                SettingsControl.Left += sizeChange;
-                BuyControl.Left += sizeChange;
+                LeftPanelHideShowButton.Left = 132;
+                this.MarketControlTab.Left += sizeChange;
+                SettingsControlTab.Left += sizeChange;
                 appCurtailButton.Left += sizeChange;
                 appExitButton.Left += sizeChange;
-                TradeControl.Left += sizeChange;
+                TradeControlTab.Left += sizeChange;
                 this.Width += sizeChange;
-                logoImageBox.Visible = true;
+                LogoImageBox.Visible = true;
             }
         }
 
         public void SettingsLinkButton_Click(object sender, EventArgs e) {
-            FocusSidePanelToMenuElement(sidePanel, settingsLinkButton);
-            SettingsControl.BringToFront();
+            FocusSidePanelToMenuElement(SidePanel, SettingsLinkButton);
+            SettingsControlTab.BringToFront();
+
+            RightEdge.BringToFront();
+            LeftEdge.BringToFront();
+            BotEdge.BringToFront();
         }
 
         public void SaleLinkButton_Click(object sender, EventArgs e) {
-            FocusSidePanelToMenuElement(sidePanel, saleLinkButton);
-           this.SaleControl.BringToFront();
-        }
+            FocusSidePanelToMenuElement(SidePanel, SaleLinkButton);
+            this.MarketControlTab.BringToFront();
 
-        public void BuyLinkButton_Click(object sender, EventArgs e) {
-            FocusSidePanelToMenuElement(sidePanel, buyLinkButton);
-            BuyControl.BringToFront();
+            RightEdge.BringToFront();
+            LeftEdge.BringToFront();
+            BotEdge.BringToFront();
         }
 
         private void TradeLinkButton_Click(object sender, EventArgs e) {
-            FocusSidePanelToMenuElement(sidePanel, TradeLinkButton);
-            TradeControl.BringToFront();
+            FocusSidePanelToMenuElement(SidePanel, TradeLinkButton);
+            TradeControlTab.BringToFront();
+
+            RightEdge.BringToFront();
+            LeftEdge.BringToFront();
+            BotEdge.BringToFront();
         }
 
 
@@ -106,10 +109,6 @@ namespace autotrade {
         public void FocusSidePanelToMenuElement(Panel sidePanel, Button button) {
             sidePanel.Height = button.Height;
             sidePanel.Top = button.Top;
-        }
-
-        private void CustomTabControl1_DrawItem(object sender, DrawItemEventArgs e) {
-
         }
     }
 }

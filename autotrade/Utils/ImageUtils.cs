@@ -25,7 +25,6 @@ namespace autotrade.Utils {
             }
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public static Image ResizeImage(Image img, int width, int height) {
             var res = new Bitmap(width, height);
             res.SetResolution(img.HorizontalResolution, img.VerticalResolution);
@@ -36,7 +35,7 @@ namespace autotrade.Utils {
             return res;
         }
 
-        public static Image GetSteamProfileSMallImage(ulong steamId) {
+        public static Image GetSteamProfileSmallImage(ulong steamId) {
             try {
                 Image image = WorkingProcess.ImagesCache.GetImage($"{steamId}");
                 if (image != null) return image;
