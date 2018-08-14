@@ -27,27 +27,20 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecievedTradeManageControl));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.CurrentTradesGroupBox = new System.Windows.Forms.GroupBox();
             this.CurrentTradesGridView = new System.Windows.Forms.DataGridView();
-            this.TradeofferIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SenderAccountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TradeSteteColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SellGroupBox = new System.Windows.Forms.GroupBox();
             this.DeclineTradeButton = new System.Windows.Forms.Button();
             this.AcceptTradeButton = new System.Windows.Forms.Button();
             this.MyItemsGroupBox = new System.Windows.Forms.GroupBox();
             this.MyItemsGridView = new System.Windows.Forms.DataGridView();
-            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemImageBox = new System.Windows.Forms.Panel();
@@ -61,12 +54,22 @@
             this.AddAllButton = new System.Windows.Forms.Button();
             this.HisItemsGroupBox = new System.Windows.Forms.GroupBox();
             this.HisItemsGridView = new System.Windows.Forms.DataGridView();
+            this.InventoryGroupBox = new System.Windows.Forms.GroupBox();
+            this.LoadTradesButton = new System.Windows.Forms.Button();
+            this.InventoryContextIdLabel = new System.Windows.Forms.Label();
+            this.InventoryContextIdComboBox = new System.Windows.Forms.ComboBox();
+            this.InventoryAppIdLabel = new System.Windows.Forms.Label();
+            this.InventoryAppIdComboBox = new System.Windows.Forms.ComboBox();
+            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
+            this.TradeofferIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SenderAccountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TradeSteteColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ImagePanel = new System.Windows.Forms.Panel();
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
             this.CurrentTradesGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTradesGridView)).BeginInit();
             this.SellGroupBox.SuspendLayout();
@@ -77,6 +80,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ExtraTradeInfoGridView)).BeginInit();
             this.HisItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HisItemsGridView)).BeginInit();
+            this.InventoryGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // CurrentTradesGroupBox
@@ -94,7 +98,6 @@
             // 
             this.CurrentTradesGridView.AllowUserToAddRows = false;
             this.CurrentTradesGridView.AllowUserToDeleteRows = false;
-            this.CurrentTradesGridView.AllowUserToResizeColumns = false;
             this.CurrentTradesGridView.AllowUserToResizeRows = false;
             this.CurrentTradesGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.CurrentTradesGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -133,33 +136,16 @@
             this.CurrentTradesGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.CurrentTradesGridView.Size = new System.Drawing.Size(266, 276);
             this.CurrentTradesGridView.TabIndex = 7;
-            // 
-            // TradeofferIdColumn
-            // 
-            this.TradeofferIdColumn.FillWeight = 86.8167F;
-            this.TradeofferIdColumn.HeaderText = "Id";
-            this.TradeofferIdColumn.Name = "TradeofferIdColumn";
-            // 
-            // SenderAccountColumn
-            // 
-            this.SenderAccountColumn.FillWeight = 152.2696F;
-            this.SenderAccountColumn.HeaderText = "Sender";
-            this.SenderAccountColumn.Name = "SenderAccountColumn";
-            // 
-            // TradeSteteColumn
-            // 
-            this.TradeSteteColumn.FillWeight = 60.9137F;
-            this.TradeSteteColumn.HeaderText = "State";
-            this.TradeSteteColumn.Name = "TradeSteteColumn";
+            this.CurrentTradesGridView.SelectionChanged += new System.EventHandler(this.CurrentTradesGridView_SelectionChanged);
             // 
             // SellGroupBox
             // 
             this.SellGroupBox.Controls.Add(this.DeclineTradeButton);
             this.SellGroupBox.Controls.Add(this.AcceptTradeButton);
             this.SellGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.SellGroupBox.Location = new System.Drawing.Point(586, 470);
+            this.SellGroupBox.Location = new System.Drawing.Point(586, 499);
             this.SellGroupBox.Name = "SellGroupBox";
-            this.SellGroupBox.Size = new System.Drawing.Size(293, 120);
+            this.SellGroupBox.Size = new System.Drawing.Size(293, 91);
             this.SellGroupBox.TabIndex = 19;
             this.SellGroupBox.TabStop = false;
             this.SellGroupBox.Text = "Sell";
@@ -170,9 +156,9 @@
             this.DeclineTradeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.DeclineTradeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.DeclineTradeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.DeclineTradeButton.Location = new System.Drawing.Point(45, 19);
+            this.DeclineTradeButton.Location = new System.Drawing.Point(45, 53);
             this.DeclineTradeButton.Name = "DeclineTradeButton";
-            this.DeclineTradeButton.Size = new System.Drawing.Size(203, 35);
+            this.DeclineTradeButton.Size = new System.Drawing.Size(203, 28);
             this.DeclineTradeButton.TabIndex = 17;
             this.DeclineTradeButton.Text = "DECLINE selected trade";
             this.DeclineTradeButton.UseVisualStyleBackColor = false;
@@ -183,9 +169,9 @@
             this.AcceptTradeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AcceptTradeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AcceptTradeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.AcceptTradeButton.Location = new System.Drawing.Point(45, 69);
+            this.AcceptTradeButton.Location = new System.Drawing.Point(45, 19);
             this.AcceptTradeButton.Name = "AcceptTradeButton";
-            this.AcceptTradeButton.Size = new System.Drawing.Size(203, 35);
+            this.AcceptTradeButton.Size = new System.Drawing.Size(203, 28);
             this.AcceptTradeButton.TabIndex = 16;
             this.AcceptTradeButton.Text = "ACCEPT selected trade";
             this.AcceptTradeButton.UseVisualStyleBackColor = false;
@@ -205,7 +191,6 @@
             // 
             this.MyItemsGridView.AllowUserToAddRows = false;
             this.MyItemsGridView.AllowUserToDeleteRows = false;
-            this.MyItemsGridView.AllowUserToResizeColumns = false;
             this.MyItemsGridView.AllowUserToResizeRows = false;
             this.MyItemsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.MyItemsGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -224,8 +209,7 @@
             this.MyItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NameColumn,
             this.CountColumn,
-            this.ItemTypeColumn,
-            this.HidenItemMarketHashName});
+            this.ItemTypeColumn});
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -245,44 +229,6 @@
             this.MyItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.MyItemsGridView.Size = new System.Drawing.Size(288, 276);
             this.MyItemsGridView.TabIndex = 7;
-            // 
-            // NameColumn
-            // 
-            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.NameColumn.FillWeight = 190F;
-            this.NameColumn.Frozen = true;
-            this.NameColumn.HeaderText = "Item name";
-            this.NameColumn.MinimumWidth = 190;
-            this.NameColumn.Name = "NameColumn";
-            this.NameColumn.ReadOnly = true;
-            this.NameColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NameColumn.Width = 190;
-            // 
-            // CountColumn
-            // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle4;
-            this.CountColumn.FillWeight = 40F;
-            this.CountColumn.HeaderText = "#";
-            this.CountColumn.MinimumWidth = 40;
-            this.CountColumn.Name = "CountColumn";
-            this.CountColumn.ReadOnly = true;
-            this.CountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // ItemTypeColumn
-            // 
-            this.ItemTypeColumn.FillWeight = 150F;
-            this.ItemTypeColumn.HeaderText = "Type";
-            this.ItemTypeColumn.Name = "ItemTypeColumn";
-            this.ItemTypeColumn.ReadOnly = true;
-            this.ItemTypeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // HidenItemMarketHashName
-            // 
-            this.HidenItemMarketHashName.HeaderText = "HidenItemMarketHashNameColumn";
-            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
-            this.HidenItemMarketHashName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HidenItemMarketHashName.Visible = false;
             // 
             // ItemDescriptionGroupBox
             // 
@@ -331,7 +277,6 @@
             // 
             this.ExtraTradeInfoGridView.AllowUserToAddRows = false;
             this.ExtraTradeInfoGridView.AllowUserToDeleteRows = false;
-            this.ExtraTradeInfoGridView.AllowUserToResizeColumns = false;
             this.ExtraTradeInfoGridView.AllowUserToResizeRows = false;
             this.ExtraTradeInfoGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ExtraTradeInfoGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -451,7 +396,6 @@
             // 
             this.HisItemsGridView.AllowUserToAddRows = false;
             this.HisItemsGridView.AllowUserToDeleteRows = false;
-            this.HisItemsGridView.AllowUserToResizeColumns = false;
             this.HisItemsGridView.AllowUserToResizeRows = false;
             this.HisItemsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.HisItemsGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -470,8 +414,7 @@
             this.HisItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4});
+            this.dataGridViewTextBoxColumn3});
             dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -492,52 +435,81 @@
             this.HisItemsGridView.Size = new System.Drawing.Size(288, 276);
             this.HisItemsGridView.TabIndex = 7;
             // 
-            // dataGridViewTextBoxColumn1
+            // InventoryGroupBox
             // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.dataGridViewTextBoxColumn1.FillWeight = 190F;
-            this.dataGridViewTextBoxColumn1.Frozen = true;
-            this.dataGridViewTextBoxColumn1.HeaderText = "Item name";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 190;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn1.Width = 190;
+            this.InventoryGroupBox.Controls.Add(this.LoadTradesButton);
+            this.InventoryGroupBox.Controls.Add(this.InventoryContextIdLabel);
+            this.InventoryGroupBox.Controls.Add(this.InventoryContextIdComboBox);
+            this.InventoryGroupBox.Controls.Add(this.InventoryAppIdLabel);
+            this.InventoryGroupBox.Controls.Add(this.InventoryAppIdComboBox);
+            this.InventoryGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.InventoryGroupBox.Location = new System.Drawing.Point(586, 360);
+            this.InventoryGroupBox.Name = "InventoryGroupBox";
+            this.InventoryGroupBox.Size = new System.Drawing.Size(296, 133);
+            this.InventoryGroupBox.TabIndex = 31;
+            this.InventoryGroupBox.TabStop = false;
+            this.InventoryGroupBox.Text = "Inventory settings";
             // 
-            // dataGridViewTextBoxColumn2
+            // LoadTradesButton
             // 
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle9;
-            this.dataGridViewTextBoxColumn2.FillWeight = 40F;
-            this.dataGridViewTextBoxColumn2.HeaderText = "#";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 40;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.LoadTradesButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LoadTradesButton.FlatAppearance.BorderSize = 0;
+            this.LoadTradesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadTradesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.LoadTradesButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadTradesButton.Image")));
+            this.LoadTradesButton.Location = new System.Drawing.Point(214, 19);
+            this.LoadTradesButton.Name = "LoadTradesButton";
+            this.LoadTradesButton.Size = new System.Drawing.Size(76, 92);
+            this.LoadTradesButton.TabIndex = 25;
+            this.LoadTradesButton.UseVisualStyleBackColor = true;
+            this.LoadTradesButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
             // 
-            // dataGridViewTextBoxColumn3
+            // InventoryContextIdLabel
             // 
-            this.dataGridViewTextBoxColumn3.FillWeight = 150F;
-            this.dataGridViewTextBoxColumn3.HeaderText = "Type";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.InventoryContextIdLabel.AutoSize = true;
+            this.InventoryContextIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.InventoryContextIdLabel.Location = new System.Drawing.Point(8, 49);
+            this.InventoryContextIdLabel.Name = "InventoryContextIdLabel";
+            this.InventoryContextIdLabel.Size = new System.Drawing.Size(66, 16);
+            this.InventoryContextIdLabel.TabIndex = 3;
+            this.InventoryContextIdLabel.Text = "Context id";
             // 
-            // dataGridViewTextBoxColumn4
+            // InventoryContextIdComboBox
             // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "HidenItemMarketHashNameColumn";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn4.Visible = false;
+            this.InventoryContextIdComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.InventoryContextIdComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InventoryContextIdComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.InventoryContextIdComboBox.FormattingEnabled = true;
+            this.InventoryContextIdComboBox.Location = new System.Drawing.Point(92, 46);
+            this.InventoryContextIdComboBox.Name = "InventoryContextIdComboBox";
+            this.InventoryContextIdComboBox.Size = new System.Drawing.Size(97, 21);
+            this.InventoryContextIdComboBox.TabIndex = 2;
             // 
-            // ImagePanel
+            // InventoryAppIdLabel
             // 
-            this.ImagePanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ImagePanel.BackgroundImage")));
-            this.ImagePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ImagePanel.Location = new System.Drawing.Point(586, 355);
-            this.ImagePanel.Name = "ImagePanel";
-            this.ImagePanel.Size = new System.Drawing.Size(291, 106);
-            this.ImagePanel.TabIndex = 32;
+            this.InventoryAppIdLabel.AutoSize = true;
+            this.InventoryAppIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.InventoryAppIdLabel.Location = new System.Drawing.Point(8, 22);
+            this.InventoryAppIdLabel.Name = "InventoryAppIdLabel";
+            this.InventoryAppIdLabel.Size = new System.Drawing.Size(47, 16);
+            this.InventoryAppIdLabel.TabIndex = 1;
+            this.InventoryAppIdLabel.Text = "App id";
+            // 
+            // InventoryAppIdComboBox
+            // 
+            this.InventoryAppIdComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.InventoryAppIdComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InventoryAppIdComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.InventoryAppIdComboBox.FormattingEnabled = true;
+            this.InventoryAppIdComboBox.Items.AddRange(new object[] {
+            "STEAM",
+            "CS:GO",
+            "PUBG",
+            "TF"});
+            this.InventoryAppIdComboBox.Location = new System.Drawing.Point(92, 19);
+            this.InventoryAppIdComboBox.Name = "InventoryAppIdComboBox";
+            this.InventoryAppIdComboBox.Size = new System.Drawing.Size(97, 21);
+            this.InventoryAppIdComboBox.TabIndex = 0;
             // 
             // ItemDescriptionTextBox
             // 
@@ -551,12 +523,84 @@
             this.ItemDescriptionTextBox.TabIndex = 11;
             this.ItemDescriptionTextBox.Text = "";
             // 
+            // TradeofferIdColumn
+            // 
+            this.TradeofferIdColumn.FillWeight = 75F;
+            this.TradeofferIdColumn.HeaderText = "Id";
+            this.TradeofferIdColumn.Name = "TradeofferIdColumn";
+            // 
+            // SenderAccountColumn
+            // 
+            this.SenderAccountColumn.FillWeight = 152.2696F;
+            this.SenderAccountColumn.HeaderText = "Sender";
+            this.SenderAccountColumn.Name = "SenderAccountColumn";
+            // 
+            // TradeSteteColumn
+            // 
+            this.TradeSteteColumn.FillWeight = 76F;
+            this.TradeSteteColumn.HeaderText = "State";
+            this.TradeSteteColumn.Name = "TradeSteteColumn";
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NameColumn.FillWeight = 150F;
+            this.NameColumn.Frozen = true;
+            this.NameColumn.HeaderText = "Item name";
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.ReadOnly = true;
+            this.NameColumn.Width = 150;
+            // 
+            // CountColumn
+            // 
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            this.CountColumn.FillWeight = 40F;
+            this.CountColumn.HeaderText = "#";
+            this.CountColumn.MinimumWidth = 40;
+            this.CountColumn.Name = "CountColumn";
+            this.CountColumn.ReadOnly = true;
+            // 
+            // ItemTypeColumn
+            // 
+            this.ItemTypeColumn.FillWeight = 150F;
+            this.ItemTypeColumn.HeaderText = "Type";
+            this.ItemTypeColumn.Name = "ItemTypeColumn";
+            this.ItemTypeColumn.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.dataGridViewTextBoxColumn1.FillWeight = 150F;
+            this.dataGridViewTextBoxColumn1.Frozen = true;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Item name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 150;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle9;
+            this.dataGridViewTextBoxColumn2.FillWeight = 40F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "#";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 40;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.FillWeight = 150F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "Type";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
             // RecievedTradeManageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.Controls.Add(this.ImagePanel);
+            this.Controls.Add(this.InventoryGroupBox);
             this.Controls.Add(this.HisItemsGroupBox);
             this.Controls.Add(this.ItemDescriptionGroupBox);
             this.Controls.Add(this.OpenGameInventoryPageButton);
@@ -581,6 +625,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.ExtraTradeInfoGridView)).EndInit();
             this.HisItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.HisItemsGridView)).EndInit();
+            this.InventoryGroupBox.ResumeLayout(false);
+            this.InventoryGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
             }
@@ -589,9 +635,6 @@
 
         private System.Windows.Forms.GroupBox CurrentTradesGroupBox;
         private System.Windows.Forms.DataGridView CurrentTradesGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TradeofferIdColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SenderAccountColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TradeSteteColumn;
         private System.Windows.Forms.GroupBox SellGroupBox;
         private System.Windows.Forms.GroupBox MyItemsGroupBox;
         private System.Windows.Forms.DataGridView MyItemsGridView;
@@ -599,10 +642,6 @@
         private RichTextBoxWithNoPaint ItemDescriptionTextBox;
         private System.Windows.Forms.Label ItemNameLable;
         private System.Windows.Forms.Panel ItemImageBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NameColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CountColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemTypeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn HidenItemMarketHashName;
         private System.Windows.Forms.Button DeclineTradeButton;
         private System.Windows.Forms.Button AcceptTradeButton;
         private System.Windows.Forms.GroupBox ExtraTradeInfoGroupBox;
@@ -615,11 +654,21 @@
         private System.Windows.Forms.Button AddAllButton;
         private System.Windows.Forms.GroupBox HisItemsGroupBox;
         private System.Windows.Forms.DataGridView HisItemsGridView;
+        private System.Windows.Forms.GroupBox InventoryGroupBox;
+        private System.Windows.Forms.Button LoadTradesButton;
+        private System.Windows.Forms.Label InventoryContextIdLabel;
+        private System.Windows.Forms.ComboBox InventoryContextIdComboBox;
+        private System.Windows.Forms.Label InventoryAppIdLabel;
+        private System.Windows.Forms.ComboBox InventoryAppIdComboBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TradeofferIdColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SenderAccountColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TradeSteteColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CountColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemTypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.Panel ImagePanel;
     }
     }
 

@@ -18,7 +18,7 @@ namespace autotrade {
         }
         public static MainForm MainForm;
         public static WorkingProcessForm WorkingProcessForm;
-        public static InventoryLoadingForm InventoryLoadingForm;
+        public static LoadingForm LoadingForm;
 
         /// <summary>
         /// Главная точка входа для приложения.
@@ -33,7 +33,7 @@ namespace autotrade {
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();
             WorkingProcessForm = new WorkingProcessForm();
-            InventoryLoadingForm = new InventoryLoadingForm();
+            LoadingForm = new LoadingForm();
 
             Application.Run(MainForm);
         }

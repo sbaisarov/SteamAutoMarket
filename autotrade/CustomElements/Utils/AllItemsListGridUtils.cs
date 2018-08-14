@@ -1,4 +1,5 @@
-﻿using autotrade.Utils;
+﻿using autotrade.CustomElements.Utils;
+using autotrade.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -51,22 +52,13 @@ namespace autotrade.CustomElements {
 
             nameCell.Value = firstItem.Description.name;
             countCell.Value = itemsToAddList.Sum(item => int.Parse(item.Asset.amount));
-            typeCell.Value = GetClearType(itemsToAddList.First());
+            typeCell.Value = SteamItemsUtils.GetClearType(itemsToAddList.First());
             SetDefaultAmountToAddComboBoxCellValue(comboBoxCell);
             hidenItemsListCell.Value = itemsToAddList;
             hidenMarketHashNameCell.Value = firstItem.Description.market_hash_name;
         }
 
-        private static string GetClearType(RgFullItem item) {
-            if (item.Description.type.Contains("Sale Foil Trading Card")) return "Sale Foil Trading Card";
-            if (item.Description.type.Contains("Sale Trading Card")) return "Sale Trading Card";
-            if (item.Description.type.Contains("Foil Trading Card")) return "Foil Trading Card";
-            if (item.Description.type.Contains("Trading Card")) return "Trading Card";
-            if (item.Description.type.Contains("Emoticon")) return "Emoticon";
-            if (item.Description.type.Contains("Background")) return "Background";
-            if (item.Description.type.Contains("Sale Item")) return "Sale Item";
-            return item.Description.type;
-        }
+
 
         public static void UpdateItemDescription(DataGridView allItemsGrid, int row, RichTextBox textBox, Panel imageBox, Label label) {
             var cell = GetGridHidenItemsListCell(allItemsGrid, row);

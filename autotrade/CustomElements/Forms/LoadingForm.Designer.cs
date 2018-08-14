@@ -1,5 +1,5 @@
 ﻿namespace autotrade {
-    partial class InventoryLoadingForm {
+    partial class LoadingForm {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -75,7 +75,7 @@
             this.PageLable.Text = "Page 0 of 0 loaded";
             this.PageLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // InventoryLoadingForm
+            // LoadingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -88,9 +88,9 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "InventoryLoadingForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Inventory loading";
+            this.Name = "LoadingForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Loading";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InventoryLoadingForm_FormClosing);
             this.ResumeLayout(false);
 

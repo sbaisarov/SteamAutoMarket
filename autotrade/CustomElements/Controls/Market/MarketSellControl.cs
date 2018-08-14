@@ -48,9 +48,9 @@ namespace autotrade {
                 ItemsToSaleGridView.Rows.Clear();
             });
 
-            Program.InventoryLoadingForm.InitProcess();
-            List<RgFullItem> allItemsList = Program.InventoryLoadingForm.GetLoadedItems();
-            Program.InventoryLoadingForm.Disactivate();
+            Program.LoadingForm.InitInventoryLoadingProcess();
+            List<RgFullItem> allItemsList = Program.LoadingForm.GetLoadedItems();
+            Program.LoadingForm.Disactivate();
 
             allItemsList.RemoveAll(item => item.Description.marketable == false);
 
@@ -271,7 +271,8 @@ namespace autotrade {
                     }
                 }
             }
-            Program.WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType));
+            //todo
+            //Program.WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType));
         }
 
 

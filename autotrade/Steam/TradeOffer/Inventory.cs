@@ -108,13 +108,13 @@ namespace autotrade.Steam.TradeOffer {
             try {
                 var startAssetid = "";
                 InventoryRootModel inventoryPage = LoadInventoryPage(steamid, appid, contextid, startAssetid);
-                Program.InventoryLoadingForm.SetTotalItemsCount(inventoryPage.total_inventory_count);
+                Program.LoadingForm.SetTotalItemsCount(inventoryPage.total_inventory_count, (int)Math.Ceiling((double)inventoryPage.total_inventory_count / 5000), "Total items count");
 
                 do {
                     inventoryPage = LoadInventoryPage(steamid, appid, contextid, startAssetid);
                     startAssetid = inventoryPage.last_assetid;
                     items.AddRange(ProcessInventoryPage(inventoryPage));
-                    Program.InventoryLoadingForm.TrackLoadedPage();
+                    Program.LoadingForm.TrackLoadedIteration("Page {currentPage} of {totalPages} loaded");
                 }
                 while (inventoryPage.more_items == 1);
             } catch (Exception e) {
@@ -259,7 +259,6 @@ namespace autotrade.Steam.TradeOffer {
             public InventoryResult result;
         }
 
-        //Get All Inventory
         public partial class RgInventory {
             public int appid { get; set; }
             public string classid { get; set; }
@@ -323,9 +322,7 @@ namespace autotrade.Steam.TradeOffer {
                     description = descriptions
                         .First(item => (asset.instanceid == item.instanceid && asset.classid == item.classid));
 
-                } catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException) {
-                    Logger.Error("Description not found");
-                }
+                } catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException) { }
                 return description;
             }
         }

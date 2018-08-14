@@ -48,9 +48,9 @@ namespace autotrade.CustomElements {
                 ItemsToTradeGridView.Rows.Clear();
             });
 
-            Program.InventoryLoadingForm.InitProcess();
-            List<RgFullItem> allItemsList = Program.InventoryLoadingForm.GetLoadedItems();
-            Program.InventoryLoadingForm.Disactivate();
+            Program.LoadingForm.InitInventoryLoadingProcess();
+            List<RgFullItem> allItemsList = Program.LoadingForm.GetLoadedItems();
+            Program.LoadingForm.Disactivate();
 
             allItemsList.RemoveAll(item => item.Description.tradable == false);
 

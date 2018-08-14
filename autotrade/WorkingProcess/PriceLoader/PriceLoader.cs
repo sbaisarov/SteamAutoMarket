@@ -174,7 +174,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 }
 
                 if (averagePrice == null) {
-                    CurrentSession.SteamManager.GetAveragePrice(out averagePrice, item.Asset, item.Description, 100);
+                    CurrentSession.SteamManager.GetAveragePrice(out averagePrice, item.Asset, item.Description);
                     if (averagePrice != null && averagePrice != 0) {
                         AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
                     }

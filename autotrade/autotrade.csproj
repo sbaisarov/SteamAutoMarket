@@ -120,6 +120,7 @@
     <Compile Include="CustomElements\Elements\CustomNumericUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomElements\Utils\GridUtils.cs" />
     <Compile Include="CustomElements\Utils\MainFormUtils.cs" />
     <Compile Include="CustomElements\Utils\ItemsToSaleGridUtils.cs" />
     <Compile Include="CustomElements\Elements\RichTextBoxWithNoPaint.cs">
@@ -149,12 +150,13 @@
     <Compile Include="CustomElements\Controls\Trade\TradeSendControl.Designer.cs">
       <DependentUpon>TradeSendControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomElements\Forms\InventoryLoadingForm.cs">
+    <Compile Include="CustomElements\Forms\LoadingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomElements\Forms\InventoryLoadingForm.Designer.cs">
-      <DependentUpon>InventoryLoadingForm.cs</DependentUpon>
+    <Compile Include="CustomElements\Forms\LoadingForm.Designer.cs">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomElements\Utils\SteamItemsUtils.cs" />
     <Compile Include="Steam\Market\MarketInfoCache.cs" />
     <Compile Include="Utils\FormComponents.cs" />
     <Compile Include="CustomElements\Forms\WorkingProcessForm.cs">
@@ -285,8 +287,8 @@
     <EmbeddedResource Include="CustomElements\Controls\Trade\TradeSendControl.resx">
       <DependentUpon>TradeSendControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomElements\Forms\InventoryLoadingForm.resx">
-      <DependentUpon>InventoryLoadingForm.cs</DependentUpon>
+    <EmbeddedResource Include="CustomElements\Forms\LoadingForm.resx">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

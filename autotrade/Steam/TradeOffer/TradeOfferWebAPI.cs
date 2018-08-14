@@ -4,67 +4,55 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using SteamAuth;
+using static autotrade.Steam.TradeOffer.Inventory;
+using autotrade.Utils;
 
-namespace autotrade.Steam.TradeOffer
-{
-    public class TradeOfferWebAPI
-    {
+namespace autotrade.Steam.TradeOffer {
+    public class TradeOfferWebAPI {
         private readonly string apiKey;
 
-        public TradeOfferWebAPI(string apiKey)
-        {
+        public TradeOfferWebAPI(string apiKey) {
             this.apiKey = apiKey;
 
-            if (apiKey == null)
-            {
+            if (apiKey == null) {
                 throw new ArgumentNullException("apiKey");
             }
         }
 
         private const string BaseUrl = "http://api.steampowered.com/IEconService/{0}/{1}/{2}";
 
-        public OfferResponse GetTradeOffer(string tradeofferid)
-        {
+        public OfferResponse GetTradeOffer(string tradeofferid) {
             string options = string.Format("?key={0}&tradeofferid={1}&language={2}", apiKey, tradeofferid, "en_us");
             string url = String.Format(BaseUrl, "GetTradeOffer", "v1", options);
-            try
-            {
+            try {
                 string response = SteamWeb.Request(url, "GET", data: null);
                 var result = JsonConvert.DeserializeObject<ApiResponse<OfferResponse>>(response);
                 return result.Response;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 //todo log
                 Debug.WriteLine(ex);
             }
             return new OfferResponse();
         }
 
-        public TradeOfferState GetOfferState(string tradeofferid)
-        {
+        public TradeOfferState GetOfferState(string tradeofferid) {
             var resp = GetTradeOffer(tradeofferid);
-            if (resp != null && resp.Offer != null)
-            {
+            if (resp != null && resp.Offer != null) {
                 return resp.Offer.TradeOfferState;
             }
             return TradeOfferState.TradeOfferStateUnknown;
         }
 
-        public OffersResponse GetAllTradeOffers(string timeHistoricalCutoff = "1389106496", string language = "en_us")
-        {
+        public OffersResponse GetAllTradeOffers(string timeHistoricalCutoff = "1389106496", string language = "en_us") {
             return GetTradeOffers(true, true, false, true, false, timeHistoricalCutoff, language);
         }
 
-        public OffersResponse GetActiveTradeOffers(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, string language = "en_us")
-        {
+        public OffersResponse GetActiveTradeOffers(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, string language = "en_us") {
             return GetTradeOffers(getSentOffers, getReceivedOffers, getDescriptions, true, false, "1389106496", language);
         }
 
-        public OffersResponse GetTradeOffers(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, bool activeOnly, bool historicalOnly, string timeHistoricalCutoff = "1389106496", string language = "en_us")
-        {
-            if (!getSentOffers && !getReceivedOffers)
-            {
+        public OffersResponse GetTradeOffers(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, bool activeOnly, bool historicalOnly, string timeHistoricalCutoff = "1389106496", string language = "en_us") {
+            if (!getSentOffers && !getReceivedOffers) {
                 throw new ArgumentException("getSentOffers and getReceivedOffers can't be both false");
             }
 
@@ -72,77 +60,64 @@ namespace autotrade.Steam.TradeOffer
                 apiKey, BoolConverter(getSentOffers), BoolConverter(getReceivedOffers), BoolConverter(getDescriptions), language, BoolConverter(activeOnly), BoolConverter(historicalOnly), timeHistoricalCutoff);
             string url = String.Format(BaseUrl, "GetTradeOffers", "v1", options);
             string response = SteamWeb.Request(url, "GET", data: null);
-            try
-            {
+            try {
                 var result = JsonConvert.DeserializeObject<ApiResponse<OffersResponse>>(response);
                 return result.Response;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 //todo log
                 Debug.WriteLine(ex);
             }
             return new OffersResponse();
         }
 
-        private static string BoolConverter(bool value)
-        {
+        private static string BoolConverter(bool value) {
             return value ? "1" : "0";
         }
 
-        public TradeOffersSummary GetTradeOffersSummary(UInt32 timeLastVisit)
-        {
+        public TradeOffersSummary GetTradeOffersSummary(UInt32 timeLastVisit) {
             string options = string.Format("?key={0}&time_last_visit={1}", apiKey, timeLastVisit);
             string url = String.Format(BaseUrl, "GetTradeOffersSummary", "v1", options);
 
-            try
-            {
+            try {
                 string response = SteamWeb.Request(url, "GET", data: null);
                 var resp = JsonConvert.DeserializeObject<ApiResponse<TradeOffersSummary>>(response);
 
                 return resp.Response;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 //todo log
                 Debug.WriteLine(ex);
             }
             return new TradeOffersSummary();
         }
 
-        private bool DeclineTradeOffer(ulong tradeofferid)
-        {
+        private bool DeclineTradeOffer(ulong tradeofferid) {
             string options = string.Format("?key={0}&tradeofferid={1}", apiKey, tradeofferid);
             string url = String.Format(BaseUrl, "DeclineTradeOffer", "v1", options);
             Debug.WriteLine(url);
             string response = SteamWeb.Request(url, "POST", data: null);
             dynamic json = JsonConvert.DeserializeObject(response);
 
-            if (json == null || json.success != "1")
-            {
+            if (json == null || json.success != "1") {
                 return false;
             }
             return true;
         }
 
-        private bool CancelTradeOffer(ulong tradeofferid)
-        {
+        private bool CancelTradeOffer(ulong tradeofferid) {
             string options = string.Format("?key={0}&tradeofferid={1}", apiKey, tradeofferid);
             string url = String.Format(BaseUrl, "CancelTradeOffer", "v1", options);
             Debug.WriteLine(url);
             string response = SteamWeb.Request(url, "POST", data: null);
             dynamic json = JsonConvert.DeserializeObject(response);
 
-            if (json == null || json.success != "1")
-            {
+            if (json == null || json.success != "1") {
                 return false;
             }
             return true;
         }
     }
 
-    public class TradeOffersSummary
-    {
+    public class TradeOffersSummary {
         [JsonProperty("pending_received_count")]
         public int PendingReceivedCount { get; set; }
 
@@ -168,14 +143,12 @@ namespace autotrade.Steam.TradeOffer
         public int HistoricalSentCount { get; set; }
     }
 
-    public class ApiResponse<T>
-    {
+    public class ApiResponse<T> {
         [JsonProperty("response")]
         public T Response { get; set; }
     }
 
-    public class OfferResponse
-    {
+    public class OfferResponse {
         [JsonProperty("offer")]
         public Offer Offer { get; set; }
 
@@ -183,8 +156,7 @@ namespace autotrade.Steam.TradeOffer
         public List<AssetDescription> Descriptions { get; set; }
     }
 
-    public class OffersResponse
-    {
+    public class OffersResponse {
         [JsonProperty("trade_offers_sent")]
         public List<Offer> TradeOffersSent { get; set; }
 
@@ -194,12 +166,9 @@ namespace autotrade.Steam.TradeOffer
         [JsonProperty("descriptions")]
         public List<AssetDescription> Descriptions { get; set; }
 
-        public IEnumerable<Offer> AllOffers
-        {
-            get
-            {
-                if (TradeOffersSent == null)
-                {
+        public IEnumerable<Offer> AllOffers {
+            get {
+                if (TradeOffersSent == null) {
                     return TradeOffersReceived;
                 }
 
@@ -208,8 +177,7 @@ namespace autotrade.Steam.TradeOffer
         }
     }
 
-    public class Offer
-    {
+    public class Offer {
         [JsonProperty("tradeofferid")]
         public string TradeOfferId { get; set; }
 
@@ -251,8 +219,7 @@ namespace autotrade.Steam.TradeOffer
         public TradeOfferConfirmationMethod ConfirmationMethod { get { return (TradeOfferConfirmationMethod)confirmationMethod; } set { confirmationMethod = (int)value; } }
     }
 
-    public enum TradeOfferState
-    {
+    public enum TradeOfferState {
         TradeOfferStateInvalid = 1,
         TradeOfferStateActive = 2,
         TradeOfferStateAccepted = 3,
@@ -267,15 +234,13 @@ namespace autotrade.Steam.TradeOffer
         TradeOfferStateUnknown
     }
 
-    public enum TradeOfferConfirmationMethod
-    {
+    public enum TradeOfferConfirmationMethod {
         TradeOfferConfirmationMethodInvalid = 0,
         TradeOfferConfirmationMethodEmail = 1,
         TradeOfferConfirmationMethodMobileApp = 2
     }
 
-    public class CEconAsset
-    {
+    public class CEconAsset {
         [JsonProperty("appid")]
         public string AppId { get; set; }
 
@@ -298,8 +263,7 @@ namespace autotrade.Steam.TradeOffer
         public bool IsMissing { get; set; }
     }
 
-    public class AssetDescription
-    {
+    public class AssetDescription {
         [JsonProperty("appid")]
         public int AppId { get; set; }
 
@@ -346,8 +310,7 @@ namespace autotrade.Steam.TradeOffer
         public string MarketHashName { get; set; }
     }
 
-    public class Description
-    {
+    public class Description {
         [JsonProperty("type")]
         public string Type { get; set; }
 
@@ -355,12 +318,54 @@ namespace autotrade.Steam.TradeOffer
         public string Value { get; set; }
     }
 
-    public class OwnerAction
-    {
+    public class OwnerAction {
         [JsonProperty("link")]
         public string Link { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
+    }
+
+    public class TradeFullItem {
+        public CEconAsset Asset { get; set; }
+        public AssetDescription Description { get; set; }
+
+        public static AssetDescription GetDescription(CEconAsset asset, List<AssetDescription> descriptions) {
+            AssetDescription description = null;
+            try {
+                description = descriptions
+                    .First(item => (asset.InstanceId == item.InstanceId && asset.ClassId == item.ClassId));
+
+            } catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException) {
+                description = new AssetDescription
+                {
+                    MarketHashName = "[Info is missing]",
+                    AppId = int.Parse(asset.AppId),
+                    Name = "[Info is missing]"
+                };
+            }
+            return description;
+        }
+        public static List<TradeFullItem> GetFullItemsList(List<CEconAsset> assets, List<AssetDescription> descriptions) {
+            var itemsList = new List<TradeFullItem>();
+            if (assets == null || descriptions == null) return itemsList;
+
+            foreach (var item in assets) {
+                itemsList.Add(
+                    new TradeFullItem
+                    {
+                        Asset = item,
+                        Description = TradeFullItem.GetDescription(item, descriptions)
+                    }
+                );
+            }
+            return itemsList;
+        }
+    }
+
+    public class FullTradeOffer {
+        public Offer Offers { get; set; }
+        public List<TradeFullItem> ItemsToGive { get; set; }
+        public List<TradeFullItem> ItemsToRecieve { get; set; }
     }
 }
