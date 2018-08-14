@@ -24,16 +24,28 @@ namespace autotrade {
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main() {
+        static void Main()
+        {
+            //CheckLicense();
+            //UpdateProgram();
             mainThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
             MainForm = new MainForm();
             WorkingProcessForm = new WorkingProcessForm();
             InventoryLoadingForm = new InventoryLoadingForm();
 
             Application.Run(MainForm);
+        }
+
+        private static void CheckLicense()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void UpdateProgram()
+        {
+            //update
         }
     }
 }

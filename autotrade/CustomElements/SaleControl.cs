@@ -253,8 +253,10 @@ namespace autotrade {
             if (marketSaleType == MarketSaleType.RECOMMENDED) {
                 for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
                     var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);
-                    foreach (var item in itemsList) {
+                    foreach (var item in itemsList)
+                    {
                         itemsToSale.Add(item, 0);
+                        
                     }
                 }
             }

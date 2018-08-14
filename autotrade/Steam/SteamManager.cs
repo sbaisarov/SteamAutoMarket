@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +14,13 @@ using Market.Models;
 using Market.Models.Json;
 using Market.Exceptions;
 using System.Threading;
+using System.Windows.Forms;
 using SteamKit2;
 using autotrade.Steam.TradeOffer;
 using autotrade.CustomElements;
 using Market.Interface;
 using autotrade.Steam.Market;
+using autotrade.Utils;
 
 namespace autotrade.Steam {
     public class SteamManager {
@@ -57,6 +60,8 @@ namespace autotrade.Steam {
                     }
                 }
                 while (loginResult != LoginResult.LoginOkay);
+
+                Guard.Session = SteamClient.Session;
                 SaveAccount(Guard);
             }
 
@@ -85,56 +90,44 @@ namespace autotrade.Steam {
             }
         }
 
-        public void SellOnMarket(Dictionary<Inventory.RgFullItem, double> items, WorkingProcess.MarketSaleType saleType) {
-            Inventory.RgInventory asset;
-            Inventory.RgDescription description;
-            foreach (KeyValuePair<Inventory.RgFullItem, double> item in items) {
-                double? price;
-                double amount;
-                asset = item.Key.Asset;
-                description = item.Key.Description;
-                amount = item.Value;
-                switch (saleType) {
-                    case WorkingProcess.MarketSaleType.LOWER_THAN_CURRENT:
-                        GetCurrentPrice(out price, asset, description);
-                        if (price == null) continue;
-                        price -= amount;
-                        break;
-
-                    case WorkingProcess.MarketSaleType.MANUAL:
-                        price = amount;
-                        break;
-
-                    case WorkingProcess.MarketSaleType.RECOMMENDED:
-                        GetAveragePrice(out price, asset, description, amount);
-                        break;
-
-                    default:
-                        price = null;
-                        break;
-                }
-
-                if (price == null) continue;
-
-                while (true) {
-                    try {
-                        JSellItem resp = MarketClient.SellItem(description.appid, int.Parse(asset.contextid),
-                                            long.Parse(asset.assetid), 1, (double)price * 0.87);
-
-                        string message = resp.Message; // error message
-                        if (message != null) {
-                            Utils.Logger.Warning(message);
-                            Thread.Sleep(5000);
-                            continue;
-                        }
-                        break;
-                    } catch (JsonSerializationException e) {
-                        Utils.Logger.Warning(e.Message);
+        public void SellOnMarket(IEnumerable<ItemsForSale> items) {
+            foreach (var package in items) {
+                SellOnMarket(package);    
+            }
+        }
+        
+        public void SellOnMarket(ItemsForSale package)
+        {
+            foreach (var item in package.items)
+            {
+                SellOnMarket(item, package.price);
+            }
+        }
+        
+        public void SellOnMarket(Inventory.RgFullItem item, double price)
+        {
+            Inventory.RgInventory asset = item.Asset;
+            Inventory.RgDescription description = item.Description;
+            while (true) {
+                try {
+                    JSellItem resp = MarketClient.SellItem(description.appid, int.Parse(asset.contextid),
+                        long.Parse(asset.assetid), 1, price * 0.87);
+    
+                    string message = resp.Message; // error message
+                    if (message != null) {
+                        Logger.Warning(message);
+                        Thread.Sleep(5000);
                         continue;
                     }
+                    break;
+                } catch (JsonSerializationException e) {
+                    Logger.Warning(e.Message);
                 }
             }
-
+        }
+        
+        public void ConfirmMarketTransactions()
+        {
             Utils.Logger.Info("Fetching confirmations...");
             Confirmation[] confirmations = Guard.FetchConfirmations();
             var marketConfirmations = confirmations
@@ -145,13 +138,11 @@ namespace autotrade.Steam {
         }
 
         public void GetAveragePrice(out double? price, Inventory.RgInventory asset, 
-            Inventory.RgDescription description, double amount) {
+            Inventory.RgDescription description) {
             try {
-                List<PriceHistoryDay> history = MarketClient
-                    .PriceHistory(asset.appid, description.market_hash_name);
+                var history = MarketClient.PriceHistory(asset.appid, description.market_hash_name);
                 price = CountAveragePrice(history);
-                price -= amount;
-            } catch (SteamException e) {
+            } catch (Exception e) {
                 Utils.Logger.Warning($"Error on geting average price of ${description.market_hash_name}", e);
                 price = null;
             }
@@ -241,6 +232,18 @@ namespace autotrade.Steam {
             } catch (Exception e) {
                 Utils.Logger.Error("Error on session save", e);
                 return false;
+            }
+        }
+
+        public struct ItemsForSale
+        {
+            public readonly IEnumerable<Inventory.RgFullItem> items;
+            public readonly double price;
+
+            public ItemsForSale(IEnumerable<Inventory.RgFullItem> items, double price)
+            {
+                this.items = items;
+                this.price = price;
             }
         }
     }
