@@ -1,4 +1,5 @@
 ﻿using autotrade.CustomElements;
+using autotrade.WorkingProcess.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,14 +29,20 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 ALL_ITEMS_GRID = allItemsGrid;
                 ITEMS_TO_SALE_GRID = itemsToSaleGrid;
 
-                ALL_ITEMS_WORKING_THREAD = new BackgroundWorker();
+                ALL_ITEMS_WORKING_THREAD = new BackgroundWorker
+                {
+                    WorkerSupportsCancellation = true
+                };
                 ALL_ITEMS_WORKING_THREAD.DoWork += LoadAllItemsToSalePrices;
 
-                ITEMS_TO_SALE_WORKING_THREAD = new BackgroundWorker();
+                ITEMS_TO_SALE_WORKING_THREAD = new BackgroundWorker
+                {
+                    WorkerSupportsCancellation = true
+                };
                 ITEMS_TO_SALE_WORKING_THREAD.DoWork += LoadItemsToSalePrices;
 
-                if (CURRENT_PRICES_CACHE == null) CURRENT_PRICES_CACHE = new PricesCash("current_prices_cache.ini");
-                if (AVERAGE_PRICES_CACHE == null) AVERAGE_PRICES_CACHE = new PricesCash("average_prices_cache.ini");
+                if (CURRENT_PRICES_CACHE == null) CURRENT_PRICES_CACHE = new PricesCash("current_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE);
+                if (AVERAGE_PRICES_CACHE == null) AVERAGE_PRICES_CACHE = new PricesCash("average_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE);
             }
         }
 
@@ -91,7 +98,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 }
             } else if (tableToLoad == TableToLoad.ITEMS_TO_SALE_TABLE) {
                 foreach (var row in ITEMS_TO_SALE_GRID.Rows.Cast<DataGridViewRow>()) {
-                    cell = ItemsToSaleGridUtils.GetGridPriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
+                    cell = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
                     if (cell != null) cell.Value = null;
 
                     cell = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
@@ -193,7 +200,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
             var rows = GetItemsToSaleRowsWithNoPrice();
             foreach (var row in rows) {
                 try {
-                    var currentPriceCell = ItemsToSaleGridUtils.GetGridPriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
+                    var currentPriceCell = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
                     var averagePriceCell = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
 
 
@@ -266,7 +273,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 }
 
                 if (averagePrice == null) {
-                    CurrentSession.SteamManager.GetCurrentPrice(out averagePrice, item.Asset, item.Description);
+                    CurrentSession.SteamManager.GetAveragePrice(out averagePrice, item.Asset, item.Description);
                     if (averagePrice != null && averagePrice != 0) {
                         AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
                     }

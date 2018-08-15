@@ -18,6 +18,9 @@ using autotrade.WorkingProcess;
 using System.Runtime.CompilerServices;
 using autotrade.WorkingProcess.PriceLoader;
 using autotrade.WorkingProcess.Settings;
+using static autotrade.Steam.SteamManager;
+using autotrade.WorkingProcess.MarketPriceFormation;
+using autotrade.CustomElements.Utils;
 
 namespace autotrade {
     public partial class SaleControl : UserControl {
@@ -228,53 +231,28 @@ namespace autotrade {
                 return;
             }
 
+            double changeValue = 0, changePercentValue = 0;
+
             MarketSaleType marketSaleType;
-            if (RecomendedPriceRadioButton.Checked) marketSaleType = MarketSaleType.RECOMMENDED;
-            else if (ManualPriceRadioButton.Checked) marketSaleType = MarketSaleType.MANUAL;
-            else if (CurrentMinusPriceRadioButton.Checked) marketSaleType = MarketSaleType.LOWER_THAN_CURRENT;
-            else return;
+            if (ManualPriceRadioButton.Checked) {
+                marketSaleType = MarketSaleType.MANUAL;
 
-            var itemsToSale = new Dictionary<RgFullItem, double>();
+            } else if (AveregeMinusPriceRadioButton.Checked) {
+                marketSaleType = MarketSaleType.LOWER_THAN_AVERAGE;
+                changeValue = (double)AveragePriceNumericUpDown.Value;
+                changePercentValue = (double)AveragePricePercentNumericUpDown.Value;
 
-            if (marketSaleType == MarketSaleType.MANUAL) {
-                for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
-                    var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);
-                    double.TryParse((string)ItemsToSaleGridView.Rows[i].Cells[2].Value, out double price);
-                    if (price <= 0) {
-                        MessageBox.Show($"Incorrect price of {itemsList.First().Description.name}", "Error price converting", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Logger.Error($"Incorrect price of {itemsList.First().Description.name} found");
-                        return;
-                    }
-                    foreach (var item in itemsList) {
-                        itemsToSale.Add(item, price);
-                    }
-                }
-            }
+            } else if (CurrentMinusPriceRadioButton.Checked) {
+                marketSaleType = MarketSaleType.LOWER_THAN_CURRENT;
+                changeValue = (double)CurrentPriceNumericUpDown.Value;
+                changePercentValue = (double)CurrentPricePercentNumericUpDown.Value;
 
-            if (marketSaleType == MarketSaleType.RECOMMENDED) {
-                for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
-                    var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);
-                    foreach (var item in itemsList)
-                    {
-                        itemsToSale.Add(item, 0);
-                        
-                    }
-                }
-            }
+            } else return;
 
-            if (marketSaleType == MarketSaleType.LOWER_THAN_CURRENT) {
-                double lowerAmount = (double)CurrentPriceNumericUpDown.Value;
-                for (int i = 0; i < ItemsToSaleGridView.Rows.Count; i++) {
-                    var itemsList = ItemsToSaleGridUtils.GetRowItemsList(ItemsToSaleGridView, i);
-                    foreach (var item in itemsList) {
-                        itemsToSale.Add(item, lowerAmount);
-                    }
-                }
-            }
-            //todo
-            //Program.WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale, marketSaleType));
+            List<ItemsForSale> itemsToSale = new PriceShaper(ItemsToSaleGridView, marketSaleType, changeValue, changePercentValue).GetItemsForSales();
+
+            Program.WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale));
         }
-
 
         private void AddAllButton_Click(object sender, EventArgs e) {
             this.AllSteamItemsGridView.CurrentCellChanged -= new EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
@@ -308,7 +286,6 @@ namespace autotrade {
                 SavedSettings.UpdateAll();
             }
         }
-
 
         private void CurrentPricePercentNumericUpDown_ValueChanged(object sender, EventArgs e) {
             if (CurrentPriceNumericUpDown.Value != 0) {

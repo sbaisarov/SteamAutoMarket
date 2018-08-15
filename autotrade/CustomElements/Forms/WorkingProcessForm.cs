@@ -43,12 +43,10 @@ namespace autotrade {
 
         private void _activate() {
             this.Show();
-            Program.MainForm.Enabled = false;
         }
 
         private void _disactivate() {
             Dispatcher.Invoke(Program.WorkingProcessForm, () => {
-                Program.MainForm.Enabled = true;
                 this.Close();
                 Program.WorkingProcessForm = new WorkingProcessForm();
             });

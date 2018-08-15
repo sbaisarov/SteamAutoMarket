@@ -12,7 +12,7 @@ namespace autotrade.CustomElements {
     class ItemsToSaleGridUtils {
 
         public static void CellClick(DataGridView itemsToSaleGrid, int row) {
-            var cell = GetGridPriceTextBoxCell(itemsToSaleGrid, row);
+            var cell = GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, row);
             itemsToSaleGrid.CurrentCell = cell;
             itemsToSaleGrid.BeginEdit(true);
         }
@@ -30,7 +30,7 @@ namespace autotrade.CustomElements {
 
                 var nameCell = GetGridNameTextBoxCell(itemsToSaleGrid, rowIndex);
                 var countCell = GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex);
-                var priceCell = GetGridPriceTextBoxCell(itemsToSaleGrid, rowIndex);
+                var priceCell = GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, rowIndex);
                 var hidenMarketHashNameCell = GetGridHidenItemsMarketHashName(itemsToSaleGrid, rowIndex);
                 var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex);
 
@@ -159,7 +159,7 @@ namespace autotrade.CustomElements {
         }
 
         public static double? GetRowItemPrice(DataGridView itemsToSaleGrid, int rowIndex) {
-            var row = GetGridPriceTextBoxCell(itemsToSaleGrid, rowIndex);
+            var row = GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, rowIndex);
             if (row == null && row.Value == null) {
                 return null;
             }
@@ -191,7 +191,7 @@ namespace autotrade.CustomElements {
             return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[1];
         }
 
-        public static DataGridViewTextBoxCell GetGridPriceTextBoxCell(DataGridView grid, int rowIndex) {
+        public static DataGridViewTextBoxCell GetGridCurrentPriceTextBoxCell(DataGridView grid, int rowIndex) {
             return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[2];
         }
 

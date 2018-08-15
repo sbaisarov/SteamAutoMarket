@@ -12,7 +12,9 @@ namespace autotrade.WorkingProcess.Settings {
     class SavedSettings {
         private static SavedSettings cached = null;
 
-        public int LOGGER_LEVEL { get; set; } = 0;
+        public int SETTINGS_LOGGER_LEVEL { get; set; } = 0;
+        public int SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE { get; set; } = 1;
+        public int SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE { get; set; } = 12;
 
         public string MARKET_INVENTORY_APP_ID { get; set; } = "";
         public string MARKET_INVENTORY_CONTEX_ID { get; set; } = "";

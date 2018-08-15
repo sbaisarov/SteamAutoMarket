@@ -32,13 +32,13 @@
             // 
             this.logTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.logTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.logTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.logTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.logTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.logTextBox.Location = new System.Drawing.Point(0, 0);
             this.logTextBox.Name = "logTextBox";
             this.logTextBox.ReadOnly = true;
             this.logTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.logTextBox.Size = new System.Drawing.Size(395, 433);
+            this.logTextBox.Size = new System.Drawing.Size(441, 433);
             this.logTextBox.TabIndex = 0;
             this.logTextBox.Text = "";
             // 
@@ -48,7 +48,7 @@
             this.StopWorkingProcessButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.StopWorkingProcessButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.StopWorkingProcessButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.StopWorkingProcessButton.Location = new System.Drawing.Point(118, 439);
+            this.StopWorkingProcessButton.Location = new System.Drawing.Point(133, 439);
             this.StopWorkingProcessButton.Name = "StopWorkingProcessButton";
             this.StopWorkingProcessButton.Size = new System.Drawing.Size(174, 35);
             this.StopWorkingProcessButton.TabIndex = 15;
@@ -61,7 +61,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
-            this.ClientSize = new System.Drawing.Size(395, 482);
+            this.ClientSize = new System.Drawing.Size(441, 482);
             this.Controls.Add(this.StopWorkingProcessButton);
             this.Controls.Add(this.logTextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;

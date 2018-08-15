@@ -22,6 +22,7 @@ using Market.Interface;
 using autotrade.Steam.Market;
 using autotrade.Utils;
 using autotrade.WorkingProcess.Settings;
+using autotrade.WorkingProcess.MarketPriceFormation;
 
 namespace autotrade.Steam {
     public class SteamManager {
@@ -92,59 +93,59 @@ namespace autotrade.Steam {
         }
 
         public void SellOnMarket(IEnumerable<ItemsForSale> items) {
+            int index = 1;
+            int total = items.Sum(x => x.items.Count());
+            string itemName;
+
             foreach (var package in items) {
-                SellOnMarket(package);    
+                itemName = package.items.First().Description.name;
+                foreach (var item in package.items) {
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index++}/{total}] Selling {itemName} for {package.price}");
+                    SellOnMarket(item, package.price);
+                }
             }
         }
-        
-        public void SellOnMarket(ItemsForSale package)
-        {
-            foreach (var item in package.items)
-            {
-                SellOnMarket(item, package.price);
-            }
-        }
-        
-        public void SellOnMarket(Inventory.RgFullItem item, double price)
-        {
+
+        public void SellOnMarket(Inventory.RgFullItem item, double price) {
             Inventory.RgInventory asset = item.Asset;
             Inventory.RgDescription description = item.Description;
             while (true) {
                 try {
                     JSellItem resp = MarketClient.SellItem(description.appid, int.Parse(asset.contextid),
                         long.Parse(asset.assetid), 1, price * 0.87);
-    
+
                     string message = resp.Message; // error message
                     if (message != null) {
                         Logger.Warning(message);
+                        Program.WorkingProcessForm.AppendWorkingProcessInfo($"ERROR on selling {item.Description.name} - {message}");
                         Thread.Sleep(5000);
                         continue;
                     }
                     break;
                 } catch (JsonSerializationException e) {
                     Logger.Warning(e.Message);
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"ERROR on selling {item.Description.name} - {e.Message}");
                 }
             }
         }
-        
-        public void ConfirmMarketTransactions()
-        {
-            Utils.Logger.Info("Fetching confirmations...");
+
+        public void ConfirmMarketTransactions() {
+            Program.WorkingProcessForm.AppendWorkingProcessInfo($"Fetching confirmations");
             Confirmation[] confirmations = Guard.FetchConfirmations();
             var marketConfirmations = confirmations
                 .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction)
                 .ToArray();
-            Utils.Logger.Info("Accepting confirmations...");
+            Program.WorkingProcessForm.AppendWorkingProcessInfo($"Accepting confirmations");
             Guard.AcceptMultipleConfirmations(marketConfirmations);
         }
 
-        public void GetAveragePrice(out double? price, Inventory.RgInventory asset, 
+        public void GetAveragePrice(out double? price, Inventory.RgInventory asset,
             Inventory.RgDescription description) {
             try {
                 var history = MarketClient.PriceHistory(asset.appid, description.market_hash_name);
-                price = CountAveragePrice(history);
+                price = Math.Round(CountAveragePrice(history),2);
             } catch (Exception e) {
-                Utils.Logger.Warning($"Error on geting average price of ${description.market_hash_name}", e);
+                Logger.Warning($"Error on geting average price of ${description.market_hash_name}", e);
                 price = null;
             }
         }
@@ -171,7 +172,6 @@ namespace autotrade.Steam {
             // days are sorted from oldest to newest, we need the contrary
             history.Reverse();
             var firstSevenDays = history.GetRange(0, 7);
-            average = IterateHistory(firstSevenDays, average);
             average = IterateHistory(firstSevenDays, average);
             return average;
         }
@@ -213,15 +213,12 @@ namespace autotrade.Steam {
             Guard.AcceptConfirmation(conf);
         }
 
-        public OffersResponse ReceiveTradeOffers()
-        {
+        public OffersResponse ReceiveTradeOffers() {
             return TradeOfferWeb.GetActiveTradeOffers(false, true, true);
         }
 
-        public void AcceptOffers(IEnumerable<Offer> offers)
-        {
-            foreach (var offer in offers)
-            {
+        public void AcceptOffers(IEnumerable<Offer> offers) {
+            foreach (var offer in offers) {
                 OfferSession.Accept(offer.TradeOfferId);
             }
         }
@@ -233,18 +230,6 @@ namespace autotrade.Steam {
             } catch (Exception e) {
                 Utils.Logger.Error("Error on session save", e);
                 return false;
-            }
-        }
-
-        public struct ItemsForSale
-        {
-            public readonly IEnumerable<Inventory.RgFullItem> items;
-            public readonly double price;
-
-            public ItemsForSale(IEnumerable<Inventory.RgFullItem> items, double price)
-            {
-                this.items = items;
-                this.price = price;
             }
         }
     }

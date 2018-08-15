@@ -21,7 +21,7 @@ namespace autotrade.CustomElements {
 
         public GeneralSettingsControl() {
             InitializeComponent();
-            LoggingLevelComboBox.SelectedIndex = SavedSettings.Get().LOGGER_LEVEL;
+            LoggingLevelComboBox.SelectedIndex = SavedSettings.Get().SETTINGS_LOGGER_LEVEL;
 
             if (File.Exists(SettingsContainer.ACCOUNTS_FILE_PATH)) {
                 var accounts = SavedSteamAccount.Get();
@@ -227,8 +227,8 @@ namespace autotrade.CustomElements {
             }
             Logger.LOGGER_LEVEL = level;
 
-            if (SavedSettings.Get().LOGGER_LEVEL != LoggingLevelComboBox.SelectedIndex) {
-                SavedSettings.Get().LOGGER_LEVEL = LoggingLevelComboBox.SelectedIndex;
+            if (SavedSettings.Get().SETTINGS_LOGGER_LEVEL != LoggingLevelComboBox.SelectedIndex) {
+                SavedSettings.Get().SETTINGS_LOGGER_LEVEL = LoggingLevelComboBox.SelectedIndex;
                 SavedSettings.UpdateAll();
             }
         }
