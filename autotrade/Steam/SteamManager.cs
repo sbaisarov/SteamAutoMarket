@@ -201,7 +201,7 @@ namespace autotrade.Steam {
             }
 
             double? result = sum / count;
-            if (!(result is double.NaN)) return result;
+            if (!(double.IsNaN((double) result))) return result;
             result = null;
             if (!(average is null)) result = average;
 
