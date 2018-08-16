@@ -249,9 +249,14 @@ namespace autotrade {
 
             } else return;
 
-            List<ItemsForSale> itemsToSale = new PriceShaper(ItemsToSaleGridView, marketSaleType, changeValue, changePercentValue).GetItemsForSales();
+            ToSaleObject itemsToSale = new PriceShaper(ItemsToSaleGridView, marketSaleType, changeValue, changePercentValue).GetItemsForSales();
 
             Program.WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale));
+        }
+
+        public void DeleteSoldItem(string marketHashName) {
+            var row = ItemsToSaleGridUtils.GetDataGridViewRowByMarketHashName(ItemsToSaleGridView, marketHashName);
+            if (row != null) ItemsToSaleGridView.Rows.Remove(row);
         }
 
         private void AddAllButton_Click(object sender, EventArgs e) {

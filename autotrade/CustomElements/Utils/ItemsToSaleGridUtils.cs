@@ -45,7 +45,7 @@ namespace autotrade.CustomElements {
             //Logger.Debug($"{items.Count} of {items.First().Description.name} was added to sale list");
         }
 
-        private static DataGridViewRow GetDataGridViewRowByMarketHashName(DataGridView itemsToSaleGrid, string marketHashName) {
+        public static DataGridViewRow GetDataGridViewRowByMarketHashName(DataGridView itemsToSaleGrid, string marketHashName) {
             for (int i = 0; i < itemsToSaleGrid.RowCount; i++) {
                 var row = GetGridHidenItemsMarketHashName(itemsToSaleGrid, i);
                 if (row == null) continue;

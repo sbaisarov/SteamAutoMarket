@@ -25,6 +25,7 @@ using autotrade.Steam.Market;
 using autotrade.Utils;
 using autotrade.WorkingProcess.Settings;
 using autotrade.WorkingProcess.MarketPriceFormation;
+using autotrade.WorkingProcess;
 
 namespace autotrade.Steam {
     public class SteamManager {
@@ -94,16 +95,20 @@ namespace autotrade.Steam {
             }
         }
 
-        public void SellOnMarket(IEnumerable<ItemsForSale> items) {
+        public void SellOnMarket(ToSaleObject items) {
             int index = 1;
-            int total = items.Sum(x => x.items.Count());
+            int total = items.ItemsForSaleList.Sum(x => x.Items.Count());
             string itemName;
 
-            foreach (var package in items) {
-                itemName = package.items.First().Description.name;
-                foreach (var item in package.items) {
-                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index++}/{total}] Selling {itemName} for {package.price}");
-                    SellOnMarket(item, package.price);
+            foreach (var package in items.ItemsForSaleList) {
+                itemName = package.Items.First().Description.name;
+                foreach (var item in package.Items) {
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Selling {itemName} for {package.Price}");
+                    if (!package.Price.HasValue) {
+                        //todo ВОТ ТУТ НУЖНО ПОЛУЧИТЬ ЕГО ЕСЛИ ЕГО НЕТ
+                    }
+                    SellOnMarket(item, package.Price.Value);
+                    index++;
                 }
             }
         }

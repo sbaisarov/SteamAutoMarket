@@ -23,15 +23,33 @@ namespace autotrade.CustomElements.Utils {
             LOWER_PERCENT_VALUE = lowerPercentValue;
         }
 
-        public List<ItemsForSale> GetItemsForSales() {
-            switch (TYPE) {
-                case MarketSaleType.LOWER_THAN_AVERAGE: return GetAveragePriceItemsForSale();
+        public ToSaleObject GetItemsForSales() {
+            List<ItemsForSale> itemsForSales;
 
-                case MarketSaleType.LOWER_THAN_CURRENT: return GetCurrentPriceItemsForSale();
-                case MarketSaleType.MANUAL: return GetManualPriceItemsForSale();
+            switch (TYPE) {
+
+                case MarketSaleType.LOWER_THAN_AVERAGE: itemsForSales = GetAveragePriceItemsForSale(); break;
+
+                case MarketSaleType.LOWER_THAN_CURRENT: itemsForSales = GetCurrentPriceItemsForSale(); break;
+
+                case MarketSaleType.MANUAL: itemsForSales = GetManualPriceItemsForSale(); break;
 
                 default: throw new InvalidOperationException("Not implemented market sale type");
             }
+
+            ChangeValueType changeValueType = ChangeValueType.ChangeValueTypeNone;
+            double changeValue = 0;
+
+            if (LOWER_VALUE != 0) {
+                changeValueType = ChangeValueType.ChangeValueTypeByValue;
+                changeValue = LOWER_VALUE;
+
+            } else if (LOWER_PERCENT_VALUE != 0) {
+                changeValueType = ChangeValueType.ChangeValueTypeByPercent;
+                changeValue = LOWER_PERCENT_VALUE;
+            }
+
+            return new ToSaleObject(itemsForSales, TYPE, changeValueType, changeValue);
         }
 
         private List<ItemsForSale> GetCurrentPriceItemsForSale() {
@@ -44,11 +62,13 @@ namespace autotrade.CustomElements.Utils {
                 if (items == null) continue;
 
                 var price = GetGridCurrentPrice(row.Index);
-                if (price == null) continue;
-                price = priceShapingStrategy.Format(price.Value);
-                if (price.Value <= 0) continue;
+                if (price == null || price.Value <= 0) {
+                    price = null;
+                } else {
+                    price = priceShapingStrategy.Format(price.Value);
+                }
 
-                itemsForSale.Add(new ItemsForSale(items, price.Value));
+                itemsForSale.Add(new ItemsForSale(items, price));
             }
 
             return itemsForSale;
@@ -64,12 +84,13 @@ namespace autotrade.CustomElements.Utils {
                 if (items == null) continue;
 
                 var price = GetGridAveragePrice(row.Index);
-                if (price == null) continue;
+                if (price == null || price.Value <= 0) {
+                    price = null;
+                } else {
+                    price = priceShapingStrategy.Format(price.Value);
+                }
 
-                price = priceShapingStrategy.Format(price.Value);
-                if (price.Value <= 0) continue;
-
-                itemsForSale.Add(new ItemsForSale(items, price.Value));
+                itemsForSale.Add(new ItemsForSale(items, price));
             }
 
             return itemsForSale;

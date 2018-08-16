@@ -16,7 +16,7 @@ namespace autotrade.WorkingProcess {
             ImageCache.TryGetValue(hashName, out Image image);
             if (image != null) return image;
 
-            string fileName = $"{imagesPath}/{MakeValidFileName(hashName)}.jpg";
+            string fileName = $"{imagesPath}\\{MakeValidFileName(hashName)}.jpg";
             if (File.Exists(fileName)) {
                 image = Image.FromFile(fileName);
                 ImageCache[hashName] = image;
@@ -33,7 +33,9 @@ namespace autotrade.WorkingProcess {
                 ImageCache.Add(hashName, image);
             }
             Directory.CreateDirectory(imagesPath);
-            image.Save($"{imagesPath}/{MakeValidFileName(hashName)}.jpg");
+            try {
+                image.Save($"{imagesPath}/{MakeValidFileName(hashName)}.jpg");
+            } catch { };
         }
 
         private static string MakeValidFileName(string name) {

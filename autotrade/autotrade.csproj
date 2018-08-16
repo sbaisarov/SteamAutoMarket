@@ -156,6 +156,7 @@
     <Compile Include="CustomElements\Forms\LoadingForm.Designer.cs">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="WorkingProcess\MarketPriceFormation\ChangeValueType.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\ItemsForSale.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\PriceShaper.cs" />
     <Compile Include="CustomElements\Utils\SteamItemsUtils.cs" />
