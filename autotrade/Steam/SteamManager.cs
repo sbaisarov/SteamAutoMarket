@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using Market.Models;
 using Market.Models.Json;
 using Market.Exceptions;
 using System.Threading;
+using System.Web.UI.WebControls.WebParts;
 using System.Windows.Forms;
 using SteamKit2;
 using autotrade.Steam.TradeOffer;
@@ -168,21 +170,22 @@ namespace autotrade.Steam {
         }
 
         private double CountAveragePrice(List<PriceHistoryDay> history) {
-            double average = 0;
             // days are sorted from oldest to newest, we need the contrary
             history.Reverse();
             var firstSevenDays = history.GetRange(0, 7);
+            var average = IterateHistory(firstSevenDays);
+            if (average is null) throw new SteamException("No prices recorded during the week");
             average = IterateHistory(firstSevenDays, average);
-            return average;
+            return (double) average;
         }
 
-        private double IterateHistory(List<PriceHistoryDay> history, double? average) {
+        private double? IterateHistory(List<PriceHistoryDay> history, double? average = null) {
             double sum = 0;
             int count = 0;
             foreach (var item in history) {
                 foreach (PriceHistoryItem data in item.History) {
-                    if (average > 0) {
-                        // skip lowball or highball prices
+                    if (!(average is null)) {
+                        // skip lowball and highball prices
                         if (data.Price < average / 2 || data.Price > average * 2) {
                             continue;
                         }
@@ -191,13 +194,15 @@ namespace autotrade.Steam {
                     count += data.Count;
                 }
             }
-            try {
-                return sum / count;
-            } catch (DivideByZeroException) {
-                throw new SteamException("No prices recorded during a week");
-            }
-        }
 
+            double? result = sum / count;
+            if (!(result is double.NaN)) return result;
+            result = null;
+            if (!(average is null)) result = average;
+
+            return result;
+        }
+        
         public void SendTradeOffer(List<Inventory.RgFullItem> items, string partnerId, string tradeToken) {
             TradeOffer.TradeOffer offer = new TradeOffer.TradeOffer(OfferSession, new SteamID(ulong.Parse(partnerId)));
             bool status = offer.SendWithToken(out string offerId, tradeToken);
