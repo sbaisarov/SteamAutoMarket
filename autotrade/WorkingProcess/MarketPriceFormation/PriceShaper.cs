@@ -28,6 +28,8 @@ namespace autotrade.CustomElements.Utils {
 
             switch (TYPE) {
 
+                case MarketSaleType.RECOMENDED: itemsForSales = GetRecomendedPriceItemsForSale();  break;
+
                 case MarketSaleType.LOWER_THAN_AVERAGE: itemsForSales = GetAveragePriceItemsForSale(); break;
 
                 case MarketSaleType.LOWER_THAN_CURRENT: itemsForSales = GetCurrentPriceItemsForSale(); break;
@@ -50,6 +52,37 @@ namespace autotrade.CustomElements.Utils {
             }
 
             return new ToSaleObject(itemsForSales, TYPE, changeValueType, changeValue);
+        }
+
+        private List<ItemsForSale> GetRecomendedPriceItemsForSale() {
+            var itemsForSale = new List<ItemsForSale>();
+
+            var priceShapingStrategy = GetPriceShapingStrategy();
+
+            foreach (var row in GRID.Rows.Cast<DataGridViewRow>()) {
+                var items = GetGridItemsList(row.Index);
+                if (items == null) continue;
+
+                double? resultPrice = null;
+                var averagePrice = GetGridAveragePrice(row.Index);
+                var currentPrice = GetGridCurrentPrice(row.Index);
+
+                if (averagePrice == null || currentPrice == null) {
+                    resultPrice = null;
+                } else if (averagePrice > currentPrice) {
+                    resultPrice = averagePrice;
+                } else if (currentPrice >= averagePrice) {
+                    resultPrice = currentPrice - 0.01;
+                }
+
+                if (resultPrice == null || resultPrice.Value <= 0) {
+                    resultPrice = null;
+                }
+
+                itemsForSale.Add(new ItemsForSale(items, resultPrice));
+            }
+
+            return itemsForSale;
         }
 
         private List<ItemsForSale> GetCurrentPriceItemsForSale() {

@@ -42,6 +42,8 @@ namespace autotrade.CustomElements {
             this.TradeTokenLable = new System.Windows.Forms.Label();
             this.TradeTokenTextBox = new System.Windows.Forms.TextBox();
             this.TradeGroupBox = new System.Windows.Forms.GroupBox();
+            this.LoadedAccountComboBox = new System.Windows.Forms.ComboBox();
+            this.LoadedAccountLable = new System.Windows.Forms.Label();
             this.DeleteSelectedItemButton = new System.Windows.Forms.Button();
             this.ItemsToSaleGroupBox = new System.Windows.Forms.GroupBox();
             this.ItemsToTradeGridView = new System.Windows.Forms.DataGridView();
@@ -113,7 +115,7 @@ namespace autotrade.CustomElements {
             // 
             this.PartnerIdLable.AutoSize = true;
             this.PartnerIdLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.PartnerIdLable.Location = new System.Drawing.Point(12, 32);
+            this.PartnerIdLable.Location = new System.Drawing.Point(12, 47);
             this.PartnerIdLable.Name = "PartnerIdLable";
             this.PartnerIdLable.Size = new System.Drawing.Size(107, 16);
             this.PartnerIdLable.TabIndex = 26;
@@ -123,7 +125,7 @@ namespace autotrade.CustomElements {
             // 
             this.TradeParthenIdTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.TradeParthenIdTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.TradeParthenIdTextBox.Location = new System.Drawing.Point(154, 31);
+            this.TradeParthenIdTextBox.Location = new System.Drawing.Point(154, 46);
             this.TradeParthenIdTextBox.Name = "TradeParthenIdTextBox";
             this.TradeParthenIdTextBox.Size = new System.Drawing.Size(123, 20);
             this.TradeParthenIdTextBox.TabIndex = 27;
@@ -133,7 +135,7 @@ namespace autotrade.CustomElements {
             // 
             this.TradeTokenLable.AutoSize = true;
             this.TradeTokenLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.TradeTokenLable.Location = new System.Drawing.Point(12, 67);
+            this.TradeTokenLable.Location = new System.Drawing.Point(12, 73);
             this.TradeTokenLable.Name = "TradeTokenLable";
             this.TradeTokenLable.Size = new System.Drawing.Size(118, 16);
             this.TradeTokenLable.TabIndex = 28;
@@ -143,7 +145,7 @@ namespace autotrade.CustomElements {
             // 
             this.TradeTokenTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.TradeTokenTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.TradeTokenTextBox.Location = new System.Drawing.Point(154, 66);
+            this.TradeTokenTextBox.Location = new System.Drawing.Point(154, 72);
             this.TradeTokenTextBox.Name = "TradeTokenTextBox";
             this.TradeTokenTextBox.Size = new System.Drawing.Size(123, 20);
             this.TradeTokenTextBox.TabIndex = 29;
@@ -151,6 +153,8 @@ namespace autotrade.CustomElements {
             // 
             // TradeGroupBox
             // 
+            this.TradeGroupBox.Controls.Add(this.LoadedAccountComboBox);
+            this.TradeGroupBox.Controls.Add(this.LoadedAccountLable);
             this.TradeGroupBox.Controls.Add(this.TradeTokenTextBox);
             this.TradeGroupBox.Controls.Add(this.TradeTokenLable);
             this.TradeGroupBox.Controls.Add(this.TradeParthenIdTextBox);
@@ -162,6 +166,28 @@ namespace autotrade.CustomElements {
             this.TradeGroupBox.TabIndex = 18;
             this.TradeGroupBox.TabStop = false;
             this.TradeGroupBox.Text = "Trade setting ";
+            // 
+            // LoadedAccountComboBox
+            // 
+            this.LoadedAccountComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.LoadedAccountComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadedAccountComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.LoadedAccountComboBox.FormattingEnabled = true;
+            this.LoadedAccountComboBox.Location = new System.Drawing.Point(154, 20);
+            this.LoadedAccountComboBox.Name = "LoadedAccountComboBox";
+            this.LoadedAccountComboBox.Size = new System.Drawing.Size(123, 21);
+            this.LoadedAccountComboBox.TabIndex = 31;
+            this.LoadedAccountComboBox.SelectedIndexChanged += new System.EventHandler(this.LoadedAccountComboBox_SelectedIndexChanged);
+            // 
+            // LoadedAccountLable
+            // 
+            this.LoadedAccountLable.AutoSize = true;
+            this.LoadedAccountLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.LoadedAccountLable.Location = new System.Drawing.Point(12, 21);
+            this.LoadedAccountLable.Name = "LoadedAccountLable";
+            this.LoadedAccountLable.Size = new System.Drawing.Size(105, 16);
+            this.LoadedAccountLable.TabIndex = 30;
+            this.LoadedAccountLable.Text = "Loaded account";
             // 
             // DeleteSelectedItemButton
             // 
@@ -748,7 +774,7 @@ namespace autotrade.CustomElements {
             this.AddAllToolTip.UseAnimation = false;
             this.AddAllToolTip.UseFading = false;
             // 
-            // TradeControl
+            // TradeSendControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -767,7 +793,7 @@ namespace autotrade.CustomElements {
             this.Controls.Add(this.TradeSendGroupBox);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.Name = "TradeControl";
+            this.Name = "TradeSendControl";
             this.Size = new System.Drawing.Size(885, 599);
             this.Load += new System.EventHandler(this.SaleControl_Load);
             this.TradeGroupBox.ResumeLayout(false);
@@ -855,5 +881,7 @@ namespace autotrade.CustomElements {
         private DataGridViewTextBoxColumn HidenMarketHashNameColumn;
         private DataGridViewTextBoxColumn AddedToSaleListHidenItemsList;
         private DataGridViewTextBoxColumn AveragePrice;
+        private ComboBox LoadedAccountComboBox;
+        private Label LoadedAccountLable;
     }
 }

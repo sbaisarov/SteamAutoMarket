@@ -56,6 +56,8 @@ namespace autotrade.CustomElements.Controls {
         }
 
         private void CurrentTradesGridView_SelectionChanged(object sender, EventArgs e) {
+            if (CurrentTradesGridView.SelectedCells.Count == 0) return;
+
             int index = CurrentTradesGridView.SelectedCells[0].RowIndex;
             if (index < 0) return;
 

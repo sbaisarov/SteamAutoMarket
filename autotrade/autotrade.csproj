@@ -264,7 +264,7 @@
       <DependentUpon>MarketSellControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\Logger.cs" />
-    <Compile Include="WorkingProcess\Variables\CurrentSession.cs" />
+    <Compile Include="WorkingProcess\CurrentSession.cs" />
     <Compile Include="WorkingProcess\Caches\ImagesCache.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\MarketSaleType.cs" />
     <Compile Include="WorkingProcess\PriceLoader\PriceLoader.cs" />

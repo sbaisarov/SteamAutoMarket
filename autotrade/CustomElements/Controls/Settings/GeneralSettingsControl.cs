@@ -198,7 +198,7 @@ namespace autotrade.CustomElements {
 
             Logger.Info($"Steam authentication for {login} started");
 
-            Dispatcher.Invoke(Program.MainForm, () => {
+            Task.Run(() => {
                 try {
                     CurrentSession.SteamManager = new SteamManager(login, password, mafile, api);
                 } catch (Exception ex) {
@@ -206,13 +206,14 @@ namespace autotrade.CustomElements {
                     LoginButton.Enabled = true;
                     return;
                 }
-                CurrentSession.AccountImage = image;
-                Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
-                Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
-                Logger.Info("Steam authentication successful");
+                Dispatcher.Invoke(Program.MainForm, () => {
+                    CurrentSession.AccountImage = image;
+                    Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
+                    Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
+                    Logger.Info($"Steam authentication for {login} successful");
+                    LoginButton.Enabled = true;
+                });
             });
-
-            LoginButton.Enabled = true;
         }
 
         private void LoggingLevelComboBox_SelectedIndexChanged(object sender, EventArgs e) {

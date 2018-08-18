@@ -237,6 +237,9 @@ namespace autotrade {
             if (ManualPriceRadioButton.Checked) {
                 marketSaleType = MarketSaleType.MANUAL;
 
+            } else if (RecomendedPriceRadioButton.Checked) {
+                marketSaleType = MarketSaleType.RECOMENDED;
+
             } else if (AveregeMinusPriceRadioButton.Checked) {
                 marketSaleType = MarketSaleType.LOWER_THAN_AVERAGE;
                 changeValue = (double)AveragePriceNumericUpDown.Value;
@@ -247,7 +250,7 @@ namespace autotrade {
                 changeValue = (double)CurrentPriceNumericUpDown.Value;
                 changePercentValue = (double)CurrentPricePercentNumericUpDown.Value;
 
-            } else return;
+            } else throw new InvalidOperationException("Not implemented market sale type");
 
             ToSaleObject itemsToSale = new PriceShaper(ItemsToSaleGridView, marketSaleType, changeValue, changePercentValue).GetItemsForSales();
 

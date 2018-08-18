@@ -50,9 +50,9 @@
             this.DeleteAccountButton = new System.Windows.Forms.Button();
             this.LoggingLevelGroupBox = new System.Windows.Forms.GroupBox();
             this.LoggingLevelComboBox = new System.Windows.Forms.ComboBox();
+            this.SteamApiLinkLable = new System.Windows.Forms.LinkLabel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SteamApiGroupBox = new System.Windows.Forms.GroupBox();
-            this.SteamApiLinkLable = new System.Windows.Forms.LinkLabel();
             this.SteamApiTextBox = new System.Windows.Forms.TextBox();
             this.LogGroupBox = new System.Windows.Forms.GroupBox();
             this.LogTextBox = new System.Windows.Forms.RichTextBox();
@@ -346,7 +346,7 @@
             this.LoggingLevelGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.LoggingLevelGroupBox.Location = new System.Drawing.Point(7, 19);
             this.LoggingLevelGroupBox.Name = "LoggingLevelGroupBox";
-            this.LoggingLevelGroupBox.Size = new System.Drawing.Size(190, 40);
+            this.LoggingLevelGroupBox.Size = new System.Drawing.Size(123, 40);
             this.LoggingLevelGroupBox.TabIndex = 10;
             this.LoggingLevelGroupBox.TabStop = false;
             this.LoggingLevelGroupBox.Text = "Logging detailing";
@@ -367,10 +367,24 @@
             "None"});
             this.LoggingLevelComboBox.Location = new System.Drawing.Point(3, 16);
             this.LoggingLevelComboBox.Name = "LoggingLevelComboBox";
-            this.LoggingLevelComboBox.Size = new System.Drawing.Size(184, 21);
+            this.LoggingLevelComboBox.Size = new System.Drawing.Size(117, 21);
             this.LoggingLevelComboBox.TabIndex = 0;
             this.AddAllToolTip.SetToolTip(this.LoggingLevelComboBox, "With large amounts of work, disabling logs will speed up the program");
             this.LoggingLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.LoggingLevelComboBox_SelectedIndexChanged);
+            // 
+            // SteamApiLinkLable
+            // 
+            this.SteamApiLinkLable.ActiveLinkColor = System.Drawing.Color.Aqua;
+            this.SteamApiLinkLable.AutoSize = true;
+            this.SteamApiLinkLable.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.SteamApiLinkLable.Location = new System.Drawing.Point(68, 0);
+            this.SteamApiLinkLable.Name = "SteamApiLinkLable";
+            this.SteamApiLinkLable.Size = new System.Drawing.Size(39, 13);
+            this.SteamApiLinkLable.TabIndex = 16;
+            this.SteamApiLinkLable.TabStop = true;
+            this.SteamApiLinkLable.Text = "(Link)";
+            this.AddAllToolTip.SetToolTip(this.SteamApiLinkLable, "Open Steam API page on browser");
+            this.SteamApiLinkLable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SteamApiLinkLable_LinkClicked);
             // 
             // groupBox1
             // 
@@ -402,20 +416,6 @@
             this.SteamApiGroupBox.TabIndex = 11;
             this.SteamApiGroupBox.TabStop = false;
             this.SteamApiGroupBox.Text = "Steam API        ";
-            // 
-            // SteamApiLinkLable
-            // 
-            this.SteamApiLinkLable.ActiveLinkColor = System.Drawing.Color.Aqua;
-            this.SteamApiLinkLable.AutoSize = true;
-            this.SteamApiLinkLable.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.SteamApiLinkLable.Location = new System.Drawing.Point(68, 0);
-            this.SteamApiLinkLable.Name = "SteamApiLinkLable";
-            this.SteamApiLinkLable.Size = new System.Drawing.Size(39, 13);
-            this.SteamApiLinkLable.TabIndex = 16;
-            this.SteamApiLinkLable.TabStop = true;
-            this.SteamApiLinkLable.Text = "(Link)";
-            this.AddAllToolTip.SetToolTip(this.SteamApiLinkLable, "Open Steam API page on browser");
-            this.SteamApiLinkLable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SteamApiLinkLable_LinkClicked);
             // 
             // SteamApiTextBox
             // 
@@ -474,12 +474,13 @@
             this.AvrPriceGroupBox.Controls.Add(this.numericUpDown1);
             this.AvrPriceGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AvrPriceGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.AvrPriceGroupBox.Location = new System.Drawing.Point(232, 19);
+            this.AvrPriceGroupBox.Location = new System.Drawing.Point(7, 65);
             this.AvrPriceGroupBox.Name = "AvrPriceGroupBox";
-            this.AvrPriceGroupBox.Size = new System.Drawing.Size(190, 40);
+            this.AvrPriceGroupBox.Size = new System.Drawing.Size(123, 40);
             this.AvrPriceGroupBox.TabIndex = 16;
             this.AvrPriceGroupBox.TabStop = false;
-            this.AvrPriceGroupBox.Text = "Averagge price days count";
+            this.AvrPriceGroupBox.Text = "Avr price (days)";
+            this.AddAllToolTip.SetToolTip(this.AvrPriceGroupBox, "Count of days from today on which average price will be calculated");
             // 
             // numericUpDown1
             // 
@@ -489,7 +490,7 @@
             this.numericUpDown1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.numericUpDown1.Location = new System.Drawing.Point(3, 16);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(184, 20);
+            this.numericUpDown1.Size = new System.Drawing.Size(117, 20);
             this.numericUpDown1.TabIndex = 0;
             this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numericUpDown1.Value = new decimal(new int[] {

@@ -31,6 +31,8 @@ namespace autotrade.CustomElements {
             InventoryContextIdComboBox.Text = settings.TRADE_INVENTORY_CONTEX_ID;
             TradeParthenIdTextBox.Text = settings.TRADE_PARTNER_ID;
             TradeTokenTextBox.Text = settings.TRADE_TOKEN;
+
+            LoadedAccountComboBox.Items.AddRange(SavedSteamAccount.Get().Select(x => x.Login).ToArray());
         }
 
         private void SaleControl_Load(object sender, EventArgs e) {
@@ -71,7 +73,7 @@ namespace autotrade.CustomElements {
             } else if (e.ColumnIndex == 4) {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsToTradeGridView, e.RowIndex, ItemsToTradeGridView);
                 PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
-            } 
+            }
         }
 
         private void AllSteamItemsGridView_CurrentCellChanged(object sender, EventArgs e) {
@@ -321,6 +323,15 @@ namespace autotrade.CustomElements {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsToTradeGridView, e.RowIndex, ItemsToTradeGridView);
                 PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
             }
+        }
+
+        private void LoadedAccountComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+            string login = LoadedAccountComboBox.Text;
+            SavedSteamAccount acc = SavedSteamAccount.Get().FirstOrDefault(x => x.Login == login);
+            if (acc == null) return;
+
+            TradeParthenIdTextBox.Text = new SteamID(acc.Mafile.Session.SteamID).AccountID.ToString();
+            TradeTokenTextBox.Text = "todo"; //toso
         }
     }
 }
