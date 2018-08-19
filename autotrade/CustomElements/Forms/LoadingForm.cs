@@ -106,7 +106,7 @@ namespace autotrade {
             var response = CurrentSession.SteamManager.TradeOfferWeb.GetTradeOffers(false, true, true, false, false);
             Program.LoadingForm.SetTotalItemsCount(response.AllOffers.Count(), response.AllOffers.Count(), "Total trades count");
 
-            foreach (var trade in response.AllOffers) {
+            foreach (var trade in response.AllOffers.Where(trade => trade.TradeOfferState == TradeOfferState.TradeOfferStateActive)) {
                 tradesList.Add(new FullTradeOffer
                 {
                     Offers = trade,

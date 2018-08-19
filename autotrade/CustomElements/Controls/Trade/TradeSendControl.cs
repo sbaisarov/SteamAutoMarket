@@ -17,6 +17,7 @@ using autotrade.Utils;
 using autotrade.WorkingProcess;
 using autotrade.WorkingProcess.PriceLoader;
 using autotrade.WorkingProcess.Settings;
+using autotrade.CustomElements.Elements;
 
 namespace autotrade.CustomElements {
     public partial class TradeSendControl : UserControl {
@@ -32,7 +33,9 @@ namespace autotrade.CustomElements {
             TradeParthenIdTextBox.Text = settings.TRADE_PARTNER_ID;
             TradeTokenTextBox.Text = settings.TRADE_TOKEN;
 
-            LoadedAccountComboBox.Items.AddRange(SavedSteamAccount.Get().Select(x => x.Login).ToArray());
+            foreach (var acc in SavedSteamAccount.Get().OrderBy(x => x.Login)) {
+                LoadedAccountCombobox.AddItem(acc.Login, ImageUtils.GetSteamProfileSmallImage(acc.Mafile.Session.SteamID));
+            }
         }
 
         private void SaleControl_Load(object sender, EventArgs e) {
@@ -326,12 +329,47 @@ namespace autotrade.CustomElements {
         }
 
         private void LoadedAccountComboBox_SelectedIndexChanged(object sender, EventArgs e) {
-            string login = LoadedAccountComboBox.Text;
+            string login = LoadedAccountCombobox.Text;
             SavedSteamAccount acc = SavedSteamAccount.Get().FirstOrDefault(x => x.Login == login);
             if (acc == null) return;
 
             TradeParthenIdTextBox.Text = new SteamID(acc.Mafile.Session.SteamID).AccountID.ToString();
             TradeTokenTextBox.Text = "todo"; //toso
+        }
+
+        private void ComboboxWithImage1_MeasureItem_1(object sender, MeasureItemEventArgs e) {
+            e.ItemHeight = 36;
+        }
+
+        private void ComboboxWithImage1_DrawItem(object sender, DrawItemEventArgs e) {
+            ComboboxWithImage box = sender as ComboboxWithImage;
+
+            if (box is null) return;
+
+            e.DrawBackground();
+
+            if (e.Index >= 0) {
+                Graphics g = e.Graphics;
+
+                using (Brush brush = ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                                      ? new SolidBrush(SystemColors.Highlight)
+                                      : new SolidBrush(e.BackColor)) {
+                    using (Brush textBrush = new SolidBrush(e.ForeColor)) {
+                        g.FillRectangle(brush, e.Bounds);
+                        Image image = box.GetImageByIndex(e.Index);
+
+                        g.DrawString(box.Items[e.Index].ToString(),
+                                     e.Font,
+                                     textBrush,
+                                     e.Bounds.Left + 32, e.Bounds.Top + 10,
+                                     StringFormat.GenericDefault);
+
+                        g.DrawImage(image, e.Bounds.Left, e.Bounds.Top + 2, 32, 32);
+                    }
+                }
+            }
+
+            e.DrawFocusRectangle();
         }
     }
 }

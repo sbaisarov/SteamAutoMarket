@@ -51,14 +51,14 @@
             this.LoggingLevelGroupBox = new System.Windows.Forms.GroupBox();
             this.LoggingLevelComboBox = new System.Windows.Forms.ComboBox();
             this.SteamApiLinkLable = new System.Windows.Forms.LinkLabel();
+            this.AvrPriceGroupBox = new System.Windows.Forms.GroupBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SteamApiGroupBox = new System.Windows.Forms.GroupBox();
             this.SteamApiTextBox = new System.Windows.Forms.TextBox();
             this.LogGroupBox = new System.Windows.Forms.GroupBox();
             this.LogTextBox = new System.Windows.Forms.RichTextBox();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.AvrPriceGroupBox = new System.Windows.Forms.GroupBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.UpdateButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.AccountsDataGridView)).BeginInit();
             this.AccountGroupBox.SuspendLayout();
@@ -66,12 +66,12 @@
             this.PasswordGroupBox.SuspendLayout();
             this.LoginGroupBox.SuspendLayout();
             this.LoggingLevelGroupBox.SuspendLayout();
+            this.AvrPriceGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SteamApiGroupBox.SuspendLayout();
             this.LogGroupBox.SuspendLayout();
             this.SettingsGroupBox.SuspendLayout();
-            this.AvrPriceGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // AccountsDataGridView
@@ -119,7 +119,7 @@
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.AccountsDataGridView.RowTemplate.Height = 34;
+            this.AccountsDataGridView.RowTemplate.Height = 32;
             this.AccountsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.AccountsDataGridView.Size = new System.Drawing.Size(426, 331);
             this.AccountsDataGridView.TabIndex = 7;
@@ -386,6 +386,35 @@
             this.AddAllToolTip.SetToolTip(this.SteamApiLinkLable, "Open Steam API page on browser");
             this.SteamApiLinkLable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SteamApiLinkLable_LinkClicked);
             // 
+            // AvrPriceGroupBox
+            // 
+            this.AvrPriceGroupBox.Controls.Add(this.numericUpDown1);
+            this.AvrPriceGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AvrPriceGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.AvrPriceGroupBox.Location = new System.Drawing.Point(7, 65);
+            this.AvrPriceGroupBox.Name = "AvrPriceGroupBox";
+            this.AvrPriceGroupBox.Size = new System.Drawing.Size(123, 40);
+            this.AvrPriceGroupBox.TabIndex = 16;
+            this.AvrPriceGroupBox.TabStop = false;
+            this.AvrPriceGroupBox.Text = "Avr price (days)";
+            this.AddAllToolTip.SetToolTip(this.AvrPriceGroupBox, "Count of days from today on which average price will be calculated");
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.numericUpDown1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numericUpDown1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDown1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.numericUpDown1.Location = new System.Drawing.Point(3, 16);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(117, 20);
+            this.numericUpDown1.TabIndex = 0;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.DeleteAccountButton);
@@ -469,36 +498,6 @@
             this.SettingsGroupBox.TabStop = false;
             this.SettingsGroupBox.Text = "Settings";
             // 
-            // AvrPriceGroupBox
-            // 
-            this.AvrPriceGroupBox.Controls.Add(this.numericUpDown1);
-            this.AvrPriceGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AvrPriceGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.AvrPriceGroupBox.Location = new System.Drawing.Point(7, 65);
-            this.AvrPriceGroupBox.Name = "AvrPriceGroupBox";
-            this.AvrPriceGroupBox.Size = new System.Drawing.Size(123, 40);
-            this.AvrPriceGroupBox.TabIndex = 16;
-            this.AvrPriceGroupBox.TabStop = false;
-            this.AvrPriceGroupBox.Text = "Avr price (days)";
-            this.AddAllToolTip.SetToolTip(this.AvrPriceGroupBox, "Count of days from today on which average price will be calculated");
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.numericUpDown1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.numericUpDown1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.numericUpDown1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.numericUpDown1.Location = new System.Drawing.Point(3, 16);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(117, 20);
-            this.numericUpDown1.TabIndex = 0;
-            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-            // 
             // UpdateButton
             // 
             this.UpdateButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
@@ -537,13 +536,13 @@
             this.LoginGroupBox.ResumeLayout(false);
             this.LoginGroupBox.PerformLayout();
             this.LoggingLevelGroupBox.ResumeLayout(false);
+            this.AvrPriceGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.SteamApiGroupBox.ResumeLayout(false);
             this.SteamApiGroupBox.PerformLayout();
             this.LogGroupBox.ResumeLayout(false);
             this.SettingsGroupBox.ResumeLayout(false);
-            this.AvrPriceGroupBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }

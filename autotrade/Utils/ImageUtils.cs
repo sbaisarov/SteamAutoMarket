@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using autotrade.Steam.TradeOffer;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,6 +10,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.Utils {
     class ImageUtils {
@@ -26,6 +29,8 @@ namespace autotrade.Utils {
         }
 
         public static Image ResizeImage(Image img, int width, int height) {
+            if (img.Width == width && img.Height == height) return img;
+
             var res = new Bitmap(width, height);
             res.SetResolution(img.HorizontalResolution, img.VerticalResolution);
             using (var g = Graphics.FromImage(res)) {
@@ -56,5 +61,30 @@ namespace autotrade.Utils {
                 return null;
             }
         }
+
+        public static void UpdateItemImageOnPanelAsync(AssetDescription assetDescription, Panel imageBox) {
+            UpdateItemImageOnPanelAsync(assetDescription.MarketHashName, assetDescription.IconUrl, imageBox);
+        }
+
+        public static void UpdateItemImageOnPanelAsync(RgDescription description, Panel imageBox) {
+            UpdateItemImageOnPanelAsync(description.market_hash_name, description.icon_url, imageBox);
+        }
+
+        public static void UpdateItemImageOnPanelAsync(string hash, string iconUrl, Panel imageBox) {
+            Task.Run(() => {
+                Image image = WorkingProcess.ImagesCache.GetImage(hash);
+
+                if (image != null) {
+                    imageBox.BackgroundImage = ResizeImage(image, 100, 100);
+                } else {
+                    image = DownloadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + iconUrl + "/192fx192f");
+                    if (image != null) {
+                        WorkingProcess.ImagesCache.CacheImage(hash, image);
+                        imageBox.BackgroundImage = ResizeImage(image, 100, 100);
+                    }
+                }
+            });
+        }
+
     }
 }

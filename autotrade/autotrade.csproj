@@ -110,6 +110,9 @@
     <Compile Include="CustomElements\Controls\Trade\RecievedTradeManageControl.Designer.cs">
       <DependentUpon>RecievedTradeManageControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomElements\Elements\ComboboxWithImage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CustomElements\Utils\AccountsDataGridUtils.cs" />
     <Compile Include="CustomElements\Controls\Market\MarketBuyControl.cs">
       <SubType>UserControl</SubType>
@@ -120,6 +123,7 @@
     <Compile Include="CustomElements\Elements\CustomNumericUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomElements\Utils\ElementsUtils.cs" />
     <Compile Include="CustomElements\Utils\GridUtils.cs" />
     <Compile Include="CustomElements\Utils\MainFormUtils.cs" />
     <Compile Include="CustomElements\Utils\ItemsToSaleGridUtils.cs" />

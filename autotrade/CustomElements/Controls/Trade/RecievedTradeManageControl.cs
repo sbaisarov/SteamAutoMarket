@@ -12,6 +12,7 @@ using static autotrade.Steam.TradeOffer.Inventory;
 using autotrade.Utils;
 using autotrade.CustomElements.Utils;
 using autotrade.WorkingProcess;
+using SteamKit2;
 
 namespace autotrade.CustomElements.Controls {
     public partial class RecievedTradeManageControl : UserControl {
@@ -21,7 +22,7 @@ namespace autotrade.CustomElements.Controls {
 
         private Dictionary<string, FullTradeOffer> ALL_TRADES = new Dictionary<string, FullTradeOffer>();
         private string SELECTED_OFFER_ID;
-        private TradeFullItem SELECTED_ITEM;
+        private AssetDescription SELECTED_ITEM_DESCRIPTION;
 
         private void LoadInventoryButton_Click(object sender, EventArgs e) {
             if (CurrentSession.SteamManager == null) {
@@ -35,6 +36,7 @@ namespace autotrade.CustomElements.Controls {
             GridUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
 
             Task.Run(() => {
+                ALL_TRADES.Clear();
                 Program.LoadingForm.InitTradesLoadingProcess(false, true, true, false, false);
                 List<FullTradeOffer> fullTradeOffers = Program.LoadingForm.GetLoadedTrades();
                 Program.LoadingForm.Disactivate();
@@ -45,7 +47,7 @@ namespace autotrade.CustomElements.Controls {
                     Dispatcher.Invoke(Program.MainForm, () => {
                         CurrentTradesGridView.Rows.Add(
                             trade.Offers.TradeOfferId,
-                            trade.Offers.AccountIdOther,
+                            new SteamID((uint)trade.Offers.AccountIdOther, EUniverse.Public, EAccountType.Individual).ConvertToUInt64(),
                             trade.Offers.TradeOfferState.ToString().Replace("TradeOfferState", "")
                         );
                         LoadTradesButton.Enabled = true;
@@ -72,7 +74,6 @@ namespace autotrade.CustomElements.Controls {
             GridUtils.ClearGrids(MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
             FullTradeOffer tradeOffer = ALL_TRADES[SELECTED_OFFER_ID];
 
-
             if (tradeOffer.ItemsToGive != null) {
                 var gropedItems = tradeOffer.ItemsToGive.GroupBy(item => item.Description.MarketHashName);
                 foreach (var groupedList in gropedItems) {
@@ -80,7 +81,8 @@ namespace autotrade.CustomElements.Controls {
                     MyItemsGridView.Rows.Add(
                         firstItem.Description.Name,
                         groupedList.Sum(x => int.Parse(x.Asset.Amount)),
-                        SteamItemsUtils.GetClearType(firstItem)
+                        SteamItemsUtils.GetClearType(firstItem),
+                        firstItem.Description
                     );
                 }
             }
@@ -108,6 +110,74 @@ namespace autotrade.CustomElements.Controls {
             ExtraTradeInfoGridView.Rows.Add("TimeUpdated", GridUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeUpdated).ToString());
             ExtraTradeInfoGridView.Rows.Add("EscrowEndDate", tradeOffer.Offers.EscrowEndDate.ToString());
             ExtraTradeInfoGridView.Rows.Add("FromRealTimeTrade", tradeOffer.Offers.FromRealTimeTrade.ToString());
+        }
+
+        private void CurrentTradesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e) {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            if (e.ColumnIndex == 1) {
+                var cell = CurrentTradesGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                if (cell == null) return;
+
+                var steamId = cell.Value;
+                if (steamId == null) return;
+
+                System.Diagnostics.Process.Start($"https://steamcommunity.com/profiles/{steamId.ToString()}/");
+            }
+        }
+
+        private void MyItemsGridView_SelectionChanged(object sender, EventArgs e) {
+            var grid = sender as DataGridView;
+            var selectedRows = grid.SelectedRows;
+            if (selectedRows.Count == 0) return;
+
+            var index = selectedRows[0].Index;
+            SELECTED_ITEM_DESCRIPTION = (AssetDescription)grid.Rows[index].Cells[3].Value;
+
+            ChangeSelectedItem();
+        }
+
+        private void ChangeSelectedItem() {
+            ImageUtils.UpdateItemImageOnPanelAsync(SELECTED_ITEM_DESCRIPTION, ItemImageBox);
+            UpdateItemDescriptionTextBox(ItemDescriptionTextBox, ItemNameLable, SELECTED_ITEM_DESCRIPTION);
+        }
+
+        private void UpdateItemDescriptionTextBox(RichTextBox textBox, Label label, AssetDescription description) {
+            textBox.Clear();
+
+            label.Text = description.Name;
+
+            var descriptionText = "";
+            if (description.Descriptions != null) {
+                foreach (var item in description.Descriptions) {
+                    string text = item.Value.Trim();
+                    if (!string.IsNullOrWhiteSpace(text)) descriptionText += text + ", ";
+                }
+                if (descriptionText.EndsWith(", ")) descriptionText = descriptionText.Substring(0, descriptionText.Length - 2);
+            }
+
+            var tagsText = "";
+            
+            ElementsUtils.appendBoldText(textBox, "Game: ");
+            textBox.AppendText(description.AppId.ToString() + "\n");
+
+            ElementsUtils.appendBoldText(textBox, "Name: ");
+            textBox.AppendText(description.MarketHashName + "\n");
+
+            ElementsUtils.appendBoldText(textBox, "Type: ");
+            textBox.AppendText(description.Type);
+
+            if (!string.IsNullOrWhiteSpace(descriptionText)) {
+                textBox.AppendText("\n");
+                ElementsUtils.appendBoldText(textBox, "Description: ");
+                textBox.AppendText(descriptionText);
+            }
+
+            if (!string.IsNullOrWhiteSpace(tagsText)) {
+                textBox.AppendText("\n");
+                ElementsUtils.appendBoldText(textBox, "Tags: ");
+                textBox.AppendText(tagsText);
+            }
         }
     }
 }

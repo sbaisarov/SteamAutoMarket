@@ -29,15 +29,25 @@ namespace autotrade {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaleControl));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.AllSteamItemsGridView = new System.Windows.Forms.DataGridView();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AveragePriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CountToAddColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.HidenItemsListColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HidenItemImageColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
@@ -78,16 +88,6 @@ namespace autotrade {
             this.SellGroupBox = new System.Windows.Forms.GroupBox();
             this.RecomendedPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AveragePriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CountToAddColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.HidenItemsListColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HidenItemImageColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).BeginInit();
             this.ItemDescriptionGroupBox.SuspendLayout();
             this.ItemsToSaleGroupBox.SuspendLayout();
@@ -154,6 +154,107 @@ namespace autotrade {
             this.AllSteamItemsGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SteamSaleDataGridView_CellClick);
             this.AllSteamItemsGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsGridView_CurrentCellChanged);
             this.AllSteamItemsGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.SteamSaleDataGridView_EditingControlShowing);
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NameColumn.FillWeight = 200F;
+            this.NameColumn.Frozen = true;
+            this.NameColumn.HeaderText = "Item name";
+            this.NameColumn.MinimumWidth = 200;
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.ReadOnly = true;
+            this.NameColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.NameColumn.Width = 200;
+            // 
+            // CountColumn
+            // 
+            this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            this.CountColumn.FillWeight = 40F;
+            this.CountColumn.HeaderText = "#";
+            this.CountColumn.Name = "CountColumn";
+            this.CountColumn.ReadOnly = true;
+            this.CountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.CountColumn.Width = 40;
+            // 
+            // ItemTypeColumn
+            // 
+            this.ItemTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ItemTypeColumn.FillWeight = 120F;
+            this.ItemTypeColumn.HeaderText = "Type";
+            this.ItemTypeColumn.Name = "ItemTypeColumn";
+            this.ItemTypeColumn.ReadOnly = true;
+            this.ItemTypeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ItemTypeColumn.Width = 120;
+            // 
+            // CurrentPriceColumn
+            // 
+            this.CurrentPriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.CurrentPriceColumn.FillWeight = 20F;
+            this.CurrentPriceColumn.HeaderText = "Cur";
+            this.CurrentPriceColumn.MinimumWidth = 20;
+            this.CurrentPriceColumn.Name = "CurrentPriceColumn";
+            this.CurrentPriceColumn.ReadOnly = true;
+            this.CurrentPriceColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.CurrentPriceColumn.ToolTipText = "Current price";
+            this.CurrentPriceColumn.Width = 45;
+            // 
+            // AveragePriceColumn
+            // 
+            this.AveragePriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.AveragePriceColumn.FillWeight = 20F;
+            this.AveragePriceColumn.HeaderText = "Avr";
+            this.AveragePriceColumn.MinimumWidth = 20;
+            this.AveragePriceColumn.Name = "AveragePriceColumn";
+            this.AveragePriceColumn.ReadOnly = true;
+            this.AveragePriceColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AveragePriceColumn.ToolTipText = "Average price";
+            this.AveragePriceColumn.Width = 45;
+            // 
+            // CountToAddColumn
+            // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.CountToAddColumn.FillWeight = 20F;
+            this.CountToAddColumn.HeaderText = "Amount to add";
+            this.CountToAddColumn.MaxDropDownItems = 10;
+            this.CountToAddColumn.MinimumWidth = 20;
+            this.CountToAddColumn.Name = "CountToAddColumn";
+            this.CountToAddColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // AddButtonColumn
+            // 
+            this.AddButtonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.AddButtonColumn.FillWeight = 60F;
+            this.AddButtonColumn.HeaderText = "Add";
+            this.AddButtonColumn.Name = "AddButtonColumn";
+            this.AddButtonColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.AddButtonColumn.Text = "Add";
+            this.AddButtonColumn.UseColumnTextForButtonValue = true;
+            // 
+            // HidenItemsListColumn
+            // 
+            this.HidenItemsListColumn.HeaderText = "HidenItemsList";
+            this.HidenItemsListColumn.Name = "HidenItemsListColumn";
+            this.HidenItemsListColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HidenItemsListColumn.Visible = false;
+            // 
+            // HidenItemImageColumn
+            // 
+            this.HidenItemImageColumn.HeaderText = "HidenItemImage";
+            this.HidenItemImageColumn.Name = "HidenItemImageColumn";
+            this.HidenItemImageColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HidenItemImageColumn.Visible = false;
+            // 
+            // HidenItemMarketHashName
+            // 
+            this.HidenItemMarketHashName.HeaderText = "HidenItemMarketHashNameColumn";
+            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
+            this.HidenItemMarketHashName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.HidenItemMarketHashName.Visible = false;
             // 
             // ItemImageBox
             // 
@@ -636,7 +737,7 @@ namespace autotrade {
             this.InventoryGroupBox.Size = new System.Drawing.Size(296, 79);
             this.InventoryGroupBox.TabIndex = 18;
             this.InventoryGroupBox.TabStop = false;
-            this.InventoryGroupBox.Text = "Inventory settings";
+            this.InventoryGroupBox.Text = "Inventory loading settings";
             // 
             // InventoryContextIdLabel
             // 
@@ -751,107 +852,6 @@ namespace autotrade {
             this.PriceSettingsGroupBox.TabIndex = 17;
             this.PriceSettingsGroupBox.TabStop = false;
             this.PriceSettingsGroupBox.Text = "The price formation setting ";
-            // 
-            // NameColumn
-            // 
-            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.NameColumn.FillWeight = 200F;
-            this.NameColumn.Frozen = true;
-            this.NameColumn.HeaderText = "Item name";
-            this.NameColumn.MinimumWidth = 200;
-            this.NameColumn.Name = "NameColumn";
-            this.NameColumn.ReadOnly = true;
-            this.NameColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.NameColumn.Width = 200;
-            // 
-            // CountColumn
-            // 
-            this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
-            this.CountColumn.FillWeight = 40F;
-            this.CountColumn.HeaderText = "#";
-            this.CountColumn.Name = "CountColumn";
-            this.CountColumn.ReadOnly = true;
-            this.CountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.CountColumn.Width = 40;
-            // 
-            // ItemTypeColumn
-            // 
-            this.ItemTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ItemTypeColumn.FillWeight = 120F;
-            this.ItemTypeColumn.HeaderText = "Type";
-            this.ItemTypeColumn.Name = "ItemTypeColumn";
-            this.ItemTypeColumn.ReadOnly = true;
-            this.ItemTypeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ItemTypeColumn.Width = 120;
-            // 
-            // CurrentPriceColumn
-            // 
-            this.CurrentPriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.CurrentPriceColumn.FillWeight = 20F;
-            this.CurrentPriceColumn.HeaderText = "Cur";
-            this.CurrentPriceColumn.MinimumWidth = 20;
-            this.CurrentPriceColumn.Name = "CurrentPriceColumn";
-            this.CurrentPriceColumn.ReadOnly = true;
-            this.CurrentPriceColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.CurrentPriceColumn.ToolTipText = "Current price";
-            this.CurrentPriceColumn.Width = 45;
-            // 
-            // AveragePriceColumn
-            // 
-            this.AveragePriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.AveragePriceColumn.FillWeight = 20F;
-            this.AveragePriceColumn.HeaderText = "Avr";
-            this.AveragePriceColumn.MinimumWidth = 20;
-            this.AveragePriceColumn.Name = "AveragePriceColumn";
-            this.AveragePriceColumn.ReadOnly = true;
-            this.AveragePriceColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AveragePriceColumn.ToolTipText = "Average price";
-            this.AveragePriceColumn.Width = 45;
-            // 
-            // CountToAddColumn
-            // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
-            this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            this.CountToAddColumn.FillWeight = 20F;
-            this.CountToAddColumn.HeaderText = "Amount to add";
-            this.CountToAddColumn.MaxDropDownItems = 10;
-            this.CountToAddColumn.MinimumWidth = 20;
-            this.CountToAddColumn.Name = "CountToAddColumn";
-            this.CountToAddColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // AddButtonColumn
-            // 
-            this.AddButtonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.AddButtonColumn.FillWeight = 60F;
-            this.AddButtonColumn.HeaderText = "Add";
-            this.AddButtonColumn.Name = "AddButtonColumn";
-            this.AddButtonColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AddButtonColumn.Text = "Add";
-            this.AddButtonColumn.UseColumnTextForButtonValue = true;
-            // 
-            // HidenItemsListColumn
-            // 
-            this.HidenItemsListColumn.HeaderText = "HidenItemsList";
-            this.HidenItemsListColumn.Name = "HidenItemsListColumn";
-            this.HidenItemsListColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HidenItemsListColumn.Visible = false;
-            // 
-            // HidenItemImageColumn
-            // 
-            this.HidenItemImageColumn.HeaderText = "HidenItemImage";
-            this.HidenItemImageColumn.Name = "HidenItemImageColumn";
-            this.HidenItemImageColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HidenItemImageColumn.Visible = false;
-            // 
-            // HidenItemMarketHashName
-            // 
-            this.HidenItemMarketHashName.HeaderText = "HidenItemMarketHashNameColumn";
-            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
-            this.HidenItemMarketHashName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.HidenItemMarketHashName.Visible = false;
             // 
             // SaleControl
             // 

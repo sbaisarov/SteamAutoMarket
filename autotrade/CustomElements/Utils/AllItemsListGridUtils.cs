@@ -74,7 +74,7 @@ namespace autotrade.CustomElements {
             TradeSendControl.LastSelectedItemDescription = description;
 
             UpdateItemTextDescription(description, textBox, label);
-            UpdateItemImage(description, imageBox);
+            ImageUtils.UpdateItemImageOnPanelAsync(description, imageBox);
         }
 
         public static void GridComboBoxClick(DataGridView allItemsGrid, int row) {
@@ -215,51 +215,29 @@ namespace autotrade.CustomElements {
                 }
                 if (tagsText.EndsWith(", ")) tagsText = tagsText.Substring(0, tagsText.Length - 2);
             }
-            appendBoldText(textBox, "Игра: ");
+            ElementsUtils.appendBoldText(textBox, "Game: ");
             textBox.AppendText(description.appid.ToString() + "\n");
 
-            appendBoldText(textBox, "Название: ");
+            ElementsUtils.appendBoldText(textBox, "Name: ");
             textBox.AppendText(description.market_hash_name + "\n");
 
-            appendBoldText(textBox, "Тип: ");
+            ElementsUtils.appendBoldText(textBox, "Type: ");
             textBox.AppendText(description.type);
 
             if (!string.IsNullOrWhiteSpace(descriptionText)) {
                 textBox.AppendText("\n");
-                appendBoldText(textBox, "Описание: ");
+                ElementsUtils.appendBoldText(textBox, "Description: ");
                 textBox.AppendText(descriptionText);
             }
 
             if (!string.IsNullOrWhiteSpace(tagsText)) {
                 textBox.AppendText("\n");
-                appendBoldText(textBox, "Теги: ");
+                ElementsUtils.appendBoldText(textBox, "Tags: ");
                 textBox.AppendText(tagsText);
             }
         }
 
-        private static void appendBoldText(RichTextBox textBox, string text) {
-            textBox.SelectionFont = new Font(textBox.Font, FontStyle.Bold);
-            textBox.AppendText(text);
-            textBox.SelectionFont = new Font(textBox.Font, FontStyle.Regular);
-        }
 
-        private static void UpdateItemImage(RgDescription description, Panel imageBox) {
-            Task.Run(() => {
-                Image image = WorkingProcess.ImagesCache.GetImage(description.market_hash_name);
-
-                if (image != null) {
-                    imageBox.BackgroundImage = ImageUtils.ResizeImage(image, 100, 100);
-                } else {
-                    image = ImageUtils.DownloadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + description.icon_url + "/192fx192f");
-                    if (image != null) {
-                        WorkingProcess.ImagesCache.CacheImage(description.market_hash_name, image);
-                        imageBox.BackgroundImage = ImageUtils.ResizeImage(image, 100, 100);
-                    }
-                }
-            });
-        }
-
-       
 
         public static List<RgFullItem> GetRgFullItems(DataGridView grid, int rowIndex) {
             var hidenItemsListCell = GetGridHidenItemsListCell(grid, rowIndex);

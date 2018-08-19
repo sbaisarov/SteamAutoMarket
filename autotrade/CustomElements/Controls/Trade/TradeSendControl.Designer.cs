@@ -42,7 +42,7 @@ namespace autotrade.CustomElements {
             this.TradeTokenLable = new System.Windows.Forms.Label();
             this.TradeTokenTextBox = new System.Windows.Forms.TextBox();
             this.TradeGroupBox = new System.Windows.Forms.GroupBox();
-            this.LoadedAccountComboBox = new System.Windows.Forms.ComboBox();
+            this.LoadedAccountCombobox = new autotrade.CustomElements.Elements.ComboboxWithImage();
             this.LoadedAccountLable = new System.Windows.Forms.Label();
             this.DeleteSelectedItemButton = new System.Windows.Forms.Button();
             this.ItemsToSaleGroupBox = new System.Windows.Forms.GroupBox();
@@ -153,7 +153,7 @@ namespace autotrade.CustomElements {
             // 
             // TradeGroupBox
             // 
-            this.TradeGroupBox.Controls.Add(this.LoadedAccountComboBox);
+            this.TradeGroupBox.Controls.Add(this.LoadedAccountCombobox);
             this.TradeGroupBox.Controls.Add(this.LoadedAccountLable);
             this.TradeGroupBox.Controls.Add(this.TradeTokenTextBox);
             this.TradeGroupBox.Controls.Add(this.TradeTokenLable);
@@ -167,17 +167,21 @@ namespace autotrade.CustomElements {
             this.TradeGroupBox.TabStop = false;
             this.TradeGroupBox.Text = "Trade setting ";
             // 
-            // LoadedAccountComboBox
+            // LoadedAccountCombobox
             // 
-            this.LoadedAccountComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.LoadedAccountComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadedAccountComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadedAccountComboBox.FormattingEnabled = true;
-            this.LoadedAccountComboBox.Location = new System.Drawing.Point(154, 20);
-            this.LoadedAccountComboBox.Name = "LoadedAccountComboBox";
-            this.LoadedAccountComboBox.Size = new System.Drawing.Size(123, 21);
-            this.LoadedAccountComboBox.TabIndex = 31;
-            this.LoadedAccountComboBox.SelectedIndexChanged += new System.EventHandler(this.LoadedAccountComboBox_SelectedIndexChanged);
+            this.LoadedAccountCombobox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.LoadedAccountCombobox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.LoadedAccountCombobox.DropDownHeight = 150;
+            this.LoadedAccountCombobox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LoadedAccountCombobox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.LoadedAccountCombobox.FormattingEnabled = true;
+            this.LoadedAccountCombobox.IntegralHeight = false;
+            this.LoadedAccountCombobox.Location = new System.Drawing.Point(154, 16);
+            this.LoadedAccountCombobox.Name = "LoadedAccountCombobox";
+            this.LoadedAccountCombobox.Size = new System.Drawing.Size(123, 21);
+            this.LoadedAccountCombobox.TabIndex = 31;
+            this.LoadedAccountCombobox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ComboboxWithImage1_DrawItem);
+            this.LoadedAccountCombobox.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.ComboboxWithImage1_MeasureItem_1);
             // 
             // LoadedAccountLable
             // 
@@ -731,7 +735,7 @@ namespace autotrade.CustomElements {
             this.InventoryGroupBox.Size = new System.Drawing.Size(296, 79);
             this.InventoryGroupBox.TabIndex = 18;
             this.InventoryGroupBox.TabStop = false;
-            this.InventoryGroupBox.Text = "Inventory settings";
+            this.InventoryGroupBox.Text = "Inventory loading settings";
             // 
             // LoadInventoryButton
             // 
@@ -881,7 +885,7 @@ namespace autotrade.CustomElements {
         private DataGridViewTextBoxColumn HidenMarketHashNameColumn;
         private DataGridViewTextBoxColumn AddedToSaleListHidenItemsList;
         private DataGridViewTextBoxColumn AveragePrice;
-        private ComboBox LoadedAccountComboBox;
         private Label LoadedAccountLable;
+        private Elements.ComboboxWithImage LoadedAccountCombobox;
     }
 }
