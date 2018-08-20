@@ -341,7 +341,8 @@ namespace autotrade.Steam.TradeOffer {
                 {
                     MarketHashName = "[Info is missing]",
                     AppId = int.Parse(asset.AppId),
-                    Name = "[Info is missing]"
+                    Name = "[Info is missing]",
+                    Type = "[Info is missing]"
                 };
             }
             return description;

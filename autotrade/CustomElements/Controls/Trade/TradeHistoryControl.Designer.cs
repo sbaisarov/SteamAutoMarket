@@ -1,46 +1,46 @@
-﻿using autotrade.Utils;
+﻿using autotrade.CustomElements;
+using autotrade.CustomElements.Controls;
 
-namespace autotrade.CustomElements.Controls {
-    partial class RecievedTradeManageControl {
-            /// <summary> 
-            /// Обязательная переменная конструктора.
-            /// </summary>
-            private System.ComponentModel.IContainer components = null;
+namespace autotrade {
+    partial class TradeHistoryControl {
+        /// <summary> 
+        /// Обязательная переменная конструктора.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-            /// <summary> 
-            /// Освободить все используемые ресурсы.
-            /// </summary>
-            /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-            protected override void Dispose(bool disposing) {
-                if (disposing && (components != null)) {
-                    components.Dispose();
-                }
-                base.Dispose(disposing);
+        /// <summary> 
+        /// Освободить все используемые ресурсы.
+        /// </summary>
+        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
+                components.Dispose();
             }
+            base.Dispose(disposing);
+        }
 
-            #region Код, автоматически созданный конструктором компонентов
+        #region Код, автоматически созданный конструктором компонентов
 
-            /// <summary> 
-            /// Требуемый метод для поддержки конструктора — не изменяйте 
-            /// содержимое этого метода с помощью редактора кода.
-            /// </summary>
-            private void InitializeComponent() {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecievedTradeManageControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+        /// <summary> 
+        /// Требуемый метод для поддержки конструктора — не изменяйте 
+        /// содержимое этого метода с помощью редактора кода.
+        /// </summary>
+        private void InitializeComponent() {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.CurrentTradesGroupBox = new System.Windows.Forms.GroupBox();
             this.CurrentTradesGridView = new System.Windows.Forms.DataGridView();
-            this.SellGroupBox = new System.Windows.Forms.GroupBox();
-            this.DeclineTradeButton = new System.Windows.Forms.Button();
-            this.AcceptTradeButton = new System.Windows.Forms.Button();
+            this.TradeofferIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SenderAccountColumn = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.TradeSteteColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MyItemsGroupBox = new System.Windows.Forms.GroupBox();
             this.MyItemsGridView = new System.Windows.Forms.DataGridView();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,6 +48,7 @@ namespace autotrade.CustomElements.Controls {
             this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.ExtraTradeInfoGroupBox = new System.Windows.Forms.GroupBox();
@@ -61,21 +62,15 @@ namespace autotrade.CustomElements.Controls {
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenHisMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TradeSettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.ActiveOnlyCheckBox = new System.Windows.Forms.CheckBox();
             this.DescriptionLanguageComboBox = new System.Windows.Forms.ComboBox();
             this.PartnerIdLable = new System.Windows.Forms.Label();
             this.RecievedOffersCheckBox = new System.Windows.Forms.CheckBox();
             this.SentOffersCheckBox = new System.Windows.Forms.CheckBox();
             this.LoadTradesButton = new System.Windows.Forms.Button();
-            this.TradeofferIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SenderAccountColumn = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.TradeSteteColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SplitterPanel = new System.Windows.Forms.Panel();
             this.AccountNameLable = new System.Windows.Forms.Label();
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
             this.CurrentTradesGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTradesGridView)).BeginInit();
-            this.SellGroupBox.SuspendLayout();
             this.MyItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MyItemsGridView)).BeginInit();
             this.ItemDescriptionGroupBox.SuspendLayout();
@@ -106,28 +101,28 @@ namespace autotrade.CustomElements.Controls {
             this.CurrentTradesGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.CurrentTradesGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.CurrentTradesGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CurrentTradesGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CurrentTradesGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.CurrentTradesGridView.ColumnHeadersHeight = 30;
             this.CurrentTradesGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.CurrentTradesGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.TradeofferIdColumn,
             this.SenderAccountColumn,
             this.TradeSteteColumn});
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.CurrentTradesGridView.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.CurrentTradesGridView.DefaultCellStyle = dataGridViewCellStyle2;
             this.CurrentTradesGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CurrentTradesGridView.EnableHeadersVisualStyles = false;
             this.CurrentTradesGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -142,43 +137,26 @@ namespace autotrade.CustomElements.Controls {
             this.CurrentTradesGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CurrentTradesGridView_CellContentClick);
             this.CurrentTradesGridView.SelectionChanged += new System.EventHandler(this.CurrentTradesGridView_SelectionChanged);
             // 
-            // SellGroupBox
+            // TradeofferIdColumn
             // 
-            this.SellGroupBox.Controls.Add(this.DeclineTradeButton);
-            this.SellGroupBox.Controls.Add(this.AcceptTradeButton);
-            this.SellGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.SellGroupBox.Location = new System.Drawing.Point(603, 489);
-            this.SellGroupBox.Name = "SellGroupBox";
-            this.SellGroupBox.Size = new System.Drawing.Size(279, 101);
-            this.SellGroupBox.TabIndex = 19;
-            this.SellGroupBox.TabStop = false;
-            this.SellGroupBox.Text = "Sell";
+            this.TradeofferIdColumn.FillWeight = 80F;
+            this.TradeofferIdColumn.HeaderText = "Id";
+            this.TradeofferIdColumn.Name = "TradeofferIdColumn";
             // 
-            // DeclineTradeButton
+            // SenderAccountColumn
             // 
-            this.DeclineTradeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.DeclineTradeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DeclineTradeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.DeclineTradeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.DeclineTradeButton.Location = new System.Drawing.Point(45, 57);
-            this.DeclineTradeButton.Name = "DeclineTradeButton";
-            this.DeclineTradeButton.Size = new System.Drawing.Size(203, 35);
-            this.DeclineTradeButton.TabIndex = 17;
-            this.DeclineTradeButton.Text = "DECLINE selected trade";
-            this.DeclineTradeButton.UseVisualStyleBackColor = false;
+            this.SenderAccountColumn.FillWeight = 152.2696F;
+            this.SenderAccountColumn.HeaderText = "Sender";
+            this.SenderAccountColumn.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.SenderAccountColumn.Name = "SenderAccountColumn";
+            this.SenderAccountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.SenderAccountColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // AcceptTradeButton
+            // TradeSteteColumn
             // 
-            this.AcceptTradeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.AcceptTradeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AcceptTradeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AcceptTradeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.AcceptTradeButton.Location = new System.Drawing.Point(45, 13);
-            this.AcceptTradeButton.Name = "AcceptTradeButton";
-            this.AcceptTradeButton.Size = new System.Drawing.Size(203, 35);
-            this.AcceptTradeButton.TabIndex = 16;
-            this.AcceptTradeButton.Text = "ACCEPT selected trade";
-            this.AcceptTradeButton.UseVisualStyleBackColor = false;
+            this.TradeSteteColumn.FillWeight = 72F;
+            this.TradeSteteColumn.HeaderText = "State";
+            this.TradeSteteColumn.Name = "TradeSteteColumn";
             // 
             // MyItemsGroupBox
             // 
@@ -200,14 +178,14 @@ namespace autotrade.CustomElements.Controls {
             this.MyItemsGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.MyItemsGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.MyItemsGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.MyItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.MyItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.MyItemsGridView.ColumnHeadersHeight = 30;
             this.MyItemsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.MyItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -215,14 +193,14 @@ namespace autotrade.CustomElements.Controls {
             this.CountColumn,
             this.ItemTypeColumn,
             this.HidenMarketHashNameColumn});
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.MyItemsGridView.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.MyItemsGridView.DefaultCellStyle = dataGridViewCellStyle5;
             this.MyItemsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MyItemsGridView.EnableHeadersVisualStyles = false;
             this.MyItemsGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -249,8 +227,8 @@ namespace autotrade.CustomElements.Controls {
             // 
             // CountColumn
             // 
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle4;
             this.CountColumn.FillWeight = 40F;
             this.CountColumn.HeaderText = "#";
             this.CountColumn.MinimumWidth = 40;
@@ -283,6 +261,18 @@ namespace autotrade.CustomElements.Controls {
             this.ItemDescriptionGroupBox.TabStop = false;
             this.ItemDescriptionGroupBox.Text = "Item description";
             // 
+            // ItemDescriptionTextBox
+            // 
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
+            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
+            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(273, 142);
+            this.ItemDescriptionTextBox.TabIndex = 11;
+            this.ItemDescriptionTextBox.Text = "";
+            // 
             // ItemNameLable
             // 
             this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -294,7 +284,6 @@ namespace autotrade.CustomElements.Controls {
             // ItemImageBox
             // 
             this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ItemImageBox.BackgroundImage")));
             this.ItemImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ItemImageBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
@@ -322,27 +311,27 @@ namespace autotrade.CustomElements.Controls {
             this.ExtraTradeInfoGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.ExtraTradeInfoGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.ExtraTradeInfoGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ExtraTradeInfoGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ExtraTradeInfoGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.ExtraTradeInfoGridView.ColumnHeadersHeight = 30;
             this.ExtraTradeInfoGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.ExtraTradeInfoGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ParameterColumn,
             this.ValueColumn});
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ExtraTradeInfoGridView.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ExtraTradeInfoGridView.DefaultCellStyle = dataGridViewCellStyle7;
             this.ExtraTradeInfoGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ExtraTradeInfoGridView.EnableHeadersVisualStyles = false;
             this.ExtraTradeInfoGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -389,14 +378,14 @@ namespace autotrade.CustomElements.Controls {
             this.HisItemsGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.HisItemsGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.HisItemsGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.HisItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.HisItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.HisItemsGridView.ColumnHeadersHeight = 30;
             this.HisItemsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.HisItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -404,14 +393,14 @@ namespace autotrade.CustomElements.Controls {
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3,
             this.HidenHisMarketHashNameColumn});
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.HisItemsGridView.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.HisItemsGridView.DefaultCellStyle = dataGridViewCellStyle10;
             this.HisItemsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.HisItemsGridView.EnableHeadersVisualStyles = false;
             this.HisItemsGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -438,8 +427,8 @@ namespace autotrade.CustomElements.Controls {
             // 
             // dataGridViewTextBoxColumn2
             // 
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridViewTextBoxColumn2.FillWeight = 40F;
             this.dataGridViewTextBoxColumn2.HeaderText = "#";
             this.dataGridViewTextBoxColumn2.MinimumWidth = 40;
@@ -461,7 +450,6 @@ namespace autotrade.CustomElements.Controls {
             // 
             // TradeSettingsGroupBox
             // 
-            this.TradeSettingsGroupBox.Controls.Add(this.ActiveOnlyCheckBox);
             this.TradeSettingsGroupBox.Controls.Add(this.DescriptionLanguageComboBox);
             this.TradeSettingsGroupBox.Controls.Add(this.PartnerIdLable);
             this.TradeSettingsGroupBox.Controls.Add(this.RecievedOffersCheckBox);
@@ -470,24 +458,10 @@ namespace autotrade.CustomElements.Controls {
             this.TradeSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.TradeSettingsGroupBox.Location = new System.Drawing.Point(603, 350);
             this.TradeSettingsGroupBox.Name = "TradeSettingsGroupBox";
-            this.TradeSettingsGroupBox.Size = new System.Drawing.Size(279, 133);
+            this.TradeSettingsGroupBox.Size = new System.Drawing.Size(279, 241);
             this.TradeSettingsGroupBox.TabIndex = 31;
             this.TradeSettingsGroupBox.TabStop = false;
             this.TradeSettingsGroupBox.Text = "Trade loading settings";
-            // 
-            // ActiveOnlyCheckBox
-            // 
-            this.ActiveOnlyCheckBox.AutoSize = true;
-            this.ActiveOnlyCheckBox.Checked = true;
-            this.ActiveOnlyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ActiveOnlyCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ActiveOnlyCheckBox.Location = new System.Drawing.Point(13, 59);
-            this.ActiveOnlyCheckBox.Name = "ActiveOnlyCheckBox";
-            this.ActiveOnlyCheckBox.Size = new System.Drawing.Size(91, 20);
-            this.ActiveOnlyCheckBox.TabIndex = 32;
-            this.ActiveOnlyCheckBox.Text = "ActiveOnly";
-            this.ActiveOnlyCheckBox.UseVisualStyleBackColor = true;
-            this.ActiveOnlyCheckBox.CheckedChanged += new System.EventHandler(this.ActiveOnlyCheckBox_CheckedChanged);
             // 
             // DescriptionLanguageComboBox
             // 
@@ -551,38 +525,15 @@ namespace autotrade.CustomElements.Controls {
             this.LoadTradesButton.FlatAppearance.BorderSize = 0;
             this.LoadTradesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadTradesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadTradesButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadTradesButton.Image")));
-            this.LoadTradesButton.Location = new System.Drawing.Point(194, 26);
+            this.LoadTradesButton.Location = new System.Drawing.Point(197, 154);
             this.LoadTradesButton.Name = "LoadTradesButton";
             this.LoadTradesButton.Size = new System.Drawing.Size(76, 81);
             this.LoadTradesButton.TabIndex = 25;
             this.LoadTradesButton.UseVisualStyleBackColor = false;
             this.LoadTradesButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
             // 
-            // TradeofferIdColumn
-            // 
-            this.TradeofferIdColumn.FillWeight = 80F;
-            this.TradeofferIdColumn.HeaderText = "Id";
-            this.TradeofferIdColumn.Name = "TradeofferIdColumn";
-            // 
-            // SenderAccountColumn
-            // 
-            this.SenderAccountColumn.FillWeight = 152.2696F;
-            this.SenderAccountColumn.HeaderText = "Sender";
-            this.SenderAccountColumn.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.SenderAccountColumn.Name = "SenderAccountColumn";
-            this.SenderAccountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.SenderAccountColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // TradeSteteColumn
-            // 
-            this.TradeSteteColumn.FillWeight = 72F;
-            this.TradeSteteColumn.HeaderText = "State";
-            this.TradeSteteColumn.Name = "TradeSteteColumn";
-            // 
             // SplitterPanel
             // 
-            this.SplitterPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SplitterPanel.BackgroundImage")));
             this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SplitterPanel.Location = new System.Drawing.Point(706, 3);
             this.SplitterPanel.Name = "SplitterPanel";
@@ -599,19 +550,7 @@ namespace autotrade.CustomElements.Controls {
             this.AccountNameLable.Text = "Not logged in";
             this.AccountNameLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ItemDescriptionTextBox
-            // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
-            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
-            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(273, 142);
-            this.ItemDescriptionTextBox.TabIndex = 11;
-            this.ItemDescriptionTextBox.Text = "";
-            // 
-            // RecievedTradeManageControl
+            // TradeHistoryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -623,15 +562,13 @@ namespace autotrade.CustomElements.Controls {
             this.Controls.Add(this.ItemDescriptionGroupBox);
             this.Controls.Add(this.ExtraTradeInfoGroupBox);
             this.Controls.Add(this.MyItemsGroupBox);
-            this.Controls.Add(this.SellGroupBox);
             this.Controls.Add(this.CurrentTradesGroupBox);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.Name = "RecievedTradeManageControl";
+            this.Name = "TradeHistoryControl";
             this.Size = new System.Drawing.Size(885, 599);
             this.CurrentTradesGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTradesGridView)).EndInit();
-            this.SellGroupBox.ResumeLayout(false);
             this.MyItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MyItemsGridView)).EndInit();
             this.ItemDescriptionGroupBox.ResumeLayout(false);
@@ -643,21 +580,18 @@ namespace autotrade.CustomElements.Controls {
             this.TradeSettingsGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
-            }
+        }
 
         #endregion
 
         private System.Windows.Forms.GroupBox CurrentTradesGroupBox;
         private System.Windows.Forms.DataGridView CurrentTradesGridView;
-        private System.Windows.Forms.GroupBox SellGroupBox;
         private System.Windows.Forms.GroupBox MyItemsGroupBox;
         private System.Windows.Forms.DataGridView MyItemsGridView;
         private System.Windows.Forms.GroupBox ItemDescriptionGroupBox;
         private RichTextBoxWithNoPaint ItemDescriptionTextBox;
         private System.Windows.Forms.Label ItemNameLable;
         private System.Windows.Forms.Panel ItemImageBox;
-        private System.Windows.Forms.Button DeclineTradeButton;
-        private System.Windows.Forms.Button AcceptTradeButton;
         private System.Windows.Forms.GroupBox ExtraTradeInfoGroupBox;
         private System.Windows.Forms.DataGridView ExtraTradeInfoGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn ParameterColumn;
@@ -674,7 +608,6 @@ namespace autotrade.CustomElements.Controls {
         private System.Windows.Forms.CheckBox SentOffersCheckBox;
         private System.Windows.Forms.Label PartnerIdLable;
         private System.Windows.Forms.ComboBox DescriptionLanguageComboBox;
-        private System.Windows.Forms.CheckBox ActiveOnlyCheckBox;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
@@ -685,5 +618,4 @@ namespace autotrade.CustomElements.Controls {
         private System.Windows.Forms.Panel SplitterPanel;
         private System.Windows.Forms.Label AccountNameLable;
     }
-    }
-
+}

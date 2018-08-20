@@ -180,10 +180,7 @@ namespace autotrade {
                 case "CS:GO": { InventoryContextIdComboBox.Text = "2"; break; }
                 case "PUBG": { InventoryContextIdComboBox.Text = "2"; break; }
             }
-            if (SavedSettings.Get().MARKET_INVENTORY_APP_ID != InventoryAppIdComboBox.Text) {
-                SavedSettings.Get().MARKET_INVENTORY_APP_ID = InventoryAppIdComboBox.Text;
-                SavedSettings.UpdateAll();
-            }
+            SavedSettings.UpdateField(ref SavedSettings.Get().MARKET_INVENTORY_APP_ID, InventoryAppIdComboBox.Text);
         }
 
         private void LoadInventoryButton_Click(object sender, EventArgs e) {
@@ -289,10 +286,7 @@ namespace autotrade {
         }
 
         private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e) {
-            if (SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID != InventoryContextIdComboBox.Text) {
-                SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID = InventoryContextIdComboBox.Text;
-                SavedSettings.UpdateAll();
-            }
+            SavedSettings.UpdateField(ref SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID, InventoryContextIdComboBox.Text);
         }
 
         private void CurrentPricePercentNumericUpDown_ValueChanged(object sender, EventArgs e) {

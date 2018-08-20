@@ -26,17 +26,21 @@
             this.TabControl = new System.Windows.Forms.TabControl();
             this.SendTradeTab = new System.Windows.Forms.TabPage();
             this.TradeControl = new autotrade.CustomElements.TradeSendControl();
-            this.RecievedTradesTab = new System.Windows.Forms.TabPage();
-            this.recievedTradeManageControl1 = new autotrade.CustomElements.Controls.RecievedTradeManageControl();
+            this.ActiveTradesTab = new System.Windows.Forms.TabPage();
+            this.RecievedTradeManageControl = new autotrade.CustomElements.Controls.RecievedTradeManageControl();
+            this.HistoryTradesTab = new System.Windows.Forms.TabPage();
+            this.tradeHistoryControl1 = new autotrade.TradeHistoryControl();
             this.TabControl.SuspendLayout();
             this.SendTradeTab.SuspendLayout();
-            this.RecievedTradesTab.SuspendLayout();
+            this.ActiveTradesTab.SuspendLayout();
+            this.HistoryTradesTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabControl
             // 
             this.TabControl.Controls.Add(this.SendTradeTab);
-            this.TabControl.Controls.Add(this.RecievedTradesTab);
+            this.TabControl.Controls.Add(this.ActiveTradesTab);
+            this.TabControl.Controls.Add(this.HistoryTradesTab);
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControl.Font = new System.Drawing.Font("Impact", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TabControl.ItemSize = new System.Drawing.Size(150, 25);
@@ -69,25 +73,46 @@
             this.TradeControl.Size = new System.Drawing.Size(885, 599);
             this.TradeControl.TabIndex = 0;
             // 
-            // RecievedTradesTab
+            // ActiveTradesTab
             // 
-            this.RecievedTradesTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
-            this.RecievedTradesTab.Controls.Add(this.recievedTradeManageControl1);
-            this.RecievedTradesTab.Location = new System.Drawing.Point(4, 29);
-            this.RecievedTradesTab.Name = "RecievedTradesTab";
-            this.RecievedTradesTab.Size = new System.Drawing.Size(886, 599);
-            this.RecievedTradesTab.TabIndex = 1;
-            this.RecievedTradesTab.Text = "Recieved";
+            this.ActiveTradesTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
+            this.ActiveTradesTab.Controls.Add(this.RecievedTradeManageControl);
+            this.ActiveTradesTab.Location = new System.Drawing.Point(4, 29);
+            this.ActiveTradesTab.Name = "ActiveTradesTab";
+            this.ActiveTradesTab.Size = new System.Drawing.Size(886, 599);
+            this.ActiveTradesTab.TabIndex = 1;
+            this.ActiveTradesTab.Text = "Active";
+            this.ActiveTradesTab.UseVisualStyleBackColor = true;
             // 
-            // recievedTradeManageControl1
+            // RecievedTradeManageControl
             // 
-            this.recievedTradeManageControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.recievedTradeManageControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.recievedTradeManageControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.recievedTradeManageControl1.Location = new System.Drawing.Point(0, 0);
-            this.recievedTradeManageControl1.Name = "recievedTradeManageControl1";
-            this.recievedTradeManageControl1.Size = new System.Drawing.Size(885, 599);
-            this.recievedTradeManageControl1.TabIndex = 0;
+            this.RecievedTradeManageControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.RecievedTradeManageControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.RecievedTradeManageControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.RecievedTradeManageControl.Location = new System.Drawing.Point(0, 0);
+            this.RecievedTradeManageControl.Name = "RecievedTradeManageControl";
+            this.RecievedTradeManageControl.Size = new System.Drawing.Size(885, 599);
+            this.RecievedTradeManageControl.TabIndex = 0;
+            // 
+            // HistoryTradesTab
+            // 
+            this.HistoryTradesTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
+            this.HistoryTradesTab.Controls.Add(this.tradeHistoryControl1);
+            this.HistoryTradesTab.Location = new System.Drawing.Point(4, 29);
+            this.HistoryTradesTab.Name = "HistoryTradesTab";
+            this.HistoryTradesTab.Size = new System.Drawing.Size(886, 599);
+            this.HistoryTradesTab.TabIndex = 2;
+            this.HistoryTradesTab.Text = "History";
+            // 
+            // tradeHistoryControl1
+            // 
+            this.tradeHistoryControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.tradeHistoryControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tradeHistoryControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.tradeHistoryControl1.Location = new System.Drawing.Point(0, 0);
+            this.tradeHistoryControl1.Name = "tradeHistoryControl1";
+            this.tradeHistoryControl1.Size = new System.Drawing.Size(885, 599);
+            this.tradeHistoryControl1.TabIndex = 0;
             // 
             // TradeControlTab
             // 
@@ -99,7 +124,8 @@
             this.Size = new System.Drawing.Size(894, 632);
             this.TabControl.ResumeLayout(false);
             this.SendTradeTab.ResumeLayout(false);
-            this.RecievedTradesTab.ResumeLayout(false);
+            this.ActiveTradesTab.ResumeLayout(false);
+            this.HistoryTradesTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -108,7 +134,9 @@
         private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.TabPage SendTradeTab;
         public TradeSendControl TradeControl;
-        private System.Windows.Forms.TabPage RecievedTradesTab;
-        private Controls.RecievedTradeManageControl recievedTradeManageControl1;
+        private System.Windows.Forms.TabPage ActiveTradesTab;
+        public Controls.RecievedTradeManageControl RecievedTradeManageControl;
+        private System.Windows.Forms.TabPage HistoryTradesTab;
+        private TradeHistoryControl tradeHistoryControl1;
     }
 }

@@ -21,7 +21,13 @@ namespace autotrade.CustomElements {
 
         public GeneralSettingsControl() {
             InitializeComponent();
-            LoggingLevelComboBox.SelectedIndex = SavedSettings.Get().SETTINGS_LOGGER_LEVEL;
+
+            SavedSettings settings = SavedSettings.Get();
+
+            LoggingLevelComboBox.SelectedIndex = settings.SETTINGS_LOGGER_LEVEL;
+            AveragePriceDaysNumericUpDown.Value = settings.SETTINGS_AVERAGE_PRICE_PARSE_DAYS;
+            AverageCacheNumericUpDown.Value = settings.SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE;
+            CurrentCacheNumericUpDown.Value = settings.SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE;
 
             if (File.Exists(SettingsContainer.ACCOUNTS_FILE_PATH)) {
                 var accounts = SavedSteamAccount.Get();
@@ -210,6 +216,7 @@ namespace autotrade.CustomElements {
                     CurrentSession.AccountImage = image;
                     Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
                     Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
+                    Program.MainForm.TradeControlTab.RecievedTradeManageControl.AuthCurrentAccount();
                     Logger.Info($"Steam authentication for {login} successful");
                     LoginButton.Enabled = true;
                 });
@@ -228,14 +235,23 @@ namespace autotrade.CustomElements {
             }
             Logger.LOGGER_LEVEL = level;
 
-            if (SavedSettings.Get().SETTINGS_LOGGER_LEVEL != LoggingLevelComboBox.SelectedIndex) {
-                SavedSettings.Get().SETTINGS_LOGGER_LEVEL = LoggingLevelComboBox.SelectedIndex;
-                SavedSettings.UpdateAll();
-            }
+            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_LOGGER_LEVEL, LoggingLevelComboBox.SelectedIndex);
         }
 
         private void SteamApiLinkLable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             System.Diagnostics.Process.Start("https://steamcommunity.com/dev/apikey");
+        }
+
+        private void AveragePriceDaysNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_AVERAGE_PRICE_PARSE_DAYS, (int)AveragePriceDaysNumericUpDown.Value);
+        }
+
+        private void AverageCacheNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE, (int)AverageCacheNumericUpDown.Value);
+        }
+
+        private void CurrentCacheNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE, (int)CurrentCacheNumericUpDown.Value);
         }
     }
 }

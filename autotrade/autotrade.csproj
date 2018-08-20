@@ -160,6 +160,12 @@
     <Compile Include="CustomElements\Forms\LoadingForm.Designer.cs">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomElements\Controls\Trade\TradeHistoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomElements\Controls\Trade\TradeHistoryControl.Designer.cs">
+      <DependentUpon>TradeHistoryControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="WorkingProcess\MarketPriceFormation\ChangeValueType.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\ItemsForSale.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\PriceShaper.cs" />
@@ -316,6 +322,10 @@
     </Compile>
     <EmbeddedResource Include="CustomElements\Controls\Market\MarketSellControl.resx">
       <DependentUpon>MarketSellControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomElements\Controls\Trade\TradeHistoryControl.resx">
+      <DependentUpon>TradeHistoryControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

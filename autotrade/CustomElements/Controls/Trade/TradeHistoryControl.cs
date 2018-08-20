@@ -7,23 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using autotrade.Steam.TradeOffer;
-using static autotrade.Steam.TradeOffer.Inventory;
-using autotrade.Utils;
 using autotrade.CustomElements.Utils;
-using autotrade.WorkingProcess;
+using autotrade.Steam.TradeOffer;
+using autotrade.Utils;
 using SteamKit2;
+using autotrade.WorkingProcess;
 using autotrade.WorkingProcess.Settings;
 
-namespace autotrade.CustomElements.Controls {
-    public partial class RecievedTradeManageControl : UserControl {
-        public RecievedTradeManageControl() {
+namespace autotrade {
+    public partial class TradeHistoryControl : UserControl {
+        public TradeHistoryControl() {
             InitializeComponent();
 
-            var settings = SavedSettings.Get();
+            var settings = SavedSettings.Get(); //todo
             SentOffersCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_SENT;
             RecievedOffersCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_RECIEVED;
-            ActiveOnlyCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_ACTIVE_ONLY;
             DescriptionLanguageComboBox.Text = settings.ACTIVE_TRADES_DESCRIPTION_LANGUAGE;
         }
 
@@ -38,7 +36,7 @@ namespace autotrade.CustomElements.Controls {
 
         private void LoadInventoryButton_Click(object sender, EventArgs e) {
             if (CurrentSession.SteamManager == null) {
-                MessageBox.Show("You should login first", "Error trades loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You should login first", "Error trades history loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Error("Error on trades history loading. No logined account found.");
                 return;
             }
@@ -46,14 +44,12 @@ namespace autotrade.CustomElements.Controls {
             bool sentOffers = SentOffersCheckBox.Checked;
             bool recievedOffers = RecievedOffersCheckBox.Checked;
             if (!sentOffers && !recievedOffers) {
-                MessageBox.Show("You should select at least one type of offers to load (Recieved/Sent)", "Error trades loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You should select at least one type of offers to load (Recieved/Sent)", "Error trades history loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Error("Error on trades history loading. No trades type selected.");
                 return;
             }
 
             GridUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
-            LoadTradesButton.Enabled = false;
-            bool activeOnly = ActiveOnlyCheckBox.Checked;
 
             string language = DescriptionLanguageComboBox.Text;
             if (language == null) {
@@ -62,22 +58,22 @@ namespace autotrade.CustomElements.Controls {
 
             Task.Run(() => {
                 ALL_TRADES.Clear();
-                Program.LoadingForm.InitCurrentTradesLoadingProcess(sentOffers, recievedOffers, true, activeOnly, false, language: language);
-                List<FullTradeOffer> fullTradeOffers = Program.LoadingForm.GetLoadedCurrentTrades();
+                Program.LoadingForm.InitTradesHistoryLoadingProcess(sentOffers, recievedOffers, language: language);
+                List<FullTradeOffer> fullTradeOffers = Program.LoadingForm.GetLoadedTradesHistory();
                 Program.LoadingForm.Disactivate();
 
-                foreach (var trade in fullTradeOffers) {
-                    ALL_TRADES.Add(trade.Offers.TradeOfferId, trade);
+                Dispatcher.Invoke(Program.MainForm, () => {
+                    foreach (var trade in fullTradeOffers) {
+                        ALL_TRADES.Add(trade.Offers.TradeOfferId, trade);
 
-                    Dispatcher.Invoke(Program.MainForm, () => {
                         CurrentTradesGridView.Rows.Add(
                             trade.Offers.TradeOfferId,
                             new SteamID((uint)trade.Offers.AccountIdOther, EUniverse.Public, EAccountType.Individual).ConvertToUInt64(),
                             trade.Offers.TradeOfferState.ToString().Replace("TradeOfferState", "")
                         );
-                        LoadTradesButton.Enabled = true;
-                    });
-                }
+                    }
+                    LoadTradesButton.Enabled = true;
+                });
             });
 
         }
@@ -233,10 +229,6 @@ namespace autotrade.CustomElements.Controls {
 
         private void RecievedOffersCheckBox_CheckedChanged(object sender, EventArgs e) {
             SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_LOAD_RECIEVED, RecievedOffersCheckBox.Checked);
-        }
-
-        private void ActiveOnlyCheckBox_CheckedChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_LOAD_ACTIVE_ONLY, ActiveOnlyCheckBox.Checked);
         }
     }
 }

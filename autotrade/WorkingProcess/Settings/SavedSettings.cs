@@ -6,27 +6,55 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace autotrade.WorkingProcess.Settings {
     class SavedSettings {
         private static SavedSettings cached = null;
 
-        public int SETTINGS_LOGGER_LEVEL { get; set; } = 0;
-        public int SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE { get; set; } = 1;
-        public int SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE { get; set; } = 12;
+        public int SETTINGS_LOGGER_LEVEL = 0;
+        public int SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE = 1;
+        public int SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE = 12;
+        public int SETTINGS_AVERAGE_PRICE_PARSE_DAYS = 7;
 
-        public string MARKET_INVENTORY_APP_ID { get; set; } = "";
-        public string MARKET_INVENTORY_CONTEX_ID { get; set; } = "";
-        public string MARKET_CURRENT_PRICE_MINUS_VALUE { get; set; } = "";
-        public string MARKET_CURRENT_PRICE_MINUS_PERCENT { get; set; } = "";
+        public string MARKET_INVENTORY_APP_ID = "";
+        public string MARKET_INVENTORY_CONTEX_ID = "";
+        public string MARKET_CURRENT_PRICE_MINUS_VALUE = "";
+        public string MARKET_CURRENT_PRICE_MINUS_PERCENT = "";
 
-        public string TRADE_INVENTORY_APP_ID { get; set; } = "";
-        public string TRADE_INVENTORY_CONTEX_ID { get; set; } = "";
-        public string TRADE_CURRENT_PRICE_MINUS_VALUE { get; set; } = "";
-        public string TRADE_CURRENT_PRICE_MINUS_PERCENT { get; set; } = "";
-        public string TRADE_TOKEN { get; set; } = "";
-        public string TRADE_PARTNER_ID { get; set; } = "";
+        public string TRADE_INVENTORY_APP_ID = "";
+        public string TRADE_INVENTORY_CONTEX_ID = "";
+        public string TRADE_CURRENT_PRICE_MINUS_VALUE = "";
+        public string TRADE_CURRENT_PRICE_MINUS_PERCENT = "";
+        public string TRADE_TOKEN = "";
+        public string TRADE_PARTNER_ID = "";
+
+        public string ACTIVE_TRADES_DESCRIPTION_LANGUAGE = "";
+        public bool ACTIVE_TRADES_LOAD_RECIEVED = true;
+        public bool ACTIVE_TRADES_LOAD_SENT = true;
+        public bool ACTIVE_TRADES_LOAD_ACTIVE_ONLY = true;
+
+        public static void UpdateField(ref string fieldToUpdate, string newValue) {
+            if (fieldToUpdate != newValue) {
+                fieldToUpdate = newValue;
+                UpdateAll();
+            }
+        }
+
+        public static void UpdateField(ref bool fieldToUpdate, bool newValue) {
+            if (fieldToUpdate != newValue) {
+                fieldToUpdate = newValue;
+                UpdateAll();
+            }
+        }
+
+        public static void UpdateField(ref int fieldToUpdate, int newValue) {
+            if (fieldToUpdate != newValue) {
+                fieldToUpdate = newValue;
+                UpdateAll();
+            }
+        }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static SavedSettings Get() {
@@ -41,11 +69,26 @@ namespace autotrade.WorkingProcess.Settings {
             return cached;
         }
 
+        private static void UpdateAll() {
+            SettingsUpdater.UpdateSettings();
+        }
+    }
+
+    class SettingsUpdater {
+        private static bool IsPending = false;
+
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void UpdateAll() {
-            try {
-                File.WriteAllText(SettingsContainer.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(cached, Formatting.Indented));
-            } finally { };
+        public static void UpdateSettings() {
+            if (IsPending) return;
+            IsPending = true;
+
+            Task.Run(() => {
+                Thread.Sleep(5000);
+                try {
+                    File.WriteAllText(SettingsContainer.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(SavedSettings.Get(), Formatting.Indented));
+                } finally { };
+                IsPending = false;
+            });
         }
     }
 }
