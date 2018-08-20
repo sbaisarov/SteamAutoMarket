@@ -56,8 +56,12 @@ namespace autotrade.Steam.TradeOffer {
                 throw new ArgumentException("getSentOffers and getReceivedOffers can't be both false");
             }
 
-            string options = string.Format("?key={0}&get_sent_offers={1}&get_received_offers={2}&get_descriptions={3}&language={4}&active_only={5}&historical_only={6}&time_historical_cutoff={7}",
-                apiKey, BoolConverter(getSentOffers), BoolConverter(getReceivedOffers), BoolConverter(getDescriptions), language, BoolConverter(activeOnly), BoolConverter(historicalOnly), timeHistoricalCutoff);
+            string options = string.Format("?key={0}&get_sent_offers={1}&get_received_offers={2}&get_descriptions={3}&language={4}&active_only={5}&historical_only={6}",
+                apiKey, BoolConverter(getSentOffers), BoolConverter(getReceivedOffers), BoolConverter(getDescriptions), language, BoolConverter(activeOnly), BoolConverter(historicalOnly));
+
+            if (timeHistoricalCutoff != "1389106496") options += $"&time_historical_cutoff={timeHistoricalCutoff}";
+
+
             string url = String.Format(BaseUrl, "GetTradeOffers", "v1", options);
             string response = SteamWeb.Request(url, "GET", data: null);
             try {

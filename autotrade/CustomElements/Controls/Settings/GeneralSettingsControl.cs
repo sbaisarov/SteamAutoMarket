@@ -214,9 +214,12 @@ namespace autotrade.CustomElements {
                 }
                 Dispatcher.Invoke(Program.MainForm, () => {
                     CurrentSession.AccountImage = image;
+
                     Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
                     Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
                     Program.MainForm.TradeControlTab.RecievedTradeManageControl.AuthCurrentAccount();
+                    Program.MainForm.TradeControlTab.TradeHistoryControl.AuthCurrentAccount();
+
                     Logger.Info($"Steam authentication for {login} successful");
                     LoginButton.Enabled = true;
                 });

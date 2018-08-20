@@ -62,7 +62,7 @@ namespace autotrade.CustomElements.Controls {
 
             Task.Run(() => {
                 ALL_TRADES.Clear();
-                Program.LoadingForm.InitCurrentTradesLoadingProcess(sentOffers, recievedOffers, true, activeOnly, false, language: language);
+                Program.LoadingForm.InitCurrentTradesLoadingProcess(sentOffers, recievedOffers, activeOnly, language);
                 List<FullTradeOffer> fullTradeOffers = Program.LoadingForm.GetLoadedCurrentTrades();
                 Program.LoadingForm.Disactivate();
 

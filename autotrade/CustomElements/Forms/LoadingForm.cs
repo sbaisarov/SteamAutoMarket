@@ -92,18 +92,18 @@ namespace autotrade {
         #region Current Trades
         private List<FullTradeOffer> currentTrades;
 
-        public void InitCurrentTradesLoadingProcess(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, bool activeOnly, bool historicalOnly, string language) {
+        public void InitCurrentTradesLoadingProcess(bool getSentOffers, bool getReceivedOffers, bool activeOnly, string language) {
             this.Text = $"Trade history loading";
             Activate();
             workingThread = new Thread(() => {
-                LoadCurrentTradeOffers(getSentOffers, getReceivedOffers, getDescriptions, activeOnly, historicalOnly, language);
+                LoadCurrentTradeOffers(getSentOffers, getReceivedOffers, activeOnly, language);
             });
             workingThread.Start();
         }
-        public void LoadCurrentTradeOffers(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, bool activeOnly, bool historicalOnly, string language) {
+        public void LoadCurrentTradeOffers(bool getSentOffers, bool getReceivedOffers, bool activeOnly, string language) {
             List<FullTradeOffer> tradesList = new List<FullTradeOffer>();
 
-            var response = CurrentSession.SteamManager.TradeOfferWeb.GetTradeOffers(getSentOffers, getReceivedOffers, getDescriptions, activeOnly, historicalOnly, language: language);
+            var response = CurrentSession.SteamManager.TradeOfferWeb.GetTradeOffers(getSentOffers, getReceivedOffers, true, activeOnly, false, language: language);
             Program.LoadingForm.SetTotalItemsCount(response.AllOffers.Count(), response.AllOffers.Count(), "Total trades count");
 
             foreach (var trade in response.AllOffers) {
