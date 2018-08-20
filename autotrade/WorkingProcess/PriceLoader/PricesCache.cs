@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.WorkingProcess.PriceLoader {
-    class PricesCash {
+    class PricesCache {
         private Dictionary<string, LoadedItemPrice> CACHE;
         private readonly string CACHE_PRICES_PATH;
         private int HOURS_TO_BECOME_OLD;
+        private int Counter = 0;
         private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat };
 
-        public PricesCash(string filePath, int hoursToBecomeOld) {
+        public PricesCache(string filePath, int hoursToBecomeOld) {
             CACHE_PRICES_PATH = filePath;
             HOURS_TO_BECOME_OLD = hoursToBecomeOld;
         }
@@ -46,20 +47,26 @@ namespace autotrade.WorkingProcess.PriceLoader {
         }
 
         public void Cache(string hashName, double price) {
-            if (price == 0 || price == Double.NaN) return;
+            if (Math.Abs(price) < 0.000001 || double.IsNaN(price)) return;
             Get()[hashName] = new LoadedItemPrice(DateTime.Now, price);
             UpdateAll();
         }
 
         public void Uncache(string hashName) {
             Get().Remove(hashName);
+            Counter += 1;
             UpdateAll();
         }
 
-
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateAll() {
-            File.WriteAllText(CACHE_PRICES_PATH, JsonConvert.SerializeObject(Get(), Formatting.Indented, _jsonSettings));
+        private void UpdateAll()
+        {
+            Counter += 1;
+            if (Counter == 10)
+            {
+                File.WriteAllText(CACHE_PRICES_PATH, JsonConvert.SerializeObject(Get(), Formatting.Indented, _jsonSettings));
+                Counter = 0;
+            }
         }
 
         private bool IsOld(LoadedItemPrice item) {

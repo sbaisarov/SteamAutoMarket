@@ -645,6 +645,13 @@ namespace Market.Interface {
             return JsonConvert.DeserializeObject<JSellItem>(resp);
         }
 
+        public Task<List<PriceHistoryDay>> PriceHistoryAsync(int appid, string hashName)
+        {
+            var result = new Task<List<PriceHistoryDay>>(() => PriceHistory(appid, hashName));
+            result.Start();
+            return result;
+        }
+
         public List<PriceHistoryDay> PriceHistory(int appId, string hashName) {
             var url = Urls.Market + $"/pricehistory/?appid={appId}&market_hash_name={hashName}";
 
@@ -653,7 +660,7 @@ namespace Market.Interface {
             var respDes = JsonConvert.DeserializeObject<JPriceHistory>(resp.Data.Content);
 
             if (!respDes.Success)
-                throw new SteamException($"Connot get price history for [{hashName}]");
+                throw new SteamException($"Cannot get price history for [{hashName}]");
 
             IEnumerable<dynamic> prices = Enumerable.ToList(respDes.Prices);
 

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using System.IO;
 using System.Net;
 using SteamAuth;
 using Market;
@@ -15,17 +11,16 @@ using Market.Models;
 using Market.Models.Json;
 using Market.Exceptions;
 using System.Threading;
-using System.Web.UI.WebControls.WebParts;
-using System.Windows.Forms;
+using System.Web.Caching;
 using SteamKit2;
 using autotrade.Steam.TradeOffer;
-using autotrade.CustomElements;
 using Market.Interface;
 using autotrade.Steam.Market;
 using autotrade.Utils;
-using autotrade.WorkingProcess.Settings;
+ using autotrade.WorkingProcess;
+ using autotrade.WorkingProcess.Settings;
 using autotrade.WorkingProcess.MarketPriceFormation;
-using autotrade.WorkingProcess;
+using autotrade.WorkingProcess.PriceLoader;
 
 namespace autotrade.Steam {
     public class SteamManager {
@@ -98,15 +93,35 @@ namespace autotrade.Steam {
         public void SellOnMarket(ToSaleObject items) {
             int index = 1;
             int total = items.ItemsForSaleList.Sum(x => x.Items.Count());
+            PricesCache cache = null;
+            if (items.MarketSaleType == MarketSaleType.LOWER_THAN_AVERAGE)
+            {
+                cache = PriceLoader.AVERAGE_PRICES_CACHE;
+            }
+            else if (items.MarketSaleType == MarketSaleType.LOWER_THAN_CURRENT)
+            {
+                cache = PriceLoader.CURRENT_PRICES_CACHE;
+            }
             string itemName;
-
             foreach (var package in items.ItemsForSaleList) {
                 itemName = package.Items.First().Description.name;
+                if (!package.Price.HasValue && cache != null)
+                {
+                    LoadedItemPrice itemPrice = cache.Get(package.Items.First());
+                    if (itemPrice != null)
+                    {
+                        package.Price = itemPrice.Price;
+                    }
+                    else
+                    {
+                        // double price = get price
+                        //cache.Cache(itemName, price);
+                        //package.Price = price;
+                    }
+                }
+
                 foreach (var item in package.Items) {
                     Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Selling {itemName} for {package.Price}");
-                    if (!package.Price.HasValue) {
-                        //todo ВОТ ТУТ НУЖНО ПОЛУЧИТЬ ЕГО ЕСЛИ ЕГО НЕТ
-                    }
                     SellOnMarket(item, package.Price.Value);
                     index++;
                 }
@@ -157,7 +172,7 @@ namespace autotrade.Steam {
             }
         }
 
-        public void GetCurrentPrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description) {
+        public async Task<double?> GetCurrentPrice(Inventory.RgInventory asset, Inventory.RgDescription description) {
             MarketItemInfo itemPageInfo = MarketInfoCache.Get(asset.appid, description.market_hash_name);
 
             if (itemPageInfo == null) {
@@ -165,13 +180,14 @@ namespace autotrade.Steam {
                 MarketInfoCache.Cache(asset.appid, description.market_hash_name, itemPageInfo);
             }
 
-            ItemOrdersHistogram histogram = MarketClient.ItemOrdersHistogram(
+            ItemOrdersHistogram histogram = await MarketClient.ItemOrdersHistogramAsync(
                             itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
-            price = histogram.MinSellPrice as double?;
+            double? price = histogram.MinSellPrice;
             if (price is null) {
                 Utils.Logger.Warning($"Error on geting current price of ${description.market_hash_name}");
-                price = null;
             }
+
+            return price;
         }
 
         private double CountAveragePrice(List<PriceHistoryDay> history) {

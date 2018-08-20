@@ -11,8 +11,8 @@ using System.Windows.Forms;
 using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.CustomElements {
-    class AllItemsListGridUtils {
-
+    static class AllItemsListGridUtils {
+        
         public static DataGridViewRow GetRowByItemMarketHashName(DataGridView allItemsGrid, string marketHashName) {
             for (int i = 0; i < allItemsGrid.RowCount; i++) {
                 var hidenMarketHashNameCell = GetGridHidenItemMarketHashNameCell(allItemsGrid, i);

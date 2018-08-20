@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.CustomElements {
-    class ItemsToSaleGridUtils {
+    static class ItemsToSaleGridUtils {
 
         public static void CellClick(DataGridView itemsToSaleGrid, int row) {
             var cell = GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, row);

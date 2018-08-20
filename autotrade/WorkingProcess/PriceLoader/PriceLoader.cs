@@ -1,19 +1,23 @@
-﻿using autotrade.CustomElements;
+﻿﻿using autotrade.CustomElements;
 using autotrade.WorkingProcess.Settings;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using autotrade.CustomElements.Utils;
+using Accord;
 using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.WorkingProcess.PriceLoader {
     class PriceLoader {
         private static bool IS_FORCED = false;
 
-        public static PricesCash CURRENT_PRICES_CACHE;
-        public static PricesCash AVERAGE_PRICES_CACHE;
+        public static PricesCache CURRENT_PRICES_CACHE;
+        public static PricesCache AVERAGE_PRICES_CACHE;
 
         private static DataGridView ALL_ITEMS_GRID;
         private static DataGridView ITEMS_TO_SALE_GRID;
@@ -33,16 +37,16 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 {
                     WorkerSupportsCancellation = true
                 };
-                ALL_ITEMS_WORKING_THREAD.DoWork += LoadAllItemsToSalePrices;
+                ALL_ITEMS_WORKING_THREAD.DoWork += async (o, e) => await LoadAllItemsToSalePrices(o, e);
 
                 ITEMS_TO_SALE_WORKING_THREAD = new BackgroundWorker
                 {
                     WorkerSupportsCancellation = true
                 };
-                ITEMS_TO_SALE_WORKING_THREAD.DoWork += LoadItemsToSalePrices;
+                ITEMS_TO_SALE_WORKING_THREAD.DoWork += async (o, e) => await LoadAllItemsToSalePrices(o, e);
 
-                if (CURRENT_PRICES_CACHE == null) CURRENT_PRICES_CACHE = new PricesCash("current_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE);
-                if (AVERAGE_PRICES_CACHE == null) AVERAGE_PRICES_CACHE = new PricesCash("average_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE);
+                if (CURRENT_PRICES_CACHE == null) CURRENT_PRICES_CACHE = new PricesCache("current_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE);
+                if (AVERAGE_PRICES_CACHE == null) AVERAGE_PRICES_CACHE = new PricesCache("average_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE);
             }
         }
 
@@ -108,35 +112,48 @@ namespace autotrade.WorkingProcess.PriceLoader {
         }
 
         #region ALL ITEMS
-        private static void LoadAllItemsToSalePrices(object sender, DoWorkEventArgs ev) {
+        private static async Task LoadAllItemsToSalePrices(object sender, DoWorkEventArgs ev) {
             var rows = GetAllItemsRowsWithNoPrice();
-            foreach (var row in rows) {
-                try {
-                    var currentPriceCell = AllItemsListGridUtils.GetGridCurrentPriceTextBoxCell(ALL_ITEMS_GRID, row.Index);
-                    var averagePriceCell = AllItemsListGridUtils.GetGridAveragePriceTextBoxCell(ALL_ITEMS_GRID, row.Index);
-
-                    var prices = GetAllItemsRowPrice(row);
-
-                    double? currentPrice = prices.Item1;
-                    if (currentPrice != -1) {
-                        currentPriceCell.Value = currentPrice;
-                    }
-
-                    //todo
-                    double? averagePrice = prices.Item2;
-                    if (averagePrice != -1) {
-                        averagePriceCell.Value = averagePrice;
-                    }
-
-                } catch (Exception e) {
-                    Utils.Logger.Warning("Error on parsing item price", e);
-                }
-                WaitFor_AllItemThreadShouldWait();
+            var tasks = new List<Task>();
+            foreach (var row in rows)
+            {
+                tasks.Add(SetAllItemsListGridValues(row));
             }
 
+            await Task.WhenAll(tasks);
             Thread.Sleep(1000);
             rows = GetItemsToSaleRowsWithNoPrice();
-            if (rows.Count() != 0) LoadItemsToSalePrices(sender, ev);
+            if (rows.Count() != 0) await LoadItemsToSalePrices(sender, ev);
+        }
+
+        private static async Task SetAllItemsListGridValues(DataGridViewRow row)
+        {
+            try
+            {
+                var currentPriceCell = AllItemsListGridUtils.GetGridCurrentPriceTextBoxCell(ALL_ITEMS_GRID, row.Index);
+                var averagePriceCell = AllItemsListGridUtils.GetGridAveragePriceTextBoxCell(ALL_ITEMS_GRID, row.Index);
+
+                var prices = await GetAllItemsRowPrice(row);
+
+                double? currentPrice = prices.Item1;
+                if (currentPrice != -1)
+                {
+                    currentPriceCell.Value = currentPrice;
+                }
+
+                //todo
+                double? averagePrice = prices.Item2;
+                if (averagePrice != -1)
+                {
+                    averagePriceCell.Value = averagePrice;
+                }
+            }
+            catch (Exception e)
+            {
+                Utils.Logger.Warning("Error on parsing item price", e);
+            }
+
+            WaitFor_AllItemThreadShouldWait();
         }
 
         private static IEnumerable<DataGridViewRow> GetAllItemsRowsWithNoPrice() {
@@ -148,7 +165,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 );
         }
 
-        private static Tuple<double?, double?> GetAllItemsRowPrice(DataGridViewRow row) {
+        private static async Task<Tuple<double?, double?>> GetAllItemsRowPrice(DataGridViewRow row) {
             RgFullItem item = new RgFullItem();
             try {
                 var itemsCell = AllItemsListGridUtils.GetGridHidenItemsListCell(ALL_ITEMS_GRID, row.Index);
@@ -166,8 +183,8 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 }
 
                 if (currentPrice == null) {
-                    CurrentSession.SteamManager.GetCurrentPrice(out currentPrice, item.Asset, item.Description);
-                    if (currentPrice != null && currentPrice != 0) {
+                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
+                    if (currentPrice != null && Math.Abs((double) currentPrice) < 0.0000001) {
                         CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, currentPrice.Value);
                     }
                 }
@@ -182,7 +199,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
 
                 if (averagePrice == null) {
                     CurrentSession.SteamManager.GetAveragePrice(out averagePrice, item.Asset, item.Description);
-                    if (averagePrice != null && averagePrice != 0) {
+                    if (averagePrice != null && Math.Abs((double) averagePrice) < 0.0000001) {
                         AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
                     }
                 }
@@ -196,38 +213,52 @@ namespace autotrade.WorkingProcess.PriceLoader {
         #endregion
 
         #region ITEMS TO SALE
-        private static void LoadItemsToSalePrices(object sender, DoWorkEventArgs ev) {
+        private static async Task LoadItemsToSalePrices(object sender, DoWorkEventArgs ev) {
             var rows = GetItemsToSaleRowsWithNoPrice();
-            foreach (var row in rows) {
-                try {
-                    var currentPriceCell = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
-                    var averagePriceCell = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
-
-
-                    var prices = GetItemsToSaleRowPrice(row);
-
-                    double? currentPrice = prices.Item1;
-                    if (currentPrice != -1) {
-                        currentPriceCell.Value = currentPrice;
-                    }
-
-                    double? averagePrice = prices.Item2;
-                    if (averagePrice != -1) {
-                        averagePriceCell.Value = averagePrice;
-                    }
-                } catch (Exception e) {
-                    Utils.Logger.Warning("Error on parsing item price", e);
-                }
+            var tasks = new List<Task>();
+            foreach (var row in rows)
+            {
+                tasks.Add(SetRowCurrentPrices(row));
             }
+
+            await Task.WhenAll(tasks);
 
             Thread.Sleep(1000);
             rows = GetItemsToSaleRowsWithNoPrice();
             if (rows.Count() != 0) {
-                LoadItemsToSalePrices(sender, ev);
+                await LoadItemsToSalePrices(sender, ev);
             } else {
                 AllItemThreadShouldWait = false;
             }
 
+        }
+
+        private static async Task SetRowCurrentPrices(DataGridViewRow row)
+        {
+            try
+            {
+                var currentPriceCell = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
+                var averagePriceCell = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(ITEMS_TO_SALE_GRID, row.Index);
+
+
+                var prices = await GetItemsToSaleRowPrice(row);
+
+                double? currentPrice = prices.Item1;
+                if (currentPrice != -1)
+                {
+                    currentPriceCell.Value = currentPrice;
+                }
+
+                double? averagePrice = prices.Item2;
+                if (averagePrice != -1)
+                {
+                    averagePriceCell.Value = averagePrice;
+                }
+            }
+            catch (Exception e)
+            {
+                Utils.Logger.Warning("Error on parsing item price", e);
+            }
         }
 
         private static IEnumerable<DataGridViewRow> GetItemsToSaleRowsWithNoPrice() {
@@ -240,7 +271,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 );
         }
 
-        private static Tuple<double?, double?> GetItemsToSaleRowPrice(DataGridViewRow row) {
+        private static async Task<Tuple<double?, double?>> GetItemsToSaleRowPrice(DataGridViewRow row) {
             RgFullItem item = new RgFullItem();
             try {
                 var itemsCell = ItemsToSaleGridUtils.GetGridHidenItemsListCell(ITEMS_TO_SALE_GRID, row.Index);
@@ -258,7 +289,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 }
 
                 if (currentPrice == null) {
-                    CurrentSession.SteamManager.GetCurrentPrice(out currentPrice, item.Asset, item.Description);
+                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
                     if (currentPrice != null && currentPrice != 0) {
                         CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, currentPrice.Value);
                     }
