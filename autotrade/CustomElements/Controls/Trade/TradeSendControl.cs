@@ -250,10 +250,7 @@ namespace autotrade.CustomElements {
         }
 
         private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e) {
-            if (SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID != InventoryContextIdComboBox.Text) {
-                SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID = InventoryContextIdComboBox.Text;
-                SavedSettings.UpdateAll();
-            }
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID, InventoryContextIdComboBox.Text);
         }
 
         private void InventoryAppIdComboBox_TextChanged(object sender, EventArgs e) {
@@ -263,24 +260,15 @@ namespace autotrade.CustomElements {
                 case "CS:GO": { InventoryContextIdComboBox.Text = "2"; break; }
                 case "PUBG": { InventoryContextIdComboBox.Text = "2"; break; }
             }
-            if (SavedSettings.Get().TRADE_INVENTORY_APP_ID != InventoryAppIdComboBox.Text) {
-                SavedSettings.Get().TRADE_INVENTORY_APP_ID = InventoryAppIdComboBox.Text;
-                SavedSettings.UpdateAll();
-            }
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_INVENTORY_APP_ID, InventoryAppIdComboBox.Text);
         }
 
         private void TradeParthenIdTextBox_TextChanged(object sender, EventArgs e) {
-            if (SavedSettings.Get().TRADE_PARTNER_ID != TradeParthenIdTextBox.Text) {
-                SavedSettings.Get().TRADE_PARTNER_ID = TradeParthenIdTextBox.Text;
-                SavedSettings.UpdateAll();
-            }
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_PARTNER_ID, TradeParthenIdTextBox.Text);
         }
 
         private void TradeTokenTextBox_TextChanged(object sender, EventArgs e) {
-            if (SavedSettings.Get().TRADE_TOKEN != TradeTokenTextBox.Text) {
-                SavedSettings.Get().TRADE_TOKEN = TradeTokenTextBox.Text;
-                SavedSettings.UpdateAll();
-            }
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_TOKEN, TradeTokenTextBox.Text);
         }
 
         private void ItemsToTradeGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
@@ -328,15 +316,6 @@ namespace autotrade.CustomElements {
             }
         }
 
-        private void LoadedAccountComboBox_SelectedIndexChanged(object sender, EventArgs e) {
-            string login = LoadedAccountCombobox.Text;
-            SavedSteamAccount acc = SavedSteamAccount.Get().FirstOrDefault(x => x.Login == login);
-            if (acc == null) return;
-
-            TradeParthenIdTextBox.Text = new SteamID(acc.Mafile.Session.SteamID).AccountID.ToString();
-            TradeTokenTextBox.Text = "todo"; //toso
-        }
-
         private void ComboboxWithImage1_MeasureItem_1(object sender, MeasureItemEventArgs e) {
             e.ItemHeight = 36;
         }
@@ -370,6 +349,15 @@ namespace autotrade.CustomElements {
             }
 
             e.DrawFocusRectangle();
+        }
+
+        private void LoadedAccountCombobox_SelectedIndexChanged(object sender, EventArgs e) {
+            string login = LoadedAccountCombobox.Text;
+            SavedSteamAccount acc = SavedSteamAccount.Get().FirstOrDefault(x => x.Login == login);
+            if (acc == null) return;
+
+            TradeParthenIdTextBox.Text = new SteamID(acc.Mafile.Session.SteamID).AccountID.ToString();
+            TradeTokenTextBox.Text = "todo";
         }
     }
 }

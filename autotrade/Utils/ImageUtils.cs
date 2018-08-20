@@ -81,9 +81,15 @@ namespace autotrade.Utils {
                     if (image != null) {
                         WorkingProcess.ImagesCache.CacheImage(hash, image);
                         imageBox.BackgroundImage = ResizeImage(image, 100, 100);
+                    } else {
+                        imageBox.BackgroundImage = GetDefaultResourceImage("ItemImageBox.BackgroundImage", typeof(SaleControl));
                     }
                 }
             });
+        }
+
+        public static Image GetDefaultResourceImage(string name, Type type) {
+            return ((Image)((new System.ComponentModel.ComponentResourceManager(type)).GetObject(name)));
         }
 
     }

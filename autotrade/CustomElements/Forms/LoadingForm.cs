@@ -55,7 +55,7 @@ namespace autotrade {
             Dispatcher.Invoke(Program.LoadingForm, () => {
                 Logger.Debug($"Inventory {CurrentSession.CurrentInventoryAppId}-{CurrentSession.CurrentInventoryContextId} loading process aborted");
                 items = new List<RgFullItem>();
-                trades = new List<FullTradeOffer>();
+                currentTrades = new List<FullTradeOffer>();
                 workingThread.Abort();
                 Disactivate();
             });
@@ -82,31 +82,31 @@ namespace autotrade {
         }
         public List<RgFullItem> GetLoadedItems() {
             if (items == null || this == null) {
-                Thread.Sleep(300);
+                Thread.Sleep(500);
                 return GetLoadedItems();
             }
             return items;
         }
         #endregion
 
-        #region Trades
-        private List<FullTradeOffer> trades;
+        #region Current Trades
+        private List<FullTradeOffer> currentTrades;
 
-        public void InitTradesLoadingProcess(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, bool activeOnly, bool historicalOnly, string timeHistoricalCutoff = "1389106496", string language = "en_us") {
+        public void InitCurrentTradesLoadingProcess(bool getSentOffers, bool getReceivedOffers, bool activeOnly, string language) {
             this.Text = $"Trade history loading";
             Activate();
             workingThread = new Thread(() => {
-                LoadTradeOffers(getSentOffers, getReceivedOffers, getDescriptions, activeOnly, historicalOnly, timeHistoricalCutoff, language);
+                LoadCurrentTradeOffers(getSentOffers, getReceivedOffers, activeOnly, language);
             });
             workingThread.Start();
         }
-        public void LoadTradeOffers(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, bool activeOnly, bool historicalOnly, string timeHistoricalCutoff = "1389106496", string language = "en_us") {
+        public void LoadCurrentTradeOffers(bool getSentOffers, bool getReceivedOffers, bool activeOnly, string language) {
             List<FullTradeOffer> tradesList = new List<FullTradeOffer>();
 
-            var response = CurrentSession.SteamManager.TradeOfferWeb.GetTradeOffers(false, true, true, false, false);
+            var response = CurrentSession.SteamManager.TradeOfferWeb.GetTradeOffers(getSentOffers, getReceivedOffers, true, activeOnly, false, language: language);
             Program.LoadingForm.SetTotalItemsCount(response.AllOffers.Count(), response.AllOffers.Count(), "Total trades count");
 
-            foreach (var trade in response.AllOffers.Where(trade => trade.TradeOfferState == TradeOfferState.TradeOfferStateActive)) {
+            foreach (var trade in response.AllOffers) {
                 tradesList.Add(new FullTradeOffer
                 {
                     Offers = trade,
@@ -116,19 +116,53 @@ namespace autotrade {
                 Program.LoadingForm.TrackLoadedIteration("{currentPage} of {totalPages} trades loaded");
             }
 
-            trades = tradesList;
+            currentTrades = tradesList;
         }
-        public List<FullTradeOffer> GetLoadedTrades() {
-            if (trades == null || this == null) {
-                Thread.Sleep(300);
-                return GetLoadedTrades();
+        public List<FullTradeOffer> GetLoadedCurrentTrades() {
+            if (currentTrades == null || this == null) {
+                Thread.Sleep(500);
+                return GetLoadedCurrentTrades();
             }
-            return trades;
+            return currentTrades;
         }
         #endregion
 
+        #region Trades History
+        private List<FullTradeOffer> tradesHistory;
 
+        public void InitTradesHistoryLoadingProcess(bool getSentOffers, bool getReceivedOffers, string timeHistoricalCutoff = "0", string language = "en_us") {
+            Text = $"Trade history loading";
+            Activate();
+            workingThread = new Thread(() => {
+                LoadTradeOffersHistory(getSentOffers, getReceivedOffers, true, false, true, timeHistoricalCutoff, language);
+            });
+            workingThread.Start();
+        }
+        public void LoadTradeOffersHistory(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, bool activeOnly, bool historicalOnly, string timeHistoricalCutoff, string language) {
+            List<FullTradeOffer> tradesList = new List<FullTradeOffer>();
 
+            var response = CurrentSession.SteamManager.TradeOfferWeb.GetTradeOffers(getSentOffers, getReceivedOffers, getDescriptions, activeOnly, historicalOnly, timeHistoricalCutoff, language);
+            Program.LoadingForm.SetTotalItemsCount(response.AllOffers.Count(), response.AllOffers.Count(), "Total trades count");
 
+            foreach (var trade in response.AllOffers) {
+                tradesList.Add(new FullTradeOffer
+                {
+                    Offers = trade,
+                    ItemsToGive = TradeFullItem.GetFullItemsList(trade.ItemsToGive, response.Descriptions),
+                    ItemsToRecieve = TradeFullItem.GetFullItemsList(trade.ItemsToReceive, response.Descriptions)
+                });
+                Program.LoadingForm.TrackLoadedIteration("{currentPage} of {totalPages} trades loaded");
+            }
+
+            tradesHistory = tradesList;
+        }
+        public List<FullTradeOffer> GetLoadedTradesHistory() {
+            if (tradesHistory == null || this == null) {
+                Thread.Sleep(500);
+                return GetLoadedTradesHistory();
+            }
+            return tradesHistory;
+        }
+        #endregion
     }
 }
