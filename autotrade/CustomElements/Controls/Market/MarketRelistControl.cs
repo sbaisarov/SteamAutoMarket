@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace autotrade.CustomElements {
-    public partial class MarketBuyControl : UserControl {
-        public MarketBuyControl() {
+    public partial class MarketRelistControl : UserControl {
+        public MarketRelistControl() {
             InitializeComponent();
         }
     }

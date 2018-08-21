@@ -1,5 +1,5 @@
 ﻿namespace autotrade.CustomElements {
-    partial class MarketBuyControl {
+    partial class MarketRelistControl {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -30,20 +30,20 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(271, 265);
+            this.label1.Location = new System.Drawing.Point(70, 81);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(348, 39);
             this.label1.TabIndex = 0;
             this.label1.Text = "NOT IMPLEMENTED";
             // 
-            // MarketBuyControl
+            // MarketRelistControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.Controls.Add(this.label1);
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.Name = "MarketBuyControl";
+            this.Name = "MarketRelistControl";
             this.Size = new System.Drawing.Size(885, 599);
             this.ResumeLayout(false);
             this.PerformLayout();
