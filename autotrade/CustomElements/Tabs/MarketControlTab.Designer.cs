@@ -27,7 +27,7 @@
             this.MarketSellTab = new System.Windows.Forms.TabPage();
             this.MarketBuyTab = new System.Windows.Forms.TabPage();
             this.SaleControl = new autotrade.SaleControl();
-            this.marketRelistControl1 = new autotrade.CustomElements.MarketRelistControl();
+            this.RelistControl = new autotrade.CustomElements.Controls.Market.MarketRelistControl();
             this.TabControl.SuspendLayout();
             this.MarketSellTab.SuspendLayout();
             this.MarketBuyTab.SuspendLayout();
@@ -62,7 +62,7 @@
             // MarketBuyTab
             // 
             this.MarketBuyTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.MarketBuyTab.Controls.Add(this.marketRelistControl1);
+            this.MarketBuyTab.Controls.Add(this.RelistControl);
             this.MarketBuyTab.Location = new System.Drawing.Point(4, 29);
             this.MarketBuyTab.Name = "MarketBuyTab";
             this.MarketBuyTab.Padding = new System.Windows.Forms.Padding(3);
@@ -82,13 +82,13 @@
             // 
             // marketRelistControl1
             // 
-            this.marketRelistControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.marketRelistControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.marketRelistControl1.Location = new System.Drawing.Point(0, 0);
-            this.marketRelistControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.marketRelistControl1.Name = "marketRelistControl1";
-            this.marketRelistControl1.Size = new System.Drawing.Size(885, 599);
-            this.marketRelistControl1.TabIndex = 0;
+            this.RelistControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
+            this.RelistControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RelistControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.RelistControl.Location = new System.Drawing.Point(0, 0);
+            this.RelistControl.Name = "marketRelistControl1";
+            this.RelistControl.Size = new System.Drawing.Size(885, 599);
+            this.RelistControl.TabIndex = 0;
             // 
             // MarketControlTab
             // 
@@ -110,6 +110,6 @@
         private System.Windows.Forms.TabPage MarketSellTab;
         private System.Windows.Forms.TabPage MarketBuyTab;
         public SaleControl SaleControl;
-        private MarketRelistControl marketRelistControl1;
+        public Controls.Market.MarketRelistControl RelistControl;
     }
 }

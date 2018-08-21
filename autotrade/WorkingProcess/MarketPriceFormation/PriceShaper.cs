@@ -237,6 +237,5 @@ namespace autotrade.CustomElements.Utils {
             public static PriceShapingStrategy BY_PERCENT = new ChangeByPercentStrategy();
             public static PriceShapingStrategy DONT_CHANGE = new DontChangeStrategy();
         }
-
     }
 }

@@ -30,10 +30,19 @@ namespace autotrade.WorkingProcess.Settings {
         public string TRADE_TOKEN = "";
         public string TRADE_PARTNER_ID = "";
 
-        public string ACTIVE_TRADES_DESCRIPTION_LANGUAGE = "";
-        public bool ACTIVE_TRADES_LOAD_RECIEVED = true;
-        public bool ACTIVE_TRADES_LOAD_SENT = true;
-        public bool ACTIVE_TRADES_LOAD_ACTIVE_ONLY = true;
+        public string ACTIVE_TRADES_LANGUAGE = "";
+        public bool ACTIVE_TRADES_RECIEVED = true;
+        public bool ACTIVE_TRADES_SENT = true;
+        public bool ACTIVE_TRADES_ACTIVE_ONLY = true;
+
+        public string TRADE_HISTORY_TRADE_ID = "";
+        public int TRADE_HISTORY_MAX_TRADES = 10;
+        public string TRADE_HISTORY_LANGUAGE = "en_US";
+        public bool TRADE_HISTORY_NAVIGATING_BACK = true;
+        public bool TRADE_HISTORY_INCLUDE_FAILED = true;
+        public bool TRADE_HISTORY_RECIEVED = true;
+        public bool TRADE_HISTORY_SENT = true;
+
 
         public static void UpdateField(ref string fieldToUpdate, string newValue) {
             if (fieldToUpdate != newValue) {

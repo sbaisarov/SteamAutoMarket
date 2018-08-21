@@ -115,12 +115,14 @@ namespace autotrade.Steam {
                     else
                     {
                         Task<double?> task = Task.Run(async () => await items.GetPrice(package.Items.First(), this));
+                        Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Parsing price for {itemName}");
                         task.Wait();
                         var price = task.Result;
                         if (price != null)
                         {
                             cache.Cache(itemName, (double) price);
                             package.Price = price;
+                            Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Parsed price for {itemName} is {price}");
                         }
                     }
                 }

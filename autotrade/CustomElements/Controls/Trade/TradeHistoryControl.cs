@@ -19,10 +19,14 @@ namespace autotrade {
         public TradeHistoryControl() {
             InitializeComponent();
 
-            var settings = SavedSettings.Get(); //todo
-            SentOffersCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_SENT;
-            RecievedOffersCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_RECIEVED;
-            //DescriptionLanguageComboBox.Text = settings.ACTIVE_TRADES_DESCRIPTION_LANGUAGE;
+            var settings = SavedSettings.Get(); 
+            TradeIdTextBox.Text = settings.TRADE_HISTORY_TRADE_ID;
+            MaxTradesNumericUpDown.Value = settings.TRADE_HISTORY_MAX_TRADES;
+            LanguageComboBox.Text = settings.TRADE_HISTORY_LANGUAGE;
+            NavigatingBackCheckBox.Checked = settings.TRADE_HISTORY_NAVIGATING_BACK;
+            IncludeFailedCheckBox.Checked = settings.TRADE_HISTORY_INCLUDE_FAILED;
+            RecievedOffersCheckBox.Checked = settings.TRADE_HISTORY_RECIEVED;
+            SentOffersCheckBox.Checked = settings.TRADE_HISTORY_SENT;
         }
 
         private Dictionary<string, FullTradeOffer> ALL_TRADES = new Dictionary<string, FullTradeOffer>();
@@ -41,20 +45,27 @@ namespace autotrade {
                 return;
             }
 
+
             bool sentOffers = SentOffersCheckBox.Checked;
             bool recievedOffers = RecievedOffersCheckBox.Checked;
+
             if (!sentOffers && !recievedOffers) {
                 MessageBox.Show("You should select at least one type of offers to load (Recieved/Sent)", "Error trades history loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Error("Error on trades history loading. No trades type selected.");
                 return;
             }
 
-            GridUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
-
-            string language = "";// DescriptionLanguageComboBox.Text;
+            long startTime = ElementsUtils.GetSecondsFromDateTime(DateTimePicker.Value);
+            string startTradeId = TradeIdTextBox.Text;
+            int maxTrades = (int)MaxTradesNumericUpDown.Value;
+            bool navigatingBack = NavigatingBackCheckBox.Checked;
+            bool includeFailed = IncludeFailedCheckBox.Checked;
+            string language = LanguageComboBox.Text;
             if (language == null) {
                 language = "en_US";
             }
+
+            GridUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
 
             Task.Run(() => {
                 ALL_TRADES.Clear();
@@ -182,24 +193,24 @@ namespace autotrade {
 
             var tagsText = "";
 
-            ElementsUtils.appendBoldText(textBox, "Game: ");
+            ElementsUtils.AppendBoldText(textBox, "Game: ");
             textBox.AppendText(description.AppId.ToString() + "\n");
 
-            ElementsUtils.appendBoldText(textBox, "Name: ");
+            ElementsUtils.AppendBoldText(textBox, "Name: ");
             textBox.AppendText(description.MarketHashName + "\n");
 
-            ElementsUtils.appendBoldText(textBox, "Type: ");
+            ElementsUtils.AppendBoldText(textBox, "Type: ");
             textBox.AppendText(description.Type);
 
             if (!string.IsNullOrWhiteSpace(descriptionText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.appendBoldText(textBox, "Description: ");
+                ElementsUtils.AppendBoldText(textBox, "Description: ");
                 textBox.AppendText(descriptionText);
             }
 
             if (!string.IsNullOrWhiteSpace(tagsText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.appendBoldText(textBox, "Tags: ");
+                ElementsUtils.AppendBoldText(textBox, "Tags: ");
                 textBox.AppendText(tagsText);
             }
         }
@@ -220,11 +231,31 @@ namespace autotrade {
         }
 
         private void SentOffersCheckBox_CheckStateChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_LOAD_SENT, SentOffersCheckBox.Checked);
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_SENT, SentOffersCheckBox.Checked);
         }
 
         private void RecievedOffersCheckBox_CheckedChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_LOAD_RECIEVED, RecievedOffersCheckBox.Checked);
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_RECIEVED, RecievedOffersCheckBox.Checked);
+        }
+
+        private void TradeIdTextBox_TextChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_TRADE_ID, TradeIdTextBox.Text);
+        }
+
+        private void MaxTradesNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_MAX_TRADES, (int)MaxTradesNumericUpDown.Value);
+        }
+
+        private void LanguageComboBox_TextChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_LANGUAGE, LanguageComboBox.Text);
+        }
+
+        private void NavigatingBackCheckBox_CheckedChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_NAVIGATING_BACK, NavigatingBackCheckBox.Checked);
+        }
+
+        private void IncludeFailedCheckBox_CheckedChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_INCLUDE_FAILED, IncludeFailedCheckBox.Checked);
         }
     }
 }

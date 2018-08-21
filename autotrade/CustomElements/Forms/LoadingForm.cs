@@ -81,9 +81,8 @@ namespace autotrade {
             items = CurrentSession.SteamManager.LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), CurrentSession.CurrentInventoryAppId, CurrentSession.CurrentInventoryContextId, true);
         }
         public List<RgFullItem> GetLoadedItems() {
-            if (items == null || this == null) {
+            while (items == null || this == null) {
                 Thread.Sleep(500);
-                return GetLoadedItems();
             }
             return items;
         }

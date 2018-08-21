@@ -29,7 +29,7 @@ namespace autotrade {
             //1051; 630
             int sizeChange = 115;
 
-            if (this.Width == 1051) {
+            if (this.Width == 1061) {
                 leftHeaderPanel.Width -= sizeChange;
                 BotEdge.Left -= sizeChange;
                 RightEdge.Left -= sizeChange;

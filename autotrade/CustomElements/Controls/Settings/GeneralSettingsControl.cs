@@ -216,6 +216,7 @@ namespace autotrade.CustomElements {
                     CurrentSession.AccountImage = image;
 
                     Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
+                    Program.MainForm.MarketControlTab.RelistControl.AuthCurrentAccount();
                     Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
                     Program.MainForm.TradeControlTab.RecievedTradeManageControl.AuthCurrentAccount();
                     Program.MainForm.TradeControlTab.TradeHistoryControl.AuthCurrentAccount();

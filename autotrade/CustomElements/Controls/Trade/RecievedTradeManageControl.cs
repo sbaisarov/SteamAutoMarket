@@ -21,10 +21,10 @@ namespace autotrade.CustomElements.Controls {
             InitializeComponent();
 
             var settings = SavedSettings.Get();
-            SentOffersCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_SENT;
-            RecievedOffersCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_RECIEVED;
-            ActiveOnlyCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_ACTIVE_ONLY;
-            DescriptionLanguageComboBox.Text = settings.ACTIVE_TRADES_DESCRIPTION_LANGUAGE;
+            SentOffersCheckBox.Checked = settings.ACTIVE_TRADES_SENT;
+            RecievedOffersCheckBox.Checked = settings.ACTIVE_TRADES_RECIEVED;
+            ActiveOnlyCheckBox.Checked = settings.ACTIVE_TRADES_ACTIVE_ONLY;
+            DescriptionLanguageComboBox.Text = settings.ACTIVE_TRADES_LANGUAGE;
         }
 
         private Dictionary<string, FullTradeOffer> ALL_TRADES = new Dictionary<string, FullTradeOffer>();
@@ -186,24 +186,24 @@ namespace autotrade.CustomElements.Controls {
 
             var tagsText = "";
 
-            ElementsUtils.appendBoldText(textBox, "Game: ");
+            ElementsUtils.AppendBoldText(textBox, "Game: ");
             textBox.AppendText(description.AppId.ToString() + "\n");
 
-            ElementsUtils.appendBoldText(textBox, "Name: ");
+            ElementsUtils.AppendBoldText(textBox, "Name: ");
             textBox.AppendText(description.MarketHashName + "\n");
 
-            ElementsUtils.appendBoldText(textBox, "Type: ");
+            ElementsUtils.AppendBoldText(textBox, "Type: ");
             textBox.AppendText(description.Type);
 
             if (!string.IsNullOrWhiteSpace(descriptionText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.appendBoldText(textBox, "Description: ");
+                ElementsUtils.AppendBoldText(textBox, "Description: ");
                 textBox.AppendText(descriptionText);
             }
 
             if (!string.IsNullOrWhiteSpace(tagsText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.appendBoldText(textBox, "Tags: ");
+                ElementsUtils.AppendBoldText(textBox, "Tags: ");
                 textBox.AppendText(tagsText);
             }
         }
@@ -224,19 +224,19 @@ namespace autotrade.CustomElements.Controls {
         }
 
         private void DescriptionLanguageComboBox_TextChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_DESCRIPTION_LANGUAGE, DescriptionLanguageComboBox.Text);
+            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_LANGUAGE, DescriptionLanguageComboBox.Text);
         }
 
         private void SentOffersCheckBox_CheckStateChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_LOAD_SENT, SentOffersCheckBox.Checked);
+            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_SENT, SentOffersCheckBox.Checked);
         }
 
         private void RecievedOffersCheckBox_CheckedChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_LOAD_RECIEVED, RecievedOffersCheckBox.Checked);
+            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_RECIEVED, RecievedOffersCheckBox.Checked);
         }
 
         private void ActiveOnlyCheckBox_CheckedChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_LOAD_ACTIVE_ONLY, ActiveOnlyCheckBox.Checked);
+            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_ACTIVE_ONLY, ActiveOnlyCheckBox.Checked);
         }
     }
 }

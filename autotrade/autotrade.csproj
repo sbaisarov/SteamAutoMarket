@@ -104,6 +104,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomElements\Controls\Market\MarketRelistControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomElements\Controls\Market\MarketRelistControl.Designer.cs">
+      <DependentUpon>MarketRelistControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomElements\Controls\Trade\RecievedTradeManageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -113,13 +119,10 @@
     <Compile Include="CustomElements\Elements\ComboboxWithImage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomElements\Elements\CustomDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CustomElements\Utils\AccountsDataGridUtils.cs" />
-    <Compile Include="CustomElements\Controls\Market\MarketRelistControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomElements\Controls\Market\MarketRelistControl.Designer.cs">
-      <DependentUpon>MarketRelistControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="CustomElements\Elements\CustomNumericUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -341,7 +344,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

@@ -6,7 +6,7 @@ namespace autotrade {
         /// Обязательная переменная конструктора.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
+        private System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
         /// <summary>
         /// Освободить все используемые ресурсы.
         /// </summary>
@@ -135,6 +135,7 @@ namespace autotrade {
             // 
             this.LogoImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LogoImageBox.BackgroundImage")));
             this.LogoImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.LogoImageBox.ErrorImage = ((System.Drawing.Image)(resources.GetObject("LogoImageBox.ErrorImage")));
             this.LogoImageBox.Location = new System.Drawing.Point(1, 7);
             this.LogoImageBox.Name = "LogoImageBox";
             this.LogoImageBox.Size = new System.Drawing.Size(164, 161);
@@ -335,5 +336,10 @@ namespace autotrade {
         public CustomElements.SettingsControlTab SettingsControlTab;
         public CustomElements.Tabs.MarketControlTab MarketControlTab;
         public CustomElements.Tabs.TradeControlTab TradeControlTab;
+
+
+        public System.ComponentModel.ComponentResourceManager GetResources() {
+            return resources;
+        }
     }
 }

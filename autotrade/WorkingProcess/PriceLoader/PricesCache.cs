@@ -12,7 +12,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
     class PricesCache {
         private Dictionary<string, LoadedItemPrice> CACHE;
         private readonly string CACHE_PRICES_PATH;
-        private int HOURS_TO_BECOME_OLD;
+        private readonly int HOURS_TO_BECOME_OLD;
         private int Counter = 0;
         private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat };
 
@@ -61,8 +61,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void UpdateAll()
         {
-            Counter += 1;
-            if (Counter == 10)
+            if (++Counter == 10)
             {
                 File.WriteAllText(CACHE_PRICES_PATH, JsonConvert.SerializeObject(Get(), Formatting.Indented, _jsonSettings));
                 Counter = 0;

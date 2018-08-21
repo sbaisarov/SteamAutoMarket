@@ -249,6 +249,7 @@ namespace autotrade {
 
             } else throw new InvalidOperationException("Not implemented market sale type");
 
+            PriceLoader.StopAll();
             ToSaleObject itemsToSale = new PriceShaper(ItemsToSaleGridView, marketSaleType, changeValue, changePercentValue).GetItemsForSales();
 
             Program.WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale));
