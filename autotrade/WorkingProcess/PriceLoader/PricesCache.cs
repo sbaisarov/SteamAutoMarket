@@ -47,7 +47,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
         }
 
         public void Cache(string hashName, double price) {
-            if (Math.Abs(price) < 0.000001 || double.IsNaN(price)) return;
+            if (price == 0 || double.IsNaN(price)) return;
             Get()[hashName] = new LoadedItemPrice(DateTime.Now, price);
             UpdateAll();
         }

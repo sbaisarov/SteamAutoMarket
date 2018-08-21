@@ -184,7 +184,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
 
                 if (currentPrice == null) {
                     currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
-                    if (currentPrice != null && Math.Abs((double) currentPrice) < 0.0000001) {
+                    if (currentPrice != null && (double) currentPrice > 0) {
                         CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, currentPrice.Value);
                     }
                 }
@@ -199,7 +199,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
 
                 if (averagePrice == null) {
                     CurrentSession.SteamManager.GetAveragePrice(out averagePrice, item.Asset, item.Description);
-                    if (averagePrice != null && Math.Abs((double) averagePrice) < 0.0000001) {
+                    if (averagePrice != null && (double) averagePrice > 0) {
                         AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
                     }
                 }
