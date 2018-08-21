@@ -25,9 +25,9 @@
         private void InitializeComponent() {
             this.TabControl = new System.Windows.Forms.TabControl();
             this.MarketSellTab = new System.Windows.Forms.TabPage();
-            this.SaleControl = new autotrade.SaleControl();
             this.MarketBuyTab = new System.Windows.Forms.TabPage();
-            this.BuyControl = new autotrade.CustomElements.MarketBuyControl();
+            this.SaleControl = new autotrade.SaleControl();
+            this.marketRelistControl1 = new autotrade.CustomElements.MarketRelistControl();
             this.TabControl.SuspendLayout();
             this.MarketSellTab.SuspendLayout();
             this.MarketBuyTab.SuspendLayout();
@@ -59,6 +59,17 @@
             this.MarketSellTab.TabIndex = 0;
             this.MarketSellTab.Text = "Sell";
             // 
+            // MarketBuyTab
+            // 
+            this.MarketBuyTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.MarketBuyTab.Controls.Add(this.marketRelistControl1);
+            this.MarketBuyTab.Location = new System.Drawing.Point(4, 29);
+            this.MarketBuyTab.Name = "MarketBuyTab";
+            this.MarketBuyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.MarketBuyTab.Size = new System.Drawing.Size(886, 599);
+            this.MarketBuyTab.TabIndex = 1;
+            this.MarketBuyTab.Text = "Relist";
+            // 
             // SaleControl
             // 
             this.SaleControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
@@ -69,26 +80,15 @@
             this.SaleControl.Size = new System.Drawing.Size(885, 599);
             this.SaleControl.TabIndex = 0;
             // 
-            // MarketBuyTab
+            // marketRelistControl1
             // 
-            this.MarketBuyTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.MarketBuyTab.Controls.Add(this.BuyControl);
-            this.MarketBuyTab.Location = new System.Drawing.Point(4, 29);
-            this.MarketBuyTab.Name = "MarketBuyTab";
-            this.MarketBuyTab.Padding = new System.Windows.Forms.Padding(3);
-            this.MarketBuyTab.Size = new System.Drawing.Size(886, 599);
-            this.MarketBuyTab.TabIndex = 1;
-            this.MarketBuyTab.Text = "Buy";
-            // 
-            // BuyControl
-            // 
-            this.BuyControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.BuyControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.BuyControl.Location = new System.Drawing.Point(0, 0);
-            this.BuyControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.BuyControl.Name = "BuyControl";
-            this.BuyControl.Size = new System.Drawing.Size(885, 599);
-            this.BuyControl.TabIndex = 0;
+            this.marketRelistControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.marketRelistControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.marketRelistControl1.Location = new System.Drawing.Point(0, 0);
+            this.marketRelistControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.marketRelistControl1.Name = "marketRelistControl1";
+            this.marketRelistControl1.Size = new System.Drawing.Size(885, 599);
+            this.marketRelistControl1.TabIndex = 0;
             // 
             // MarketControlTab
             // 
@@ -110,6 +110,6 @@
         private System.Windows.Forms.TabPage MarketSellTab;
         private System.Windows.Forms.TabPage MarketBuyTab;
         public SaleControl SaleControl;
-        public MarketBuyControl BuyControl;
+        private MarketRelistControl marketRelistControl1;
     }
 }

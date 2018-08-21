@@ -114,11 +114,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CustomElements\Utils\AccountsDataGridUtils.cs" />
-    <Compile Include="CustomElements\Controls\Market\MarketBuyControl.cs">
+    <Compile Include="CustomElements\Controls\Market\MarketRelistControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomElements\Controls\Market\MarketBuyControl.Designer.cs">
-      <DependentUpon>MarketBuyControl.cs</DependentUpon>
+    <Compile Include="CustomElements\Controls\Market\MarketRelistControl.Designer.cs">
+      <DependentUpon>MarketRelistControl.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomElements\Elements\CustomNumericUpDown.cs">
       <SubType>Component</SubType>
@@ -278,8 +278,8 @@
     <Compile Include="WorkingProcess\Caches\ImagesCache.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\MarketSaleType.cs" />
     <Compile Include="WorkingProcess\PriceLoader\PriceLoader.cs" />
-    <EmbeddedResource Include="CustomElements\Controls\Market\MarketBuyControl.resx">
-      <DependentUpon>MarketBuyControl.cs</DependentUpon>
+    <EmbeddedResource Include="CustomElements\Controls\Market\MarketRelistControl.resx">
+      <DependentUpon>MarketRelistControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomElements\Controls\Settings\GeneralSettingsControl.resx">
       <DependentUpon>GeneralSettingsControl.cs</DependentUpon>

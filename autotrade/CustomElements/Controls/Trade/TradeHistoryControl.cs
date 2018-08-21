@@ -22,7 +22,7 @@ namespace autotrade {
             var settings = SavedSettings.Get(); //todo
             SentOffersCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_SENT;
             RecievedOffersCheckBox.Checked = settings.ACTIVE_TRADES_LOAD_RECIEVED;
-            DescriptionLanguageComboBox.Text = settings.ACTIVE_TRADES_DESCRIPTION_LANGUAGE;
+            //DescriptionLanguageComboBox.Text = settings.ACTIVE_TRADES_DESCRIPTION_LANGUAGE;
         }
 
         private Dictionary<string, FullTradeOffer> ALL_TRADES = new Dictionary<string, FullTradeOffer>();
@@ -51,7 +51,7 @@ namespace autotrade {
 
             GridUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
 
-            string language = DescriptionLanguageComboBox.Text;
+            string language = "";// DescriptionLanguageComboBox.Text;
             if (language == null) {
                 language = "en_US";
             }
@@ -217,10 +217,6 @@ namespace autotrade {
                     ChangeSelectedItem();
                 }
             }
-        }
-
-        private void DescriptionLanguageComboBox_TextChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_DESCRIPTION_LANGUAGE, DescriptionLanguageComboBox.Text);
         }
 
         private void SentOffersCheckBox_CheckStateChanged(object sender, EventArgs e) {
