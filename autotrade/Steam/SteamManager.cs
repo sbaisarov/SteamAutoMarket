@@ -114,9 +114,14 @@ namespace autotrade.Steam {
                     }
                     else
                     {
-                        // double price = get price
-                        //cache.Cache(itemName, price);
-                        //package.Price = price;
+                        Task<double?> task = Task.Run(async () => await items.GetPrice(package.Items.First(), this));
+                        task.Wait();
+                        var price = task.Result;
+                        if (price != null)
+                        {
+                            cache.Cache(itemName, (double) price);
+                            package.Price = price;
+                        }
                     }
                 }
 
@@ -161,14 +166,21 @@ namespace autotrade.Steam {
             Guard.AcceptMultipleConfirmations(marketConfirmations);
         }
 
-        public void GetAveragePrice(out double? price, Inventory.RgInventory asset,
-            Inventory.RgDescription description) {
-            try {
-                var history = MarketClient.PriceHistory(asset.appid, description.market_hash_name);
-                price = Math.Round(CountAveragePrice(history),2);
-            } catch (Exception e) {
-                Logger.Warning($"Error on geting average price of ${description.market_hash_name}", e);
-                price = null;
+        public void GetAveragePrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description)
+        {
+            var attempts = 0;
+            price = null;
+            while (attempts < 3)
+            {
+                try {
+                    var history = MarketClient.PriceHistory(asset.appid, description.market_hash_name);
+                    price = Math.Round(CountAveragePrice(history),2);
+                    break;
+                } catch (Exception e) {
+                    Logger.Warning($"Error on geting average price of ${description.market_hash_name}", e);
+                }
+
+                attempts++;
             }
         }
 
@@ -180,13 +192,21 @@ namespace autotrade.Steam {
                 MarketInfoCache.Cache(asset.appid, description.market_hash_name, itemPageInfo);
             }
 
-            ItemOrdersHistogram histogram = await MarketClient.ItemOrdersHistogramAsync(
-                            itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
-            double? price = histogram.MinSellPrice;
-            if (price is null) {
-                Utils.Logger.Warning($"Error on geting current price of ${description.market_hash_name}");
-            }
+            var attempts = 0;
+            double? price = null;
+            while(attempts < 3)
+            {
+                ItemOrdersHistogram histogram = await MarketClient.ItemOrdersHistogramAsync(
+                    itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
+                price = histogram.MinSellPrice;
+                if (price is null) {
+                    Logger.Warning($"Error on geting current price of ${description.market_hash_name}");
+                    attempts++;
+                    continue;
+                }
 
+                break;
+            }
             return price;
         }
 

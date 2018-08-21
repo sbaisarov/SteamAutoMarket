@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using autotrade.Steam;
 
 namespace autotrade.WorkingProcess.MarketPriceFormation {
     public class ItemsForSale {
@@ -27,6 +28,41 @@ namespace autotrade.WorkingProcess.MarketPriceFormation {
             MarketSaleType = marketSaleType;
             ChangeValueType = changeValueType;
             ChangeValue = changeValue;
+        }
+
+        public async Task<double?> GetPrice(Inventory.RgFullItem item, SteamManager manager)
+        {
+            double? price = null;
+            switch (MarketSaleType)
+            {
+                case MarketSaleType.LOWER_THAN_CURRENT:
+                    price = await manager.GetCurrentPrice(item.Asset, item.Description);
+                    break;
+
+                case MarketSaleType.LOWER_THAN_AVERAGE:
+                    manager.GetAveragePrice(out double? priceValue, item.Asset, item.Description);
+                    price = priceValue;
+                    break;
+
+                case MarketSaleType.RECOMENDED:
+                    var currentPrice = await manager.GetCurrentPrice(item.Asset, item.Description);
+                    manager.GetAveragePrice(out double? averagePrice, item.Asset, item.Description);
+
+                    if (averagePrice == null || currentPrice == null) {
+                        price = null;
+                    } else if (averagePrice > currentPrice) {
+                        price = averagePrice;
+                    } else if (currentPrice >= averagePrice) {
+                        price = currentPrice - 0.01;
+                    }
+
+                    if (price == null || price.Value <= 0) {
+                        price = null;
+                    }
+                    break;                
+            }
+
+            return price;
         }
     }
 }
