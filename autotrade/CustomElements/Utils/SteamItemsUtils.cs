@@ -30,7 +30,5 @@ namespace autotrade.CustomElements.Utils {
             if (item.Description.Type.Contains("Sale Item")) return "Sale Item";
             return item.Description.Type;
         }
-
-
     }
 }

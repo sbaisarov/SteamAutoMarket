@@ -32,7 +32,6 @@ namespace autotrade {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TradeHistoryControl));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -50,6 +49,7 @@ namespace autotrade {
             this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.ExtraTradeInfoGroupBox = new System.Windows.Forms.GroupBox();
@@ -63,6 +63,7 @@ namespace autotrade {
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenHisMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TradeSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.DateTimePicker = new autotrade.CustomElements.Elements.CustomDateTimePicker();
             this.LanguageComboBox = new System.Windows.Forms.ComboBox();
             this.TimeLable = new System.Windows.Forms.Label();
             this.MaxTradesNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -75,11 +76,9 @@ namespace autotrade {
             this.MaxTradesLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.LoadTradesButton = new System.Windows.Forms.Button();
-            this.SplitterPanel = new System.Windows.Forms.Panel();
             this.AccountNameLable = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.DateTimePicker = new autotrade.CustomElements.Elements.CustomDateTimePicker();
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
+            this.SplitterPanel = new System.Windows.Forms.Panel();
             this.CurrentTradesGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTradesGridView)).BeginInit();
             this.MyItemsGroupBox.SuspendLayout();
@@ -97,7 +96,7 @@ namespace autotrade {
             // 
             this.CurrentTradesGroupBox.Controls.Add(this.CurrentTradesGridView);
             this.CurrentTradesGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.CurrentTradesGroupBox.Location = new System.Drawing.Point(8, 3);
+            this.CurrentTradesGroupBox.Location = new System.Drawing.Point(7, 3);
             this.CurrentTradesGroupBox.Name = "CurrentTradesGroupBox";
             this.CurrentTradesGroupBox.Size = new System.Drawing.Size(289, 290);
             this.CurrentTradesGroupBox.TabIndex = 17;
@@ -273,6 +272,18 @@ namespace autotrade {
             this.ItemDescriptionGroupBox.TabStop = false;
             this.ItemDescriptionGroupBox.Text = "Item description";
             // 
+            // ItemDescriptionTextBox
+            // 
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
+            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
+            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(273, 142);
+            this.ItemDescriptionTextBox.TabIndex = 11;
+            this.ItemDescriptionTextBox.Text = "";
+            // 
             // ItemNameLable
             // 
             this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -284,7 +295,7 @@ namespace autotrade {
             // ItemImageBox
             // 
             this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ItemImageBox.BackgroundImage")));
+            this.ItemImageBox.BackgroundImage = global::autotrade.Properties.Resources.DefaultItem;
             this.ItemImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ItemImageBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
@@ -296,7 +307,7 @@ namespace autotrade {
             // 
             this.ExtraTradeInfoGroupBox.Controls.Add(this.ExtraTradeInfoGridView);
             this.ExtraTradeInfoGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ExtraTradeInfoGroupBox.Location = new System.Drawing.Point(8, 300);
+            this.ExtraTradeInfoGroupBox.Location = new System.Drawing.Point(7, 300);
             this.ExtraTradeInfoGroupBox.Name = "ExtraTradeInfoGroupBox";
             this.ExtraTradeInfoGroupBox.Size = new System.Drawing.Size(286, 290);
             this.ExtraTradeInfoGroupBox.TabIndex = 21;
@@ -471,6 +482,16 @@ namespace autotrade {
             this.TradeSettingsGroupBox.TabStop = false;
             this.TradeSettingsGroupBox.Text = "Trade loading settings";
             // 
+            // DateTimePicker
+            // 
+            this.DateTimePicker.BackColor = System.Drawing.Color.Yellow;
+            this.DateTimePicker.Checked = false;
+            this.DateTimePicker.CustomFormat = " dd/MM/yyyy";
+            this.DateTimePicker.Location = new System.Drawing.Point(121, 21);
+            this.DateTimePicker.Name = "DateTimePicker";
+            this.DateTimePicker.Size = new System.Drawing.Size(121, 20);
+            this.DateTimePicker.TabIndex = 12;
+            // 
             // LanguageComboBox
             // 
             this.LanguageComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -626,7 +647,7 @@ namespace autotrade {
             this.LoadTradesButton.FlatAppearance.BorderSize = 0;
             this.LoadTradesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadTradesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadTradesButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadTradesButton.Image")));
+            this.LoadTradesButton.Image = global::autotrade.Properties.Resources.Download;
             this.LoadTradesButton.Location = new System.Drawing.Point(197, 154);
             this.LoadTradesButton.Name = "LoadTradesButton";
             this.LoadTradesButton.Size = new System.Drawing.Size(76, 81);
@@ -634,15 +655,6 @@ namespace autotrade {
             this.toolTip1.SetToolTip(this.LoadTradesButton, "Load trades");
             this.LoadTradesButton.UseVisualStyleBackColor = false;
             this.LoadTradesButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
-            // 
-            // SplitterPanel
-            // 
-            this.SplitterPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SplitterPanel.BackgroundImage")));
-            this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SplitterPanel.Location = new System.Drawing.Point(706, 3);
-            this.SplitterPanel.Name = "SplitterPanel";
-            this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
-            this.SplitterPanel.TabIndex = 33;
             // 
             // AccountNameLable
             // 
@@ -664,27 +676,14 @@ namespace autotrade {
             this.toolTip1.UseAnimation = false;
             this.toolTip1.UseFading = false;
             // 
-            // DateTimePicker
+            // SplitterPanel
             // 
-            this.DateTimePicker.BackColor = System.Drawing.Color.Yellow;
-            this.DateTimePicker.Checked = false;
-            this.DateTimePicker.CustomFormat = " dd/MM/yyyy";
-            this.DateTimePicker.Location = new System.Drawing.Point(121, 21);
-            this.DateTimePicker.Name = "DateTimePicker";
-            this.DateTimePicker.Size = new System.Drawing.Size(121, 20);
-            this.DateTimePicker.TabIndex = 12;
-            // 
-            // ItemDescriptionTextBox
-            // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
-            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
-            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(273, 142);
-            this.ItemDescriptionTextBox.TabIndex = 11;
-            this.ItemDescriptionTextBox.Text = "";
+            this.SplitterPanel.BackgroundImage = global::autotrade.Properties.Resources.NotLogined;
+            this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SplitterPanel.Location = new System.Drawing.Point(706, 3);
+            this.SplitterPanel.Name = "SplitterPanel";
+            this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
+            this.SplitterPanel.TabIndex = 33;
             // 
             // TradeHistoryControl
             // 

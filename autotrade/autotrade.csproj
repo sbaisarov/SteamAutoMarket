@@ -126,9 +126,7 @@
     <Compile Include="CustomElements\Elements\CustomNumericUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomElements\Utils\ElementsUtils.cs" />
-    <Compile Include="CustomElements\Utils\GridUtils.cs" />
-    <Compile Include="CustomElements\Utils\MainFormUtils.cs" />
+    <Compile Include="CustomElements\Utils\CommonUtils.cs" />
     <Compile Include="CustomElements\Utils\ItemsToSaleGridUtils.cs" />
     <Compile Include="CustomElements\Elements\RichTextBoxWithNoPaint.cs">
       <SubType>Component</SubType>
@@ -358,6 +356,69 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NotLogined.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DefaultItem.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BrowseFolders.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EditButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CancelButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LoginButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MarketImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddAllButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RefreshButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SteamButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GameButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MainLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MenuSettings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MenuMarket.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MenuTrade.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SmallLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HideMenuButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MinimizeButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseButton.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />

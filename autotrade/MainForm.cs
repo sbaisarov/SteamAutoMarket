@@ -30,6 +30,7 @@ namespace autotrade {
             int sizeChange = 115;
 
             if (this.Width == 1061) {
+                LogoImageBox.Visible = false;
                 leftHeaderPanel.Width -= sizeChange;
                 BotEdge.Left -= sizeChange;
                 RightEdge.Left -= sizeChange;
@@ -40,9 +41,9 @@ namespace autotrade {
                 appExitButton.Left -= sizeChange;
                 TradeControlTab.Left -= sizeChange;
                 this.Width -= sizeChange;
-                LogoImageBox.Visible = false;
 
             } else {
+                LogoImageBox.Visible = true;
                 leftHeaderPanel.Width += sizeChange;
                 BotEdge.Left += sizeChange;
                 RightEdge.Left += sizeChange;
@@ -53,7 +54,6 @@ namespace autotrade {
                 appExitButton.Left += sizeChange;
                 TradeControlTab.Left += sizeChange;
                 this.Width += sizeChange;
-                LogoImageBox.Visible = true;
             }
         }
 

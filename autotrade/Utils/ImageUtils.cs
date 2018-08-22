@@ -6,15 +6,24 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.Utils {
     class ImageUtils {
+        public static Image GetResourceImage(string name) {
+            Assembly myAssembly = Assembly.GetExecutingAssembly();
+            string[] names = myAssembly.GetManifestResourceNames();
+            Stream stream = myAssembly.GetManifestResourceStream("autotrade.Resources." + name);
+            return Image.FromStream(stream);
+        }
+
         public static Image DownloadImage(string url) {
             try {
                 WebRequest req = WebRequest.Create(url);
@@ -29,15 +38,20 @@ namespace autotrade.Utils {
         }
 
         public static Image ResizeImage(Image img, int width, int height) {
-            if (img.Width == width && img.Height == height) return img;
+            try {
+                if (img.Width == width && img.Height == height) return img;
 
-            var res = new Bitmap(width, height);
-            res.SetResolution(img.HorizontalResolution, img.VerticalResolution);
-            using (var g = Graphics.FromImage(res)) {
-                var dst = new Rectangle(0, 0, res.Width, res.Height);
-                g.DrawImage(img, dst);
+                var res = new Bitmap(width, height);
+                res.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+                using (var g = Graphics.FromImage(res)) {
+                    var dst = new Rectangle(0, 0, res.Width, res.Height);
+                    g.DrawImage(img, dst);
+                }
+                return res;
+            } catch (InvalidOperationException) {
+                Thread.Sleep(500);
+                return ResizeImage(img, width, height);
             }
-            return res;
         }
 
         public static Image GetSteamProfileSmallImage(ulong steamId) {

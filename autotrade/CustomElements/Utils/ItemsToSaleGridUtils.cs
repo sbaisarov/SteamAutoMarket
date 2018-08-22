@@ -42,7 +42,6 @@ namespace autotrade.CustomElements {
                 hidenMarketHashNameCell.Value = firstItem.Description.market_hash_name;
                 hidenItemsListCell.Value = items;
             }
-            //Logger.Debug($"{items.Count} of {items.First().Description.name} was added to sale list");
         }
 
         public static DataGridViewRow GetDataGridViewRowByMarketHashName(DataGridView itemsToSaleGrid, string marketHashName) {

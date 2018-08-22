@@ -29,25 +29,19 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneralSettingsControl));
             this.AccountsDataGridView = new System.Windows.Forms.DataGridView();
-            this.AvatarColumn = new System.Windows.Forms.DataGridViewImageColumn();
             this.LoginColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PasswordColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OpskinsApiColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AccountObjectHidenColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TruePassword = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AccountGroupBox = new System.Windows.Forms.GroupBox();
-            this.AddNewAccountButton = new System.Windows.Forms.Button();
             this.MafilePathGroupBox = new System.Windows.Forms.GroupBox();
-            this.BrowseMafilePathButton = new System.Windows.Forms.Button();
             this.MafilePathTextBox = new System.Windows.Forms.TextBox();
             this.PasswordGroupBox = new System.Windows.Forms.GroupBox();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.LoginGroupBox = new System.Windows.Forms.GroupBox();
             this.LoginTextBox = new System.Windows.Forms.TextBox();
-            this.EditAccountButton = new System.Windows.Forms.Button();
             this.AddAllToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.LoginButton = new System.Windows.Forms.Button();
-            this.DeleteAccountButton = new System.Windows.Forms.Button();
             this.LoggingLevelGroupBox = new System.Windows.Forms.GroupBox();
             this.LoggingLevelComboBox = new System.Windows.Forms.ComboBox();
             this.SteamApiLinkLable = new System.Windows.Forms.LinkLabel();
@@ -64,6 +58,13 @@
             this.LogTextBox = new System.Windows.Forms.RichTextBox();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.UpdateButton = new System.Windows.Forms.Button();
+            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.DeleteAccountButton = new System.Windows.Forms.Button();
+            this.EditAccountButton = new System.Windows.Forms.Button();
+            this.AddNewAccountButton = new System.Windows.Forms.Button();
+            this.BrowseMafilePathButton = new System.Windows.Forms.Button();
+            this.LoginButton = new System.Windows.Forms.Button();
+            this.AvatarColumn = new System.Windows.Forms.DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)(this.AccountsDataGridView)).BeginInit();
             this.AccountGroupBox.SuspendLayout();
             this.MafilePathGroupBox.SuspendLayout();
@@ -132,16 +133,6 @@
             this.AccountsDataGridView.Size = new System.Drawing.Size(426, 331);
             this.AccountsDataGridView.TabIndex = 7;
             // 
-            // AvatarColumn
-            // 
-            this.AvatarColumn.FillWeight = 0.2428631F;
-            this.AvatarColumn.HeaderText = "";
-            this.AvatarColumn.Image = ((System.Drawing.Image)(resources.GetObject("AvatarColumn.Image")));
-            this.AvatarColumn.MinimumWidth = 32;
-            this.AvatarColumn.Name = "AvatarColumn";
-            this.AvatarColumn.ReadOnly = true;
-            this.AvatarColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
             // LoginColumn
             // 
             this.LoginColumn.FillWeight = 119F;
@@ -193,21 +184,6 @@
             this.AccountGroupBox.TabStop = false;
             this.AccountGroupBox.Text = "Steam Accounts";
             // 
-            // AddNewAccountButton
-            // 
-            this.AddNewAccountButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AddNewAccountButton.FlatAppearance.BorderSize = 0;
-            this.AddNewAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddNewAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.AddNewAccountButton.Image = ((System.Drawing.Image)(resources.GetObject("AddNewAccountButton.Image")));
-            this.AddNewAccountButton.Location = new System.Drawing.Point(366, 49);
-            this.AddNewAccountButton.Name = "AddNewAccountButton";
-            this.AddNewAccountButton.Size = new System.Drawing.Size(47, 40);
-            this.AddNewAccountButton.TabIndex = 99;
-            this.AddAllToolTip.SetToolTip(this.AddNewAccountButton, "Add account to the list");
-            this.AddNewAccountButton.UseVisualStyleBackColor = true;
-            this.AddNewAccountButton.Click += new System.EventHandler(this.AddNewAccountButton_Click);
-            // 
             // MafilePathGroupBox
             // 
             this.MafilePathGroupBox.Controls.Add(this.BrowseMafilePathButton);
@@ -220,21 +196,6 @@
             this.MafilePathGroupBox.TabIndex = 10;
             this.MafilePathGroupBox.TabStop = false;
             this.MafilePathGroupBox.Text = "Mafile path";
-            // 
-            // BrowseMafilePathButton
-            // 
-            this.BrowseMafilePathButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BrowseMafilePathButton.FlatAppearance.BorderSize = 0;
-            this.BrowseMafilePathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseMafilePathButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.BrowseMafilePathButton.Image = ((System.Drawing.Image)(resources.GetObject("BrowseMafilePathButton.Image")));
-            this.BrowseMafilePathButton.Location = new System.Drawing.Point(135, 11);
-            this.BrowseMafilePathButton.Name = "BrowseMafilePathButton";
-            this.BrowseMafilePathButton.Size = new System.Drawing.Size(29, 25);
-            this.BrowseMafilePathButton.TabIndex = 11;
-            this.AddAllToolTip.SetToolTip(this.BrowseMafilePathButton, "Mafile path selecting dialog");
-            this.BrowseMafilePathButton.UseVisualStyleBackColor = true;
-            this.BrowseMafilePathButton.Click += new System.EventHandler(this.BrowseMafilePath_Click);
             // 
             // MafilePathTextBox
             // 
@@ -291,21 +252,6 @@
             this.LoginTextBox.Size = new System.Drawing.Size(163, 20);
             this.LoginTextBox.TabIndex = 1;
             // 
-            // EditAccountButton
-            // 
-            this.EditAccountButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.EditAccountButton.FlatAppearance.BorderSize = 0;
-            this.EditAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EditAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.EditAccountButton.Image = ((System.Drawing.Image)(resources.GetObject("EditAccountButton.Image")));
-            this.EditAccountButton.Location = new System.Drawing.Point(10, 116);
-            this.EditAccountButton.Name = "EditAccountButton";
-            this.EditAccountButton.Size = new System.Drawing.Size(47, 40);
-            this.EditAccountButton.TabIndex = 99;
-            this.AddAllToolTip.SetToolTip(this.EditAccountButton, "Edit selected account");
-            this.EditAccountButton.UseVisualStyleBackColor = true;
-            this.EditAccountButton.Click += new System.EventHandler(this.EditAccountButton_Click);
-            // 
             // AddAllToolTip
             // 
             this.AddAllToolTip.AutomaticDelay = 100;
@@ -315,36 +261,6 @@
             this.AddAllToolTip.ReshowDelay = 20;
             this.AddAllToolTip.UseAnimation = false;
             this.AddAllToolTip.UseFading = false;
-            // 
-            // LoginButton
-            // 
-            this.LoginButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LoginButton.FlatAppearance.BorderSize = 0;
-            this.LoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoginButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.LoginButton.Image = ((System.Drawing.Image)(resources.GetObject("LoginButton.Image")));
-            this.LoginButton.Location = new System.Drawing.Point(-1, 533);
-            this.LoginButton.Name = "LoginButton";
-            this.LoginButton.Size = new System.Drawing.Size(885, 66);
-            this.LoginButton.TabIndex = 5;
-            this.AddAllToolTip.SetToolTip(this.LoginButton, "Login using selected account");
-            this.LoginButton.UseVisualStyleBackColor = true;
-            this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
-            // 
-            // DeleteAccountButton
-            // 
-            this.DeleteAccountButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DeleteAccountButton.FlatAppearance.BorderSize = 0;
-            this.DeleteAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.DeleteAccountButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteAccountButton.Image")));
-            this.DeleteAccountButton.Location = new System.Drawing.Point(66, 116);
-            this.DeleteAccountButton.Name = "DeleteAccountButton";
-            this.DeleteAccountButton.Size = new System.Drawing.Size(47, 40);
-            this.DeleteAccountButton.TabIndex = 99;
-            this.AddAllToolTip.SetToolTip(this.DeleteAccountButton, "Remove the selected account from the list");
-            this.DeleteAccountButton.UseVisualStyleBackColor = true;
-            this.DeleteAccountButton.Click += new System.EventHandler(this.DeleteAccountButton_Click);
             // 
             // LoggingLevelGroupBox
             // 
@@ -570,6 +486,102 @@
             this.UpdateButton.Text = "Check for updates";
             this.UpdateButton.UseVisualStyleBackColor = false;
             // 
+            // dataGridViewImageColumn1
+            // 
+            this.dataGridViewImageColumn1.FillWeight = 0.2428631F;
+            this.dataGridViewImageColumn1.HeaderText = "";
+            this.dataGridViewImageColumn1.Image = ((System.Drawing.Image)(resources.GetObject("dataGridViewImageColumn1.Image")));
+            this.dataGridViewImageColumn1.MinimumWidth = 32;
+            this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
+            this.dataGridViewImageColumn1.ReadOnly = true;
+            this.dataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewImageColumn1.Width = 32;
+            // 
+            // DeleteAccountButton
+            // 
+            this.DeleteAccountButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DeleteAccountButton.FlatAppearance.BorderSize = 0;
+            this.DeleteAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DeleteAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.DeleteAccountButton.Image = global::autotrade.Properties.Resources.CancelButton;
+            this.DeleteAccountButton.Location = new System.Drawing.Point(66, 116);
+            this.DeleteAccountButton.Name = "DeleteAccountButton";
+            this.DeleteAccountButton.Size = new System.Drawing.Size(47, 40);
+            this.DeleteAccountButton.TabIndex = 99;
+            this.AddAllToolTip.SetToolTip(this.DeleteAccountButton, "Remove the selected account from the list");
+            this.DeleteAccountButton.UseVisualStyleBackColor = true;
+            this.DeleteAccountButton.Click += new System.EventHandler(this.DeleteAccountButton_Click);
+            // 
+            // EditAccountButton
+            // 
+            this.EditAccountButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.EditAccountButton.FlatAppearance.BorderSize = 0;
+            this.EditAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EditAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.EditAccountButton.Image = global::autotrade.Properties.Resources.EditButton;
+            this.EditAccountButton.Location = new System.Drawing.Point(10, 116);
+            this.EditAccountButton.Name = "EditAccountButton";
+            this.EditAccountButton.Size = new System.Drawing.Size(47, 40);
+            this.EditAccountButton.TabIndex = 99;
+            this.AddAllToolTip.SetToolTip(this.EditAccountButton, "Edit selected account");
+            this.EditAccountButton.UseVisualStyleBackColor = true;
+            this.EditAccountButton.Click += new System.EventHandler(this.EditAccountButton_Click);
+            // 
+            // AddNewAccountButton
+            // 
+            this.AddNewAccountButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AddNewAccountButton.FlatAppearance.BorderSize = 0;
+            this.AddNewAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddNewAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.AddNewAccountButton.Image = global::autotrade.Properties.Resources.AddButton;
+            this.AddNewAccountButton.Location = new System.Drawing.Point(366, 49);
+            this.AddNewAccountButton.Name = "AddNewAccountButton";
+            this.AddNewAccountButton.Size = new System.Drawing.Size(47, 40);
+            this.AddNewAccountButton.TabIndex = 99;
+            this.AddAllToolTip.SetToolTip(this.AddNewAccountButton, "Add account to the list");
+            this.AddNewAccountButton.UseVisualStyleBackColor = true;
+            this.AddNewAccountButton.Click += new System.EventHandler(this.AddNewAccountButton_Click);
+            // 
+            // BrowseMafilePathButton
+            // 
+            this.BrowseMafilePathButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BrowseMafilePathButton.FlatAppearance.BorderSize = 0;
+            this.BrowseMafilePathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BrowseMafilePathButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.BrowseMafilePathButton.Image = global::autotrade.Properties.Resources.BrowseFolders;
+            this.BrowseMafilePathButton.Location = new System.Drawing.Point(135, 11);
+            this.BrowseMafilePathButton.Name = "BrowseMafilePathButton";
+            this.BrowseMafilePathButton.Size = new System.Drawing.Size(29, 25);
+            this.BrowseMafilePathButton.TabIndex = 11;
+            this.AddAllToolTip.SetToolTip(this.BrowseMafilePathButton, "Mafile path selecting dialog");
+            this.BrowseMafilePathButton.UseVisualStyleBackColor = true;
+            this.BrowseMafilePathButton.Click += new System.EventHandler(this.BrowseMafilePath_Click);
+            // 
+            // LoginButton
+            // 
+            this.LoginButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LoginButton.FlatAppearance.BorderSize = 0;
+            this.LoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoginButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.LoginButton.Image = global::autotrade.Properties.Resources.LoginButton;
+            this.LoginButton.Location = new System.Drawing.Point(-1, 533);
+            this.LoginButton.Name = "LoginButton";
+            this.LoginButton.Size = new System.Drawing.Size(885, 66);
+            this.LoginButton.TabIndex = 5;
+            this.AddAllToolTip.SetToolTip(this.LoginButton, "Login using selected account");
+            this.LoginButton.UseVisualStyleBackColor = true;
+            this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
+            // 
+            // AvatarColumn
+            // 
+            this.AvatarColumn.FillWeight = 0.2428631F;
+            this.AvatarColumn.HeaderText = "";
+            this.AvatarColumn.Image = ((System.Drawing.Image)(resources.GetObject("AvatarColumn.Image")));
+            this.AvatarColumn.MinimumWidth = 32;
+            this.AvatarColumn.Name = "AvatarColumn";
+            this.AvatarColumn.ReadOnly = true;
+            this.AvatarColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
             // GeneralSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -637,10 +649,9 @@
         private System.Windows.Forms.DataGridViewImageColumn AvatarColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LoginColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn PasswordColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SteamApiColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn AccountObjectHidenColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn TruePassword;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OpskinsApiColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SteamApiColumn;
         private System.Windows.Forms.LinkLabel SteamApiLinkLable;
         private System.Windows.Forms.GroupBox AvrPriceGroupBox;
         private System.Windows.Forms.NumericUpDown AveragePriceDaysNumericUpDown;
@@ -648,5 +659,7 @@
         private System.Windows.Forms.NumericUpDown CurrentCacheNumericUpDown;
         private System.Windows.Forms.GroupBox AverageCacheGroupBox;
         private System.Windows.Forms.NumericUpDown AverageCacheNumericUpDown;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OpskinsApiColumn;
+        private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
     }
 }

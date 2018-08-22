@@ -31,7 +31,6 @@ namespace autotrade {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaleControl));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -51,6 +50,7 @@ namespace autotrade {
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemsToSaleGroupBox = new System.Windows.Forms.GroupBox();
             this.ForcePricesReloadButton = new System.Windows.Forms.Button();
@@ -76,6 +76,8 @@ namespace autotrade {
             this.AveregeMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.ManualPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.RecomendedPriceRadioButton = new System.Windows.Forms.RadioButton();
+            this.AveragePricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
+            this.CurrentPricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
             this.InventoryGroupBox = new System.Windows.Forms.GroupBox();
             this.InventoryContextIdLabel = new System.Windows.Forms.Label();
             this.InventoryContextIdComboBox = new System.Windows.Forms.ComboBox();
@@ -85,9 +87,6 @@ namespace autotrade {
             this.StartSteamSellButton = new System.Windows.Forms.Button();
             this.SellGroupBox = new System.Windows.Forms.GroupBox();
             this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
-            this.AveragePricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
-            this.CurrentPricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).BeginInit();
             this.ItemDescriptionGroupBox.SuspendLayout();
             this.ItemsToSaleGroupBox.SuspendLayout();
@@ -95,11 +94,11 @@ namespace autotrade {
             this.AllSteamItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
             this.InventoryGroupBox.SuspendLayout();
             this.SellGroupBox.SuspendLayout();
             this.PriceSettingsGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // AllSteamItemsGridView
@@ -259,7 +258,7 @@ namespace autotrade {
             // ItemImageBox
             // 
             this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ItemImageBox.BackgroundImage")));
+            this.ItemImageBox.BackgroundImage = global::autotrade.Properties.Resources.DefaultItem;
             this.ItemImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ItemImageBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
@@ -284,6 +283,18 @@ namespace autotrade {
             this.ItemDescriptionGroupBox.TabStop = false;
             this.ItemDescriptionGroupBox.Text = "Item description";
             // 
+            // ItemDescriptionTextBox
+            // 
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
+            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
+            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
+            this.ItemDescriptionTextBox.TabIndex = 11;
+            this.ItemDescriptionTextBox.Text = "";
+            // 
             // ItemNameLable
             // 
             this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -298,7 +309,7 @@ namespace autotrade {
             this.ItemsToSaleGroupBox.Controls.Add(this.ItemsToSaleGridView);
             this.ItemsToSaleGroupBox.Controls.Add(this.DeleteSelectedItemButton);
             this.ItemsToSaleGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemsToSaleGroupBox.Location = new System.Drawing.Point(10, 323);
+            this.ItemsToSaleGroupBox.Location = new System.Drawing.Point(7, 323);
             this.ItemsToSaleGroupBox.Name = "ItemsToSaleGroupBox";
             this.ItemsToSaleGroupBox.Size = new System.Drawing.Size(564, 267);
             this.ItemsToSaleGroupBox.TabIndex = 15;
@@ -311,7 +322,7 @@ namespace autotrade {
             this.ForcePricesReloadButton.FlatAppearance.BorderSize = 0;
             this.ForcePricesReloadButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ForcePricesReloadButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ForcePricesReloadButton.Image = ((System.Drawing.Image)(resources.GetObject("ForcePricesReloadButton.Image")));
+            this.ForcePricesReloadButton.Image = global::autotrade.Properties.Resources.RefreshButton;
             this.ForcePricesReloadButton.Location = new System.Drawing.Point(451, 221);
             this.ForcePricesReloadButton.Name = "ForcePricesReloadButton";
             this.ForcePricesReloadButton.Size = new System.Drawing.Size(47, 40);
@@ -422,7 +433,7 @@ namespace autotrade {
             this.DeleteSelectedItemButton.FlatAppearance.BorderSize = 0;
             this.DeleteSelectedItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteSelectedItemButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.DeleteSelectedItemButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteSelectedItemButton.Image")));
+            this.DeleteSelectedItemButton.Image = global::autotrade.Properties.Resources.CancelButton;
             this.DeleteSelectedItemButton.Location = new System.Drawing.Point(504, 221);
             this.DeleteSelectedItemButton.Name = "DeleteSelectedItemButton";
             this.DeleteSelectedItemButton.Size = new System.Drawing.Size(47, 40);
@@ -444,7 +455,7 @@ namespace autotrade {
             // 
             // SplitterPanel
             // 
-            this.SplitterPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SplitterPanel.BackgroundImage")));
+            this.SplitterPanel.BackgroundImage = global::autotrade.Properties.Resources.NotLogined;
             this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SplitterPanel.Location = new System.Drawing.Point(692, 11);
             this.SplitterPanel.Name = "SplitterPanel";
@@ -467,7 +478,7 @@ namespace autotrade {
             this.LoadInventoryButton.FlatAppearance.BorderSize = 0;
             this.LoadInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadInventoryButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadInventoryButton.Image")));
+            this.LoadInventoryButton.Image = global::autotrade.Properties.Resources.Download;
             this.LoadInventoryButton.Location = new System.Drawing.Point(206, 9);
             this.LoadInventoryButton.Name = "LoadInventoryButton";
             this.LoadInventoryButton.Size = new System.Drawing.Size(76, 65);
@@ -533,7 +544,7 @@ namespace autotrade {
             this.AddAllButton.FlatAppearance.BorderSize = 0;
             this.AddAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AddAllButton.Image = ((System.Drawing.Image)(resources.GetObject("AddAllButton.Image")));
+            this.AddAllButton.Image = global::autotrade.Properties.Resources.AddAllButton;
             this.AddAllButton.Location = new System.Drawing.Point(582, 10);
             this.AddAllButton.Name = "AddAllButton";
             this.AddAllButton.Size = new System.Drawing.Size(47, 40);
@@ -549,7 +560,7 @@ namespace autotrade {
             this.RefreshPricesButton.FlatAppearance.BorderSize = 0;
             this.RefreshPricesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RefreshPricesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.RefreshPricesButton.Image = ((System.Drawing.Image)(resources.GetObject("RefreshPricesButton.Image")));
+            this.RefreshPricesButton.Image = global::autotrade.Properties.Resources.RefreshButton;
             this.RefreshPricesButton.Location = new System.Drawing.Point(635, 10);
             this.RefreshPricesButton.Name = "RefreshPricesButton";
             this.RefreshPricesButton.Size = new System.Drawing.Size(47, 40);
@@ -565,7 +576,7 @@ namespace autotrade {
             this.OpenMarketPageButtonClick.FlatAppearance.BorderSize = 0;
             this.OpenMarketPageButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OpenMarketPageButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.OpenMarketPageButtonClick.Image = ((System.Drawing.Image)(resources.GetObject("OpenMarketPageButtonClick.Image")));
+            this.OpenMarketPageButtonClick.Image = global::autotrade.Properties.Resources.SteamButton;
             this.OpenMarketPageButtonClick.Location = new System.Drawing.Point(778, 12);
             this.OpenMarketPageButtonClick.Name = "OpenMarketPageButtonClick";
             this.OpenMarketPageButtonClick.Size = new System.Drawing.Size(47, 40);
@@ -581,7 +592,7 @@ namespace autotrade {
             this.OpenGameInventoryPageButton.FlatAppearance.BorderSize = 0;
             this.OpenGameInventoryPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OpenGameInventoryPageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.OpenGameInventoryPageButton.Image = ((System.Drawing.Image)(resources.GetObject("OpenGameInventoryPageButton.Image")));
+            this.OpenGameInventoryPageButton.Image = global::autotrade.Properties.Resources.GameButton;
             this.OpenGameInventoryPageButton.Location = new System.Drawing.Point(828, 12);
             this.OpenGameInventoryPageButton.Name = "OpenGameInventoryPageButton";
             this.OpenGameInventoryPageButton.Size = new System.Drawing.Size(47, 40);
@@ -665,6 +676,70 @@ namespace autotrade {
             this.RecomendedPriceRadioButton.Text = "Recommended price";
             this.AddAllToolTip.SetToolTip(this.RecomendedPriceRadioButton, "The largest of the maximum and current prices");
             this.RecomendedPriceRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // AveragePricePercentNumericUpDown
+            // 
+            this.AveragePricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AveragePricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AveragePricePercentNumericUpDown.DecimalPlaces = 2;
+            this.AveragePricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AveragePricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AveragePricePercentNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.AveragePricePercentNumericUpDown.Location = new System.Drawing.Point(212, 57);
+            this.AveragePricePercentNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.AveragePricePercentNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.AveragePricePercentNumericUpDown.Name = "AveragePricePercentNumericUpDown";
+            this.AveragePricePercentNumericUpDown.Size = new System.Drawing.Size(76, 22);
+            this.AveragePricePercentNumericUpDown.TabIndex = 7;
+            this.AveragePricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.AveragePricePercentNumericUpDown, "Only one value type can be used");
+            this.AveragePricePercentNumericUpDown.TrailingSign = "%";
+            this.AveragePricePercentNumericUpDown.Visible = false;
+            this.AveragePricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePricePercentNumericUpDown_ValueChanged);
+            // 
+            // CurrentPricePercentNumericUpDown
+            // 
+            this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
+            this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(212, 79);
+            this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.CurrentPricePercentNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.CurrentPricePercentNumericUpDown.Name = "CurrentPricePercentNumericUpDown";
+            this.CurrentPricePercentNumericUpDown.Size = new System.Drawing.Size(76, 22);
+            this.CurrentPricePercentNumericUpDown.TabIndex = 4;
+            this.CurrentPricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.CurrentPricePercentNumericUpDown, "Only one value type can be used");
+            this.CurrentPricePercentNumericUpDown.TrailingSign = "%";
+            this.CurrentPricePercentNumericUpDown.Visible = false;
+            this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDown_ValueChanged);
             // 
             // InventoryGroupBox
             // 
@@ -784,82 +859,6 @@ namespace autotrade {
             this.PriceSettingsGroupBox.TabStop = false;
             this.PriceSettingsGroupBox.Text = "The price formation setting ";
             // 
-            // ItemDescriptionTextBox
-            // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
-            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
-            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
-            this.ItemDescriptionTextBox.TabIndex = 11;
-            this.ItemDescriptionTextBox.Text = "";
-            // 
-            // AveragePricePercentNumericUpDown
-            // 
-            this.AveragePricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.AveragePricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AveragePricePercentNumericUpDown.DecimalPlaces = 2;
-            this.AveragePricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AveragePricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AveragePricePercentNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.AveragePricePercentNumericUpDown.Location = new System.Drawing.Point(212, 57);
-            this.AveragePricePercentNumericUpDown.Maximum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            0});
-            this.AveragePricePercentNumericUpDown.Minimum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            -2147483648});
-            this.AveragePricePercentNumericUpDown.Name = "AveragePricePercentNumericUpDown";
-            this.AveragePricePercentNumericUpDown.Size = new System.Drawing.Size(76, 22);
-            this.AveragePricePercentNumericUpDown.TabIndex = 7;
-            this.AveragePricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.AddAllToolTip.SetToolTip(this.AveragePricePercentNumericUpDown, "Only one value type can be used");
-            this.AveragePricePercentNumericUpDown.TrailingSign = "%";
-            this.AveragePricePercentNumericUpDown.Visible = false;
-            this.AveragePricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePricePercentNumericUpDown_ValueChanged);
-            // 
-            // CurrentPricePercentNumericUpDown
-            // 
-            this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
-            this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(212, 79);
-            this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            0});
-            this.CurrentPricePercentNumericUpDown.Minimum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            -2147483648});
-            this.CurrentPricePercentNumericUpDown.Name = "CurrentPricePercentNumericUpDown";
-            this.CurrentPricePercentNumericUpDown.Size = new System.Drawing.Size(76, 22);
-            this.CurrentPricePercentNumericUpDown.TabIndex = 4;
-            this.CurrentPricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.AddAllToolTip.SetToolTip(this.CurrentPricePercentNumericUpDown, "Only one value type can be used");
-            this.CurrentPricePercentNumericUpDown.TrailingSign = "%";
-            this.CurrentPricePercentNumericUpDown.Visible = false;
-            this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDown_ValueChanged);
-            // 
             // SaleControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -889,13 +888,13 @@ namespace autotrade {
             this.AllSteamItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
             this.InventoryGroupBox.ResumeLayout(false);
             this.InventoryGroupBox.PerformLayout();
             this.SellGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
