@@ -1,5 +1,6 @@
 ﻿﻿using System;
-using System.Collections.Generic;
+ using System.Collections;
+ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -101,6 +102,10 @@ namespace autotrade.Steam {
             else if (items.MarketSaleType == MarketSaleType.LOWER_THAN_CURRENT)
             {
                 cache = PriceLoader.CURRENT_PRICES_CACHE;
+            }
+            else if (items.MarketSaleType == MarketSaleType.RECOMENDED)
+            {
+                cache = PriceLoader.RECOMMENDED_PRICES_CACHE;
             }
             string itemName;
             foreach (var package in items.ItemsForSaleList) {
