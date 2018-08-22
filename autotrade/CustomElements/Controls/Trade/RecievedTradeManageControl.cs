@@ -51,7 +51,7 @@ namespace autotrade.CustomElements.Controls {
                 return;
             }
 
-            GridUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
+            CommonUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
             LoadTradesButton.Enabled = false;
             bool activeOnly = ActiveOnlyCheckBox.Checked;
 
@@ -64,7 +64,7 @@ namespace autotrade.CustomElements.Controls {
                 ALL_TRADES.Clear();
                 Program.LoadingForm.InitCurrentTradesLoadingProcess(sentOffers, recievedOffers, activeOnly, language);
                 List<FullTradeOffer> fullTradeOffers = Program.LoadingForm.GetLoadedCurrentTrades();
-                Program.LoadingForm.Disactivate();
+                Program.LoadingForm.DisactivateForm();
 
                 foreach (var trade in fullTradeOffers) {
                     ALL_TRADES.Add(trade.Offers.TradeOfferId, trade);
@@ -96,7 +96,7 @@ namespace autotrade.CustomElements.Controls {
         }
 
         private void ChangeSelectedTrade() {
-            GridUtils.ClearGrids(MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
+            CommonUtils.ClearGrids(MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
             FullTradeOffer tradeOffer = ALL_TRADES[SELECTED_OFFER_ID];
 
             if (tradeOffer.ItemsToGive != null) {
@@ -130,10 +130,10 @@ namespace autotrade.CustomElements.Controls {
             ExtraTradeInfoGridView.Rows.Add("Message", tradeOffer.Offers.Message);
             ExtraTradeInfoGridView.Rows.Add("IsOurOffer", tradeOffer.Offers.IsOurOffer.ToString());
             ExtraTradeInfoGridView.Rows.Add("AccountIdOther", tradeOffer.Offers.AccountIdOther.ToString());
-            ExtraTradeInfoGridView.Rows.Add("ExpirationTime", GridUtils.ParseSteamUnixDate(tradeOffer.Offers.ExpirationTime).ToString());
+            ExtraTradeInfoGridView.Rows.Add("ExpirationTime", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.ExpirationTime).ToString());
             ExtraTradeInfoGridView.Rows.Add("ConfirmationMethod", tradeOffer.Offers.ConfirmationMethod.ToString().Replace("TradeOfferConfirmation", ""));
-            ExtraTradeInfoGridView.Rows.Add("TimeCreated", GridUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeCreated).ToString());
-            ExtraTradeInfoGridView.Rows.Add("TimeUpdated", GridUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeUpdated).ToString());
+            ExtraTradeInfoGridView.Rows.Add("TimeCreated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeCreated).ToString());
+            ExtraTradeInfoGridView.Rows.Add("TimeUpdated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeUpdated).ToString());
             ExtraTradeInfoGridView.Rows.Add("EscrowEndDate", tradeOffer.Offers.EscrowEndDate.ToString());
             ExtraTradeInfoGridView.Rows.Add("FromRealTimeTrade", tradeOffer.Offers.FromRealTimeTrade.ToString());
         }
@@ -186,24 +186,24 @@ namespace autotrade.CustomElements.Controls {
 
             var tagsText = "";
 
-            ElementsUtils.AppendBoldText(textBox, "Game: ");
+            CommonUtils.AppendBoldText(textBox, "Game: ");
             textBox.AppendText(description.AppId.ToString() + "\n");
 
-            ElementsUtils.AppendBoldText(textBox, "Name: ");
+            CommonUtils.AppendBoldText(textBox, "Name: ");
             textBox.AppendText(description.MarketHashName + "\n");
 
-            ElementsUtils.AppendBoldText(textBox, "Type: ");
+            CommonUtils.AppendBoldText(textBox, "Type: ");
             textBox.AppendText(description.Type);
 
             if (!string.IsNullOrWhiteSpace(descriptionText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.AppendBoldText(textBox, "Description: ");
+                CommonUtils.AppendBoldText(textBox, "Description: ");
                 textBox.AppendText(descriptionText);
             }
 
             if (!string.IsNullOrWhiteSpace(tagsText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.AppendBoldText(textBox, "Tags: ");
+                CommonUtils.AppendBoldText(textBox, "Tags: ");
                 textBox.AppendText(tagsText);
             }
         }

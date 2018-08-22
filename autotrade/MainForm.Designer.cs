@@ -36,15 +36,15 @@ namespace autotrade {
             this.TradeLinkButton = new System.Windows.Forms.Button();
             this.BotEdge = new System.Windows.Forms.Panel();
             this.BottomEdge1 = new System.Windows.Forms.Panel();
-            this.appExitButton = new System.Windows.Forms.Button();
-            this.appCurtailButton = new System.Windows.Forms.Button();
             this.HeaderPanel = new System.Windows.Forms.Panel();
             this.ProgramLogo = new System.Windows.Forms.PictureBox();
             this.titleLable = new System.Windows.Forms.Label();
+            this.appCurtailButton = new System.Windows.Forms.Button();
+            this.appExitButton = new System.Windows.Forms.Button();
             this.RightEdge = new System.Windows.Forms.Panel();
-            this.TradeControlTab = new autotrade.CustomElements.Tabs.TradeControlTab();
             this.MarketControlTab = new autotrade.CustomElements.Tabs.MarketControlTab();
             this.SettingsControlTab = new autotrade.CustomElements.SettingsControlTab();
+            this.TradeControlTab = new autotrade.CustomElements.Tabs.TradeControlTab();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoImageBox)).BeginInit();
             this.HeaderPanel.SuspendLayout();
@@ -90,7 +90,7 @@ namespace autotrade {
             this.SettingsLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SettingsLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SettingsLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.SettingsLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("SettingsLinkButton.Image")));
+            this.SettingsLinkButton.Image = global::autotrade.Properties.Resources.MenuSettings;
             this.SettingsLinkButton.Location = new System.Drawing.Point(3, 172);
             this.SettingsLinkButton.Name = "SettingsLinkButton";
             this.SettingsLinkButton.Size = new System.Drawing.Size(166, 45);
@@ -102,10 +102,11 @@ namespace autotrade {
             // 
             // LeftPanelHideShowButton
             // 
+            this.LeftPanelHideShowButton.BackgroundImage = global::autotrade.Properties.Resources.HideMenuButton;
+            this.LeftPanelHideShowButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.LeftPanelHideShowButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.LeftPanelHideShowButton.FlatAppearance.BorderSize = 0;
             this.LeftPanelHideShowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LeftPanelHideShowButton.Image = ((System.Drawing.Image)(resources.GetObject("LeftPanelHideShowButton.Image")));
             this.LeftPanelHideShowButton.Location = new System.Drawing.Point(134, 4);
             this.LeftPanelHideShowButton.Name = "LeftPanelHideShowButton";
             this.LeftPanelHideShowButton.Size = new System.Drawing.Size(27, 27);
@@ -121,7 +122,7 @@ namespace autotrade {
             this.SaleLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaleLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SaleLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.SaleLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("SaleLinkButton.Image")));
+            this.SaleLinkButton.Image = global::autotrade.Properties.Resources.MenuMarket;
             this.SaleLinkButton.Location = new System.Drawing.Point(0, 233);
             this.SaleLinkButton.Name = "SaleLinkButton";
             this.SaleLinkButton.Size = new System.Drawing.Size(166, 45);
@@ -133,9 +134,9 @@ namespace autotrade {
             // 
             // LogoImageBox
             // 
-            this.LogoImageBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LogoImageBox.BackgroundImage")));
+            this.LogoImageBox.BackgroundImage = global::autotrade.Properties.Resources.MainLogo;
             this.LogoImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.LogoImageBox.ErrorImage = ((System.Drawing.Image)(resources.GetObject("LogoImageBox.ErrorImage")));
+            this.LogoImageBox.ErrorImage = null;
             this.LogoImageBox.Location = new System.Drawing.Point(1, 7);
             this.LogoImageBox.Name = "LogoImageBox";
             this.LogoImageBox.Size = new System.Drawing.Size(164, 161);
@@ -149,7 +150,7 @@ namespace autotrade {
             this.TradeLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TradeLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TradeLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.TradeLinkButton.Image = ((System.Drawing.Image)(resources.GetObject("TradeLinkButton.Image")));
+            this.TradeLinkButton.Image = global::autotrade.Properties.Resources.MenuTrade;
             this.TradeLinkButton.Location = new System.Drawing.Point(0, 294);
             this.TradeLinkButton.Name = "TradeLinkButton";
             this.TradeLinkButton.Size = new System.Drawing.Size(166, 45);
@@ -177,33 +178,6 @@ namespace autotrade {
             this.BottomEdge1.Size = new System.Drawing.Size(1061, 2);
             this.BottomEdge1.TabIndex = 6;
             // 
-            // appExitButton
-            // 
-            this.appExitButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.appExitButton.FlatAppearance.BorderSize = 0;
-            this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.appExitButton.Image = ((System.Drawing.Image)(resources.GetObject("appExitButton.Image")));
-            this.appExitButton.Location = new System.Drawing.Point(1029, 3);
-            this.appExitButton.Name = "appExitButton";
-            this.appExitButton.Size = new System.Drawing.Size(27, 23);
-            this.appExitButton.TabIndex = 6;
-            this.appExitButton.UseVisualStyleBackColor = true;
-            this.appExitButton.Click += new System.EventHandler(this.AppExitButton_Click);
-            // 
-            // appCurtailButton
-            // 
-            this.appCurtailButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.appCurtailButton.FlatAppearance.BorderSize = 0;
-            this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.appCurtailButton.Image = ((System.Drawing.Image)(resources.GetObject("appCurtailButton.Image")));
-            this.appCurtailButton.Location = new System.Drawing.Point(999, 3);
-            this.appCurtailButton.Name = "appCurtailButton";
-            this.appCurtailButton.Size = new System.Drawing.Size(27, 23);
-            this.appCurtailButton.TabIndex = 5;
-            this.appCurtailButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.appCurtailButton.UseVisualStyleBackColor = true;
-            this.appCurtailButton.Click += new System.EventHandler(this.AppCurtailButton_Click);
-            // 
             // HeaderPanel
             // 
             this.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -222,7 +196,7 @@ namespace autotrade {
             // 
             // ProgramLogo
             // 
-            this.ProgramLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProgramLogo.BackgroundImage")));
+            this.ProgramLogo.BackgroundImage = global::autotrade.Properties.Resources.SmallLogo;
             this.ProgramLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ProgramLogo.ErrorImage = null;
             this.ProgramLogo.InitialImage = null;
@@ -249,6 +223,33 @@ namespace autotrade {
             this.titleLable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
             this.titleLable.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Move_MouseUp);
             // 
+            // appCurtailButton
+            // 
+            this.appCurtailButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.appCurtailButton.FlatAppearance.BorderSize = 0;
+            this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.appCurtailButton.Image = global::autotrade.Properties.Resources.MinimizeButton;
+            this.appCurtailButton.Location = new System.Drawing.Point(999, 3);
+            this.appCurtailButton.Name = "appCurtailButton";
+            this.appCurtailButton.Size = new System.Drawing.Size(27, 23);
+            this.appCurtailButton.TabIndex = 5;
+            this.appCurtailButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.appCurtailButton.UseVisualStyleBackColor = true;
+            this.appCurtailButton.Click += new System.EventHandler(this.AppCurtailButton_Click);
+            // 
+            // appExitButton
+            // 
+            this.appExitButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.appExitButton.FlatAppearance.BorderSize = 0;
+            this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.appExitButton.Image = global::autotrade.Properties.Resources.CloseButton;
+            this.appExitButton.Location = new System.Drawing.Point(1029, 3);
+            this.appExitButton.Name = "appExitButton";
+            this.appExitButton.Size = new System.Drawing.Size(27, 23);
+            this.appExitButton.TabIndex = 6;
+            this.appExitButton.UseVisualStyleBackColor = true;
+            this.appExitButton.Click += new System.EventHandler(this.AppExitButton_Click);
+            // 
             // RightEdge
             // 
             this.RightEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -257,14 +258,6 @@ namespace autotrade {
             this.RightEdge.Name = "RightEdge";
             this.RightEdge.Size = new System.Drawing.Size(3, 637);
             this.RightEdge.TabIndex = 6;
-            // 
-            // TradeControlTab
-            // 
-            this.TradeControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.TradeControlTab.Location = new System.Drawing.Point(165, 36);
-            this.TradeControlTab.Name = "TradeControlTab";
-            this.TradeControlTab.Size = new System.Drawing.Size(894, 632);
-            this.TradeControlTab.TabIndex = 9;
             // 
             // MarketControlTab
             // 
@@ -285,6 +278,14 @@ namespace autotrade {
             this.SettingsControlTab.Size = new System.Drawing.Size(894, 632);
             this.SettingsControlTab.TabIndex = 8;
             // 
+            // tradeControlTab1
+            // 
+            this.TradeControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.TradeControlTab.Location = new System.Drawing.Point(165, 36);
+            this.TradeControlTab.Name = "tradeControlTab1";
+            this.TradeControlTab.Size = new System.Drawing.Size(894, 632);
+            this.TradeControlTab.TabIndex = 9;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -297,15 +298,15 @@ namespace autotrade {
             this.Controls.Add(this.BotEdge);
             this.Controls.Add(this.leftHeaderPanel);
             this.Controls.Add(this.HeaderPanel);
-            this.Controls.Add(this.TradeControlTab);
             this.Controls.Add(this.MarketControlTab);
+            this.Controls.Add(this.TradeControlTab);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Steam-Auto-Market";
             this.leftHeaderPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LogoImageBox)).EndInit();
             this.HeaderPanel.ResumeLayout(false);
@@ -336,10 +337,5 @@ namespace autotrade {
         public CustomElements.SettingsControlTab SettingsControlTab;
         public CustomElements.Tabs.MarketControlTab MarketControlTab;
         public CustomElements.Tabs.TradeControlTab TradeControlTab;
-
-
-        public System.ComponentModel.ComponentResourceManager GetResources() {
-            return resources;
-        }
     }
 }

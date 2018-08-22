@@ -40,16 +40,21 @@ namespace autotrade {
                 ProgressBar.Value = currentPage;
             });
         }
-        public void Disactivate() {
+        public void DisactivateForm() {
             Dispatcher.Invoke(Program.MainForm, () => {
                 this.Close();
                 Program.LoadingForm = new LoadingForm();
             });
         }
 
-        private void Activate() => Dispatcher.Invoke(Program.MainForm, () => {
-            this.Show();
-        });
+        private void ActivateForm() {
+            Dispatcher.Invoke(Program.MainForm, () => {
+                if (this != null) {
+                    this.Show();
+                }
+            });
+        }
+
         private void StopWorkingProcessButton_Click(object sender, EventArgs e) {
             stopButtonPressed = true;
             Dispatcher.Invoke(Program.LoadingForm, () => {
@@ -57,7 +62,7 @@ namespace autotrade {
                 items = new List<RgFullItem>();
                 currentTrades = new List<FullTradeOffer>();
                 workingThread.Abort();
-                Disactivate();
+                DisactivateForm();
             });
         }
         private void InventoryLoadingForm_FormClosing(object sender, FormClosingEventArgs e) {
@@ -71,7 +76,7 @@ namespace autotrade {
 
         public void InitInventoryLoadingProcess() {
             this.Text = $"{CurrentSession.CurrentInventoryAppId}-{CurrentSession.CurrentInventoryContextId} inventory loading";
-            Activate();
+            ActivateForm();
             workingThread = new Thread(() => {
                 LoadCurrentInventory();
             });
@@ -93,7 +98,7 @@ namespace autotrade {
 
         public void InitCurrentTradesLoadingProcess(bool getSentOffers, bool getReceivedOffers, bool activeOnly, string language) {
             this.Text = $"Trade history loading";
-            Activate();
+            ActivateForm();
             workingThread = new Thread(() => {
                 LoadCurrentTradeOffers(getSentOffers, getReceivedOffers, activeOnly, language);
             });
@@ -131,7 +136,7 @@ namespace autotrade {
 
         public void InitTradesHistoryLoadingProcess(bool getSentOffers, bool getReceivedOffers, string timeHistoricalCutoff = "0", string language = "en_us") {
             Text = $"Trade history loading";
-            Activate();
+            ActivateForm();
             workingThread = new Thread(() => {
                 LoadTradeOffersHistory(getSentOffers, getReceivedOffers, true, false, true, timeHistoricalCutoff, language);
             });

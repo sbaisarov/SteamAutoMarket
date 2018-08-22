@@ -55,7 +55,7 @@ namespace autotrade.CustomElements {
 
             Program.LoadingForm.InitInventoryLoadingProcess();
             List<RgFullItem> allItemsList = Program.LoadingForm.GetLoadedItems();
-            Program.LoadingForm.Disactivate();
+            Program.LoadingForm.DisactivateForm();
 
             allItemsList.RemoveAll(item => item.Description.tradable == false);
 

@@ -19,7 +19,7 @@ namespace autotrade {
         public TradeHistoryControl() {
             InitializeComponent();
 
-            var settings = SavedSettings.Get(); 
+            var settings = SavedSettings.Get();
             TradeIdTextBox.Text = settings.TRADE_HISTORY_TRADE_ID;
             MaxTradesNumericUpDown.Value = settings.TRADE_HISTORY_MAX_TRADES;
             LanguageComboBox.Text = settings.TRADE_HISTORY_LANGUAGE;
@@ -55,7 +55,7 @@ namespace autotrade {
                 return;
             }
 
-            long startTime = ElementsUtils.GetSecondsFromDateTime(DateTimePicker.Value);
+            long startTime = CommonUtils.GetSecondsFromDateTime(CommonUtils.ResetTimeToDauStart(DateTimePicker.Value));
             string startTradeId = TradeIdTextBox.Text;
             int maxTrades = (int)MaxTradesNumericUpDown.Value;
             bool navigatingBack = NavigatingBackCheckBox.Checked;
@@ -65,13 +65,13 @@ namespace autotrade {
                 language = "en_US";
             }
 
-            GridUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
+            CommonUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
 
             Task.Run(() => {
                 ALL_TRADES.Clear();
                 Program.LoadingForm.InitTradesHistoryLoadingProcess(sentOffers, recievedOffers, language: language);
                 List<FullTradeOffer> fullTradeOffers = Program.LoadingForm.GetLoadedTradesHistory();
-                Program.LoadingForm.Disactivate();
+                Program.LoadingForm.DisactivateForm();
 
                 Dispatcher.Invoke(Program.MainForm, () => {
                     foreach (var trade in fullTradeOffers) {
@@ -103,7 +103,7 @@ namespace autotrade {
         }
 
         private void ChangeSelectedTrade() {
-            GridUtils.ClearGrids(MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
+            CommonUtils.ClearGrids(MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
             FullTradeOffer tradeOffer = ALL_TRADES[SELECTED_OFFER_ID];
 
             if (tradeOffer.ItemsToGive != null) {
@@ -137,10 +137,10 @@ namespace autotrade {
             ExtraTradeInfoGridView.Rows.Add("Message", tradeOffer.Offers.Message);
             ExtraTradeInfoGridView.Rows.Add("IsOurOffer", tradeOffer.Offers.IsOurOffer.ToString());
             ExtraTradeInfoGridView.Rows.Add("AccountIdOther", tradeOffer.Offers.AccountIdOther.ToString());
-            ExtraTradeInfoGridView.Rows.Add("ExpirationTime", GridUtils.ParseSteamUnixDate(tradeOffer.Offers.ExpirationTime).ToString());
+            ExtraTradeInfoGridView.Rows.Add("ExpirationTime", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.ExpirationTime).ToString());
             ExtraTradeInfoGridView.Rows.Add("ConfirmationMethod", tradeOffer.Offers.ConfirmationMethod.ToString().Replace("TradeOfferConfirmation", ""));
-            ExtraTradeInfoGridView.Rows.Add("TimeCreated", GridUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeCreated).ToString());
-            ExtraTradeInfoGridView.Rows.Add("TimeUpdated", GridUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeUpdated).ToString());
+            ExtraTradeInfoGridView.Rows.Add("TimeCreated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeCreated).ToString());
+            ExtraTradeInfoGridView.Rows.Add("TimeUpdated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeUpdated).ToString());
             ExtraTradeInfoGridView.Rows.Add("EscrowEndDate", tradeOffer.Offers.EscrowEndDate.ToString());
             ExtraTradeInfoGridView.Rows.Add("FromRealTimeTrade", tradeOffer.Offers.FromRealTimeTrade.ToString());
         }
@@ -193,24 +193,24 @@ namespace autotrade {
 
             var tagsText = "";
 
-            ElementsUtils.AppendBoldText(textBox, "Game: ");
+            CommonUtils.AppendBoldText(textBox, "Game: ");
             textBox.AppendText(description.AppId.ToString() + "\n");
 
-            ElementsUtils.AppendBoldText(textBox, "Name: ");
+            CommonUtils.AppendBoldText(textBox, "Name: ");
             textBox.AppendText(description.MarketHashName + "\n");
 
-            ElementsUtils.AppendBoldText(textBox, "Type: ");
+            CommonUtils.AppendBoldText(textBox, "Type: ");
             textBox.AppendText(description.Type);
 
             if (!string.IsNullOrWhiteSpace(descriptionText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.AppendBoldText(textBox, "Description: ");
+                CommonUtils.AppendBoldText(textBox, "Description: ");
                 textBox.AppendText(descriptionText);
             }
 
             if (!string.IsNullOrWhiteSpace(tagsText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.AppendBoldText(textBox, "Tags: ");
+                CommonUtils.AppendBoldText(textBox, "Tags: ");
                 textBox.AppendText(tagsText);
             }
         }

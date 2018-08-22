@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace autotrade.Utils {
     class Logger {
-        public static LoggerLevel LOGGER_LEVEL { get; set; } = LoggerLevel.INFO;// 0 debug, 1 info + errors, 2 errors, 3 none
+        public static LoggerLevel LOGGER_LEVEL { get; set; } = LoggerLevel.INFO;
         public const string DATE_FROMAT = "HH:mm:ss"; //dd-MM-yy H:mm:ss
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -62,8 +62,8 @@ namespace autotrade.Utils {
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void Critical(string message, Exception e) {
-            message = $"{GetCurrentDate()} [CRITICAL] - {message}. {e.Message} {e.StackTrace}";
-            File.AppendAllText("error.log", message + "\n");
+            message = $"{GetCurrentDate()} [CRITICAL] - {message}. {e.Message}";
+            File.AppendAllText("error.log", $"{message} {e.StackTrace}\n");
 
             var confirmResult = MessageBox.Show(message, "Critical unhandled exception",
                                       MessageBoxButtons.OK, MessageBoxIcon.Stop);

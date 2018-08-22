@@ -215,24 +215,24 @@ namespace autotrade.CustomElements {
                 }
                 if (tagsText.EndsWith(", ")) tagsText = tagsText.Substring(0, tagsText.Length - 2);
             }
-            ElementsUtils.AppendBoldText(textBox, "Game: ");
+            CommonUtils.AppendBoldText(textBox, "Game: ");
             textBox.AppendText(description.appid.ToString() + "\n");
 
-            ElementsUtils.AppendBoldText(textBox, "Name: ");
+            CommonUtils.AppendBoldText(textBox, "Name: ");
             textBox.AppendText(description.market_hash_name + "\n");
 
-            ElementsUtils.AppendBoldText(textBox, "Type: ");
+            CommonUtils.AppendBoldText(textBox, "Type: ");
             textBox.AppendText(description.type);
 
             if (!string.IsNullOrWhiteSpace(descriptionText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.AppendBoldText(textBox, "Description: ");
+                CommonUtils.AppendBoldText(textBox, "Description: ");
                 textBox.AppendText(descriptionText);
             }
 
             if (!string.IsNullOrWhiteSpace(tagsText)) {
                 textBox.AppendText("\n");
-                ElementsUtils.AppendBoldText(textBox, "Tags: ");
+                CommonUtils.AppendBoldText(textBox, "Tags: ");
                 textBox.AppendText(tagsText);
             }
         }

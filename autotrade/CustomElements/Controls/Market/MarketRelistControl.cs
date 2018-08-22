@@ -13,6 +13,12 @@ namespace autotrade.CustomElements.Controls.Market {
     public partial class MarketRelistControl : UserControl {
         public MarketRelistControl() {
             InitializeComponent();
+
+            this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+            this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+            this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+            this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+            this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
         }
 
         public void AuthCurrentAccount() {

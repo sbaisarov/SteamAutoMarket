@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using autotrade.Utils;
+using System.Windows.Forms;
 
 namespace autotrade.CustomElements {
     partial class TradeSendControl {
@@ -26,7 +27,6 @@ namespace autotrade.CustomElements {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TradeSendControl));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -42,8 +42,8 @@ namespace autotrade.CustomElements {
             this.TradeTokenLable = new System.Windows.Forms.Label();
             this.TradeTokenTextBox = new System.Windows.Forms.TextBox();
             this.TradeGroupBox = new System.Windows.Forms.GroupBox();
+            this.LoadedAccountCombobox = new autotrade.CustomElements.Elements.ComboboxWithImage();
             this.LoadedAccountLable = new System.Windows.Forms.Label();
-            this.DeleteSelectedItemButton = new System.Windows.Forms.Button();
             this.ItemsToSaleGroupBox = new System.Windows.Forms.GroupBox();
             this.ItemsToTradeGridView = new System.Windows.Forms.DataGridView();
             this.AddedToSaleListItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,10 +52,12 @@ namespace autotrade.CustomElements {
             this.HidenMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddedToSaleListHidenItemsList = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AveragePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeleteSelectedItemButton = new System.Windows.Forms.Button();
             this.TradeSendGroupBox = new System.Windows.Forms.GroupBox();
             this.SendTradeButton = new System.Windows.Forms.Button();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.AllSteamItemsGroupBox = new System.Windows.Forms.GroupBox();
             this.AllSteamItemsToTradeGridView = new System.Windows.Forms.DataGridView();
@@ -69,10 +71,7 @@ namespace autotrade.CustomElements {
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AddAllButton = new System.Windows.Forms.Button();
-            this.RefreshInventoryButton = new System.Windows.Forms.Button();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.SplitterPanel = new System.Windows.Forms.Panel();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenItemImageColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -81,17 +80,18 @@ namespace autotrade.CustomElements {
             this.CountToAddColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OpenMarketPageButtonClick = new System.Windows.Forms.Button();
             this.InventoryAppIdComboBox = new System.Windows.Forms.ComboBox();
             this.InventoryAppIdLabel = new System.Windows.Forms.Label();
             this.InventoryContextIdComboBox = new System.Windows.Forms.ComboBox();
             this.InventoryContextIdLabel = new System.Windows.Forms.Label();
             this.InventoryGroupBox = new System.Windows.Forms.GroupBox();
             this.LoadInventoryButton = new System.Windows.Forms.Button();
-            this.OpenGameInventoryPageButton = new System.Windows.Forms.Button();
             this.AddAllToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
-            this.LoadedAccountCombobox = new autotrade.CustomElements.Elements.ComboboxWithImage();
+            this.OpenGameInventoryPageButton = new System.Windows.Forms.Button();
+            this.OpenMarketPageButtonClick = new System.Windows.Forms.Button();
+            this.RefreshInventoryButton = new System.Windows.Forms.Button();
+            this.AddAllButton = new System.Windows.Forms.Button();
+            this.SplitterPanel = new System.Windows.Forms.Panel();
             this.TradeGroupBox.SuspendLayout();
             this.ItemsToSaleGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToTradeGridView)).BeginInit();
@@ -168,6 +168,23 @@ namespace autotrade.CustomElements {
             this.TradeGroupBox.TabStop = false;
             this.TradeGroupBox.Text = "Trade setting ";
             // 
+            // LoadedAccountCombobox
+            // 
+            this.LoadedAccountCombobox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.LoadedAccountCombobox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.LoadedAccountCombobox.DropDownHeight = 150;
+            this.LoadedAccountCombobox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LoadedAccountCombobox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.LoadedAccountCombobox.FormattingEnabled = true;
+            this.LoadedAccountCombobox.IntegralHeight = false;
+            this.LoadedAccountCombobox.Location = new System.Drawing.Point(154, 16);
+            this.LoadedAccountCombobox.Name = "LoadedAccountCombobox";
+            this.LoadedAccountCombobox.Size = new System.Drawing.Size(123, 21);
+            this.LoadedAccountCombobox.TabIndex = 31;
+            this.LoadedAccountCombobox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ComboboxWithImage1_DrawItem);
+            this.LoadedAccountCombobox.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.ComboboxWithImage1_MeasureItem_1);
+            this.LoadedAccountCombobox.SelectedIndexChanged += new System.EventHandler(this.LoadedAccountCombobox_SelectedIndexChanged);
+            // 
             // LoadedAccountLable
             // 
             this.LoadedAccountLable.AutoSize = true;
@@ -178,27 +195,12 @@ namespace autotrade.CustomElements {
             this.LoadedAccountLable.TabIndex = 30;
             this.LoadedAccountLable.Text = "Loaded account";
             // 
-            // DeleteSelectedItemButton
-            // 
-            this.DeleteSelectedItemButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.DeleteSelectedItemButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.DeleteSelectedItemButton.FlatAppearance.BorderSize = 0;
-            this.DeleteSelectedItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteSelectedItemButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.DeleteSelectedItemButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteSelectedItemButton.Image")));
-            this.DeleteSelectedItemButton.Location = new System.Drawing.Point(504, 221);
-            this.DeleteSelectedItemButton.Name = "DeleteSelectedItemButton";
-            this.DeleteSelectedItemButton.Size = new System.Drawing.Size(47, 40);
-            this.DeleteSelectedItemButton.TabIndex = 22;
-            this.DeleteSelectedItemButton.UseVisualStyleBackColor = true;
-            this.DeleteSelectedItemButton.Click += new System.EventHandler(this.DeleteAccountButton_Click);
-            // 
             // ItemsToSaleGroupBox
             // 
             this.ItemsToSaleGroupBox.Controls.Add(this.ItemsToTradeGridView);
             this.ItemsToSaleGroupBox.Controls.Add(this.DeleteSelectedItemButton);
             this.ItemsToSaleGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemsToSaleGroupBox.Location = new System.Drawing.Point(10, 323);
+            this.ItemsToSaleGroupBox.Location = new System.Drawing.Point(7, 323);
             this.ItemsToSaleGroupBox.Name = "ItemsToSaleGroupBox";
             this.ItemsToSaleGroupBox.Size = new System.Drawing.Size(564, 267);
             this.ItemsToSaleGroupBox.TabIndex = 15;
@@ -300,6 +302,21 @@ namespace autotrade.CustomElements {
             this.AveragePrice.ReadOnly = true;
             this.AveragePrice.Visible = false;
             // 
+            // DeleteSelectedItemButton
+            // 
+            this.DeleteSelectedItemButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.DeleteSelectedItemButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.DeleteSelectedItemButton.FlatAppearance.BorderSize = 0;
+            this.DeleteSelectedItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DeleteSelectedItemButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.DeleteSelectedItemButton.Image = global::autotrade.Properties.Resources.CancelButton;
+            this.DeleteSelectedItemButton.Location = new System.Drawing.Point(504, 221);
+            this.DeleteSelectedItemButton.Name = "DeleteSelectedItemButton";
+            this.DeleteSelectedItemButton.Size = new System.Drawing.Size(47, 40);
+            this.DeleteSelectedItemButton.TabIndex = 22;
+            this.DeleteSelectedItemButton.UseVisualStyleBackColor = true;
+            this.DeleteSelectedItemButton.Click += new System.EventHandler(this.DeleteAccountButton_Click);
+            // 
             // TradeSendGroupBox
             // 
             this.TradeSendGroupBox.Controls.Add(this.SendTradeButton);
@@ -346,9 +363,22 @@ namespace autotrade.CustomElements {
             this.ItemDescriptionGroupBox.TabStop = false;
             this.ItemDescriptionGroupBox.Text = "Item description";
             // 
+            // ItemDescriptionTextBox
+            // 
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
+            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
+            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
+            this.ItemDescriptionTextBox.TabIndex = 12;
+            this.ItemDescriptionTextBox.Text = "";
+            // 
             // ItemImageBox
             // 
             this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemImageBox.BackgroundImage = global::autotrade.Properties.Resources.DefaultItem;
             this.ItemImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ItemImageBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
@@ -512,51 +542,9 @@ namespace autotrade.CustomElements {
             this.dataGridViewTextBoxColumn6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn6.Visible = false;
             // 
-            // AddAllButton
-            // 
-            this.AddAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.AddAllButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AddAllButton.FlatAppearance.BorderSize = 0;
-            this.AddAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AddAllButton.Image = ((System.Drawing.Image)(resources.GetObject("AddAllButton.Image")));
-            this.AddAllButton.Location = new System.Drawing.Point(582, 10);
-            this.AddAllButton.Name = "AddAllButton";
-            this.AddAllButton.Size = new System.Drawing.Size(47, 40);
-            this.AddAllButton.TabIndex = 28;
-            this.AddAllToolTip.SetToolTip(this.AddAllButton, "Add all selected items to trade list");
-            this.AddAllButton.UseVisualStyleBackColor = false;
-            this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
-            // 
-            // RefreshInventoryButton
-            // 
-            this.RefreshInventoryButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.RefreshInventoryButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RefreshInventoryButton.FlatAppearance.BorderSize = 0;
-            this.RefreshInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RefreshInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.RefreshInventoryButton.Image = ((System.Drawing.Image)(resources.GetObject("RefreshInventoryButton.Image")));
-            this.RefreshInventoryButton.Location = new System.Drawing.Point(635, 10);
-            this.RefreshInventoryButton.Name = "RefreshInventoryButton";
-            this.RefreshInventoryButton.Size = new System.Drawing.Size(47, 40);
-            this.RefreshInventoryButton.TabIndex = 27;
-            this.AddAllToolTip.SetToolTip(this.RefreshInventoryButton, "Reload inventory");
-            this.RefreshInventoryButton.UseVisualStyleBackColor = false;
-            this.RefreshInventoryButton.Click += new System.EventHandler(this.RefreshInventoryButton_Click);
-            // 
             // checkInvent
             // 
             this.checkInvent.Name = "checkInvent";
-            // 
-            // SplitterPanel
-            // 
-            this.SplitterPanel.BackColor = System.Drawing.Color.Transparent;
-            this.SplitterPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SplitterPanel.BackgroundImage")));
-            this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SplitterPanel.Location = new System.Drawing.Point(692, 11);
-            this.SplitterPanel.Name = "SplitterPanel";
-            this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
-            this.SplitterPanel.TabIndex = 20;
             // 
             // NameColumn
             // 
@@ -634,22 +622,6 @@ namespace autotrade.CustomElements {
             this.CountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.CountColumn.Width = 40;
             // 
-            // OpenMarketPageButtonClick
-            // 
-            this.OpenMarketPageButtonClick.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.OpenMarketPageButtonClick.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.OpenMarketPageButtonClick.FlatAppearance.BorderSize = 0;
-            this.OpenMarketPageButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpenMarketPageButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.OpenMarketPageButtonClick.Image = ((System.Drawing.Image)(resources.GetObject("OpenMarketPageButtonClick.Image")));
-            this.OpenMarketPageButtonClick.Location = new System.Drawing.Point(778, 12);
-            this.OpenMarketPageButtonClick.Name = "OpenMarketPageButtonClick";
-            this.OpenMarketPageButtonClick.Size = new System.Drawing.Size(47, 40);
-            this.OpenMarketPageButtonClick.TabIndex = 29;
-            this.AddAllToolTip.SetToolTip(this.OpenMarketPageButtonClick, "Find selected item on Steam Market");
-            this.OpenMarketPageButtonClick.UseVisualStyleBackColor = false;
-            this.OpenMarketPageButtonClick.Click += new System.EventHandler(this.OpenMarketPageButtonClick_Click);
-            // 
             // InventoryAppIdComboBox
             // 
             this.InventoryAppIdComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -722,7 +694,7 @@ namespace autotrade.CustomElements {
             this.LoadInventoryButton.FlatAppearance.BorderSize = 0;
             this.LoadInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadInventoryButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadInventoryButton.Image")));
+            this.LoadInventoryButton.Image = global::autotrade.Properties.Resources.Download;
             this.LoadInventoryButton.Location = new System.Drawing.Point(206, 9);
             this.LoadInventoryButton.Name = "LoadInventoryButton";
             this.LoadInventoryButton.Size = new System.Drawing.Size(76, 65);
@@ -730,22 +702,6 @@ namespace autotrade.CustomElements {
             this.AddAllToolTip.SetToolTip(this.LoadInventoryButton, "Load selected inventory");
             this.LoadInventoryButton.UseVisualStyleBackColor = false;
             this.LoadInventoryButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
-            // 
-            // OpenGameInventoryPageButton
-            // 
-            this.OpenGameInventoryPageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.OpenGameInventoryPageButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.OpenGameInventoryPageButton.FlatAppearance.BorderSize = 0;
-            this.OpenGameInventoryPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpenGameInventoryPageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.OpenGameInventoryPageButton.Image = ((System.Drawing.Image)(resources.GetObject("OpenGameInventoryPageButton.Image")));
-            this.OpenGameInventoryPageButton.Location = new System.Drawing.Point(828, 12);
-            this.OpenGameInventoryPageButton.Name = "OpenGameInventoryPageButton";
-            this.OpenGameInventoryPageButton.Size = new System.Drawing.Size(47, 40);
-            this.OpenGameInventoryPageButton.TabIndex = 30;
-            this.AddAllToolTip.SetToolTip(this.OpenGameInventoryPageButton, "Open loaded inventory on browser");
-            this.OpenGameInventoryPageButton.UseVisualStyleBackColor = false;
-            this.OpenGameInventoryPageButton.Click += new System.EventHandler(this.OpenGameInventoryPageButton_Click);
             // 
             // AddAllToolTip
             // 
@@ -757,34 +713,79 @@ namespace autotrade.CustomElements {
             this.AddAllToolTip.UseAnimation = false;
             this.AddAllToolTip.UseFading = false;
             // 
-            // ItemDescriptionTextBox
+            // OpenGameInventoryPageButton
             // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
-            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
-            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
-            this.ItemDescriptionTextBox.TabIndex = 12;
-            this.ItemDescriptionTextBox.Text = "";
+            this.OpenGameInventoryPageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.OpenGameInventoryPageButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.OpenGameInventoryPageButton.FlatAppearance.BorderSize = 0;
+            this.OpenGameInventoryPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OpenGameInventoryPageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.OpenGameInventoryPageButton.Image = global::autotrade.Properties.Resources.GameButton;
+            this.OpenGameInventoryPageButton.Location = new System.Drawing.Point(828, 12);
+            this.OpenGameInventoryPageButton.Name = "OpenGameInventoryPageButton";
+            this.OpenGameInventoryPageButton.Size = new System.Drawing.Size(47, 40);
+            this.OpenGameInventoryPageButton.TabIndex = 30;
+            this.AddAllToolTip.SetToolTip(this.OpenGameInventoryPageButton, "Open loaded inventory on browser");
+            this.OpenGameInventoryPageButton.UseVisualStyleBackColor = false;
+            this.OpenGameInventoryPageButton.Click += new System.EventHandler(this.OpenGameInventoryPageButton_Click);
             // 
-            // LoadedAccountCombobox
+            // OpenMarketPageButtonClick
             // 
-            this.LoadedAccountCombobox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.LoadedAccountCombobox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.LoadedAccountCombobox.DropDownHeight = 150;
-            this.LoadedAccountCombobox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.LoadedAccountCombobox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadedAccountCombobox.FormattingEnabled = true;
-            this.LoadedAccountCombobox.IntegralHeight = false;
-            this.LoadedAccountCombobox.Location = new System.Drawing.Point(154, 16);
-            this.LoadedAccountCombobox.Name = "LoadedAccountCombobox";
-            this.LoadedAccountCombobox.Size = new System.Drawing.Size(123, 21);
-            this.LoadedAccountCombobox.TabIndex = 31;
-            this.LoadedAccountCombobox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ComboboxWithImage1_DrawItem);
-            this.LoadedAccountCombobox.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.ComboboxWithImage1_MeasureItem_1);
-            this.LoadedAccountCombobox.SelectedIndexChanged += new System.EventHandler(this.LoadedAccountCombobox_SelectedIndexChanged);
+            this.OpenMarketPageButtonClick.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.OpenMarketPageButtonClick.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.OpenMarketPageButtonClick.FlatAppearance.BorderSize = 0;
+            this.OpenMarketPageButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OpenMarketPageButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.OpenMarketPageButtonClick.Image = global::autotrade.Properties.Resources.SteamButton;
+            this.OpenMarketPageButtonClick.Location = new System.Drawing.Point(778, 12);
+            this.OpenMarketPageButtonClick.Name = "OpenMarketPageButtonClick";
+            this.OpenMarketPageButtonClick.Size = new System.Drawing.Size(47, 40);
+            this.OpenMarketPageButtonClick.TabIndex = 29;
+            this.AddAllToolTip.SetToolTip(this.OpenMarketPageButtonClick, "Find selected item on Steam Market");
+            this.OpenMarketPageButtonClick.UseVisualStyleBackColor = false;
+            this.OpenMarketPageButtonClick.Click += new System.EventHandler(this.OpenMarketPageButtonClick_Click);
+            // 
+            // RefreshInventoryButton
+            // 
+            this.RefreshInventoryButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.RefreshInventoryButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RefreshInventoryButton.FlatAppearance.BorderSize = 0;
+            this.RefreshInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RefreshInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.RefreshInventoryButton.Image = global::autotrade.Properties.Resources.RefreshButton;
+            this.RefreshInventoryButton.Location = new System.Drawing.Point(635, 10);
+            this.RefreshInventoryButton.Name = "RefreshInventoryButton";
+            this.RefreshInventoryButton.Size = new System.Drawing.Size(47, 40);
+            this.RefreshInventoryButton.TabIndex = 27;
+            this.AddAllToolTip.SetToolTip(this.RefreshInventoryButton, "Reload inventory");
+            this.RefreshInventoryButton.UseVisualStyleBackColor = false;
+            this.RefreshInventoryButton.Click += new System.EventHandler(this.RefreshInventoryButton_Click);
+            // 
+            // AddAllButton
+            // 
+            this.AddAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.AddAllButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AddAllButton.FlatAppearance.BorderSize = 0;
+            this.AddAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AddAllButton.Image = global::autotrade.Properties.Resources.AddAllButton;
+            this.AddAllButton.Location = new System.Drawing.Point(582, 10);
+            this.AddAllButton.Name = "AddAllButton";
+            this.AddAllButton.Size = new System.Drawing.Size(47, 40);
+            this.AddAllButton.TabIndex = 28;
+            this.AddAllToolTip.SetToolTip(this.AddAllButton, "Add all selected items to trade list");
+            this.AddAllButton.UseVisualStyleBackColor = false;
+            this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
+            // 
+            // SplitterPanel
+            // 
+            this.SplitterPanel.BackColor = System.Drawing.Color.Transparent;
+            this.SplitterPanel.BackgroundImage = global::autotrade.Properties.Resources.NotLogined;
+            this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SplitterPanel.Location = new System.Drawing.Point(692, 11);
+            this.SplitterPanel.Name = "SplitterPanel";
+            this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
+            this.SplitterPanel.TabIndex = 20;
             // 
             // TradeSendControl
             // 
