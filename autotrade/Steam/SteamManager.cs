@@ -256,16 +256,19 @@ namespace autotrade.Steam {
             bool status = offer.SendWithToken(out string offerId, tradeToken);
             if (status is false) {
                 Utils.Logger.Info(offer.Session.Error);
-                return;
             }
+        }
+        
+        public void ConfirmTradeTransactions(List<ulong> offerids)
+        {
             Confirmation[] confirmations = Guard.FetchConfirmations();
             var conf = confirmations
                 .Where(item => item.ConfType == Confirmation.ConfirmationType.Trade
-                        && item.Creator == ulong.Parse(offerId))
+                               && offerids.Contains(item.Creator))
                 .ToArray()[0];
             Guard.AcceptConfirmation(conf);
         }
-
+        
         public OffersResponse ReceiveTradeOffers() {
             return TradeOfferWeb.GetActiveTradeOffers(false, true, true);
         }
