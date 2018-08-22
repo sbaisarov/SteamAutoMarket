@@ -110,6 +110,12 @@
     <Compile Include="CustomElements\Controls\Market\MarketRelistControl.Designer.cs">
       <DependentUpon>MarketRelistControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomElements\Controls\Settings\CacheSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomElements\Controls\Settings\CacheSettingsControl.Designer.cs">
+      <DependentUpon>CacheSettingsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomElements\Controls\Trade\RecievedTradeManageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,6 +172,11 @@
     </Compile>
     <Compile Include="CustomElements\Controls\Trade\TradeHistoryControl.Designer.cs">
       <DependentUpon>TradeHistoryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="WorkingProcess\MarketPriceFormation\ChangeValueType.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\ItemsForSale.cs" />
@@ -282,6 +293,9 @@
     <EmbeddedResource Include="CustomElements\Controls\Market\MarketRelistControl.resx">
       <DependentUpon>MarketRelistControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CustomElements\Controls\Settings\CacheSettingsControl.resx">
+      <DependentUpon>CacheSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomElements\Controls\Settings\GeneralSettingsControl.resx">
       <DependentUpon>GeneralSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -313,14 +327,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="CustomElements\Controls\Market\MarketSellControl.resx">
       <DependentUpon>MarketSellControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -419,6 +428,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CloseButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClearCacheImage3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />

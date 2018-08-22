@@ -20,8 +20,6 @@ namespace autotrade.WorkingProcess.Settings {
 
         public string MARKET_INVENTORY_APP_ID = "";
         public string MARKET_INVENTORY_CONTEX_ID = "";
-        public string MARKET_CURRENT_PRICE_MINUS_VALUE = "";
-        public string MARKET_CURRENT_PRICE_MINUS_PERCENT = "";
 
         public string TRADE_INVENTORY_APP_ID = "";
         public string TRADE_INVENTORY_CONTEX_ID = "";

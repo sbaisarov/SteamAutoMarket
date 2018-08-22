@@ -21,11 +21,10 @@ namespace autotrade.WorkingProcess.PriceLoader {
             HOURS_TO_BECOME_OLD = hoursToBecomeOld;
         }
 
-        private Dictionary<string, LoadedItemPrice> Get() {
+        public Dictionary<string, LoadedItemPrice> Get() {
             if (CACHE == null) {
                 if (File.Exists(CACHE_PRICES_PATH)) {
                     CACHE = JsonConvert.DeserializeObject<Dictionary<string, LoadedItemPrice>>(File.ReadAllText(CACHE_PRICES_PATH), _jsonSettings);
-                    CACHE = CACHE.Where(x => !IsOld(x.Value)).ToDictionary(x => x.Key, x => x.Value);
                     UpdateAll();
                 } else {
                     CACHE = new Dictionary<string, LoadedItemPrice>();
@@ -68,7 +67,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
             }
         }
 
-        private bool IsOld(LoadedItemPrice item) {
+        public bool IsOld(LoadedItemPrice item) {
             return item.ParseTime.AddHours(HOURS_TO_BECOME_OLD) < DateTime.Now;
         }
     }

@@ -12,6 +12,7 @@ namespace autotrade.Utils {
         public delegate void DispatcherInvoker(Form form, AsyncAction a);
 
         public static void Invoke(Form form, AsyncAction action) {
+            if (form == null || action == null) return;
             if (!form.InvokeRequired) {
                 action();
             } else {

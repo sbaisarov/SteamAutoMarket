@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 namespace autotrade.WorkingProcess {
     class ImagesCache {
         public static Dictionary<string, Image> ImageCache { get; set; } = new Dictionary<string, Image>();
-        private static readonly string imagesPath = AppDomain.CurrentDomain.BaseDirectory + "images";
+        public static readonly string IMAGES_PATH = AppDomain.CurrentDomain.BaseDirectory + "images";
 
         public static Image GetImage(string hashName) {
             ImageCache.TryGetValue(hashName, out Image image);
             if (image != null) return image;
 
-            string fileName = $"{imagesPath}\\{MakeValidFileName(hashName)}.jpg";
+            string fileName = $"{IMAGES_PATH}\\{MakeValidFileName(hashName)}.jpg";
             if (File.Exists(fileName)) {
                 image = Image.FromFile(fileName);
                 ImageCache[hashName] = image;
@@ -32,9 +32,9 @@ namespace autotrade.WorkingProcess {
             if (!ImageCache.ContainsKey(hashName)) {
                 ImageCache.Add(hashName, image);
             }
-            Directory.CreateDirectory(imagesPath);
+            Directory.CreateDirectory(IMAGES_PATH);
             try {
-                image.Save($"{imagesPath}/{MakeValidFileName(hashName)}.jpg");
+                image.Save($"{IMAGES_PATH}/{MakeValidFileName(hashName)}.jpg");
             } catch { };
         }
 
