@@ -13,7 +13,7 @@ namespace autotrade.Steam.Market {
         private static Dictionary<string, MarketItemInfo> CACHE;
         private static readonly string CACHE_PRICES_PATH = "item_ids_cache.ini";
 
-        private static Dictionary<string, MarketItemInfo> Get() {
+        public static Dictionary<string, MarketItemInfo> Get() {
             if (CACHE == null) {
                 if (File.Exists(CACHE_PRICES_PATH)) {
                     CACHE = JsonConvert.DeserializeObject<Dictionary<string, MarketItemInfo>>(File.ReadAllText(CACHE_PRICES_PATH));

@@ -25,14 +25,18 @@
         private void InitializeComponent() {
             this.TabControl = new System.Windows.Forms.TabControl();
             this.GeneralSettingsTab = new System.Windows.Forms.TabPage();
+            this.CacheSettingsTab = new System.Windows.Forms.TabPage();
             this.SettingsControl = new autotrade.CustomElements.GeneralSettingsControl();
+            this.cacheSettingsControl1 = new autotrade.CustomElements.Controls.Settings.CacheSettingsControl();
             this.TabControl.SuspendLayout();
             this.GeneralSettingsTab.SuspendLayout();
+            this.CacheSettingsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabControl
             // 
             this.TabControl.Controls.Add(this.GeneralSettingsTab);
+            this.TabControl.Controls.Add(this.CacheSettingsTab);
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControl.Font = new System.Drawing.Font("Impact", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TabControl.ItemSize = new System.Drawing.Size(150, 25);
@@ -55,6 +59,16 @@
             this.GeneralSettingsTab.TabIndex = 0;
             this.GeneralSettingsTab.Text = "General";
             // 
+            // CacheSettingsTab
+            // 
+            this.CacheSettingsTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
+            this.CacheSettingsTab.Controls.Add(this.cacheSettingsControl1);
+            this.CacheSettingsTab.Location = new System.Drawing.Point(4, 29);
+            this.CacheSettingsTab.Name = "CacheSettingsTab";
+            this.CacheSettingsTab.Size = new System.Drawing.Size(886, 599);
+            this.CacheSettingsTab.TabIndex = 1;
+            this.CacheSettingsTab.Text = "Cache";
+            // 
             // SettingsControl
             // 
             this.SettingsControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
@@ -66,6 +80,16 @@
             this.SettingsControl.Size = new System.Drawing.Size(885, 599);
             this.SettingsControl.TabIndex = 0;
             // 
+            // cacheSettingsControl1
+            // 
+            this.cacheSettingsControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.cacheSettingsControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cacheSettingsControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.cacheSettingsControl1.Location = new System.Drawing.Point(0, 0);
+            this.cacheSettingsControl1.Name = "cacheSettingsControl1";
+            this.cacheSettingsControl1.Size = new System.Drawing.Size(885, 599);
+            this.cacheSettingsControl1.TabIndex = 0;
+            // 
             // SettingsControlTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -76,6 +100,7 @@
             this.Size = new System.Drawing.Size(894, 632);
             this.TabControl.ResumeLayout(false);
             this.GeneralSettingsTab.ResumeLayout(false);
+            this.CacheSettingsTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -84,5 +109,7 @@
         private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.TabPage GeneralSettingsTab;
         public GeneralSettingsControl SettingsControl;
+        private System.Windows.Forms.TabPage CacheSettingsTab;
+        private Controls.Settings.CacheSettingsControl cacheSettingsControl1;
     }
 }

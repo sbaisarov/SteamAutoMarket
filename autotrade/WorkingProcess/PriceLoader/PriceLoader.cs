@@ -16,9 +16,9 @@ namespace autotrade.WorkingProcess.PriceLoader {
     class PriceLoader {
         private static bool IS_FORCED = false;
 
-        public static PricesCache CURRENT_PRICES_CACHE;
-        public static PricesCache AVERAGE_PRICES_CACHE;
-        public static PricesCache RECOMMENDED_PRICES_CACHE;
+        public static PricesCache CURRENT_PRICES_CACHE { get; set; }
+        public static PricesCache AVERAGE_PRICES_CACHE { get; set; }
+        public static PricesCache RECOMMENDED_PRICES_CACHE { get; set; }
 
         private static DataGridView ALL_ITEMS_GRID;
         private static DataGridView ITEMS_TO_SALE_GRID;

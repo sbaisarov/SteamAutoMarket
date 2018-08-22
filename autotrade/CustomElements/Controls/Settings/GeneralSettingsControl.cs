@@ -26,8 +26,6 @@ namespace autotrade.CustomElements {
 
             LoggingLevelComboBox.SelectedIndex = settings.SETTINGS_LOGGER_LEVEL;
             AveragePriceDaysNumericUpDown.Value = settings.SETTINGS_AVERAGE_PRICE_PARSE_DAYS;
-            AverageCacheNumericUpDown.Value = settings.SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE;
-            CurrentCacheNumericUpDown.Value = settings.SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE;
 
             if (File.Exists(SettingsContainer.ACCOUNTS_FILE_PATH)) {
                 var accounts = SavedSteamAccount.Get();
@@ -248,14 +246,6 @@ namespace autotrade.CustomElements {
 
         private void AveragePriceDaysNumericUpDown_ValueChanged(object sender, EventArgs e) {
             SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_AVERAGE_PRICE_PARSE_DAYS, (int)AveragePriceDaysNumericUpDown.Value);
-        }
-
-        private void AverageCacheNumericUpDown_ValueChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE, (int)AverageCacheNumericUpDown.Value);
-        }
-
-        private void CurrentCacheNumericUpDown_ValueChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE, (int)CurrentCacheNumericUpDown.Value);
         }
     }
 }
