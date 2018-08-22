@@ -358,67 +358,67 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\NotLogined.png" />
+    <EmbeddedResource Include="Resources\NotLogined.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DefaultItem.png" />
+    <EmbeddedResource Include="Resources\DefaultItem.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Download.png" />
+    <EmbeddedResource Include="Resources\Download.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BrowseFolders.png" />
+    <EmbeddedResource Include="Resources\BrowseFolders.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\EditButton.png" />
+    <EmbeddedResource Include="Resources\EditButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CancelButton.png" />
+    <EmbeddedResource Include="Resources\CancelButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\LoginButton.png" />
+    <EmbeddedResource Include="Resources\LoginButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AddButton.png" />
+    <EmbeddedResource Include="Resources\AddButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MarketImage.png" />
+    <EmbeddedResource Include="Resources\MarketImage.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AddAllButton.png" />
+    <EmbeddedResource Include="Resources\AddAllButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\RefreshButton.png" />
+    <EmbeddedResource Include="Resources\RefreshButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SteamButton.png" />
+    <EmbeddedResource Include="Resources\SteamButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\GameButton.png" />
+    <EmbeddedResource Include="Resources\GameButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MainLogo.png" />
+    <EmbeddedResource Include="Resources\MainLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MenuSettings.png" />
+    <EmbeddedResource Include="Resources\MenuSettings.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MenuMarket.png" />
+    <EmbeddedResource Include="Resources\MenuMarket.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MenuTrade.png" />
+    <EmbeddedResource Include="Resources\MenuTrade.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SmallLogo.png" />
+    <EmbeddedResource Include="Resources\SmallLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\HideMenuButton.png" />
+    <EmbeddedResource Include="Resources\HideMenuButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MinimizeButton.png" />
+    <EmbeddedResource Include="Resources\MinimizeButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CloseButton.png" />
+    <EmbeddedResource Include="Resources\CloseButton.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />
