@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static autotrade.WorkingProcess.PriceLoader.PriceLoader;
 using autotrade.Steam;
 
 namespace autotrade.WorkingProcess.MarketPriceFormation {
@@ -36,18 +37,38 @@ namespace autotrade.WorkingProcess.MarketPriceFormation {
             switch (MarketSaleType)
             {
                 case MarketSaleType.LOWER_THAN_CURRENT:
-                    price = await manager.GetCurrentPrice(item.Asset, item.Description);
+                    price = CURRENT_PRICES_CACHE.Get(item)?.Price;
+                    if (price == null)
+                    {
+                        price = await manager.GetCurrentPrice(item.Asset, item.Description);
+                        CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, (double) price);
+                    }
+
                     break;
 
                 case MarketSaleType.LOWER_THAN_AVERAGE:
-                    manager.GetAveragePrice(out double? priceValue, item.Asset, item.Description);
-                    price = priceValue;
+                    price = AVERAGE_PRICES_CACHE.Get(item)?.Price;
+                    if (price == null)
+                    {
+                        price = manager.GetAveragePrice(item.Asset, item.Description);
+                        AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, (double) price);
+                    }
                     break;
 
                 case MarketSaleType.RECOMENDED:
-                    var currentPrice = await manager.GetCurrentPrice(item.Asset, item.Description);
-                    manager.GetAveragePrice(out double? averagePrice, item.Asset, item.Description);
-
+                    var currentPrice = CURRENT_PRICES_CACHE.Get(item)?.Price;
+                    if (currentPrice == null)
+                    {
+                        currentPrice = await manager.GetCurrentPrice(item.Asset, item.Description);
+                        CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, (double) price);
+                    }
+                    
+                    var averagePrice = AVERAGE_PRICES_CACHE.Get(item)?.Price;
+                    if (averagePrice == null)
+                    {
+                        averagePrice = manager.GetAveragePrice(item.Asset, item.Description);
+                        AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, (double) price);
+                    }
                     if (averagePrice == null || currentPrice == null) {
                         price = null;
                     } else if (averagePrice > currentPrice) {
