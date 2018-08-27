@@ -1,6 +1,5 @@
 ﻿﻿using System;
- using System.Collections;
- using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -94,41 +93,19 @@ namespace autotrade.Steam {
         public void SellOnMarket(ToSaleObject items) {
             int index = 1;
             int total = items.ItemsForSaleList.Sum(x => x.Items.Count());
-            PricesCache cache = null;
-            if (items.MarketSaleType == MarketSaleType.LOWER_THAN_AVERAGE)
-            {
-                cache = PriceLoader.AVERAGE_PRICES_CACHE;
-            }
-            else if (items.MarketSaleType == MarketSaleType.LOWER_THAN_CURRENT)
-            {
-                cache = PriceLoader.CURRENT_PRICES_CACHE;
-            }
-            else if (items.MarketSaleType == MarketSaleType.RECOMENDED)
-            {
-                cache = PriceLoader.RECOMMENDED_PRICES_CACHE;
-            }
             string itemName;
             foreach (var package in items.ItemsForSaleList) {
                 itemName = package.Items.First().Description.name;
-                if (!package.Price.HasValue && cache != null)
+                if (!package.Price.HasValue)
                 {
-                    LoadedItemPrice itemPrice = cache.Get(package.Items.First());
-                    if (itemPrice != null)
+                    Task<double?> task = Task.Run(async () => await items.GetPrice(package.Items.First(), this));
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Parsing price for {itemName}");
+                    task.Wait();
+                    var price = task.Result;
+                    if (price != null)
                     {
-                        package.Price = itemPrice.Price;
-                    }
-                    else
-                    {
-                        Task<double?> task = Task.Run(async () => await items.GetPrice(package.Items.First(), this));
-                        Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Parsing price for {itemName}");
-                        task.Wait();
-                        var price = task.Result;
-                        if (price != null)
-                        {
-                            cache.Cache(itemName, (double) price);
-                            package.Price = price;
-                            Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Parsed price for {itemName} is {price}");
-                        }
+                        package.Price = price;
+                        Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Parsed price for {itemName} is {price}");
                     }
                 }
 
@@ -173,10 +150,10 @@ namespace autotrade.Steam {
             Guard.AcceptMultipleConfirmations(marketConfirmations);
         }
 
-        public void GetAveragePrice(out double? price, Inventory.RgInventory asset, Inventory.RgDescription description)
+        public double? GetAveragePrice(Inventory.RgInventory asset, Inventory.RgDescription description)
         {
+            double? price = null;
             var attempts = 0;
-            price = null;
             while (attempts < 3)
             {
                 try {
@@ -189,6 +166,8 @@ namespace autotrade.Steam {
 
                 attempts++;
             }
+
+            return price;
         }
 
         public async Task<double?> GetCurrentPrice(Inventory.RgInventory asset, Inventory.RgDescription description) {
@@ -256,16 +235,19 @@ namespace autotrade.Steam {
             bool status = offer.SendWithToken(out string offerId, tradeToken);
             if (status is false) {
                 Utils.Logger.Info(offer.Session.Error);
-                return;
             }
+        }
+        
+        public void ConfirmTradeTransactions(List<ulong> offerids)
+        {
             Confirmation[] confirmations = Guard.FetchConfirmations();
             var conf = confirmations
                 .Where(item => item.ConfType == Confirmation.ConfirmationType.Trade
-                        && item.Creator == ulong.Parse(offerId))
+                               && offerids.Contains(item.Creator))
                 .ToArray()[0];
             Guard.AcceptConfirmation(conf);
         }
-
+        
         public OffersResponse ReceiveTradeOffers() {
             return TradeOfferWeb.GetActiveTradeOffers(false, true, true);
         }

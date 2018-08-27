@@ -16,9 +16,8 @@ namespace autotrade.WorkingProcess.PriceLoader {
     class PriceLoader {
         private static bool IS_FORCED = false;
 
-        public static PricesCache CURRENT_PRICES_CACHE { get; set; }
-        public static PricesCache AVERAGE_PRICES_CACHE { get; set; }
-        public static PricesCache RECOMMENDED_PRICES_CACHE { get; set; }
+        public static PricesCache CURRENT_PRICES_CACHE;
+        public static PricesCache AVERAGE_PRICES_CACHE;
 
         private static DataGridView ALL_ITEMS_GRID;
         private static DataGridView ITEMS_TO_SALE_GRID;
@@ -48,7 +47,6 @@ namespace autotrade.WorkingProcess.PriceLoader {
 
                 if (CURRENT_PRICES_CACHE == null) CURRENT_PRICES_CACHE = new PricesCache("current_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE);
                 if (AVERAGE_PRICES_CACHE == null) AVERAGE_PRICES_CACHE = new PricesCache("average_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE);
-                if (RECOMMENDED_PRICES_CACHE == null) RECOMMENDED_PRICES_CACHE = new PricesCache("recommneded_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE);
             }
         }
 
@@ -191,7 +189,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 }
 
                 if (averagePrice == null) {
-                    CurrentSession.SteamManager.GetAveragePrice(out averagePrice, item.Asset, item.Description);
+                    averagePrice = CurrentSession.SteamManager.GetAveragePrice(item.Asset, item.Description);
                     if (averagePrice != null && (double) averagePrice > 0) {
                         AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
                     }
@@ -290,7 +288,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 }
 
                 if (averagePrice == null) {
-                    CurrentSession.SteamManager.GetAveragePrice(out averagePrice, item.Asset, item.Description);
+                    averagePrice = CurrentSession.SteamManager.GetAveragePrice(item.Asset, item.Description);
                     if (averagePrice != null && averagePrice != 0) {
                         AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
                     }
