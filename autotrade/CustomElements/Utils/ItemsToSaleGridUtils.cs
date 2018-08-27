@@ -1,4 +1,5 @@
 ﻿using autotrade.Utils;
+using autotrade.WorkingProcess.PriceLoader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,12 @@ using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.CustomElements {
     static class ItemsToSaleGridUtils {
+        public static readonly int ItemNameColumnIndex = 0;
+        public static readonly int CountColumnIndex = 1;
+        public static readonly int CurrentColumnIndex = 2;
+        public static readonly int AverageColumnIndex = 3;
+        public static readonly int HidenItemMarketHashNameIndex = 4;
+        public static readonly int HidenItemListIndex = 5;
 
         public static void CellClick(DataGridView itemsToSaleGrid, int row) {
             var cell = GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, row);
@@ -30,15 +37,19 @@ namespace autotrade.CustomElements {
 
                 var nameCell = GetGridNameTextBoxCell(itemsToSaleGrid, rowIndex);
                 var countCell = GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex);
-                var priceCell = GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, rowIndex);
                 var hidenMarketHashNameCell = GetGridHidenItemsMarketHashName(itemsToSaleGrid, rowIndex);
                 var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex);
+                var currentPriceCell = GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, rowIndex);
+                var averagePriceCell = GetGridAveragePriceTextBoxCell(itemsToSaleGrid, rowIndex);
 
                 var firstItem = items.First();
+                LoadedItemPrice currentPriceObj = PriceLoader.CURRENT_PRICES_CACHE.Get(firstItem);
+                LoadedItemPrice averagePriceObj = PriceLoader.AVERAGE_PRICES_CACHE.Get(firstItem);
 
                 nameCell.Value = firstItem.Description.name;
                 countCell.Value = items.Sum(item => int.Parse(item.Asset.amount));
-                priceCell.Value = null;
+                if (currentPriceObj != null) currentPriceCell.Value = currentPriceObj.Price;
+                if (averagePriceObj != null) averagePriceCell.Value = averagePriceObj.Price;
                 hidenMarketHashNameCell.Value = firstItem.Description.market_hash_name;
                 hidenItemsListCell.Value = items;
             }
@@ -183,28 +194,29 @@ namespace autotrade.CustomElements {
 
         #region Cells getters
         public static DataGridViewTextBoxCell GetGridNameTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[0];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[ItemNameColumnIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridCountTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[1];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[CountColumnIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridCurrentPriceTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[2];
-        }
-
-        public static DataGridViewTextBoxCell GetGridHidenItemsMarketHashName(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[3];
-        }
-
-        public static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[4];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[CurrentColumnIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridAveragePriceTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[5];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[AverageColumnIndex];
+        }
+
+        public static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex) {
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemListIndex];
+        }
+
+        public static DataGridViewTextBoxCell GetGridHidenItemsMarketHashName(DataGridView grid, int rowIndex) {
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemMarketHashNameIndex];
         }
         #endregion
+
     }
 }

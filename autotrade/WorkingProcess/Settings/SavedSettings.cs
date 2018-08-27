@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace autotrade.WorkingProcess.Settings {
     class SavedSettings {
+        public static string SETTINGS_FILE_PATH = AppDomain.CurrentDomain.BaseDirectory + "settings.ini";
         private static SavedSettings cached = null;
 
         public int SETTINGS_LOGGER_LEVEL = 0;
@@ -66,14 +67,20 @@ namespace autotrade.WorkingProcess.Settings {
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static SavedSettings Get() {
             if (cached != null) return cached;
-            if (!File.Exists(SettingsContainer.ACCOUNTS_FILE_PATH)) {
+            if (!File.Exists(SETTINGS_FILE_PATH)) {
                 cached = new SavedSettings();
                 UpdateAll();
                 return cached;
             }
             cached = JsonConvert.DeserializeObject<SavedSettings>(
-                File.ReadAllText(SettingsContainer.SETTINGS_FILE_PATH));
+                File.ReadAllText(SETTINGS_FILE_PATH));
             return cached;
+        }
+
+        public static void RestoreDefault() {
+            cached = new SavedSettings();
+            SettingsUpdater.IsPending = false;
+            File.WriteAllText(SETTINGS_FILE_PATH, JsonConvert.SerializeObject(SavedSettings.Get(), Formatting.Indented));
         }
 
         private static void UpdateAll() {
@@ -82,7 +89,7 @@ namespace autotrade.WorkingProcess.Settings {
     }
 
     class SettingsUpdater {
-        private static bool IsPending = false;
+        internal static bool IsPending = false;
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateSettings() {
@@ -92,7 +99,7 @@ namespace autotrade.WorkingProcess.Settings {
             Task.Run(() => {
                 Thread.Sleep(5000);
                 try {
-                    File.WriteAllText(SettingsContainer.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(SavedSettings.Get(), Formatting.Indented));
+                    File.WriteAllText(SavedSettings.SETTINGS_FILE_PATH, JsonConvert.SerializeObject(SavedSettings.Get(), Formatting.Indented));
                 } finally { };
                 IsPending = false;
             });

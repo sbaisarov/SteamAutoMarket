@@ -63,7 +63,7 @@ namespace autotrade {
             this.leftHeaderPanel.Controls.Add(this.TradeLinkButton);
             this.leftHeaderPanel.Location = new System.Drawing.Point(0, 31);
             this.leftHeaderPanel.Name = "leftHeaderPanel";
-            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 696);
+            this.leftHeaderPanel.Size = new System.Drawing.Size(166, 641);
             this.leftHeaderPanel.TabIndex = 3;
             // 
             // LeftEdge
@@ -72,7 +72,7 @@ namespace autotrade {
             this.LeftEdge.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftEdge.Location = new System.Drawing.Point(0, 0);
             this.LeftEdge.Name = "LeftEdge";
-            this.LeftEdge.Size = new System.Drawing.Size(2, 696);
+            this.LeftEdge.Size = new System.Drawing.Size(2, 641);
             this.LeftEdge.TabIndex = 5;
             // 
             // SidePanel
@@ -278,11 +278,11 @@ namespace autotrade {
             this.SettingsControlTab.Size = new System.Drawing.Size(894, 632);
             this.SettingsControlTab.TabIndex = 8;
             // 
-            // tradeControlTab1
+            // TradeControlTab
             // 
             this.TradeControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
             this.TradeControlTab.Location = new System.Drawing.Point(165, 36);
-            this.TradeControlTab.Name = "tradeControlTab1";
+            this.TradeControlTab.Name = "TradeControlTab";
             this.TradeControlTab.Size = new System.Drawing.Size(894, 632);
             this.TradeControlTab.TabIndex = 9;
             // 

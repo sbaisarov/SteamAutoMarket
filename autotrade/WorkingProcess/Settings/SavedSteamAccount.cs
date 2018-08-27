@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace autotrade.WorkingProcess.Settings {
     class SavedSteamAccount {
+        public static string ACCOUNTS_FILE_PATH = AppDomain.CurrentDomain.BaseDirectory + "accounts.ini";
+
         private static List<SavedSteamAccount> cached = null;
 
         public string Login { get; set; }
@@ -21,20 +23,20 @@ namespace autotrade.WorkingProcess.Settings {
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static List<SavedSteamAccount> Get() {
             if (cached != null) return cached;
-            if (!File.Exists(SettingsContainer.ACCOUNTS_FILE_PATH)) {
+            if (!File.Exists(ACCOUNTS_FILE_PATH)) {
                 cached = new List<SavedSteamAccount>();
                 UpdateAll(cached);
                 return cached;
             }
             cached = JsonConvert.DeserializeObject<List<SavedSteamAccount>>(
-                File.ReadAllText(SettingsContainer.ACCOUNTS_FILE_PATH));
+                File.ReadAllText(ACCOUNTS_FILE_PATH));
             return cached;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateAll(List<SavedSteamAccount> accounts) {
             cached = accounts;
-            File.WriteAllText(SettingsContainer.ACCOUNTS_FILE_PATH, JsonConvert.SerializeObject(accounts, Formatting.Indented));
+            File.WriteAllText(ACCOUNTS_FILE_PATH, JsonConvert.SerializeObject(accounts, Formatting.Indented));
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]

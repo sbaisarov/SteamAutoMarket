@@ -13,11 +13,13 @@ using autotrade.WorkingProcess;
 using autotrade.Steam.Market;
 using autotrade.WorkingProcess.PriceLoader;
 using System.Linq.Expressions;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace autotrade.CustomElements.Controls.Settings {
     public partial class CacheSettingsControl : UserControl {
-        private readonly static string CACHED_TEXT = "Caches items quantity - ";
-        private readonly static string CACHED_ABSOLETE_TEXT = "Not obsolete quantity - ";
+        private readonly static string CACHED_TEXT = "Cached items quantity - ";
+        private readonly static string CACHED_ABSOLETE_TEXT = "Obsolete quantity - ";
 
         public CacheSettingsControl() {
             InitializeComponent();
@@ -30,19 +32,43 @@ namespace autotrade.CustomElements.Controls.Settings {
         }
 
         private void InitCurrentCacheStatusesAsync() {
+            UpdateButton.Enabled = false;
             Task.Run(() => {
-                SetCacheCount(ImagesCacheCountLable, Directory.GetFiles(ImagesCache.IMAGES_PATH).Count());
-                SetCacheCount(MarketIdCacheCountLable, MarketInfoCache.Get().Count);
+                SetCacheCount(ImagesCacheCountLable, GetCachedImagesCount());
+                SetCacheCount(MarketIdCacheCountLable, GetCachedMarketIdsCount());
                 SetCacheCount(SettingsCacheCountLable, GetChangedSettingsCount());
 
-                var averagePriceCache = PriceLoader.AVERAGE_PRICES_CACHE;
-                SetCacheCount(AverageCacheCountLable, averagePriceCache.Get().Count);
-                SetObsoleteCacheCount(AverageObsoleteCacheCountLable, GetObsoleteValues(averagePriceCache).Count);
+                SetCacheCount(AverageCacheCountLable, GetCachedAveragePricesCount());
+                SetObsoleteCacheCount(AverageObsoleteCacheCountLable, GetObsoleteCachedAveragePricesCount());
 
-                var currentPriceCache = PriceLoader.CURRENT_PRICES_CACHE;
-                SetCacheCount(CurrentCacheCountLable, currentPriceCache.Get().Count);
-                SetObsoleteCacheCount(CurrentObsoleteCacheCountLable, GetObsoleteValues(currentPriceCache).Count);
+                SetCacheCount(CurrentCacheCountLable, GetCachedCurrentPricesCount());
+                SetObsoleteCacheCount(CurrentObsoleteCacheCountLable, GetObsoleteCachedCurrentPricesCount());
             });
+            UpdateButton.Enabled = true;
+        }
+
+        private int GetCachedImagesCount() {
+            return Directory.GetFiles(ImagesCache.IMAGES_PATH).Count();
+        }
+
+        private int GetCachedMarketIdsCount() {
+            return MarketInfoCache.Get().Count;
+        }
+
+        private int GetCachedAveragePricesCount() {
+            return PriceLoader.AVERAGE_PRICES_CACHE.Get().Count;
+        }
+
+        private int GetObsoleteCachedAveragePricesCount() {
+            return GetObsoleteValues(PriceLoader.AVERAGE_PRICES_CACHE).Count;
+        }
+
+        private int GetCachedCurrentPricesCount() {
+            return PriceLoader.CURRENT_PRICES_CACHE.Get().Count;
+        }
+
+        private int GetObsoleteCachedCurrentPricesCount() {
+            return GetObsoleteValues(PriceLoader.CURRENT_PRICES_CACHE).Count;
         }
 
         private static Dictionary<string, LoadedItemPrice> GetObsoleteValues(PricesCache cache) {
@@ -56,7 +82,9 @@ namespace autotrade.CustomElements.Controls.Settings {
             var newSettingsType = newSettings.GetType();
 
             foreach (var item in oldSettings.GetType().GetFields()) {
-                if (newSettingsType.GetField(item.Name).GetValue(newSettings) != item.GetValue(oldSettings)) {
+                var newValue = newSettingsType.GetField(item.Name).GetValue(newSettings);
+                var oldValue = item.GetValue(oldSettings);
+                if (newValue.ToString() != oldValue.ToString()) {
                     count++;
                 }
             }
@@ -77,6 +105,97 @@ namespace autotrade.CustomElements.Controls.Settings {
 
         private void AverageCacheNumericUpDown_ValueChanged(object sender, EventArgs e) {
             SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE, (int)AverageCacheNumericUpDown.Value);
+        }
+
+        private void ImagesCacheOpenButton_Click(object sender, EventArgs e) {
+            Process.Start(ImagesCache.IMAGES_PATH);
+        }
+
+        private void ImagesCacheClearButton_Click(object sender, EventArgs e) {
+            if (ConfirmationClearCacheWindow()) {
+                DirectoryInfo di = new DirectoryInfo(ImagesCache.IMAGES_PATH);
+                foreach (FileInfo file in di.GetFiles()) {
+                    try {
+                        file.Delete();
+                    } catch (IOException) { }
+                }
+                SetCacheCount(ImagesCacheCountLable, GetCachedImagesCount());
+            }
+        }
+
+        private void MarketIdCacheOpenButton_Click(object sender, EventArgs e) {
+            Process.Start(MarketInfoCache.CACHE_PRICES_PATH);
+            SetCacheCount(MarketIdCacheCountLable, GetCachedMarketIdsCount());
+        }
+
+        private void MarketIdCacheClearButton_Click(object sender, EventArgs e) {
+            if (ConfirmationClearCacheWindow()) {
+                MarketInfoCache.Clear();
+                SetCacheCount(MarketIdCacheCountLable, GetCachedMarketIdsCount());
+            }
+        }
+
+        private void SettingsOpenButton_Click(object sender, EventArgs e) {
+            Process.Start(SavedSettings.SETTINGS_FILE_PATH);
+        }
+
+        private void SettingsRestoreDefaultButton_Click(object sender, EventArgs e) {
+            if (ConfirmationClearCacheWindow()) {
+                SavedSettings.RestoreDefault();
+                SetCacheCount(SettingsCacheCountLable, GetChangedSettingsCount());
+            }
+        }
+
+        private void AverageOpenButton_Click(object sender, EventArgs e) {
+            Process.Start(PriceLoader.AVERAGE_PRICES_CACHE.CACHE_PRICES_PATH);
+        }
+
+        private void CurrentOpenButton_Click(object sender, EventArgs e) {
+            Process.Start(PriceLoader.CURRENT_PRICES_CACHE.CACHE_PRICES_PATH);
+        }
+
+        private void AverageClearObsoleteButton_Click(object sender, EventArgs e) {
+            if (ConfirmationClearCacheWindow()) {
+                PriceLoader.AVERAGE_PRICES_CACHE.ClearOld();
+                SetCacheCount(AverageCacheCountLable, GetCachedAveragePricesCount());
+                SetObsoleteCacheCount(AverageObsoleteCacheCountLable, GetObsoleteCachedAveragePricesCount());
+            }
+        }
+
+        private void CurrentClearObsoleteButton_Click(object sender, EventArgs e) {
+            if (ConfirmationClearCacheWindow()) {
+                PriceLoader.CURRENT_PRICES_CACHE.ClearOld();
+                SetCacheCount(CurrentCacheCountLable, GetCachedCurrentPricesCount());
+                SetObsoleteCacheCount(CurrentObsoleteCacheCountLable, GetObsoleteCachedCurrentPricesCount());
+            }
+        }
+
+        private void AverageClearButton_Click(object sender, EventArgs e) {
+            if (ConfirmationClearCacheWindow()) {
+                PriceLoader.AVERAGE_PRICES_CACHE.Clear();
+                SetCacheCount(AverageCacheCountLable, GetCachedAveragePricesCount());
+                SetObsoleteCacheCount(AverageObsoleteCacheCountLable, GetObsoleteCachedAveragePricesCount());
+            }
+        }
+
+        private void CurrentClearButton_Click(object sender, EventArgs e) {
+            if (ConfirmationClearCacheWindow()) {
+                PriceLoader.CURRENT_PRICES_CACHE.Clear();
+                SetCacheCount(CurrentCacheCountLable, GetCachedCurrentPricesCount());
+                SetObsoleteCacheCount(CurrentObsoleteCacheCountLable, GetObsoleteCachedCurrentPricesCount());
+            }
+
+        }
+
+        private bool ConfirmationClearCacheWindow() {
+            var confirmResult = MessageBox.Show($"Are you sure you want to clear cached items?",
+                          "Confirm deletion?", MessageBoxButtons.YesNo);
+
+            return confirmResult == DialogResult.Yes;
+        }
+
+        private void UpdateButton_Click(object sender, EventArgs e) {
+            InitCurrentCacheStatusesAsync();
         }
     }
 }
