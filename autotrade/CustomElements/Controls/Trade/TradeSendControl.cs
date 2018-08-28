@@ -111,7 +111,7 @@ namespace autotrade.CustomElements {
                 rowIndex = row;
             }
             ItemsToSaleGridUtils.RowClick(ItemsToTradeGridView, row, AllDescriptionsDictionary, AllSteamItemsToTradeGridView, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
-            var list = ItemsToSaleGridUtils.GetRgFullItems(AllSteamItemsToTradeGridView, rowIndex);
+            var list = ItemsToSaleGridUtils.GetRgFullItems(ItemsToTradeGridView, rowIndex);
             if (list != null && list.Count > 0) LastSelectedItemDescription = list[0].Description;
         }
 

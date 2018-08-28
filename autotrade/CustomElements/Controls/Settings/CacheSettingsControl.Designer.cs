@@ -58,6 +58,7 @@
             this.AverageClearObsoleteButton = new System.Windows.Forms.Button();
             this.AverageClearButton = new System.Windows.Forms.Button();
             this.AverageOpenButton = new System.Windows.Forms.Button();
+            this.UpdateButton = new System.Windows.Forms.Button();
             this.MidleImagePanel = new System.Windows.Forms.Panel();
             this.ImagesCacheGroupBox.SuspendLayout();
             this.MarketIdCacheGroupBox.SuspendLayout();
@@ -96,7 +97,8 @@
             this.ImagesInfoLable.TabIndex = 26;
             this.ImagesInfoLable.Text = "(?)";
             this.ImagesInfoLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.AddAllToolTip.SetToolTip(this.ImagesInfoLable, "todo some info");
+            this.AddAllToolTip.SetToolTip(this.ImagesInfoLable, "Saved avatars and icons of items. Clearing this cache significantly slows down th" +
+        "e loading of images");
             // 
             // ImagesCacheClearButton
             // 
@@ -104,12 +106,13 @@
             this.ImagesCacheClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ImagesCacheClearButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ImagesCacheClearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.ImagesCacheClearButton.Location = new System.Drawing.Point(16, 120);
+            this.ImagesCacheClearButton.Location = new System.Drawing.Point(22, 120);
             this.ImagesCacheClearButton.Name = "ImagesCacheClearButton";
-            this.ImagesCacheClearButton.Size = new System.Drawing.Size(203, 35);
+            this.ImagesCacheClearButton.Size = new System.Drawing.Size(204, 35);
             this.ImagesCacheClearButton.TabIndex = 24;
             this.ImagesCacheClearButton.Text = "Clear cache";
             this.ImagesCacheClearButton.UseVisualStyleBackColor = false;
+            this.ImagesCacheClearButton.Click += new System.EventHandler(this.ImagesCacheClearButton_Click);
             // 
             // ImagesCacheOpenButton
             // 
@@ -117,12 +120,13 @@
             this.ImagesCacheOpenButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ImagesCacheOpenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ImagesCacheOpenButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.ImagesCacheOpenButton.Location = new System.Drawing.Point(16, 79);
+            this.ImagesCacheOpenButton.Location = new System.Drawing.Point(22, 79);
             this.ImagesCacheOpenButton.Name = "ImagesCacheOpenButton";
-            this.ImagesCacheOpenButton.Size = new System.Drawing.Size(203, 35);
+            this.ImagesCacheOpenButton.Size = new System.Drawing.Size(204, 35);
             this.ImagesCacheOpenButton.TabIndex = 23;
             this.ImagesCacheOpenButton.Text = "Open folder";
             this.ImagesCacheOpenButton.UseVisualStyleBackColor = false;
+            this.ImagesCacheOpenButton.Click += new System.EventHandler(this.ImagesCacheOpenButton_Click);
             // 
             // ImagesCacheCountLable
             // 
@@ -172,7 +176,8 @@
             this.MarketIdInfoLable.TabIndex = 27;
             this.MarketIdInfoLable.Text = "(?)";
             this.MarketIdInfoLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.AddAllToolTip.SetToolTip(this.MarketIdInfoLable, "todo some info");
+            this.AddAllToolTip.SetToolTip(this.MarketIdInfoLable, "Cached ids of items to have ability to search on them market with 1 request.  Сle" +
+        "aning is not recommended. Perform only when absolutely necessary");
             // 
             // MarketIdCacheClearButton
             // 
@@ -180,12 +185,13 @@
             this.MarketIdCacheClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.MarketIdCacheClearButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.MarketIdCacheClearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.MarketIdCacheClearButton.Location = new System.Drawing.Point(9, 120);
+            this.MarketIdCacheClearButton.Location = new System.Drawing.Point(22, 120);
             this.MarketIdCacheClearButton.Name = "MarketIdCacheClearButton";
-            this.MarketIdCacheClearButton.Size = new System.Drawing.Size(203, 35);
+            this.MarketIdCacheClearButton.Size = new System.Drawing.Size(204, 35);
             this.MarketIdCacheClearButton.TabIndex = 24;
             this.MarketIdCacheClearButton.Text = "Clear cache";
             this.MarketIdCacheClearButton.UseVisualStyleBackColor = false;
+            this.MarketIdCacheClearButton.Click += new System.EventHandler(this.MarketIdCacheClearButton_Click);
             // 
             // MarketIdCacheOpenButton
             // 
@@ -193,12 +199,13 @@
             this.MarketIdCacheOpenButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.MarketIdCacheOpenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.MarketIdCacheOpenButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.MarketIdCacheOpenButton.Location = new System.Drawing.Point(9, 79);
+            this.MarketIdCacheOpenButton.Location = new System.Drawing.Point(22, 79);
             this.MarketIdCacheOpenButton.Name = "MarketIdCacheOpenButton";
-            this.MarketIdCacheOpenButton.Size = new System.Drawing.Size(203, 35);
+            this.MarketIdCacheOpenButton.Size = new System.Drawing.Size(204, 35);
             this.MarketIdCacheOpenButton.TabIndex = 23;
             this.MarketIdCacheOpenButton.Text = "Open file";
             this.MarketIdCacheOpenButton.UseVisualStyleBackColor = false;
+            this.MarketIdCacheOpenButton.Click += new System.EventHandler(this.MarketIdCacheOpenButton_Click);
             // 
             // AddAllToolTip
             // 
@@ -222,7 +229,8 @@
             this.CurrentInfoLable.TabIndex = 26;
             this.CurrentInfoLable.Text = "(?)";
             this.CurrentInfoLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.AddAllToolTip.SetToolTip(this.CurrentInfoLable, "todo some info");
+            this.AddAllToolTip.SetToolTip(this.CurrentInfoLable, "Cached current market prices. Obsolete values are updated automatically when prom" +
+        "pted");
             // 
             // SettingsInfoLable
             // 
@@ -236,16 +244,16 @@
             this.SettingsInfoLable.TabIndex = 27;
             this.SettingsInfoLable.Text = "(?)";
             this.SettingsInfoLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.AddAllToolTip.SetToolTip(this.SettingsInfoLable, "todo some info");
+            this.AddAllToolTip.SetToolTip(this.SettingsInfoLable, "Saved states of switches in program");
             // 
             // CurrentCacheGroupBox
             // 
             this.CurrentCacheGroupBox.Controls.Add(this.CurrentCacheNumericUpDown);
             this.CurrentCacheGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CurrentCacheGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.CurrentCacheGroupBox.Location = new System.Drawing.Point(20, 90);
+            this.CurrentCacheGroupBox.Location = new System.Drawing.Point(45, 90);
             this.CurrentCacheGroupBox.Name = "CurrentCacheGroupBox";
-            this.CurrentCacheGroupBox.Size = new System.Drawing.Size(181, 40);
+            this.CurrentCacheGroupBox.Size = new System.Drawing.Size(157, 40);
             this.CurrentCacheGroupBox.TabIndex = 27;
             this.CurrentCacheGroupBox.TabStop = false;
             this.CurrentCacheGroupBox.Text = "Current cache (hours)";
@@ -260,7 +268,7 @@
             this.CurrentCacheNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.CurrentCacheNumericUpDown.Location = new System.Drawing.Point(3, 16);
             this.CurrentCacheNumericUpDown.Name = "CurrentCacheNumericUpDown";
-            this.CurrentCacheNumericUpDown.Size = new System.Drawing.Size(175, 20);
+            this.CurrentCacheNumericUpDown.Size = new System.Drawing.Size(151, 20);
             this.CurrentCacheNumericUpDown.TabIndex = 0;
             this.CurrentCacheNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentCacheNumericUpDown_ValueChanged);
             // 
@@ -276,16 +284,17 @@
             this.AverageInfoLable.TabIndex = 26;
             this.AverageInfoLable.Text = "(?)";
             this.AverageInfoLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.AddAllToolTip.SetToolTip(this.AverageInfoLable, "todo some info");
+            this.AddAllToolTip.SetToolTip(this.AverageInfoLable, "Cached average market prices. Obsolete values are updated automatically when prom" +
+        "pted");
             // 
             // AverageCacheGroupBox
             // 
             this.AverageCacheGroupBox.Controls.Add(this.AverageCacheNumericUpDown);
             this.AverageCacheGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AverageCacheGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.AverageCacheGroupBox.Location = new System.Drawing.Point(20, 90);
+            this.AverageCacheGroupBox.Location = new System.Drawing.Point(45, 90);
             this.AverageCacheGroupBox.Name = "AverageCacheGroupBox";
-            this.AverageCacheGroupBox.Size = new System.Drawing.Size(181, 40);
+            this.AverageCacheGroupBox.Size = new System.Drawing.Size(157, 40);
             this.AverageCacheGroupBox.TabIndex = 32;
             this.AverageCacheGroupBox.TabStop = false;
             this.AverageCacheGroupBox.Text = "Average cache (hours)";
@@ -300,7 +309,7 @@
             this.AverageCacheNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.AverageCacheNumericUpDown.Location = new System.Drawing.Point(3, 16);
             this.AverageCacheNumericUpDown.Name = "AverageCacheNumericUpDown";
-            this.AverageCacheNumericUpDown.Size = new System.Drawing.Size(175, 20);
+            this.AverageCacheNumericUpDown.Size = new System.Drawing.Size(151, 20);
             this.AverageCacheNumericUpDown.TabIndex = 0;
             this.AverageCacheNumericUpDown.ValueChanged += new System.EventHandler(this.AverageCacheNumericUpDown_ValueChanged);
             // 
@@ -349,12 +358,13 @@
             this.CurrentClearObsoleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CurrentClearObsoleteButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CurrentClearObsoleteButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.CurrentClearObsoleteButton.Location = new System.Drawing.Point(14, 185);
+            this.CurrentClearObsoleteButton.Location = new System.Drawing.Point(22, 185);
             this.CurrentClearObsoleteButton.Name = "CurrentClearObsoleteButton";
-            this.CurrentClearObsoleteButton.Size = new System.Drawing.Size(203, 35);
+            this.CurrentClearObsoleteButton.Size = new System.Drawing.Size(204, 35);
             this.CurrentClearObsoleteButton.TabIndex = 31;
             this.CurrentClearObsoleteButton.Text = "Clear obsolete";
             this.CurrentClearObsoleteButton.UseVisualStyleBackColor = false;
+            this.CurrentClearObsoleteButton.Click += new System.EventHandler(this.CurrentClearObsoleteButton_Click);
             // 
             // CurrentClearButton
             // 
@@ -362,12 +372,13 @@
             this.CurrentClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CurrentClearButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CurrentClearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.CurrentClearButton.Location = new System.Drawing.Point(14, 226);
+            this.CurrentClearButton.Location = new System.Drawing.Point(22, 226);
             this.CurrentClearButton.Name = "CurrentClearButton";
-            this.CurrentClearButton.Size = new System.Drawing.Size(203, 35);
+            this.CurrentClearButton.Size = new System.Drawing.Size(204, 35);
             this.CurrentClearButton.TabIndex = 24;
             this.CurrentClearButton.Text = "Clear cache";
             this.CurrentClearButton.UseVisualStyleBackColor = false;
+            this.CurrentClearButton.Click += new System.EventHandler(this.CurrentClearButton_Click);
             // 
             // CurrentOpenButton
             // 
@@ -375,12 +386,13 @@
             this.CurrentOpenButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CurrentOpenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CurrentOpenButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.CurrentOpenButton.Location = new System.Drawing.Point(14, 144);
+            this.CurrentOpenButton.Location = new System.Drawing.Point(22, 144);
             this.CurrentOpenButton.Name = "CurrentOpenButton";
-            this.CurrentOpenButton.Size = new System.Drawing.Size(203, 35);
+            this.CurrentOpenButton.Size = new System.Drawing.Size(204, 35);
             this.CurrentOpenButton.TabIndex = 23;
             this.CurrentOpenButton.Text = "Open file";
             this.CurrentOpenButton.UseVisualStyleBackColor = false;
+            this.CurrentOpenButton.Click += new System.EventHandler(this.CurrentOpenButton_Click);
             // 
             // SettingsGroupBox
             // 
@@ -413,12 +425,13 @@
             this.SettingsRestoreDefaultButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SettingsRestoreDefaultButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SettingsRestoreDefaultButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.SettingsRestoreDefaultButton.Location = new System.Drawing.Point(9, 120);
+            this.SettingsRestoreDefaultButton.Location = new System.Drawing.Point(22, 120);
             this.SettingsRestoreDefaultButton.Name = "SettingsRestoreDefaultButton";
-            this.SettingsRestoreDefaultButton.Size = new System.Drawing.Size(203, 35);
+            this.SettingsRestoreDefaultButton.Size = new System.Drawing.Size(204, 35);
             this.SettingsRestoreDefaultButton.TabIndex = 24;
             this.SettingsRestoreDefaultButton.Text = "Restore default";
             this.SettingsRestoreDefaultButton.UseVisualStyleBackColor = false;
+            this.SettingsRestoreDefaultButton.Click += new System.EventHandler(this.SettingsRestoreDefaultButton_Click);
             // 
             // SettingsOpenButton
             // 
@@ -426,12 +439,13 @@
             this.SettingsOpenButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SettingsOpenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SettingsOpenButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.SettingsOpenButton.Location = new System.Drawing.Point(9, 79);
+            this.SettingsOpenButton.Location = new System.Drawing.Point(22, 79);
             this.SettingsOpenButton.Name = "SettingsOpenButton";
-            this.SettingsOpenButton.Size = new System.Drawing.Size(203, 35);
+            this.SettingsOpenButton.Size = new System.Drawing.Size(204, 35);
             this.SettingsOpenButton.TabIndex = 23;
             this.SettingsOpenButton.Text = "Open file";
             this.SettingsOpenButton.UseVisualStyleBackColor = false;
+            this.SettingsOpenButton.Click += new System.EventHandler(this.SettingsOpenButton_Click);
             // 
             // AverageGroupBox
             // 
@@ -478,12 +492,13 @@
             this.AverageClearObsoleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AverageClearObsoleteButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AverageClearObsoleteButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.AverageClearObsoleteButton.Location = new System.Drawing.Point(14, 185);
+            this.AverageClearObsoleteButton.Location = new System.Drawing.Point(22, 185);
             this.AverageClearObsoleteButton.Name = "AverageClearObsoleteButton";
-            this.AverageClearObsoleteButton.Size = new System.Drawing.Size(203, 35);
+            this.AverageClearObsoleteButton.Size = new System.Drawing.Size(204, 35);
             this.AverageClearObsoleteButton.TabIndex = 31;
             this.AverageClearObsoleteButton.Text = "Clear obsolete";
             this.AverageClearObsoleteButton.UseVisualStyleBackColor = false;
+            this.AverageClearObsoleteButton.Click += new System.EventHandler(this.AverageClearObsoleteButton_Click);
             // 
             // AverageClearButton
             // 
@@ -491,12 +506,13 @@
             this.AverageClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AverageClearButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AverageClearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.AverageClearButton.Location = new System.Drawing.Point(14, 226);
+            this.AverageClearButton.Location = new System.Drawing.Point(22, 226);
             this.AverageClearButton.Name = "AverageClearButton";
-            this.AverageClearButton.Size = new System.Drawing.Size(203, 35);
+            this.AverageClearButton.Size = new System.Drawing.Size(204, 35);
             this.AverageClearButton.TabIndex = 24;
             this.AverageClearButton.Text = "Clear cache";
             this.AverageClearButton.UseVisualStyleBackColor = false;
+            this.AverageClearButton.Click += new System.EventHandler(this.AverageClearButton_Click);
             // 
             // AverageOpenButton
             // 
@@ -504,18 +520,35 @@
             this.AverageOpenButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AverageOpenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AverageOpenButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.AverageOpenButton.Location = new System.Drawing.Point(14, 144);
+            this.AverageOpenButton.Location = new System.Drawing.Point(22, 144);
             this.AverageOpenButton.Name = "AverageOpenButton";
-            this.AverageOpenButton.Size = new System.Drawing.Size(203, 35);
+            this.AverageOpenButton.Size = new System.Drawing.Size(204, 35);
             this.AverageOpenButton.TabIndex = 23;
             this.AverageOpenButton.Text = "Open file";
             this.AverageOpenButton.UseVisualStyleBackColor = false;
+            this.AverageOpenButton.Click += new System.EventHandler(this.AverageOpenButton_Click);
+            // 
+            // UpdateButton
+            // 
+            this.UpdateButton.BackgroundImage = global::autotrade.Properties.Resources.yellow_update_button;
+            this.UpdateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.UpdateButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.UpdateButton.FlatAppearance.BorderSize = 0;
+            this.UpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UpdateButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.UpdateButton.Location = new System.Drawing.Point(265, 513);
+            this.UpdateButton.Name = "UpdateButton";
+            this.UpdateButton.Size = new System.Drawing.Size(351, 66);
+            this.UpdateButton.TabIndex = 34;
+            this.AddAllToolTip.SetToolTip(this.UpdateButton, "Update cached items quantity");
+            this.UpdateButton.UseVisualStyleBackColor = true;
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
             // 
             // MidleImagePanel
             // 
             this.MidleImagePanel.BackgroundImage = global::autotrade.Properties.Resources.ClearCacheImage3;
             this.MidleImagePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.MidleImagePanel.Location = new System.Drawing.Point(265, 68);
+            this.MidleImagePanel.Location = new System.Drawing.Point(265, 47);
             this.MidleImagePanel.Name = "MidleImagePanel";
             this.MidleImagePanel.Size = new System.Drawing.Size(351, 420);
             this.MidleImagePanel.TabIndex = 33;
@@ -525,6 +558,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.Controls.Add(this.UpdateButton);
             this.Controls.Add(this.MidleImagePanel);
             this.Controls.Add(this.AverageGroupBox);
             this.Controls.Add(this.SettingsGroupBox);
@@ -590,5 +624,6 @@
         private System.Windows.Forms.Label AverageCacheCountLable;
         private System.Windows.Forms.Label AverageObsoleteCacheCountLable;
         private System.Windows.Forms.Label CurrentObsoleteCacheCountLable;
+        private System.Windows.Forms.Button UpdateButton;
     }
 }

@@ -280,10 +280,23 @@ namespace autotrade {
                 LastSelectedItemDescription.market_hash_name);
         }
 
-        private void OpenGameInventoryPageButton_Click(object sender, EventArgs e) {
-            if (LastSelectedItemDescription == null) return;
-            System.Diagnostics.Process.Start("https://" + $"steamcommunity.com/profiles/{CurrentSession.SteamManager.Guard.Session.SteamID}" +
-                $"/inventory/#{CurrentSession.CurrentInventoryAppId}_{CurrentSession.CurrentInventoryContextId}");
+        private async void AllItemsUpdateOneButtonClick_Click(object sender, EventArgs e) {
+            await Task.Run(async () => {
+                var selectedRows = AllSteamItemsGridView.SelectedRows.Cast<DataGridViewRow>();
+                foreach (var row in selectedRows) {
+                    var item = AllItemsListGridUtils.GetRgFullItems(AllSteamItemsGridView, row.Index).FirstOrDefault();
+                    if (item == null) continue;
+
+                    CurrentSession.SteamManager.GetAveragePrice(out double? averagePrice, item.Asset, item.Description);
+                    PriceLoader.AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
+
+                    double? currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
+                    PriceLoader.CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, currentPrice.Value);
+
+                    row.Cells[AllItemsListGridUtils.CurrentColumnIndex].Value = currentPrice;
+                    row.Cells[AllItemsListGridUtils.AverageColumnIndex].Value = averagePrice;
+                }
+            });
         }
 
         private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e) {
@@ -339,6 +352,25 @@ namespace autotrade {
 
         private void ForcePricesReloadButton_Click(object sender, EventArgs e) {
             PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE, true);
+        }
+
+        private async void ItemsForSaleUpdateOneButtonClick_Click(object sender, EventArgs e) {
+            await Task.Run(async () => {
+                var selectedRows = ItemsToSaleGridView.SelectedRows.Cast<DataGridViewRow>();
+                foreach (var row in selectedRows) {
+                    var item = ItemsToSaleGridUtils.GetRgFullItems(ItemsToSaleGridView, row.Index).FirstOrDefault();
+                    if (item == null) continue;
+
+                    CurrentSession.SteamManager.GetAveragePrice(out double? averagePrice, item.Asset, item.Description);
+                    PriceLoader.AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
+
+                    double? currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
+                    PriceLoader.CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, currentPrice.Value);
+
+                    row.Cells[ItemsToSaleGridUtils.CurrentColumnIndex].Value = currentPrice;
+                    row.Cells[ItemsToSaleGridUtils.AverageColumnIndex].Value = averagePrice;
+                }
+            });
         }
     }
 }

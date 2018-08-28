@@ -27,6 +27,9 @@
             this.ProgressBar = new System.Windows.Forms.ProgressBar();
             this.TotalItemsLable = new System.Windows.Forms.Label();
             this.PageLable = new System.Windows.Forms.Label();
+            this.LeftEdge = new System.Windows.Forms.Panel();
+            this.BottomEdge = new System.Windows.Forms.Panel();
+            this.RightEdge = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // StopWorkingProcessButton
@@ -75,12 +78,42 @@
             this.PageLable.Text = "Page 0 of 0 loaded";
             this.PageLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // LeftEdge
+            // 
+            this.LeftEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.LeftEdge.Dock = System.Windows.Forms.DockStyle.Left;
+            this.LeftEdge.Location = new System.Drawing.Point(0, 0);
+            this.LeftEdge.Name = "LeftEdge";
+            this.LeftEdge.Size = new System.Drawing.Size(2, 140);
+            this.LeftEdge.TabIndex = 19;
+            // 
+            // BottomEdge
+            // 
+            this.BottomEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.BottomEdge.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.BottomEdge.Location = new System.Drawing.Point(2, 138);
+            this.BottomEdge.Name = "BottomEdge";
+            this.BottomEdge.Size = new System.Drawing.Size(393, 2);
+            this.BottomEdge.TabIndex = 20;
+            // 
+            // RightEdge
+            // 
+            this.RightEdge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.RightEdge.Dock = System.Windows.Forms.DockStyle.Right;
+            this.RightEdge.Location = new System.Drawing.Point(393, 0);
+            this.RightEdge.Name = "RightEdge";
+            this.RightEdge.Size = new System.Drawing.Size(2, 138);
+            this.RightEdge.TabIndex = 20;
+            // 
             // LoadingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
             this.ClientSize = new System.Drawing.Size(395, 140);
+            this.Controls.Add(this.RightEdge);
+            this.Controls.Add(this.BottomEdge);
+            this.Controls.Add(this.LeftEdge);
             this.Controls.Add(this.PageLable);
             this.Controls.Add(this.TotalItemsLable);
             this.Controls.Add(this.ProgressBar);
@@ -101,5 +134,8 @@
         private System.Windows.Forms.ProgressBar ProgressBar;
         private System.Windows.Forms.Label TotalItemsLable;
         private System.Windows.Forms.Label PageLable;
+        private System.Windows.Forms.Panel LeftEdge;
+        private System.Windows.Forms.Panel BottomEdge;
+        private System.Windows.Forms.Panel RightEdge;
     }
 }

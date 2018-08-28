@@ -27,7 +27,7 @@ namespace autotrade.CustomElements {
             LoggingLevelComboBox.SelectedIndex = settings.SETTINGS_LOGGER_LEVEL;
             AveragePriceDaysNumericUpDown.Value = settings.SETTINGS_AVERAGE_PRICE_PARSE_DAYS;
 
-            if (File.Exists(SettingsContainer.ACCOUNTS_FILE_PATH)) {
+            if (File.Exists(SavedSteamAccount.ACCOUNTS_FILE_PATH)) {
                 var accounts = SavedSteamAccount.Get();
                 foreach (var acc in accounts) {
                     int row = AccountsDataGridView.Rows.Add();

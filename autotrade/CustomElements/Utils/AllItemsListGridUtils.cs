@@ -12,7 +12,17 @@ using static autotrade.Steam.TradeOffer.Inventory;
 
 namespace autotrade.CustomElements {
     static class AllItemsListGridUtils {
-        
+        public static readonly int ItemNameColumnIndex = 0;
+        public static readonly int CountColumnIndex = 1;
+        public static readonly int TypeColumnIndex = 2;
+        public static readonly int CurrentColumnIndex = 3;
+        public static readonly int AverageColumnIndex = 4;
+        public static readonly int AmountToAddIndex = 5;
+        public static readonly int AddButtonIndex = 6;
+        public static readonly int HidenItemListIndex = 7;
+        public static readonly int HidenItemImageIndex = 8;
+        public static readonly int HidenItemMarketHashNameIndex = 9;
+
         public static DataGridViewRow GetRowByItemMarketHashName(DataGridView allItemsGrid, string marketHashName) {
             for (int i = 0; i < allItemsGrid.RowCount; i++) {
                 var hidenMarketHashNameCell = GetGridHidenItemMarketHashNameCell(allItemsGrid, i);
@@ -265,43 +275,43 @@ namespace autotrade.CustomElements {
 
         #region Cells getters
         public static DataGridViewTextBoxCell GetGridNameTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[0];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[ItemNameColumnIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridCountTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[1];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[CountColumnIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridTypeTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[2];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[TypeColumnIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridCurrentPriceTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[3];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[CurrentColumnIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridAveragePriceTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[4];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[AverageColumnIndex];
         }
 
         public static DataGridViewComboBoxCell GetGridCountToAddComboBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewComboBoxCell)grid.Rows[rowIndex].Cells[5];
+            return (DataGridViewComboBoxCell)grid.Rows[rowIndex].Cells[AmountToAddIndex];
         }
 
         public static DataGridViewButtonCell GetGridAddButtonCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewButtonCell)grid.Rows[rowIndex].Cells[6];
+            return (DataGridViewButtonCell)grid.Rows[rowIndex].Cells[AddButtonIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[7];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemListIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridHidenItemImageCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[8];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemImageIndex];
         }
 
         public static DataGridViewTextBoxCell GetGridHidenItemMarketHashNameCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[9];
+            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemMarketHashNameIndex];
         }
         #endregion
     }

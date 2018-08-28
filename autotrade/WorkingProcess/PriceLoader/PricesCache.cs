@@ -11,7 +11,7 @@ using static autotrade.Steam.TradeOffer.Inventory;
 namespace autotrade.WorkingProcess.PriceLoader {
     class PricesCache {
         private Dictionary<string, LoadedItemPrice> CACHE;
-        private readonly string CACHE_PRICES_PATH;
+        public string CACHE_PRICES_PATH { get; private set; }
         private readonly int HOURS_TO_BECOME_OLD;
         private int Counter = 0;
         private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat };
@@ -51,6 +51,19 @@ namespace autotrade.WorkingProcess.PriceLoader {
             UpdateAll();
         }
 
+        public void ClearOld() {
+            CACHE = CACHE
+                .Where(pair => IsOld(pair.Value) == false)
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            UpdateAll(true);
+        }
+
+        public void Clear() {
+            CACHE.Clear();
+            UpdateAll(true);
+        }
+
         public void Uncache(string hashName) {
             Get().Remove(hashName);
             Counter += 1;
@@ -58,10 +71,8 @@ namespace autotrade.WorkingProcess.PriceLoader {
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        private void UpdateAll()
-        {
-            if (++Counter == 10)
-            {
+        private void UpdateAll(bool force = false) {
+            if (++Counter == 10 || force) {
                 File.WriteAllText(CACHE_PRICES_PATH, JsonConvert.SerializeObject(Get(), Formatting.Indented, _jsonSettings));
                 Counter = 0;
             }

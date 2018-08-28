@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace autotrade.Steam.Market {
     class MarketInfoCache {
+        public static readonly string CACHE_PRICES_PATH = AppDomain.CurrentDomain.BaseDirectory + "item_ids_cache.ini";
         private static Dictionary<string, MarketItemInfo> CACHE;
-        private static readonly string CACHE_PRICES_PATH = "item_ids_cache.ini";
 
         public static Dictionary<string, MarketItemInfo> Get() {
             if (CACHE == null) {
@@ -38,6 +38,12 @@ namespace autotrade.Steam.Market {
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateAll() {
             File.WriteAllText(CACHE_PRICES_PATH, JsonConvert.SerializeObject(Get(), Formatting.Indented));
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static void Clear() {
+            CACHE.Clear();
+            File.WriteAllText(CACHE_PRICES_PATH, JsonConvert.SerializeObject(new Dictionary<string, MarketItemInfo>(), Formatting.Indented));
         }
     }
 }
