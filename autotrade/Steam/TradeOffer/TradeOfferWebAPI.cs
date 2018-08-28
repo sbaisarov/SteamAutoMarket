@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 using SteamAuth;
 using static autotrade.Steam.TradeOffer.Inventory;
 using autotrade.Utils;
+using Newtonsoft.Json.Serialization;
 
 namespace autotrade.Steam.TradeOffer {
     public class TradeOfferWebAPI {
@@ -72,6 +74,29 @@ namespace autotrade.Steam.TradeOffer {
                 Debug.WriteLine(ex);
             }
             return new OffersResponse();
+        }
+
+        public TradeHistoryResponse GetTradeHistory(int maxTrades, int startAfterTime, int startAfterTradeId, 
+            bool navigatingBack = false, bool getDescriptions = false, string lanugage = "en", bool includeFailed = false)
+        {
+            string options = string.Format("?key={0}&max_trades={1}&start_after_time={2}&start_after_tradeid={3}" +
+                                           "&navigating_back={4}&get_descriptions={5}&language={6}&include_failed={7}",
+                                           apiKey, maxTrades, startAfterTime, startAfterTradeId, BoolConverter(navigatingBack),
+                                           BoolConverter(getDescriptions), lanugage, BoolConverter(includeFailed));
+            
+            string url = String.Format(BaseUrl, "GetTradeHistory", "v1", options);
+            string response = SteamWeb.Request(url, "GET", data: null);
+            try
+            {
+                var result = JsonConvert.DeserializeObject<ApiResponse<TradeHistoryResponse>>(response);
+                return result.Response;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return new TradeHistoryResponse();
         }
 
         private static string BoolConverter(bool value) {
@@ -181,6 +206,82 @@ namespace autotrade.Steam.TradeOffer {
         }
     }
 
+    public class TradeHistoryResponse
+    {
+        [JsonProperty("total_trades")] public int TotalTrades { get; set; }
+        
+        [JsonProperty("more")] public bool More { get; set; }
+        
+        [JsonProperty("trades")] public List<TradeHistoryItem> Trades { get; set; }
+        
+        [JsonProperty("descriptions")] public List<AssetDescription> Descriptions { get; set; }
+    }
+
+    public class TradeHistoryItem
+    {
+        [JsonProperty("tradeid")] public string TradeId { get; set; }
+        
+        [JsonProperty("steamid_other")] public string SteamIdOther { get; set; }
+        
+        [JsonProperty("time_init")] public string TimeInit { get; set; }
+        
+        [JsonProperty("time_escrow_end")] public string TimeEscrowEnd { get; set; }
+        
+        [JsonProperty("status")] public TradeState Status { get; set; }
+        
+        [JsonProperty("assets_received")] public List<TradedAsset> AssetsReceived { get; set; }
+
+        [JsonProperty("assets_given")] public List<TradedAsset> AssetsGiven { get; set; }
+        
+        [JsonProperty("currency_received")] public List<TradedCurrency>  CurrencyReceived { get; set; }
+        
+        [JsonProperty("currency_given")] public List<TradedCurrency> CurrencyGiven { get; set; }
+    }
+
+    public class TradedAsset
+    {
+        [JsonProperty("appid")] public int Appid { get; set; }
+        
+        [JsonProperty("contextid")] public string ContextId { get; set; }
+        
+        [JsonProperty("assetid")] public string AssetId { get; set; }
+        
+        [JsonProperty("classid")] public string ClassId { get; set; }
+        
+        [JsonProperty("instanceid")] public string InstanceId { get; set; }
+        
+        [JsonProperty("new_assetid")] public string NewAssetId { get; set; }
+        
+        [JsonProperty("new_contextid")] public string NewContextId { get; set; }
+        
+        [JsonProperty("rollback_new_assetid")] public string RollbackNewAssetId { get; set; }
+        
+        [JsonProperty("rollback_new_contextid")] public string RollbackNewContextId { get; set; }
+        
+        [JsonProperty("amount")] public string Amount { get; set; }
+    }
+
+    public class TradedCurrency
+    {
+        [JsonProperty("appid")] public int Appid { get; set; }
+        
+        [JsonProperty("contextid")] public string ContextId { get; set; }
+        
+        [JsonProperty("currencyid")] public string CurrenyId { get; set; }
+        
+        [JsonProperty("classid")] public string ClassId { get; set; }
+        
+        [JsonProperty("new_currencyid")] public string NewCurrencyId { get; set; }
+        
+        [JsonProperty("new_contextid")] public string NewContextId { get; set; }
+        
+        [JsonProperty("rollback_new_currencyid")] public string RollbackNewCurrencyId { get; set; }
+        
+        [JsonProperty("rollback_new_contextid")] public string RollbackNewContextId { get; set; }
+        
+        [JsonProperty("amount")] public string Amount { get; set; }
+    }
+
     public class Offer {
         [JsonProperty("tradeofferid")]
         public string TradeOfferId { get; set; }
@@ -236,6 +337,22 @@ namespace autotrade.Steam.TradeOffer {
         TradeOfferStateCanceledBySecondFactor = 10,
         TradeOfferStateInEscrow = 11,
         TradeOfferStateUnknown
+    }
+    
+    public enum TradeState {
+        TradeStateInit = 0,
+        TradeStatePreCommited = 1,
+        TradeStateCommited = 2,
+        TradeStateComplete = 3,
+        TradeStateFailed = 4,
+        TradeStatePartialSupportRollback = 5,
+        TradeStateFullSupportRollback = 6,
+        TradeStateSupportRollbackSelective = 7,
+        TradeStateRollbackFailed = 8,
+        TradeStateRollbackAbandoned = 9,
+        TradeStateInEscrow = 10,
+        TradeStateEscrowRollback = 11,
+        TradeStateUnknown
     }
 
     public enum TradeOfferConfirmationMethod {
