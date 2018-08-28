@@ -70,8 +70,8 @@ namespace autotrade.Utils {
                 image = DownloadImage(imageUrl);
                 WorkingProcess.ImagesCache.CacheImage($"{steamId}", image);
                 return image;
-            } catch (Exception e) {
-                Logger.Error("Error on geting profile image", e);
+            } catch (Exception ex) {
+                Logger.Error("Error on geting profile image", ex);
                 return null;
             }
         }

@@ -31,45 +31,39 @@ namespace autotrade.WorkingProcess.MarketPriceFormation {
             ChangeValue = changeValue;
         }
 
-        public async Task<double?> GetPrice(Inventory.RgFullItem item, SteamManager manager)
-        {
+        public async Task<double?> GetPrice(Inventory.RgFullItem item, SteamManager manager) {
             double? price = null;
-            switch (MarketSaleType)
-            {
+            switch (MarketSaleType) {
                 case MarketSaleType.LOWER_THAN_CURRENT:
                     price = CURRENT_PRICES_CACHE.Get(item)?.Price;
-                    if (price == null)
-                    {
+                    if (!price.HasValue) {
                         price = await manager.GetCurrentPrice(item.Asset, item.Description);
-                        CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, (double) price);
+                        CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, (double)price);
                     }
 
                     break;
 
                 case MarketSaleType.LOWER_THAN_AVERAGE:
                     price = AVERAGE_PRICES_CACHE.Get(item)?.Price;
-                    if (price == null)
-                    {
+                    if (!price.HasValue) {
                         price = manager.GetAveragePrice(item.Asset, item.Description);
-                        AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, (double) price);
+                        AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, (double)price);
                     }
                     break;
 
                 case MarketSaleType.RECOMENDED:
                     var currentPrice = CURRENT_PRICES_CACHE.Get(item)?.Price;
-                    if (currentPrice == null)
-                    {
+                    if (!currentPrice.HasValue) {
                         currentPrice = await manager.GetCurrentPrice(item.Asset, item.Description);
-                        CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, (double) price);
+                        CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, (double)currentPrice);
                     }
-                    
+
                     var averagePrice = AVERAGE_PRICES_CACHE.Get(item)?.Price;
-                    if (averagePrice == null)
-                    {
+                    if (!averagePrice.HasValue) {
                         averagePrice = manager.GetAveragePrice(item.Asset, item.Description);
-                        AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, (double) price);
+                        AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, (double)averagePrice);
                     }
-                    if (averagePrice == null || currentPrice == null) {
+                    if (!currentPrice.HasValue || !currentPrice.HasValue) {
                         price = null;
                     } else if (averagePrice > currentPrice) {
                         price = averagePrice;
@@ -77,10 +71,11 @@ namespace autotrade.WorkingProcess.MarketPriceFormation {
                         price = currentPrice - 0.01;
                     }
 
-                    if (price == null || price.Value <= 0) {
+                    if (!price.HasValue || price <= 0 || price == double.NaN) {
                         price = null;
                     }
-                    break;                
+
+                    break;
             }
 
             return price;

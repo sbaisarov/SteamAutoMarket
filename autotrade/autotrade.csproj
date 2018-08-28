@@ -50,7 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>30.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accord, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
@@ -435,7 +435,7 @@
     <None Include="Resources\ClearCacheImage3.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="30.ico" />
+    <Content Include="icon.ico" />
     <None Include="Resources\update-1.png" />
     <None Include="Resources\yellow-update-button.png" />
   </ItemGroup>

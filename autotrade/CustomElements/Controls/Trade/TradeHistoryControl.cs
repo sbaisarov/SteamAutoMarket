@@ -20,7 +20,7 @@ namespace autotrade {
             InitializeComponent();
 
             var settings = SavedSettings.Get();
-            TradeIdTextBox.Text = settings.TRADE_HISTORY_TRADE_ID;
+            TradeIdComboBox.Text = settings.TRADE_HISTORY_TRADE_ID;
             MaxTradesNumericUpDown.Value = settings.TRADE_HISTORY_MAX_TRADES;
             LanguageComboBox.Text = settings.TRADE_HISTORY_LANGUAGE;
             NavigatingBackCheckBox.Checked = settings.TRADE_HISTORY_NAVIGATING_BACK;
@@ -29,7 +29,7 @@ namespace autotrade {
             SentOffersCheckBox.Checked = settings.TRADE_HISTORY_SENT;
         }
 
-        private Dictionary<string, FullTradeOffer> ALL_TRADES = new Dictionary<string, FullTradeOffer>();
+        private Dictionary<string, FullHistoryTradeOffer> ALL_TRADES = new Dictionary<string, FullHistoryTradeOffer>();
         private string SELECTED_OFFER_ID;
         private AssetDescription SELECTED_ITEM_DESCRIPTION;
 
@@ -45,7 +45,6 @@ namespace autotrade {
                 return;
             }
 
-
             bool sentOffers = SentOffersCheckBox.Checked;
             bool recievedOffers = RecievedOffersCheckBox.Checked;
 
@@ -56,7 +55,7 @@ namespace autotrade {
             }
 
             long startTime = CommonUtils.GetSecondsFromDateTime(CommonUtils.ResetTimeToDauStart(DateTimePicker.Value));
-            string startTradeId = TradeIdTextBox.Text;
+            string startTradeId = TradeIdComboBox.Text;
             int maxTrades = (int)MaxTradesNumericUpDown.Value;
             bool navigatingBack = NavigatingBackCheckBox.Checked;
             bool includeFailed = IncludeFailedCheckBox.Checked;
@@ -69,19 +68,23 @@ namespace autotrade {
 
             Task.Run(() => {
                 ALL_TRADES.Clear();
-                Program.LoadingForm.InitTradesHistoryLoadingProcess(sentOffers, recievedOffers, language: language);
-                List<FullTradeOffer> fullTradeOffers = Program.LoadingForm.GetLoadedTradesHistory();
+
+                Program.LoadingForm.InitTradesHistoryLoadingProcess(maxTrades, startTime, startTradeId, navigatingBack, true, language, includeFailed);
+                List<FullHistoryTradeOffer> fullTradeOffers = Program.LoadingForm.GetLoadedTradesHistory();
                 Program.LoadingForm.DisactivateForm();
 
                 Dispatcher.Invoke(Program.MainForm, () => {
+                    TradeIdComboBox.Items.Clear();
                     foreach (var trade in fullTradeOffers) {
-                        ALL_TRADES.Add(trade.Offers.TradeOfferId, trade);
+                        ALL_TRADES.Add(trade.TradeId, trade);
 
                         CurrentTradesGridView.Rows.Add(
-                            trade.Offers.TradeOfferId,
-                            new SteamID((uint)trade.Offers.AccountIdOther, EUniverse.Public, EAccountType.Individual).ConvertToUInt64(),
-                            trade.Offers.TradeOfferState.ToString().Replace("TradeOfferState", "")
+                            trade.TradeId,
+                            trade.SteamIdOther.ConvertToUInt64(),
+                            trade.Status.ToString().Replace("TradeState", "")
                         );
+
+                        TradeIdComboBox.Items.Add(trade.TradeId);
                     }
                     LoadTradesButton.Enabled = true;
                 });
@@ -104,10 +107,10 @@ namespace autotrade {
 
         private void ChangeSelectedTrade() {
             CommonUtils.ClearGrids(MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
-            FullTradeOffer tradeOffer = ALL_TRADES[SELECTED_OFFER_ID];
+            FullHistoryTradeOffer tradeOffer = ALL_TRADES[SELECTED_OFFER_ID];
 
-            if (tradeOffer.ItemsToGive != null) {
-                var gropedItems = tradeOffer.ItemsToGive.GroupBy(item => item.Description.MarketHashName);
+            if (tradeOffer.MyItems != null) {
+                var gropedItems = tradeOffer.MyItems.GroupBy(item => item.Description.MarketHashName);
                 foreach (var groupedList in gropedItems) {
                     var firstItem = groupedList.First();
                     MyItemsGridView.Rows.Add(
@@ -119,8 +122,8 @@ namespace autotrade {
                 }
             }
 
-            if (tradeOffer.ItemsToRecieve != null) {
-                var gropedItems = tradeOffer.ItemsToRecieve.GroupBy(item => item.Description.MarketHashName);
+            if (tradeOffer.HisItems != null) {
+                var gropedItems = tradeOffer.HisItems.GroupBy(item => item.Description.MarketHashName);
                 foreach (var groupedList in gropedItems) {
                     var firstItem = groupedList.First();
                     HisItemsGridView.Rows.Add(
@@ -132,17 +135,11 @@ namespace autotrade {
                 }
             }
 
-            ExtraTradeInfoGridView.Rows.Add("TradeOfferId", tradeOffer.Offers.TradeOfferId);
-            ExtraTradeInfoGridView.Rows.Add("TradeOfferState", tradeOffer.Offers.TradeOfferState.ToString().Replace("TradeOfferState", ""));
-            ExtraTradeInfoGridView.Rows.Add("Message", tradeOffer.Offers.Message);
-            ExtraTradeInfoGridView.Rows.Add("IsOurOffer", tradeOffer.Offers.IsOurOffer.ToString());
-            ExtraTradeInfoGridView.Rows.Add("AccountIdOther", tradeOffer.Offers.AccountIdOther.ToString());
-            ExtraTradeInfoGridView.Rows.Add("ExpirationTime", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.ExpirationTime).ToString());
-            ExtraTradeInfoGridView.Rows.Add("ConfirmationMethod", tradeOffer.Offers.ConfirmationMethod.ToString().Replace("TradeOfferConfirmation", ""));
-            ExtraTradeInfoGridView.Rows.Add("TimeCreated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeCreated).ToString());
-            ExtraTradeInfoGridView.Rows.Add("TimeUpdated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeUpdated).ToString());
-            ExtraTradeInfoGridView.Rows.Add("EscrowEndDate", tradeOffer.Offers.EscrowEndDate.ToString());
-            ExtraTradeInfoGridView.Rows.Add("FromRealTimeTrade", tradeOffer.Offers.FromRealTimeTrade.ToString());
+            ExtraTradeInfoGridView.Rows.Add("TradeId", tradeOffer.TradeId);
+            ExtraTradeInfoGridView.Rows.Add("TradeOfferState", tradeOffer.Status.ToString().Replace("TradeState", ""));
+            ExtraTradeInfoGridView.Rows.Add("SteamIdOtherIdOther", tradeOffer.SteamIdOther);
+            ExtraTradeInfoGridView.Rows.Add("TimeInit", tradeOffer.TimeInit);
+            ExtraTradeInfoGridView.Rows.Add("TimeEscrowEnd", tradeOffer.TimeEscrowEnd);
         }
 
         private void CurrentTradesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e) {
@@ -238,8 +235,8 @@ namespace autotrade {
             SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_RECIEVED, RecievedOffersCheckBox.Checked);
         }
 
-        private void TradeIdTextBox_TextChanged(object sender, EventArgs e) {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_TRADE_ID, TradeIdTextBox.Text);
+        private void TradeIdComboBox_TextChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_TRADE_ID, TradeIdComboBox.Text);
         }
 
         private void MaxTradesNumericUpDown_ValueChanged(object sender, EventArgs e) {

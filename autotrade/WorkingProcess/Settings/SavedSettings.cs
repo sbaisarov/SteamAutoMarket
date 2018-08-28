@@ -18,6 +18,7 @@ namespace autotrade.WorkingProcess.Settings {
         public int SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE = 1;
         public int SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE = 12;
         public int SETTINGS_AVERAGE_PRICE_PARSE_DAYS = 7;
+        public int SETTINGS_2FA_ITEMS_TO_CONFIRM = 10;
 
         public string MARKET_INVENTORY_APP_ID = "";
         public string MARKET_INVENTORY_CONTEX_ID = "";

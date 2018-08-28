@@ -29,6 +29,8 @@ namespace autotrade {
         public void AppendWorkingProcessInfo(string message) {
             Dispatcher.Invoke(Program.WorkingProcessForm, () => {
                 this.logTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
+                logTextBox.ScrollToCaret();
+
                 Logger.Working(message);
             });
         }

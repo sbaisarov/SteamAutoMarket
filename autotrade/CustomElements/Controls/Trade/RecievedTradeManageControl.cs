@@ -67,13 +67,13 @@ namespace autotrade.CustomElements.Controls {
                 Program.LoadingForm.DisactivateForm();
 
                 foreach (var trade in fullTradeOffers) {
-                    ALL_TRADES.Add(trade.Offers.TradeOfferId, trade);
+                    ALL_TRADES.Add(trade.Offer.TradeOfferId, trade);
 
                     Dispatcher.Invoke(Program.MainForm, () => {
                         CurrentTradesGridView.Rows.Add(
-                            trade.Offers.TradeOfferId,
-                            new SteamID((uint)trade.Offers.AccountIdOther, EUniverse.Public, EAccountType.Individual).ConvertToUInt64(),
-                            trade.Offers.TradeOfferState.ToString().Replace("TradeOfferState", "")
+                            trade.Offer.TradeOfferId,
+                            new SteamID((uint)trade.Offer.AccountIdOther, EUniverse.Public, EAccountType.Individual).ConvertToUInt64(),
+                            trade.Offer.TradeOfferState.ToString().Replace("TradeOfferState", "")
                         );
                         LoadTradesButton.Enabled = true;
                     });
@@ -125,17 +125,17 @@ namespace autotrade.CustomElements.Controls {
                 }
             }
 
-            ExtraTradeInfoGridView.Rows.Add("TradeOfferId", tradeOffer.Offers.TradeOfferId);
-            ExtraTradeInfoGridView.Rows.Add("TradeOfferState", tradeOffer.Offers.TradeOfferState.ToString().Replace("TradeOfferState", ""));
-            ExtraTradeInfoGridView.Rows.Add("Message", tradeOffer.Offers.Message);
-            ExtraTradeInfoGridView.Rows.Add("IsOurOffer", tradeOffer.Offers.IsOurOffer.ToString());
-            ExtraTradeInfoGridView.Rows.Add("AccountIdOther", tradeOffer.Offers.AccountIdOther.ToString());
-            ExtraTradeInfoGridView.Rows.Add("ExpirationTime", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.ExpirationTime).ToString());
-            ExtraTradeInfoGridView.Rows.Add("ConfirmationMethod", tradeOffer.Offers.ConfirmationMethod.ToString().Replace("TradeOfferConfirmation", ""));
-            ExtraTradeInfoGridView.Rows.Add("TimeCreated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeCreated).ToString());
-            ExtraTradeInfoGridView.Rows.Add("TimeUpdated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offers.TimeUpdated).ToString());
-            ExtraTradeInfoGridView.Rows.Add("EscrowEndDate", tradeOffer.Offers.EscrowEndDate.ToString());
-            ExtraTradeInfoGridView.Rows.Add("FromRealTimeTrade", tradeOffer.Offers.FromRealTimeTrade.ToString());
+            ExtraTradeInfoGridView.Rows.Add("TradeOfferId", tradeOffer.Offer.TradeOfferId);
+            ExtraTradeInfoGridView.Rows.Add("TradeOfferState", tradeOffer.Offer.TradeOfferState.ToString().Replace("TradeOfferState", ""));
+            ExtraTradeInfoGridView.Rows.Add("Message", tradeOffer.Offer.Message);
+            ExtraTradeInfoGridView.Rows.Add("IsOurOffer", tradeOffer.Offer.IsOurOffer.ToString());
+            ExtraTradeInfoGridView.Rows.Add("AccountIdOther", tradeOffer.Offer.AccountIdOther.ToString());
+            ExtraTradeInfoGridView.Rows.Add("ExpirationTime", CommonUtils.ParseSteamUnixDate(tradeOffer.Offer.ExpirationTime).ToString());
+            ExtraTradeInfoGridView.Rows.Add("ConfirmationMethod", tradeOffer.Offer.ConfirmationMethod.ToString().Replace("TradeOfferConfirmation", ""));
+            ExtraTradeInfoGridView.Rows.Add("TimeCreated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offer.TimeCreated).ToString());
+            ExtraTradeInfoGridView.Rows.Add("TimeUpdated", CommonUtils.ParseSteamUnixDate(tradeOffer.Offer.TimeUpdated).ToString());
+            ExtraTradeInfoGridView.Rows.Add("EscrowEndDate", tradeOffer.Offer.EscrowEndDate.ToString());
+            ExtraTradeInfoGridView.Rows.Add("FromRealTimeTrade", tradeOffer.Offer.FromRealTimeTrade.ToString());
         }
 
         private void CurrentTradesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e) {

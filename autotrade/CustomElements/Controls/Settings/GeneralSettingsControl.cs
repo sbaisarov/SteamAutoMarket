@@ -26,6 +26,7 @@ namespace autotrade.CustomElements {
 
             LoggingLevelComboBox.SelectedIndex = settings.SETTINGS_LOGGER_LEVEL;
             AveragePriceDaysNumericUpDown.Value = settings.SETTINGS_AVERAGE_PRICE_PARSE_DAYS;
+            Confirm2FANumericUpDown.Value = settings.SETTINGS_2FA_ITEMS_TO_CONFIRM;
 
             if (File.Exists(SavedSteamAccount.ACCOUNTS_FILE_PATH)) {
                 var accounts = SavedSteamAccount.Get();
@@ -246,6 +247,10 @@ namespace autotrade.CustomElements {
 
         private void AveragePriceDaysNumericUpDown_ValueChanged(object sender, EventArgs e) {
             SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_AVERAGE_PRICE_PARSE_DAYS, (int)AveragePriceDaysNumericUpDown.Value);
+        }
+
+        private void Confirm2FANumericUpDown_ValueChanged(object sender, EventArgs e) {
+            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_2FA_ITEMS_TO_CONFIRM, (int)Confirm2FANumericUpDown.Value);
         }
     }
 }

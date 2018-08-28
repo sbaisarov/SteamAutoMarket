@@ -9,26 +9,28 @@ using static autotrade.Steam.TradeOffer.Inventory;
 namespace autotrade.CustomElements.Utils {
     class SteamItemsUtils {
         public static string GetClearType(RgFullItem item) {
-            if (item.Description.type.Contains("Sale Foil Trading Card")) return "Sale Foil Trading Card";
-            if (item.Description.type.Contains("Sale Trading Card")) return "Sale Trading Card";
-            if (item.Description.type.Contains("Foil Trading Card")) return "Foil Trading Card";
-            if (item.Description.type.Contains("Trading Card")) return "Trading Card";
-            if (item.Description.type.Contains("Emoticon")) return "Emoticon";
-            if (item.Description.type.Contains("Background")) return "Background";
-            if (item.Description.type.Contains("Sale Item")) return "Sale Item";
-            return item.Description.type;
+            return GetClearType(item.Description.type);
         }
 
-        public static string GetClearType(TradeFullItem item) {
-            if (item.Description.Type == null) return "[None]";
-            if (item.Description.Type.Contains("Sale Foil Trading Card")) return "Sale Foil Trading Card";
-            if (item.Description.Type.Contains("Sale Trading Card")) return "Sale Trading Card";
-            if (item.Description.Type.Contains("Foil Trading Card")) return "Foil Trading Card";
-            if (item.Description.Type.Contains("Trading Card")) return "Trading Card";
-            if (item.Description.Type.Contains("Emoticon")) return "Emoticon";
-            if (item.Description.Type.Contains("Background")) return "Background";
-            if (item.Description.Type.Contains("Sale Item")) return "Sale Item";
-            return item.Description.Type;
+        public static string GetClearType(FullTradeItem item) {
+            return GetClearType(item.Description.Type);
         }
+
+        public static string GetClearType(FullHistoryTradeItem item) {
+            return GetClearType(item.Description.Type);
+        }
+
+        private static string GetClearType(string type) {
+            if (type == null) return "[None]";
+            if (type.Contains("Sale Foil Trading Card")) return "Sale Foil Trading Card";
+            if (type.Contains("Sale Trading Card")) return "Sale Trading Card";
+            if (type.Contains("Foil Trading Card")) return "Foil Trading Card";
+            if (type.Contains("Trading Card")) return "Trading Card";
+            if (type.Contains("Emoticon")) return "Emoticon";
+            if (type.Contains("Background")) return "Background";
+            if (type.Contains("Sale Item")) return "Sale Item";
+            return type;
+        }
+
     }
 }

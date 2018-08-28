@@ -24,9 +24,9 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneralSettingsControl));
             this.AccountsDataGridView = new System.Windows.Forms.DataGridView();
             this.AvatarColumn = new System.Windows.Forms.DataGridViewImageColumn();
@@ -61,6 +61,8 @@
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.UpdateButton = new System.Windows.Forms.Button();
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Confirm2FACountGroupBox = new System.Windows.Forms.GroupBox();
+            this.Confirm2FANumericUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.AccountsDataGridView)).BeginInit();
             this.AccountGroupBox.SuspendLayout();
             this.MafilePathGroupBox.SuspendLayout();
@@ -73,6 +75,8 @@
             this.SteamApiGroupBox.SuspendLayout();
             this.LogGroupBox.SuspendLayout();
             this.SettingsGroupBox.SuspendLayout();
+            this.Confirm2FACountGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Confirm2FANumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // AccountsDataGridView
@@ -84,14 +88,14 @@
             this.AccountsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.AccountsDataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AccountsDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.AccountsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.AccountsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.AccountsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.AccountsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AvatarColumn,
@@ -100,14 +104,14 @@
             this.OpskinsApiColumn,
             this.AccountObjectHidenColumn,
             this.TruePassword});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.AccountsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AccountsDataGridView.DefaultCellStyle = dataGridViewCellStyle11;
             this.AccountsDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AccountsDataGridView.EnableHeadersVisualStyles = false;
             this.AccountsDataGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -117,9 +121,9 @@
             this.AccountsDataGridView.ReadOnly = true;
             this.AccountsDataGridView.RowHeadersVisible = false;
             this.AccountsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.AccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle12;
             this.AccountsDataGridView.RowTemplate.Height = 32;
             this.AccountsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.AccountsDataGridView.Size = new System.Drawing.Size(426, 331);
@@ -285,9 +289,9 @@
             this.LoggingLevelGroupBox.Controls.Add(this.LoggingLevelComboBox);
             this.LoggingLevelGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoggingLevelGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.LoggingLevelGroupBox.Location = new System.Drawing.Point(147, 18);
+            this.LoggingLevelGroupBox.Location = new System.Drawing.Point(148, 19);
             this.LoggingLevelGroupBox.Name = "LoggingLevelGroupBox";
-            this.LoggingLevelGroupBox.Size = new System.Drawing.Size(123, 40);
+            this.LoggingLevelGroupBox.Size = new System.Drawing.Size(133, 40);
             this.LoggingLevelGroupBox.TabIndex = 10;
             this.LoggingLevelGroupBox.TabStop = false;
             this.LoggingLevelGroupBox.Text = "Logging detailing";
@@ -308,7 +312,7 @@
             "None"});
             this.LoggingLevelComboBox.Location = new System.Drawing.Point(3, 16);
             this.LoggingLevelComboBox.Name = "LoggingLevelComboBox";
-            this.LoggingLevelComboBox.Size = new System.Drawing.Size(117, 21);
+            this.LoggingLevelComboBox.Size = new System.Drawing.Size(127, 21);
             this.LoggingLevelComboBox.TabIndex = 0;
             this.AddAllToolTip.SetToolTip(this.LoggingLevelComboBox, "With large amounts of work, disabling logs will speed up the program");
             this.LoggingLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.LoggingLevelComboBox_SelectedIndexChanged);
@@ -334,7 +338,7 @@
             this.AvrPriceGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.AvrPriceGroupBox.Location = new System.Drawing.Point(7, 18);
             this.AvrPriceGroupBox.Name = "AvrPriceGroupBox";
-            this.AvrPriceGroupBox.Size = new System.Drawing.Size(123, 40);
+            this.AvrPriceGroupBox.Size = new System.Drawing.Size(133, 40);
             this.AvrPriceGroupBox.TabIndex = 16;
             this.AvrPriceGroupBox.TabStop = false;
             this.AvrPriceGroupBox.Text = "Avr price (days)";
@@ -348,7 +352,7 @@
             this.AveragePriceDaysNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.AveragePriceDaysNumericUpDown.Location = new System.Drawing.Point(3, 16);
             this.AveragePriceDaysNumericUpDown.Name = "AveragePriceDaysNumericUpDown";
-            this.AveragePriceDaysNumericUpDown.Size = new System.Drawing.Size(117, 20);
+            this.AveragePriceDaysNumericUpDown.Size = new System.Drawing.Size(127, 20);
             this.AveragePriceDaysNumericUpDown.TabIndex = 0;
             this.AveragePriceDaysNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePriceDaysNumericUpDown_ValueChanged);
             // 
@@ -484,6 +488,7 @@
             // SettingsGroupBox
             // 
             this.SettingsGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.SettingsGroupBox.Controls.Add(this.Confirm2FACountGroupBox);
             this.SettingsGroupBox.Controls.Add(this.AvrPriceGroupBox);
             this.SettingsGroupBox.Controls.Add(this.UpdateButton);
             this.SettingsGroupBox.Controls.Add(this.LoggingLevelGroupBox);
@@ -520,6 +525,47 @@
             this.dataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewImageColumn1.Width = 32;
             // 
+            // Confirm2FACountGroupBox
+            // 
+            this.Confirm2FACountGroupBox.Controls.Add(this.Confirm2FANumericUpDown);
+            this.Confirm2FACountGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Confirm2FACountGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.Confirm2FACountGroupBox.Location = new System.Drawing.Point(289, 19);
+            this.Confirm2FACountGroupBox.Name = "Confirm2FACountGroupBox";
+            this.Confirm2FACountGroupBox.Size = new System.Drawing.Size(133, 40);
+            this.Confirm2FACountGroupBox.TabIndex = 17;
+            this.Confirm2FACountGroupBox.TabStop = false;
+            this.Confirm2FACountGroupBox.Text = "Confirm 2FA (count)";
+            this.AddAllToolTip.SetToolTip(this.Confirm2FACountGroupBox, "Count of days from today on which average price will be calculated");
+            // 
+            // Confirm2FANumericUpDown
+            // 
+            this.Confirm2FANumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.Confirm2FANumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Confirm2FANumericUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Confirm2FANumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.Confirm2FANumericUpDown.Location = new System.Drawing.Point(3, 16);
+            this.Confirm2FANumericUpDown.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.Confirm2FANumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Confirm2FANumericUpDown.Name = "Confirm2FANumericUpDown";
+            this.Confirm2FANumericUpDown.Size = new System.Drawing.Size(127, 20);
+            this.Confirm2FANumericUpDown.TabIndex = 0;
+            this.AddAllToolTip.SetToolTip(this.Confirm2FANumericUpDown, "The number of 2FA requests after which all the requests will be confirmed");
+            this.Confirm2FANumericUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.Confirm2FANumericUpDown.ValueChanged += new System.EventHandler(this.Confirm2FANumericUpDown_ValueChanged);
+            // 
             // GeneralSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -551,6 +597,8 @@
             this.SteamApiGroupBox.PerformLayout();
             this.LogGroupBox.ResumeLayout(false);
             this.SettingsGroupBox.ResumeLayout(false);
+            this.Confirm2FACountGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Confirm2FANumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -591,5 +639,7 @@
         private System.Windows.Forms.NumericUpDown AveragePriceDaysNumericUpDown;
         private System.Windows.Forms.DataGridViewTextBoxColumn OpskinsApiColumn;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
+        private System.Windows.Forms.GroupBox Confirm2FACountGroupBox;
+        private System.Windows.Forms.NumericUpDown Confirm2FANumericUpDown;
     }
 }

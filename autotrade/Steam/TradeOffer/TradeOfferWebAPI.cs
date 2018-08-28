@@ -8,6 +8,9 @@ using SteamAuth;
 using static autotrade.Steam.TradeOffer.Inventory;
 using autotrade.Utils;
 using Newtonsoft.Json.Serialization;
+using System.Text;
+using SteamKit2;
+using autotrade.CustomElements.Utils;
 
 namespace autotrade.Steam.TradeOffer {
     public class TradeOfferWebAPI {
@@ -31,8 +34,7 @@ namespace autotrade.Steam.TradeOffer {
                 var result = JsonConvert.DeserializeObject<ApiResponse<OfferResponse>>(response);
                 return result.Response;
             } catch (Exception ex) {
-                //todo log
-                Debug.WriteLine(ex);
+                Utils.Logger.Warning("Error on getting trade offers", ex);
             }
             return new OfferResponse();
         }
@@ -70,33 +72,46 @@ namespace autotrade.Steam.TradeOffer {
                 var result = JsonConvert.DeserializeObject<ApiResponse<OffersResponse>>(response);
                 return result.Response;
             } catch (Exception ex) {
-                //todo log
-                Debug.WriteLine(ex);
+                Logger.Error("Error on get rdade offers", ex);
             }
             return new OffersResponse();
         }
 
-        public TradeHistoryResponse GetTradeHistory(int maxTrades, int startAfterTime, int startAfterTradeId, 
-            bool navigatingBack = false, bool getDescriptions = false, string lanugage = "en", bool includeFailed = false)
-        {
-            string options = string.Format("?key={0}&max_trades={1}&start_after_time={2}&start_after_tradeid={3}" +
-                                           "&navigating_back={4}&get_descriptions={5}&language={6}&include_failed={7}",
-                                           apiKey, maxTrades, startAfterTime, startAfterTradeId, BoolConverter(navigatingBack),
-                                           BoolConverter(getDescriptions), lanugage, BoolConverter(includeFailed));
-            
+        public TradeHistoryResponse GetTradeHistory(int? maxTrades, long? startAfterTime, string startAfterTradeId,
+            bool navigatingBack = false, bool getDescriptions = false, string lanugage = "en", bool includeFailed = false) {
+            if (!string.IsNullOrEmpty(startAfterTradeId)) startAfterTime = null;
+
+            string options = GetOptions(
+                    ("key", apiKey),
+                    ("max_trades", maxTrades),
+                    ("start_after_tradeid", startAfterTradeId),
+                    ("get_descriptions", BoolConverter(getDescriptions)),
+                    ("language", lanugage),
+                    ("include_failed", BoolConverter(includeFailed)),
+                    ("start_after_time", startAfterTime),
+                    ("navigating_back", BoolConverter(navigatingBack))
+                 );
+
             string url = String.Format(BaseUrl, "GetTradeHistory", "v1", options);
             string response = SteamWeb.Request(url, "GET", data: null);
-            try
-            {
+            try {
                 var result = JsonConvert.DeserializeObject<ApiResponse<TradeHistoryResponse>>(response);
                 return result.Response;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Debug.WriteLine(ex);
             }
 
             return new TradeHistoryResponse();
+        }
+
+        private static string GetOptions(params (string, object)[] options) {
+            var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
+            foreach (var param in options) {
+                if (param.Item2 != null && param.Item2.ToString() != "") {
+                    queryString[param.Item1] = param.Item2.ToString();
+                }
+            }
+            return "?" + queryString.ToString();
         }
 
         private static string BoolConverter(bool value) {
@@ -113,8 +128,7 @@ namespace autotrade.Steam.TradeOffer {
 
                 return resp.Response;
             } catch (Exception ex) {
-                //todo log
-                Debug.WriteLine(ex);
+                Logger.Warning("Error on getting trade offer summary", ex);
             }
             return new TradeOffersSummary();
         }
@@ -206,79 +220,75 @@ namespace autotrade.Steam.TradeOffer {
         }
     }
 
-    public class TradeHistoryResponse
-    {
+    public class TradeHistoryResponse {
         [JsonProperty("total_trades")] public int TotalTrades { get; set; }
-        
+
         [JsonProperty("more")] public bool More { get; set; }
-        
+
         [JsonProperty("trades")] public List<TradeHistoryItem> Trades { get; set; }
-        
+
         [JsonProperty("descriptions")] public List<AssetDescription> Descriptions { get; set; }
     }
 
-    public class TradeHistoryItem
-    {
+    public class TradeHistoryItem {
         [JsonProperty("tradeid")] public string TradeId { get; set; }
-        
+
         [JsonProperty("steamid_other")] public string SteamIdOther { get; set; }
-        
+
         [JsonProperty("time_init")] public string TimeInit { get; set; }
-        
+
         [JsonProperty("time_escrow_end")] public string TimeEscrowEnd { get; set; }
-        
+
         [JsonProperty("status")] public TradeState Status { get; set; }
-        
+
         [JsonProperty("assets_received")] public List<TradedAsset> AssetsReceived { get; set; }
 
         [JsonProperty("assets_given")] public List<TradedAsset> AssetsGiven { get; set; }
-        
-        [JsonProperty("currency_received")] public List<TradedCurrency>  CurrencyReceived { get; set; }
-        
+
+        [JsonProperty("currency_received")] public List<TradedCurrency> CurrencyReceived { get; set; }
+
         [JsonProperty("currency_given")] public List<TradedCurrency> CurrencyGiven { get; set; }
     }
 
-    public class TradedAsset
-    {
+    public class TradedAsset {
         [JsonProperty("appid")] public int Appid { get; set; }
-        
+
         [JsonProperty("contextid")] public string ContextId { get; set; }
-        
+
         [JsonProperty("assetid")] public string AssetId { get; set; }
-        
+
         [JsonProperty("classid")] public string ClassId { get; set; }
-        
+
         [JsonProperty("instanceid")] public string InstanceId { get; set; }
-        
+
         [JsonProperty("new_assetid")] public string NewAssetId { get; set; }
-        
+
         [JsonProperty("new_contextid")] public string NewContextId { get; set; }
-        
+
         [JsonProperty("rollback_new_assetid")] public string RollbackNewAssetId { get; set; }
-        
+
         [JsonProperty("rollback_new_contextid")] public string RollbackNewContextId { get; set; }
-        
+
         [JsonProperty("amount")] public string Amount { get; set; }
     }
 
-    public class TradedCurrency
-    {
+    public class TradedCurrency {
         [JsonProperty("appid")] public int Appid { get; set; }
-        
+
         [JsonProperty("contextid")] public string ContextId { get; set; }
-        
+
         [JsonProperty("currencyid")] public string CurrenyId { get; set; }
-        
+
         [JsonProperty("classid")] public string ClassId { get; set; }
-        
+
         [JsonProperty("new_currencyid")] public string NewCurrencyId { get; set; }
-        
+
         [JsonProperty("new_contextid")] public string NewContextId { get; set; }
-        
+
         [JsonProperty("rollback_new_currencyid")] public string RollbackNewCurrencyId { get; set; }
-        
+
         [JsonProperty("rollback_new_contextid")] public string RollbackNewContextId { get; set; }
-        
+
         [JsonProperty("amount")] public string Amount { get; set; }
     }
 
@@ -338,7 +348,7 @@ namespace autotrade.Steam.TradeOffer {
         TradeOfferStateInEscrow = 11,
         TradeOfferStateUnknown
     }
-    
+
     public enum TradeState {
         TradeStateInit = 0,
         TradeStatePreCommited = 1,
@@ -447,7 +457,7 @@ namespace autotrade.Steam.TradeOffer {
         public string Name { get; set; }
     }
 
-    public class TradeFullItem {
+    public class FullTradeItem {
         public CEconAsset Asset { get; set; }
         public AssetDescription Description { get; set; }
 
@@ -468,16 +478,17 @@ namespace autotrade.Steam.TradeOffer {
             }
             return description;
         }
-        public static List<TradeFullItem> GetFullItemsList(List<CEconAsset> assets, List<AssetDescription> descriptions) {
-            var itemsList = new List<TradeFullItem>();
+
+        public static List<FullTradeItem> GetFullItemsList(List<CEconAsset> assets, List<AssetDescription> descriptions) {
+            var itemsList = new List<FullTradeItem>();
             if (assets == null || descriptions == null) return itemsList;
 
             foreach (var item in assets) {
                 itemsList.Add(
-                    new TradeFullItem
+                    new FullTradeItem
                     {
                         Asset = item,
-                        Description = TradeFullItem.GetDescription(item, descriptions)
+                        Description = FullTradeItem.GetDescription(item, descriptions)
                     }
                 );
             }
@@ -486,8 +497,56 @@ namespace autotrade.Steam.TradeOffer {
     }
 
     public class FullTradeOffer {
-        public Offer Offers { get; set; }
-        public List<TradeFullItem> ItemsToGive { get; set; }
-        public List<TradeFullItem> ItemsToRecieve { get; set; }
+        public Offer Offer { get; set; }
+        public List<FullTradeItem> ItemsToGive { get; set; }
+        public List<FullTradeItem> ItemsToRecieve { get; set; }
+    }
+
+    public class FullHistoryTradeOffer {
+        public string TradeId { get; set; }
+        public SteamID SteamIdOther { get; set; }
+        public DateTime TimeInit { get; set; }
+        public string TimeEscrowEnd { get; set; }
+        public TradeState Status { get; set; }
+        public List<FullHistoryTradeItem> MyItems { get; set; }
+        public List<FullHistoryTradeItem> HisItems { get; set; }
+
+        public FullHistoryTradeOffer(TradeHistoryItem historyItem, List<AssetDescription> assetDescriptions) {
+            TradeId = historyItem.TradeId;
+            SteamIdOther = new SteamID(ulong.Parse(historyItem.SteamIdOther));
+            TimeInit = CommonUtils.ParseSteamUnixDate(int.Parse(historyItem.TimeInit));
+            TimeEscrowEnd = historyItem.TimeEscrowEnd;
+            Status = historyItem.Status;
+            MyItems = GetFullHistoryTradeItemsList(historyItem.AssetsGiven, historyItem.CurrencyGiven, assetDescriptions);
+            HisItems = GetFullHistoryTradeItemsList(historyItem.AssetsReceived, historyItem.CurrencyReceived, assetDescriptions);
+        }
+
+        private List<FullHistoryTradeItem> GetFullHistoryTradeItemsList(List<TradedAsset> tradedAssets, List<TradedCurrency> tradedCurrencies, List<AssetDescription> assetDescriptions) {
+            var fullItems = new List<FullHistoryTradeItem>();
+            if (tradedAssets == null) return fullItems;
+
+            foreach (var asset in tradedAssets) {
+                TradedCurrency currency = null;
+                if (tradedCurrencies != null) tradedCurrencies.FirstOrDefault(curr => curr.ClassId == asset.ClassId && curr.ContextId == asset.ContextId);
+
+                var description = assetDescriptions.FirstOrDefault(descr => asset.ClassId == descr.ClassId && asset.InstanceId == descr.InstanceId);
+
+                fullItems.Add(new FullHistoryTradeItem(asset, currency, description));
+            }
+
+            return fullItems;
+        }
+    }
+
+    public class FullHistoryTradeItem {
+        public TradedAsset Asset { get; set; }
+        public TradedCurrency Currency { get; set; }
+        public AssetDescription Description { get; set; }
+
+        public FullHistoryTradeItem(TradedAsset tradedAsset, TradedCurrency tradedCurrency, AssetDescription assetDescription) {
+            Asset = tradedAsset;
+            Currency = tradedCurrency;
+            Description = assetDescription;
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 {
                     WorkerSupportsCancellation = true
                 };
-                ITEMS_TO_SALE_WORKING_THREAD.DoWork += async (o, e) => await LoadAllItemsToSalePrices(o, e);
+                ITEMS_TO_SALE_WORKING_THREAD.DoWork += async (o, e) => await LoadItemsToSalePrices(o, e);
 
                 if (CURRENT_PRICES_CACHE == null) CURRENT_PRICES_CACHE = new PricesCache("current_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE);
                 if (AVERAGE_PRICES_CACHE == null) AVERAGE_PRICES_CACHE = new PricesCache("average_prices_cache.ini", SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE);
@@ -121,6 +121,7 @@ namespace autotrade.WorkingProcess.PriceLoader {
             Thread.Sleep(1000);
             rows = GetItemsToSaleRowsWithNoPrice();
             if (rows.Count() != 0) await LoadItemsToSalePrices(sender, ev);
+            AllItemThreadShouldWait = false;
         }
 
         private static async Task SetAllItemsListGridValues(DataGridViewRow row) {
@@ -135,13 +136,12 @@ namespace autotrade.WorkingProcess.PriceLoader {
                     currentPriceCell.Value = currentPrice;
                 }
 
-                //todo
                 double? averagePrice = prices.Item2;
                 if (averagePrice != -1) {
                     averagePriceCell.Value = averagePrice;
                 }
-            } catch (Exception e) {
-                Utils.Logger.Warning("Error on parsing item price", e);
+            } catch (Exception ex) {
+                Utils.Logger.Warning("Error on parsing item price", ex);
             }
 
             WaitFor_AllItemThreadShouldWait();
@@ -196,8 +196,8 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 }
 
                 return new Tuple<double?, double?>(currentPrice, averagePrice);
-            } catch (Exception e) {
-                Utils.Logger.Debug($"Error on parsing item price - {e.Message}");
+            } catch (Exception ex) {
+                Utils.Logger.Debug($"Error on parsing item price - {ex.Message}");
                 return new Tuple<double?, double?>(0, 0);
             }
         }
@@ -240,8 +240,8 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 if (averagePrice != -1) {
                     averagePriceCell.Value = averagePrice;
                 }
-            } catch (Exception e) {
-                Utils.Logger.Warning("Error on parsing item price", e);
+            } catch (Exception ex) {
+                Utils.Logger.Warning("Error on parsing item price", ex);
             }
         }
 
@@ -295,8 +295,8 @@ namespace autotrade.WorkingProcess.PriceLoader {
                 }
 
                 return new Tuple<double?, double?>(currentPrice, averagePrice);
-            } catch (Exception e) {
-                Utils.Logger.Debug($"Error on parsing item price - {e.Message}");
+            } catch (Exception ex) {
+                Utils.Logger.Debug($"Error on parsing item price - {ex.Message}");
                 return new Tuple<double?, double?>(0, 0);
             }
         }

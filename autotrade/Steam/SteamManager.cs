@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,8 +17,8 @@ using autotrade.Steam.TradeOffer;
 using Market.Interface;
 using autotrade.Steam.Market;
 using autotrade.Utils;
- using autotrade.WorkingProcess;
- using autotrade.WorkingProcess.Settings;
+using autotrade.WorkingProcess;
+using autotrade.WorkingProcess.Settings;
 using autotrade.WorkingProcess.MarketPriceFormation;
 using autotrade.WorkingProcess.PriceLoader;
 
@@ -44,13 +44,13 @@ namespace autotrade.Steam {
 
             bool isSessionRefreshed = Guard.RefreshSession();
             if (isSessionRefreshed == false) {
-                Utils.Logger.Debug($"Saved steam session for {login} is expired. Refreshing session.");
+                Logger.Debug($"Saved steam session for {login} is expired. Refreshing session.");
                 LoginResult loginResult;
                 int tryCount = 0;
                 do {
                     loginResult = SteamClient.DoLogin();
                     if (loginResult != LoginResult.LoginOkay) {
-                        Utils.Logger.Warning($"Login status is - {loginResult}");
+                        Logger.Warning($"Login status is - {loginResult}");
 
                         if (++tryCount == 3) {
                             throw new WebException("Login failed after 3 attempts!");
@@ -65,7 +65,6 @@ namespace autotrade.Steam {
                 SaveAccount(Guard);
             }
 
-
             this.ApiKey = apiKey;
 
             CookieContainer cookies = new CookieContainer();
@@ -77,6 +76,7 @@ namespace autotrade.Steam {
             {
                 IsAuthorized = true
             };
+
             market.Auth = auth;
             MarketClient = new MarketClient(market);
             Inventory = new Inventory();
@@ -92,29 +92,44 @@ namespace autotrade.Steam {
 
         public void SellOnMarket(ToSaleObject items) {
             int index = 1;
+            int itemsToConfirm = SavedSettings.Get().SETTINGS_2FA_ITEMS_TO_CONFIRM;
             int total = items.ItemsForSaleList.Sum(x => x.Items.Count());
             string itemName;
             foreach (var package in items.ItemsForSaleList) {
                 itemName = package.Items.First().Description.name;
-                if (!package.Price.HasValue)
-                {
-                    Task<double?> task = Task.Run(async () => await items.GetPrice(package.Items.First(), this));
-                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Parsing price for {itemName}");
-                    task.Wait();
-                    var price = task.Result;
-                    if (price != null)
-                    {
-                        package.Price = price;
-                        Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Parsed price for {itemName} is {price}");
+                if (!package.Price.HasValue) {
+                    try {
+                        Task<double?> task = Task.Run(async () => await items.GetPrice(package.Items.First(), this));
+                        Program.WorkingProcessForm.AppendWorkingProcessInfo($"Processing price for '{itemName}'");
+                        task.Wait();
+
+                        var price = task.Result;
+                        if (price != null) {
+                            package.Price = price;
+                            Program.WorkingProcessForm.AppendWorkingProcessInfo($"Price for '{itemName}' is {price}");
+                        }
+                    } catch (Exception ex) {
+                        Logger.Error("Erron on market price parse", ex);
+                        Program.WorkingProcessForm.AppendWorkingProcessInfo($"ERROR on selling {itemName} - {ex.Message}");
                     }
                 }
 
                 foreach (var item in package.Items) {
-                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Selling {itemName} for {package.Price}");
-                    SellOnMarket(item, package.Price.Value);
+                    try {
+                        Program.WorkingProcessForm.AppendWorkingProcessInfo($"[{index}/{total}] Selling - '{itemName}' for {package.Price}");
+                        SellOnMarket(item, package.Price.Value);
+                        if (index % itemsToConfirm == 0) {
+                            ConfirmMarketTransactions();
+                        }
+                    } catch (Exception ex) {
+                        Logger.Error("Erron on market sell", ex);
+                        Program.WorkingProcessForm.AppendWorkingProcessInfo($"ERROR on selling '{itemName}' - {ex.Message}");
+                    }
                     index++;
                 }
             }
+
+            ConfirmMarketTransactions();
         }
 
         public void SellOnMarket(Inventory.RgFullItem item, double price) {
@@ -129,13 +144,19 @@ namespace autotrade.Steam {
                     if (message != null) {
                         Logger.Warning(message);
                         Program.WorkingProcessForm.AppendWorkingProcessInfo($"ERROR on selling {item.Description.name} - {message}");
+
+                        if (message.Contains("You already have a listing for this item pending confirmation")) {
+                            ConfirmMarketTransactions();
+                            continue;
+                        }
+
                         Thread.Sleep(5000);
                         continue;
                     }
                     break;
-                } catch (JsonSerializationException e) {
-                    Logger.Warning(e.Message);
-                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"ERROR on selling {item.Description.name} - {e.Message}");
+                } catch (JsonSerializationException ex) {
+                    Logger.Warning(ex.Message);
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"ERROR on selling {item.Description.name} - {ex.Message}");
                 }
             }
         }
@@ -150,18 +171,16 @@ namespace autotrade.Steam {
             Guard.AcceptMultipleConfirmations(marketConfirmations);
         }
 
-        public double? GetAveragePrice(Inventory.RgInventory asset, Inventory.RgDescription description)
-        {
+        public double? GetAveragePrice(Inventory.RgInventory asset, Inventory.RgDescription description) {
             double? price = null;
             var attempts = 0;
-            while (attempts < 3)
-            {
+            while (attempts < 3) {
                 try {
                     var history = MarketClient.PriceHistory(asset.appid, description.market_hash_name);
-                    price = Math.Round(CountAveragePrice(history),2);
+                    price = Math.Round(CountAveragePrice(history), 2);
                     break;
-                } catch (Exception e) {
-                    Logger.Warning($"Error on geting average price of ${description.market_hash_name}", e);
+                } catch (Exception ex) {
+                    Logger.Warning($"Error on geting average price of ${description.market_hash_name}", ex);
                 }
 
                 attempts++;
@@ -180,8 +199,7 @@ namespace autotrade.Steam {
 
             var attempts = 0;
             double? price = null;
-            while(attempts < 3)
-            {
+            while (attempts < 3) {
                 ItemOrdersHistogram histogram = await MarketClient.ItemOrdersHistogramAsync(
                     itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
                 price = histogram.MinSellPrice;
@@ -203,7 +221,7 @@ namespace autotrade.Steam {
             var average = IterateHistory(firstSevenDays);
             if (average is null) throw new SteamException("No prices recorded during the week");
             average = IterateHistory(firstSevenDays, average);
-            return (double) average;
+            return (double)average;
         }
 
         private double? IterateHistory(List<PriceHistoryDay> history, double? average = null) {
@@ -223,13 +241,13 @@ namespace autotrade.Steam {
             }
 
             double? result = sum / count;
-            if (!(double.IsNaN((double) result))) return result;
+            if (!(double.IsNaN((double)result))) return result;
             result = null;
             if (!(average is null)) result = average;
 
             return result;
         }
-        
+
         public void SendTradeOffer(List<Inventory.RgFullItem> items, string partnerId, string tradeToken) {
             TradeOffer.TradeOffer offer = new TradeOffer.TradeOffer(OfferSession, new SteamID(ulong.Parse(partnerId)));
             bool status = offer.SendWithToken(out string offerId, tradeToken);
@@ -237,9 +255,8 @@ namespace autotrade.Steam {
                 Utils.Logger.Info(offer.Session.Error);
             }
         }
-        
-        public void ConfirmTradeTransactions(List<ulong> offerids)
-        {
+
+        public void ConfirmTradeTransactions(List<ulong> offerids) {
             Confirmation[] confirmations = Guard.FetchConfirmations();
             var conf = confirmations
                 .Where(item => item.ConfType == Confirmation.ConfirmationType.Trade
@@ -247,7 +264,7 @@ namespace autotrade.Steam {
                 .ToArray()[0];
             Guard.AcceptConfirmation(conf);
         }
-        
+
         public OffersResponse ReceiveTradeOffers() {
             return TradeOfferWeb.GetActiveTradeOffers(false, true, true);
         }
@@ -262,8 +279,8 @@ namespace autotrade.Steam {
             try {
                 SavedSteamAccount.UpdateByLogin(account.AccountName, account);
                 return true;
-            } catch (Exception e) {
-                Utils.Logger.Error("Error on session save", e);
+            } catch (Exception ex) {
+                Utils.Logger.Error("Error on session save", ex);
                 return false;
             }
         }

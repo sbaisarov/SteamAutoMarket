@@ -74,9 +74,9 @@ namespace autotrade.Steam.TradeOffer {
             string response =  SteamWeb.Request(url, "GET", dataString: null);
             return JsonConvert.DeserializeObject<InventoryRootOModel>(response);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e.Message);
+            Console.WriteLine(ex.Message);
             return null;
         }
 
@@ -97,8 +97,8 @@ namespace autotrade.Steam.TradeOffer {
                     items.AddRange(ProcessInventoryPage(inventoryPage));
                 }
                 while (inventoryPage.more_items == 1);
-            } catch (Exception e) {
-                Logger.Error(e.Message, e);
+            } catch (Exception ex) {
+                Logger.Error(ex.Message, ex);
             }
             return items;
         }
@@ -117,9 +117,9 @@ namespace autotrade.Steam.TradeOffer {
                     Program.LoadingForm.TrackLoadedIteration("Page {currentPage} of {totalPages} loaded");
                 }
                 while (inventoryPage.more_items == 1);
-            } catch (Exception e) {
-                if (e.GetType() != typeof(ThreadAbortException)) {
-                    Logger.Error("Error on loading inventory", e);
+            } catch (Exception ex) {
+                if (ex.GetType() != typeof(ThreadAbortException)) {
+                    Logger.Error("Error on loading inventory", ex);
                 }
             }
             return items;

@@ -287,7 +287,7 @@ namespace autotrade {
                     var item = AllItemsListGridUtils.GetRgFullItems(AllSteamItemsGridView, row.Index).FirstOrDefault();
                     if (item == null) continue;
 
-                    CurrentSession.SteamManager.GetAveragePrice(out double? averagePrice, item.Asset, item.Description);
+                    double? averagePrice = CurrentSession.SteamManager.GetAveragePrice(item.Asset, item.Description);
                     PriceLoader.AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
 
                     double? currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
@@ -356,19 +356,23 @@ namespace autotrade {
 
         private async void ItemsForSaleUpdateOneButtonClick_Click(object sender, EventArgs e) {
             await Task.Run(async () => {
-                var selectedRows = ItemsToSaleGridView.SelectedRows.Cast<DataGridViewRow>();
-                foreach (var row in selectedRows) {
-                    var item = ItemsToSaleGridUtils.GetRgFullItems(ItemsToSaleGridView, row.Index).FirstOrDefault();
-                    if (item == null) continue;
+                try {
+                    var selectedRows = ItemsToSaleGridView.SelectedRows.Cast<DataGridViewRow>();
+                    foreach (var row in selectedRows) {
+                        var item = ItemsToSaleGridUtils.GetRgFullItems(ItemsToSaleGridView, row.Index).FirstOrDefault();
+                        if (item == null) continue;
 
-                    CurrentSession.SteamManager.GetAveragePrice(out double? averagePrice, item.Asset, item.Description);
-                    PriceLoader.AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
+                        double? averagePrice = CurrentSession.SteamManager.GetAveragePrice(item.Asset, item.Description);
+                        PriceLoader.AVERAGE_PRICES_CACHE.Cache(item.Description.market_hash_name, averagePrice.Value);
 
-                    double? currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
-                    PriceLoader.CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, currentPrice.Value);
+                        double? currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
+                        PriceLoader.CURRENT_PRICES_CACHE.Cache(item.Description.market_hash_name, currentPrice.Value);
 
-                    row.Cells[ItemsToSaleGridUtils.CurrentColumnIndex].Value = currentPrice;
-                    row.Cells[ItemsToSaleGridUtils.AverageColumnIndex].Value = averagePrice;
+                        row.Cells[ItemsToSaleGridUtils.CurrentColumnIndex].Value = currentPrice;
+                        row.Cells[ItemsToSaleGridUtils.AverageColumnIndex].Value = averagePrice;
+                    }
+                } catch (Exception ex) {
+                    Logger.Error("Erron on update item price", ex);
                 }
             });
         }

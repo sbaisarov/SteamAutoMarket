@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,37 +14,45 @@ namespace autotrade.Utils {
         public const string DATE_FROMAT = "HH:mm:ss"; //dd-MM-yy H:mm:ss
 
         [MethodImpl(MethodImplOptions.Synchronized)]
+        private static void LogToFile(string s) {
+            Task.Run(() => {
+                try {
+                    File.AppendAllText("log.log", s + "\n");
+                } catch {
+                    Thread.Sleep(1000);
+                    LogToFile(s);
+                }
+            });
+
+        }
+
         public static void Working(string message) {
             message = $"{GetCurrentDate()} [WORKING] - {message}";
-            File.AppendAllText("log.log", message + "\n");
             LogToLogBox(message);
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public static void Debug(string message) {
             if (_ignoreLogs(LoggerLevel.DEBUG)) return;
 
             message = $"{GetCurrentDate()} [DEBUG] - {message}";
-            File.AppendAllText("log.log", message + "\n");
+            LogToFile(message);
             LogToLogBox(message);
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public static void Info(string message) {
             if (_ignoreLogs(LoggerLevel.INFO)) return;
 
             message = $"{GetCurrentDate()} [INFO] - {message}";
-            File.AppendAllText("log.log", message + "\n");
+            LogToFile(message);
             LogToLogBox(message);
         }
 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public static void Warning(string message, Exception e = null) {
             if (_ignoreLogs(LoggerLevel.INFO)) return;
 
             message = $"{GetCurrentDate()} [WARN] - {message} " + ((e != null) ? e.Message + " " + e.StackTrace : "");
-            File.AppendAllText("log.log", message + "\n");
+            LogToFile(message);
             LogToLogBox(message);
         }
 
@@ -60,10 +69,9 @@ namespace autotrade.Utils {
             LogToLogBox(message);
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void Critical(string message, Exception e) {
-            message = $"{GetCurrentDate()} [CRITICAL] - {message}. {e.Message}";
-            File.AppendAllText("error.log", $"{message} {e.StackTrace}\n");
+        public static void Critical(string message, Exception ex) {
+            message = $"{GetCurrentDate()} [CRITICAL] - {message}. {ex.Message}";
+            File.AppendAllText("error.log", $"{message} {ex.StackTrace}\n");
 
             var confirmResult = MessageBox.Show(message, "Critical unhandled exception",
                                       MessageBoxButtons.OK, MessageBoxIcon.Stop);

@@ -37,6 +37,8 @@ namespace autotrade {
                     .Replace("{currentPage}", (++currentPage).ToString())
                     .Replace("{totalPages}", totalPages.ToString());
 
+                if (currentPage > ProgressBar.Maximum) currentPage = ProgressBar.Maximum;
+
                 ProgressBar.Value = currentPage;
             });
         }
@@ -113,9 +115,9 @@ namespace autotrade {
             foreach (var trade in response.AllOffers) {
                 tradesList.Add(new FullTradeOffer
                 {
-                    Offers = trade,
-                    ItemsToGive = TradeFullItem.GetFullItemsList(trade.ItemsToGive, response.Descriptions),
-                    ItemsToRecieve = TradeFullItem.GetFullItemsList(trade.ItemsToReceive, response.Descriptions)
+                    Offer = trade,
+                    ItemsToGive = FullTradeItem.GetFullItemsList(trade.ItemsToGive, response.Descriptions),
+                    ItemsToRecieve = FullTradeItem.GetFullItemsList(trade.ItemsToReceive, response.Descriptions)
                 });
                 Program.LoadingForm.TrackLoadedIteration("{currentPage} of {totalPages} trades loaded");
             }
@@ -123,47 +125,50 @@ namespace autotrade {
             currentTrades = tradesList;
         }
         public List<FullTradeOffer> GetLoadedCurrentTrades() {
-            if (currentTrades == null || this == null) {
+            while (currentTrades == null || this == null) {
                 Thread.Sleep(500);
-                return GetLoadedCurrentTrades();
             }
             return currentTrades;
         }
         #endregion
 
         #region Trades History
-        private List<FullTradeOffer> tradesHistory;
+        private List<FullHistoryTradeOffer> tradesHistory;
 
-        public void InitTradesHistoryLoadingProcess(bool getSentOffers, bool getReceivedOffers, string timeHistoricalCutoff = "0", string language = "en_us") {
+        public void InitTradesHistoryLoadingProcess(int? maxTrades, long? startAfterTime, string startAfterTradeId, bool navigatingBack = false, bool getDescriptions = false, string lanugage = "en", bool includeFailed = false) {
             Text = $"Trade history loading";
             ActivateForm();
             workingThread = new Thread(() => {
-                LoadTradeOffersHistory(getSentOffers, getReceivedOffers, true, false, true, timeHistoricalCutoff, language);
+                LoadTradeOffersHistory(maxTrades, startAfterTime, startAfterTradeId, navigatingBack, getDescriptions, lanugage, includeFailed);
             });
             workingThread.Start();
         }
-        public void LoadTradeOffersHistory(bool getSentOffers, bool getReceivedOffers, bool getDescriptions, bool activeOnly, bool historicalOnly, string timeHistoricalCutoff, string language) {
-            List<FullTradeOffer> tradesList = new List<FullTradeOffer>();
 
-            var response = CurrentSession.SteamManager.TradeOfferWeb.GetTradeOffers(getSentOffers, getReceivedOffers, getDescriptions, activeOnly, historicalOnly, timeHistoricalCutoff, language);
-            Program.LoadingForm.SetTotalItemsCount(response.AllOffers.Count(), response.AllOffers.Count(), "Total trades count");
+        public void LoadTradeOffersHistory(int? maxTrades, long? startAfterTime, string startAfterTradeId, bool navigatingBack, bool getDescriptions, string lanugage, bool includeFailed) {
+            var tradesList = new List<FullHistoryTradeOffer>();
 
-            foreach (var trade in response.AllOffers) {
-                tradesList.Add(new FullTradeOffer
-                {
-                    Offers = trade,
-                    ItemsToGive = TradeFullItem.GetFullItemsList(trade.ItemsToGive, response.Descriptions),
-                    ItemsToRecieve = TradeFullItem.GetFullItemsList(trade.ItemsToReceive, response.Descriptions)
-                });
+            var response = CurrentSession.SteamManager.TradeOfferWeb.GetTradeHistory(maxTrades, startAfterTime, startAfterTradeId, navigatingBack, getDescriptions, lanugage, includeFailed);
+
+            int totalCount = 0;
+            if (response.Trades != null) totalCount = response.Trades.Count();
+            Program.LoadingForm.SetTotalItemsCount(totalCount, totalCount, "Total trades count");
+
+            if (response.Trades == null) {
+                tradesHistory = new List<FullHistoryTradeOffer>();
+                return;
+            }
+
+            foreach (var trade in response.Trades) {
+                tradesList.Add(new FullHistoryTradeOffer(trade, response.Descriptions));
                 Program.LoadingForm.TrackLoadedIteration("{currentPage} of {totalPages} trades loaded");
             }
 
             tradesHistory = tradesList;
         }
-        public List<FullTradeOffer> GetLoadedTradesHistory() {
-            if (tradesHistory == null || this == null) {
+
+        public List<FullHistoryTradeOffer> GetLoadedTradesHistory() {
+            while (tradesHistory == null || this == null) {
                 Thread.Sleep(500);
-                return GetLoadedTradesHistory();
             }
             return tradesHistory;
         }
