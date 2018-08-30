@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net;
+using System.Text.RegularExpressions;
 using SteamAuth;
 using Market;
 using Market.Enums;
@@ -31,6 +32,7 @@ namespace autotrade.Steam {
         public static UserLogin SteamClient { get; set; }
         public MarketClient MarketClient { get; set; }
         public SteamGuardAccount Guard { get; set; }
+        public CookieContainer Cookies { get; set; } = new CookieContainer();
 
         public SteamManager() {
         }
@@ -67,16 +69,16 @@ namespace autotrade.Steam {
 
             this.ApiKey = apiKey;
 
-            CookieContainer cookies = new CookieContainer();
             TradeOfferWeb = new TradeOfferWebAPI(apiKey);
-            OfferSession = new OfferSession(TradeOfferWeb, cookies, Guard.Session.SessionID);
-            Guard.Session.AddCookies(cookies);
+            OfferSession = new OfferSession(TradeOfferWeb, Cookies, Guard.Session.SessionID);
+            Guard.Session.AddCookies(Cookies);
             var market = new SteamMarketHandler(ELanguage.English, "user-agent");
-            Auth auth = new Auth(market, cookies)
+            Auth auth = new Auth(market, Cookies)
             {
                 IsAuthorized = true
             };
 
+            FetchTradeToken();
             market.Auth = auth;
             MarketClient = new MarketClient(market);
             Inventory = new Inventory();
@@ -138,7 +140,7 @@ namespace autotrade.Steam {
             while (true) {
                 try {
                     JSellItem resp = MarketClient.SellItem(description.appid, int.Parse(asset.contextid),
-                        long.Parse(asset.assetid), 1, price * 0.87);
+                        long.Parse(asset.assetid), int.Parse(item.Asset.amount), price * 0.87);
 
                     string message = resp.Message; // error message
                     if (message != null) {
@@ -163,12 +165,21 @@ namespace autotrade.Steam {
 
         public void ConfirmMarketTransactions() {
             Program.WorkingProcessForm.AppendWorkingProcessInfo($"Fetching confirmations");
-            Confirmation[] confirmations = Guard.FetchConfirmations();
-            var marketConfirmations = confirmations
-                .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction)
-                .ToArray();
-            Program.WorkingProcessForm.AppendWorkingProcessInfo($"Accepting confirmations");
-            Guard.AcceptMultipleConfirmations(marketConfirmations);
+            try
+            {
+                Confirmation[] confirmations = Guard.FetchConfirmations();
+                var marketConfirmations = confirmations
+                    .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction)
+                    .ToArray();
+                Program.WorkingProcessForm.AppendWorkingProcessInfo($"Accepting confirmations");
+                Guard.AcceptMultipleConfirmations(marketConfirmations);
+            }
+            catch (SteamGuardAccount.WGTokenExpiredException ex)
+            {
+                Program.WorkingProcessForm.AppendWorkingProcessInfo($"Session expired. Updating...");
+                Guard.RefreshSession();
+                ConfirmMarketTransactions();
+            }
         }
 
         public double? GetAveragePrice(Inventory.RgInventory asset, Inventory.RgDescription description) {
@@ -257,12 +268,21 @@ namespace autotrade.Steam {
         }
 
         public void ConfirmTradeTransactions(List<ulong> offerids) {
-            Confirmation[] confirmations = Guard.FetchConfirmations();
-            var conf = confirmations
-                .Where(item => item.ConfType == Confirmation.ConfirmationType.Trade
-                               && offerids.Contains(item.Creator))
-                .ToArray()[0];
-            Guard.AcceptConfirmation(conf);
+            try
+            {
+                Confirmation[] confirmations = Guard.FetchConfirmations();
+                var conf = confirmations
+                    .Where(item => item.ConfType == Confirmation.ConfirmationType.Trade
+                                   && offerids.Contains(item.Creator))
+                    .ToArray()[0];
+                Guard.AcceptConfirmation(conf);
+            }
+            catch (SteamGuardAccount.WGTokenExpiredException ex)
+            {
+                Program.WorkingProcessForm.AppendWorkingProcessInfo($"Session expired. Updating...");
+                Guard.RefreshSession();
+                ConfirmTradeTransactions(offerids);
+            }
         }
 
         public OffersResponse ReceiveTradeOffers() {
@@ -273,6 +293,14 @@ namespace autotrade.Steam {
             foreach (var offer in offers) {
                 OfferSession.Accept(offer.TradeOfferId);
             }
+        }
+
+        public bool FetchTradeToken()
+        {
+            var response = SteamWeb.Request("https://steamcommunity.com/my/tradeoffers/privacy", "GET", "", Cookies);
+            var token = Regex.Match(response,
+                @"https://steamcommunity\.com/tradeoffer/new/\?partner=.+&token=(.+?)\b").Groups[1].Value;
+            return !string.IsNullOrEmpty(token);
         }
 
         public bool SaveAccount(SteamGuardAccount account) {
