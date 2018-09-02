@@ -15,9 +15,12 @@ using autotrade.WorkingProcess;
 using SteamKit2;
 using autotrade.WorkingProcess.Settings;
 
-namespace autotrade.CustomElements.Controls {
-    public partial class RecievedTradeManageControl : UserControl {
-        public RecievedTradeManageControl() {
+namespace autotrade.CustomElements.Controls
+{
+    public partial class RecievedTradeManageControl : UserControl
+    {
+        public RecievedTradeManageControl()
+        {
             InitializeComponent();
 
             var settings = SavedSettings.Get();
@@ -31,13 +34,16 @@ namespace autotrade.CustomElements.Controls {
         private string SELECTED_OFFER_ID;
         private AssetDescription SELECTED_ITEM_DESCRIPTION;
 
-        public void AuthCurrentAccount() {
+        public void AuthCurrentAccount()
+        {
             this.AccountNameLable.Text = CurrentSession.SteamManager.Guard.AccountName;
             this.SplitterPanel.BackgroundImage = CurrentSession.AccountImage;
         }
 
-        private void LoadInventoryButton_Click(object sender, EventArgs e) {
-            if (CurrentSession.SteamManager == null) {
+        private void LoadInventoryButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentSession.SteamManager == null)
+            {
                 MessageBox.Show("You should login first", "Error trades loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Error("Error on trades history loading. No logined account found.");
                 return;
@@ -45,7 +51,8 @@ namespace autotrade.CustomElements.Controls {
 
             bool sentOffers = SentOffersCheckBox.Checked;
             bool recievedOffers = RecievedOffersCheckBox.Checked;
-            if (!sentOffers && !recievedOffers) {
+            if (!sentOffers && !recievedOffers)
+            {
                 MessageBox.Show("You should select at least one type of offers to load (Recieved/Sent)", "Error trades loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Error("Error on trades history loading. No trades type selected.");
                 return;
@@ -56,20 +63,24 @@ namespace autotrade.CustomElements.Controls {
             bool activeOnly = ActiveOnlyCheckBox.Checked;
 
             string language = DescriptionLanguageComboBox.Text;
-            if (language == null) {
+            if (language == null)
+            {
                 language = "en_US";
             }
 
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 ALL_TRADES.Clear();
                 Program.LoadingForm.InitCurrentTradesLoadingProcess(sentOffers, recievedOffers, activeOnly, language);
                 List<FullTradeOffer> fullTradeOffers = Program.LoadingForm.GetLoadedCurrentTrades();
                 Program.LoadingForm.DisactivateForm();
 
-                foreach (var trade in fullTradeOffers) {
+                foreach (var trade in fullTradeOffers)
+                {
                     ALL_TRADES.Add(trade.Offer.TradeOfferId, trade);
 
-                    Dispatcher.Invoke(Program.MainForm, () => {
+                    Dispatcher.Invoke(Program.MainForm, () =>
+                    {
                         CurrentTradesGridView.Rows.Add(
                             trade.Offer.TradeOfferId,
                             new SteamID((uint)trade.Offer.AccountIdOther, EUniverse.Public, EAccountType.Individual).ConvertToUInt64(),
@@ -82,7 +93,8 @@ namespace autotrade.CustomElements.Controls {
 
         }
 
-        private void CurrentTradesGridView_SelectionChanged(object sender, EventArgs e) {
+        private void CurrentTradesGridView_SelectionChanged(object sender, EventArgs e)
+        {
             if (CurrentTradesGridView.SelectedCells.Count == 0) return;
 
             int index = CurrentTradesGridView.SelectedCells[0].RowIndex;
@@ -95,13 +107,16 @@ namespace autotrade.CustomElements.Controls {
             ChangeSelectedTrade();
         }
 
-        private void ChangeSelectedTrade() {
+        private void ChangeSelectedTrade()
+        {
             CommonUtils.ClearGrids(MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
             FullTradeOffer tradeOffer = ALL_TRADES[SELECTED_OFFER_ID];
 
-            if (tradeOffer.ItemsToGive != null) {
+            if (tradeOffer.ItemsToGive != null)
+            {
                 var gropedItems = tradeOffer.ItemsToGive.GroupBy(item => item.Description.MarketHashName);
-                foreach (var groupedList in gropedItems) {
+                foreach (var groupedList in gropedItems)
+                {
                     var firstItem = groupedList.First();
                     MyItemsGridView.Rows.Add(
                         firstItem.Description.Name,
@@ -112,9 +127,11 @@ namespace autotrade.CustomElements.Controls {
                 }
             }
 
-            if (tradeOffer.ItemsToRecieve != null) {
+            if (tradeOffer.ItemsToRecieve != null)
+            {
                 var gropedItems = tradeOffer.ItemsToRecieve.GroupBy(item => item.Description.MarketHashName);
-                foreach (var groupedList in gropedItems) {
+                foreach (var groupedList in gropedItems)
+                {
                     var firstItem = groupedList.First();
                     HisItemsGridView.Rows.Add(
                         firstItem.Description.Name,
@@ -138,10 +155,12 @@ namespace autotrade.CustomElements.Controls {
             ExtraTradeInfoGridView.Rows.Add("FromRealTimeTrade", tradeOffer.Offer.FromRealTimeTrade.ToString());
         }
 
-        private void CurrentTradesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e) {
+        private void CurrentTradesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            if (e.ColumnIndex == 1) {
+            if (e.ColumnIndex == 1)
+            {
                 var cell = CurrentTradesGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 if (cell == null) return;
 
@@ -152,32 +171,38 @@ namespace autotrade.CustomElements.Controls {
             }
         }
 
-        private void ItemsGridView_SelectionChanged(object sender, EventArgs e) {
+        private void ItemsGridView_SelectionChanged(object sender, EventArgs e)
+        {
             var grid = sender as DataGridView;
             var selectedRows = grid.SelectedRows;
             if (selectedRows.Count == 0) return;
 
             var index = selectedRows[0].Index;
             var description = (AssetDescription)grid.Rows[index].Cells[3].Value;
-            if (!description.Equals(SELECTED_ITEM_DESCRIPTION)) {
+            if (!description.Equals(SELECTED_ITEM_DESCRIPTION))
+            {
                 SELECTED_ITEM_DESCRIPTION = description;
                 ChangeSelectedItem();
             }
         }
 
-        private void ChangeSelectedItem() {
+        private void ChangeSelectedItem()
+        {
             ImageUtils.UpdateItemImageOnPanelAsync(SELECTED_ITEM_DESCRIPTION, ItemImageBox);
             UpdateItemDescriptionTextBox(ItemDescriptionTextBox, ItemNameLable, SELECTED_ITEM_DESCRIPTION);
         }
 
-        private void UpdateItemDescriptionTextBox(RichTextBox textBox, Label label, AssetDescription description) {
+        private void UpdateItemDescriptionTextBox(RichTextBox textBox, Label label, AssetDescription description)
+        {
             textBox.Clear();
 
             label.Text = description.Name;
 
             var descriptionText = "";
-            if (description.Descriptions != null) {
-                foreach (var item in description.Descriptions) {
+            if (description.Descriptions != null)
+            {
+                foreach (var item in description.Descriptions)
+                {
                     string text = item.Value.Trim();
                     if (!string.IsNullOrWhiteSpace(text)) descriptionText += text + ", ";
                 }
@@ -195,48 +220,102 @@ namespace autotrade.CustomElements.Controls {
             CommonUtils.AppendBoldText(textBox, "Type: ");
             textBox.AppendText(description.Type);
 
-            if (!string.IsNullOrWhiteSpace(descriptionText)) {
+            if (!string.IsNullOrWhiteSpace(descriptionText))
+            {
                 textBox.AppendText("\n");
                 CommonUtils.AppendBoldText(textBox, "Description: ");
                 textBox.AppendText(descriptionText);
             }
 
-            if (!string.IsNullOrWhiteSpace(tagsText)) {
+            if (!string.IsNullOrWhiteSpace(tagsText))
+            {
                 textBox.AppendText("\n");
                 CommonUtils.AppendBoldText(textBox, "Tags: ");
                 textBox.AppendText(tagsText);
             }
         }
 
-        private void ItemsGridView_CellContentClick(object sender, DataGridViewCellEventArgs e) {
+        private void ItemsGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
             var grid = sender as DataGridView;
-            if (grid.Rows.Count == 1) {
+            if (grid.Rows.Count == 1)
+            {
                 var selectedRows = grid.SelectedRows;
                 if (selectedRows.Count == 0) return;
 
                 var index = selectedRows[0].Index;
                 var description = (AssetDescription)grid.Rows[index].Cells[3].Value;
-                if (!description.Equals(SELECTED_ITEM_DESCRIPTION)) {
+                if (!description.Equals(SELECTED_ITEM_DESCRIPTION))
+                {
                     SELECTED_ITEM_DESCRIPTION = description;
                     ChangeSelectedItem();
                 }
             }
         }
 
-        private void DescriptionLanguageComboBox_TextChanged(object sender, EventArgs e) {
+        private void DescriptionLanguageComboBox_TextChanged(object sender, EventArgs e)
+        {
             SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_LANGUAGE, DescriptionLanguageComboBox.Text);
         }
 
-        private void SentOffersCheckBox_CheckStateChanged(object sender, EventArgs e) {
+        private void SentOffersCheckBox_CheckStateChanged(object sender, EventArgs e)
+        {
             SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_SENT, SentOffersCheckBox.Checked);
         }
 
-        private void RecievedOffersCheckBox_CheckedChanged(object sender, EventArgs e) {
+        private void RecievedOffersCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
             SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_RECIEVED, RecievedOffersCheckBox.Checked);
         }
 
-        private void ActiveOnlyCheckBox_CheckedChanged(object sender, EventArgs e) {
+        private void ActiveOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
             SavedSettings.UpdateField(ref SavedSettings.Get().ACTIVE_TRADES_ACTIVE_ONLY, ActiveOnlyCheckBox.Checked);
+        }
+
+        private void AcceptTradeButton_Click(object sender, EventArgs e)
+        {
+            if (SELECTED_OFFER_ID == null) return;
+
+            String text;
+            MessageBoxIcon icon;
+            try
+            {
+                var response = CurrentSession.SteamManager.OfferSession.Accept(SELECTED_OFFER_ID);
+
+                text = $"Accept state - {response.Accepted}.";
+                if (!string.IsNullOrEmpty(response.TradeError)) text += $"Error - {response.TradeError}";
+                icon = MessageBoxIcon.Information;
+            }
+            catch (Exception ex)
+            {
+                text = ex.Message;
+                icon = MessageBoxIcon.Error;
+            }
+
+            MessageBox.Show(text, "Trade info", MessageBoxButtons.OK, icon);
+        }
+
+        private void DeclineTradeButton_Click(object sender, EventArgs e)
+        {
+            if (SELECTED_OFFER_ID == null) return;
+
+            String text;
+            MessageBoxIcon icon;
+            try
+            {
+                var response = CurrentSession.SteamManager.OfferSession.Decline(SELECTED_OFFER_ID);
+
+                text = $"Decline state - {response}.";
+                icon = MessageBoxIcon.Information;
+            }
+            catch (Exception ex)
+            {
+                text = ex.Message;
+                icon = MessageBoxIcon.Error;
+            }
+
+            MessageBox.Show(text, "Trade info", MessageBoxButtons.OK, icon);
         }
     }
 }

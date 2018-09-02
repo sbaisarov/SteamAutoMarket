@@ -25,10 +25,10 @@ using autotrade.WorkingProcess.PriceLoader;
 namespace autotrade.Steam {
     public class SteamManager {
         public string ApiKey { get; set; }
-        public static OfferSession OfferSession { get; set; }
+        public OfferSession OfferSession { get; set; }
         public TradeOfferWebAPI TradeOfferWeb { get; }
         public Inventory Inventory { get; set; }
-        public static UserLogin SteamClient { get; set; }
+        public UserLogin SteamClient { get; set; }
         public MarketClient MarketClient { get; set; }
         public SteamGuardAccount Guard { get; set; }
 
