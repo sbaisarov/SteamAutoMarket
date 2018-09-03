@@ -30,7 +30,7 @@ namespace autotrade.Steam.Market
             };
             Auth = new Auth(this);
             Client = new MarketClient(this);
-            Invertory = new Invertory(this);
+            Inventory = new Invertory(this);
 
             _requestsPerSecondLock = new object();
             RequestsPerSecond = 3;
@@ -38,7 +38,7 @@ namespace autotrade.Steam.Market
 
         public Settings Settings { get; }
         public Auth Auth { get; set; }
-        public Invertory Invertory { get; }
+        public Invertory Inventory { get; }
         public MarketClient Client { get; }
         private DateTimeOffset? LastInvokeTime { get; set; }
 
@@ -58,7 +58,10 @@ namespace autotrade.Steam.Market
             set
             {
                 _requestsPerSecond = value;
-                _minInterval = (int) (1000 / _requestsPerSecond) + 1;
+                lock (_requestsPerSecondLock)
+                {
+                    _minInterval = (int) (1000 / _requestsPerSecond) + 1;
+                }
             }
         }
 

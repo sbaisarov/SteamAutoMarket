@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using autotrade.Steam;
 using autotrade.Steam.TradeOffer.Models.Full;
+using autotrade.WorkingProcess.Settings;
 using static autotrade.WorkingProcess.PriceLoader.PriceLoader;
 
 namespace autotrade.WorkingProcess.MarketPriceFormation
@@ -40,39 +41,40 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
             double? price = null;
             switch (MarketSaleType)
             {
-                case MarketSaleType.LOWER_THAN_CURRENT:
-                    price = CURRENT_PRICES_CACHE.Get(item)?.Price;
+                case MarketSaleType.LowerThanCurrent:
+                    price = CurrentPricesCache.Get(item)?.Price;
                     if (!price.HasValue)
                     {
                         price = await manager.GetCurrentPrice(item.Asset, item.Description);
-                        CURRENT_PRICES_CACHE.Cache(item.Description.MarketHashName, (double) price);
+                        CurrentPricesCache.Cache(item.Description.MarketHashName, (double)price);
                     }
 
                     break;
 
-                case MarketSaleType.LOWER_THAN_AVERAGE:
-                    price = AVERAGE_PRICES_CACHE.Get(item)?.Price;
+                case MarketSaleType.LowerThanAverage:
+                    price = AveragePricesCache.Get(item)?.Price;
+
                     if (!price.HasValue)
                     {
-                        price = manager.GetAveragePrice(item.Asset, item.Description);
-                        AVERAGE_PRICES_CACHE.Cache(item.Description.MarketHashName, (double) price);
+                        price = manager.GetAveragePrice(item.Asset, item.Description, SavedSettings.Get().SettingsAveragePriceParseDays);
+                        if (price != null) AveragePricesCache.Cache(item.Description.MarketHashName, (double)price);
                     }
 
                     break;
 
-                case MarketSaleType.RECOMENDED:
-                    var currentPrice = CURRENT_PRICES_CACHE.Get(item)?.Price;
+                case MarketSaleType.Recommended:
+                    var currentPrice = CurrentPricesCache.Get(item)?.Price;
                     if (!currentPrice.HasValue)
                     {
                         currentPrice = await manager.GetCurrentPrice(item.Asset, item.Description);
-                        CURRENT_PRICES_CACHE.Cache(item.Description.MarketHashName, (double) currentPrice);
+                        CurrentPricesCache.Cache(item.Description.MarketHashName, (double)currentPrice);
                     }
 
-                    var averagePrice = AVERAGE_PRICES_CACHE.Get(item)?.Price;
+                    var averagePrice = AveragePricesCache.Get(item)?.Price;
                     if (!averagePrice.HasValue)
                     {
-                        averagePrice = manager.GetAveragePrice(item.Asset, item.Description);
-                        AVERAGE_PRICES_CACHE.Cache(item.Description.MarketHashName, (double) averagePrice);
+                        averagePrice = manager.GetAveragePrice(item.Asset, item.Description, SavedSettings.Get().SettingsAveragePriceParseDays);
+                        if (averagePrice != null) AveragePricesCache.Cache(item.Description.MarketHashName, (double)averagePrice);
                     }
 
                     if (!currentPrice.HasValue || !currentPrice.HasValue)

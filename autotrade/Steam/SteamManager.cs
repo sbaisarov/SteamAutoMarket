@@ -62,7 +62,7 @@ namespace autotrade.Steam
 
             ApiKey = apiKey;
 
-            TradeOfferWeb = new TradeOfferWebAPI(apiKey);
+            TradeOfferWeb = new TradeOfferWebApi(apiKey);
             OfferSession = new OfferSession(TradeOfferWeb, Cookies, Guard.Session.SessionID);
             Guard.Session.AddCookies(Cookies);
             var market = new SteamMarketHandler(ELanguage.English, "user-agent");
@@ -79,7 +79,7 @@ namespace autotrade.Steam
 
         public string ApiKey { get; set; }
         public OfferSession OfferSession { get; set; }
-        public TradeOfferWebAPI TradeOfferWeb { get; }
+        public TradeOfferWebApi TradeOfferWeb { get; }
         public Inventory Inventory { get; set; }
         public UserLogin SteamClient { get; set; }
         public MarketClient MarketClient { get; set; }
@@ -97,7 +97,7 @@ namespace autotrade.Steam
         public void SellOnMarket(ToSaleObject items)
         {
             var index = 1;
-            var itemsToConfirm = SavedSettings.Get().SETTINGS_2FA_ITEMS_TO_CONFIRM;
+            var itemsToConfirm = SavedSettings.Get().Settings_2FaItemsToConfirm;
             var total = items.ItemsForSaleList.Sum(x => x.Items.Count());
             string itemName;
             foreach (var package in items.ItemsForSaleList)
@@ -130,12 +130,16 @@ namespace autotrade.Steam
                     {
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(
                             $"[{index}/{total}] Selling - '{itemName}' for {package.Price}");
-                        SellOnMarket(item, package.Price.Value);
+                        if (package.Price != null) SellOnMarket(item, package.Price.Value);
+                        else
+                        {
+                            throw new NullReferenceException($"Price for '{itemName}' is not loaded");
+                        }
                         if (index % itemsToConfirm == 0) ConfirmMarketTransactions();
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error("Erron on market sell", ex);
+                        Logger.Error("Error on market sell", ex);
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(
                             $"ERROR on selling '{itemName}' - {ex.Message}");
                     }
@@ -204,7 +208,7 @@ namespace autotrade.Steam
             }
         }
 
-        public double? GetAveragePrice(RgInventory asset, RgDescription description)
+        public double? GetAveragePrice(RgInventory asset, RgDescription description, int days)
         {
             double? price = null;
             var attempts = 0;
@@ -213,15 +217,16 @@ namespace autotrade.Steam
                 try
                 {
                     var history = MarketClient.PriceHistory(asset.Appid, description.MarketHashName);
-                    price = Math.Round(CountAveragePrice(history), 2);
+                    price = CountAveragePrice(history, days);
+                    if (price.HasValue) price = Math.Round(price.Value, 2);
                     break;
                 }
                 catch (Exception ex)
                 {
-                    Logger.Warning($"Error on geting average price of ${description.MarketHashName}", ex);
+                    if (++attempts == 3) Logger.Warning($"Error on getting average price of {description.MarketHashName}", ex);
                 }
 
-                attempts++;
+
             }
 
             return price;
@@ -241,31 +246,32 @@ namespace autotrade.Steam
             double? price = null;
             while (attempts < 3)
             {
-                var histogram = await MarketClient.ItemOrdersHistogramAsync(
-                    itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
-                price = histogram.MinSellPrice;
-                if (price is null)
+                try
                 {
-                    Logger.Warning($"Error on geting current price of ${description.MarketHashName}");
-                    attempts++;
-                    continue;
+                    var histogram = await MarketClient.ItemOrdersHistogramAsync(
+                        itemPageInfo.NameId, "RU", ELanguage.Russian, 5);
+                    price = histogram.MinSellPrice;
+                    break;
                 }
-
-                break;
+                catch (Exception ex)
+                {
+                    if (++attempts == 3) Logger.Warning($"Error on getting current price of {description.MarketHashName}", ex);
+                }
             }
 
             return price;
         }
 
-        private double CountAveragePrice(List<PriceHistoryDay> history)
+        private double? CountAveragePrice(List<PriceHistoryDay> history, int daysCount)
         {
             // days are sorted from oldest to newest, we need the contrary
             history.Reverse();
-            var firstSevenDays = history.GetRange(0, 7);
-            var average = IterateHistory(firstSevenDays);
-            if (average is null) throw new SteamException("No prices recorded during the week");
-            average = IterateHistory(firstSevenDays, average);
-            return (double) average;
+            var days = history.GetRange(0, (daysCount < history.Count) ? daysCount : history.Count);
+            var average = IterateHistory(days);
+            if (average is null) throw new SteamException($"No prices recorded during {daysCount} days");
+            average = IterateHistory(days, average);
+
+            return average;
         }
 
         private double? IterateHistory(List<PriceHistoryDay> history, double? average = null)
@@ -273,28 +279,27 @@ namespace autotrade.Steam
             double sum = 0;
             var count = 0;
             foreach (var item in history)
-            foreach (var data in item.History)
-            {
-                if (!(average is null))
-                    if (data.Price < average / 2 || data.Price > average * 2)
-                        continue;
-                sum += data.Price * data.Count;
-                count += data.Count;
-            }
+                foreach (var data in item.History)
+                {
+                    if (!(average is null))
+                        if (data.Price < average / 2 || data.Price > average * 2)
+                            continue;
+                    sum += data.Price * data.Count;
+                    count += data.Count;
+                }
 
             double? result = sum / count;
-            if (!double.IsNaN((double) result)) return result;
+            if (!double.IsNaN((double)result)) return result;
             result = null;
             if (!(average is null)) result = average;
 
             return result;
         }
 
-        public void SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken)
+        public bool SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken)
         {
             var offer = new TradeOffer.TradeOffer(OfferSession, new SteamID(ulong.Parse(partnerId)));
-            var status = offer.SendWithToken(out var offerId, tradeToken);
-            if (status is false) Logger.Info(offer.Session.Error);
+            return  offer.SendWithToken(out _, tradeToken);
         }
 
         public void ConfirmTradeTransactions(List<ulong> offerids)

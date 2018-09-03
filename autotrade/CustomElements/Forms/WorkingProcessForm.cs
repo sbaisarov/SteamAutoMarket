@@ -8,8 +8,8 @@ namespace autotrade.CustomElements.Forms
 {
     public partial class WorkingProcessForm : Form
     {
-        private bool stopButtonPressed;
-        private Thread workingThread;
+        private bool _stopButtonPressed;
+        private Thread _workingThread;
 
         public WorkingProcessForm()
         {
@@ -19,12 +19,12 @@ namespace autotrade.CustomElements.Forms
         public void InitProcess(Action process)
         {
             _activate();
-            workingThread = new Thread(() =>
+            _workingThread = new Thread(() =>
             {
                 process();
                 _disactivate();
             });
-            workingThread.Start();
+            _workingThread.Start();
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -60,14 +60,14 @@ namespace autotrade.CustomElements.Forms
 
         private void StopWorkingProcessButton_Click(object sender, EventArgs e)
         {
-            stopButtonPressed = true;
-            workingThread.Abort();
+            _stopButtonPressed = true;
+            _workingThread.Abort();
             _disactivate();
         }
 
         private void WorkingProcessForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!stopButtonPressed) StopWorkingProcessButton_Click(sender, e);
+            if (!_stopButtonPressed) StopWorkingProcessButton_Click(sender, e);
         }
     }
 }

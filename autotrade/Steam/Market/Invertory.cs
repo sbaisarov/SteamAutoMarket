@@ -18,14 +18,14 @@ namespace autotrade.Steam.Market
         public Dictionary<JInvertoryAsset, JDescription> Get(long userId, int appId, int contextId, int count = 500,
             bool useAuth = false)
         {
-            var url = Urls.Invertory + $"{userId}/{appId}/{contextId}";
+            var url = Urls.Inventory + $"{userId}/{appId}/{contextId}";
 
             var urlQuery = new Dictionary<string, string>
             {
                 {"count", count.ToString()}
             };
 
-            var resp = _steam.Request(url, Method.GET, Urls.Invertory, urlQuery, useAuth);
+            var resp = _steam.Request(url, Method.GET, Urls.Inventory, urlQuery, useAuth);
             var respDes = JsonConvert.DeserializeObject<JInvertory>(resp.Data.Content);
 
             if (respDes.TotalInventoryCount == 0)

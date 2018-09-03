@@ -26,13 +26,13 @@ namespace autotrade.CustomElements.Controls.Trade
             InitializeComponent();
 
             var settings = SavedSettings.Get();
-            TradeIdComboBox.Text = settings.TRADE_HISTORY_TRADE_ID;
-            MaxTradesNumericUpDown.Value = settings.TRADE_HISTORY_MAX_TRADES;
-            LanguageComboBox.Text = settings.TRADE_HISTORY_LANGUAGE;
-            NavigatingBackCheckBox.Checked = settings.TRADE_HISTORY_NAVIGATING_BACK;
-            IncludeFailedCheckBox.Checked = settings.TRADE_HISTORY_INCLUDE_FAILED;
-            RecievedOffersCheckBox.Checked = settings.TRADE_HISTORY_RECIEVED;
-            SentOffersCheckBox.Checked = settings.TRADE_HISTORY_SENT;
+            TradeIdComboBox.Text = settings.TradeHistoryTradeId;
+            MaxTradesNumericUpDown.Value = settings.TradeHistoryMaxTrades;
+            LanguageComboBox.Text = settings.TradeHistoryLanguage;
+            NavigatingBackCheckBox.Checked = settings.TradeHistoryNavigatingBack;
+            IncludeFailedCheckBox.Checked = settings.TradeHistoryIncludeFailed;
+            ReceivedOffersCheckBox.Checked = settings.TradeHistoryReceived;
+            SentOffersCheckBox.Checked = settings.TradeHistorySent;
         }
 
         public void AuthCurrentAccount()
@@ -52,11 +52,11 @@ namespace autotrade.CustomElements.Controls.Trade
             }
 
             var sentOffers = SentOffersCheckBox.Checked;
-            var recievedOffers = RecievedOffersCheckBox.Checked;
+            var ReceivedOffers = ReceivedOffersCheckBox.Checked;
 
-            if (!sentOffers && !recievedOffers)
+            if (!sentOffers && !ReceivedOffers)
             {
-                MessageBox.Show("You should select at least one type of offers to load (Recieved/Sent)",
+                MessageBox.Show("You should select at least one type of offers to load (Received/Sent)",
                     "Error trades history loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Logger.Error("Error on trades history loading. No trades type selected.");
                 return;
@@ -79,7 +79,7 @@ namespace autotrade.CustomElements.Controls.Trade
                 Program.LoadingForm.InitTradesHistoryLoadingProcess(maxTrades, startTime, startTradeId, navigatingBack,
                     true, language, includeFailed);
                 var fullTradeOffers = Program.LoadingForm.GetLoadedTradesHistory();
-                Program.LoadingForm.DisactivateForm();
+                Program.LoadingForm.DeactivateForm();
 
                 Dispatcher.AsMainForm(() =>
                 {
@@ -260,39 +260,39 @@ namespace autotrade.CustomElements.Controls.Trade
 
         private void SentOffersCheckBox_CheckStateChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_SENT, SentOffersCheckBox.Checked);
+            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistorySent, SentOffersCheckBox.Checked);
         }
 
-        private void RecievedOffersCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void ReceivedOffersCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_RECIEVED, RecievedOffersCheckBox.Checked);
+            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryReceived, ReceivedOffersCheckBox.Checked);
         }
 
         private void TradeIdComboBox_TextChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_TRADE_ID, TradeIdComboBox.Text);
+            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryTradeId, TradeIdComboBox.Text);
         }
 
         private void MaxTradesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_MAX_TRADES,
+            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryMaxTrades,
                 (int) MaxTradesNumericUpDown.Value);
         }
 
         private void LanguageComboBox_TextChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_LANGUAGE, LanguageComboBox.Text);
+            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryLanguage, LanguageComboBox.Text);
         }
 
         private void NavigatingBackCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_NAVIGATING_BACK,
+            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryNavigatingBack,
                 NavigatingBackCheckBox.Checked);
         }
 
         private void IncludeFailedCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_HISTORY_INCLUDE_FAILED,
+            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryIncludeFailed,
                 IncludeFailedCheckBox.Checked);
         }
     }

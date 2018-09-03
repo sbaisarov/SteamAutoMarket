@@ -9,21 +9,21 @@ using SteamAuth;
 
 namespace autotrade.Steam.TradeOffer
 {
-    public class TradeOfferWebAPI
+    public class TradeOfferWebApi
     {
         private const string BaseUrl = "http://api.steampowered.com/IEconService/{0}/{1}/{2}";
-        private readonly string apiKey;
+        private readonly string _apiKey;
 
-        public TradeOfferWebAPI(string apiKey)
+        public TradeOfferWebApi(string apiKey)
         {
-            this.apiKey = apiKey;
+            _apiKey = apiKey;
 
             if (apiKey == null) throw new ArgumentNullException("apiKey");
         }
 
         public OfferResponse GetTradeOffer(string tradeofferid)
         {
-            var options = string.Format("?key={0}&tradeofferid={1}&language={2}", apiKey, tradeofferid, "en_us");
+            var options = string.Format("?key={0}&tradeofferid={1}&language={2}", _apiKey, tradeofferid, "en_us");
             var url = string.Format(BaseUrl, "GetTradeOffer", "v1", options);
             try
             {
@@ -66,7 +66,7 @@ namespace autotrade.Steam.TradeOffer
 
             var options = string.Format(
                 "?key={0}&get_sent_offers={1}&get_received_offers={2}&get_descriptions={3}&language={4}&active_only={5}&historical_only={6}",
-                apiKey, BoolConverter(getSentOffers), BoolConverter(getReceivedOffers), BoolConverter(getDescriptions),
+                _apiKey, BoolConverter(getSentOffers), BoolConverter(getReceivedOffers), BoolConverter(getDescriptions),
                 language, BoolConverter(activeOnly), BoolConverter(historicalOnly));
 
             if (timeHistoricalCutoff != "1389106496") options += $"&time_historical_cutoff={timeHistoricalCutoff}";
@@ -94,7 +94,7 @@ namespace autotrade.Steam.TradeOffer
             if (!string.IsNullOrEmpty(startAfterTradeId)) startAfterTime = null;
 
             var options = GetOptions(
-                ("key", apiKey),
+                ("key", _apiKey),
                 ("max_trades", maxTrades),
                 ("start_after_tradeid", startAfterTradeId),
                 ("get_descriptions", BoolConverter(getDescriptions)),
@@ -113,7 +113,7 @@ namespace autotrade.Steam.TradeOffer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                Logger.Error("Error on get trade history", ex);
             }
 
             return new TradeHistoryResponse();
@@ -135,7 +135,7 @@ namespace autotrade.Steam.TradeOffer
 
         public TradeOffersSummary GetTradeOffersSummary(uint timeLastVisit)
         {
-            var options = string.Format("?key={0}&time_last_visit={1}", apiKey, timeLastVisit);
+            var options = string.Format("?key={0}&time_last_visit={1}", _apiKey, timeLastVisit);
             var url = string.Format(BaseUrl, "GetTradeOffersSummary", "v1", options);
 
             try
@@ -153,11 +153,11 @@ namespace autotrade.Steam.TradeOffer
             return new TradeOffersSummary();
         }
 
-        private bool DeclineTradeOffer(ulong tradeofferid)
+        public bool DeclineTradeOffer(ulong tradeofferid)
         {
-            var options = string.Format("?key={0}&tradeofferid={1}", apiKey, tradeofferid);
+            var options = $"?key={_apiKey}&tradeofferid={tradeofferid}";
             var url = string.Format(BaseUrl, "DeclineTradeOffer", "v1", options);
-            Debug.WriteLine(url);
+            
             var response = SteamWeb.Request(url, "POST", data: null);
             dynamic json = JsonConvert.DeserializeObject(response);
 
@@ -165,11 +165,11 @@ namespace autotrade.Steam.TradeOffer
             return true;
         }
 
-        private bool CancelTradeOffer(ulong tradeofferid)
+        public bool CancelTradeOffer(ulong tradeofferid)
         {
-            var options = string.Format("?key={0}&tradeofferid={1}", apiKey, tradeofferid);
+            var options = $"?key={_apiKey}&tradeofferid={tradeofferid}";
             var url = string.Format(BaseUrl, "CancelTradeOffer", "v1", options);
-            Debug.WriteLine(url);
+            
             var response = SteamWeb.Request(url, "POST", data: null);
             dynamic json = JsonConvert.DeserializeObject(response);
 

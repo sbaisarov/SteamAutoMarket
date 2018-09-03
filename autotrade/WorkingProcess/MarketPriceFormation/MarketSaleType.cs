@@ -2,9 +2,9 @@
 {
     public enum MarketSaleType
     {
-        MANUAL,
-        RECOMENDED,
-        LOWER_THAN_CURRENT,
-        LOWER_THAN_AVERAGE
+        Manual,
+        Recommended,
+        LowerThanCurrent,
+        LowerThanAverage
     }
 }

@@ -9,32 +9,31 @@ namespace autotrade.WorkingProcess.Settings
 {
     internal class SavedSettings
     {
-        public static string SETTINGS_FILE_PATH = AppDomain.CurrentDomain.BaseDirectory + "settings.ini";
-        private static SavedSettings cached;
-        public bool ACTIVE_TRADES_ACTIVE_ONLY = true;
+        public static string SettingsFilePath = AppDomain.CurrentDomain.BaseDirectory + "settings.ini";
+        private static SavedSettings _cached;
 
-        public string ACTIVE_TRADES_LANGUAGE = "";
-        public bool ACTIVE_TRADES_RECIEVED = true;
-        public bool ACTIVE_TRADES_SENT = true;
+        public bool ActiveTradesActiveOnly = true;
 
-        public string MARKET_INVENTORY_APP_ID = "";
-        public string MARKET_INVENTORY_CONTEX_ID = "";
-        public int SETTINGS_2FA_ITEMS_TO_CONFIRM = 10;
-        public int SETTINGS_AVERAGE_PRICE_PARSE_DAYS = 7;
-        public int SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE = 12;
-        public int SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE = 1;
+        public string ActiveTradesLanguage = "";
+        public bool ActiveTradesReceived = true;
+        public bool ActiveTradesSent = true;
 
-        public int SETTINGS_LOGGER_LEVEL = 0;
-        public string TRADE_CURRENT_PRICE_MINUS_PERCENT = "";
-        public string TRADE_CURRENT_PRICE_MINUS_VALUE = "";
-        public bool TRADE_HISTORY_INCLUDE_FAILED = true;
-        public string TRADE_HISTORY_LANGUAGE = "en_US";
-        public int TRADE_HISTORY_MAX_TRADES = 10;
-        public bool TRADE_HISTORY_NAVIGATING_BACK = true;
-        public bool TRADE_HISTORY_RECIEVED = true;
-        public bool TRADE_HISTORY_SENT = true;
+        public string MarketInventoryAppId = "";
+        public string MarketInventoryContexId = "";
+        public int Settings_2FaItemsToConfirm = 10;
+        public int SettingsAveragePriceParseDays = 7;
+        public int SettingsHoursToBecomeOldAveragePrice = 12;
+        public int SettingsHoursToBecomeOldCurrentPrice = 1;
 
-        public string TRADE_HISTORY_TRADE_ID = "";
+        public int SettingsLoggerLevel = 0;
+        public bool TradeHistoryIncludeFailed = true;
+        public string TradeHistoryLanguage = "en_US";
+        public int TradeHistoryMaxTrades = 10;
+        public bool TradeHistoryNavigatingBack = true;
+        public bool TradeHistoryReceived = true;
+        public bool TradeHistorySent = true;
+
+        public string TradeHistoryTradeId = "";
 
         public string TRADE_INVENTORY_APP_ID = "";
         public string TRADE_INVENTORY_CONTEX_ID = "";
@@ -72,24 +71,24 @@ namespace autotrade.WorkingProcess.Settings
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static SavedSettings Get()
         {
-            if (cached != null) return cached;
-            if (!File.Exists(SETTINGS_FILE_PATH))
+            if (_cached != null) return _cached;
+            if (!File.Exists(SettingsFilePath))
             {
-                cached = new SavedSettings();
+                _cached = new SavedSettings();
                 UpdateAll();
-                return cached;
+                return _cached;
             }
 
-            cached = JsonConvert.DeserializeObject<SavedSettings>(
-                File.ReadAllText(SETTINGS_FILE_PATH));
-            return cached;
+            _cached = JsonConvert.DeserializeObject<SavedSettings>(
+                File.ReadAllText(SettingsFilePath));
+            return _cached;
         }
 
         public static void RestoreDefault()
         {
-            cached = new SavedSettings();
+            _cached = new SavedSettings();
             SettingsUpdater.IsPending = false;
-            File.WriteAllText(SETTINGS_FILE_PATH, JsonConvert.SerializeObject(Get(), Formatting.Indented));
+            File.WriteAllText(SettingsFilePath, JsonConvert.SerializeObject(Get(), Formatting.Indented));
         }
 
         private static void UpdateAll()
@@ -111,7 +110,7 @@ namespace autotrade.WorkingProcess.Settings
             Task.Run(() =>
             {
                 Thread.Sleep(5000);
-                File.WriteAllText(SavedSettings.SETTINGS_FILE_PATH,
+                File.WriteAllText(SavedSettings.SettingsFilePath,
                     JsonConvert.SerializeObject(SavedSettings.Get(), Formatting.Indented));
                 ;
                 IsPending = false;

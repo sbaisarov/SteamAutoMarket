@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using autotrade.Steam.TradeOffer.Enums;
 using autotrade.Steam.TradeOffer.Models;
+using autotrade.Utils;
 using Newtonsoft.Json;
 using SteamAuth;
 using SteamKit2;
@@ -15,9 +16,9 @@ namespace autotrade.Steam.TradeOffer
         internal const string SendUrl = "https://steamcommunity.com/tradeoffer/new/send";
         private readonly CookieContainer _cookies;
         private readonly string _sessionId;
-        private readonly TradeOfferWebAPI _webApi;
+        private readonly TradeOfferWebApi _webApi;
 
-        public OfferSession(TradeOfferWebAPI webApi, CookieContainer cookies, string sessionId)
+        public OfferSession(TradeOfferWebApi webApi, CookieContainer cookies, string sessionId)
         {
             _webApi = webApi;
             _cookies = cookies;
@@ -35,10 +36,10 @@ namespace autotrade.Steam.TradeOffer
 
         public TradeOfferAcceptResponse Accept(string tradeOfferId)
         {
-            var data = new NameValueCollection();
-            data.Add("sessionid", _sessionId);
-            data.Add("serverid", "1");
-            data.Add("tradeofferid", tradeOfferId);
+            var data = new NameValueCollection
+            {
+                {"sessionid", _sessionId}, {"serverid", "1"}, {"tradeofferid", tradeOfferId}
+            };
 
             var url = $"https://steamcommunity.com/tradeoffer/{tradeOfferId}/accept";
             var referer = $"https://steamcommunity.com/tradeoffer/{tradeOfferId}/";
@@ -68,10 +69,10 @@ namespace autotrade.Steam.TradeOffer
 
         public bool Decline(string tradeOfferId)
         {
-            var data = new NameValueCollection();
-            data.Add("sessionid", _sessionId);
-            data.Add("serverid", "1");
-            data.Add("tradeofferid", tradeOfferId);
+            var data = new NameValueCollection
+            {
+                {"sessionid", _sessionId}, {"serverid", "1"}, {"tradeofferid", tradeOfferId}
+            };
 
             var url = string.Format("https://steamcommunity.com/tradeoffer/{0}/decline", tradeOfferId);
             //should be http://steamcommunity.com/{0}/{1}/tradeoffers - id/profile persona/id64 ideally
@@ -86,9 +87,9 @@ namespace autotrade.Steam.TradeOffer
                     var json = JsonConvert.DeserializeObject<NewTradeOfferResponse>(resp);
                     if (json.TradeOfferId != null && json.TradeOfferId == tradeOfferId) return true;
                 }
-                catch (JsonException jsex)
+                catch (JsonException ex)
                 {
-                    Debug.WriteLine(jsex);
+                    Logger.Error("Error on decline trade offer",ex);
                 }
             }
             else
@@ -102,10 +103,10 @@ namespace autotrade.Steam.TradeOffer
 
         public bool Cancel(string tradeOfferId)
         {
-            var data = new NameValueCollection();
-            data.Add("sessionid", _sessionId);
-            data.Add("tradeofferid", tradeOfferId);
-            data.Add("serverid", "1");
+            var data = new NameValueCollection
+            {
+                {"sessionid", _sessionId}, {"tradeofferid", tradeOfferId}, {"serverid", "1"}
+            };
             var url = string.Format("https://steamcommunity.com/tradeoffer/{0}/cancel", tradeOfferId);
             //should be http://steamcommunity.com/{0}/{1}/tradeoffers/sent/ - id/profile persona/id64 ideally
             var referer = string.Format("https://steamcommunity.com/tradeoffer/{0}/", tradeOfferId);
@@ -119,9 +120,9 @@ namespace autotrade.Steam.TradeOffer
                     var json = JsonConvert.DeserializeObject<NewTradeOfferResponse>(resp);
                     if (json.TradeOfferId != null && json.TradeOfferId == tradeOfferId) return true;
                 }
-                catch (JsonException jsex)
+                catch (JsonException ex)
                 {
-                    Debug.WriteLine(jsex);
+                    Logger.Error("Error on cancel trade offer", ex);
                 }
             }
             else
@@ -142,20 +143,22 @@ namespace autotrade.Steam.TradeOffer
         /// <param name="newTradeOfferId">The trade offer Id that will be created if successful</param>
         /// <param name="tradeOfferId">The trade offer Id of the offer being countered</param>
         /// <returns></returns>
-        public bool CounterOffer(string message, SteamID otherSteamId, TradeOffer.TradeStatus status,
+        public bool CounterOffer(string message, SteamID otherSteamId, TradeStatus status,
             out string newTradeOfferId, string tradeOfferId)
         {
             if (string.IsNullOrEmpty(tradeOfferId))
-                throw new ArgumentNullException("tradeOfferId", "Trade Offer Id must be set for counter offers.");
+                throw new ArgumentNullException("tradeOfferId", @"Trade Offer Id must be set for counter offers.");
 
-            var data = new NameValueCollection();
-            data.Add("sessionid", _sessionId);
-            data.Add("serverid", "1");
-            data.Add("partner", otherSteamId.ConvertToUInt64().ToString());
-            data.Add("tradeoffermessage", message);
-            data.Add("json_tradeoffer", JsonConvert.SerializeObject(status, JsonSerializerSettings));
-            data.Add("tradeofferid_countered", tradeOfferId);
-            data.Add("trade_offer_create_params", "{}");
+            var data = new NameValueCollection
+            {
+                {"sessionid", _sessionId},
+                {"serverid", "1"},
+                {"partner", otherSteamId.ConvertToUInt64().ToString()},
+                {"tradeoffermessage", message},
+                {"json_tradeoffer", JsonConvert.SerializeObject(status, JsonSerializerSettings)},
+                {"tradeofferid_countered", tradeOfferId},
+                {"trade_offer_create_params", "{}"}
+            };
 
             var referer = string.Format("https://steamcommunity.com/tradeoffer/{0}/", tradeOfferId);
 
@@ -177,16 +180,18 @@ namespace autotrade.Steam.TradeOffer
         /// <param name="status">The list of items we and they are going to trade</param>
         /// <param name="newTradeOfferId">The trade offer Id that will be created if successful</param>
         /// <returns>True if successfully returns a newTradeOfferId, else false</returns>
-        public bool SendTradeOffer(string message, SteamID otherSteamId, TradeOffer.TradeStatus status,
+        public bool SendTradeOffer(string message, SteamID otherSteamId, TradeStatus status,
             out string newTradeOfferId)
         {
-            var data = new NameValueCollection();
-            data.Add("sessionid", _sessionId);
-            data.Add("serverid", "1");
-            data.Add("partner", otherSteamId.ConvertToUInt64().ToString());
-            data.Add("tradeoffermessage", message);
-            data.Add("json_tradeoffer", JsonConvert.SerializeObject(status, JsonSerializerSettings));
-            data.Add("trade_offer_create_params", "{}");
+            var data = new NameValueCollection
+            {
+                {"sessionid", _sessionId},
+                {"serverid", "1"},
+                {"partner", otherSteamId.ConvertToUInt64().ToString()},
+                {"tradeoffermessage", message},
+                {"json_tradeoffer", JsonConvert.SerializeObject(status, JsonSerializerSettings)},
+                {"trade_offer_create_params", "{}"}
+            };
 
             var referer = string.Format("https://steamcommunity.com/tradeoffer/new/?partner={0}",
                 otherSteamId.AccountID);
@@ -203,20 +208,22 @@ namespace autotrade.Steam.TradeOffer
         /// <param name="token">The token of the partner we are trading with</param>
         /// <param name="newTradeOfferId">The trade offer Id that will be created if successful</param>
         /// <returns>True if successfully returns a newTradeOfferId, else false</returns>
-        public bool SendTradeOfferWithToken(string message, SteamID otherSteamId, TradeOffer.TradeStatus status,
+        public bool SendTradeOfferWithToken(string message, SteamID otherSteamId, TradeStatus status,
             string token, out string newTradeOfferId)
         {
             if (string.IsNullOrEmpty(token))
-                throw new ArgumentNullException("token", "Partner trade offer token is missing");
+                throw new ArgumentNullException(nameof(token), @"Partner trade offer token is missing");
             var offerToken = new OfferAccessToken {TradeOfferAccessToken = token};
 
-            var data = new NameValueCollection();
-            data.Add("sessionid", _sessionId);
-            data.Add("serverid", "1");
-            data.Add("partner", otherSteamId.ConvertToUInt64().ToString());
-            data.Add("tradeoffermessage", message);
-            data.Add("json_tradeoffer", JsonConvert.SerializeObject(status, JsonSerializerSettings));
-            data.Add("trade_offer_create_params", JsonConvert.SerializeObject(offerToken, JsonSerializerSettings));
+            var data = new NameValueCollection
+            {
+                {"sessionid", _sessionId},
+                {"serverid", "1"},
+                {"partner", otherSteamId.ConvertToUInt64().ToString()},
+                {"tradeoffermessage", message},
+                {"json_tradeoffer", JsonConvert.SerializeObject(status, JsonSerializerSettings)},
+                {"trade_offer_create_params", JsonConvert.SerializeObject(offerToken, JsonSerializerSettings)}
+            };
 
             var referer = string.Format("https://steamcommunity.com/tradeoffer/new/?partner={0}&token={1}",
                 otherSteamId.AccountID, token);
@@ -240,11 +247,11 @@ namespace autotrade.Steam.TradeOffer
                     }
 
                     Error = offerResponse.TradeError;
-                    Debug.WriteLine(offerResponse.TradeError);
+                    Logger.Error($"Error on decline trade offer - {Error}");
                 }
-                catch (JsonException jsex)
+                catch (JsonException ex)
                 {
-                    Debug.WriteLine(jsex);
+                    Logger.Error("Error on decline trade offer", ex);
                 }
 
             return false;

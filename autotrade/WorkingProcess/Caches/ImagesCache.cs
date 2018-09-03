@@ -2,29 +2,29 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace autotrade.WorkingProcess.Caches
 {
     internal class ImagesCache
     {
-        public static readonly string IMAGES_PATH = AppDomain.CurrentDomain.BaseDirectory + "images";
+        public static readonly string ImagesPath = AppDomain.CurrentDomain.BaseDirectory + "images";
         public static Dictionary<string, Image> ImageCache { get; set; } = new Dictionary<string, Image>();
 
-        public static Image GetImage(string hashName)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static Image GetImage(string name)
         {
-            ImageCache.TryGetValue(hashName, out var image);
+            ImageCache.TryGetValue(name, out var image);
             if (image != null) return image;
 
-            var fileName = $"{IMAGES_PATH}\\{MakeValidFileName(hashName)}.jpg";
-            if (File.Exists(fileName))
-            {
-                image = Image.FromFile(fileName);
-                ImageCache[hashName] = image;
-                return image;
-            }
+            var fileName = $"{ImagesPath}\\{MakeValidFileName(name)}.jpg";
 
-            return null;
+            if (!File.Exists(fileName)) return null;
+
+            image = Image.FromFile(fileName);
+            ImageCache[name] = image;
+            return image;
         }
 
         public static void CacheImage(string hashName, Image image)
@@ -32,16 +32,15 @@ namespace autotrade.WorkingProcess.Caches
             if (image == null) return;
 
             if (!ImageCache.ContainsKey(hashName)) ImageCache.Add(hashName, image);
-            Directory.CreateDirectory(IMAGES_PATH);
+            Directory.CreateDirectory(ImagesPath);
             try
             {
-                image.Save($"{IMAGES_PATH}/{MakeValidFileName(hashName)}.jpg");
+                image.Save($"{ImagesPath}/{MakeValidFileName(hashName)}.jpg");
             }
             catch
             {
+                // ignored
             }
-
-            ;
         }
 
         private static string MakeValidFileName(string name)

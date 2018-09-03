@@ -71,7 +71,7 @@ namespace autotrade.CustomElements.Controls.Trade
             this.TimeLable = new System.Windows.Forms.Label();
             this.MaxTradesNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.SentOffersCheckBox = new System.Windows.Forms.CheckBox();
-            this.RecievedOffersCheckBox = new System.Windows.Forms.CheckBox();
+            this.ReceivedOffersCheckBox = new System.Windows.Forms.CheckBox();
             this.IncludeFailedCheckBox = new System.Windows.Forms.CheckBox();
             this.NavigatingBackCheckBox = new System.Windows.Forms.CheckBox();
             this.TradeIdLabel = new System.Windows.Forms.Label();
@@ -459,7 +459,7 @@ namespace autotrade.CustomElements.Controls.Trade
             this.TradeSettingsGroupBox.Controls.Add(this.TimeLable);
             this.TradeSettingsGroupBox.Controls.Add(this.MaxTradesNumericUpDown);
             this.TradeSettingsGroupBox.Controls.Add(this.SentOffersCheckBox);
-            this.TradeSettingsGroupBox.Controls.Add(this.RecievedOffersCheckBox);
+            this.TradeSettingsGroupBox.Controls.Add(this.ReceivedOffersCheckBox);
             this.TradeSettingsGroupBox.Controls.Add(this.IncludeFailedCheckBox);
             this.TradeSettingsGroupBox.Controls.Add(this.NavigatingBackCheckBox);
             this.TradeSettingsGroupBox.Controls.Add(this.TradeIdLabel);
@@ -553,19 +553,19 @@ namespace autotrade.CustomElements.Controls.Trade
             this.SentOffersCheckBox.UseVisualStyleBackColor = true;
             this.SentOffersCheckBox.CheckStateChanged += new System.EventHandler(this.SentOffersCheckBox_CheckStateChanged);
             // 
-            // RecievedOffersCheckBox
+            // ReceivedOffersCheckBox
             // 
-            this.RecievedOffersCheckBox.AutoSize = true;
-            this.RecievedOffersCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.RecievedOffersCheckBox.Location = new System.Drawing.Point(9, 204);
-            this.RecievedOffersCheckBox.Name = "RecievedOffersCheckBox";
-            this.RecievedOffersCheckBox.Size = new System.Drawing.Size(122, 20);
-            this.RecievedOffersCheckBox.TabIndex = 27;
-            this.RecievedOffersCheckBox.Text = "Recieved offers";
-            this.toolTip1.SetToolTip(this.RecievedOffersCheckBox, "Filter only recieved offers (result amount will be lower then \'Max trades\' parame" +
+            this.ReceivedOffersCheckBox.AutoSize = true;
+            this.ReceivedOffersCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ReceivedOffersCheckBox.Location = new System.Drawing.Point(9, 204);
+            this.ReceivedOffersCheckBox.Name = "ReceivedOffersCheckBox";
+            this.ReceivedOffersCheckBox.Size = new System.Drawing.Size(122, 20);
+            this.ReceivedOffersCheckBox.TabIndex = 27;
+            this.ReceivedOffersCheckBox.Text = "Received offers";
+            this.toolTip1.SetToolTip(this.ReceivedOffersCheckBox, "Filter only Received offers (result amount will be lower then \'Max trades\' parame" +
         "ter)");
-            this.RecievedOffersCheckBox.UseVisualStyleBackColor = true;
-            this.RecievedOffersCheckBox.CheckedChanged += new System.EventHandler(this.RecievedOffersCheckBox_CheckedChanged);
+            this.ReceivedOffersCheckBox.UseVisualStyleBackColor = true;
+            this.ReceivedOffersCheckBox.CheckedChanged += new System.EventHandler(this.ReceivedOffersCheckBox_CheckedChanged);
             // 
             // IncludeFailedCheckBox
             // 
@@ -747,7 +747,7 @@ namespace autotrade.CustomElements.Controls.Trade
         private System.Windows.Forms.DataGridViewTextBoxColumn CountColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemTypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn HidenMarketHashNameColumn;
-        private System.Windows.Forms.CheckBox RecievedOffersCheckBox;
+        private System.Windows.Forms.CheckBox ReceivedOffersCheckBox;
         private System.Windows.Forms.CheckBox SentOffersCheckBox;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;

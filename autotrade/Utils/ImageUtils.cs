@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Net;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,14 +15,6 @@ namespace autotrade.Utils
 {
     internal class ImageUtils
     {
-        public static Image GetResourceImage(string name)
-        {
-            var myAssembly = Assembly.GetExecutingAssembly();
-            var names = myAssembly.GetManifestResourceNames();
-            var stream = myAssembly.GetManifestResourceStream("autotrade.Resources." + name);
-            return Image.FromStream(stream);
-        }
-
         public static Image DownloadImage(string url)
         {
             try
@@ -31,6 +22,8 @@ namespace autotrade.Utils
                 var req = WebRequest.Create(url);
                 var res = req.GetResponse();
                 var imgStream = res.GetResponseStream();
+                if (imgStream == null) return null;
+
                 var img1 = Image.FromStream(imgStream);
                 imgStream.Close();
                 return img1;
@@ -85,7 +78,7 @@ namespace autotrade.Utils
             }
             catch (Exception ex)
             {
-                Logger.Error("Error on geting profile image", ex);
+                Logger.Error("Error on getting profile image", ex);
                 return null;
             }
         }
@@ -130,7 +123,7 @@ namespace autotrade.Utils
 
         public static Image GetDefaultResourceImage(string name, Type type)
         {
-            return (Image) new ComponentResourceManager(type).GetObject(name);
+            return (Image)new ComponentResourceManager(type).GetObject(name);
         }
     }
 }

@@ -7,12 +7,13 @@ namespace autotrade
 {
     internal static class Program
     {
-        private static int mainThreadId;
+        private static int _mainThreadId;
+
         public static MainForm MainForm;
         public static WorkingProcessForm WorkingProcessForm;
         public static LoadingForm LoadingForm;
 
-        public static bool IsMainThread => Thread.CurrentThread.ManagedThreadId == mainThreadId;
+        public static bool IsMainThread => Thread.CurrentThread.ManagedThreadId == _mainThreadId;
 
         /// <summary>
         ///     Главная точка входа для приложения.
@@ -22,7 +23,7 @@ namespace autotrade
         {
             //CheckLicense();
             //UpdateProgram();
-            mainThreadId = Thread.CurrentThread.ManagedThreadId;
+            _mainThreadId = Thread.CurrentThread.ManagedThreadId;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();
@@ -39,7 +40,7 @@ namespace autotrade
 
         private static void UpdateProgram()
         {
-            //update
+            throw new NotImplementedException();
         }
     }
 }

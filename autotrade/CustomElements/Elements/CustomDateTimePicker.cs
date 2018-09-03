@@ -15,7 +15,7 @@ namespace autotrade.CustomElements.Elements
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.FillRectangle(new SolidBrush(FormComponents.SIMPLE_BACK_COLOR), ClientRectangle);
+            e.Graphics.FillRectangle(new SolidBrush(FormComponents.SimpleBackColor), ClientRectangle);
 
             var pen = new Pen(SystemColors.MenuBar, 2)
             {
@@ -23,7 +23,7 @@ namespace autotrade.CustomElements.Elements
             };
             e.Graphics.DrawRectangle(pen, ClientRectangle);
 
-            e.Graphics.DrawString(Value.ToString(CustomFormat), Font, new SolidBrush(FormComponents.SIMPLE_TEXT_COLOR),
+            e.Graphics.DrawString(Value.ToString(CustomFormat), Font, new SolidBrush(FormComponents.SimpleTextColor),
                 2, 4);
 
             ComboBoxRenderer.DrawDropDownButton(e.Graphics,

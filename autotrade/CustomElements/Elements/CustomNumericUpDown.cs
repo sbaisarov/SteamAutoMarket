@@ -58,7 +58,7 @@ namespace autotrade.CustomElements.Elements
 
             if (Hexadecimal)
             {
-                text = ((long) num).ToString("X", CultureInfo.InvariantCulture);
+                text = ((long)num).ToString("X", CultureInfo.InvariantCulture);
                 Debug.Assert(text == text.ToUpper(CultureInfo.InvariantCulture),
                     "GetPreferredSize assumes hex digits to be uppercase.");
             }
@@ -100,9 +100,6 @@ namespace autotrade.CustomElements.Elements
                     else
                         Value = Constrain(decimal.Parse(text, CultureInfo.CurrentCulture));
                 }
-            }
-            catch
-            {
             }
             finally
             {

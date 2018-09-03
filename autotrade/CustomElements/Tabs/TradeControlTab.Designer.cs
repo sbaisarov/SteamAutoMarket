@@ -34,7 +34,7 @@ namespace autotrade.CustomElements.Tabs
             this.SendTradeTab = new System.Windows.Forms.TabPage();
             this.TradeControl = new TradeSendControl();
             this.ActiveTradesTab = new System.Windows.Forms.TabPage();
-            this.RecievedTradeManageControl = new RecievedTradeManageControl();
+            this.ReceivedTradeManageControl = new ReceivedTradeManageControl();
             this.HistoryTradesTab = new System.Windows.Forms.TabPage();
             this.TradeHistoryControl = new TradeHistoryControl();
             this.TabControl.SuspendLayout();
@@ -83,7 +83,7 @@ namespace autotrade.CustomElements.Tabs
             // ActiveTradesTab
             // 
             this.ActiveTradesTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
-            this.ActiveTradesTab.Controls.Add(this.RecievedTradeManageControl);
+            this.ActiveTradesTab.Controls.Add(this.ReceivedTradeManageControl);
             this.ActiveTradesTab.Location = new System.Drawing.Point(4, 29);
             this.ActiveTradesTab.Name = "ActiveTradesTab";
             this.ActiveTradesTab.Size = new System.Drawing.Size(886, 599);
@@ -91,15 +91,15 @@ namespace autotrade.CustomElements.Tabs
             this.ActiveTradesTab.Text = "Active";
             this.ActiveTradesTab.UseVisualStyleBackColor = true;
             // 
-            // RecievedTradeManageControl
+            // ReceivedTradeManageControl
             // 
-            this.RecievedTradeManageControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.RecievedTradeManageControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.RecievedTradeManageControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.RecievedTradeManageControl.Location = new System.Drawing.Point(0, 0);
-            this.RecievedTradeManageControl.Name = "RecievedTradeManageControl";
-            this.RecievedTradeManageControl.Size = new System.Drawing.Size(885, 599);
-            this.RecievedTradeManageControl.TabIndex = 0;
+            this.ReceivedTradeManageControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.ReceivedTradeManageControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ReceivedTradeManageControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ReceivedTradeManageControl.Location = new System.Drawing.Point(0, 0);
+            this.ReceivedTradeManageControl.Name = "ReceivedTradeManageControl";
+            this.ReceivedTradeManageControl.Size = new System.Drawing.Size(885, 599);
+            this.ReceivedTradeManageControl.TabIndex = 0;
             // 
             // HistoryTradesTab
             // 
@@ -143,7 +143,7 @@ namespace autotrade.CustomElements.Tabs
         private System.Windows.Forms.TabPage ActiveTradesTab;
         private System.Windows.Forms.TabPage HistoryTradesTab;
         public TradeSendControl TradeControl;
-        public RecievedTradeManageControl RecievedTradeManageControl;
+        public ReceivedTradeManageControl ReceivedTradeManageControl;
         public TradeHistoryControl TradeHistoryControl;
     }
 }

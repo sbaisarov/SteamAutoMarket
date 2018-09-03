@@ -37,12 +37,12 @@ namespace autotrade.Steam.TradeOffer
         /// <returns>The give users inventory.</returns>
         /// <param name='steamId'>Steam identifier.</param>
         /// <param name='apiKey'>The needed Steam API key.</param>
-        /// <param name="steamWeb">The SteamWeb instance for this Bot</param>
+        /// <param name="appid"></param>
         public Inventory FetchInventory(ulong steamId, string apiKey, int appid)
         {
             var attempts = 1;
             InventoryResponse result = null;
-            while ((result == null || result.result.Items == null) && attempts <= 3)
+            while ((result?.result.Items == null) && attempts <= 3)
             {
                 var url =
                     $"http://api.steampowered.com/IEconItems_{appid}/GetPlayerItems/v0001/?key={apiKey}&steamid={steamId}";
@@ -51,7 +51,7 @@ namespace autotrade.Steam.TradeOffer
                 attempts++;
             }
 
-            return new Inventory(result.result);
+            return new Inventory(result?.result);
         }
 
         public List<FullRgItem> GetInventory(SteamID steamid, int appid, int contextid)
@@ -84,7 +84,7 @@ namespace autotrade.Steam.TradeOffer
                 var startAssetid = "";
                 var inventoryPage = LoadInventoryPage(steamid, appid, contextid, startAssetid);
                 Program.LoadingForm.SetTotalItemsCount(inventoryPage.TotalInventoryCount,
-                    (int) Math.Ceiling((double) inventoryPage.TotalInventoryCount / 5000), "Total items count");
+                    (int)Math.Ceiling((double)inventoryPage.TotalInventoryCount / 5000), "Total items count");
 
                 do
                 {
@@ -106,7 +106,7 @@ namespace autotrade.Steam.TradeOffer
             string startAssetid = "", int count = 5000)
         {
             var url = "https://" +
-                      $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{contextid}?l=english&count=5000&start_assetid={startAssetid}";
+                      $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{contextid}?l=english&count={count}&start_assetid={startAssetid}";
             var response = SteamWeb.Request(url, "GET", dataString: null);
             var inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
             return inventoryRoot;

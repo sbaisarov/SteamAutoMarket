@@ -240,7 +240,7 @@ namespace autotrade.Steam.Market.Interface
                     out var nameId);
 
             if (!nameIdParse)
-                throw new SteamException("Unable to find name ID");
+                throw new SteamException($"Unable to find name ID of {hashName}");
 
             var publisherFeePercentMatch = Regex.Match(content, "(?<=\"publisher_fee_percent\":\")(.*?)(?=\")").Value;
 

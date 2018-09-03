@@ -9,36 +9,36 @@ namespace autotrade.WorkingProcess.Settings
 {
     internal class SavedSteamAccount
     {
-        public static string ACCOUNTS_FILE_PATH = AppDomain.CurrentDomain.BaseDirectory + "accounts.ini";
+        public static string AccountsFilePath = AppDomain.CurrentDomain.BaseDirectory + "accounts.ini";
 
-        private static List<SavedSteamAccount> cached;
+        private static List<SavedSteamAccount> _cached;
 
         public string Login { get; set; }
         public string Password { get; set; }
-        public string OpskinsApi { get; set; }
-        public SteamGuardAccount Mafile { get; set; }
+        public string SteamApi { get; set; }
+        public SteamGuardAccount MaFile { get; set; }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static List<SavedSteamAccount> Get()
         {
-            if (cached != null) return cached;
-            if (!File.Exists(ACCOUNTS_FILE_PATH))
+            if (_cached != null) return _cached;
+            if (!File.Exists(AccountsFilePath))
             {
-                cached = new List<SavedSteamAccount>();
-                UpdateAll(cached);
-                return cached;
+                _cached = new List<SavedSteamAccount>();
+                UpdateAll(_cached);
+                return _cached;
             }
 
-            cached = JsonConvert.DeserializeObject<List<SavedSteamAccount>>(
-                File.ReadAllText(ACCOUNTS_FILE_PATH));
-            return cached;
+            _cached = JsonConvert.DeserializeObject<List<SavedSteamAccount>>(
+                File.ReadAllText(AccountsFilePath));
+            return _cached;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateAll(List<SavedSteamAccount> accounts)
         {
-            cached = accounts;
-            File.WriteAllText(ACCOUNTS_FILE_PATH, JsonConvert.SerializeObject(accounts, Formatting.Indented));
+            _cached = accounts;
+            File.WriteAllText(AccountsFilePath, JsonConvert.SerializeObject(accounts, Formatting.Indented));
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -63,7 +63,7 @@ namespace autotrade.WorkingProcess.Settings
 
             if (foundAccount == -1)
                 return;
-            allAccounts[foundAccount].Mafile = account;
+            allAccounts[foundAccount].MaFile = account;
 
             UpdateAll(allAccounts);
         }

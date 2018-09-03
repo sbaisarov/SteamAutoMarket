@@ -22,8 +22,8 @@ namespace autotrade.CustomElements.Controls.Settings
             InitializeComponent();
 
             var settings = SavedSettings.Get();
-            CurrentCacheNumericUpDown.Value = settings.SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE;
-            AverageCacheNumericUpDown.Value = settings.SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE;
+            CurrentCacheNumericUpDown.Value = settings.SettingsHoursToBecomeOldCurrentPrice;
+            AverageCacheNumericUpDown.Value = settings.SettingsHoursToBecomeOldAveragePrice;
 
             InitCurrentCacheStatusesAsync();
         }
@@ -48,7 +48,7 @@ namespace autotrade.CustomElements.Controls.Settings
 
         private int GetCachedImagesCount()
         {
-            return Directory.GetFiles(ImagesCache.IMAGES_PATH).Count();
+            return Directory.GetFiles(ImagesCache.ImagesPath).Count();
         }
 
         private int GetCachedMarketIdsCount()
@@ -58,22 +58,22 @@ namespace autotrade.CustomElements.Controls.Settings
 
         private int GetCachedAveragePricesCount()
         {
-            return PriceLoader.AVERAGE_PRICES_CACHE.Get().Count;
+            return PriceLoader.AveragePricesCache.Get().Count;
         }
 
         private int GetObsoleteCachedAveragePricesCount()
         {
-            return GetObsoleteValues(PriceLoader.AVERAGE_PRICES_CACHE).Count;
+            return GetObsoleteValues(PriceLoader.AveragePricesCache).Count;
         }
 
         private int GetCachedCurrentPricesCount()
         {
-            return PriceLoader.CURRENT_PRICES_CACHE.Get().Count;
+            return PriceLoader.CurrentPricesCache.Get().Count;
         }
 
         private int GetObsoleteCachedCurrentPricesCount()
         {
-            return GetObsoleteValues(PriceLoader.CURRENT_PRICES_CACHE).Count;
+            return GetObsoleteValues(PriceLoader.CurrentPricesCache).Count;
         }
 
         private static Dictionary<string, LoadedItemPrice> GetObsoleteValues(PricesCache cache)
@@ -110,26 +110,26 @@ namespace autotrade.CustomElements.Controls.Settings
 
         private void CurrentCacheNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_CURRENT_PRICE,
+            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsHoursToBecomeOldCurrentPrice,
                 (int) CurrentCacheNumericUpDown.Value);
         }
 
         private void AverageCacheNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_HOURS_TO_BECOME_OLD_AVERAGE_PRICE,
+            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsHoursToBecomeOldAveragePrice,
                 (int) AverageCacheNumericUpDown.Value);
         }
 
         private void ImagesCacheOpenButton_Click(object sender, EventArgs e)
         {
-            Process.Start(ImagesCache.IMAGES_PATH);
+            Process.Start(ImagesCache.ImagesPath);
         }
 
         private void ImagesCacheClearButton_Click(object sender, EventArgs e)
         {
             if (ConfirmationClearCacheWindow())
             {
-                var di = new DirectoryInfo(ImagesCache.IMAGES_PATH);
+                var di = new DirectoryInfo(ImagesCache.ImagesPath);
                 foreach (var file in di.GetFiles())
                     try
                     {
@@ -145,7 +145,7 @@ namespace autotrade.CustomElements.Controls.Settings
 
         private void MarketIdCacheOpenButton_Click(object sender, EventArgs e)
         {
-            Process.Start(MarketInfoCache.CACHE_PRICES_PATH);
+            Process.Start(MarketInfoCache.CachePricesPath);
             SetCacheCount(MarketIdCacheCountLable, GetCachedMarketIdsCount());
         }
 
@@ -160,7 +160,7 @@ namespace autotrade.CustomElements.Controls.Settings
 
         private void SettingsOpenButton_Click(object sender, EventArgs e)
         {
-            Process.Start(SavedSettings.SETTINGS_FILE_PATH);
+            Process.Start(SavedSettings.SettingsFilePath);
         }
 
         private void SettingsRestoreDefaultButton_Click(object sender, EventArgs e)
@@ -174,19 +174,19 @@ namespace autotrade.CustomElements.Controls.Settings
 
         private void AverageOpenButton_Click(object sender, EventArgs e)
         {
-            Process.Start(PriceLoader.AVERAGE_PRICES_CACHE.CACHE_PRICES_PATH);
+            Process.Start(PriceLoader.AveragePricesCache.CachePricesPath);
         }
 
         private void CurrentOpenButton_Click(object sender, EventArgs e)
         {
-            Process.Start(PriceLoader.CURRENT_PRICES_CACHE.CACHE_PRICES_PATH);
+            Process.Start(PriceLoader.CurrentPricesCache.CachePricesPath);
         }
 
         private void AverageClearObsoleteButton_Click(object sender, EventArgs e)
         {
             if (ConfirmationClearCacheWindow())
             {
-                PriceLoader.AVERAGE_PRICES_CACHE.ClearOld();
+                PriceLoader.AveragePricesCache.ClearOld();
                 SetCacheCount(AverageCacheCountLable, GetCachedAveragePricesCount());
                 SetObsoleteCacheCount(AverageObsoleteCacheCountLable, GetObsoleteCachedAveragePricesCount());
             }
@@ -196,7 +196,7 @@ namespace autotrade.CustomElements.Controls.Settings
         {
             if (ConfirmationClearCacheWindow())
             {
-                PriceLoader.CURRENT_PRICES_CACHE.ClearOld();
+                PriceLoader.CurrentPricesCache.ClearOld();
                 SetCacheCount(CurrentCacheCountLable, GetCachedCurrentPricesCount());
                 SetObsoleteCacheCount(CurrentObsoleteCacheCountLable, GetObsoleteCachedCurrentPricesCount());
             }
@@ -206,7 +206,7 @@ namespace autotrade.CustomElements.Controls.Settings
         {
             if (ConfirmationClearCacheWindow())
             {
-                PriceLoader.AVERAGE_PRICES_CACHE.Clear();
+                PriceLoader.AveragePricesCache.Clear();
                 SetCacheCount(AverageCacheCountLable, GetCachedAveragePricesCount());
                 SetObsoleteCacheCount(AverageObsoleteCacheCountLable, GetObsoleteCachedAveragePricesCount());
             }
@@ -216,7 +216,7 @@ namespace autotrade.CustomElements.Controls.Settings
         {
             if (ConfirmationClearCacheWindow())
             {
-                PriceLoader.CURRENT_PRICES_CACHE.Clear();
+                PriceLoader.CurrentPricesCache.Clear();
                 SetCacheCount(CurrentCacheCountLable, GetCachedCurrentPricesCount());
                 SetObsoleteCacheCount(CurrentObsoleteCacheCountLable, GetObsoleteCachedCurrentPricesCount());
             }

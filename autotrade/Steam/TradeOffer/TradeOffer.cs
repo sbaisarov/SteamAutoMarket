@@ -8,7 +8,7 @@ using SteamKit2;
 
 namespace autotrade.Steam.TradeOffer
 {
-    public partial class TradeOffer
+    public class TradeOffer
     {
         public TradeOffer(OfferSession session, SteamID partnerSteamdId)
         {
@@ -140,10 +140,10 @@ namespace autotrade.Steam.TradeOffer
         public TradeOfferAcceptResponse Accept()
         {
             if (TradeOfferId == null)
-                return new TradeOfferAcceptResponse {TradeError = "Can't accept a trade without a tradeofferid"};
+                return new TradeOfferAcceptResponse { TradeError = "Can't accept a trade without a tradeofferid" };
             if (!IsOurOffer && OfferState == TradeOfferState.TradeOfferStateActive) return Session.Accept(TradeOfferId);
             Logger.Warning("Can't accept a trade that is not active");
-            return new TradeOfferAcceptResponse {TradeError = "Can't accept a trade that is not active"};
+            return new TradeOfferAcceptResponse { TradeError = "Can't accept a trade that is not active" };
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace autotrade.Steam.TradeOffer
         {
             if (TradeOfferId == null)
             {
-                Debug.WriteLine("Can't decline a trade without a tradeofferid");
+                Logger.Error("Can't decline a trade without a trade offer id");
                 throw new ArgumentException("TradeOfferId");
             }
 
@@ -188,7 +188,7 @@ namespace autotrade.Steam.TradeOffer
         {
             if (TradeOfferId == null)
             {
-                Debug.WriteLine("Can't cancel a trade without a tradeofferid");
+                Logger.Error("Can't cancel a trade without a trade offer id");
                 throw new ArgumentException("TradeOfferId");
             }
 

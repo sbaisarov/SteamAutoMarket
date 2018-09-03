@@ -24,44 +24,39 @@ namespace autotrade.CustomElements.Controls.Settings
 
             var settings = SavedSettings.Get();
 
-            LoggingLevelComboBox.SelectedIndex = settings.SETTINGS_LOGGER_LEVEL;
-            AveragePriceDaysNumericUpDown.Value = settings.SETTINGS_AVERAGE_PRICE_PARSE_DAYS;
-            Confirm2FANumericUpDown.Value = settings.SETTINGS_2FA_ITEMS_TO_CONFIRM;
+            LoggingLevelComboBox.SelectedIndex = settings.SettingsLoggerLevel;
+            AveragePriceDaysNumericUpDown.Value = settings.SettingsAveragePriceParseDays;
+            Confirm2FANumericUpDown.Value = settings.Settings_2FaItemsToConfirm;
 
-            if (File.Exists(SavedSteamAccount.ACCOUNTS_FILE_PATH))
+            if (!File.Exists(SavedSteamAccount.AccountsFilePath)) return;
+
+            var accounts = SavedSteamAccount.Get();
+            foreach (var acc in accounts)
             {
-                var accounts = SavedSteamAccount.Get();
-                foreach (var acc in accounts)
+                var row = AccountsDataGridView.Rows.Add();
+                AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = acc.Login;
+                AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value =
+                    GetPasswordStars(acc.Password.Count());
+                AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value =
+                    acc.Password;
+                AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value = acc.SteamApi;
+                AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = acc.MaFile;
+
+                Task.Run(() =>
                 {
-                    var row = AccountsDataGridView.Rows.Add();
-                    AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = acc.Login;
-                    AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value =
-                        GetPasswordStars(acc.Password.Count());
-                    AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value =
-                        acc.Password;
-                    AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value = acc.OpskinsApi;
-                    AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = acc.Mafile;
-
-                    Task.Run(() =>
-                    {
-                        var profileImage = ImageUtils.GetSteamProfileSmallImage(acc.Mafile.Session.SteamID);
-                        if (profileImage != null)
-                            AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value =
-                                profileImage;
-                    });
-                }
+                    var profileImage = ImageUtils.GetSteamProfileSmallImage(acc.MaFile.Session.SteamID);
+                    if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
+                });
             }
-
-            ;
         }
 
         private void BrowseMafilePath_Click(object sender, EventArgs e)
         {
             using (var openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "Mobile auth file (*.maFile)|*.mafile";
+                openFileDialog.Filter = @"Mobile auth file (*.maFile)|*.mafile";
                 openFileDialog.Multiselect = false;
-                openFileDialog.Title = "MaFile path selecting";
+                openFileDialog.Title = @"MaFile path selecting";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -71,10 +66,10 @@ namespace autotrade.CustomElements.Controls.Settings
             }
         }
 
-        private string GetPasswordStars(int Count)
+        private string GetPasswordStars(int count)
         {
             var result = "";
-            for (var i = 0; i < Count; i++) result += "*";
+            for (var i = 0; i < count; i++) result += "*";
             return result;
         }
 
@@ -83,7 +78,7 @@ namespace autotrade.CustomElements.Controls.Settings
             if (string.IsNullOrEmpty(LoginTextBox.Text) || string.IsNullOrEmpty(MafilePathTextBox.Text) ||
                 string.IsNullOrEmpty(PasswordTextBox.Text) || string.IsNullOrEmpty(SteamApiTextBox.Text))
             {
-                MessageBox.Show("Some fields are filled - incorrectly", "Error adding account", MessageBoxButtons.OK,
+                MessageBox.Show(@"Some fields are filled - incorrectly", @"Error adding account", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 Logger.Error("Error adding account. Some fields are filled - incorrectly");
                 return;
@@ -92,12 +87,12 @@ namespace autotrade.CustomElements.Controls.Settings
             if (AccountsDataGridUtils.IsAccountAreadyExist(AccountsDataGridView, LoginTextBox.Text.Trim()))
             {
                 Logger.Error($"{LoginTextBox.Text.Trim()} already exist in accounts list");
-                MessageBox.Show($"{LoginTextBox.Text.Trim()} already exist in accounts list",
-                    "Error on the account add", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($@"{LoginTextBox.Text.Trim()} already exist in accounts list",
+                    @"Error on the account add", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            SteamGuardAccount account = null;
+            SteamGuardAccount account;
             try
             {
                 account = JsonConvert.DeserializeObject<SteamGuardAccount>(File.ReadAllText(MafilePathTextBox.Text));
@@ -105,7 +100,7 @@ namespace autotrade.CustomElements.Controls.Settings
             catch (Exception ex)
             {
                 Logger.Error("Error processing MaFile", ex);
-                MessageBox.Show(ex.Message, "Error processing MaFile", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, @"Error processing MaFile", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -152,20 +147,20 @@ namespace autotrade.CustomElements.Controls.Settings
             var accounts = new List<SavedSteamAccount>();
             for (var i = 0; i < AccountsDataGridView.RowCount; i++)
             {
-                var login = (string) AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, i).Value;
-                var password = (string) AccountsDataGridUtils
+                var login = (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, i).Value;
+                var password = (string)AccountsDataGridUtils
                     .GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, i).Value;
                 var opskinsApi =
-                    (string) AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, i).Value;
-                var mafile = (SteamGuardAccount) AccountsDataGridUtils
+                    (string)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, i).Value;
+                var mafile = (SteamGuardAccount)AccountsDataGridUtils
                     .GetDataGridViewMafileHidenCell(AccountsDataGridView, i).Value;
 
                 accounts.Add(new SavedSteamAccount
                 {
                     Login = login,
                     Password = password,
-                    OpskinsApi = opskinsApi,
-                    Mafile = mafile
+                    SteamApi = opskinsApi,
+                    MaFile = mafile
                 });
             }
 
@@ -186,8 +181,8 @@ namespace autotrade.CustomElements.Controls.Settings
 
             var accName = AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
 
-            var confirmResult = MessageBox.Show($"Are you sure you want to delete the account - {accName}?",
-                "Confirm deletion?",
+            var confirmResult = MessageBox.Show($@"Are you sure you want to delete the account - {accName}?",
+                @"Confirm deletion?",
                 MessageBoxButtons.YesNo);
 
             if (confirmResult == DialogResult.Yes)
@@ -212,11 +207,11 @@ namespace autotrade.CustomElements.Controls.Settings
             if (row < 0) return;
 
             LoginTextBox.Text =
-                " " + (string) AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
-            PasswordTextBox.Text = " " + (string) AccountsDataGridUtils
+                @" " + (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
+            PasswordTextBox.Text = @" " + (string)AccountsDataGridUtils
                                        .GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value;
             SteamApiTextBox.Text =
-                " " + (string) AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value;
+                @" " + (string)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value;
         }
 
         private void LogTextBox_TextChanged(object sender, EventArgs e)
@@ -242,15 +237,15 @@ namespace autotrade.CustomElements.Controls.Settings
                 return;
             }
 
-            var login = (string) AccountsDataGridUtils
+            var login = (string)AccountsDataGridUtils
                 .GetDataGridViewLoginCell(AccountsDataGridView, currentCell.RowIndex).Value;
-            var password = (string) AccountsDataGridUtils
+            var password = (string)AccountsDataGridUtils
                 .GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
-            var api = (string) AccountsDataGridUtils
+            var api = (string)AccountsDataGridUtils
                 .GetDataGridViewSteamApiCell(AccountsDataGridView, currentCell.RowIndex).Value;
-            var mafile = (SteamGuardAccount) AccountsDataGridUtils
+            var mafile = (SteamGuardAccount)AccountsDataGridUtils
                 .GetDataGridViewMafileHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
-            var image = (Image) AccountsDataGridUtils
+            var image = (Image)AccountsDataGridUtils
                 .GetDataGridViewImageCell(AccountsDataGridView, currentCell.RowIndex).Value;
 
             Logger.Info($"Steam authentication for {login} started");
@@ -264,7 +259,7 @@ namespace autotrade.CustomElements.Controls.Settings
                 catch (Exception ex)
                 {
                     Logger.Error("Login failed!", ex);
-                    LoginButton.Enabled = true;
+                    Dispatcher.AsMainForm(() => LoginButton.Enabled = true);
                     return;
                 }
 
@@ -275,7 +270,7 @@ namespace autotrade.CustomElements.Controls.Settings
                     Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
                     Program.MainForm.MarketControlTab.RelistControl.AuthCurrentAccount();
                     Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
-                    Program.MainForm.TradeControlTab.RecievedTradeManageControl.AuthCurrentAccount();
+                    Program.MainForm.TradeControlTab.ReceivedTradeManageControl.AuthCurrentAccount();
                     Program.MainForm.TradeControlTab.TradeHistoryControl.AuthCurrentAccount();
 
                     Logger.Info($"Steam authentication for {login} successful");
@@ -288,26 +283,26 @@ namespace autotrade.CustomElements.Controls.Settings
         {
             var selectedLevel = LoggingLevelComboBox.SelectedValue;
 
-            var level = LoggerLevel.INFO;
+            var level = LoggerLevel.Info;
             switch (selectedLevel)
             {
                 case "Debug":
-                    level = LoggerLevel.DEBUG;
+                    level = LoggerLevel.Debug;
                     break;
                 case "Info + Errors":
-                    level = LoggerLevel.INFO;
+                    level = LoggerLevel.Info;
                     break;
                 case "Errors":
-                    level = LoggerLevel.ERROR;
+                    level = LoggerLevel.Error;
                     break;
                 case "None":
-                    level = LoggerLevel.NONE;
+                    level = LoggerLevel.None;
                     break;
             }
 
-            Logger.LOGGER_LEVEL = level;
+            Logger.LoggerLevel = level;
 
-            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_LOGGER_LEVEL,
+            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsLoggerLevel,
                 LoggingLevelComboBox.SelectedIndex);
         }
 
@@ -318,14 +313,14 @@ namespace autotrade.CustomElements.Controls.Settings
 
         private void AveragePriceDaysNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_AVERAGE_PRICE_PARSE_DAYS,
-                (int) AveragePriceDaysNumericUpDown.Value);
+            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsAveragePriceParseDays,
+                (int)AveragePriceDaysNumericUpDown.Value);
         }
 
         private void Confirm2FANumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().SETTINGS_2FA_ITEMS_TO_CONFIRM,
-                (int) Confirm2FANumericUpDown.Value);
+            SavedSettings.UpdateField(ref SavedSettings.Get().Settings_2FaItemsToConfirm,
+                (int)Confirm2FANumericUpDown.Value);
         }
     }
 }

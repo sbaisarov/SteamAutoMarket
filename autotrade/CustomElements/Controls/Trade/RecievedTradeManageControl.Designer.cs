@@ -2,7 +2,7 @@
 
 namespace autotrade.CustomElements.Controls.Trade
 {
-    partial class RecievedTradeManageControl
+    partial class ReceivedTradeManageControl
     {
         /// <summary> 
         /// Обязательная переменная конструктора.
@@ -73,7 +73,7 @@ namespace autotrade.CustomElements.Controls.Trade
             this.ActiveOnlyCheckBox = new System.Windows.Forms.CheckBox();
             this.DescriptionLanguageComboBox = new System.Windows.Forms.ComboBox();
             this.PartnerIdLable = new System.Windows.Forms.Label();
-            this.RecievedOffersCheckBox = new System.Windows.Forms.CheckBox();
+            this.ReceivedOffersCheckBox = new System.Windows.Forms.CheckBox();
             this.SentOffersCheckBox = new System.Windows.Forms.CheckBox();
             this.LoadTradesButton = new System.Windows.Forms.Button();
             this.SplitterPanel = new System.Windows.Forms.Panel();
@@ -504,7 +504,7 @@ namespace autotrade.CustomElements.Controls.Trade
             this.TradeSettingsGroupBox.Controls.Add(this.ActiveOnlyCheckBox);
             this.TradeSettingsGroupBox.Controls.Add(this.DescriptionLanguageComboBox);
             this.TradeSettingsGroupBox.Controls.Add(this.PartnerIdLable);
-            this.TradeSettingsGroupBox.Controls.Add(this.RecievedOffersCheckBox);
+            this.TradeSettingsGroupBox.Controls.Add(this.ReceivedOffersCheckBox);
             this.TradeSettingsGroupBox.Controls.Add(this.SentOffersCheckBox);
             this.TradeSettingsGroupBox.Controls.Add(this.LoadTradesButton);
             this.TradeSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
@@ -560,20 +560,20 @@ namespace autotrade.CustomElements.Controls.Trade
             this.PartnerIdLable.Text = "Language";
             this.toolTip1.SetToolTip(this.PartnerIdLable, "The language to use when loading item display data");
             // 
-            // RecievedOffersCheckBox
+            // ReceivedOffersCheckBox
             // 
-            this.RecievedOffersCheckBox.AutoSize = true;
-            this.RecievedOffersCheckBox.Checked = true;
-            this.RecievedOffersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RecievedOffersCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.RecievedOffersCheckBox.Location = new System.Drawing.Point(13, 38);
-            this.RecievedOffersCheckBox.Name = "RecievedOffersCheckBox";
-            this.RecievedOffersCheckBox.Size = new System.Drawing.Size(122, 20);
-            this.RecievedOffersCheckBox.TabIndex = 27;
-            this.RecievedOffersCheckBox.Text = "Recieved offers";
-            this.toolTip1.SetToolTip(this.RecievedOffersCheckBox, "Return the list of offers you\'ve received from other people");
-            this.RecievedOffersCheckBox.UseVisualStyleBackColor = true;
-            this.RecievedOffersCheckBox.CheckedChanged += new System.EventHandler(this.RecievedOffersCheckBox_CheckedChanged);
+            this.ReceivedOffersCheckBox.AutoSize = true;
+            this.ReceivedOffersCheckBox.Checked = true;
+            this.ReceivedOffersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ReceivedOffersCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ReceivedOffersCheckBox.Location = new System.Drawing.Point(13, 38);
+            this.ReceivedOffersCheckBox.Name = "ReceivedOffersCheckBox";
+            this.ReceivedOffersCheckBox.Size = new System.Drawing.Size(122, 20);
+            this.ReceivedOffersCheckBox.TabIndex = 27;
+            this.ReceivedOffersCheckBox.Text = "Received offers";
+            this.toolTip1.SetToolTip(this.ReceivedOffersCheckBox, "Return the list of offers you\'ve received from other people");
+            this.ReceivedOffersCheckBox.UseVisualStyleBackColor = true;
+            this.ReceivedOffersCheckBox.CheckedChanged += new System.EventHandler(this.ReceivedOffersCheckBox_CheckedChanged);
             // 
             // SentOffersCheckBox
             // 
@@ -633,7 +633,7 @@ namespace autotrade.CustomElements.Controls.Trade
             this.toolTip1.UseAnimation = false;
             this.toolTip1.UseFading = false;
             // 
-            // RecievedTradeManageControl
+            // ReceivedTradeManageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -649,7 +649,7 @@ namespace autotrade.CustomElements.Controls.Trade
             this.Controls.Add(this.CurrentTradesGroupBox);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.Name = "RecievedTradeManageControl";
+            this.Name = "ReceivedTradeManageControl";
             this.Size = new System.Drawing.Size(885, 599);
             this.CurrentTradesGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTradesGridView)).EndInit();
@@ -690,7 +690,7 @@ namespace autotrade.CustomElements.Controls.Trade
         private System.Windows.Forms.DataGridViewTextBoxColumn CountColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemTypeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn HidenMarketHashNameColumn;
-        private System.Windows.Forms.CheckBox RecievedOffersCheckBox;
+        private System.Windows.Forms.CheckBox ReceivedOffersCheckBox;
         private System.Windows.Forms.CheckBox SentOffersCheckBox;
         private System.Windows.Forms.Label PartnerIdLable;
         private System.Windows.Forms.ComboBox DescriptionLanguageComboBox;

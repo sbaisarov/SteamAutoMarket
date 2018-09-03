@@ -9,26 +9,25 @@ namespace autotrade.Steam.Market
 {
     internal class MarketInfoCache
     {
-        public static readonly string CACHE_PRICES_PATH = AppDomain.CurrentDomain.BaseDirectory + "item_ids_cache.ini";
-        private static Dictionary<string, MarketItemInfo> CACHE;
+        public static readonly string CachePricesPath = AppDomain.CurrentDomain.BaseDirectory + "item_ids_cache.ini";
+        private static Dictionary<string, MarketItemInfo> _cache;
 
         public static Dictionary<string, MarketItemInfo> Get()
         {
-            if (CACHE == null)
+            if (_cache != null) return _cache;
+
+            if (File.Exists(CachePricesPath))
             {
-                if (File.Exists(CACHE_PRICES_PATH))
-                {
-                    CACHE = JsonConvert.DeserializeObject<Dictionary<string, MarketItemInfo>>(
-                        File.ReadAllText(CACHE_PRICES_PATH));
-                }
-                else
-                {
-                    CACHE = new Dictionary<string, MarketItemInfo>();
-                    UpdateAll();
-                }
+                _cache = JsonConvert.DeserializeObject<Dictionary<string, MarketItemInfo>>(
+                    File.ReadAllText(CachePricesPath));
+            }
+            else
+            {
+                _cache = new Dictionary<string, MarketItemInfo>();
+                UpdateAll();
             }
 
-            return CACHE;
+            return _cache;
         }
 
         public static MarketItemInfo Get(int appid, string hashName)
@@ -46,14 +45,14 @@ namespace autotrade.Steam.Market
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateAll()
         {
-            File.WriteAllText(CACHE_PRICES_PATH, JsonConvert.SerializeObject(Get(), Formatting.Indented));
+            File.WriteAllText(CachePricesPath, JsonConvert.SerializeObject(Get(), Formatting.Indented));
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void Clear()
         {
-            CACHE.Clear();
-            File.WriteAllText(CACHE_PRICES_PATH,
+            _cache.Clear();
+            File.WriteAllText(CachePricesPath,
                 JsonConvert.SerializeObject(new Dictionary<string, MarketItemInfo>(), Formatting.Indented));
         }
     }

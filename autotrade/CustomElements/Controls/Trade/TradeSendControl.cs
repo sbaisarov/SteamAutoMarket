@@ -31,7 +31,7 @@ namespace autotrade.CustomElements.Controls.Trade
 
             foreach (var acc in SavedSteamAccount.Get().OrderBy(x => x.Login))
                 LoadedAccountCombobox.AddItem(acc.Login,
-                    ImageUtils.GetSteamProfileSmallImage(acc.Mafile.Session.SteamID));
+                    ImageUtils.GetSteamProfileSmallImage(acc.MaFile.Session.SteamID));
         }
 
         public static Dictionary<string, RgDescription> AllDescriptionsDictionary { get; set; }
@@ -58,7 +58,7 @@ namespace autotrade.CustomElements.Controls.Trade
 
             Program.LoadingForm.InitInventoryLoadingProcess();
             var allItemsList = Program.LoadingForm.GetLoadedItems();
-            Program.LoadingForm.DisactivateForm();
+            Program.LoadingForm.DeactivateForm();
 
             allItemsList.RemoveAll(item => item.Description.IsTradable == false);
 
@@ -83,7 +83,7 @@ namespace autotrade.CustomElements.Controls.Trade
             {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsToTradeGridView, e.RowIndex,
                     ItemsToTradeGridView);
-                PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
+                PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable);
             }
         }
 
@@ -246,7 +246,9 @@ namespace autotrade.CustomElements.Controls.Trade
                 itemsToSale.AddRange(itemsList);
             }
 
-            CurrentSession.SteamManager.SendTradeOffer(itemsToSale, TradeParthenIdTextBox.Text, TradeTokenTextBox.Text);
+            var response = CurrentSession.SteamManager.SendTradeOffer(itemsToSale, TradeParthenIdTextBox.Text, TradeTokenTextBox.Text);
+
+            MessageBox.Show($@"Trade sent - {response}", @"Trade info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void AddAllButton_Click(object sender, EventArgs e)
@@ -405,7 +407,7 @@ namespace autotrade.CustomElements.Controls.Trade
             {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsToTradeGridView, e.RowIndex,
                     ItemsToTradeGridView);
-                PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
+                PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable);
             }
         }
 
@@ -455,7 +457,7 @@ namespace autotrade.CustomElements.Controls.Trade
             var acc = SavedSteamAccount.Get().FirstOrDefault(x => x.Login == login);
             if (acc == null) return;
 
-            TradeParthenIdTextBox.Text = new SteamID(acc.Mafile.Session.SteamID).AccountID.ToString();
+            TradeParthenIdTextBox.Text = new SteamID(acc.MaFile.Session.SteamID).AccountID.ToString();
             TradeTokenTextBox.Text = "todo";
         }
     }

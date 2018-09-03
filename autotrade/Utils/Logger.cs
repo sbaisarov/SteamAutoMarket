@@ -10,18 +10,6 @@ namespace autotrade.Utils
 {
     internal class Logger
     {
-        public const string DATE_FROMAT = "HH:mm:ss";
-
-        private static readonly LoggerLevel[] NONE_SHOULD_BE_IGNORED =
-            {LoggerLevel.DEBUG, LoggerLevel.INFO, LoggerLevel.ERROR, LoggerLevel.NONE};
-
-        private static readonly LoggerLevel[] DEBUG_SHOULD_BE_IGNORED =
-            {LoggerLevel.INFO, LoggerLevel.ERROR, LoggerLevel.NONE};
-
-        private static readonly LoggerLevel[] INFO_SHOULD_BE_IGNORED = {LoggerLevel.ERROR, LoggerLevel.NONE};
-        private static readonly LoggerLevel[] ERROR_SHOULD_BE_IGNORED = {LoggerLevel.NONE};
-
-        public static LoggerLevel LOGGER_LEVEL { get; set; } = LoggerLevel.INFO;
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         private static void LogToFile(string s)
@@ -30,7 +18,7 @@ namespace autotrade.Utils
             {
                 try
                 {
-                    File.AppendAllText("log.log", s + "\n");
+                    File.AppendAllText("log.log", $@"{s}\n");
                 }
                 catch
                 {
@@ -48,7 +36,7 @@ namespace autotrade.Utils
 
         public static void Debug(string message)
         {
-            if (_ignoreLogs(LoggerLevel.DEBUG)) return;
+            if (_ignoreLogs(LoggerLevel.Debug)) return;
 
             message = $"{GetCurrentDate()} [DEBUG] - {message}";
             LogToFile(message);
@@ -57,7 +45,7 @@ namespace autotrade.Utils
 
         public static void Info(string message)
         {
-            if (_ignoreLogs(LoggerLevel.INFO)) return;
+            if (_ignoreLogs(LoggerLevel.Info)) return;
 
             message = $"{GetCurrentDate()} [INFO] - {message}";
             LogToFile(message);
@@ -67,34 +55,32 @@ namespace autotrade.Utils
 
         public static void Warning(string message, Exception e = null)
         {
-            if (_ignoreLogs(LoggerLevel.INFO)) return;
+            if (_ignoreLogs(LoggerLevel.Info)) return;
 
-            message = $"{GetCurrentDate()} [WARN] - {message} " + (e != null ? e.Message + " " + e.StackTrace : "");
-            LogToFile(message);
+            message = $"{GetCurrentDate()} [WARN] - {message}";
+
             LogToLogBox(message);
+            LogToFile(message + (e != null ? e.Message + " " + e.StackTrace : ""));
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void Error(string message, Exception e = null)
         {
-            if (_ignoreLogs(LoggerLevel.ERROR)) return;
+            if (_ignoreLogs(LoggerLevel.Error)) return;
 
             message = $"{GetCurrentDate()} [ERROR] - {message}";
             if (e != null) message += $". {e.Message}";
 
-            File.AppendAllText("error.log", message + " " + (e != null ? e.Message + " " + e.StackTrace : "") + "\n");
+            File.AppendAllText("error.log", message + @" " + (e != null ? e.Message + " " + e.StackTrace : "") + @"\n");
             LogToLogBox(message);
         }
 
         public static void Critical(string message, Exception ex)
         {
             message = $"{GetCurrentDate()} [CRITICAL] - {message}. {ex.Message}";
-            File.AppendAllText("error.log", $"{message} {ex.StackTrace}\n");
+            File.AppendAllText("error.log", $@"{message} {ex.StackTrace}\n");
 
-            var confirmResult = MessageBox.Show(message, "Critical unhandled exception",
-                MessageBoxButtons.OK, MessageBoxIcon.Stop);
-
-            Application.Exit();
+            MessageBox.Show(message, message, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         public static void LogToLogBox(string s)
@@ -120,27 +106,40 @@ namespace autotrade.Utils
 
         public static string GetCurrentDate()
         {
-            return DateTime.Now.ToString(DATE_FROMAT);
+            return DateTime.Now.ToString(DateFormat);
         }
 
         private static bool _ignoreLogs(LoggerLevel invoked)
         {
             switch (invoked)
             {
-                case LoggerLevel.DEBUG: return DEBUG_SHOULD_BE_IGNORED.Contains(invoked);
-                case LoggerLevel.INFO: return INFO_SHOULD_BE_IGNORED.Contains(invoked);
-                case LoggerLevel.ERROR: return ERROR_SHOULD_BE_IGNORED.Contains(invoked);
-                case LoggerLevel.NONE: return NONE_SHOULD_BE_IGNORED.Contains(invoked);
+                case LoggerLevel.Debug: return DebugShouldBeIgnored.Contains(invoked);
+                case LoggerLevel.Info: return InfoShouldBeIgnored.Contains(invoked);
+                case LoggerLevel.Error: return ErrorShouldBeIgnored.Contains(invoked);
+                case LoggerLevel.None: return NoneShouldBeIgnored.Contains(invoked);
                 default: return false;
             }
         }
+
+        public const string DateFormat = "HH:mm:ss";
+
+        private static readonly LoggerLevel[] NoneShouldBeIgnored =
+            {LoggerLevel.Debug, LoggerLevel.Info, LoggerLevel.Error, LoggerLevel.None};
+
+        private static readonly LoggerLevel[] DebugShouldBeIgnored =
+            {LoggerLevel.Info, LoggerLevel.Error, LoggerLevel.None};
+
+        private static readonly LoggerLevel[] InfoShouldBeIgnored = { LoggerLevel.Error, LoggerLevel.None };
+        private static readonly LoggerLevel[] ErrorShouldBeIgnored = { LoggerLevel.None };
+
+        public static LoggerLevel LoggerLevel { get; set; } = LoggerLevel.Info;
     }
 
     internal enum LoggerLevel
     {
-        DEBUG,
-        INFO,
-        ERROR,
-        NONE
+        Debug,
+        Info,
+        Error,
+        None
     }
 }

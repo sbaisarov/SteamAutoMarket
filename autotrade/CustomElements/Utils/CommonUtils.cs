@@ -15,14 +15,14 @@ namespace autotrade.CustomElements.Utils
 
         public static long GetSecondsFromDateTime(DateTime date)
         {
-            return (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            return (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
 
         public static DateTime ResetTimeToDauStart(DateTime date)
         {
-            date.AddHours(-1 * date.Hour);
-            date.AddMinutes(-1 * date.Minute);
-            date.AddSeconds(-1 * date.Second);
+            date = date.AddHours(-1 * date.Hour);
+            date = date.AddMinutes(-1 * date.Minute);
+            date = date.AddSeconds(-1 * date.Second);
 
             return date;
         }

@@ -32,7 +32,10 @@ namespace autotrade.CustomElements.Elements
             else
             {
                 var backColorDisabled = _backColorDisabled;
-                if (Parent.FindForm() != null) backColorDisabled = Parent.FindForm().BackColor;
+
+                var form = Parent.FindForm();
+                if (form != null) form.BackColor = backColorDisabled;
+
                 textBrush = new SolidBrush(_foreColorDisabled);
                 var backBrush = new SolidBrush(backColorDisabled);
                 e.Graphics.FillRectangle(backBrush, ClientRectangle);

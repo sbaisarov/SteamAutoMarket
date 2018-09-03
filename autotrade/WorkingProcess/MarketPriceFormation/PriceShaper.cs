@@ -13,36 +13,36 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
         public PriceShaper(DataGridView itemsToSaleGridView, MarketSaleType type, double lowerValue,
             double lowerPercentValue)
         {
-            GRID = itemsToSaleGridView;
-            TYPE = type;
-            LOWER_VALUE = lowerValue;
-            LOWER_PERCENT_VALUE = lowerPercentValue;
+            Grid = itemsToSaleGridView;
+            Type = type;
+            LowerValue = lowerValue;
+            LowerPercentValue = lowerPercentValue;
         }
 
-        private static DataGridView GRID { get; set; }
-        private static MarketSaleType TYPE { get; set; }
-        private static double LOWER_VALUE { get; set; }
-        private static double LOWER_PERCENT_VALUE { get; set; }
+        private static DataGridView Grid { get; set; }
+        private static MarketSaleType Type { get; set; }
+        private static double LowerValue { get; set; }
+        private static double LowerPercentValue { get; set; }
 
         public ToSaleObject GetItemsForSales()
         {
             List<ItemsForSale> itemsForSales;
 
-            switch (TYPE)
+            switch (Type)
             {
-                case MarketSaleType.RECOMENDED:
+                case MarketSaleType.Recommended:
                     itemsForSales = GetRecomendedPriceItemsForSale();
                     break;
 
-                case MarketSaleType.LOWER_THAN_AVERAGE:
+                case MarketSaleType.LowerThanAverage:
                     itemsForSales = GetAveragePriceItemsForSale();
                     break;
 
-                case MarketSaleType.LOWER_THAN_CURRENT:
+                case MarketSaleType.LowerThanCurrent:
                     itemsForSales = GetCurrentPriceItemsForSale();
                     break;
 
-                case MarketSaleType.MANUAL:
+                case MarketSaleType.Manual:
                     itemsForSales = GetManualPriceItemsForSale();
                     break;
 
@@ -52,27 +52,25 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
             var changeValueType = ChangeValueType.ChangeValueTypeNone;
             double changeValue = 0;
 
-            if (LOWER_VALUE != 0)
+            if (LowerValue != 0d)
             {
                 changeValueType = ChangeValueType.ChangeValueTypeByValue;
-                changeValue = LOWER_VALUE;
+                changeValue = LowerValue;
             }
-            else if (LOWER_PERCENT_VALUE != 0)
+            else if (LowerPercentValue != 0)
             {
                 changeValueType = ChangeValueType.ChangeValueTypeByPercent;
-                changeValue = LOWER_PERCENT_VALUE;
+                changeValue = LowerPercentValue;
             }
 
-            return new ToSaleObject(itemsForSales, TYPE, changeValueType, changeValue);
+            return new ToSaleObject(itemsForSales, Type, changeValueType, changeValue);
         }
 
         private List<ItemsForSale> GetRecomendedPriceItemsForSale()
         {
             var itemsForSale = new List<ItemsForSale>();
 
-            var priceShapingStrategy = GetPriceShapingStrategy();
-
-            foreach (var row in GRID.Rows.Cast<DataGridViewRow>())
+            foreach (var row in Grid.Rows.Cast<DataGridViewRow>())
             {
                 var items = GetGridItemsList(row.Index);
                 if (items == null) continue;
@@ -81,11 +79,11 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
                 var averagePrice = GetGridAveragePrice(row.Index);
                 var currentPrice = GetGridCurrentPrice(row.Index);
 
-                if (averagePrice == null || currentPrice == null)
-                    resultPrice = null;
-                else if (averagePrice > currentPrice)
-                    resultPrice = averagePrice;
-                else if (currentPrice >= averagePrice) resultPrice = currentPrice - 0.01;
+                if (averagePrice != null && currentPrice != null)
+                {
+                    if (averagePrice > currentPrice) resultPrice = averagePrice;
+                    else if (currentPrice >= averagePrice) resultPrice = currentPrice - 0.01;
+                }
 
                 if (resultPrice == null || resultPrice.Value <= 0) resultPrice = null;
 
@@ -101,7 +99,7 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
 
             var priceShapingStrategy = GetPriceShapingStrategy();
 
-            foreach (var row in GRID.Rows.Cast<DataGridViewRow>())
+            foreach (var row in Grid.Rows.Cast<DataGridViewRow>())
             {
                 var items = GetGridItemsList(row.Index);
                 if (items == null) continue;
@@ -124,7 +122,7 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
 
             var priceShapingStrategy = GetPriceShapingStrategy();
 
-            foreach (var row in GRID.Rows.Cast<DataGridViewRow>())
+            foreach (var row in Grid.Rows.Cast<DataGridViewRow>())
             {
                 var items = GetGridItemsList(row.Index);
                 if (items == null) continue;
@@ -145,7 +143,7 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
         {
             var itemsForSale = new List<ItemsForSale>();
 
-            foreach (var row in GRID.Rows.Cast<DataGridViewRow>())
+            foreach (var row in Grid.Rows.Cast<DataGridViewRow>())
             {
                 var items = GetGridItemsList(row.Index);
                 if (items == null) continue;
@@ -163,18 +161,18 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
         {
             var items = new List<FullRgItem>();
 
-            var row = ItemsToSaleGridUtils.GetGridHidenItemsListCell(GRID, index);
-            if (row == null || row.Value == null) return items;
+            var row = ItemsToSaleGridUtils.GetGridHidenItemsListCell(Grid, index);
+            if (row?.Value == null) return items;
 
             items = row.Value as List<FullRgItem>;
-            if (items.Count == 0) return null;
+            if (items != null && items.Count == 0) return null;
 
             return items;
         }
 
         private double? GetGridCurrentPrice(int index)
         {
-            var row = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(GRID, index);
+            var row = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(Grid, index);
             if (row == null || row.Value == null) return null;
 
             if (GetDouble(row.Value, out var price))
@@ -188,7 +186,7 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
 
         private double? GetGridAveragePrice(int index)
         {
-            var row = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(GRID, index);
+            var row = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(Grid, index);
             if (row == null || row.Value == null) return null;
 
             if (GetDouble(row.Value, out var price))
@@ -205,12 +203,12 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
             string stringValue;
             if (value is double)
             {
-                result = (double) value;
+                result = (double)value;
                 return true;
             }
 
             if (value is string)
-                stringValue = (string) value;
+                stringValue = (string)value;
             else
                 stringValue = value.ToString();
 
@@ -223,9 +221,9 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
 
         private PriceShapingStrategy GetPriceShapingStrategy()
         {
-            if (LOWER_VALUE != 0) return PriceShapingStrategyContainer.BY_VALUE;
-            if (LOWER_PERCENT_VALUE != 0) return PriceShapingStrategyContainer.BY_PERCENT;
-            return PriceShapingStrategyContainer.DONT_CHANGE;
+            if (LowerValue != 0) return PriceShapingStrategyContainer.ByValue;
+            if (LowerPercentValue != 0) return PriceShapingStrategyContainer.ByPercent;
+            return PriceShapingStrategyContainer.DoNotChange;
         }
 
         public abstract class PriceShapingStrategy
@@ -237,7 +235,7 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
         {
             public override double Format(double oldValue)
             {
-                return oldValue + LOWER_VALUE;
+                return oldValue + LowerValue;
             }
         }
 
@@ -245,11 +243,11 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
         {
             public override double Format(double oldValue)
             {
-                return oldValue + oldValue * LOWER_PERCENT_VALUE / 100;
+                return oldValue + oldValue * LowerPercentValue / 100;
             }
         }
 
-        public class DontChangeStrategy : PriceShapingStrategy
+        public class DoNotChangeStrategy : PriceShapingStrategy
         {
             public override double Format(double oldValue)
             {
@@ -259,9 +257,9 @@ namespace autotrade.WorkingProcess.MarketPriceFormation
 
         public class PriceShapingStrategyContainer
         {
-            public static PriceShapingStrategy BY_VALUE = new ChangeByValueStrategy();
-            public static PriceShapingStrategy BY_PERCENT = new ChangeByPercentStrategy();
-            public static PriceShapingStrategy DONT_CHANGE = new DontChangeStrategy();
+            public static PriceShapingStrategy ByValue = new ChangeByValueStrategy();
+            public static PriceShapingStrategy ByPercent = new ChangeByPercentStrategy();
+            public static PriceShapingStrategy DoNotChange = new DoNotChangeStrategy();
         }
     }
 }

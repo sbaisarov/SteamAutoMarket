@@ -4,11 +4,11 @@ namespace autotrade.Utils
 {
     internal class FormComponents
     {
-        public static Color SIMPLE_TEXT_COLOR = Color.FromArgb(212, 212, 220);
-        public static Color SIMPLE_BACK_COLOR = Color.FromArgb(29, 30, 34);
-        public static Color SIMPLE_TABLE_BACK_COLOR = Color.FromArgb(57, 63, 77);
-        public static Color YELLOW_COLOR = Color.FromArgb(254, 218, 106);
-        public static Color BACKGROUND_COLOR = Color.FromArgb(23, 26, 33);
+        public static Color SimpleTextColor = Color.FromArgb(212, 212, 220);
+        public static Color SimpleBackColor = Color.FromArgb(29, 30, 34);
+        public static Color SimpleTableBackColor = Color.FromArgb(57, 63, 77);
+        public static Color YellowColor = Color.FromArgb(254, 218, 106);
+        public static Color BackgroundColor = Color.FromArgb(23, 26, 33);
 
         /*
          Yellow - 

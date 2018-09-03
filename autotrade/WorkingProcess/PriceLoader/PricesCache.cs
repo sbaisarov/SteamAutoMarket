@@ -10,39 +10,39 @@ namespace autotrade.WorkingProcess.PriceLoader
 {
     internal class PricesCache
     {
-        private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
             {DateFormatHandling = DateFormatHandling.IsoDateFormat};
 
-        private readonly int HOURS_TO_BECOME_OLD;
-        private Dictionary<string, LoadedItemPrice> CACHE;
-        private int Counter;
+        private readonly int _hoursToBecomeOld;
+        private Dictionary<string, LoadedItemPrice> _cache;
+        private int _counter;
 
         public PricesCache(string filePath, int hoursToBecomeOld)
         {
-            CACHE_PRICES_PATH = filePath;
-            HOURS_TO_BECOME_OLD = hoursToBecomeOld;
+            CachePricesPath = filePath;
+            _hoursToBecomeOld = hoursToBecomeOld;
         }
 
-        public string CACHE_PRICES_PATH { get; }
+        public string CachePricesPath { get; }
 
         public Dictionary<string, LoadedItemPrice> Get()
         {
-            if (CACHE == null)
+            if (_cache == null)
             {
-                if (File.Exists(CACHE_PRICES_PATH))
+                if (File.Exists(CachePricesPath))
                 {
-                    CACHE = JsonConvert.DeserializeObject<Dictionary<string, LoadedItemPrice>>(
-                        File.ReadAllText(CACHE_PRICES_PATH), _jsonSettings);
+                    _cache = JsonConvert.DeserializeObject<Dictionary<string, LoadedItemPrice>>(
+                        File.ReadAllText(CachePricesPath), JsonSettings);
                     UpdateAll();
                 }
                 else
                 {
-                    CACHE = new Dictionary<string, LoadedItemPrice>();
+                    _cache = new Dictionary<string, LoadedItemPrice>();
                     UpdateAll();
                 }
             }
 
-            return CACHE;
+            return _cache;
         }
 
         public LoadedItemPrice Get(FullRgItem item)
@@ -68,7 +68,7 @@ namespace autotrade.WorkingProcess.PriceLoader
 
         public void ClearOld()
         {
-            CACHE = CACHE
+            _cache = _cache
                 .Where(pair => IsOld(pair.Value) == false)
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
@@ -77,31 +77,31 @@ namespace autotrade.WorkingProcess.PriceLoader
 
         public void Clear()
         {
-            CACHE.Clear();
+            _cache.Clear();
             UpdateAll(true);
         }
 
         public void Uncache(string hashName)
         {
             Get().Remove(hashName);
-            Counter += 1;
+            _counter += 1;
             UpdateAll();
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void UpdateAll(bool force = false)
         {
-            if (++Counter == 10 || force)
+            if (++_counter == 10 || force)
             {
-                File.WriteAllText(CACHE_PRICES_PATH,
-                    JsonConvert.SerializeObject(Get(), Formatting.Indented, _jsonSettings));
-                Counter = 0;
+                File.WriteAllText(CachePricesPath,
+                    JsonConvert.SerializeObject(Get(), Formatting.Indented, JsonSettings));
+                _counter = 0;
             }
         }
 
         public bool IsOld(LoadedItemPrice item)
         {
-            return item.ParseTime.AddHours(HOURS_TO_BECOME_OLD) < DateTime.Now;
+            return item.ParseTime.AddHours(_hoursToBecomeOld) < DateTime.Now;
         }
     }
 }

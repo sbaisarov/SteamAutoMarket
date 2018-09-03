@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using autotrade.Steam.TradeOffer.Enums;
 using autotrade.Steam.TradeOffer.Models;
+using autotrade.Utils;
 using SteamKit2;
 
 namespace autotrade.Steam.TradeOffer
@@ -18,7 +19,7 @@ namespace autotrade.Steam.TradeOffer
 
         private readonly OfferSession _session;
         private readonly Queue<Offer> _unhandledTradeOfferUpdates;
-        private readonly TradeOfferWebAPI _webApi;
+        private readonly TradeOfferWebApi _webApi;
 
         public TradeOfferManager(string apiKey, CookieContainer cookies, string sessionid)
         {
@@ -26,7 +27,7 @@ namespace autotrade.Steam.TradeOffer
                 throw new ArgumentNullException(nameof(apiKey));
 
             LastTimeCheckedOffers = DateTime.MinValue;
-            _webApi = new TradeOfferWebAPI(apiKey);
+            _webApi = new TradeOfferWebApi(apiKey);
             _session = new OfferSession(_webApi, cookies, sessionid);
             _unhandledTradeOfferUpdates = new Queue<Offer>();
         }
@@ -95,7 +96,7 @@ namespace autotrade.Steam.TradeOffer
                 }
                 else
                 {
-                    Debug.WriteLine("Offer returned from steam api is not valid : " + resp.Offer.TradeOfferId);
+                    Logger.Error($"Offer returned from steam api is not valid : {resp.Offer.TradeOfferId}");
                     return false;
                 }
             }
@@ -113,7 +114,7 @@ namespace autotrade.Steam.TradeOffer
         private void SendOfferToHandler(Offer offer)
         {
             _knownTradeOffers[offer.TradeOfferId] = offer.TradeOfferState;
-            OnTradeOfferUpdated(new TradeOffer(_session, offer));
+            OnTradeOfferUpdated?.Invoke(new TradeOffer(_session, offer));
         }
 
         private uint GetUnixTimeStamp(DateTime dateTime)
@@ -139,7 +140,7 @@ namespace autotrade.Steam.TradeOffer
                     return true;
                 }
 
-                Debug.WriteLine("Offer returned from steam api is not valid : " + resp.Offer.TradeOfferId);
+                Logger.Error($"Offer returned from steam api is not valid : {resp.Offer.TradeOfferId}");
             }
 
             return false;

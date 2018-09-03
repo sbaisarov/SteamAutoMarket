@@ -6,8 +6,6 @@ using Newtonsoft.Json;
 
 namespace autotrade.Steam.TradeOffer
 {
-    public partial class TradeOffer
-    {
         public class TradeAssetsConverter : JsonConverter
         {
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -29,5 +27,4 @@ namespace autotrade.Steam.TradeOffer
                        objectType == typeof(List<TradeAsset>);
             }
         }
-    }
 }

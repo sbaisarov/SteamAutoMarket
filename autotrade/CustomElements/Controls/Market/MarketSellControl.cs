@@ -21,8 +21,8 @@ namespace autotrade.CustomElements.Controls.Market
             InitializeComponent();
             PriceLoader.Init(AllSteamItemsGridView, ItemsToSaleGridView);
 
-            InventoryAppIdComboBox.Text = SavedSettings.Get().MARKET_INVENTORY_APP_ID;
-            InventoryContextIdComboBox.Text = SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID;
+            InventoryAppIdComboBox.Text = SavedSettings.Get().MarketInventoryAppId;
+            InventoryContextIdComboBox.Text = SavedSettings.Get().MarketInventoryContexId;
         }
 
         public static Dictionary<string, RgDescription> AllDescriptionsDictionary { get; set; }
@@ -49,7 +49,7 @@ namespace autotrade.CustomElements.Controls.Market
 
             Program.LoadingForm.InitInventoryLoadingProcess();
             var allItemsList = Program.LoadingForm.GetLoadedItems();
-            Program.LoadingForm.DisactivateForm();
+            Program.LoadingForm.DeactivateForm();
 
             allItemsList.RemoveAll(item => item.Description.IsMarketable == false);
 
@@ -73,7 +73,7 @@ namespace autotrade.CustomElements.Controls.Market
             else if (e.ColumnIndex == 6)
             {
                 AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsGridView, e.RowIndex, ItemsToSaleGridView);
-                PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
+                PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable);
             }
         }
 
@@ -219,7 +219,7 @@ namespace autotrade.CustomElements.Controls.Market
                 }
             }
 
-            SavedSettings.UpdateField(ref SavedSettings.Get().MARKET_INVENTORY_APP_ID, InventoryAppIdComboBox.Text);
+            SavedSettings.UpdateField(ref SavedSettings.Get().MarketInventoryAppId, InventoryAppIdComboBox.Text);
         }
 
         private void LoadInventoryButton_Click(object sender, EventArgs e)
@@ -275,7 +275,7 @@ namespace autotrade.CustomElements.Controls.Market
                 LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), appid, contextId);
                 Logger.Info($"Inventory {appid} - {contextId} loading finished");
                 Dispatcher.AsMainForm(() => { LoadInventoryButton.Enabled = true; });
-                PriceLoader.StartPriceLoading(TableToLoad.ALL_ITEMS_TABLE);
+                PriceLoader.StartPriceLoading(TableToLoad.AllItemsTable);
             });
         }
 
@@ -294,21 +294,21 @@ namespace autotrade.CustomElements.Controls.Market
             MarketSaleType marketSaleType;
             if (ManualPriceRadioButton.Checked)
             {
-                marketSaleType = MarketSaleType.MANUAL;
+                marketSaleType = MarketSaleType.Manual;
             }
             else if (RecomendedPriceRadioButton.Checked)
             {
-                marketSaleType = MarketSaleType.RECOMENDED;
+                marketSaleType = MarketSaleType.Recommended;
             }
             else if (AveregeMinusPriceRadioButton.Checked)
             {
-                marketSaleType = MarketSaleType.LOWER_THAN_AVERAGE;
+                marketSaleType = MarketSaleType.LowerThanAverage;
                 changeValue = (double) AveragePriceNumericUpDown.Value;
                 changePercentValue = (double) AveragePricePercentNumericUpDown.Value;
             }
             else if (CurrentMinusPriceRadioButton.Checked)
             {
-                marketSaleType = MarketSaleType.LOWER_THAN_CURRENT;
+                marketSaleType = MarketSaleType.LowerThanCurrent;
                 changeValue = (double) CurrentPriceNumericUpDown.Value;
                 changePercentValue = (double) CurrentPricePercentNumericUpDown.Value;
             }
@@ -342,7 +342,7 @@ namespace autotrade.CustomElements.Controls.Market
             ItemsToSaleGridView.CurrentCellChanged += ItemsToSaleGridView_CurrentCellChanged;
 
             Logger.Debug("All selected items was added to sale list");
-            PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE);
+            PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable);
         }
 
         private void OpenMarketPageButtonClick_Click(object sender, EventArgs e)
@@ -363,11 +363,11 @@ namespace autotrade.CustomElements.Controls.Market
                     var item = AllItemsListGridUtils.GetFullRgItems(AllSteamItemsGridView, row.Index).FirstOrDefault();
                     if (item == null) continue;
 
-                    var averagePrice = CurrentSession.SteamManager.GetAveragePrice(item.Asset, item.Description);
-                    PriceLoader.AVERAGE_PRICES_CACHE.Cache(item.Description.MarketHashName, averagePrice.Value);
+                    var averagePrice = CurrentSession.SteamManager.GetAveragePrice(item.Asset, item.Description, SavedSettings.Get().SettingsAveragePriceParseDays);
+                    PriceLoader.AveragePricesCache.Cache(item.Description.MarketHashName, averagePrice.Value);
 
                     var currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
-                    PriceLoader.CURRENT_PRICES_CACHE.Cache(item.Description.MarketHashName, currentPrice.Value);
+                    PriceLoader.CurrentPricesCache.Cache(item.Description.MarketHashName, currentPrice.Value);
 
                     row.Cells[AllItemsListGridUtils.CurrentColumnIndex].Value = currentPrice;
                     row.Cells[AllItemsListGridUtils.AverageColumnIndex].Value = averagePrice;
@@ -377,7 +377,7 @@ namespace autotrade.CustomElements.Controls.Market
 
         private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().MARKET_INVENTORY_CONTEX_ID,
+            SavedSettings.UpdateField(ref SavedSettings.Get().MarketInventoryContexId,
                 InventoryContextIdComboBox.Text);
         }
 
@@ -437,13 +437,13 @@ namespace autotrade.CustomElements.Controls.Market
 
         private void RefreshPricesButton_Click(object sender, EventArgs e)
         {
-            PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE, true);
-            PriceLoader.StartPriceLoading(TableToLoad.ALL_ITEMS_TABLE, true);
+            PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable, true);
+            PriceLoader.StartPriceLoading(TableToLoad.AllItemsTable, true);
         }
 
         private void ForcePricesReloadButton_Click(object sender, EventArgs e)
         {
-            PriceLoader.StartPriceLoading(TableToLoad.ITEMS_TO_SALE_TABLE, true);
+            PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable, true);
         }
 
         private async void ItemsForSaleUpdateOneButtonClick_Click(object sender, EventArgs e)
@@ -458,12 +458,12 @@ namespace autotrade.CustomElements.Controls.Market
                         var item = ItemsToSaleGridUtils.GetFullRgItems(ItemsToSaleGridView, row.Index).FirstOrDefault();
                         if (item == null) continue;
 
-                        var averagePrice = CurrentSession.SteamManager.GetAveragePrice(item.Asset, item.Description);
-                        PriceLoader.AVERAGE_PRICES_CACHE.Cache(item.Description.MarketHashName, averagePrice.Value);
+                        var averagePrice = CurrentSession.SteamManager.GetAveragePrice(item.Asset, item.Description, SavedSettings.Get().SettingsAveragePriceParseDays);
+                        PriceLoader.AveragePricesCache.Cache(item.Description.MarketHashName, averagePrice.Value);
 
                         var currentPrice =
                             await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
-                        PriceLoader.CURRENT_PRICES_CACHE.Cache(item.Description.MarketHashName, currentPrice.Value);
+                        PriceLoader.CurrentPricesCache.Cache(item.Description.MarketHashName, currentPrice.Value);
 
                         row.Cells[ItemsToSaleGridUtils.CurrentColumnIndex].Value = currentPrice;
                         row.Cells[ItemsToSaleGridUtils.AverageColumnIndex].Value = averagePrice;
