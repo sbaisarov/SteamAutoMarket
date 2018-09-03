@@ -53,9 +53,6 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Accord, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Accord.3.8.0\lib\net46\Accord.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.8.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.8.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -81,28 +78,21 @@
       <HintPath>..\packages\SteamKit2.2.1.0\lib\netstandard2.0\SteamKit2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security.AccessControl, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.AccessControl.4.5.0\lib\net461\System.Security.AccessControl.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Principal.Windows, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Principal.Windows.4.5.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
     </Reference>
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -181,6 +171,44 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Steam\TradeOffer\Models\ApiResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\AssetDescription.cs" />
+    <Compile Include="Steam\TradeOffer\Models\CEconAsset.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullHistoryTradeItem.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullHistoryTradeOffer.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullTradeItem.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullTradeOffer.cs" />
+    <Compile Include="Steam\TradeOffer\Models\AccountInfo.cs" />
+    <Compile Include="Steam\TradeOffer\Models\AppData.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Description.cs" />
+    <Compile Include="Steam\TradeOffer\Models\InventoryResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\InventoryResult.cs" />
+    <Compile Include="Steam\TradeOffer\Models\InventoryRootModel.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Item.cs" />
+    <Compile Include="Steam\TradeOffer\Models\ItemAttribute.cs" />
+    <Compile Include="Steam\TradeOffer\Models\NewTradeOfferResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\OfferAccessToken.cs" />
+    <Compile Include="Steam\TradeOffer\Models\RgDescription.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullRgItem.cs" />
+    <Compile Include="Steam\TradeOffer\Models\RgInventory.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Tag.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeOfferAcceptResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Offer.cs" />
+    <Compile Include="Steam\TradeOffer\Models\OfferResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\OffersResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\OwnerAction.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradedAsset.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradedCurrency.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeHistoryItem.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeHistoryResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Enums\TradeOfferConfirmationMethod.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeOffersSummary.cs" />
+    <Compile Include="Steam\TradeOffer\Enums\TradeOfferState.cs" />
+    <Compile Include="Steam\TradeOffer\Enums\TradeState.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeAsset.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeStatusUser.cs" />
+    <Compile Include="Steam\TradeOffer\TradeAssetsConverter.cs" />
+    <Compile Include="Steam\TradeOffer\TradeStatus.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\ChangeValueType.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\ItemsForSale.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\PriceShaper.cs" />
@@ -440,12 +468,10 @@
     <None Include="Resources\yellow-update-button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Accord.3.8.0\build\Accord.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.3.8.0\build\Accord.targets'))" />
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
   </Target>
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />

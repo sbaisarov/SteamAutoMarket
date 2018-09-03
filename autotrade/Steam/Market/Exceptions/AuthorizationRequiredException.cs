@@ -1,4 +1,6 @@
-﻿namespace Market.Exceptions
+﻿namespace autotrade.Steam.Market.Exceptions
 {
-    public class AuthorizationRequiredException : SteamException {}
+    public class AuthorizationRequiredException : SteamException
+    {
+    }
 }

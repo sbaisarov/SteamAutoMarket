@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
-using Market.Models;
+using autotrade.Steam.Market.Models;
 
-namespace Market
+namespace autotrade.Steam.Market
 {
     public static class Utils
     {
@@ -43,33 +43,31 @@ namespace Market
         public static DateTime SteamTimeConvertor(string time)
         {
             if (DateTime.TryParseExact(time, "MMM dd yyyy HH: +0", CultureInfo.GetCultureInfo("en-US"),
-                DateTimeStyles.None, out DateTime converted))
-            {
+                DateTimeStyles.None, out var converted))
                 return converted;
-            }
-            else
-            {
-                throw new ArgumentException("Not a valid time string");
-            }
+            throw new ArgumentException("Not a valid time string");
         }
 
         public static byte[] StringToByteArray(string hex)
         {
             return Enumerable.Range(0, hex.Length)
-                             .Where(x => x % 2 == 0)
-                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                             .ToArray();
+                .Where(x => x % 2 == 0)
+                .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                .ToArray();
         }
 
         public static double PriseWithoutFee(double price, WalletInfo walletInfo)
         {
-            return PriseWithoutFee(price, walletInfo.WalletFeePercent, walletInfo.WalletPublisherFeePercent, walletInfo.WalletFeeMinimum);
+            return PriseWithoutFee(price, walletInfo.WalletFeePercent, walletInfo.WalletPublisherFeePercent,
+                walletInfo.WalletFeeMinimum);
         }
 
         public static double PriceReFee(double price, WalletInfo walletInfo)
         {
-            var priseWithoutFee = PriseWithoutFee(price, walletInfo.WalletFeePercent, walletInfo.WalletPublisherFeePercent, walletInfo.WalletFeeMinimum);
-            var priseWithFee = PriseWithFee(priseWithoutFee, walletInfo.WalletFeePercent, walletInfo.WalletPublisherFeePercent, walletInfo.WalletFeeMinimum);
+            var priseWithoutFee = PriseWithoutFee(price, walletInfo.WalletFeePercent,
+                walletInfo.WalletPublisherFeePercent, walletInfo.WalletFeeMinimum);
+            var priseWithFee = PriseWithFee(priseWithoutFee, walletInfo.WalletFeePercent,
+                walletInfo.WalletPublisherFeePercent, walletInfo.WalletFeeMinimum);
             return priseWithFee;
         }
 
@@ -80,7 +78,8 @@ namespace Market
             return priseWithFee;
         }
 
-        public static double PriseWithoutFee(double price, int walletFeePercent, int publisherFeePercent, double feeMinimum)
+        public static double PriseWithoutFee(double price, int walletFeePercent, int publisherFeePercent,
+            double feeMinimum)
         {
             var tempPrice = 100 * price;
             var totalFee = 100 + walletFeePercent + publisherFeePercent;
@@ -96,17 +95,21 @@ namespace Market
 
         public static double PriseWithFee(double price, WalletInfo walletInfo)
         {
-            return PriseWithFee(price, walletInfo.WalletFeePercent, walletInfo.WalletPublisherFeePercent, walletInfo.WalletFeeMinimum);
+            return PriseWithFee(price, walletInfo.WalletFeePercent, walletInfo.WalletPublisherFeePercent,
+                walletInfo.WalletFeeMinimum);
         }
 
-        public static double PriseWithFee(double price, int walletFeePercent, int publisherFeePercent, double feeMinimum)
+        public static double PriseWithFee(double price, int walletFeePercent, int publisherFeePercent,
+            double feeMinimum)
         {
             var tempPrice = price * 100;
             var tempFeeMinimum = feeMinimum * 100;
-            var tempPublisherFeePercent = (double)publisherFeePercent / 100;
-            var tempWalletFeePercent = (double) walletFeePercent/100;
+            var tempPublisherFeePercent = (double) publisherFeePercent / 100;
+            var tempWalletFeePercent = (double) walletFeePercent / 100;
 
-            var priseWithFee = Math.Max(tempPrice, tempFeeMinimum) + Math.Max(Math.Floor(tempPublisherFeePercent * tempPrice), tempFeeMinimum) + Math.Max(Math.Floor(tempWalletFeePercent * tempPrice), tempFeeMinimum);
+            var priseWithFee = Math.Max(tempPrice, tempFeeMinimum) +
+                               Math.Max(Math.Floor(tempPublisherFeePercent * tempPrice), tempFeeMinimum) +
+                               Math.Max(Math.Floor(tempWalletFeePercent * tempPrice), tempFeeMinimum);
             return priseWithFee / 100;
         }
 
@@ -116,10 +119,7 @@ namespace Market
             if (price <= minPrice) return minPrice;
 
             var tempPrice = price;
-            while (PriceReFee(tempPrice, walletInfo) > price)
-            {
-                tempPrice = tempPrice - 0.01;
-            }
+            while (PriceReFee(tempPrice, walletInfo) > price) tempPrice = tempPrice - 0.01;
 
             return tempPrice;
         }

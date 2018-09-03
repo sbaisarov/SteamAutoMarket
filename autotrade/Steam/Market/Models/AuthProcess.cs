@@ -1,4 +1,4 @@
-﻿namespace Market.Models
+﻿namespace autotrade.Steam.Market.Models
 {
     public class AuthProcess
     {
@@ -17,6 +17,5 @@
         public string EmailId { get; set; }
 
         public bool TwoFactorNeeded { get; set; }
-
     }
 }

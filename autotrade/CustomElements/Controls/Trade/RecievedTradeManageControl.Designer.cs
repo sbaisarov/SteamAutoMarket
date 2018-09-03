@@ -1,30 +1,35 @@
-﻿using autotrade.Utils;
+﻿using autotrade.CustomElements.Elements;
 
-namespace autotrade.CustomElements.Controls {
-    partial class RecievedTradeManageControl {
-            /// <summary> 
-            /// Обязательная переменная конструктора.
-            /// </summary>
-            private System.ComponentModel.IContainer components = null;
+namespace autotrade.CustomElements.Controls.Trade
+{
+    partial class RecievedTradeManageControl
+    {
+        /// <summary> 
+        /// Обязательная переменная конструктора.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-            /// <summary> 
-            /// Освободить все используемые ресурсы.
-            /// </summary>
-            /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-            protected override void Dispose(bool disposing) {
-                if (disposing && (components != null)) {
-                    components.Dispose();
-                }
-                base.Dispose(disposing);
+        /// <summary> 
+        /// Освободить все используемые ресурсы.
+        /// </summary>
+        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
             }
+            base.Dispose(disposing);
+        }
 
-            #region Код, автоматически созданный конструктором компонентов
+        #region Код, автоматически созданный конструктором компонентов
 
-            /// <summary> 
-            /// Требуемый метод для поддержки конструктора — не изменяйте 
-            /// содержимое этого метода с помощью редактора кода.
-            /// </summary>
-            private void InitializeComponent() {
+        /// <summary> 
+        /// Требуемый метод для поддержки конструктора — не изменяйте 
+        /// содержимое этого метода с помощью редактора кода.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -51,7 +56,7 @@ namespace autotrade.CustomElements.Controls {
             this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
+            this.ItemDescriptionTextBox = new RichTextBoxWithNoPaint();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.ExtraTradeInfoGroupBox = new System.Windows.Forms.GroupBox();
@@ -660,7 +665,7 @@ namespace autotrade.CustomElements.Controls {
             this.TradeSettingsGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
-            }
+        }
 
         #endregion
 
@@ -703,5 +708,5 @@ namespace autotrade.CustomElements.Controls {
         private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
         private System.Windows.Forms.ToolTip toolTip1;
     }
-    }
+}
 

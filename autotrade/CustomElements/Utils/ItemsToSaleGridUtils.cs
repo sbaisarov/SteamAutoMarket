@@ -1,16 +1,16 @@
-﻿using autotrade.Utils;
-using autotrade.WorkingProcess.PriceLoader;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static autotrade.Steam.TradeOffer.Inventory;
+using autotrade.CustomElements.Controls.Trade;
+using autotrade.Steam.TradeOffer.Models;
+using autotrade.Steam.TradeOffer.Models.Full;
+using autotrade.Utils;
+using autotrade.WorkingProcess.PriceLoader;
 
-namespace autotrade.CustomElements {
-    static class ItemsToSaleGridUtils {
+namespace autotrade.CustomElements.Utils
+{
+    internal static class ItemsToSaleGridUtils
+    {
         public static readonly int ItemNameColumnIndex = 0;
         public static readonly int CountColumnIndex = 1;
         public static readonly int CurrentColumnIndex = 2;
@@ -18,21 +18,26 @@ namespace autotrade.CustomElements {
         public static readonly int HidenItemMarketHashNameIndex = 4;
         public static readonly int HidenItemListIndex = 5;
 
-        public static void CellClick(DataGridView itemsToSaleGrid, int row) {
+        public static void CellClick(DataGridView itemsToSaleGrid, int row)
+        {
             var cell = GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, row);
             itemsToSaleGrid.CurrentCell = cell;
             itemsToSaleGrid.BeginEdit(true);
         }
 
-        public static void AddItemsToSale(DataGridView itemsToSaleGrid, List<RgFullItem> items) {
-            var row = GetDataGridViewRowByMarketHashName(itemsToSaleGrid, items.First().Description.market_hash_name);
-            if (row != null) {
+        public static void AddItemsToSale(DataGridView itemsToSaleGrid, List<FullRgItem> items)
+        {
+            var row = GetDataGridViewRowByMarketHashName(itemsToSaleGrid, items.First().Description.MarketHashName);
+            if (row != null)
+            {
                 var countCell = GetGridCountTextBoxCell(itemsToSaleGrid, row.Index);
-                var hidenItemsList = (List<RgFullItem>)GetGridHidenItemsListCell(itemsToSaleGrid, row.Index).Value;
+                var hidenItemsList = (List<FullRgItem>) GetGridHidenItemsListCell(itemsToSaleGrid, row.Index).Value;
 
                 hidenItemsList.AddRange(items);
-                countCell.Value = hidenItemsList.Sum(item => int.Parse(item.Asset.amount));
-            } else {
+                countCell.Value = hidenItemsList.Sum(item => int.Parse(item.Asset.Amount));
+            }
+            else
+            {
                 var rowIndex = itemsToSaleGrid.Rows.Add();
 
                 var nameCell = GetGridNameTextBoxCell(itemsToSaleGrid, rowIndex);
@@ -43,180 +48,209 @@ namespace autotrade.CustomElements {
                 var averagePriceCell = GetGridAveragePriceTextBoxCell(itemsToSaleGrid, rowIndex);
 
                 var firstItem = items.First();
-                LoadedItemPrice currentPriceObj = PriceLoader.CURRENT_PRICES_CACHE.Get(firstItem);
-                LoadedItemPrice averagePriceObj = PriceLoader.AVERAGE_PRICES_CACHE.Get(firstItem);
+                var currentPriceObj = PriceLoader.CURRENT_PRICES_CACHE.Get(firstItem);
+                var averagePriceObj = PriceLoader.AVERAGE_PRICES_CACHE.Get(firstItem);
 
-                nameCell.Value = firstItem.Description.name;
-                countCell.Value = items.Sum(item => int.Parse(item.Asset.amount));
+                nameCell.Value = firstItem.Description.Name;
+                countCell.Value = items.Sum(item => int.Parse(item.Asset.Amount));
                 if (currentPriceObj != null) currentPriceCell.Value = currentPriceObj.Price;
                 if (averagePriceObj != null) averagePriceCell.Value = averagePriceObj.Price;
-                hidenMarketHashNameCell.Value = firstItem.Description.market_hash_name;
+                hidenMarketHashNameCell.Value = firstItem.Description.MarketHashName;
                 hidenItemsListCell.Value = items;
             }
         }
 
-        public static DataGridViewRow GetDataGridViewRowByMarketHashName(DataGridView itemsToSaleGrid, string marketHashName) {
-            for (int i = 0; i < itemsToSaleGrid.RowCount; i++) {
+        public static DataGridViewRow GetDataGridViewRowByMarketHashName(DataGridView itemsToSaleGrid,
+            string marketHashName)
+        {
+            for (var i = 0; i < itemsToSaleGrid.RowCount; i++)
+            {
                 var row = GetGridHidenItemsMarketHashName(itemsToSaleGrid, i);
                 if (row == null) continue;
-                if (row.Value.Equals(marketHashName)) {
-                    return itemsToSaleGrid.Rows[i];
-                }
+                if (row.Value.Equals(marketHashName)) return itemsToSaleGrid.Rows[i];
             }
+
             return null;
         }
 
-        public static void RowClick(DataGridView itemsToSaleGrid, int row, Dictionary<string, RgDescription> descriptions, DataGridView allItemsGrid, RichTextBox textBox, Panel imageBox, Label lable) {
+        public static void RowClick(DataGridView itemsToSaleGrid, int row,
+            Dictionary<string, RgDescription> descriptions, DataGridView allItemsGrid, RichTextBox textBox,
+            Panel imageBox, Label lable)
+        {
             var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, row);
-            var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
-            if (hidenItemsList == null) {
-                return;
-            }
+            var hidenItemsList = (List<FullRgItem>) hidenItemsListCell.Value;
+            if (hidenItemsList == null) return;
 
-            var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
+            var itemMarketHashName = hidenItemsList.First().Description.MarketHashName;
 
-            AllItemsListGridUtils.UpdateItemDescription(TradeSendControl.AllDescriptionsDictionary[itemMarketHashName], textBox, imageBox, lable);
+            AllItemsListGridUtils.UpdateItemDescription(TradeSendControl.AllDescriptionsDictionary[itemMarketHashName],
+                textBox, imageBox, lable);
         }
 
-        public static void DeleteButtonClick(DataGridView allItemsGrid, DataGridView itemsToSaleGrid, int selectedRow) {
+        public static void DeleteButtonClick(DataGridView allItemsGrid, DataGridView itemsToSaleGrid, int selectedRow)
+        {
             var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, selectedRow);
-            var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
-            var itemMarketHashName = hidenItemsList.First().Description.market_hash_name;
+            var hidenItemsList = (List<FullRgItem>) hidenItemsListCell.Value;
+            var itemMarketHashName = hidenItemsList.First().Description.MarketHashName;
 
             var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, itemMarketHashName);
-            if (allItemsGridRow != null) {
+            if (allItemsGridRow != null)
                 AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, hidenItemsList);
-            } else {
+            else
                 AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, hidenItemsList);
-            }
 
             itemsToSaleGrid.Rows.RemoveAt(selectedRow);
 
-            Logger.Debug($"{hidenItemsList.Count} of {hidenItemsList.First().Description.name} was deleted from sale list");
+            Logger.Debug(
+                $"{hidenItemsList.Count} of {hidenItemsList.First().Description.Name} was deleted from sale list");
         }
 
-        public static void DeleteUnmarketable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
-            int totalDeletedItemsCount = 0;
+        public static void DeleteUnmarketable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid)
+        {
+            var totalDeletedItemsCount = 0;
 
-            for (int rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++) {
+            for (var rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++)
+            {
                 var hidenItemsCell = GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex);
                 if (hidenItemsCell == null || hidenItemsCell.Value == null) continue;
 
-                var items = ((List<RgFullItem>)hidenItemsCell.Value);
+                var items = (List<FullRgItem>) hidenItemsCell.Value;
                 var stastCount = items.Count;
 
-                var unmarketableList = new List<RgFullItem>();
-                for (int i = 0; i < items.Count; i++) {
+                var unmarketableList = new List<FullRgItem>();
+                for (var i = 0; i < items.Count; i++)
+                {
                     var item = items[i];
-                    if (!item.Description.marketable) {
+                    if (!item.Description.IsMarketable)
+                    {
                         unmarketableList.Add(item);
                         items.RemoveAt(i--);
                     }
                 }
-                if (unmarketableList.Count > 0) {
+
+                if (unmarketableList.Count > 0)
+                {
                     totalDeletedItemsCount += unmarketableList.Count;
                     var untradableItem = unmarketableList.First();
-                    var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, untradableItem.Description.market_hash_name);
-                    if (allItemsGridRow != null) {
+                    var allItemsGridRow =
+                        AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid,
+                            untradableItem.Description.MarketHashName);
+                    if (allItemsGridRow != null)
                         AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, unmarketableList);
-                    } else {
+                    else
                         AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, unmarketableList);
-                    }
                 }
+
                 if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);
-                else if (stastCount != items.Count) GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
+                else if (stastCount != items.Count)
+                    GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
             }
+
             Logger.Debug($"{totalDeletedItemsCount} unmarketable items was deleted from sale list");
         }
 
-        public static void DeleteUntradable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid) {
-            int totalDeletedItemsCount = 0;
+        public static void DeleteUntradable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid)
+        {
+            var totalDeletedItemsCount = 0;
 
-            for (int rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++) {
+            for (var rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++)
+            {
                 var hidenItemsCell = GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex);
                 if (hidenItemsCell == null || hidenItemsCell.Value == null) continue;
 
-                var items = ((List<RgFullItem>)hidenItemsCell.Value);
+                var items = (List<FullRgItem>) hidenItemsCell.Value;
                 var stastCount = items.Count;
 
-                var untradableList = new List<RgFullItem>();
-                for (int i = 0; i < items.Count; i++) {
+                var untradableList = new List<FullRgItem>();
+                for (var i = 0; i < items.Count; i++)
+                {
                     var item = items[i];
-                    if (!item.Description.tradable) {
+                    if (!item.Description.IsTradable)
+                    {
                         untradableList.Add(item);
                         items.RemoveAt(i--);
                     }
                 }
-                if (untradableList.Count > 0) {
+
+                if (untradableList.Count > 0)
+                {
                     totalDeletedItemsCount += untradableList.Count;
                     var untradableItem = untradableList.First();
-                    var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, untradableItem.Description.market_hash_name);
-                    if (allItemsGridRow != null) {
+                    var allItemsGridRow =
+                        AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid,
+                            untradableItem.Description.MarketHashName);
+                    if (allItemsGridRow != null)
                         AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, untradableList);
-                    } else {
+                    else
                         AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, untradableList);
-                    }
                 }
 
                 if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);
-                else if (stastCount != items.Count) GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
+                else if (stastCount != items.Count)
+                    GetGridCountTextBoxCell(itemsToSaleGrid, rowIndex).Value = items.Count;
             }
+
             Logger.Debug($"{totalDeletedItemsCount} unmarketable items was deleted from sale list");
         }
 
-        public static List<RgFullItem> GetRowItemsList(DataGridView itemsToSaleGrid, int rowIndex) {
-            return (List<RgFullItem>)GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex).Value;
+        public static List<FullRgItem> GetRowItemsList(DataGridView itemsToSaleGrid, int rowIndex)
+        {
+            return (List<FullRgItem>) GetGridHidenItemsListCell(itemsToSaleGrid, rowIndex).Value;
         }
 
-        public static double? GetRowItemPrice(DataGridView itemsToSaleGrid, int rowIndex) {
+        public static double? GetRowItemPrice(DataGridView itemsToSaleGrid, int rowIndex)
+        {
             var row = GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, rowIndex);
-            if (row == null && row.Value == null) {
-                return null;
-            }
-            return (double?)row.Value;
+            if (row == null && row.Value == null) return null;
+            return (double?) row.Value;
         }
 
-        public static double? GetRowAveragePrice(DataGridView itemsToSaleGrid, int rowIndex) {
+        public static double? GetRowAveragePrice(DataGridView itemsToSaleGrid, int rowIndex)
+        {
             var row = GetGridAveragePriceTextBoxCell(itemsToSaleGrid, rowIndex);
-            if (row == null && row.Value == null) {
-                return null;
-            }
-            return (double?)row.Value;
+            if (row == null && row.Value == null) return null;
+            return (double?) row.Value;
         }
 
-        public static List<RgFullItem> GetRgFullItems(DataGridView grid, int rowIndex) {
+        public static List<FullRgItem> GetFullRgItems(DataGridView grid, int rowIndex)
+        {
             var hidenItemsListCell = GetGridHidenItemsListCell(grid, rowIndex);
-            if (hidenItemsListCell == null) {
-                return new List<RgFullItem>();
-            }
-            return (List<RgFullItem>)hidenItemsListCell.Value;
+            if (hidenItemsListCell == null) return new List<FullRgItem>();
+            return (List<FullRgItem>) hidenItemsListCell.Value;
         }
 
         #region Cells getters
-        public static DataGridViewTextBoxCell GetGridNameTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[ItemNameColumnIndex];
+
+        public static DataGridViewTextBoxCell GetGridNameTextBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[ItemNameColumnIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridCountTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[CountColumnIndex];
+        public static DataGridViewTextBoxCell GetGridCountTextBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[CountColumnIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridCurrentPriceTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[CurrentColumnIndex];
+        public static DataGridViewTextBoxCell GetGridCurrentPriceTextBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[CurrentColumnIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridAveragePriceTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[AverageColumnIndex];
+        public static DataGridViewTextBoxCell GetGridAveragePriceTextBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[AverageColumnIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemListIndex];
+        public static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[HidenItemListIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridHidenItemsMarketHashName(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemMarketHashNameIndex];
+        public static DataGridViewTextBoxCell GetGridHidenItemsMarketHashName(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[HidenItemMarketHashNameIndex];
         }
+
         #endregion
-
     }
 }

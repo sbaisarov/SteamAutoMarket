@@ -1,8 +1,10 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using autotrade.CustomElements.Elements;
 
-namespace autotrade {
-    partial class SaleControl {
+namespace autotrade.CustomElements.Controls.Market
+{
+    partial class SaleControl
+    {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -12,8 +14,10 @@ namespace autotrade {
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -25,7 +29,8 @@ namespace autotrade {
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -85,9 +90,9 @@ namespace autotrade {
             this.AveragePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddedToSaleListHidenItemsList = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
-            this.AveragePricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
-            this.CurrentPricePercentNumericUpDown = new autotrade.CustomElements.CustomNumericUpDown();
+            this.ItemDescriptionTextBox = new RichTextBoxWithNoPaint();
+            this.AveragePricePercentNumericUpDown = new CustomNumericUpDown();
+            this.CurrentPricePercentNumericUpDown = new CustomNumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).BeginInit();
             this.ItemDescriptionGroupBox.SuspendLayout();
             this.ItemsToSaleGroupBox.SuspendLayout();
@@ -916,19 +921,23 @@ namespace autotrade {
 
         }
 
-        public void setSizeListView1(int width, int height) {
+        public void setSizeListView1(int width, int height)
+        {
             // this.listView1.Size = new System.Drawing.Size(width, height);
             this.AllSteamItemsGridView.Size = new System.Drawing.Size(width, height);
         }
 
-        public void setSizeListView2(int width, int height) {
+        public void setSizeListView2(int width, int height)
+        {
         }
 
-        public void setSizeTabControll(int width, int height) {
+        public void setSizeTabControll(int width, int height)
+        {
 
         }
 
-        public void setPoint(int x, int y) {
+        public void setPoint(int x, int y)
+        {
         }
 
         #endregion
@@ -955,7 +964,7 @@ namespace autotrade {
         private RadioButton CurrentMinusPriceRadioButton;
         private RadioButton ManualPriceRadioButton;
         private NumericUpDown CurrentPriceNumericUpDown;
-        private CustomElements.CustomNumericUpDown CurrentPricePercentNumericUpDown;
+        private CustomNumericUpDown CurrentPricePercentNumericUpDown;
         private GroupBox PriceSettingsGroupBox;
         private DataGridView ItemsToSaleGridView;
         private Button ForcePricesReloadButton;
@@ -963,8 +972,8 @@ namespace autotrade {
         private Button RefreshPricesButton;
         private Button OpenMarketPageButtonClick;
         private Button AllItemsUpdateOneButtonClick;
-        private CustomElements.RichTextBoxWithNoPaint ItemDescriptionTextBox;
-        private CustomElements.CustomNumericUpDown AveragePricePercentNumericUpDown;
+        private RichTextBoxWithNoPaint ItemDescriptionTextBox;
+        private CustomNumericUpDown AveragePricePercentNumericUpDown;
         private NumericUpDown AveragePriceNumericUpDown;
         private RadioButton AveregeMinusPriceRadioButton;
         private DataGridViewTextBoxColumn NameColumn;

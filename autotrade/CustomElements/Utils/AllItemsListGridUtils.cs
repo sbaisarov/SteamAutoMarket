@@ -1,17 +1,15 @@
-﻿using autotrade.CustomElements.Utils;
-using autotrade.Utils;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static autotrade.Steam.TradeOffer.Inventory;
+using autotrade.CustomElements.Controls.Trade;
+using autotrade.Steam.TradeOffer.Models;
+using autotrade.Steam.TradeOffer.Models.Full;
+using autotrade.Utils;
 
-namespace autotrade.CustomElements {
-    static class AllItemsListGridUtils {
+namespace autotrade.CustomElements.Utils
+{
+    internal static class AllItemsListGridUtils
+    {
         public static readonly int ItemNameColumnIndex = 0;
         public static readonly int CountColumnIndex = 1;
         public static readonly int TypeColumnIndex = 2;
@@ -23,33 +21,37 @@ namespace autotrade.CustomElements {
         public static readonly int HidenItemImageIndex = 8;
         public static readonly int HidenItemMarketHashNameIndex = 9;
 
-        public static DataGridViewRow GetRowByItemMarketHashName(DataGridView allItemsGrid, string marketHashName) {
-            for (int i = 0; i < allItemsGrid.RowCount; i++) {
+        public static DataGridViewRow GetRowByItemMarketHashName(DataGridView allItemsGrid, string marketHashName)
+        {
+            for (var i = 0; i < allItemsGrid.RowCount; i++)
+            {
                 var hidenMarketHashNameCell = GetGridHidenItemMarketHashNameCell(allItemsGrid, i);
 
-                if ((string)hidenMarketHashNameCell.Value == marketHashName) {
-                    return allItemsGrid.Rows[i];
-                }
+                if ((string) hidenMarketHashNameCell.Value == marketHashName) return allItemsGrid.Rows[i];
             }
 
             return null;
         }
 
-        public static void FillSteamSaleDataGrid(DataGridView allItemsGrid, List<RgFullItem> itemsToAddList) {
-            var groupedItems = itemsToAddList.GroupBy(item => item.Description.market_hash_name);
+        public static void FillSteamSaleDataGrid(DataGridView allItemsGrid, List<FullRgItem> itemsToAddList)
+        {
+            var groupedItems = itemsToAddList.GroupBy(item => item.Description.MarketHashName);
 
-            foreach (var itemsGroup in groupedItems) {
+            foreach (var itemsGroup in groupedItems)
+            {
                 AddNewItemCellAllItemsDataGridView(allItemsGrid, itemsGroup.ToList());
 
                 var firstItem = itemsGroup.First();
-                if (!TradeSendControl.AllDescriptionsDictionary.ContainsKey(firstItem.Description.market_hash_name)) {
-                    TradeSendControl.AllDescriptionsDictionary.Add(firstItem.Description.market_hash_name, firstItem.Description);
-                }
+                if (!TradeSendControl.AllDescriptionsDictionary.ContainsKey(firstItem.Description.MarketHashName))
+                    TradeSendControl.AllDescriptionsDictionary.Add(firstItem.Description.MarketHashName,
+                        firstItem.Description);
             }
         }
 
-        public static void AddNewItemCellAllItemsDataGridView(DataGridView allItemsGrid, List<RgFullItem> itemsToAddList) {
-            int currentRowNumber = allItemsGrid.Rows.Add();
+        public static void AddNewItemCellAllItemsDataGridView(DataGridView allItemsGrid,
+            List<FullRgItem> itemsToAddList)
+        {
+            var currentRowNumber = allItemsGrid.Rows.Add();
 
             var nameCell = GetGridNameTextBoxCell(allItemsGrid, currentRowNumber);
             var countCell = GetGridCountTextBoxCell(allItemsGrid, currentRowNumber);
@@ -60,104 +62,129 @@ namespace autotrade.CustomElements {
 
             var firstItem = itemsToAddList.First();
 
-            nameCell.Value = firstItem.Description.name;
-            countCell.Value = itemsToAddList.Sum(item => int.Parse(item.Asset.amount));
+            nameCell.Value = firstItem.Description.Name;
+            countCell.Value = itemsToAddList.Sum(item => int.Parse(item.Asset.Amount));
             typeCell.Value = SteamItemsUtils.GetClearType(itemsToAddList.First());
             SetDefaultAmountToAddComboBoxCellValue(comboBoxCell);
             hidenItemsListCell.Value = itemsToAddList;
-            hidenMarketHashNameCell.Value = firstItem.Description.market_hash_name;
+            hidenMarketHashNameCell.Value = firstItem.Description.MarketHashName;
         }
 
 
-
-        public static void UpdateItemDescription(DataGridView allItemsGrid, int row, RichTextBox textBox, Panel imageBox, Label label) {
+        public static void UpdateItemDescription(DataGridView allItemsGrid, int row, RichTextBox textBox,
+            Panel imageBox, Label label)
+        {
             var cell = GetGridHidenItemsListCell(allItemsGrid, row);
             if (cell == null) return;
 
-            var hidenItemsList = (List<RgFullItem>)cell.Value;
+            var hidenItemsList = (List<FullRgItem>) cell.Value;
             if (hidenItemsList == null) return;
 
-            UpdateItemDescription(TradeSendControl.AllDescriptionsDictionary[hidenItemsList.First().Description.market_hash_name], textBox, imageBox, label);
+            UpdateItemDescription(
+                TradeSendControl.AllDescriptionsDictionary[hidenItemsList.First().Description.MarketHashName], textBox,
+                imageBox, label);
         }
 
-        public static void UpdateItemDescription(RgDescription description, RichTextBox textBox, Panel imageBox, Label label) {
+        public static void UpdateItemDescription(RgDescription description, RichTextBox textBox, Panel imageBox,
+            Label label)
+        {
             TradeSendControl.LastSelectedItemDescription = description;
 
             UpdateItemTextDescription(description, textBox, label);
             ImageUtils.UpdateItemImageOnPanelAsync(description, imageBox);
         }
 
-        public static void GridComboBoxClick(DataGridView allItemsGrid, int row) {
+        public static void GridComboBoxClick(DataGridView allItemsGrid, int row)
+        {
             var comboBoxCell = GetGridCountToAddComboBoxCell(allItemsGrid, row);
-            int leftItemsCount = int.Parse(GetGridCountTextBoxCell(allItemsGrid, row).Value.ToString());
+            var leftItemsCount = int.Parse(GetGridCountTextBoxCell(allItemsGrid, row).Value.ToString());
 
-            if (comboBoxCell.Items.Count != leftItemsCount + 1) {
+            if (comboBoxCell.Items.Count != leftItemsCount + 1)
                 FillComboBoxCellFromZeroToMaxValue(comboBoxCell, leftItemsCount);
-            }
             allItemsGrid.BeginEdit(true);
             comboBoxCell.Selected = true;
-            ((DataGridViewComboBoxEditingControl)allItemsGrid.EditingControl).DroppedDown = true;
+            ((DataGridViewComboBoxEditingControl) allItemsGrid.EditingControl).DroppedDown = true;
         }
 
-        public static void GridAddButtonClick(DataGridView allItemsGrid, int row, DataGridView itemsToSaleGrid) {
+        public static void GridAddButtonClick(DataGridView allItemsGrid, int row, DataGridView itemsToSaleGrid)
+        {
             var nameTextBoxCell = GetGridNameTextBoxCell(allItemsGrid, row);
             var countTextBoxCell = GetGridCountTextBoxCell(allItemsGrid, row);
             var amountToAddComboBoxCell = GetGridCountToAddComboBoxCell(allItemsGrid, row);
-            var hidenItemsList = (List<RgFullItem>)GetGridHidenItemsListCell(allItemsGrid, row).Value;
+            var hidenItemsList = (List<FullRgItem>) GetGridHidenItemsListCell(allItemsGrid, row).Value;
 
-            int itemsToAddCount = int.Parse(amountToAddComboBoxCell.Value.ToString());
+            var itemsToAddCount = int.Parse(amountToAddComboBoxCell.Value.ToString());
             if (itemsToAddCount <= 0) return;
 
-            var itemsToSell = new List<RgFullItem>();
+            var itemsToSell = new List<FullRgItem>();
 
-            int addedCount = 0;
-            for (int i = hidenItemsList.Count - 1; i >= 0; i--) {
+            var addedCount = 0;
+            for (var i = hidenItemsList.Count - 1; i >= 0; i--)
+            {
                 var item = hidenItemsList[i];
 
-                if (item.Asset.amount.Equals("1")) { //если это не стакающийся предмет
+                if (item.Asset.Amount.Equals("1"))
+                {
+                    //если это не стакающийся предмет
                     itemsToSell.Add(item);
                     hidenItemsList.RemoveAt(i);
                     addedCount++;
-                } else { //если это стакающийся предмет
-                    int itemsInSlotCount = int.Parse(item.Asset.amount);
-                    if (itemsInSlotCount + addedCount > itemsToAddCount) { //если нам нужно добавить НЕ ВСЕ предметы с 1 слота
-                        int neededCount = itemsToAddCount - addedCount;
+                }
+                else
+                {
+                    //если это стакающийся предмет
+                    var itemsInSlotCount = int.Parse(item.Asset.Amount);
+                    if (itemsInSlotCount + addedCount > itemsToAddCount)
+                    {
+                        //если нам нужно добавить НЕ ВСЕ предметы с 1 слота
+                        var neededCount = itemsToAddCount - addedCount;
                         var neededAmountOfItem = item.CloneAsset();
-                        neededAmountOfItem.Asset.amount = neededCount.ToString();
+                        neededAmountOfItem.Asset.Amount = neededCount.ToString();
                         itemsToSell.Add(neededAmountOfItem);
-                        item.Asset.amount = (int.Parse(item.Asset.amount) - neededCount).ToString();
-                    } else { //если нам нужно добавить ВСЕ предметы с 1 слота
+                        item.Asset.Amount = (int.Parse(item.Asset.Amount) - neededCount).ToString();
+                    }
+                    else
+                    {
+                        //если нам нужно добавить ВСЕ предметы с 1 слота
                         itemsToSell.Add(item);
                         hidenItemsList.RemoveAt(i);
                         addedCount += itemsInSlotCount;
                     }
                 }
+
                 if (addedCount == itemsToAddCount) break;
             }
 
             ItemsToSaleGridUtils.AddItemsToSale(itemsToSaleGrid, itemsToSell);
 
-            int totalAmount = int.Parse(countTextBoxCell.Value.ToString()); //изменение ячейки Общее количество
-            if (itemsToAddCount == totalAmount) {
+            var totalAmount = int.Parse(countTextBoxCell.Value.ToString()); //изменение ячейки Общее количество
+            if (itemsToAddCount == totalAmount)
+            {
                 allItemsGrid.Rows.RemoveAt(row);
-            } else {
+            }
+            else
+            {
                 countTextBoxCell.Value = totalAmount - itemsToAddCount;
                 amountToAddComboBoxCell.Items.Add(0);
                 amountToAddComboBoxCell.Value = 0;
             }
         }
 
-        public static void GridAddAllButtonClick(DataGridView allItemsGrid, int row, DataGridView itemsToSaleGrid) {
+        public static void GridAddAllButtonClick(DataGridView allItemsGrid, int row, DataGridView itemsToSaleGrid)
+        {
             AddCellListToSale(allItemsGrid, itemsToSaleGrid, allItemsGrid.Rows[row]);
         }
 
-        public static void AddCellListToSale(DataGridView allItemsGrid, DataGridView itemsToSaleGrid, params DataGridViewRow[] rows) {
-            foreach (DataGridViewRow row in rows) {
+        public static void AddCellListToSale(DataGridView allItemsGrid, DataGridView itemsToSaleGrid,
+            params DataGridViewRow[] rows)
+        {
+            foreach (var row in rows)
+            {
                 var countTextBoxCell = GetGridCountTextBoxCell(allItemsGrid, row.Index);
                 var hidenItemsListCell = GetGridHidenItemsListCell(allItemsGrid, row.Index);
-                var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
+                var hidenItemsList = (List<FullRgItem>) hidenItemsListCell.Value;
 
-                int itemsCount = int.Parse(countTextBoxCell.Value.ToString());
+                var itemsCount = int.Parse(countTextBoxCell.Value.ToString());
                 if (itemsCount <= 0) return;
 
                 ItemsToSaleGridUtils.AddItemsToSale(itemsToSaleGrid, hidenItemsList);
@@ -166,81 +193,94 @@ namespace autotrade.CustomElements {
             }
         }
 
-        public static void AddItemsToExistRow(DataGridView allItemsGrid, int row, List<RgFullItem> items) {
+        public static void AddItemsToExistRow(DataGridView allItemsGrid, int row, List<FullRgItem> items)
+        {
             var countTextBoxCell = GetGridCountTextBoxCell(allItemsGrid, row);
             var hidenItemsListCell = GetGridHidenItemsListCell(allItemsGrid, row);
-            var hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
+            var hidenItemsList = (List<FullRgItem>) hidenItemsListCell.Value;
 
-            if (hidenItemsList == null) {
+            if (hidenItemsList == null)
+            {
                 hidenItemsListCell.Value = items;
-                hidenItemsList = (List<RgFullItem>)hidenItemsListCell.Value;
-            } else {
+                hidenItemsList = (List<FullRgItem>) hidenItemsListCell.Value;
+            }
+            else
+            {
                 hidenItemsList.AddRange(items);
             }
 
-            countTextBoxCell.Value = hidenItemsList.Sum(item => int.Parse(item.Asset.amount));
+            countTextBoxCell.Value = hidenItemsList.Sum(item => int.Parse(item.Asset.Amount));
         }
 
-        private static void FillComboBoxCellFromZeroToMaxValue(DataGridViewComboBoxCell comboBoxCell, int maxValue) {
+        private static void FillComboBoxCellFromZeroToMaxValue(DataGridViewComboBoxCell comboBoxCell, int maxValue)
+        {
             if (maxValue < 0) return;
 
             SetDefaultAmountToAddComboBoxCellValue(comboBoxCell);
 
-            int step = 1;
-            if (maxValue > 1000) {
-                step = (maxValue.ToString().Length - 2) * 10;
-            }
+            var step = 1;
+            if (maxValue > 1000) step = (maxValue.ToString().Length - 2) * 10;
 
-            for (int i = step; i <= maxValue; i += step) {
-                comboBoxCell.Items.Add(i.ToString());
-            }
+            for (var i = step; i <= maxValue; i += step) comboBoxCell.Items.Add(i.ToString());
         }
 
-        private static void SetDefaultAmountToAddComboBoxCellValue(DataGridViewComboBoxCell comboBoxCell) {
+        private static void SetDefaultAmountToAddComboBoxCellValue(DataGridViewComboBoxCell comboBoxCell)
+        {
             comboBoxCell.Value = null;
             comboBoxCell.Items.Clear();
             comboBoxCell.Items.Add("0");
             comboBoxCell.Value = "0";
         }
 
-        private static void UpdateItemTextDescription(RgDescription description, RichTextBox textBox, Label label) {
+        private static void UpdateItemTextDescription(RgDescription description, RichTextBox textBox, Label label)
+        {
             textBox.Clear();
 
-            label.Text = description.name;
+            label.Text = description.Name;
 
             var descriptionText = "";
-            if (description.descriptions != null) {
-                foreach (var item in description.descriptions) {
-                    string text = item.value.Trim();
+            if (description.Descriptions != null)
+            {
+                foreach (var item in description.Descriptions)
+                {
+                    var text = item.Value.Trim();
                     if (!string.IsNullOrWhiteSpace(text)) descriptionText += text + ", ";
                 }
-                if (descriptionText.EndsWith(", ")) descriptionText = descriptionText.Substring(0, descriptionText.Length - 2);
+
+                if (descriptionText.EndsWith(", "))
+                    descriptionText = descriptionText.Substring(0, descriptionText.Length - 2);
             }
 
             var tagsText = "";
-            if (description.tags != null) {
-                foreach (var item in description.tags) {
-                    string text = item.localized_tag_name.Trim();
+            if (description.Tags != null)
+            {
+                foreach (var item in description.Tags)
+                {
+                    var text = item.LocalizedTagName.Trim();
                     if (!string.IsNullOrWhiteSpace(text)) tagsText += text + ", ";
                 }
+
                 if (tagsText.EndsWith(", ")) tagsText = tagsText.Substring(0, tagsText.Length - 2);
             }
+
             CommonUtils.AppendBoldText(textBox, "Game: ");
-            textBox.AppendText(description.appid.ToString() + "\n");
+            textBox.AppendText(description.Appid + "\n");
 
             CommonUtils.AppendBoldText(textBox, "Name: ");
-            textBox.AppendText(description.market_hash_name + "\n");
+            textBox.AppendText(description.MarketHashName + "\n");
 
             CommonUtils.AppendBoldText(textBox, "Type: ");
-            textBox.AppendText(description.type);
+            textBox.AppendText(description.Type);
 
-            if (!string.IsNullOrWhiteSpace(descriptionText)) {
+            if (!string.IsNullOrWhiteSpace(descriptionText))
+            {
                 textBox.AppendText("\n");
                 CommonUtils.AppendBoldText(textBox, "Description: ");
                 textBox.AppendText(descriptionText);
             }
 
-            if (!string.IsNullOrWhiteSpace(tagsText)) {
+            if (!string.IsNullOrWhiteSpace(tagsText))
+            {
                 textBox.AppendText("\n");
                 CommonUtils.AppendBoldText(textBox, "Tags: ");
                 textBox.AppendText(tagsText);
@@ -248,71 +288,79 @@ namespace autotrade.CustomElements {
         }
 
 
-
-        public static List<RgFullItem> GetRgFullItems(DataGridView grid, int rowIndex) {
+        public static List<FullRgItem> GetFullRgItems(DataGridView grid, int rowIndex)
+        {
             var hidenItemsListCell = GetGridHidenItemsListCell(grid, rowIndex);
-            if (hidenItemsListCell == null) {
-                return new List<RgFullItem>();
-            }
-            return (List<RgFullItem>)hidenItemsListCell.Value;
+            if (hidenItemsListCell == null) return new List<FullRgItem>();
+            return (List<FullRgItem>) hidenItemsListCell.Value;
         }
 
-        public static double? GetRowItemPrice(DataGridView grid, int rowIndex) {
+        public static double? GetRowItemPrice(DataGridView grid, int rowIndex)
+        {
             var row = GetGridCurrentPriceTextBoxCell(grid, rowIndex);
-            if (row == null && row.Value == null) {
-                return null;
-            }
-            return (double?)row.Value;
+            if (row == null && row.Value == null) return null;
+            return (double?) row.Value;
         }
 
-        public static double? GetRowAveragePrice(DataGridView grid, int rowIndex) {
+        public static double? GetRowAveragePrice(DataGridView grid, int rowIndex)
+        {
             var row = GetGridAveragePriceTextBoxCell(grid, rowIndex);
-            if (row == null && row.Value == null) {
-                return null;
-            }
-            return (double?)row.Value;
+            if (row == null && row.Value == null) return null;
+            return (double?) row.Value;
         }
 
         #region Cells getters
-        public static DataGridViewTextBoxCell GetGridNameTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[ItemNameColumnIndex];
+
+        public static DataGridViewTextBoxCell GetGridNameTextBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[ItemNameColumnIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridCountTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[CountColumnIndex];
+        public static DataGridViewTextBoxCell GetGridCountTextBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[CountColumnIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridTypeTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[TypeColumnIndex];
+        public static DataGridViewTextBoxCell GetGridTypeTextBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[TypeColumnIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridCurrentPriceTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[CurrentColumnIndex];
+        public static DataGridViewTextBoxCell GetGridCurrentPriceTextBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[CurrentColumnIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridAveragePriceTextBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[AverageColumnIndex];
+        public static DataGridViewTextBoxCell GetGridAveragePriceTextBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[AverageColumnIndex];
         }
 
-        public static DataGridViewComboBoxCell GetGridCountToAddComboBoxCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewComboBoxCell)grid.Rows[rowIndex].Cells[AmountToAddIndex];
+        public static DataGridViewComboBoxCell GetGridCountToAddComboBoxCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewComboBoxCell) grid.Rows[rowIndex].Cells[AmountToAddIndex];
         }
 
-        public static DataGridViewButtonCell GetGridAddButtonCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewButtonCell)grid.Rows[rowIndex].Cells[AddButtonIndex];
+        public static DataGridViewButtonCell GetGridAddButtonCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewButtonCell) grid.Rows[rowIndex].Cells[AddButtonIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemListIndex];
+        public static DataGridViewTextBoxCell GetGridHidenItemsListCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[HidenItemListIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridHidenItemImageCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemImageIndex];
+        public static DataGridViewTextBoxCell GetGridHidenItemImageCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[HidenItemImageIndex];
         }
 
-        public static DataGridViewTextBoxCell GetGridHidenItemMarketHashNameCell(DataGridView grid, int rowIndex) {
-            return (DataGridViewTextBoxCell)grid.Rows[rowIndex].Cells[HidenItemMarketHashNameIndex];
+        public static DataGridViewTextBoxCell GetGridHidenItemMarketHashNameCell(DataGridView grid, int rowIndex)
+        {
+            return (DataGridViewTextBoxCell) grid.Rows[rowIndex].Cells[HidenItemMarketHashNameIndex];
         }
+
         #endregion
     }
 }

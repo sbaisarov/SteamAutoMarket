@@ -1,4 +1,4 @@
-﻿namespace Market.Enums
+﻿namespace autotrade.Steam.Market.Enums
 {
     public enum ELanguage
     {

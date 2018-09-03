@@ -1,13 +1,19 @@
 ﻿using System;
 
-namespace Market.Exceptions
+namespace autotrade.Steam.Market.Exceptions
 {
     public class SteamException : Exception
     {
-        public SteamException(){}
+        public SteamException()
+        {
+        }
 
-        public SteamException(string message) : base(message){}
+        public SteamException(string message) : base(message)
+        {
+        }
 
-        public SteamException(string message, Exception inner): base(message, inner){}
+        public SteamException(string message, Exception inner) : base(message, inner)
+        {
+        }
     }
 }

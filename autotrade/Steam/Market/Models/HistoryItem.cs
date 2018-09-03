@@ -1,8 +1,8 @@
 ﻿using System;
-using Market.Enums;
-using Market.Models.Json;
+using autotrade.Steam.Market.Enums;
+using autotrade.Steam.Market.Models.Json;
 
-namespace Market.Models
+namespace autotrade.Steam.Market.Models
 {
     public class HistoryItem
     {

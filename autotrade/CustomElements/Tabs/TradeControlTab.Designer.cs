@@ -1,5 +1,9 @@
-﻿namespace autotrade.CustomElements.Tabs {
-    partial class TradeControlTab {
+﻿using autotrade.CustomElements.Controls.Trade;
+
+namespace autotrade.CustomElements.Tabs
+{
+    partial class TradeControlTab
+    {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -9,8 +13,10 @@
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -22,14 +28,15 @@
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.TabControl = new System.Windows.Forms.TabControl();
             this.SendTradeTab = new System.Windows.Forms.TabPage();
-            this.TradeControl = new autotrade.CustomElements.TradeSendControl();
+            this.TradeControl = new TradeSendControl();
             this.ActiveTradesTab = new System.Windows.Forms.TabPage();
-            this.RecievedTradeManageControl = new autotrade.CustomElements.Controls.RecievedTradeManageControl();
+            this.RecievedTradeManageControl = new RecievedTradeManageControl();
             this.HistoryTradesTab = new System.Windows.Forms.TabPage();
-            this.TradeHistoryControl = new autotrade.TradeHistoryControl();
+            this.TradeHistoryControl = new TradeHistoryControl();
             this.TabControl.SuspendLayout();
             this.SendTradeTab.SuspendLayout();
             this.ActiveTradesTab.SuspendLayout();
@@ -136,7 +143,7 @@
         private System.Windows.Forms.TabPage ActiveTradesTab;
         private System.Windows.Forms.TabPage HistoryTradesTab;
         public TradeSendControl TradeControl;
-        public Controls.RecievedTradeManageControl RecievedTradeManageControl;
+        public RecievedTradeManageControl RecievedTradeManageControl;
         public TradeHistoryControl TradeHistoryControl;
     }
 }

@@ -1,23 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
-namespace autotrade.Utils {
-    class Dispatcher {
+namespace autotrade.Utils
+{
+    internal class Dispatcher
+    {
         public delegate void AsyncAction();
 
         public delegate void DispatcherInvoker(Form form, AsyncAction a);
 
-        public static void Invoke(Form form, AsyncAction action) {
+        public static void AsMainForm(AsyncAction action)
+        {
+            Invoke(Program.MainForm, action);
+        }
+
+        public static void AsLoadingForm(AsyncAction action)
+        {
+            Invoke(Program.LoadingForm, action);
+        }
+
+        public static void AsWorkingProcessForm(AsyncAction action)
+        {
+            Invoke(Program.WorkingProcessForm, action);
+        }
+
+        private static void Invoke(Form form, AsyncAction action)
+        {
             if (form == null || action == null) return;
-            if (!form.InvokeRequired) {
+
+            if (!form.InvokeRequired)
                 action();
-            } else {
-                form.Invoke((DispatcherInvoker)Invoke, form, action);
-            }
+            else
+                form.Invoke((DispatcherInvoker) Invoke, form, action);
         }
     }
 }

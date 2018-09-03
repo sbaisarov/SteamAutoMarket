@@ -1,6 +1,6 @@
-﻿using Market.Enums;
+﻿using autotrade.Steam.Market.Enums;
 
-namespace Market
+namespace autotrade.Steam.Market
 {
     public class Settings
     {

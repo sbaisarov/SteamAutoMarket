@@ -1,44 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace autotrade.CustomElements {
-    class RichTextBoxWithNoPaint : RichTextBox {
+namespace autotrade.CustomElements.Elements
+{
+    internal class RichTextBoxWithNoPaint : RichTextBox
+    {
         private readonly Color _backColorDisabled = Color.Gainsboro;
         private readonly Color _foreColorDisabled = SystemColors.ControlText;
 
-        protected override void OnEnabledChanged(EventArgs e) {
+        protected override void OnEnabledChanged(EventArgs e)
+        {
             base.OnEnabledChanged(e);
-            if (!(this.Enabled)) {
-                this.SetStyle(ControlStyles.UserPaint, true);
-            } else {
-                this.SetStyle(ControlStyles.UserPaint, false);
-            }
+            if (!Enabled)
+                SetStyle(ControlStyles.UserPaint, true);
+            else
+                SetStyle(ControlStyles.UserPaint, false);
 
-            this.Invalidate();
+            Invalidate();
         }
 
-        protected override void OnPaint(PaintEventArgs e) {
+        protected override void OnPaint(PaintEventArgs e)
+        {
             base.OnPaint(e);
             SolidBrush textBrush;
 
-            if (this.Enabled) {
-                textBrush = new SolidBrush(this.ForeColor);
-            } else {
-                Color backColorDisabled = this._backColorDisabled;
-                if (this.Parent.FindForm() != null) {
-                    backColorDisabled = this.Parent.FindForm().BackColor;
-                }
-                textBrush = new SolidBrush(this._foreColorDisabled);
-                SolidBrush backBrush = new SolidBrush(backColorDisabled);
+            if (Enabled)
+            {
+                textBrush = new SolidBrush(ForeColor);
+            }
+            else
+            {
+                var backColorDisabled = _backColorDisabled;
+                if (Parent.FindForm() != null) backColorDisabled = Parent.FindForm().BackColor;
+                textBrush = new SolidBrush(_foreColorDisabled);
+                var backBrush = new SolidBrush(backColorDisabled);
                 e.Graphics.FillRectangle(backBrush, ClientRectangle);
             }
 
-            e.Graphics.DrawString(this.Text, this.Font, textBrush, 1.0F, 1.0F);
+            e.Graphics.DrawString(Text, Font, textBrush, 1.0F, 1.0F);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Market.Models
+namespace autotrade.Steam.Market.Models
 {
     public class MarketSearch
     {
@@ -9,7 +9,8 @@ namespace Market.Models
             Items = new List<MarketSearchItem>();
             TotalCount = 0;
         }
+
         public int TotalCount { get; set; }
-        public List<MarketSearchItem> Items { get; set; } 
+        public List<MarketSearchItem> Items { get; set; }
     }
 }

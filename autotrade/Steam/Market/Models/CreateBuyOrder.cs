@@ -1,6 +1,6 @@
-﻿using Market.Enums;
+﻿using autotrade.Steam.Market.Enums;
 
-namespace Market.Models
+namespace autotrade.Steam.Market.Models
 {
     public class CreateBuyOrder
     {

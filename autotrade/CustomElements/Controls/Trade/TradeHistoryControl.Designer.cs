@@ -1,8 +1,9 @@
-﻿using autotrade.CustomElements;
-using autotrade.CustomElements.Controls;
+﻿using autotrade.CustomElements.Elements;
 
-namespace autotrade {
-    partial class TradeHistoryControl {
+namespace autotrade.CustomElements.Controls.Trade
+{
+    partial class TradeHistoryControl
+    {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -12,8 +13,10 @@ namespace autotrade {
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -25,7 +28,8 @@ namespace autotrade {
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -78,7 +82,7 @@ namespace autotrade {
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SplitterPanel = new System.Windows.Forms.Panel();
             this.DateTimePicker = new autotrade.CustomElements.Elements.CustomDateTimePicker();
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
+            this.ItemDescriptionTextBox = new RichTextBoxWithNoPaint();
             this.CurrentTradesGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTradesGridView)).BeginInit();
             this.MyItemsGroupBox.SuspendLayout();

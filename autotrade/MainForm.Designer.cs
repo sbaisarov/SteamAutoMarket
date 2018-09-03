@@ -1,7 +1,10 @@
-﻿using autotrade.Utils;
+﻿using autotrade.CustomElements.Tabs;
+using autotrade.Utils;
 
-namespace autotrade {
-    partial class MainForm {
+namespace autotrade
+{
+    partial class MainForm
+    {
         /// <summary>
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -11,8 +14,10 @@ namespace autotrade {
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -24,7 +29,8 @@ namespace autotrade {
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.leftHeaderPanel = new System.Windows.Forms.Panel();
             this.LeftEdge = new System.Windows.Forms.Panel();
@@ -43,7 +49,7 @@ namespace autotrade {
             this.appExitButton = new System.Windows.Forms.Button();
             this.RightEdge = new System.Windows.Forms.Panel();
             this.MarketControlTab = new autotrade.CustomElements.Tabs.MarketControlTab();
-            this.SettingsControlTab = new autotrade.CustomElements.SettingsControlTab();
+            this.SettingsControlTab = new SettingsControlTab();
             this.TradeControlTab = new autotrade.CustomElements.Tabs.TradeControlTab();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoImageBox)).BeginInit();
@@ -334,7 +340,7 @@ namespace autotrade {
         private System.Windows.Forms.Panel BotEdge;
         private System.Windows.Forms.Button TradeLinkButton;
 
-        public CustomElements.SettingsControlTab SettingsControlTab;
+        public SettingsControlTab SettingsControlTab;
         public CustomElements.Tabs.MarketControlTab MarketControlTab;
         public CustomElements.Tabs.TradeControlTab TradeControlTab;
     }

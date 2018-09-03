@@ -1,24 +1,26 @@
-﻿using autotrade.Utils;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+﻿using System;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using autotrade.Utils;
 
-namespace autotrade {
-    public partial class WorkingProcessForm : Form {
+namespace autotrade.CustomElements.Forms
+{
+    public partial class WorkingProcessForm : Form
+    {
+        private bool stopButtonPressed;
         private Thread workingThread;
-        private bool stopButtonPressed = false;
 
-        public void InitProcess(Action process) {
+        public WorkingProcessForm()
+        {
+            InitializeComponent();
+        }
+
+        public void InitProcess(Action process)
+        {
             _activate();
-            workingThread = new Thread(() => {
+            workingThread = new Thread(() =>
+            {
                 process();
                 _disactivate();
             });
@@ -26,44 +28,46 @@ namespace autotrade {
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void AppendWorkingProcessInfo(string message) {
-            Dispatcher.Invoke(Program.WorkingProcessForm, () => {
-                this.logTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
+        public void AppendWorkingProcessInfo(string message)
+        {
+            Dispatcher.AsWorkingProcessForm(() =>
+            {
+                logTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
                 logTextBox.ScrollToCaret();
 
                 Logger.Working(message);
             });
         }
 
-        public WorkingProcessForm() {
-            InitializeComponent();
-        }
-
-        private void WorkingProcessForm_Load(object sender, EventArgs e) {
+        private void WorkingProcessForm_Load(object sender, EventArgs e)
+        {
             AppendWorkingProcessInfo("Working process started.");
         }
 
-        private void _activate() {
-            this.Show();
+        private void _activate()
+        {
+            Show();
         }
 
-        private void _disactivate() {
-            Dispatcher.Invoke(Program.WorkingProcessForm, () => {
-                this.Close();
+        private void _disactivate()
+        {
+            Dispatcher.AsMainForm(() =>
+            {
+                Close();
                 Program.WorkingProcessForm = new WorkingProcessForm();
             });
         }
 
-        private void StopWorkingProcessButton_Click(object sender, EventArgs e) {
+        private void StopWorkingProcessButton_Click(object sender, EventArgs e)
+        {
             stopButtonPressed = true;
             workingThread.Abort();
             _disactivate();
         }
 
-        private void WorkingProcessForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if (!stopButtonPressed) {
-                StopWorkingProcessButton_Click(sender, e);
-            }
+        private void WorkingProcessForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!stopButtonPressed) StopWorkingProcessButton_Click(sender, e);
         }
     }
 }

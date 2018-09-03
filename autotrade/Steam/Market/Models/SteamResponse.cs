@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using RestSharp;
 
-namespace Market.Models
+namespace autotrade.Steam.Market.Models
 {
     public class SteamResponse
     {

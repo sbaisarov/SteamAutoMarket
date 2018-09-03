@@ -5,27 +5,27 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using autotrade.Steam.Market.Exceptions;
+using autotrade.Steam.Market.Models;
+using autotrade.Steam.Market.Models.Json;
 using Newtonsoft.Json;
 using RestSharp;
-using Market.Exceptions;
-using Market.Models;
-using Market.Models.Json;
 
-namespace Market
+namespace autotrade.Steam.Market
 {
     public class Auth
     {
         private readonly SteamMarketHandler _steam;
-
-        public bool IsAuthorized { get; set; }
-
-        public CookieContainer CookieContainer { get; private set; }
 
         public Auth(SteamMarketHandler steam, CookieContainer cookies = null)
         {
             _steam = steam;
             CookieContainer = cookies;
         }
+
+        public bool IsAuthorized { get; set; }
+
+        public CookieContainer CookieContainer { get; private set; }
 
         public void ResetAuth()
         {
@@ -39,10 +39,7 @@ namespace Market
 
             var id = (from Cookie cook in cookies where cook.Name == "sessionid" select cook.Value).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new SteamException("Cannot get session ID from cookies");
-            }
+            if (string.IsNullOrEmpty(id)) throw new SteamException("Cannot get session ID from cookies");
 
             return id;
         }
@@ -50,7 +47,7 @@ namespace Market
         public void Logout()
         {
             var sessionId = SessionId();
-            var data = new Dictionary<string, string> { { "sessionid", sessionId } };
+            var data = new Dictionary<string, string> {{"sessionid", sessionId}};
 
             _steam.Request(Urls.Logout, Method.POST, Urls.Market, data, true);
 
@@ -83,19 +80,16 @@ namespace Market
 
             var encPass = EncryptPassword(pass, rsa.Module, rsa.Exponent);
 
-            if (string.IsNullOrEmpty(encPass))
-            {
-                throw new SteamException("Failed to get encrypt password");
-            }
+            if (string.IsNullOrEmpty(encPass)) throw new SteamException("Failed to get encrypt password");
 
             var @params = new Dictionary<string, string>
             {
-                {"password", encPass },
-                {"username", login },
-                {"rsatimestamp", rsa.TimeStamp },
-                {"remember_login",  true.ToString()},
-                {"loginfriendlyname",  ""},
-                {"l", "en" }
+                {"password", encPass},
+                {"username", login},
+                {"rsatimestamp", rsa.TimeStamp},
+                {"remember_login", true.ToString()},
+                {"loginfriendlyname", ""},
+                {"l", "en"}
             };
 
             if (!string.IsNullOrEmpty(captchaGid) && !string.IsNullOrEmpty(captchaText))
@@ -119,7 +113,7 @@ namespace Market
                 @params.Add("twofactorcode", steamGuard);
             }
 
-            var resp = _steam.Request(Urls.LoginDo , Method.POST, Urls.Login, @params);
+            var resp = _steam.Request(Urls.LoginDo, Method.POST, Urls.Login, @params);
             var jresp = JsonConvert.DeserializeObject<JLogin>(resp.Data.Content);
 
             auth.Message = jresp.Message;
@@ -164,19 +158,14 @@ namespace Market
                 CookieContainer = resp.CookieContainer;
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public JRsa GetRsa(string login)
         {
-            if (string.IsNullOrEmpty(login))
-            {
-                throw new ArgumentException("Login must not be empty");
-            }
-            var data = new Dictionary<string, string> { { "username", login } };
+            if (string.IsNullOrEmpty(login)) throw new ArgumentException("Login must not be empty");
+            var data = new Dictionary<string, string> {{"username", login}};
             var resp = _steam.Request(Urls.LoginRsa, Method.POST, Urls.SteamCommunity, data);
             return JsonConvert.DeserializeObject<JRsa>(resp.Data.Content);
         }
@@ -195,6 +184,5 @@ namespace Market
 
             return Convert.ToBase64String(encodedPass);
         }
- 
     }
 }

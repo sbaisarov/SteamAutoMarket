@@ -1,4 +1,4 @@
-﻿namespace Market
+﻿namespace autotrade.Steam.Market
 {
     public static class Urls
     {

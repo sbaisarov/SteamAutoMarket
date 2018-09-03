@@ -1,26 +1,26 @@
-﻿using autotrade.Steam.TradeOffer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static autotrade.Steam.TradeOffer.Inventory;
+﻿using autotrade.Steam.TradeOffer.Models.Full;
 
-namespace autotrade.CustomElements.Utils {
-    class SteamItemsUtils {
-        public static string GetClearType(RgFullItem item) {
-            return GetClearType(item.Description.type);
-        }
-
-        public static string GetClearType(FullTradeItem item) {
+namespace autotrade.CustomElements.Utils
+{
+    internal class SteamItemsUtils
+    {
+        public static string GetClearType(FullRgItem item)
+        {
             return GetClearType(item.Description.Type);
         }
 
-        public static string GetClearType(FullHistoryTradeItem item) {
+        public static string GetClearType(FullTradeItem item)
+        {
             return GetClearType(item.Description.Type);
         }
 
-        private static string GetClearType(string type) {
+        public static string GetClearType(FullHistoryTradeItem item)
+        {
+            return GetClearType(item.Description.Type);
+        }
+
+        private static string GetClearType(string type)
+        {
             if (type == null) return "[None]";
             if (type.Contains("Sale Foil Trading Card")) return "Sale Foil Trading Card";
             if (type.Contains("Sale Trading Card")) return "Sale Trading Card";
@@ -31,6 +31,5 @@ namespace autotrade.CustomElements.Utils {
             if (type.Contains("Sale Item")) return "Sale Item";
             return type;
         }
-
     }
 }

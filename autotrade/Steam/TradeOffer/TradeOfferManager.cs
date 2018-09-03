@@ -1,77 +1,76 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using SteamKit2;
-using System;
 using System.Linq;
 using System.Net;
-using SteamAuth;
-using System.Threading.Tasks;
+using autotrade.Steam.TradeOffer.Enums;
+using autotrade.Steam.TradeOffer.Models;
+using SteamKit2;
 
 namespace autotrade.Steam.TradeOffer
 {
     public class TradeOfferManager
     {
-        private readonly Dictionary<string, TradeOfferState> knownTradeOffers = new Dictionary<string, TradeOfferState>();
-        private readonly OfferSession session;
-        private readonly TradeOfferWebAPI webApi;
-        private readonly Queue<Offer> unhandledTradeOfferUpdates;
+        public delegate void TradeOfferUpdatedHandler(TradeOffer offer);
 
-        public DateTime LastTimeCheckedOffers { get; private set; }
+        private readonly Dictionary<string, TradeOfferState> _knownTradeOffers =
+            new Dictionary<string, TradeOfferState>();
+
+        private readonly OfferSession _session;
+        private readonly Queue<Offer> _unhandledTradeOfferUpdates;
+        private readonly TradeOfferWebAPI _webApi;
 
         public TradeOfferManager(string apiKey, CookieContainer cookies, string sessionid)
         {
             if (apiKey == null)
-                throw new ArgumentNullException("apiKey");
+                throw new ArgumentNullException(nameof(apiKey));
 
             LastTimeCheckedOffers = DateTime.MinValue;
-            webApi = new TradeOfferWebAPI(apiKey);
-            session = new OfferSession(webApi, cookies, sessionid);
-            unhandledTradeOfferUpdates = new Queue<Offer>();
+            _webApi = new TradeOfferWebAPI(apiKey);
+            _session = new OfferSession(_webApi, cookies, sessionid);
+            _unhandledTradeOfferUpdates = new Queue<Offer>();
         }
 
-        public delegate void TradeOfferUpdatedHandler(TradeOffer offer);
+        public DateTime LastTimeCheckedOffers { get; private set; }
 
         /// <summary>
-        /// Occurs when a new trade offer has been made by the other user
+        ///     Occurs when a new trade offer has been made by the other user
         /// </summary>
         public event TradeOfferUpdatedHandler OnTradeOfferUpdated;
 
         public void EnqueueUpdatedOffers()
         {
-            DateTime startTime = DateTime.Now;
+            var startTime = DateTime.Now;
 
-            var offersResponse = (LastTimeCheckedOffers == DateTime.MinValue
-                ? webApi.GetAllTradeOffers()
-                : webApi.GetAllTradeOffers(GetUnixTimeStamp(LastTimeCheckedOffers).ToString()));
+            var offersResponse = LastTimeCheckedOffers == DateTime.MinValue
+                ? _webApi.GetAllTradeOffers()
+                : _webApi.GetAllTradeOffers(GetUnixTimeStamp(LastTimeCheckedOffers).ToString());
             AddTradeOffersToQueue(offersResponse);
 
-            LastTimeCheckedOffers = startTime - TimeSpan.FromMinutes(5); //Lazy way to make sure we don't miss any trade offers due to slightly differing clocks
+            LastTimeCheckedOffers =
+                startTime - TimeSpan
+                    .FromMinutes(
+                        5); //Lazy way to make sure we don't miss any trade offers due to slightly differing clocks
         }
 
         private void AddTradeOffersToQueue(OffersResponse offers)
         {
-            if (offers == null || offers.AllOffers == null)
+            if (offers?.AllOffers == null)
                 return;
 
-            lock(unhandledTradeOfferUpdates)
+            lock (_unhandledTradeOfferUpdates)
             {
-                foreach(var offer in offers.AllOffers)
-                {
-                    unhandledTradeOfferUpdates.Enqueue(offer);
-                }
+                foreach (var offer in offers.AllOffers) _unhandledTradeOfferUpdates.Enqueue(offer);
             }
         }
 
         public bool HandleNextPendingTradeOfferUpdate()
         {
             Offer nextOffer;
-            lock (unhandledTradeOfferUpdates)
+            lock (_unhandledTradeOfferUpdates)
             {
-                if (!unhandledTradeOfferUpdates.Any())
-                {
-                    return false;
-                }
-                nextOffer = unhandledTradeOfferUpdates.Dequeue();
+                if (!_unhandledTradeOfferUpdates.Any()) return false;
+                nextOffer = _unhandledTradeOfferUpdates.Dequeue();
             }
 
             return HandleTradeOfferUpdate(nextOffer);
@@ -79,20 +78,18 @@ namespace autotrade.Steam.TradeOffer
 
         private bool HandleTradeOfferUpdate(Offer offer)
         {
-            if(knownTradeOffers.ContainsKey(offer.TradeOfferId) && knownTradeOffers[offer.TradeOfferId] == offer.TradeOfferState)
-            {
-                return false;
-            }
+            if (_knownTradeOffers.ContainsKey(offer.TradeOfferId) &&
+                _knownTradeOffers[offer.TradeOfferId] == offer.TradeOfferState) return false;
 
             //make sure the api loaded correctly sometimes the items are missing
-            if(IsOfferValid(offer))
+            if (IsOfferValid(offer))
             {
                 SendOfferToHandler(offer);
             }
             else
             {
-                var resp = webApi.GetTradeOffer(offer.TradeOfferId);
-                if(IsOfferValid(resp.Offer))
+                var resp = _webApi.GetTradeOffer(offer.TradeOfferId);
+                if (IsOfferValid(resp.Offer))
                 {
                     SendOfferToHandler(resp.Offer);
                 }
@@ -102,49 +99,49 @@ namespace autotrade.Steam.TradeOffer
                     return false;
                 }
             }
+
             return true;
         }
 
         private bool IsOfferValid(Offer offer)
         {
-            bool hasItemsToGive = offer.ItemsToGive != null && offer.ItemsToGive.Count != 0;
-            bool hasItemsToReceive = offer.ItemsToReceive != null && offer.ItemsToReceive.Count != 0;
+            var hasItemsToGive = offer.ItemsToGive != null && offer.ItemsToGive.Count != 0;
+            var hasItemsToReceive = offer.ItemsToReceive != null && offer.ItemsToReceive.Count != 0;
             return hasItemsToGive || hasItemsToReceive;
         }
 
         private void SendOfferToHandler(Offer offer)
         {
-            knownTradeOffers[offer.TradeOfferId] = offer.TradeOfferState;
-            OnTradeOfferUpdated(new TradeOffer(session, offer));
+            _knownTradeOffers[offer.TradeOfferId] = offer.TradeOfferState;
+            OnTradeOfferUpdated(new TradeOffer(_session, offer));
         }
 
         private uint GetUnixTimeStamp(DateTime dateTime)
         {
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            return (uint)((dateTime.ToUniversalTime() - epoch).TotalSeconds);
+            return (uint) (dateTime.ToUniversalTime() - epoch).TotalSeconds;
         }
 
         public TradeOffer NewOffer(SteamID other)
         {
-            return new TradeOffer(session, other);
+            return new TradeOffer(_session, other);
         }
 
         public bool TryGetOffer(string offerId, out TradeOffer tradeOffer)
         {
             tradeOffer = null;
-            var resp = webApi.GetTradeOffer(offerId);
+            var resp = _webApi.GetTradeOffer(offerId);
             if (resp != null)
             {
                 if (IsOfferValid(resp.Offer))
                 {
-                    tradeOffer = new TradeOffer(session, resp.Offer);
+                    tradeOffer = new TradeOffer(_session, resp.Offer);
                     return true;
                 }
-                else
-                {
-                    Debug.WriteLine("Offer returned from steam api is not valid : " + resp.Offer.TradeOfferId);
-                }
+
+                Debug.WriteLine("Offer returned from steam api is not valid : " + resp.Offer.TradeOfferId);
             }
+
             return false;
         }
     }

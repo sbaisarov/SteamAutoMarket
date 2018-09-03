@@ -1,8 +1,10 @@
-﻿using autotrade.Utils;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using autotrade.CustomElements.Elements;
 
-namespace autotrade.CustomElements {
-    partial class TradeSendControl {
+namespace autotrade.CustomElements.Controls.Trade
+{
+    partial class TradeSendControl
+    {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -12,8 +14,10 @@ namespace autotrade.CustomElements {
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -25,7 +29,8 @@ namespace autotrade.CustomElements {
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -57,7 +62,7 @@ namespace autotrade.CustomElements {
             this.SendTradeButton = new System.Windows.Forms.Button();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
-            this.ItemDescriptionTextBox = new autotrade.CustomElements.RichTextBoxWithNoPaint();
+            this.ItemDescriptionTextBox = new RichTextBoxWithNoPaint();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.AllSteamItemsGroupBox = new System.Windows.Forms.GroupBox();
             this.AllSteamItemsToTradeGridView = new System.Windows.Forms.DataGridView();
@@ -823,19 +828,23 @@ namespace autotrade.CustomElements {
 
         }
 
-        public void setSizeListView1(int width, int height) {
+        public void setSizeListView1(int width, int height)
+        {
             // this.listView1.Size = new System.Drawing.Size(width, height);
             this.AllSteamItemsToTradeGridView.Size = new System.Drawing.Size(width, height);
         }
 
-        public void setSizeListView2(int width, int height) {
+        public void setSizeListView2(int width, int height)
+        {
         }
 
-        public void setSizeTabControll(int width, int height) {
+        public void setSizeTabControll(int width, int height)
+        {
 
         }
 
-        public void setPoint(int x, int y) {
+        public void setPoint(int x, int y)
+        {
         }
 
         #endregion

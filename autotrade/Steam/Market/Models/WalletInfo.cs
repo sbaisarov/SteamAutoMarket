@@ -1,4 +1,4 @@
-﻿namespace Market.Models
+﻿namespace autotrade.Steam.Market.Models
 {
     public class WalletInfo
     {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Market.Models.Json
+namespace autotrade.Steam.Market.Models.Json
 {
     public class JSellItem : JSuccess
     {
@@ -13,10 +13,9 @@ namespace Market.Models.Json
         [JsonProperty("requires_confirmation")]
         public int RequiresConfirmation { get; set; }
 
-        [JsonProperty("email_domain")]
-        public string EmailDomain { get; set; }
+        [JsonProperty("email_domain")] public string EmailDomain { get; set; }
 
-        [JsonProperty("message", NullValueHandling=NullValueHandling.Include)]
+        [JsonProperty("message", NullValueHandling = NullValueHandling.Include)]
         public string Message { get; set; }
     }
 }

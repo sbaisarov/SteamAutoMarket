@@ -1,5 +1,7 @@
-﻿namespace autotrade.CustomElements {
-    partial class GeneralSettingsControl {
+﻿namespace autotrade.CustomElements.Controls.Settings
+{
+    partial class GeneralSettingsControl
+    {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -9,8 +11,10 @@
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -22,7 +26,8 @@
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -32,9 +37,9 @@
             this.AvatarColumn = new System.Windows.Forms.DataGridViewImageColumn();
             this.LoginColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PasswordColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OpskinsApiColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SteamApiColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AccountObjectHidenColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TruePassword = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TruePasswordColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AccountGroupBox = new System.Windows.Forms.GroupBox();
             this.MafilePathGroupBox = new System.Windows.Forms.GroupBox();
             this.BrowseMafilePathButton = new System.Windows.Forms.Button();
@@ -101,9 +106,9 @@
             this.AvatarColumn,
             this.LoginColumn,
             this.PasswordColumn,
-            this.OpskinsApiColumn,
+            this.SteamApiColumn,
             this.AccountObjectHidenColumn,
-            this.TruePassword});
+            this.TruePasswordColumn});
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -157,11 +162,11 @@
             // 
             // OpskinsApiColumn
             // 
-            this.OpskinsApiColumn.FillWeight = 119F;
-            this.OpskinsApiColumn.HeaderText = "STEAM API";
-            this.OpskinsApiColumn.Name = "OpskinsApiColumn";
-            this.OpskinsApiColumn.ReadOnly = true;
-            this.OpskinsApiColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.SteamApiColumn.FillWeight = 119F;
+            this.SteamApiColumn.HeaderText = "STEAM API";
+            this.SteamApiColumn.Name = "SteamApiColumn";
+            this.SteamApiColumn.ReadOnly = true;
+            this.SteamApiColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // AccountObjectHidenColumn
             // 
@@ -174,10 +179,10 @@
             // 
             // TruePassword
             // 
-            this.TruePassword.HeaderText = "TruePassword";
-            this.TruePassword.Name = "TruePassword";
-            this.TruePassword.ReadOnly = true;
-            this.TruePassword.Visible = false;
+            this.TruePasswordColumn.HeaderText = "TruePassword";
+            this.TruePasswordColumn.Name = "TruePasswordColumn";
+            this.TruePasswordColumn.ReadOnly = true;
+            this.TruePasswordColumn.Visible = false;
             // 
             // AccountGroupBox
             // 
@@ -632,12 +637,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LoginColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn PasswordColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn AccountObjectHidenColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TruePassword;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TruePasswordColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn SteamApiColumn;
         private System.Windows.Forms.LinkLabel SteamApiLinkLable;
         private System.Windows.Forms.GroupBox AvrPriceGroupBox;
         private System.Windows.Forms.NumericUpDown AveragePriceDaysNumericUpDown;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OpskinsApiColumn;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
         private System.Windows.Forms.GroupBox Confirm2FACountGroupBox;
         private System.Windows.Forms.NumericUpDown Confirm2FANumericUpDown;

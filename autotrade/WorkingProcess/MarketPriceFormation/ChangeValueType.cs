@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace autotrade.WorkingProcess.MarketPriceFormation {
-    public enum ChangeValueType {
+﻿namespace autotrade.WorkingProcess.MarketPriceFormation
+{
+    public enum ChangeValueType
+    {
         ChangeValueTypeByValue,
         ChangeValueTypeByPercent,
         ChangeValueTypeNone

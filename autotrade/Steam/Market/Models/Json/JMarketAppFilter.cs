@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Market.Models.Json
+﻿namespace autotrade.Steam.Market.Models.Json
 {
     public class JMarketAppFilter<T> : JSuccess
     {

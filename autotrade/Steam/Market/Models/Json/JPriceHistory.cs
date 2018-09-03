@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Market.Models.Json
+namespace autotrade.Steam.Market.Models.Json
 {
     public class JPriceHistory : JSuccess
     {
-        [JsonProperty("prices")]
-        public dynamic Prices { get; set; }
+        [JsonProperty("prices")] public dynamic Prices { get; set; }
     }
 }

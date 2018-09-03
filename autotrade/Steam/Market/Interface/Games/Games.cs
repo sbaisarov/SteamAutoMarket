@@ -1,4 +1,4 @@
-﻿namespace Market.Interface.Games
+﻿namespace autotrade.Steam.Market.Interface.Games
 {
     public class AvailableGames
     {

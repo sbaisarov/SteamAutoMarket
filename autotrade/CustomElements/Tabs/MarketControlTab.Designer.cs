@@ -1,5 +1,9 @@
-﻿namespace autotrade.CustomElements.Tabs {
-    partial class MarketControlTab {
+﻿using autotrade.CustomElements.Controls.Market;
+
+namespace autotrade.CustomElements.Tabs
+{
+    partial class MarketControlTab
+    {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -9,8 +13,10 @@
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -22,11 +28,12 @@
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.TabControl = new System.Windows.Forms.TabControl();
             this.MarketSellTab = new System.Windows.Forms.TabPage();
             this.MarketBuyTab = new System.Windows.Forms.TabPage();
-            this.SaleControl = new autotrade.SaleControl();
+            this.SaleControl = new SaleControl();
             this.RelistControl = new autotrade.CustomElements.Controls.Market.MarketRelistControl();
             this.TabControl.SuspendLayout();
             this.MarketSellTab.SuspendLayout();

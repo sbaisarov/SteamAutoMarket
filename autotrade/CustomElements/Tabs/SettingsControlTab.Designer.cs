@@ -1,5 +1,9 @@
-﻿namespace autotrade.CustomElements {
-    partial class SettingsControlTab {
+﻿using autotrade.CustomElements.Controls.Settings;
+
+namespace autotrade.CustomElements.Tabs
+{
+    partial class SettingsControlTab
+    {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -9,8 +13,10 @@
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -22,11 +28,12 @@
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.TabControl = new System.Windows.Forms.TabControl();
             this.GeneralSettingsTab = new System.Windows.Forms.TabPage();
             this.CacheSettingsTab = new System.Windows.Forms.TabPage();
-            this.SettingsControl = new autotrade.CustomElements.GeneralSettingsControl();
+            this.SettingsControl = new GeneralSettingsControl();
             this.cacheSettingsControl1 = new autotrade.CustomElements.Controls.Settings.CacheSettingsControl();
             this.TabControl.SuspendLayout();
             this.GeneralSettingsTab.SuspendLayout();

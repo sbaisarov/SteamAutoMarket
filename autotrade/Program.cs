@@ -1,34 +1,28 @@
-﻿using Market;
-using Market.Enums;
-using Market.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Market.SteamMarketHandler;
+using autotrade.CustomElements.Forms;
 
-namespace autotrade {
-    static class Program {
-        static int mainThreadId;
-        public static bool IsMainThread {
-            get { return Thread.CurrentThread.ManagedThreadId == mainThreadId; }
-        }
+namespace autotrade
+{
+    internal static class Program
+    {
+        private static int mainThreadId;
         public static MainForm MainForm;
         public static WorkingProcessForm WorkingProcessForm;
         public static LoadingForm LoadingForm;
 
+        public static bool IsMainThread => Thread.CurrentThread.ManagedThreadId == mainThreadId;
+
         /// <summary>
-        /// Главная точка входа для приложения.
+        ///     Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             //CheckLicense();
             //UpdateProgram();
-            mainThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            mainThreadId = Thread.CurrentThread.ManagedThreadId;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();

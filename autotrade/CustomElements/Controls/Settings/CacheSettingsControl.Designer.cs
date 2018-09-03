@@ -1,5 +1,7 @@
-﻿namespace autotrade.CustomElements.Controls.Settings {
-    partial class CacheSettingsControl {
+﻿namespace autotrade.CustomElements.Controls.Settings
+{
+    partial class CacheSettingsControl
+    {
         /// <summary> 
         /// Обязательная переменная конструктора.
         /// </summary>
@@ -9,8 +11,10 @@
         /// Освободить все используемые ресурсы.
         /// </summary>
         /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -22,7 +26,8 @@
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             this.ImagesCacheGroupBox = new System.Windows.Forms.GroupBox();
             this.ImagesInfoLable = new System.Windows.Forms.Label();
