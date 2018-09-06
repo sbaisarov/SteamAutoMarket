@@ -1,6 +1,6 @@
-﻿using autotrade.Steam.TradeOffer.Models.Full;
+﻿using SteamAutoMarket.Steam.TradeOffer.Models.Full;
 
-namespace autotrade.CustomElements.Utils
+namespace SteamAutoMarket.CustomElements.Utils
 {
     internal class SteamItemsUtils
     {

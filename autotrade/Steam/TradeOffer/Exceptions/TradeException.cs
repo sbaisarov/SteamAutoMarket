@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace autotrade.Steam.TradeOffer.Exceptions
+namespace SteamAutoMarket.Steam.TradeOffer.Exceptions
 {
     /// <inheritdoc />
     /// <summary>

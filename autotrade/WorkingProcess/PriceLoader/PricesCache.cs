@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using autotrade.Steam.TradeOffer.Models.Full;
 using Newtonsoft.Json;
+using SteamAutoMarket.Steam.TradeOffer.Models.Full;
 
-namespace autotrade.WorkingProcess.PriceLoader
+namespace SteamAutoMarket.WorkingProcess.PriceLoader
 {
     internal class PricesCache
     {

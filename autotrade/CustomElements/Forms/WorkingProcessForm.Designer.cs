@@ -1,4 +1,4 @@
-﻿namespace autotrade.CustomElements.Forms
+﻿namespace SteamAutoMarket.CustomElements.Forms
 {
     partial class WorkingProcessForm
     {

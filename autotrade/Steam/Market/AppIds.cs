@@ -1,4 +1,4 @@
-﻿namespace autotrade.Steam.Market
+﻿namespace SteamAutoMarket.Steam.Market
 {
     public static class AppIds
     {

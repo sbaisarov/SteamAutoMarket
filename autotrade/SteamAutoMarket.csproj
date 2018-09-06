@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{58A5F142-1DC6-49F9-ADB5-C9EF08F2B600}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>autotrade</RootNamespace>
+    <RootNamespace>SteamAutoMarket</RootNamespace>
     <AssemblyName>SteamAutoMarket</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

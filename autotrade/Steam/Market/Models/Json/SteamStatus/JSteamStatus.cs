@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace autotrade.Steam.Market.Models.Json.SteamStatus
+namespace SteamAutoMarket.Steam.Market.Models.Json.SteamStatus
 {
     public class JSteamStatus
     {

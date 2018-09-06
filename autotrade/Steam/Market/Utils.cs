@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
-using autotrade.Steam.Market.Models;
+using SteamAutoMarket.Steam.Market.Models;
 
-namespace autotrade.Steam.Market
+namespace SteamAutoMarket.Steam.Market
 {
     public static class Utils
     {

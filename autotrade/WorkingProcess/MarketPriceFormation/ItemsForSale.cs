@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using autotrade.Steam;
-using autotrade.Steam.TradeOffer.Models.Full;
-using autotrade.WorkingProcess.Settings;
-using static autotrade.WorkingProcess.PriceLoader.PriceLoader;
+using SteamAutoMarket.Steam;
+using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+using SteamAutoMarket.WorkingProcess.Settings;
+using static SteamAutoMarket.WorkingProcess.PriceLoader.PriceLoader;
 
-namespace autotrade.WorkingProcess.MarketPriceFormation
+namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
 {
     public class ItemsForSale
     {

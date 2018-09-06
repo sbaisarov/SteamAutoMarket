@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using autotrade.Steam.TradeOffer.Enums;
 using Newtonsoft.Json;
+using SteamAutoMarket.Steam.TradeOffer.Enums;
 
-namespace autotrade.Steam.TradeOffer.Models
+namespace SteamAutoMarket.Steam.TradeOffer.Models
 {
     public class Offer
     {

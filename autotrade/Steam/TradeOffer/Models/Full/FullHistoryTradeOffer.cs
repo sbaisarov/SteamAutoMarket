@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using autotrade.CustomElements.Utils;
-using autotrade.Steam.TradeOffer.Enums;
+using SteamAutoMarket.CustomElements.Utils;
+using SteamAutoMarket.Steam.TradeOffer.Enums;
 using SteamKit2;
 
-namespace autotrade.Steam.TradeOffer.Models.Full
+namespace SteamAutoMarket.Steam.TradeOffer.Models.Full
 {
     public class FullHistoryTradeOffer
     {

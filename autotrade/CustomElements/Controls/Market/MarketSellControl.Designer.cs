@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
-using autotrade.CustomElements.Elements;
+using SteamAutoMarket.CustomElements.Elements;
 
-namespace autotrade.CustomElements.Controls.Market
+namespace SteamAutoMarket.CustomElements.Controls.Market
 {
     partial class SaleControl
     {
@@ -264,7 +264,7 @@ namespace autotrade.CustomElements.Controls.Market
             // ItemImageBox
             // 
             this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemImageBox.BackgroundImage = global::autotrade.Properties.Resources.DefaultItem;
+            this.ItemImageBox.BackgroundImage = global::SteamAutoMarket.Properties.Resources.DefaultItem;
             this.ItemImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ItemImageBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
@@ -317,7 +317,7 @@ namespace autotrade.CustomElements.Controls.Market
             this.ItemsForSaleUpdateOneButtonClick.FlatAppearance.BorderSize = 0;
             this.ItemsForSaleUpdateOneButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ItemsForSaleUpdateOneButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemsForSaleUpdateOneButtonClick.Image = global::autotrade.Properties.Resources.update_1;
+            this.ItemsForSaleUpdateOneButtonClick.Image = global::SteamAutoMarket.Properties.Resources.update_1;
             this.ItemsForSaleUpdateOneButtonClick.Location = new System.Drawing.Point(451, 221);
             this.ItemsForSaleUpdateOneButtonClick.Name = "ItemsForSaleUpdateOneButtonClick";
             this.ItemsForSaleUpdateOneButtonClick.Size = new System.Drawing.Size(47, 40);
@@ -332,7 +332,7 @@ namespace autotrade.CustomElements.Controls.Market
             this.ForcePricesReloadButton.FlatAppearance.BorderSize = 0;
             this.ForcePricesReloadButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ForcePricesReloadButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ForcePricesReloadButton.Image = global::autotrade.Properties.Resources.RefreshButton;
+            this.ForcePricesReloadButton.Image = global::SteamAutoMarket.Properties.Resources.RefreshButton;
             this.ForcePricesReloadButton.Location = new System.Drawing.Point(398, 221);
             this.ForcePricesReloadButton.Name = "ForcePricesReloadButton";
             this.ForcePricesReloadButton.Size = new System.Drawing.Size(47, 40);
@@ -396,7 +396,7 @@ namespace autotrade.CustomElements.Controls.Market
             this.DeleteSelectedItemButton.FlatAppearance.BorderSize = 0;
             this.DeleteSelectedItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteSelectedItemButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.DeleteSelectedItemButton.Image = global::autotrade.Properties.Resources.CancelButton;
+            this.DeleteSelectedItemButton.Image = global::SteamAutoMarket.Properties.Resources.CancelButton;
             this.DeleteSelectedItemButton.Location = new System.Drawing.Point(504, 221);
             this.DeleteSelectedItemButton.Name = "DeleteSelectedItemButton";
             this.DeleteSelectedItemButton.Size = new System.Drawing.Size(47, 40);
@@ -418,7 +418,7 @@ namespace autotrade.CustomElements.Controls.Market
             // 
             // SplitterPanel
             // 
-            this.SplitterPanel.BackgroundImage = global::autotrade.Properties.Resources.NotLogined;
+            this.SplitterPanel.BackgroundImage = global::SteamAutoMarket.Properties.Resources.NotLogined;
             this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SplitterPanel.Location = new System.Drawing.Point(690, 11);
             this.SplitterPanel.Name = "SplitterPanel";
@@ -441,7 +441,7 @@ namespace autotrade.CustomElements.Controls.Market
             this.LoadInventoryButton.FlatAppearance.BorderSize = 0;
             this.LoadInventoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadInventoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadInventoryButton.Image = global::autotrade.Properties.Resources.Download;
+            this.LoadInventoryButton.Image = global::SteamAutoMarket.Properties.Resources.Download;
             this.LoadInventoryButton.Location = new System.Drawing.Point(206, 9);
             this.LoadInventoryButton.Name = "LoadInventoryButton";
             this.LoadInventoryButton.Size = new System.Drawing.Size(76, 65);
@@ -507,7 +507,7 @@ namespace autotrade.CustomElements.Controls.Market
             this.AddAllButton.FlatAppearance.BorderSize = 0;
             this.AddAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AddAllButton.Image = global::autotrade.Properties.Resources.AddAllButton;
+            this.AddAllButton.Image = global::SteamAutoMarket.Properties.Resources.AddAllButton;
             this.AddAllButton.Location = new System.Drawing.Point(582, 10);
             this.AddAllButton.Name = "AddAllButton";
             this.AddAllButton.Size = new System.Drawing.Size(47, 40);
@@ -523,7 +523,7 @@ namespace autotrade.CustomElements.Controls.Market
             this.RefreshPricesButton.FlatAppearance.BorderSize = 0;
             this.RefreshPricesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RefreshPricesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.RefreshPricesButton.Image = global::autotrade.Properties.Resources.RefreshButton;
+            this.RefreshPricesButton.Image = global::SteamAutoMarket.Properties.Resources.RefreshButton;
             this.RefreshPricesButton.Location = new System.Drawing.Point(775, 12);
             this.RefreshPricesButton.Name = "RefreshPricesButton";
             this.RefreshPricesButton.Size = new System.Drawing.Size(47, 40);
@@ -539,7 +539,7 @@ namespace autotrade.CustomElements.Controls.Market
             this.OpenMarketPageButtonClick.FlatAppearance.BorderSize = 0;
             this.OpenMarketPageButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OpenMarketPageButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.OpenMarketPageButtonClick.Image = global::autotrade.Properties.Resources.SteamButton;
+            this.OpenMarketPageButtonClick.Image = global::SteamAutoMarket.Properties.Resources.SteamButton;
             this.OpenMarketPageButtonClick.Location = new System.Drawing.Point(828, 12);
             this.OpenMarketPageButtonClick.Name = "OpenMarketPageButtonClick";
             this.OpenMarketPageButtonClick.Size = new System.Drawing.Size(47, 40);
@@ -555,7 +555,7 @@ namespace autotrade.CustomElements.Controls.Market
             this.AllItemsUpdateOneButtonClick.FlatAppearance.BorderSize = 0;
             this.AllItemsUpdateOneButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AllItemsUpdateOneButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AllItemsUpdateOneButtonClick.Image = global::autotrade.Properties.Resources.update_1;
+            this.AllItemsUpdateOneButtonClick.Image = global::SteamAutoMarket.Properties.Resources.update_1;
             this.AllItemsUpdateOneButtonClick.Location = new System.Drawing.Point(635, 10);
             this.AllItemsUpdateOneButtonClick.Name = "AllItemsUpdateOneButtonClick";
             this.AllItemsUpdateOneButtonClick.Size = new System.Drawing.Size(47, 40);

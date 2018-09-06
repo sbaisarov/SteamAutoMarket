@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace autotrade.Steam.Market.Exceptions
+namespace SteamAutoMarket.Steam.Market.Exceptions
 {
     public class SteamException : Exception
     {

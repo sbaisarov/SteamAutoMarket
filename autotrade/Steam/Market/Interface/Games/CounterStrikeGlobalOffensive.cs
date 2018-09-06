@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using autotrade.Steam.Market.Enums;
-using autotrade.Steam.Market.Exceptions;
-using autotrade.Steam.Market.Models;
-using autotrade.Steam.Market.Models.Json;
 using Newtonsoft.Json;
+using SteamAutoMarket.Steam.Market.Enums;
+using SteamAutoMarket.Steam.Market.Exceptions;
+using SteamAutoMarket.Steam.Market.Models;
+using SteamAutoMarket.Steam.Market.Models.Json;
 
-namespace autotrade.Steam.Market.Interface.Games
+namespace SteamAutoMarket.Steam.Market.Interface.Games
 {
     public class CounterStrikeGlobalOffensive
     {

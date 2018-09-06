@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace autotrade.Steam.TradeOffer.Models
+namespace SteamAutoMarket.Steam.TradeOffer.Models
 {
     public class TradeStatusUser
     {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using autotrade.Steam.TradeOffer.Models.Full;
-using autotrade.Utils;
-using autotrade.WorkingProcess;
+using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+using SteamAutoMarket.Utils;
+using SteamAutoMarket.WorkingProcess;
 
-namespace autotrade.CustomElements.Forms
+namespace SteamAutoMarket.CustomElements.Forms
 {
     public partial class LoadingForm : Form
     {

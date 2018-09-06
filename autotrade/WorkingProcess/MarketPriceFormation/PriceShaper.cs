@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using autotrade.CustomElements.Utils;
-using autotrade.Steam.TradeOffer.Models.Full;
+using SteamAutoMarket.CustomElements.Utils;
+using SteamAutoMarket.Steam.TradeOffer.Models.Full;
 
-namespace autotrade.WorkingProcess.MarketPriceFormation
+namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
 {
     internal class PriceShaper
     {

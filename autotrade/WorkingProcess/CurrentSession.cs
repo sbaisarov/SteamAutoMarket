@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
-using autotrade.Steam;
+using SteamAutoMarket.Steam;
 
-namespace autotrade.WorkingProcess
+namespace SteamAutoMarket.WorkingProcess
 {
     internal class CurrentSession
     {

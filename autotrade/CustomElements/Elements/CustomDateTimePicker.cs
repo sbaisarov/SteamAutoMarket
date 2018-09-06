@@ -2,9 +2,9 @@
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using autotrade.Utils;
+using SteamAutoMarket.Utils;
 
-namespace autotrade.CustomElements.Elements
+namespace SteamAutoMarket.CustomElements.Elements
 {
     internal class CustomDateTimePicker : DateTimePicker
     {

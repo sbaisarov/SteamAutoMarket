@@ -4,15 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using autotrade.CustomElements.Utils;
-using autotrade.Steam.TradeOffer.Models;
-using autotrade.Utils;
-using autotrade.WorkingProcess;
-using autotrade.WorkingProcess.MarketPriceFormation;
-using autotrade.WorkingProcess.PriceLoader;
-using autotrade.WorkingProcess.Settings;
+using SteamAutoMarket.CustomElements.Utils;
+using SteamAutoMarket.Steam.TradeOffer.Models;
+using SteamAutoMarket.Utils;
+using SteamAutoMarket.WorkingProcess;
+using SteamAutoMarket.WorkingProcess.MarketPriceFormation;
+using SteamAutoMarket.WorkingProcess.PriceLoader;
+using SteamAutoMarket.WorkingProcess.Settings;
 
-namespace autotrade.CustomElements.Controls.Market
+namespace SteamAutoMarket.CustomElements.Controls.Market
 {
     public partial class SaleControl : UserControl
     {

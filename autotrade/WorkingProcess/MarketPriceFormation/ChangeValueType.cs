@@ -1,4 +1,4 @@
-﻿namespace autotrade.WorkingProcess.MarketPriceFormation
+﻿namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
 {
     public enum ChangeValueType
     {

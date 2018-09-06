@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace autotrade.WorkingProcess.PriceLoader
+namespace SteamAutoMarket.WorkingProcess.PriceLoader
 {
     internal class LoadedItemPrice
     {

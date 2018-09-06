@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace autotrade.CustomElements.Elements
+namespace SteamAutoMarket.CustomElements.Elements
 {
     public class CustomNumericUpDown : NumericUpDown
     {

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace autotrade.Utils
+namespace SteamAutoMarket.Utils
 {
     internal class FormComponents
     {

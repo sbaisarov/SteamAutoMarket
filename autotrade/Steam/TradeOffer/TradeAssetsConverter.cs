@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using autotrade.Steam.TradeOffer.Models;
 using Newtonsoft.Json;
+using SteamAutoMarket.Steam.TradeOffer.Models;
 
-namespace autotrade.Steam.TradeOffer
+namespace SteamAutoMarket.Steam.TradeOffer
 {
         public class TradeAssetsConverter : JsonConverter
         {

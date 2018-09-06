@@ -1,4 +1,4 @@
-﻿namespace autotrade.Steam.Market.Enums
+﻿namespace SteamAutoMarket.Steam.Market.Enums
 {
     public enum ECreateBuyOrderStatus
     {

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using SteamAuth;
 
-namespace autotrade.WorkingProcess.Settings
+namespace SteamAutoMarket.WorkingProcess.Settings
 {
     internal class SavedSteamAccount
     {

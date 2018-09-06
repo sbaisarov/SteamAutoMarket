@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using autotrade.Steam.TradeOffer.Exceptions;
-using autotrade.Steam.TradeOffer.Models;
-using autotrade.Steam.TradeOffer.Models.Full;
-using autotrade.Utils;
 using Newtonsoft.Json;
 using SteamAuth;
+using SteamAutoMarket.Steam.TradeOffer.Exceptions;
+using SteamAutoMarket.Steam.TradeOffer.Models;
+using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+using SteamAutoMarket.Utils;
 using SteamKit2;
 
-namespace autotrade.Steam.TradeOffer
+namespace SteamAutoMarket.Steam.TradeOffer
 {
     public class Inventory
     {

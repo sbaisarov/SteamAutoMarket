@@ -1,6 +1,6 @@
-﻿using autotrade.CustomElements.Elements;
+﻿using SteamAutoMarket.CustomElements.Elements;
 
-namespace autotrade.CustomElements.Controls.Trade
+namespace SteamAutoMarket.CustomElements.Controls.Trade
 {
     partial class TradeHistoryControl
     {
@@ -81,7 +81,7 @@ namespace autotrade.CustomElements.Controls.Trade
             this.AccountNameLable = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SplitterPanel = new System.Windows.Forms.Panel();
-            this.DateTimePicker = new autotrade.CustomElements.Elements.CustomDateTimePicker();
+            this.DateTimePicker = new CustomDateTimePicker();
             this.ItemDescriptionTextBox = new RichTextBoxWithNoPaint();
             this.CurrentTradesGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTradesGridView)).BeginInit();
@@ -287,7 +287,7 @@ namespace autotrade.CustomElements.Controls.Trade
             // ItemImageBox
             // 
             this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemImageBox.BackgroundImage = global::autotrade.Properties.Resources.DefaultItem;
+            this.ItemImageBox.BackgroundImage = global::SteamAutoMarket.Properties.Resources.DefaultItem;
             this.ItemImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ItemImageBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
@@ -634,7 +634,7 @@ namespace autotrade.CustomElements.Controls.Trade
             this.LoadTradesButton.FlatAppearance.BorderSize = 0;
             this.LoadTradesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadTradesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadTradesButton.Image = global::autotrade.Properties.Resources.Download;
+            this.LoadTradesButton.Image = global::SteamAutoMarket.Properties.Resources.Download;
             this.LoadTradesButton.Location = new System.Drawing.Point(197, 154);
             this.LoadTradesButton.Name = "LoadTradesButton";
             this.LoadTradesButton.Size = new System.Drawing.Size(76, 81);
@@ -665,7 +665,7 @@ namespace autotrade.CustomElements.Controls.Trade
             // 
             // SplitterPanel
             // 
-            this.SplitterPanel.BackgroundImage = global::autotrade.Properties.Resources.NotLogined;
+            this.SplitterPanel.BackgroundImage = global::SteamAutoMarket.Properties.Resources.NotLogined;
             this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SplitterPanel.Location = new System.Drawing.Point(706, 3);
             this.SplitterPanel.Name = "SplitterPanel";

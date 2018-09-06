@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using autotrade.CustomElements.Forms;
+using SteamAutoMarket.CustomElements.Forms;
 
-namespace autotrade
+namespace SteamAutoMarket
 {
     internal static class Program
     {

@@ -6,15 +6,15 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using autotrade.CustomElements.Utils;
-using autotrade.Steam;
-using autotrade.Utils;
-using autotrade.WorkingProcess;
-using autotrade.WorkingProcess.Settings;
 using Newtonsoft.Json;
 using SteamAuth;
+using SteamAutoMarket.CustomElements.Utils;
+using SteamAutoMarket.Steam;
+using SteamAutoMarket.Utils;
+using SteamAutoMarket.WorkingProcess;
+using SteamAutoMarket.WorkingProcess.Settings;
 
-namespace autotrade.CustomElements.Controls.Settings
+namespace SteamAutoMarket.CustomElements.Controls.Settings
 {
     public partial class GeneralSettingsControl : UserControl
     {

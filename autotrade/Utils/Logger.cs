@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace autotrade.Utils
+namespace SteamAutoMarket.Utils
 {
     internal class Logger
     {

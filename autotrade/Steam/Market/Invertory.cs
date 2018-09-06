@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using autotrade.Steam.Market.Models.Json;
 using Newtonsoft.Json;
 using RestSharp;
+using SteamAutoMarket.Steam.Market.Models.Json;
 
-namespace autotrade.Steam.Market
+namespace SteamAutoMarket.Steam.Market
 {
     public class Invertory
     {

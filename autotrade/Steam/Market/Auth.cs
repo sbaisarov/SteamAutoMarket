@@ -5,13 +5,13 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using autotrade.Steam.Market.Exceptions;
-using autotrade.Steam.Market.Models;
-using autotrade.Steam.Market.Models.Json;
 using Newtonsoft.Json;
 using RestSharp;
+using SteamAutoMarket.Steam.Market.Exceptions;
+using SteamAutoMarket.Steam.Market.Models;
+using SteamAutoMarket.Steam.Market.Models.Json;
 
-namespace autotrade.Steam.Market
+namespace SteamAutoMarket.Steam.Market
 {
     public class Auth
     {

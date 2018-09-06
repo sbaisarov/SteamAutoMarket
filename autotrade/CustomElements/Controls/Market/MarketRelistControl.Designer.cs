@@ -1,4 +1,4 @@
-﻿namespace autotrade.CustomElements.Controls.Market
+﻿namespace SteamAutoMarket.CustomElements.Controls.Market
 {
     partial class MarketRelistControl
     {
@@ -206,7 +206,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackgroundImage = global::autotrade.Properties.Resources.MarketImage;
+            this.panel1.BackgroundImage = global::SteamAutoMarket.Properties.Resources.MarketImage;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel1.Location = new System.Drawing.Point(644, 73);
             this.panel1.Name = "panel1";
@@ -215,7 +215,7 @@
             // 
             // SplitterPanel
             // 
-            this.SplitterPanel.BackgroundImage = global::autotrade.Properties.Resources.NotLogined;
+            this.SplitterPanel.BackgroundImage = global::SteamAutoMarket.Properties.Resources.NotLogined;
             this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.SplitterPanel.Location = new System.Drawing.Point(720, 15);
             this.SplitterPanel.Name = "SplitterPanel";
@@ -254,7 +254,7 @@
             this.LoadListingButton.FlatAppearance.BorderSize = 0;
             this.LoadListingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadListingButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadListingButton.Image = global::autotrade.Properties.Resources.Download;
+            this.LoadListingButton.Image = global::SteamAutoMarket.Properties.Resources.Download;
             this.LoadListingButton.Location = new System.Drawing.Point(720, 277);
             this.LoadListingButton.Name = "LoadListingButton";
             this.LoadListingButton.Size = new System.Drawing.Size(76, 84);

@@ -1,4 +1,4 @@
-﻿namespace autotrade.CustomElements.Controls.Settings
+﻿namespace SteamAutoMarket.CustomElements.Controls.Settings
 {
     partial class GeneralSettingsControl
     {
@@ -214,7 +214,7 @@
             this.BrowseMafilePathButton.FlatAppearance.BorderSize = 0;
             this.BrowseMafilePathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BrowseMafilePathButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.BrowseMafilePathButton.Image = global::autotrade.Properties.Resources.BrowseFolders;
+            this.BrowseMafilePathButton.Image = global::SteamAutoMarket.Properties.Resources.BrowseFolders;
             this.BrowseMafilePathButton.Location = new System.Drawing.Point(135, 11);
             this.BrowseMafilePathButton.Name = "BrowseMafilePathButton";
             this.BrowseMafilePathButton.Size = new System.Drawing.Size(29, 25);
@@ -367,7 +367,7 @@
             this.DeleteAccountButton.FlatAppearance.BorderSize = 0;
             this.DeleteAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.DeleteAccountButton.Image = global::autotrade.Properties.Resources.CancelButton;
+            this.DeleteAccountButton.Image = global::SteamAutoMarket.Properties.Resources.CancelButton;
             this.DeleteAccountButton.Location = new System.Drawing.Point(66, 116);
             this.DeleteAccountButton.Name = "DeleteAccountButton";
             this.DeleteAccountButton.Size = new System.Drawing.Size(47, 40);
@@ -382,7 +382,7 @@
             this.EditAccountButton.FlatAppearance.BorderSize = 0;
             this.EditAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EditAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.EditAccountButton.Image = global::autotrade.Properties.Resources.EditButton;
+            this.EditAccountButton.Image = global::SteamAutoMarket.Properties.Resources.EditButton;
             this.EditAccountButton.Location = new System.Drawing.Point(10, 116);
             this.EditAccountButton.Name = "EditAccountButton";
             this.EditAccountButton.Size = new System.Drawing.Size(47, 40);
@@ -397,7 +397,7 @@
             this.AddNewAccountButton.FlatAppearance.BorderSize = 0;
             this.AddNewAccountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddNewAccountButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.AddNewAccountButton.Image = global::autotrade.Properties.Resources.AddButton;
+            this.AddNewAccountButton.Image = global::SteamAutoMarket.Properties.Resources.AddButton;
             this.AddNewAccountButton.Location = new System.Drawing.Point(366, 49);
             this.AddNewAccountButton.Name = "AddNewAccountButton";
             this.AddNewAccountButton.Size = new System.Drawing.Size(47, 40);
@@ -412,7 +412,7 @@
             this.LoginButton.FlatAppearance.BorderSize = 0;
             this.LoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoginButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.LoginButton.Image = global::autotrade.Properties.Resources.LoginButton;
+            this.LoginButton.Image = global::SteamAutoMarket.Properties.Resources.LoginButton;
             this.LoginButton.Location = new System.Drawing.Point(-1, 533);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(885, 66);

@@ -1,4 +1,4 @@
-﻿namespace autotrade.Steam.Market.Models.Json
+﻿namespace SteamAutoMarket.Steam.Market.Models.Json
 {
     public class JMarketAppFilter<T> : JSuccess
     {

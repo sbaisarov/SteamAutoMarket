@@ -1,4 +1,4 @@
-﻿namespace autotrade.Steam.TradeOffer.Models.Full
+﻿namespace SteamAutoMarket.Steam.TradeOffer.Models.Full
 {
     public class FullRgItem
     {

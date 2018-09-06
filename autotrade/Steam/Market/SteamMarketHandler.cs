@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using autotrade.Steam.Market.Enums;
-using autotrade.Steam.Market.Exceptions;
-using autotrade.Steam.Market.Interface;
-using autotrade.Steam.Market.Models;
-using autotrade.Steam.Market.Models.Json.SteamStatus;
 using Newtonsoft.Json;
 using RestSharp;
+using SteamAutoMarket.Steam.Market.Enums;
+using SteamAutoMarket.Steam.Market.Exceptions;
+using SteamAutoMarket.Steam.Market.Interface;
+using SteamAutoMarket.Steam.Market.Models;
+using SteamAutoMarket.Steam.Market.Models.Json.SteamStatus;
 
-namespace autotrade.Steam.Market
+namespace SteamAutoMarket.Steam.Market
 {
     public class SteamMarketHandler
     {

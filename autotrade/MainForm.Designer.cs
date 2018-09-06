@@ -1,7 +1,7 @@
-﻿using autotrade.CustomElements.Tabs;
-using autotrade.Utils;
+﻿using SteamAutoMarket.Utils;
+using SteamAutoMarket.CustomElements.Tabs;
 
-namespace autotrade
+namespace SteamAutoMarket
 {
     partial class MainForm
     {
@@ -48,9 +48,9 @@ namespace autotrade
             this.appCurtailButton = new System.Windows.Forms.Button();
             this.appExitButton = new System.Windows.Forms.Button();
             this.RightEdge = new System.Windows.Forms.Panel();
-            this.MarketControlTab = new autotrade.CustomElements.Tabs.MarketControlTab();
+            this.MarketControlTab = new MarketControlTab();
             this.SettingsControlTab = new SettingsControlTab();
-            this.TradeControlTab = new autotrade.CustomElements.Tabs.TradeControlTab();
+            this.TradeControlTab = new TradeControlTab();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoImageBox)).BeginInit();
             this.HeaderPanel.SuspendLayout();
@@ -96,7 +96,7 @@ namespace autotrade
             this.SettingsLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SettingsLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SettingsLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.SettingsLinkButton.Image = global::autotrade.Properties.Resources.MenuSettings;
+            this.SettingsLinkButton.Image = global::SteamAutoMarket.Properties.Resources.MenuSettings;
             this.SettingsLinkButton.Location = new System.Drawing.Point(3, 172);
             this.SettingsLinkButton.Name = "SettingsLinkButton";
             this.SettingsLinkButton.Size = new System.Drawing.Size(166, 45);
@@ -108,7 +108,7 @@ namespace autotrade
             // 
             // LeftPanelHideShowButton
             // 
-            this.LeftPanelHideShowButton.BackgroundImage = global::autotrade.Properties.Resources.HideMenuButton;
+            this.LeftPanelHideShowButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.HideMenuButton;
             this.LeftPanelHideShowButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.LeftPanelHideShowButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.LeftPanelHideShowButton.FlatAppearance.BorderSize = 0;
@@ -128,7 +128,7 @@ namespace autotrade
             this.SaleLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaleLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SaleLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.SaleLinkButton.Image = global::autotrade.Properties.Resources.MenuMarket;
+            this.SaleLinkButton.Image = global::SteamAutoMarket.Properties.Resources.MenuMarket;
             this.SaleLinkButton.Location = new System.Drawing.Point(0, 233);
             this.SaleLinkButton.Name = "SaleLinkButton";
             this.SaleLinkButton.Size = new System.Drawing.Size(166, 45);
@@ -140,7 +140,7 @@ namespace autotrade
             // 
             // LogoImageBox
             // 
-            this.LogoImageBox.BackgroundImage = global::autotrade.Properties.Resources.MainLogo;
+            this.LogoImageBox.BackgroundImage = global::SteamAutoMarket.Properties.Resources.MainLogo;
             this.LogoImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.LogoImageBox.ErrorImage = null;
             this.LogoImageBox.Location = new System.Drawing.Point(1, 7);
@@ -156,7 +156,7 @@ namespace autotrade
             this.TradeLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TradeLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TradeLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.TradeLinkButton.Image = global::autotrade.Properties.Resources.MenuTrade;
+            this.TradeLinkButton.Image = global::SteamAutoMarket.Properties.Resources.MenuTrade;
             this.TradeLinkButton.Location = new System.Drawing.Point(0, 294);
             this.TradeLinkButton.Name = "TradeLinkButton";
             this.TradeLinkButton.Size = new System.Drawing.Size(166, 45);
@@ -202,7 +202,7 @@ namespace autotrade
             // 
             // ProgramLogo
             // 
-            this.ProgramLogo.BackgroundImage = global::autotrade.Properties.Resources.SmallLogo;
+            this.ProgramLogo.BackgroundImage = global::SteamAutoMarket.Properties.Resources.SmallLogo;
             this.ProgramLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ProgramLogo.ErrorImage = null;
             this.ProgramLogo.InitialImage = null;
@@ -234,7 +234,7 @@ namespace autotrade
             this.appCurtailButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.appCurtailButton.FlatAppearance.BorderSize = 0;
             this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.appCurtailButton.Image = global::autotrade.Properties.Resources.MinimizeButton;
+            this.appCurtailButton.Image = global::SteamAutoMarket.Properties.Resources.MinimizeButton;
             this.appCurtailButton.Location = new System.Drawing.Point(999, 3);
             this.appCurtailButton.Name = "appCurtailButton";
             this.appCurtailButton.Size = new System.Drawing.Size(27, 23);
@@ -248,7 +248,7 @@ namespace autotrade
             this.appExitButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.appExitButton.FlatAppearance.BorderSize = 0;
             this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.appExitButton.Image = global::autotrade.Properties.Resources.CloseButton;
+            this.appExitButton.Image = global::SteamAutoMarket.Properties.Resources.CloseButton;
             this.appExitButton.Location = new System.Drawing.Point(1029, 3);
             this.appExitButton.Name = "appExitButton";
             this.appExitButton.Size = new System.Drawing.Size(27, 23);

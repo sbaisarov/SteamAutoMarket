@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace autotrade.CustomElements.Tabs
+namespace SteamAutoMarket.CustomElements.Tabs
 {
     public partial class MarketControlTab : UserControl
     {

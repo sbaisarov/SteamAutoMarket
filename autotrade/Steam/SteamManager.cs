@@ -5,23 +5,23 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using autotrade.Steam.Market;
-using autotrade.Steam.Market.Enums;
-using autotrade.Steam.Market.Exceptions;
-using autotrade.Steam.Market.Interface;
-using autotrade.Steam.Market.Models;
-using autotrade.Steam.Market.Models.Json;
-using autotrade.Steam.TradeOffer;
-using autotrade.Steam.TradeOffer.Models;
-using autotrade.Steam.TradeOffer.Models.Full;
-using autotrade.Utils;
-using autotrade.WorkingProcess.MarketPriceFormation;
-using autotrade.WorkingProcess.Settings;
 using Newtonsoft.Json;
 using SteamAuth;
+using SteamAutoMarket.Steam.Market;
+using SteamAutoMarket.Steam.Market.Enums;
+using SteamAutoMarket.Steam.Market.Exceptions;
+using SteamAutoMarket.Steam.Market.Interface;
+using SteamAutoMarket.Steam.Market.Models;
+using SteamAutoMarket.Steam.Market.Models.Json;
+using SteamAutoMarket.Steam.TradeOffer;
+using SteamAutoMarket.Steam.TradeOffer.Models;
+using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+using SteamAutoMarket.Utils;
+using SteamAutoMarket.WorkingProcess.MarketPriceFormation;
+using SteamAutoMarket.WorkingProcess.Settings;
 using SteamKit2;
 
-namespace autotrade.Steam
+namespace SteamAutoMarket.Steam
 {
     public class SteamManager
     {

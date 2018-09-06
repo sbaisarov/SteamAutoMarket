@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
-using autotrade.Utils;
+using SteamAutoMarket.Utils;
 
-namespace autotrade.CustomElements.Forms
+namespace SteamAutoMarket.CustomElements.Forms
 {
     public partial class WorkingProcessForm : Form
     {

@@ -4,16 +4,16 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using autotrade.Steam.Market.Enums;
-using autotrade.Steam.Market.Exceptions;
-using autotrade.Steam.Market.Interface.Games;
-using autotrade.Steam.Market.Models;
-using autotrade.Steam.Market.Models.Json;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 using RestSharp;
+using SteamAutoMarket.Steam.Market.Enums;
+using SteamAutoMarket.Steam.Market.Exceptions;
+using SteamAutoMarket.Steam.Market.Interface.Games;
+using SteamAutoMarket.Steam.Market.Models;
+using SteamAutoMarket.Steam.Market.Models.Json;
 
-namespace autotrade.Steam.Market.Interface
+namespace SteamAutoMarket.Steam.Market.Interface
 {
     public class MarketClient
     {

@@ -1,4 +1,4 @@
-﻿namespace autotrade.Steam.TradeOffer.Enums
+﻿namespace SteamAutoMarket.Steam.TradeOffer.Enums
 {
     public enum TradeOfferState
     {

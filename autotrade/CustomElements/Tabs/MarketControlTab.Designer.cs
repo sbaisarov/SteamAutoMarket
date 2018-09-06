@@ -1,6 +1,6 @@
-﻿using autotrade.CustomElements.Controls.Market;
+﻿using SteamAutoMarket.CustomElements.Controls.Market;
 
-namespace autotrade.CustomElements.Tabs
+namespace SteamAutoMarket.CustomElements.Tabs
 {
     partial class MarketControlTab
     {
@@ -34,7 +34,7 @@ namespace autotrade.CustomElements.Tabs
             this.MarketSellTab = new System.Windows.Forms.TabPage();
             this.MarketBuyTab = new System.Windows.Forms.TabPage();
             this.SaleControl = new SaleControl();
-            this.RelistControl = new autotrade.CustomElements.Controls.Market.MarketRelistControl();
+            this.RelistControl = new MarketRelistControl();
             this.TabControl.SuspendLayout();
             this.MarketSellTab.SuspendLayout();
             this.MarketBuyTab.SuspendLayout();

@@ -1,4 +1,4 @@
-﻿namespace autotrade.CustomElements.Controls.Settings
+﻿namespace SteamAutoMarket.CustomElements.Controls.Settings
 {
     partial class CacheSettingsControl
     {
@@ -535,7 +535,7 @@
             // 
             // UpdateButton
             // 
-            this.UpdateButton.BackgroundImage = global::autotrade.Properties.Resources.yellow_update_button;
+            this.UpdateButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.yellow_update_button;
             this.UpdateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.UpdateButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.UpdateButton.FlatAppearance.BorderSize = 0;
@@ -551,7 +551,7 @@
             // 
             // MidleImagePanel
             // 
-            this.MidleImagePanel.BackgroundImage = global::autotrade.Properties.Resources.ClearCacheImage3;
+            this.MidleImagePanel.BackgroundImage = global::SteamAutoMarket.Properties.Resources.ClearCacheImage3;
             this.MidleImagePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.MidleImagePanel.Location = new System.Drawing.Point(265, 47);
             this.MidleImagePanel.Name = "MidleImagePanel";

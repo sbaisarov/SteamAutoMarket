@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using autotrade.Utils;
-using autotrade.WorkingProcess;
+using SteamAutoMarket.Utils;
+using SteamAutoMarket.WorkingProcess;
 
-namespace autotrade.CustomElements.Controls.Market
+namespace SteamAutoMarket.CustomElements.Controls.Market
 {
     public partial class MarketRelistControl : UserControl
     {

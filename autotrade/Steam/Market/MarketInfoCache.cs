@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
-using autotrade.Steam.Market.Models;
 using Newtonsoft.Json;
+using SteamAutoMarket.Steam.Market.Models;
 
-namespace autotrade.Steam.Market
+namespace SteamAutoMarket.Steam.Market
 {
     internal class MarketInfoCache
     {

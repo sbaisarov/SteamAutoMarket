@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
-namespace autotrade.WorkingProcess.Caches
+namespace SteamAutoMarket.WorkingProcess.Caches
 {
     internal class ImagesCache
     {

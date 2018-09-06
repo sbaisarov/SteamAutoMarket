@@ -6,12 +6,12 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using autotrade.CustomElements.Controls.Market;
-using autotrade.Steam.TradeOffer.Models;
-using autotrade.WorkingProcess.Caches;
 using RestSharp;
+using SteamAutoMarket.CustomElements.Controls.Market;
+using SteamAutoMarket.Steam.TradeOffer.Models;
+using SteamAutoMarket.WorkingProcess.Caches;
 
-namespace autotrade.Utils
+namespace SteamAutoMarket.Utils
 {
     internal class ImageUtils
     {

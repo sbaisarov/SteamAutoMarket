@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace autotrade.CustomElements.Elements
+namespace SteamAutoMarket.CustomElements.Elements
 {
     internal class RichTextBoxWithNoPaint : RichTextBox
     {

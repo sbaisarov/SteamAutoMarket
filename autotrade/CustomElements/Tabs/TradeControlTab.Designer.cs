@@ -1,6 +1,6 @@
-﻿using autotrade.CustomElements.Controls.Trade;
+﻿using SteamAutoMarket.CustomElements.Controls.Trade;
 
-namespace autotrade.CustomElements.Tabs
+namespace SteamAutoMarket.CustomElements.Tabs
 {
     partial class TradeControlTab
     {

@@ -5,12 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using autotrade.Steam.Market;
-using autotrade.WorkingProcess.Caches;
-using autotrade.WorkingProcess.PriceLoader;
-using autotrade.WorkingProcess.Settings;
+using SteamAutoMarket.Steam.Market;
+using SteamAutoMarket.WorkingProcess.Caches;
+using SteamAutoMarket.WorkingProcess.PriceLoader;
+using SteamAutoMarket.WorkingProcess.Settings;
 
-namespace autotrade.CustomElements.Controls.Settings
+namespace SteamAutoMarket.CustomElements.Controls.Settings
 {
     public partial class CacheSettingsControl : UserControl
     {

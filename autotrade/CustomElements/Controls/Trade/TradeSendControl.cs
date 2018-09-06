@@ -5,17 +5,17 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using autotrade.CustomElements.Elements;
-using autotrade.CustomElements.Utils;
-using autotrade.Steam.TradeOffer.Models;
-using autotrade.Steam.TradeOffer.Models.Full;
-using autotrade.Utils;
-using autotrade.WorkingProcess;
-using autotrade.WorkingProcess.PriceLoader;
-using autotrade.WorkingProcess.Settings;
+using SteamAutoMarket.CustomElements.Elements;
+using SteamAutoMarket.CustomElements.Utils;
+using SteamAutoMarket.Steam.TradeOffer.Models;
+using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+using SteamAutoMarket.Utils;
+using SteamAutoMarket.WorkingProcess;
+using SteamAutoMarket.WorkingProcess.PriceLoader;
+using SteamAutoMarket.WorkingProcess.Settings;
 using SteamKit2;
 
-namespace autotrade.CustomElements.Controls.Trade
+namespace SteamAutoMarket.CustomElements.Controls.Trade
 {
     public partial class TradeSendControl : UserControl
     {

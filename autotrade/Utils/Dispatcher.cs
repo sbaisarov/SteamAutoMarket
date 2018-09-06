@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace autotrade.Utils
+namespace SteamAutoMarket.Utils
 {
     internal class Dispatcher
     {

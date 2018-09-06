@@ -1,6 +1,6 @@
-﻿using autotrade.CustomElements.Controls.Settings;
+﻿using SteamAutoMarket.CustomElements.Controls.Settings;
 
-namespace autotrade.CustomElements.Tabs
+namespace SteamAutoMarket.CustomElements.Tabs
 {
     partial class SettingsControlTab
     {
@@ -34,7 +34,7 @@ namespace autotrade.CustomElements.Tabs
             this.GeneralSettingsTab = new System.Windows.Forms.TabPage();
             this.CacheSettingsTab = new System.Windows.Forms.TabPage();
             this.SettingsControl = new GeneralSettingsControl();
-            this.cacheSettingsControl1 = new autotrade.CustomElements.Controls.Settings.CacheSettingsControl();
+            this.cacheSettingsControl1 = new CacheSettingsControl();
             this.TabControl.SuspendLayout();
             this.GeneralSettingsTab.SuspendLayout();
             this.CacheSettingsTab.SuspendLayout();

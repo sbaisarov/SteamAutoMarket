@@ -1,4 +1,4 @@
-﻿namespace autotrade.WorkingProcess.PriceLoader
+﻿namespace SteamAutoMarket.WorkingProcess.PriceLoader
 {
     public enum TableToLoad
     {

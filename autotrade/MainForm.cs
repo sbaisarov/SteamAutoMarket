@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace autotrade
+namespace SteamAutoMarket
 {
     public partial class MainForm : Form
     {

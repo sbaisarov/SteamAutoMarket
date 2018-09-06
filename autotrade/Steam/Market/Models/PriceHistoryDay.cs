@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace autotrade.Steam.Market.Models
+namespace SteamAutoMarket.Steam.Market.Models
 {
     public class PriceHistoryDay
     {

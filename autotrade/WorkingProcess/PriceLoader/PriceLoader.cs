@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using autotrade.CustomElements.Utils;
-using autotrade.Steam.TradeOffer.Models.Full;
-using autotrade.Utils;
-using autotrade.WorkingProcess.Settings;
+using SteamAutoMarket.CustomElements.Utils;
+using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+using SteamAutoMarket.Utils;
+using SteamAutoMarket.WorkingProcess.Settings;
 
-namespace autotrade.WorkingProcess.PriceLoader
+namespace SteamAutoMarket.WorkingProcess.PriceLoader
 {
     internal class PriceLoader
     {

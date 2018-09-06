@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using autotrade.Steam.TradeOffer.Enums;
-using autotrade.Steam.TradeOffer.Models;
-using autotrade.Utils;
+using SteamAutoMarket.Steam.TradeOffer.Enums;
+using SteamAutoMarket.Steam.TradeOffer.Models;
+using SteamAutoMarket.Utils;
 using SteamKit2;
 
-namespace autotrade.Steam.TradeOffer
+namespace SteamAutoMarket.Steam.TradeOffer
 {
     public class TradeOfferManager
     {

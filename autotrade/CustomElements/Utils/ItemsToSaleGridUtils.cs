@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using autotrade.CustomElements.Controls.Trade;
-using autotrade.Steam.TradeOffer.Models;
-using autotrade.Steam.TradeOffer.Models.Full;
-using autotrade.Utils;
-using autotrade.WorkingProcess.PriceLoader;
+using SteamAutoMarket.CustomElements.Controls.Trade;
+using SteamAutoMarket.Steam.TradeOffer.Models;
+using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+using SteamAutoMarket.Utils;
+using SteamAutoMarket.WorkingProcess.PriceLoader;
 
-namespace autotrade.CustomElements.Utils
+namespace SteamAutoMarket.CustomElements.Utils
 {
     internal static class ItemsToSaleGridUtils
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace autotrade.CustomElements.Utils
+namespace SteamAutoMarket.CustomElements.Utils
 {
     internal class AccountsDataGridUtils
     {
