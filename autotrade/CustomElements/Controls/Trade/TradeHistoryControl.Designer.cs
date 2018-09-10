@@ -53,6 +53,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HidenMarketHashNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemDescriptionTextBox = new SteamAutoMarket.CustomElements.Elements.RichTextBoxWithNoPaint();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.ExtraTradeInfoGroupBox = new System.Windows.Forms.GroupBox();
@@ -81,8 +82,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.AccountNameLable = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SplitterPanel = new System.Windows.Forms.Panel();
-            this.DateTimePicker = new CustomDateTimePicker();
-            this.ItemDescriptionTextBox = new RichTextBoxWithNoPaint();
+            this.DateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.CurrentTradesGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTradesGridView)).BeginInit();
             this.MyItemsGroupBox.SuspendLayout();
@@ -276,6 +276,18 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.ItemDescriptionGroupBox.TabStop = false;
             this.ItemDescriptionGroupBox.Text = "Item description";
             // 
+            // ItemDescriptionTextBox
+            // 
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
+            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
+            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(273, 142);
+            this.ItemDescriptionTextBox.TabIndex = 11;
+            this.ItemDescriptionTextBox.Text = "";
+            // 
             // ItemNameLable
             // 
             this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -453,8 +465,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             // TradeSettingsGroupBox
             // 
-            this.TradeSettingsGroupBox.Controls.Add(this.TradeIdComboBox);
             this.TradeSettingsGroupBox.Controls.Add(this.DateTimePicker);
+            this.TradeSettingsGroupBox.Controls.Add(this.TradeIdComboBox);
             this.TradeSettingsGroupBox.Controls.Add(this.LanguageComboBox);
             this.TradeSettingsGroupBox.Controls.Add(this.TimeLable);
             this.TradeSettingsGroupBox.Controls.Add(this.MaxTradesNumericUpDown);
@@ -674,25 +686,17 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             // DateTimePicker
             // 
-            this.DateTimePicker.BackColor = System.Drawing.Color.Yellow;
-            this.DateTimePicker.Checked = false;
+            this.DateTimePicker.CalendarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.DateTimePicker.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.DateTimePicker.CalendarTitleBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.DateTimePicker.CalendarTitleForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.DateTimePicker.CalendarTrailingForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.DateTimePicker.CustomFormat = " dd/MM/yyyy";
+            this.DateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.DateTimePicker.Location = new System.Drawing.Point(121, 21);
             this.DateTimePicker.Name = "DateTimePicker";
             this.DateTimePicker.Size = new System.Drawing.Size(149, 20);
-            this.DateTimePicker.TabIndex = 12;
-            // 
-            // ItemDescriptionTextBox
-            // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
-            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
-            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(273, 142);
-            this.ItemDescriptionTextBox.TabIndex = 11;
-            this.ItemDescriptionTextBox.Text = "";
+            this.DateTimePicker.TabIndex = 45;
             // 
             // TradeHistoryControl
             // 
@@ -769,7 +773,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox IncludeFailedCheckBox;
         private System.Windows.Forms.CheckBox NavigatingBackCheckBox;
-        private CustomElements.Elements.CustomDateTimePicker DateTimePicker;
         private System.Windows.Forms.ComboBox TradeIdComboBox;
+        private System.Windows.Forms.DateTimePicker DateTimePicker;
     }
 }
