@@ -2,6 +2,8 @@
 
 namespace SteamAutoMarket.CustomElements.Controls.Trade
 {
+    using System.Windows.Forms;
+
     partial class TradeHistoryControl
     {
         /// <summary> 
@@ -81,7 +83,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.AccountNameLable = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SplitterPanel = new System.Windows.Forms.Panel();
-            this.DateTimePicker = new CustomDateTimePicker();
             this.ItemDescriptionTextBox = new RichTextBoxWithNoPaint();
             this.CurrentTradesGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentTradesGridView)).BeginInit();
@@ -454,7 +455,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // TradeSettingsGroupBox
             // 
             this.TradeSettingsGroupBox.Controls.Add(this.TradeIdComboBox);
-            this.TradeSettingsGroupBox.Controls.Add(this.DateTimePicker);
             this.TradeSettingsGroupBox.Controls.Add(this.LanguageComboBox);
             this.TradeSettingsGroupBox.Controls.Add(this.TimeLable);
             this.TradeSettingsGroupBox.Controls.Add(this.MaxTradesNumericUpDown);
@@ -672,16 +672,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
             this.SplitterPanel.TabIndex = 33;
             // 
-            // DateTimePicker
-            // 
-            this.DateTimePicker.BackColor = System.Drawing.Color.Yellow;
-            this.DateTimePicker.Checked = false;
-            this.DateTimePicker.CustomFormat = " dd/MM/yyyy";
-            this.DateTimePicker.Location = new System.Drawing.Point(121, 21);
-            this.DateTimePicker.Name = "DateTimePicker";
-            this.DateTimePicker.Size = new System.Drawing.Size(149, 20);
-            this.DateTimePicker.TabIndex = 12;
-            // 
             // ItemDescriptionTextBox
             // 
             this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -769,7 +759,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox IncludeFailedCheckBox;
         private System.Windows.Forms.CheckBox NavigatingBackCheckBox;
-        private CustomElements.Elements.CustomDateTimePicker DateTimePicker;
         private System.Windows.Forms.ComboBox TradeIdComboBox;
     }
 }

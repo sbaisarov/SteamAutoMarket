@@ -1,22 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace SteamAutoMarket.CustomElements.Elements
+﻿namespace SteamAutoMarket.CustomElements.Elements
 {
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     internal class ComboboxWithImage : ComboBox
     {
-        private readonly Dictionary<int, Image> _imagesDictionary = new Dictionary<int, Image>();
+        private readonly Dictionary<int, Image> imagesDictionary = new Dictionary<int, Image>();
 
         public void AddItem(string text, Image image)
         {
-            var index = Items.Add(text);
-            _imagesDictionary.Add(index, image);
+            var index = this.Items.Add(text);
+            this.imagesDictionary.Add(index, image);
         }
 
         public Image GetImageByIndex(int index)
         {
-            return _imagesDictionary[index];
+            return this.imagesDictionary[index];
         }
     }
 }

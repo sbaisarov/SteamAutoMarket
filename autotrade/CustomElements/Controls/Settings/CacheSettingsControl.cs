@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using SteamAutoMarket.Steam.Market;
 using SteamAutoMarket.WorkingProcess.Caches;
 using SteamAutoMarket.WorkingProcess.PriceLoader;
@@ -15,6 +16,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
     public partial class CacheSettingsControl : UserControl
     {
         private static readonly string CACHED_TEXT = "Cached items quantity - ";
+
         private static readonly string CACHED_ABSOLETE_TEXT = "Obsolete quantity - ";
 
         public CacheSettingsControl()
@@ -31,24 +33,32 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
         private void InitCurrentCacheStatusesAsync()
         {
             UpdateButton.Enabled = false;
-            Task.Run(() =>
-            {
-                SetCacheCount(ImagesCacheCountLable, GetCachedImagesCount());
-                SetCacheCount(MarketIdCacheCountLable, GetCachedMarketIdsCount());
-                SetCacheCount(SettingsCacheCountLable, GetChangedSettingsCount());
+            Task.Run(
+                () =>
+                    {
+                        SetCacheCount(ImagesCacheCountLable, GetCachedImagesCount());
+                        SetCacheCount(MarketIdCacheCountLable, GetCachedMarketIdsCount());
+                        SetCacheCount(SettingsCacheCountLable, GetChangedSettingsCount());
 
-                SetCacheCount(AverageCacheCountLable, GetCachedAveragePricesCount());
-                SetObsoleteCacheCount(AverageObsoleteCacheCountLable, GetObsoleteCachedAveragePricesCount());
+                        SetCacheCount(AverageCacheCountLable, GetCachedAveragePricesCount());
+                        SetObsoleteCacheCount(AverageObsoleteCacheCountLable, GetObsoleteCachedAveragePricesCount());
 
-                SetCacheCount(CurrentCacheCountLable, GetCachedCurrentPricesCount());
-                SetObsoleteCacheCount(CurrentObsoleteCacheCountLable, GetObsoleteCachedCurrentPricesCount());
-            });
+                        SetCacheCount(CurrentCacheCountLable, GetCachedCurrentPricesCount());
+                        SetObsoleteCacheCount(CurrentObsoleteCacheCountLable, GetObsoleteCachedCurrentPricesCount());
+                    });
             UpdateButton.Enabled = true;
         }
 
         private int GetCachedImagesCount()
         {
-            return Directory.GetFiles(ImagesCache.ImagesPath).Count();
+            try
+            {
+                return Directory.GetFiles(ImagesCache.ImagesPath).Count();
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return 0;
+            }
         }
 
         private int GetCachedMarketIdsCount()
@@ -110,14 +120,16 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
 
         private void CurrentCacheNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsHoursToBecomeOldCurrentPrice,
-                (int) CurrentCacheNumericUpDown.Value);
+            SavedSettings.UpdateField(
+                ref SavedSettings.Get().SettingsHoursToBecomeOldCurrentPrice,
+                (int)CurrentCacheNumericUpDown.Value);
         }
 
         private void AverageCacheNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsHoursToBecomeOldAveragePrice,
-                (int) AverageCacheNumericUpDown.Value);
+            SavedSettings.UpdateField(
+                ref SavedSettings.Get().SettingsHoursToBecomeOldAveragePrice,
+                (int)AverageCacheNumericUpDown.Value);
         }
 
         private void ImagesCacheOpenButton_Click(object sender, EventArgs e)
@@ -224,8 +236,10 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
 
         private bool ConfirmationClearCacheWindow()
         {
-            var confirmResult = MessageBox.Show("Are you sure you want to clear cached items?",
-                "Confirm deletion?", MessageBoxButtons.YesNo);
+            var confirmResult = MessageBox.Show(
+                "Are you sure you want to clear cached items?",
+                "Confirm deletion?",
+                MessageBoxButtons.YesNo);
 
             return confirmResult == DialogResult.Yes;
         }

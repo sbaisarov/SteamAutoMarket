@@ -1,23 +1,20 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace SteamAutoMarket.CustomElements.Elements
+﻿namespace SteamAutoMarket.CustomElements.Elements
 {
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     internal class RichTextBoxWithNoPaint : RichTextBox
     {
-        private readonly Color _backColorDisabled = Color.Gainsboro;
-        private readonly Color _foreColorDisabled = SystemColors.ControlText;
+        private readonly Color backColorDisabled = Color.Gainsboro;
+        private readonly Color foreColorDisabled = SystemColors.ControlText;
 
         protected override void OnEnabledChanged(EventArgs e)
         {
             base.OnEnabledChanged(e);
-            if (!Enabled)
-                SetStyle(ControlStyles.UserPaint, true);
-            else
-                SetStyle(ControlStyles.UserPaint, false);
+            this.SetStyle(ControlStyles.UserPaint, !this.Enabled);
 
-            Invalidate();
+            this.Invalidate();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -25,23 +22,24 @@ namespace SteamAutoMarket.CustomElements.Elements
             base.OnPaint(e);
             SolidBrush textBrush;
 
-            if (Enabled)
+            if (this.Enabled)
             {
-                textBrush = new SolidBrush(ForeColor);
+                textBrush = new SolidBrush(this.ForeColor);
             }
             else
             {
-                var backColorDisabled = _backColorDisabled;
+                var form = this.Parent.FindForm();
+                if (form != null)
+                {
+                    form.BackColor = this.backColorDisabled;
+                }
 
-                var form = Parent.FindForm();
-                if (form != null) form.BackColor = backColorDisabled;
-
-                textBrush = new SolidBrush(_foreColorDisabled);
-                var backBrush = new SolidBrush(backColorDisabled);
-                e.Graphics.FillRectangle(backBrush, ClientRectangle);
+                textBrush = new SolidBrush(this.foreColorDisabled);
+                var backBrush = new SolidBrush(this.backColorDisabled);
+                e.Graphics.FillRectangle(backBrush, this.ClientRectangle);
             }
 
-            e.Graphics.DrawString(Text, Font, textBrush, 1.0F, 1.0F);
+            e.Graphics.DrawString(this.Text, this.Font, textBrush, 1.0F, 1.0F);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using SteamAutoMarket.CustomElements.Utils;
 using SteamAutoMarket.Steam.TradeOffer.Models;
 using SteamAutoMarket.Steam.TradeOffer.Models.Full;
@@ -19,6 +20,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             new Dictionary<string, FullHistoryTradeOffer>();
 
         private AssetDescription SELECTED_ITEM_DESCRIPTION;
+
         private string SELECTED_OFFER_ID;
 
         public TradeHistoryControl()
@@ -45,7 +47,10 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
         {
             if (CurrentSession.SteamManager == null)
             {
-                MessageBox.Show("You should login first", "Error trades history loading", MessageBoxButtons.OK,
+                MessageBox.Show(
+                    "You should login first",
+                    "Error trades history loading",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 Logger.Error("Error on trades history loading. No logined account found.");
                 return;
@@ -56,15 +61,18 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
 
             if (!sentOffers && !ReceivedOffers)
             {
-                MessageBox.Show("You should select at least one type of offers to load (Received/Sent)",
-                    "Error trades history loading", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "You should select at least one type of offers to load (Received/Sent)",
+                    "Error trades history loading",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 Logger.Error("Error on trades history loading. No trades type selected.");
                 return;
             }
 
-            var startTime = CommonUtils.GetSecondsFromDateTime(CommonUtils.ResetTimeToDauStart(DateTimePicker.Value));
+            var startTime = CommonUtils.GetSecondsFromDateTime(CommonUtils.ResetTimeToDauStart(DateTime.Now)); // todo
             var startTradeId = TradeIdComboBox.Text;
-            var maxTrades = (int) MaxTradesNumericUpDown.Value;
+            var maxTrades = (int)MaxTradesNumericUpDown.Value;
             var navigatingBack = NavigatingBackCheckBox.Checked;
             var includeFailed = IncludeFailedCheckBox.Checked;
             var language = LanguageComboBox.Text;
@@ -72,34 +80,41 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
 
             CommonUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
 
-            Task.Run(() =>
-            {
-                ALL_TRADES.Clear();
-
-                Program.LoadingForm.InitTradesHistoryLoadingProcess(maxTrades, startTime, startTradeId, navigatingBack,
-                    true, language, includeFailed);
-                var fullTradeOffers = Program.LoadingForm.GetLoadedTradesHistory();
-                Program.LoadingForm.DeactivateForm();
-
-                Dispatcher.AsMainForm(() =>
-                {
-                    TradeIdComboBox.Items.Clear();
-                    foreach (var trade in fullTradeOffers)
+            Task.Run(
+                () =>
                     {
-                        ALL_TRADES.Add(trade.TradeId, trade);
+                        ALL_TRADES.Clear();
 
-                        CurrentTradesGridView.Rows.Add(
-                            trade.TradeId,
-                            trade.SteamIdOther.ConvertToUInt64(),
-                            trade.Status.ToString().Replace("TradeState", "")
-                        );
+                        Program.LoadingForm.InitTradesHistoryLoadingProcess(
+                            maxTrades,
+                            startTime,
+                            startTradeId,
+                            navigatingBack,
+                            true,
+                            language,
+                            includeFailed);
+                        var fullTradeOffers = Program.LoadingForm.GetLoadedTradesHistory();
+                        Program.LoadingForm.DeactivateForm();
 
-                        TradeIdComboBox.Items.Add(trade.TradeId);
-                    }
+                        Dispatcher.AsMainForm(
+                            () =>
+                                {
+                                    TradeIdComboBox.Items.Clear();
+                                    foreach (var trade in fullTradeOffers)
+                                    {
+                                        ALL_TRADES.Add(trade.TradeId, trade);
 
-                    LoadTradesButton.Enabled = true;
-                });
-            });
+                                        CurrentTradesGridView.Rows.Add(
+                                            trade.TradeId,
+                                            trade.SteamIdOther.ConvertToUInt64(),
+                                            trade.Status.ToString().Replace("TradeState", string.Empty));
+
+                                        TradeIdComboBox.Items.Add(trade.TradeId);
+                                    }
+
+                                    LoadTradesButton.Enabled = true;
+                                });
+                    });
         }
 
         private void CurrentTradesGridView_SelectionChanged(object sender, EventArgs e)
@@ -109,7 +124,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             var index = CurrentTradesGridView.SelectedCells[0].RowIndex;
             if (index < 0) return;
 
-            var selected = (string) CurrentTradesGridView.Rows[index].Cells[0].Value;
+            var selected = (string)CurrentTradesGridView.Rows[index].Cells[0].Value;
             if (selected == SELECTED_OFFER_ID) return;
 
             SELECTED_OFFER_ID = selected;
@@ -131,8 +146,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                         firstItem.Description.Name,
                         groupedList.Sum(x => int.Parse(x.Asset.Amount)),
                         SteamItemsUtils.GetClearType(firstItem),
-                        firstItem.Description
-                    );
+                        firstItem.Description);
                 }
             }
 
@@ -146,13 +160,12 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                         firstItem.Description.Name,
                         groupedList.Sum(x => int.Parse(x.Asset.Amount)),
                         SteamItemsUtils.GetClearType(firstItem),
-                        firstItem.Description
-                    );
+                        firstItem.Description);
                 }
             }
 
             ExtraTradeInfoGridView.Rows.Add("TradeId", tradeOffer.TradeId);
-            ExtraTradeInfoGridView.Rows.Add("TradeOfferState", tradeOffer.Status.ToString().Replace("TradeState", ""));
+            ExtraTradeInfoGridView.Rows.Add("TradeOfferState", tradeOffer.Status.ToString().Replace("TradeState", string.Empty));
             ExtraTradeInfoGridView.Rows.Add("SteamIdOtherIdOther", tradeOffer.SteamIdOther);
             ExtraTradeInfoGridView.Rows.Add("TimeInit", tradeOffer.TimeInit);
             ExtraTradeInfoGridView.Rows.Add("TimeEscrowEnd", tradeOffer.TimeEscrowEnd);
@@ -181,7 +194,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             if (selectedRows.Count == 0) return;
 
             var index = selectedRows[0].Index;
-            var description = (AssetDescription) grid.Rows[index].Cells[3].Value;
+            var description = (AssetDescription)grid.Rows[index].Cells[3].Value;
             if (!description.Equals(SELECTED_ITEM_DESCRIPTION))
             {
                 SELECTED_ITEM_DESCRIPTION = description;
@@ -201,7 +214,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
 
             label.Text = description.Name;
 
-            var descriptionText = "";
+            var descriptionText = string.Empty;
             if (description.Descriptions != null)
             {
                 foreach (var item in description.Descriptions)
@@ -214,7 +227,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                     descriptionText = descriptionText.Substring(0, descriptionText.Length - 2);
             }
 
-            var tagsText = "";
+            var tagsText = string.Empty;
 
             CommonUtils.AppendBoldText(textBox, "Game: ");
             textBox.AppendText(description.AppId + "\n");
@@ -249,7 +262,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                 if (selectedRows.Count == 0) return;
 
                 var index = selectedRows[0].Index;
-                var description = (AssetDescription) grid.Rows[index].Cells[3].Value;
+                var description = (AssetDescription)grid.Rows[index].Cells[3].Value;
                 if (!description.Equals(SELECTED_ITEM_DESCRIPTION))
                 {
                     SELECTED_ITEM_DESCRIPTION = description;
@@ -275,8 +288,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
 
         private void MaxTradesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryMaxTrades,
-                (int) MaxTradesNumericUpDown.Value);
+            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryMaxTrades, (int)MaxTradesNumericUpDown.Value);
         }
 
         private void LanguageComboBox_TextChanged(object sender, EventArgs e)
@@ -286,14 +298,14 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
 
         private void NavigatingBackCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryNavigatingBack,
+            SavedSettings.UpdateField(
+                ref SavedSettings.Get().TradeHistoryNavigatingBack,
                 NavigatingBackCheckBox.Checked);
         }
 
         private void IncludeFailedCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryIncludeFailed,
-                IncludeFailedCheckBox.Checked);
+            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryIncludeFailed, IncludeFailedCheckBox.Checked);
         }
     }
 }

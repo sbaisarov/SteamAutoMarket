@@ -37,10 +37,10 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
                 AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = acc.Login;
                 AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value =
                     GetPasswordStars(acc.Password.Count());
-                AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value =
+                AccountsDataGridUtils.GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, row).Value =
                     acc.Password;
                 AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value = acc.SteamApi;
-                AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = acc.MaFile;
+                AccountsDataGridUtils.GetDataGridViewMafileHiddenCell(AccountsDataGridView, row).Value = acc.MaFile;
 
                 Task.Run(() =>
                 {
@@ -84,7 +84,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
                 return;
             }
 
-            if (AccountsDataGridUtils.IsAccountAreadyExist(AccountsDataGridView, LoginTextBox.Text.Trim()))
+            if (AccountsDataGridUtils.IsAccountAlreadyExist(AccountsDataGridView, LoginTextBox.Text.Trim()))
             {
                 Logger.Error($"{LoginTextBox.Text.Trim()} already exist in accounts list");
                 MessageBox.Show($@"{LoginTextBox.Text.Trim()} already exist in accounts list",
@@ -118,8 +118,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
                 GetPasswordStars(PasswordTextBox.Text.Trim().Count());
             AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value =
                 SteamApiTextBox.Text.Trim();
-            AccountsDataGridUtils.GetDataGridViewMafileHidenCell(AccountsDataGridView, row).Value = account;
-            AccountsDataGridUtils.GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value =
+            AccountsDataGridUtils.GetDataGridViewMafileHiddenCell(AccountsDataGridView, row).Value = account;
+            AccountsDataGridUtils.GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, row).Value =
                 PasswordTextBox.Text.Trim();
             Logger.Debug($"{login} added to accounts list");
 
@@ -149,11 +149,11 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
             {
                 var login = (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, i).Value;
                 var password = (string)AccountsDataGridUtils
-                    .GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, i).Value;
+                    .GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, i).Value;
                 var opskinsApi =
                     (string)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, i).Value;
                 var mafile = (SteamGuardAccount)AccountsDataGridUtils
-                    .GetDataGridViewMafileHidenCell(AccountsDataGridView, i).Value;
+                    .GetDataGridViewMafileHiddenCell(AccountsDataGridView, i).Value;
 
                 accounts.Add(new SavedSteamAccount
                 {
@@ -209,7 +209,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
             LoginTextBox.Text =
                 @" " + (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
             PasswordTextBox.Text = @" " + (string)AccountsDataGridUtils
-                                       .GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, row).Value;
+                                       .GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, row).Value;
             SteamApiTextBox.Text =
                 @" " + (string)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value;
         }
@@ -240,11 +240,11 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
             var login = (string)AccountsDataGridUtils
                 .GetDataGridViewLoginCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var password = (string)AccountsDataGridUtils
-                .GetDataGridViewTruePasswordHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
+                .GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var api = (string)AccountsDataGridUtils
                 .GetDataGridViewSteamApiCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var mafile = (SteamGuardAccount)AccountsDataGridUtils
-                .GetDataGridViewMafileHidenCell(AccountsDataGridView, currentCell.RowIndex).Value;
+                .GetDataGridViewMafileHiddenCell(AccountsDataGridView, currentCell.RowIndex).Value;
             var image = (Image)AccountsDataGridUtils
                 .GetDataGridViewImageCell(AccountsDataGridView, currentCell.RowIndex).Value;
 

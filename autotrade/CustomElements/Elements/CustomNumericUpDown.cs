@@ -1,15 +1,16 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.Windows.Forms;
-
-namespace SteamAutoMarket.CustomElements.Elements
+﻿namespace SteamAutoMarket.CustomElements.Elements
 {
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.Windows.Forms;
+
     public class CustomNumericUpDown : NumericUpDown
     {
-        private string _leadingSign = "";
-        private string _trailingSign = "%";
+        private string leadingSign = string.Empty;
+
+        private string trailingSign = "%";
 
         /// <summary>
         ///     Gets or sets a leading symbol that is concatenate with the text.
@@ -19,11 +20,11 @@ namespace SteamAutoMarket.CustomElements.Elements
         [DefaultValue("")]
         public string LeadingSign
         {
-            get => _leadingSign;
+            get => this.leadingSign;
             set
             {
-                _leadingSign = value;
-                UpdateEditText();
+                this.leadingSign = value;
+                this.UpdateEditText();
             }
         }
 
@@ -35,85 +36,94 @@ namespace SteamAutoMarket.CustomElements.Elements
         [DefaultValue("")]
         public string TrailingSign
         {
-            get => _trailingSign;
+            get => this.trailingSign;
             set
             {
-                _trailingSign = value;
-                UpdateEditText();
+                this.trailingSign = value;
+                this.UpdateEditText();
             }
         }
 
         protected override void UpdateEditText()
         {
-            if (UserEdit) ParseEditText();
+            if (this.UserEdit)
+            {
+                this.ParseEditText();
+            }
 
-            ChangingText = true;
-            Text = _leadingSign + GetNumberText(Value) + _trailingSign;
-            Debug.Assert(ChangingText == false, "ChangingText should have been set to false");
+            this.ChangingText = true;
+            this.Text = this.leadingSign + this.GetNumberText(this.Value) + this.trailingSign;
+        }
+
+        protected override void ValidateEditText()
+        {
+            this.ParseEditText();
+            this.UpdateEditText();
+        }
+
+        protected new void ParseEditText()
+        {
+            try
+            {
+                var text = this.Text;
+                if (!string.IsNullOrEmpty(this.leadingSign) && text.StartsWith(this.leadingSign))
+                {
+                    text = text.Substring(this.leadingSign.Length);
+                }
+
+                if (!string.IsNullOrEmpty(this.trailingSign) && text.EndsWith(this.trailingSign))
+                {
+                    text = text.Substring(0, text.Length - this.trailingSign.Length);
+                }
+
+                if (string.IsNullOrEmpty(text) || (text.Length == 1 && text == "-"))
+                {
+                    return;
+                }
+
+                this.Value = this.Constrain(
+                    this.Hexadecimal
+                        ? Convert.ToDecimal(Convert.ToInt32(text, 16))
+                        : decimal.Parse(text, CultureInfo.CurrentCulture));
+            }
+            finally
+            {
+                this.UserEdit = false;
+            }
         }
 
         private string GetNumberText(decimal num)
         {
             string text;
 
-            if (Hexadecimal)
+            if (this.Hexadecimal)
             {
                 text = ((long)num).ToString("X", CultureInfo.InvariantCulture);
-                Debug.Assert(text == text.ToUpper(CultureInfo.InvariantCulture),
+                Debug.Assert(
+                    text == text.ToUpper(CultureInfo.InvariantCulture),
                     "GetPreferredSize assumes hex digits to be uppercase.");
             }
             else
             {
                 text = num.ToString(
-                    (ThousandsSeparator ? "N" : "F") + DecimalPlaces.ToString(CultureInfo.CurrentCulture),
+                    (this.ThousandsSeparator ? "N" : "F") + this.DecimalPlaces.ToString(CultureInfo.CurrentCulture),
                     CultureInfo.CurrentCulture);
             }
 
             return text;
         }
 
-        protected override void ValidateEditText()
-        {
-            ParseEditText();
-            UpdateEditText();
-        }
-
-        protected new void ParseEditText()
-        {
-            Debug.Assert(UserEdit, "ParseEditText() - UserEdit == false");
-
-            try
-            {
-                var text = Text;
-                if (!string.IsNullOrEmpty(_leadingSign))
-                    if (text.StartsWith(_leadingSign))
-                        text = text.Substring(_leadingSign.Length);
-                if (!string.IsNullOrEmpty(_trailingSign))
-                    if (text.EndsWith(_trailingSign))
-                        text = text.Substring(0, text.Length - _trailingSign.Length);
-
-                if (!string.IsNullOrEmpty(text) &&
-                    !(text.Length == 1 && text == "-"))
-                {
-                    if (Hexadecimal)
-                        Value = Constrain(Convert.ToDecimal(Convert.ToInt32(text, 16)));
-                    else
-                        Value = Constrain(decimal.Parse(text, CultureInfo.CurrentCulture));
-                }
-            }
-            finally
-            {
-                UserEdit = false;
-            }
-        }
-
         private decimal Constrain(decimal value)
         {
-            if (value < Minimum)
-                value = Minimum;
+            if (value < this.Minimum)
+            {
+                value = this.Minimum;
+            }
 
-            if (value > Maximum)
-                value = Maximum;
+            if (value > this.Maximum)
+            {
+                value = this.Maximum;
+            }
 
             return value;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+
 using SteamAutoMarket.CustomElements.Controls.Trade;
 using SteamAutoMarket.Steam.TradeOffer.Models;
 using SteamAutoMarket.Steam.TradeOffer.Models.Full;
@@ -12,10 +13,15 @@ namespace SteamAutoMarket.CustomElements.Utils
     internal static class ItemsToSaleGridUtils
     {
         public static readonly int ItemNameColumnIndex = 0;
+
         public static readonly int CountColumnIndex = 1;
+
         public static readonly int CurrentColumnIndex = 2;
+
         public static readonly int AverageColumnIndex = 3;
+
         public static readonly int HiddenItemMarketHashNameIndex = 4;
+
         public static readonly int HiddenItemListIndex = 5;
 
         public static void CellClick(DataGridView itemsToSaleGrid, int row)
@@ -60,7 +66,8 @@ namespace SteamAutoMarket.CustomElements.Utils
             }
         }
 
-        public static DataGridViewRow GetDataGridViewRowByMarketHashName(DataGridView itemsToSaleGrid,
+        public static DataGridViewRow GetDataGridViewRowByMarketHashName(
+            DataGridView itemsToSaleGrid,
             string marketHashName)
         {
             for (var i = 0; i < itemsToSaleGrid.RowCount; i++)
@@ -73,9 +80,14 @@ namespace SteamAutoMarket.CustomElements.Utils
             return null;
         }
 
-        public static void RowClick(DataGridView itemsToSaleGrid, int row,
-            Dictionary<string, RgDescription> descriptions, DataGridView allItemsGrid, RichTextBox textBox,
-            Panel imageBox, Label lable)
+        public static void RowClick(
+            DataGridView itemsToSaleGrid,
+            int row,
+            Dictionary<string, RgDescription> descriptions,
+            DataGridView allItemsGrid,
+            RichTextBox textBox,
+            Panel imageBox,
+            Label lable)
         {
             var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, row);
             var hidenItemsList = (List<FullRgItem>)hidenItemsListCell.Value;
@@ -83,21 +95,25 @@ namespace SteamAutoMarket.CustomElements.Utils
 
             var itemMarketHashName = hidenItemsList.First().Description.MarketHashName;
 
-            AllItemsListGridUtils.UpdateItemDescription(TradeSendControl.AllDescriptionsDictionary[itemMarketHashName],
-                textBox, imageBox, lable);
+            AllItemsListGridUtils.UpdateItemDescription(
+                TradeSendControl.AllDescriptionsDictionary[itemMarketHashName],
+                textBox,
+                imageBox,
+                lable);
         }
 
         public static void DeleteButtonClick(DataGridView allItemsGrid, DataGridView itemsToSaleGrid, int selectedRow)
         {
+            var allItemsListGridUtils = new AllItemsListGridUtils(allItemsGrid);
             var hidenItemsListCell = GetGridHidenItemsListCell(itemsToSaleGrid, selectedRow);
             var hidenItemsList = (List<FullRgItem>)hidenItemsListCell.Value;
             var itemMarketHashName = hidenItemsList.First().Description.MarketHashName;
 
-            var allItemsGridRow = AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid, itemMarketHashName);
+            var allItemsGridRow = allItemsListGridUtils.GetRowByItemMarketHashName(itemMarketHashName);
             if (allItemsGridRow != null)
-                AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, hidenItemsList);
+                allItemsListGridUtils.AddItemsToExistRow(allItemsGridRow.Index, hidenItemsList);
             else
-                AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, hidenItemsList);
+                allItemsListGridUtils.AddNewItemCellAllItemsDataGridView(hidenItemsList);
 
             itemsToSaleGrid.Rows.RemoveAt(selectedRow);
 
@@ -107,6 +123,7 @@ namespace SteamAutoMarket.CustomElements.Utils
 
         public static void DeleteUnmarketable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid)
         {
+            var allItemsListGridUtils = new AllItemsListGridUtils(allItemsGrid);
             var totalDeletedItemsCount = 0;
 
             for (var rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++)
@@ -132,13 +149,12 @@ namespace SteamAutoMarket.CustomElements.Utils
                 {
                     totalDeletedItemsCount += unmarketableList.Count;
                     var untradableItem = unmarketableList.First();
-                    var allItemsGridRow =
-                        AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid,
-                            untradableItem.Description.MarketHashName);
+                    var allItemsGridRow = allItemsListGridUtils.GetRowByItemMarketHashName(
+                        untradableItem.Description.MarketHashName);
                     if (allItemsGridRow != null)
-                        AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, unmarketableList);
+                        allItemsListGridUtils.AddItemsToExistRow(allItemsGridRow.Index, unmarketableList);
                     else
-                        AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, unmarketableList);
+                        allItemsListGridUtils.AddNewItemCellAllItemsDataGridView(unmarketableList);
                 }
 
                 if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);
@@ -151,6 +167,7 @@ namespace SteamAutoMarket.CustomElements.Utils
 
         public static void DeleteUntradable(DataGridView allItemsGrid, DataGridView itemsToSaleGrid)
         {
+            var allItemsListGridUtils = new AllItemsListGridUtils(allItemsGrid);
             var totalDeletedItemsCount = 0;
 
             for (var rowIndex = 0; rowIndex < itemsToSaleGrid.RowCount; rowIndex++)
@@ -176,13 +193,13 @@ namespace SteamAutoMarket.CustomElements.Utils
                 {
                     totalDeletedItemsCount += untradableList.Count;
                     var untradableItem = untradableList.First();
-                    var allItemsGridRow =
-                        AllItemsListGridUtils.GetRowByItemMarketHashName(allItemsGrid,
-                            untradableItem.Description.MarketHashName);
+                    var allItemsGridRow = allItemsListGridUtils.GetRowByItemMarketHashName(
+                        
+                        untradableItem.Description.MarketHashName);
                     if (allItemsGridRow != null)
-                        AllItemsListGridUtils.AddItemsToExistRow(allItemsGrid, allItemsGridRow.Index, untradableList);
+                        allItemsListGridUtils.AddItemsToExistRow( allItemsGridRow.Index, untradableList);
                     else
-                        AllItemsListGridUtils.AddNewItemCellAllItemsDataGridView(allItemsGrid, untradableList);
+                        allItemsListGridUtils.AddNewItemCellAllItemsDataGridView( untradableList);
                 }
 
                 if (items.Count == 0) itemsToSaleGrid.Rows.RemoveAt(rowIndex--);

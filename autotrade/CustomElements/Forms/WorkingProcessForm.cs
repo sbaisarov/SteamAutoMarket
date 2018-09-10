@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
+
 using SteamAutoMarket.Utils;
 
 namespace SteamAutoMarket.CustomElements.Forms
@@ -9,6 +10,7 @@ namespace SteamAutoMarket.CustomElements.Forms
     public partial class WorkingProcessForm : Form
     {
         private bool _stopButtonPressed;
+
         private Thread _workingThread;
 
         public WorkingProcessForm()
@@ -19,24 +21,26 @@ namespace SteamAutoMarket.CustomElements.Forms
         public void InitProcess(Action process)
         {
             _activate();
-            _workingThread = new Thread(() =>
-            {
-                process();
-                _disactivate();
-            });
+            _workingThread = new Thread(
+                () =>
+                    {
+                        process();
+                        _disactivate();
+                    });
             _workingThread.Start();
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AppendWorkingProcessInfo(string message)
         {
-            Dispatcher.AsWorkingProcessForm(() =>
-            {
-                logTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
-                logTextBox.ScrollToCaret();
+            Dispatcher.AsWorkingProcessForm(
+                () =>
+                    {
+                        this.logTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
+                        this.logTextBox.ScrollToCaret();
 
-                Logger.Working(message);
-            });
+                        Logger.Working(message);
+                    });
         }
 
         private void WorkingProcessForm_Load(object sender, EventArgs e)
@@ -46,16 +50,17 @@ namespace SteamAutoMarket.CustomElements.Forms
 
         private void _activate()
         {
-            Show();
+            Dispatcher.AsWorkingProcessForm(this.Show);
         }
 
         private void _disactivate()
         {
-            Dispatcher.AsMainForm(() =>
-            {
-                Close();
-                Program.WorkingProcessForm = new WorkingProcessForm();
-            });
+            Dispatcher.AsMainForm(
+                () =>
+                    {
+                        Close();
+                        Program.WorkingProcessForm = new WorkingProcessForm();
+                    });
         }
 
         private void StopWorkingProcessButton_Click(object sender, EventArgs e)

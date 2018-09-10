@@ -118,13 +118,13 @@
     <Compile Include="CustomElements\Elements\ComboboxWithImage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomElements\Elements\CustomDateTimePicker.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="CustomElements\Utils\AccountsDataGridUtils.cs" />
     <Compile Include="CustomElements\Elements\CustomNumericUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomElements\Utils\AllItemsHiddenCellModel.cs" />
+    <Compile Include="CustomElements\Utils\CellGetter.cs" />
+    <Compile Include="CustomElements\Utils\CellProcessor.cs" />
     <Compile Include="CustomElements\Utils\CommonUtils.cs" />
     <Compile Include="CustomElements\Utils\ItemsToSaleGridUtils.cs" />
     <Compile Include="CustomElements\Elements\RichTextBoxWithNoPaint.cs">

@@ -1,40 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using SteamAutoMarket.CustomElements.Elements;
-using SteamAutoMarket.CustomElements.Utils;
-using SteamAutoMarket.Steam.TradeOffer.Models;
-using SteamAutoMarket.Steam.TradeOffer.Models.Full;
-using SteamAutoMarket.Utils;
-using SteamAutoMarket.WorkingProcess;
-using SteamAutoMarket.WorkingProcess.PriceLoader;
-using SteamAutoMarket.WorkingProcess.Settings;
-using SteamKit2;
-
-namespace SteamAutoMarket.CustomElements.Controls.Trade
+﻿namespace SteamAutoMarket.CustomElements.Controls.Trade
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+
+    using SteamAutoMarket.CustomElements.Elements;
+    using SteamAutoMarket.CustomElements.Utils;
+    using SteamAutoMarket.Steam.TradeOffer.Models;
+    using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+    using SteamAutoMarket.Utils;
+    using SteamAutoMarket.WorkingProcess;
+    using SteamAutoMarket.WorkingProcess.PriceLoader;
+    using SteamAutoMarket.WorkingProcess.Settings;
+
+    using SteamKit2;
+
     public partial class TradeSendControl : UserControl
     {
+        private readonly AllItemsListGridUtils allItemsListGridUtils;
+
         public TradeSendControl()
         {
-            InitializeComponent();
-
+            this.InitializeComponent();
+            this.allItemsListGridUtils = new AllItemsListGridUtils(this.AllSteamItemsToTradeGridView);
             var settings = SavedSettings.Get();
-            InventoryAppIdComboBox.Text = settings.TRADE_INVENTORY_APP_ID;
-            InventoryContextIdComboBox.Text = settings.TRADE_INVENTORY_CONTEX_ID;
-            TradeParthenIdTextBox.Text = settings.TRADE_PARTNER_ID;
-            TradeTokenTextBox.Text = settings.TRADE_TOKEN;
+            this.InventoryAppIdComboBox.Text = settings.TRADE_INVENTORY_APP_ID;
+            this.InventoryContextIdComboBox.Text = settings.TRADE_INVENTORY_CONTEX_ID;
+            this.TradeParthenIdTextBox.Text = settings.TRADE_PARTNER_ID;
+            this.TradeTokenTextBox.Text = settings.TRADE_TOKEN;
 
             foreach (var acc in SavedSteamAccount.Get().OrderBy(x => x.Login))
-                LoadedAccountCombobox.AddItem(acc.Login,
+                LoadedAccountCombobox.AddItem(
+                    acc.Login,
                     ImageUtils.GetSteamProfileSmallImage(acc.MaFile.Session.SteamID));
         }
 
         public static Dictionary<string, RgDescription> AllDescriptionsDictionary { get; set; }
+
         public static RgDescription LastSelectedItemDescription { get; set; }
 
         private void SaleControl_Load(object sender, EventArgs e)
@@ -50,11 +56,12 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
 
         public void LoadInventory(string steamid, string appid, string contextid)
         {
-            Dispatcher.AsMainForm(() =>
-            {
-                AllSteamItemsToTradeGridView.Rows.Clear();
-                ItemsToTradeGridView.Rows.Clear();
-            });
+            Dispatcher.AsMainForm(
+                () =>
+                    {
+                        AllSteamItemsToTradeGridView.Rows.Clear();
+                        ItemsToTradeGridView.Rows.Clear();
+                    });
 
             Program.LoadingForm.InitInventoryLoadingProcess();
             var allItemsList = Program.LoadingForm.GetLoadedItems();
@@ -62,27 +69,26 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
 
             allItemsList.RemoveAll(item => item.Description.IsTradable == false);
 
-            Dispatcher.AsMainForm(() =>
-            {
-                AllItemsListGridUtils.FillSteamSaleDataGrid(AllSteamItemsToTradeGridView, allItemsList);
-            });
+            Dispatcher.AsMainForm(() => { this.allItemsListGridUtils.FillSteamSaleDataGrid(allItemsList); });
         }
 
         private void SteamSaleDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsToTradeGridView,
-                AllSteamItemsToTradeGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            this.allItemsListGridUtils.UpdateItemDescription(
+                AllSteamItemsToTradeGridView.CurrentCell.RowIndex,
+                ItemDescriptionTextBox,
+                ItemImageBox,
+                ItemNameLable);
 
             if (e.ColumnIndex == 3)
             {
-                AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsToTradeGridView, e.RowIndex);
+                this.allItemsListGridUtils.GridComboBoxClick(e.RowIndex);
             }
             else if (e.ColumnIndex == 4)
             {
-                AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsToTradeGridView, e.RowIndex,
-                    ItemsToTradeGridView);
+                this.allItemsListGridUtils.GridAddButtonClick(e.RowIndex, ItemsToTradeGridView);
                 PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable);
             }
         }
@@ -101,9 +107,12 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                     .SelectedRows[AllSteamItemsToTradeGridView.SelectedRows.Count - 1].Cells[0].RowIndex;
             else
                 rowIndex = AllSteamItemsToTradeGridView.CurrentCell.RowIndex;
-            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsToTradeGridView, rowIndex, ItemDescriptionTextBox,
-                ItemImageBox, ItemNameLable);
-            var list = AllItemsListGridUtils.GetFullRgItems(AllSteamItemsToTradeGridView, rowIndex);
+            this.allItemsListGridUtils.UpdateItemDescription(
+                rowIndex,
+                ItemDescriptionTextBox,
+                ItemImageBox,
+                ItemNameLable);
+            var list = this.allItemsListGridUtils.GetRowItemsList(rowIndex);
             if (list != null && list.Count > 0) LastSelectedItemDescription = list[0].Description;
         }
 
@@ -121,13 +130,20 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                     .RowIndex;
             else
                 rowIndex = row;
-            ItemsToSaleGridUtils.RowClick(ItemsToTradeGridView, row, AllDescriptionsDictionary,
-                AllSteamItemsToTradeGridView, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            ItemsToSaleGridUtils.RowClick(
+                ItemsToTradeGridView,
+                row,
+                AllDescriptionsDictionary,
+                AllSteamItemsToTradeGridView,
+                ItemDescriptionTextBox,
+                ItemImageBox,
+                ItemNameLable);
             var list = ItemsToSaleGridUtils.GetFullRgItems(ItemsToTradeGridView, rowIndex);
             if (list != null && list.Count > 0) LastSelectedItemDescription = list[0].Description;
         }
 
-        private void SteamSaleDataGridView_EditingControlShowing(object sender,
+        private void SteamSaleDataGridView_EditingControlShowing(
+            object sender,
             DataGridViewEditingControlShowingEventArgs e)
         {
             if (e.Control is ComboBox cb)
@@ -170,17 +186,23 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
         {
             if (CurrentSession.SteamManager == null)
             {
-                MessageBox.Show("You should login first", "Error inventory loading", MessageBoxButtons.OK,
+                MessageBox.Show(
+                    "You should login first",
+                    "Error inventory loading",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 Logger.Error("Error on inventory loading. No logined account found.");
                 return;
             }
 
-            if (string.IsNullOrEmpty(InventoryAppIdComboBox.Text) ||
-                string.IsNullOrEmpty(InventoryContextIdComboBox.Text))
+            if (string.IsNullOrEmpty(InventoryAppIdComboBox.Text)
+                || string.IsNullOrEmpty(InventoryContextIdComboBox.Text))
             {
-                MessageBox.Show("You should chose inventory type first", "Error inventory loading",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "You should chose inventory type first",
+                    "Error inventory loading",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 Logger.Error("Error on inventory loading. No inventory type chosed.");
                 return;
             }
@@ -212,19 +234,23 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             CurrentSession.CurrentInventoryContextId = contextId;
             Logger.Debug($"Inventory {appid} - {contextId} loading started");
 
-            Task.Run(() =>
-            {
-                LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), appid, contextId);
-                Logger.Info($"Inventory {appid} - {contextId} loading finished");
-                Dispatcher.AsMainForm(() => { LoadInventoryButton.Enabled = true; });
-            });
+            Task.Run(
+                () =>
+                    {
+                        LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(), appid, contextId);
+                        Logger.Info($"Inventory {appid} - {contextId} loading finished");
+                        Dispatcher.AsMainForm(() => { LoadInventoryButton.Enabled = true; });
+                    });
         }
 
         private void SendTradeButton_Click(object sender, EventArgs e)
         {
             if (CurrentSession.SteamManager == null)
             {
-                MessageBox.Show("You should login first", "Error sending trade offer", MessageBoxButtons.OK,
+                MessageBox.Show(
+                    "You should login first",
+                    "Error sending trade offer",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 Logger.Error("Error on inventory loading. No logined account found.");
                 return;
@@ -232,8 +258,11 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
 
             if (string.IsNullOrEmpty(TradeParthenIdTextBox.Text) || string.IsNullOrEmpty(TradeTokenTextBox.Text))
             {
-                MessageBox.Show("You should chose target parthner first", "Error sending trade offer",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "You should chose target parthner first",
+                    "Error sending trade offer",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 Logger.Error("Error sending trade offer. No target parthner selected.");
                 return;
             }
@@ -246,9 +275,16 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                 itemsToSale.AddRange(itemsList);
             }
 
-            var response = CurrentSession.SteamManager.SendTradeOffer(itemsToSale, TradeParthenIdTextBox.Text, TradeTokenTextBox.Text);
+            var response = CurrentSession.SteamManager.SendTradeOffer(
+                itemsToSale,
+                TradeParthenIdTextBox.Text,
+                TradeTokenTextBox.Text);
 
-            MessageBox.Show($@"Trade sent - {response}", @"Trade info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(
+                $@"Trade sent - {response}",
+                @"Trade info",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         private void AddAllButton_Click(object sender, EventArgs e)
@@ -256,7 +292,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             AllSteamItemsToTradeGridView.CurrentCellChanged -= AllSteamItemsGridView_CurrentCellChanged;
             ItemsToTradeGridView.CurrentCellChanged -= ItemsToSaleGridView_CurrentCellChanged;
 
-            AllItemsListGridUtils.AddCellListToSale(AllSteamItemsToTradeGridView, ItemsToTradeGridView,
+            this.allItemsListGridUtils.AddCellListToSale(
+                ItemsToTradeGridView,
                 AllSteamItemsToTradeGridView.SelectedRows.Cast<DataGridViewRow>().ToArray());
 
             AllSteamItemsToTradeGridView.CurrentCellChanged += AllSteamItemsGridView_CurrentCellChanged;
@@ -269,16 +306,22 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
         {
             if (CurrentSession.SteamManager == null)
             {
-                MessageBox.Show("You should login first", "Error inventory loading", MessageBoxButtons.OK,
+                MessageBox.Show(
+                    "You should login first",
+                    "Error inventory loading",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 Logger.Warning("Error on inventory loading. No logined account found.");
                 return;
             }
 
-            if (string.IsNullOrEmpty(CurrentSession.CurrentInventoryAppId) ||
-                string.IsNullOrEmpty(CurrentSession.CurrentInventoryContextId))
+            if (string.IsNullOrEmpty(CurrentSession.CurrentInventoryAppId)
+                || string.IsNullOrEmpty(CurrentSession.CurrentInventoryContextId))
             {
-                MessageBox.Show("You should load inventory first", "Error inventory loading", MessageBoxButtons.OK,
+                MessageBox.Show(
+                    "You should load inventory first",
+                    "Error inventory loading",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 Logger.Warning("Error on inventory loading. No inventory type chosed.");
                 return;
@@ -290,30 +333,33 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             AllSteamItemsToTradeGridView.Rows.Clear();
             ItemsToTradeGridView.Rows.Clear();
 
-            LoadInventory(CurrentSession.SteamManager.Guard.Session.SteamID.ToString(),
-                CurrentSession.CurrentInventoryAppId, CurrentSession.CurrentInventoryContextId);
+            LoadInventory(
+                CurrentSession.SteamManager.Guard.Session.SteamID.ToString(),
+                CurrentSession.CurrentInventoryAppId,
+                CurrentSession.CurrentInventoryContextId);
             AllSteamItemsGridView_CurrentCellChanged(null, null);
         }
 
         private void OpenMarketPageButtonClick_Click(object sender, EventArgs e)
         {
             if (LastSelectedItemDescription == null) return;
-            Process.Start("https://" +
-                          $"steamcommunity.com/market/listings/{LastSelectedItemDescription.Appid}/" +
-                          LastSelectedItemDescription.MarketHashName);
+            Process.Start(
+                "https://" + $"steamcommunity.com/market/listings/{LastSelectedItemDescription.Appid}/"
+                           + LastSelectedItemDescription.MarketHashName);
         }
 
         private void OpenGameInventoryPageButton_Click(object sender, EventArgs e)
         {
             if (LastSelectedItemDescription == null) return;
-            Process.Start("https://" +
-                          $"steamcommunity.com/profiles/{CurrentSession.SteamManager.Guard.Session.SteamID}" +
-                          $"/inventory/#{CurrentSession.CurrentInventoryAppId}_{CurrentSession.CurrentInventoryContextId}");
+            Process.Start(
+                "https://" + $"steamcommunity.com/profiles/{CurrentSession.SteamManager.Guard.Session.SteamID}"
+                           + $"/inventory/#{CurrentSession.CurrentInventoryAppId}_{CurrentSession.CurrentInventoryContextId}");
         }
 
         private void InventoryContextIdComboBox_TextChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID,
+            SavedSettings.UpdateField(
+                ref SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID,
                 InventoryContextIdComboBox.Text);
         }
 
@@ -322,25 +368,28 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             switch (InventoryAppIdComboBox.Text)
             {
                 case "STEAM":
-                {
-                    InventoryContextIdComboBox.Text = "6";
-                    break;
-                }
+                    {
+                        InventoryContextIdComboBox.Text = "6";
+                        break;
+                    }
+
                 case "TF":
-                {
-                    InventoryContextIdComboBox.Text = "2";
-                    break;
-                }
+                    {
+                        InventoryContextIdComboBox.Text = "2";
+                        break;
+                    }
+
                 case "CS:GO":
-                {
-                    InventoryContextIdComboBox.Text = "2";
-                    break;
-                }
+                    {
+                        InventoryContextIdComboBox.Text = "2";
+                        break;
+                    }
+
                 case "PUBG":
-                {
-                    InventoryContextIdComboBox.Text = "2";
-                    break;
-                }
+                    {
+                        InventoryContextIdComboBox.Text = "2";
+                        break;
+                    }
             }
 
             SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_INVENTORY_APP_ID, InventoryAppIdComboBox.Text);
@@ -376,13 +425,17 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                     .SelectedRows[AllSteamItemsToTradeGridView.SelectedRows.Count - 1].Cells[0].RowIndex;
             else
                 rowIndex = AllSteamItemsToTradeGridView.CurrentCell.RowIndex;
-            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsToTradeGridView, rowIndex, ItemDescriptionTextBox,
-                ItemImageBox, ItemNameLable);
-            var list = AllItemsListGridUtils.GetFullRgItems(AllSteamItemsToTradeGridView, rowIndex);
+            this.allItemsListGridUtils.UpdateItemDescription(
+                rowIndex,
+                ItemDescriptionTextBox,
+                ItemImageBox,
+                ItemNameLable);
+            var list = this.allItemsListGridUtils.GetRowItemsList(rowIndex);
             if (list != null && list.Count > 0) LastSelectedItemDescription = list[0].Description;
         }
 
-        private void AllSteamItemsToTradeGridView_EditingControlShowing(object sender,
+        private void AllSteamItemsToTradeGridView_EditingControlShowing(
+            object sender,
             DataGridViewEditingControlShowingEventArgs e)
         {
             if (e.Control is ComboBox cb)
@@ -396,17 +449,19 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            AllItemsListGridUtils.UpdateItemDescription(AllSteamItemsToTradeGridView,
-                AllSteamItemsToTradeGridView.CurrentCell.RowIndex, ItemDescriptionTextBox, ItemImageBox, ItemNameLable);
+            this.allItemsListGridUtils.UpdateItemDescription(
+                AllSteamItemsToTradeGridView.CurrentCell.RowIndex,
+                ItemDescriptionTextBox,
+                ItemImageBox,
+                ItemNameLable);
 
             if (e.ColumnIndex == 5)
             {
-                AllItemsListGridUtils.GridComboBoxClick(AllSteamItemsToTradeGridView, e.RowIndex);
+                this.allItemsListGridUtils.GridComboBoxClick(e.RowIndex);
             }
             else if (e.ColumnIndex == 6)
             {
-                AllItemsListGridUtils.GridAddButtonClick(AllSteamItemsToTradeGridView, e.RowIndex,
-                    ItemsToTradeGridView);
+                this.allItemsListGridUtils.GridAddButtonClick(e.RowIndex, ItemsToTradeGridView);
                 PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable);
             }
         }
@@ -429,18 +484,20 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                 var g = e.Graphics;
 
                 using (Brush brush = (e.State & DrawItemState.Selected) == DrawItemState.Selected
-                    ? new SolidBrush(SystemColors.Highlight)
-                    : new SolidBrush(e.BackColor))
+                                         ? new SolidBrush(SystemColors.Highlight)
+                                         : new SolidBrush(e.BackColor))
                 {
                     using (Brush textBrush = new SolidBrush(e.ForeColor))
                     {
                         g.FillRectangle(brush, e.Bounds);
                         var image = box.GetImageByIndex(e.Index);
 
-                        g.DrawString(box.Items[e.Index].ToString(),
+                        g.DrawString(
+                            box.Items[e.Index].ToString(),
                             e.Font,
                             textBrush,
-                            e.Bounds.Left + 32, e.Bounds.Top + 10,
+                            e.Bounds.Left + 32,
+                            e.Bounds.Top + 10,
                             StringFormat.GenericDefault);
 
                         g.DrawImage(image, e.Bounds.Left, e.Bounds.Top + 2, 32, 32);

@@ -1,29 +1,29 @@
-﻿using System;
-using System.Threading;
-using System.Windows.Forms;
-using SteamAutoMarket.CustomElements.Forms;
-
-namespace SteamAutoMarket
+﻿namespace SteamAutoMarket
 {
+    using System;
+    using System.Threading;
+    using System.Windows.Forms;
+
+    using SteamAutoMarket.CustomElements.Forms;
+
     internal static class Program
     {
-        private static int _mainThreadId;
+        private static int mainThreadId;
 
-        public static MainForm MainForm;
-        public static WorkingProcessForm WorkingProcessForm;
-        public static LoadingForm LoadingForm;
+        public static MainForm MainForm { get; set; }
 
-        public static bool IsMainThread => Thread.CurrentThread.ManagedThreadId == _mainThreadId;
+        public static WorkingProcessForm WorkingProcessForm { get; set; }
 
-        /// <summary>
-        ///     Главная точка входа для приложения.
-        /// </summary>
+        public static LoadingForm LoadingForm { get; set; }
+
+        public static bool IsMainThread => Thread.CurrentThread.ManagedThreadId == mainThreadId;
+
         [STAThread]
         private static void Main()
         {
-            //CheckLicense();
-            //UpdateProgram();
-            _mainThreadId = Thread.CurrentThread.ManagedThreadId;
+            CheckLicense();
+            UpdateProgram();
+            mainThreadId = Thread.CurrentThread.ManagedThreadId;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();
@@ -35,12 +35,10 @@ namespace SteamAutoMarket
 
         private static void CheckLicense()
         {
-            throw new NotImplementedException();
         }
 
         private static void UpdateProgram()
         {
-            throw new NotImplementedException();
         }
     }
 }
