@@ -1,40 +1,59 @@
-﻿using System;
-using System.Windows.Forms;
-using SteamAutoMarket.Utils;
-using SteamAutoMarket.WorkingProcess;
-
-namespace SteamAutoMarket.CustomElements.Controls.Market
+﻿namespace SteamAutoMarket.CustomElements.Controls.Market
 {
+    using System;
+    using System.Windows.Forms;
+
+    using SteamAutoMarket.Utils;
+    using SteamAutoMarket.WorkingProcess;
+
     public partial class MarketRelistControl : UserControl
     {
         public MarketRelistControl()
         {
-            InitializeComponent();
+            try
+            {
+                this.InitializeComponent();
 
-            AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
-            AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
-            AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
-            AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
-            AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+                // todo remove mocks
+                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
         public void AuthCurrentAccount()
         {
-            AccountNameLable.Text = CurrentSession.SteamManager.Guard.AccountName;
-            SplitterPanel.BackgroundImage = CurrentSession.AccountImage;
+            this.AccountNameLable.Text = CurrentSession.SteamManager.Guard.AccountName;
+            this.SplitterPanel.BackgroundImage = CurrentSession.AccountImage;
         }
 
-        private void LoadListingButton_Click(object sender, EventArgs e)
+        private void LoadListingButtonClick(object sender, EventArgs e)
         {
-            if (CurrentSession.SteamManager == null)
+            try
             {
-                MessageBox.Show("You should login first", "Error market listing loading", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                Logger.Error("Error on market listing loading. No logined account found.");
-                return;
-            }
+                if (CurrentSession.SteamManager == null)
+                {
+                    MessageBox.Show(
+                        @"You should login first",
+                        @"Error market listing loading",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    Logger.Error("Error on market listing loading. No signed in account found.");
+                    return;
+                }
 
-            var listings = CurrentSession.SteamManager.MarketClient.MyListings();
+                var listings = CurrentSession.SteamManager.MarketClient.MyListings();
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical("Error on loading listed market items", ex);
+            }
         }
     }
 }

@@ -214,13 +214,13 @@
     <Compile Include="WorkingProcess\MarketPriceFormation\PriceShaper.cs" />
     <Compile Include="CustomElements\Utils\SteamItemsUtils.cs" />
     <Compile Include="Steam\Market\MarketInfoCache.cs" />
-    <Compile Include="Utils\FormComponents.cs" />
     <Compile Include="CustomElements\Forms\WorkingProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CustomElements\Forms\WorkingProcessForm.Designer.cs">
       <DependentUpon>WorkingProcessForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="WorkingProcess\MarketPriceFormation\ToSaleObject.cs" />
     <Compile Include="WorkingProcess\PriceLoader\LoadedItemPrice.cs" />
     <Compile Include="WorkingProcess\PriceLoader\PricesCache.cs" />
     <Compile Include="WorkingProcess\PriceLoader\TableToLoad.cs" />

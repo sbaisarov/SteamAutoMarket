@@ -145,8 +145,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.CurrentTradesGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.CurrentTradesGridView.Size = new System.Drawing.Size(283, 271);
             this.CurrentTradesGridView.TabIndex = 7;
-            this.CurrentTradesGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CurrentTradesGridView_CellContentClick);
-            this.CurrentTradesGridView.SelectionChanged += new System.EventHandler(this.CurrentTradesGridView_SelectionChanged);
+            this.CurrentTradesGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CurrentTradesGridViewCellContentClick);
+            this.CurrentTradesGridView.SelectionChanged += new System.EventHandler(this.CurrentTradesGridViewSelectionChanged);
             // 
             // TradeofferIdColumn
             // 
@@ -193,7 +193,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.DeclineTradeButton.TabIndex = 17;
             this.DeclineTradeButton.Text = "DECLINE selected trade";
             this.DeclineTradeButton.UseVisualStyleBackColor = false;
-            this.DeclineTradeButton.Click += new System.EventHandler(this.DeclineTradeButton_Click);
+            this.DeclineTradeButton.Click += new System.EventHandler(this.DeclineTradeButtonClick);
             // 
             // AcceptTradeButton
             // 
@@ -207,7 +207,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.AcceptTradeButton.TabIndex = 16;
             this.AcceptTradeButton.Text = "ACCEPT selected trade";
             this.AcceptTradeButton.UseVisualStyleBackColor = false;
-            this.AcceptTradeButton.Click += new System.EventHandler(this.AcceptTradeButton_Click);
+            this.AcceptTradeButton.Click += new System.EventHandler(this.AcceptTradeButtonClick);
             // 
             // MyItemsGroupBox
             // 
@@ -263,8 +263,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.MyItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.MyItemsGridView.Size = new System.Drawing.Size(288, 271);
             this.MyItemsGridView.TabIndex = 7;
-            this.MyItemsGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsGridView_CellContentClick);
-            this.MyItemsGridView.SelectionChanged += new System.EventHandler(this.ItemsGridView_SelectionChanged);
+            this.MyItemsGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsGridViewCellContentClick);
+            this.MyItemsGridView.SelectionChanged += new System.EventHandler(this.ItemsGridViewSelectionChanged);
             // 
             // NameColumn
             // 
@@ -463,8 +463,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.HisItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.HisItemsGridView.Size = new System.Drawing.Size(288, 276);
             this.HisItemsGridView.TabIndex = 7;
-            this.HisItemsGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsGridView_CellContentClick);
-            this.HisItemsGridView.SelectionChanged += new System.EventHandler(this.ItemsGridView_SelectionChanged);
+            this.HisItemsGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsGridViewCellContentClick);
+            this.HisItemsGridView.SelectionChanged += new System.EventHandler(this.ItemsGridViewSelectionChanged);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -529,7 +529,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.toolTip1.SetToolTip(this.ActiveOnlyCheckBox, "Return only trade offers in an active state (offers that haven\'t been accepted ye" +
         "t)");
             this.ActiveOnlyCheckBox.UseVisualStyleBackColor = true;
-            this.ActiveOnlyCheckBox.CheckedChanged += new System.EventHandler(this.ActiveOnlyCheckBox_CheckedChanged);
+            this.ActiveOnlyCheckBox.CheckedChanged += new System.EventHandler(this.ActiveOnlyCheckBoxCheckedChanged);
             // 
             // DescriptionLanguageComboBox
             // 
@@ -547,7 +547,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.DescriptionLanguageComboBox.Size = new System.Drawing.Size(68, 21);
             this.DescriptionLanguageComboBox.TabIndex = 31;
             this.DescriptionLanguageComboBox.Text = "en_US";
-            this.DescriptionLanguageComboBox.TextChanged += new System.EventHandler(this.DescriptionLanguageComboBox_TextChanged);
+            this.DescriptionLanguageComboBox.TextChanged += new System.EventHandler(this.DescriptionLanguageComboBoxTextChanged);
             // 
             // PartnerIdLable
             // 
@@ -573,7 +573,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.ReceivedOffersCheckBox.Text = "Received offers";
             this.toolTip1.SetToolTip(this.ReceivedOffersCheckBox, "Return the list of offers you\'ve received from other people");
             this.ReceivedOffersCheckBox.UseVisualStyleBackColor = true;
-            this.ReceivedOffersCheckBox.CheckedChanged += new System.EventHandler(this.ReceivedOffersCheckBox_CheckedChanged);
+            this.ReceivedOffersCheckBox.CheckedChanged += new System.EventHandler(this.ReceivedOffersCheckBoxCheckedChanged);
             // 
             // SentOffersCheckBox
             // 
@@ -588,7 +588,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.SentOffersCheckBox.Text = "Sent offers";
             this.toolTip1.SetToolTip(this.SentOffersCheckBox, "Return the list of offers you\'ve sent to other people");
             this.SentOffersCheckBox.UseVisualStyleBackColor = true;
-            this.SentOffersCheckBox.CheckStateChanged += new System.EventHandler(this.SentOffersCheckBox_CheckStateChanged);
+            this.SentOffersCheckBox.CheckStateChanged += new System.EventHandler(this.SentOffersCheckBoxCheckStateChanged);
             // 
             // LoadTradesButton
             // 
@@ -603,7 +603,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.LoadTradesButton.TabIndex = 25;
             this.toolTip1.SetToolTip(this.LoadTradesButton, "Load trades");
             this.LoadTradesButton.UseVisualStyleBackColor = false;
-            this.LoadTradesButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
+            this.LoadTradesButton.Click += new System.EventHandler(this.LoadInventoryButtonClick);
             // 
             // SplitterPanel
             // 

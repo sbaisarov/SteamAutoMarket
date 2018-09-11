@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace SteamAutoMarket
+﻿namespace SteamAutoMarket
 {
     using System;
     using System.Threading;

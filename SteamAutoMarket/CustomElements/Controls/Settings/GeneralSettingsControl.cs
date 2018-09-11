@@ -1,78 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-using Newtonsoft.Json;
-
-using SteamAuth;
-
-using SteamAutoMarket.CustomElements.Utils;
-using SteamAutoMarket.Steam;
-using SteamAutoMarket.Utils;
-using SteamAutoMarket.WorkingProcess;
-using SteamAutoMarket.WorkingProcess.Settings;
-
-namespace SteamAutoMarket.CustomElements.Controls.Settings
+﻿namespace SteamAutoMarket.CustomElements.Controls.Settings
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+
+    using Newtonsoft.Json;
+
+    using SteamAuth;
+
+    using SteamAutoMarket.CustomElements.Utils;
+    using SteamAutoMarket.Steam;
+    using SteamAutoMarket.Utils;
+    using SteamAutoMarket.WorkingProcess;
+    using SteamAutoMarket.WorkingProcess.Settings;
+
     public partial class GeneralSettingsControl : UserControl
     {
         public GeneralSettingsControl()
         {
-            InitializeComponent();
-
-            var settings = SavedSettings.Get();
-
-            LoggingLevelComboBox.SelectedIndex = settings.SettingsLoggerLevel;
-            AveragePriceDaysNumericUpDown.Value = settings.SettingsAveragePriceParseDays;
-            Confirm2FANumericUpDown.Value = settings.Settings_2FaItemsToConfirm;
-
-            if (!File.Exists(SavedSteamAccount.AccountsFilePath)) return;
-
-            var accounts = SavedSteamAccount.Get();
-            foreach (var acc in accounts)
+            try
             {
-                var row = AccountsDataGridView.Rows.Add();
-                AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = acc.Login;
-                AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value =
-                    GetPasswordStars(acc.Password.Count());
-                AccountsDataGridUtils.GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, row).Value =
-                    acc.Password;
-                AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value = acc.SteamApi;
-                AccountsDataGridUtils.GetDataGridViewMafileHiddenCell(AccountsDataGridView, row).Value = acc.MaFile;
+                this.InitializeComponent();
 
-                Task.Run(
-                    () =>
-                        {
-                            var profileImage = ImageUtils.GetSteamProfileSmallImage(acc.MaFile.Session.SteamID);
-                            if (profileImage != null)
-                                AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value =
-                                    profileImage;
-                        });
+                var settings = SavedSettings.Get();
+
+                this.LoggingLevelComboBox.SelectedIndex = settings.SettingsLoggerLevel;
+                this.AveragePriceDaysNumericUpDown.Value = settings.SettingsAveragePriceParseDays;
+                this.Confirm2FANumericUpDown.Value = settings.Settings_2FaItemsToConfirm;
+
+                this.LoadSavedAccount();
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
             }
         }
 
-        private void BrowseMafilePath_Click(object sender, EventArgs e)
-        {
-            using (var openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = @"Mobile auth file (*.maFile)|*.mafile";
-                openFileDialog.Multiselect = false;
-                openFileDialog.Title = @"MaFile path selecting";
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    MafilePathTextBox.Text = openFileDialog.FileName;
-                    Logger.Debug($"{MafilePathTextBox.Text} mafile selected");
-                }
-            }
-        }
-
-        private string GetPasswordStars(int count)
+        private static string GetPasswordStars(int count)
         {
             var result = string.Empty;
             for (var i = 0; i < count; i++)
@@ -83,264 +52,405 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
             return result;
         }
 
-        private void AddNewAccountButton_Click(object sender, EventArgs e)
+        private void LoadSavedAccount()
         {
-            if (string.IsNullOrEmpty(LoginTextBox.Text) || string.IsNullOrEmpty(MafilePathTextBox.Text)
-                                                        || string.IsNullOrEmpty(PasswordTextBox.Text)
-                                                        || string.IsNullOrEmpty(SteamApiTextBox.Text))
+            if (!File.Exists(SavedSteamAccount.AccountsFilePath))
             {
-                MessageBox.Show(
-                    @"Some fields are filled - incorrectly",
-                    @"Error adding account",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                Logger.Error("Error adding account. Some fields are filled - incorrectly");
                 return;
             }
 
-            if (AccountsDataGridUtils.IsAccountAlreadyExist(AccountsDataGridView, LoginTextBox.Text.Trim()))
+            var accounts = SavedSteamAccount.Get();
+            foreach (var acc in accounts)
             {
-                Logger.Error($"{LoginTextBox.Text.Trim()} already exist in accounts list");
-                MessageBox.Show(
-                    $@"{LoginTextBox.Text.Trim()} already exist in accounts list",
-                    @"Error on the account add",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
-            }
+                var row = this.AccountsDataGridView.Rows.Add();
+                AccountsDataGridUtils.GetDataGridViewLoginCell(this.AccountsDataGridView, row).Value = acc.Login;
+                AccountsDataGridUtils.GetDataGridViewPasswordCell(this.AccountsDataGridView, row).Value =
+                    GetPasswordStars(acc.Password.Count());
+                AccountsDataGridUtils.GetDataGridViewTruePasswordHiddenCell(this.AccountsDataGridView, row).Value =
+                    acc.Password;
+                AccountsDataGridUtils.GetDataGridViewSteamApiCell(this.AccountsDataGridView, row).Value = acc.SteamApi;
+                AccountsDataGridUtils.GetDataGridViewMafileHiddenCell(this.AccountsDataGridView, row).Value =
+                    acc.MaFile;
 
-            SteamGuardAccount account;
+                Task.Run(
+                    () =>
+                        {
+                            var profileImage = ImageUtils.GetSteamProfileSmallImage(acc.MaFile.Session.SteamID);
+                            if (profileImage != null)
+                            {
+                                AccountsDataGridUtils.GetDataGridViewImageCell(this.AccountsDataGridView, row).Value =
+                                    profileImage;
+                            }
+                        });
+            }
+        }
+
+        private void BrowseMafilePathClick(object sender, EventArgs e)
+        {
             try
             {
-                account = JsonConvert.DeserializeObject<SteamGuardAccount>(File.ReadAllText(MafilePathTextBox.Text));
+                using (var openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = @"Mobile auth file (*.maFile)|*.mafile";
+                    openFileDialog.Multiselect = false;
+                    openFileDialog.Title = @"MaFile path selecting";
+
+                    if (openFileDialog.ShowDialog() != DialogResult.OK)
+                    {
+                        return;
+                    }
+
+                    this.MafilePathTextBox.Text = openFileDialog.FileName;
+                    Logger.Debug($"{this.MafilePathTextBox.Text} mafile selected");
+                }
             }
             catch (Exception ex)
             {
-                Logger.Error("Error processing MaFile", ex);
-                MessageBox.Show(ex.Message, @"Error processing MaFile", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                Logger.Critical(ex);
             }
+        }
 
-            if (account == null)
+        private void AddNewAccountButtonClick(object sender, EventArgs e)
+        {
+            try
             {
-                Logger.Error("Error processing MaFile");
-                return;
-            }
+                if (string.IsNullOrEmpty(this.LoginTextBox.Text) || string.IsNullOrEmpty(this.MafilePathTextBox.Text)
+                                                                 || string.IsNullOrEmpty(this.PasswordTextBox.Text)
+                                                                 || string.IsNullOrEmpty(this.SteamApiTextBox.Text))
+                {
+                    MessageBox.Show(
+                        @"Some fields are filled - incorrectly",
+                        @"Error adding account",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    Logger.Error("Error adding account. Some fields are filled - incorrectly");
+                    return;
+                }
 
-            var row = AccountsDataGridView.Rows.Add();
+                if (AccountsDataGridUtils.IsAccountAlreadyExist(
+                    this.AccountsDataGridView,
+                    this.LoginTextBox.Text.Trim()))
+                {
+                    Logger.Error($"{this.LoginTextBox.Text.Trim()} already exist in accounts list");
+                    MessageBox.Show(
+                        $@"{this.LoginTextBox.Text.Trim()} already exist in accounts list",
+                        @"Error on the account add",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
 
-            var login = LoginTextBox.Text.Trim();
-            AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value = login;
-            AccountsDataGridUtils.GetDataGridViewPasswordCell(AccountsDataGridView, row).Value =
-                GetPasswordStars(PasswordTextBox.Text.Trim().Count());
-            AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value =
-                SteamApiTextBox.Text.Trim();
-            AccountsDataGridUtils.GetDataGridViewMafileHiddenCell(AccountsDataGridView, row).Value = account;
-            AccountsDataGridUtils.GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, row).Value =
-                PasswordTextBox.Text.Trim();
-            Logger.Debug($"{login} added to accounts list");
+                SteamGuardAccount account;
+                try
+                {
+                    account = JsonConvert.DeserializeObject<SteamGuardAccount>(
+                        File.ReadAllText(this.MafilePathTextBox.Text));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("Error processing MaFile", ex);
+                    MessageBox.Show(ex.Message, @"Error processing MaFile", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-            Task.Run(
-                () =>
-                    {
-                        if (account.Session != null)
+                if (account == null)
+                {
+                    Logger.Error("Error processing MaFile");
+                    return;
+                }
+
+                var row = this.AccountsDataGridView.Rows.Add();
+
+                var login = this.LoginTextBox.Text.Trim();
+                AccountsDataGridUtils.GetDataGridViewLoginCell(this.AccountsDataGridView, row).Value = login;
+                AccountsDataGridUtils.GetDataGridViewPasswordCell(this.AccountsDataGridView, row).Value =
+                    GetPasswordStars(this.PasswordTextBox.Text.Trim().Count());
+                AccountsDataGridUtils.GetDataGridViewSteamApiCell(this.AccountsDataGridView, row).Value =
+                    this.SteamApiTextBox.Text.Trim();
+                AccountsDataGridUtils.GetDataGridViewMafileHiddenCell(this.AccountsDataGridView, row).Value = account;
+                AccountsDataGridUtils.GetDataGridViewTruePasswordHiddenCell(this.AccountsDataGridView, row).Value =
+                    this.PasswordTextBox.Text.Trim();
+                Logger.Debug($"{login} added to accounts list");
+
+                Task.Run(
+                    () =>
                         {
+                            if (account.Session == null)
+                            {
+                                return;
+                            }
+
                             var profileImage = ImageUtils.GetSteamProfileSmallImage(account.Session.SteamID);
                             if (profileImage != null)
-                                AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value =
+                            {
+                                AccountsDataGridUtils.GetDataGridViewImageCell(this.AccountsDataGridView, row).Value =
                                     profileImage;
-                        }
-                    });
+                            }
+                        });
 
-            LoginTextBox.Clear();
-            PasswordTextBox.Clear();
-            MafilePathTextBox.Clear();
-            SteamApiTextBox.Clear();
+                this.LoginTextBox.Clear();
+                this.PasswordTextBox.Clear();
+                this.MafilePathTextBox.Clear();
+                this.SteamApiTextBox.Clear();
 
-            UpdateAccountsFile();
+                this.UpdateAccountsFile();
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
         private void UpdateAccountsFile()
         {
             var accounts = new List<SavedSteamAccount>();
-            for (var i = 0; i < AccountsDataGridView.RowCount; i++)
+            for (var i = 0; i < this.AccountsDataGridView.RowCount; i++)
             {
-                var login = (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, i).Value;
+                var login = (string)AccountsDataGridUtils.GetDataGridViewLoginCell(this.AccountsDataGridView, i).Value;
                 var password = (string)AccountsDataGridUtils
-                    .GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, i).Value;
-                var opskinsApi =
-                    (string)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, i).Value;
+                    .GetDataGridViewTruePasswordHiddenCell(this.AccountsDataGridView, i).Value;
+                var steamApi = (string)AccountsDataGridUtils.GetDataGridViewSteamApiCell(this.AccountsDataGridView, i)
+                    .Value;
                 var mafile = (SteamGuardAccount)AccountsDataGridUtils
-                    .GetDataGridViewMafileHiddenCell(AccountsDataGridView, i).Value;
+                    .GetDataGridViewMafileHiddenCell(this.AccountsDataGridView, i).Value;
 
                 accounts.Add(
-                    new SavedSteamAccount
-                        {
-                            Login = login, Password = password, SteamApi = opskinsApi, MaFile = mafile
-                        });
+                    new SavedSteamAccount { Login = login, Password = password, SteamApi = steamApi, MaFile = mafile });
             }
 
             SavedSteamAccount.UpdateAll(accounts);
         }
 
-        private void DeleteAccountButton_Click(object sender, EventArgs e)
+        private void DeleteAccountButtonClick(object sender, EventArgs e)
         {
-            var currentCell = AccountsDataGridView.CurrentCell;
-            if (currentCell == null)
+            try
             {
-                Logger.Warning("No accounts selected");
-                return;
+                var currentCell = this.AccountsDataGridView.CurrentCell;
+                if (currentCell == null)
+                {
+                    Logger.Warning("No accounts selected");
+                    return;
+                }
+
+                var row = currentCell.RowIndex;
+                if (row < 0)
+                {
+                    return;
+                }
+
+                var accName = AccountsDataGridUtils.GetDataGridViewLoginCell(this.AccountsDataGridView, row).Value;
+
+                var confirmResult = MessageBox.Show(
+                    $@"Are you sure you want to delete the account - {accName}?",
+                    @"Confirm deletion?",
+                    MessageBoxButtons.YesNo);
+
+                if (confirmResult == DialogResult.Yes)
+                {
+                    this.AccountsDataGridView.Rows.RemoveAt(row);
+                    Logger.Debug($"Account {accName} was deleted from accounts list");
+                }
+
+                this.UpdateAccountsFile();
             }
-
-            var row = currentCell.RowIndex;
-            if (row < 0) return;
-
-            var accName = AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
-
-            var confirmResult = MessageBox.Show(
-                $@"Are you sure you want to delete the account - {accName}?",
-                @"Confirm deletion?",
-                MessageBoxButtons.YesNo);
-
-            if (confirmResult == DialogResult.Yes)
+            catch (Exception ex)
             {
-                AccountsDataGridView.Rows.RemoveAt(row);
-                Logger.Debug($"Account {accName} was deleted from accounts list");
+                Logger.Critical(ex);
             }
-
-            UpdateAccountsFile();
         }
 
-        private void EditAccountButton_Click(object sender, EventArgs e)
+        private void EditAccountButtonClick(object sender, EventArgs e)
         {
-            var currentCell = AccountsDataGridView.CurrentCell;
-            if (currentCell == null)
+            try
             {
-                Logger.Warning("No accounts selected");
-                return;
+                var currentCell = this.AccountsDataGridView.CurrentCell;
+                if (currentCell == null)
+                {
+                    Logger.Warning("No accounts selected");
+                    return;
+                }
+
+                var row = currentCell.RowIndex;
+                if (row < 0)
+                {
+                    return;
+                }
+
+                this.LoginTextBox.Text = @" " + (string)AccountsDataGridUtils
+                                             .GetDataGridViewLoginCell(this.AccountsDataGridView, row).Value;
+                this.PasswordTextBox.Text = @" " + (string)AccountsDataGridUtils
+                                                .GetDataGridViewTruePasswordHiddenCell(this.AccountsDataGridView, row)
+                                                .Value;
+                this.SteamApiTextBox.Text = @" " + (string)AccountsDataGridUtils
+                                                .GetDataGridViewSteamApiCell(this.AccountsDataGridView, row).Value;
             }
-
-            var row = currentCell.RowIndex;
-            if (row < 0) return;
-
-            LoginTextBox.Text =
-                @" " + (string)AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
-            PasswordTextBox.Text = @" " + (string)AccountsDataGridUtils
-                                       .GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, row).Value;
-            SteamApiTextBox.Text =
-                @" " + (string)AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value;
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
-        private void LogTextBox_TextChanged(object sender, EventArgs e)
+        private void LogTextBoxTextChanged(object sender, EventArgs e)
         {
-            LogTextBox.SelectionStart = LogTextBox.Text.Length;
-            LogTextBox.ScrollToCaret();
+            try
+            {
+                this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
+                this.LogTextBox.ScrollToCaret();
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
-        private void LoginButton_Click(object sender, EventArgs e)
+        private void LoginButtonClick(object sender, EventArgs e)
         {
-            LoginButton.Enabled = false;
-            var currentCell = AccountsDataGridView.CurrentCell;
-            if (currentCell == null)
+            try
             {
-                Logger.Warning("No accounts selected");
-                return;
-            }
+                this.LoginButton.Enabled = false;
+                var currentCell = this.AccountsDataGridView.CurrentCell;
+                if (currentCell == null)
+                {
+                    Logger.Warning("No accounts selected");
+                    return;
+                }
 
-            var row = currentCell.RowIndex;
-            if (row < 0)
-            {
-                Logger.Warning("No accounts selected");
-                return;
-            }
+                var row = currentCell.RowIndex;
+                if (row < 0)
+                {
+                    Logger.Warning("No accounts selected");
+                    return;
+                }
 
-            var login = (string)AccountsDataGridUtils
-                .GetDataGridViewLoginCell(AccountsDataGridView, currentCell.RowIndex).Value;
-            var password = (string)AccountsDataGridUtils
-                .GetDataGridViewTruePasswordHiddenCell(AccountsDataGridView, currentCell.RowIndex).Value;
-            var api = (string)AccountsDataGridUtils
-                .GetDataGridViewSteamApiCell(AccountsDataGridView, currentCell.RowIndex).Value;
-            var mafile = (SteamGuardAccount)AccountsDataGridUtils
-                .GetDataGridViewMafileHiddenCell(AccountsDataGridView, currentCell.RowIndex).Value;
-            var image = (Image)AccountsDataGridUtils
-                .GetDataGridViewImageCell(AccountsDataGridView, currentCell.RowIndex).Value;
+                var login = (string)AccountsDataGridUtils
+                    .GetDataGridViewLoginCell(this.AccountsDataGridView, currentCell.RowIndex).Value;
+                var password = (string)AccountsDataGridUtils
+                    .GetDataGridViewTruePasswordHiddenCell(this.AccountsDataGridView, currentCell.RowIndex).Value;
+                var api = (string)AccountsDataGridUtils
+                    .GetDataGridViewSteamApiCell(this.AccountsDataGridView, currentCell.RowIndex).Value;
+                var mafile = (SteamGuardAccount)AccountsDataGridUtils
+                    .GetDataGridViewMafileHiddenCell(this.AccountsDataGridView, currentCell.RowIndex).Value;
+                var image = (Image)AccountsDataGridUtils
+                    .GetDataGridViewImageCell(this.AccountsDataGridView, currentCell.RowIndex).Value;
 
-            Logger.Info($"Steam authentication for {login} started");
+                Logger.Info($"Steam authentication for {login} started");
 
-            Task.Run(
-                () =>
-                    {
-                        try
+                Task.Run(
+                    () =>
                         {
-                            CurrentSession.SteamManager = new SteamManager(login, password, mafile, api, this.SessionRefreshCheckBox.Checked);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error("Login failed!", ex);
-                            Dispatcher.AsMainForm(() => LoginButton.Enabled = true);
-                            return;
-                        }
+                            try
+                            {
+                                CurrentSession.SteamManager = new SteamManager(
+                                    login,
+                                    password,
+                                    mafile,
+                                    api,
+                                    this.SessionRefreshCheckBox.Checked);
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Error("Login failed!", ex);
+                                Dispatcher.AsMainForm(() => this.LoginButton.Enabled = true);
+                                return;
+                            }
 
-                        Dispatcher.AsMainForm(
-                            () =>
-                                {
-                                    CurrentSession.AccountImage = image;
+                            Dispatcher.AsMainForm(
+                                () =>
+                                    {
+                                        CurrentSession.AccountImage = image;
 
-                                    Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
-                                    Program.MainForm.MarketControlTab.RelistControl.AuthCurrentAccount();
-                                    Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
-                                    Program.MainForm.TradeControlTab.ReceivedTradeManageControl.AuthCurrentAccount();
-                                    Program.MainForm.TradeControlTab.TradeHistoryControl.AuthCurrentAccount();
+                                        Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
+                                        Program.MainForm.MarketControlTab.RelistControl.AuthCurrentAccount();
+                                        Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
+                                        Program.MainForm.TradeControlTab.ReceivedTradeManageControl
+                                            .AuthCurrentAccount();
+                                        Program.MainForm.TradeControlTab.TradeHistoryControl.AuthCurrentAccount();
 
-                                    Logger.Info($"Steam authentication for {login} successful");
-                                    LoginButton.Enabled = true;
-                                });
-                    });
-        }
-
-        private void LoggingLevelComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var selectedLevel = LoggingLevelComboBox.SelectedValue;
-
-            var level = LoggerLevel.Info;
-            switch (selectedLevel)
-            {
-                case "Debug":
-                    level = LoggerLevel.Debug;
-                    break;
-                case "Info + Errors":
-                    level = LoggerLevel.Info;
-                    break;
-                case "Errors":
-                    level = LoggerLevel.Error;
-                    break;
-                case "None":
-                    level = LoggerLevel.None;
-                    break;
+                                        Logger.Info($"Steam authentication for {login} successful");
+                                        this.LoginButton.Enabled = true;
+                                    });
+                        });
             }
-
-            Logger.LoggerLevel = level;
-
-            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsLoggerLevel, LoggingLevelComboBox.SelectedIndex);
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+                this.LoginButton.Enabled = true;
+            }
         }
 
-        private void SteamApiLinkLable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LoggingLevelComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            Process.Start("https://steamcommunity.com/dev/apikey");
+            try
+            {
+                var selectedLevel = this.LoggingLevelComboBox.SelectedValue;
+
+                var level = LoggerLevel.Info;
+                switch (selectedLevel)
+                {
+                    case "Debug":
+                        level = LoggerLevel.Debug;
+                        break;
+                    case "Info + Errors":
+                        level = LoggerLevel.Info;
+                        break;
+                    case "Errors":
+                        level = LoggerLevel.Error;
+                        break;
+                    case "None":
+                        level = LoggerLevel.None;
+                        break;
+                }
+
+                Logger.LoggerLevel = level;
+
+                SavedSettings.UpdateField(
+                    ref SavedSettings.Get().SettingsLoggerLevel,
+                    this.LoggingLevelComboBox.SelectedIndex);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
-        private void AveragePriceDaysNumericUpDown_ValueChanged(object sender, EventArgs e)
+        private void SteamApiLinkLabelLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            SavedSettings.UpdateField(
-                ref SavedSettings.Get().SettingsAveragePriceParseDays,
-                (int)AveragePriceDaysNumericUpDown.Value);
+            try
+            {
+                Process.Start("https://steamcommunity.com/dev/apikey");
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
-        private void Confirm2FANumericUpDown_ValueChanged(object sender, EventArgs e)
+        private void AveragePriceDaysNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(
-                ref SavedSettings.Get().Settings_2FaItemsToConfirm,
-                (int)Confirm2FANumericUpDown.Value);
+            try
+            {
+                SavedSettings.UpdateField(
+                    ref SavedSettings.Get().SettingsAveragePriceParseDays,
+                    (int)this.AveragePriceDaysNumericUpDown.Value);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
+        }
+
+        private void Confirm2FaNumericUpDownValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SavedSettings.UpdateField(
+                    ref SavedSettings.Get().Settings_2FaItemsToConfirm,
+                    (int)this.Confirm2FANumericUpDown.Value);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
     }
 }

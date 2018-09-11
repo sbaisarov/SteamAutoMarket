@@ -260,7 +260,7 @@
             this.LoadListingButton.Size = new System.Drawing.Size(76, 84);
             this.LoadListingButton.TabIndex = 28;
             this.LoadListingButton.UseVisualStyleBackColor = true;
-            this.LoadListingButton.Click += new System.EventHandler(this.LoadListingButton_Click);
+            this.LoadListingButton.Click += new System.EventHandler(this.LoadListingButtonClick);
             // 
             // AddAllToolTip
             // 

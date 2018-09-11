@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-using SteamAutoMarket.CustomElements.Utils;
-using SteamAutoMarket.Steam.TradeOffer.Models.Full;
-using SteamAutoMarket.Utils;
-using SteamAutoMarket.WorkingProcess.Settings;
-
-namespace SteamAutoMarket.WorkingProcess.PriceLoader
+﻿namespace SteamAutoMarket.WorkingProcess.PriceLoader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+
+    using SteamAutoMarket.CustomElements.Utils;
+    using SteamAutoMarket.Utils;
+    using SteamAutoMarket.WorkingProcess.Settings;
+
     internal class PriceLoader
     {
         private static AllItemsListGridUtils allItemsListGridUtils;
@@ -51,32 +50,54 @@ namespace SteamAutoMarket.WorkingProcess.PriceLoader
             itemsToSaleWorkingThread.DoWork += async (o, e) => await LoadItemsToSalePrices();
 
             if (CurrentPricesCache == null)
+            {
                 CurrentPricesCache = new PricesCache(
                     "current_prices_cache.ini",
                     SavedSettings.Get().SettingsHoursToBecomeOldCurrentPrice);
+            }
+
             if (AveragePricesCache == null)
+            {
                 AveragePricesCache = new PricesCache(
                     "average_prices_cache.ini",
                     SavedSettings.Get().SettingsHoursToBecomeOldAveragePrice);
+            }
         }
 
         public static void StopAll()
         {
-            if (allItemsWorkingThread.IsBusy) allItemsWorkingThread.CancelAsync();
-            if (itemsToSaleWorkingThread.IsBusy) itemsToSaleWorkingThread.CancelAsync();
+            if (allItemsWorkingThread.IsBusy)
+            {
+                allItemsWorkingThread.CancelAsync();
+            }
+
+            if (itemsToSaleWorkingThread.IsBusy)
+            {
+                itemsToSaleWorkingThread.CancelAsync();
+            }
         }
 
         public static void StartPriceLoading(TableToLoad tableToLoad, bool force = false)
         {
             isForced = force;
-            if (isForced) ClearAllPriceCells(tableToLoad);
+            if (isForced)
+            {
+                ClearAllPriceCells(tableToLoad);
+            }
 
             switch (tableToLoad)
             {
                 case TableToLoad.AllItemsTable:
                     {
-                        if (allItemsWorkingThread.IsBusy) return;
-                        if (itemsToSaleWorkingThread.IsBusy) allItemThreadShouldWait = true;
+                        if (allItemsWorkingThread.IsBusy)
+                        {
+                            return;
+                        }
+
+                        if (itemsToSaleWorkingThread.IsBusy)
+                        {
+                            allItemThreadShouldWait = true;
+                        }
 
                         allItemsWorkingThread.RunWorkerAsync();
                         break;
@@ -84,7 +105,11 @@ namespace SteamAutoMarket.WorkingProcess.PriceLoader
 
                 case TableToLoad.ItemsToSaleTable:
                     {
-                        if (itemsToSaleWorkingThread.IsBusy) return;
+                        if (itemsToSaleWorkingThread.IsBusy)
+                        {
+                            return;
+                        }
+
                         allItemThreadShouldWait = true;
 
                         itemsToSaleWorkingThread.RunWorkerAsync();
@@ -93,33 +118,61 @@ namespace SteamAutoMarket.WorkingProcess.PriceLoader
             }
         }
 
-        private static void WaitFor_AllItemThreadShouldWait()
+        private static void WaitForAllItemThreadShouldWait()
         {
-            while (allItemThreadShouldWait) Thread.Sleep(1000);
+            while (allItemThreadShouldWait)
+            {
+                Thread.Sleep(1000);
+            }
         }
 
         public static void ClearAllPriceCells(TableToLoad tableToLoad)
         {
             DataGridViewTextBoxCell cell;
 
-            if (tableToLoad == TableToLoad.AllItemsTable)
-                foreach (var row in allItemsGrid.Rows.Cast<DataGridViewRow>())
-                {
-                    cell = allItemsListGridUtils.GetGridCurrentPriceTextBoxCell(row.Index).Cell;
-                    if (cell != null) cell.Value = null;
+            switch (tableToLoad)
+            {
+                case TableToLoad.AllItemsTable:
+                    {
+                        foreach (var row in allItemsGrid.Rows.Cast<DataGridViewRow>())
+                        {
+                            cell = allItemsListGridUtils.GetGridCurrentPriceTextBoxCell(row.Index).Cell;
+                            if (cell != null)
+                            {
+                                cell.Value = null;
+                            }
 
-                    cell = allItemsListGridUtils.GetGridAveragePriceTextBoxCell(row.Index).Cell;
-                    if (cell != null) cell.Value = null;
-                }
-            else if (tableToLoad == TableToLoad.ItemsToSaleTable)
-                foreach (var row in itemsToSaleGrid.Rows.Cast<DataGridViewRow>())
-                {
-                    cell = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, row.Index);
-                    if (cell != null) cell.Value = null;
+                            cell = allItemsListGridUtils.GetGridAveragePriceTextBoxCell(row.Index).Cell;
+                            if (cell != null)
+                            {
+                                cell.Value = null;
+                            }
+                        }
 
-                    cell = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(itemsToSaleGrid, row.Index);
-                    if (cell != null) cell.Value = null;
-                }
+                        break;
+                    }
+
+                case TableToLoad.ItemsToSaleTable:
+                    foreach (var row in itemsToSaleGrid.Rows.Cast<DataGridViewRow>())
+                    {
+                        cell = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, row.Index);
+                        if (cell != null)
+                        {
+                            cell.Value = null;
+                        }
+
+                        cell = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(itemsToSaleGrid, row.Index);
+                        if (cell != null)
+                        {
+                            cell.Value = null;
+                        }
+                    }
+
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(tableToLoad), tableToLoad, null);
+            }
         }
 
         #region ALL ITEMS
@@ -127,13 +180,16 @@ namespace SteamAutoMarket.WorkingProcess.PriceLoader
         private static async Task LoadAllItemsToSalePrices()
         {
             var rows = GetAllItemsRowsWithNoPrice();
-            var tasks = new List<Task>();
-            foreach (var row in rows) tasks.Add(SetAllItemsListGridValues(row));
+            var tasks = rows.Select(SetAllItemsListGridValues).ToList();
 
             await Task.WhenAll(tasks);
             Thread.Sleep(1000);
             rows = GetItemsToSaleRowsWithNoPrice();
-            if (rows.Count() != 0) await LoadItemsToSalePrices();
+            if (rows.Count() != 0)
+            {
+                await LoadItemsToSalePrices();
+            }
+
             allItemThreadShouldWait = false;
         }
 
@@ -147,17 +203,23 @@ namespace SteamAutoMarket.WorkingProcess.PriceLoader
                 var prices = await GetAllItemsRowPrice(row);
 
                 var currentPrice = prices.Item1;
-                if (currentPrice != null && currentPrice != -1) currentPriceCell.Value = currentPrice;
+                if (currentPrice != null && currentPrice != -1)
+                {
+                    currentPriceCell.Value = currentPrice;
+                }
 
                 var averagePrice = prices.Item2;
-                if (averagePrice != null && averagePrice != -1) averagePriceCell.Value = averagePrice;
+                if (averagePrice != null && averagePrice != -1)
+                {
+                    averagePriceCell.Value = averagePrice;
+                }
             }
             catch (Exception ex)
             {
                 Logger.Warning("Error on parsing item price", ex);
             }
 
-            WaitFor_AllItemThreadShouldWait();
+            WaitForAllItemThreadShouldWait();
         }
 
         private static IEnumerable<DataGridViewRow> GetAllItemsRowsWithNoPrice()
@@ -187,31 +249,44 @@ namespace SteamAutoMarket.WorkingProcess.PriceLoader
                 if (isForced == false)
                 {
                     var cachedCurrentPrice = CurrentPricesCache.Get(item);
-                    if (cachedCurrentPrice != null) currentPrice = cachedCurrentPrice.Price;
+                    if (cachedCurrentPrice != null)
+                    {
+                        currentPrice = cachedCurrentPrice.Price;
+                    }
                 }
 
                 if (currentPrice == null)
                 {
                     currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
-                    if (currentPrice != null && (double)currentPrice > 0)
+                    if (currentPrice != null && currentPrice > 0)
+                    {
                         CurrentPricesCache.Cache(item.Description.MarketHashName, currentPrice.Value);
+                    }
                 }
 
                 double? averagePrice = null;
                 if (isForced == false)
                 {
                     var cachedCurrentPrice = AveragePricesCache.Get(item);
-                    if (cachedCurrentPrice != null) averagePrice = cachedCurrentPrice.Price;
+                    if (cachedCurrentPrice != null)
+                    {
+                        averagePrice = cachedCurrentPrice.Price;
+                    }
                 }
 
-                if (averagePrice == null)
+                if (averagePrice != null)
                 {
-                    averagePrice = CurrentSession.SteamManager.GetAveragePrice(
-                        item.Asset,
-                        item.Description,
-                        SavedSettings.Get().SettingsAveragePriceParseDays);
-                    if (averagePrice != null && (double)averagePrice > 0)
-                        AveragePricesCache.Cache(item.Description.MarketHashName, averagePrice.Value);
+                    return new Tuple<double?, double?>(currentPrice, averagePrice);
+                }
+
+                averagePrice = CurrentSession.SteamManager.GetAveragePrice(
+                    item.Asset,
+                    item.Description,
+                    SavedSettings.Get().SettingsAveragePriceParseDays);
+
+                if (averagePrice != null && (double)averagePrice > 0)
+                {
+                    AveragePricesCache.Cache(item.Description.MarketHashName, averagePrice.Value);
                 }
 
                 return new Tuple<double?, double?>(currentPrice, averagePrice);
@@ -229,18 +304,24 @@ namespace SteamAutoMarket.WorkingProcess.PriceLoader
 
         private static async Task LoadItemsToSalePrices()
         {
-            var rows = GetItemsToSaleRowsWithNoPrice();
-            var tasks = new List<Task>();
-            foreach (var row in rows) tasks.Add(SetRowCurrentPrices(row));
+            while (true)
+            {
+                var rows = GetItemsToSaleRowsWithNoPrice();
+                var tasks = rows.Select(SetRowCurrentPrices).ToList();
 
-            await Task.WhenAll(tasks);
+                await Task.WhenAll(tasks);
 
-            Thread.Sleep(1000);
-            rows = GetItemsToSaleRowsWithNoPrice();
-            if (rows.Count() != 0)
-                await LoadItemsToSalePrices();
-            else
+                Thread.Sleep(1000);
+                rows = GetItemsToSaleRowsWithNoPrice();
+                if (rows.Count() != 0)
+                {
+                    continue;
+                }
+
                 allItemThreadShouldWait = false;
+
+                break;
+            }
         }
 
         private static async Task SetRowCurrentPrices(DataGridViewRow row)
@@ -253,10 +334,16 @@ namespace SteamAutoMarket.WorkingProcess.PriceLoader
                 var prices = await GetItemsToSaleRowPrice(row);
 
                 var currentPrice = prices.Item1;
-                if (currentPrice != -1) currentPriceCell.Value = currentPrice;
+                if (currentPrice != -1)
+                {
+                    currentPriceCell.Value = currentPrice;
+                }
 
                 var averagePrice = prices.Item2;
-                if (averagePrice != -1) averagePriceCell.Value = averagePrice;
+                if (averagePrice != -1)
+                {
+                    averagePriceCell.Value = averagePrice;
+                }
             }
             catch (Exception ex)
             {
@@ -276,40 +363,59 @@ namespace SteamAutoMarket.WorkingProcess.PriceLoader
             try
             {
                 var itemsCell = ItemsToSaleGridUtils.GetGridHidenItemsListCell(itemsToSaleGrid, row.Index);
-                if (itemsCell == null || itemsCell.Value == null) return new Tuple<double?, double?>(-1, -1);
+                if (itemsCell == null || itemsCell.Value == null)
+                {
+                    return new Tuple<double?, double?>(-1, -1);
+                }
 
                 var item = ItemsToSaleGridUtils.GetRowItemsList(itemsToSaleGrid, row.Index).FirstOrDefault();
-                if (item == null) return new Tuple<double?, double?>(-1, -1);
+                if (item == null)
+                {
+                    return new Tuple<double?, double?>(-1, -1);
+                }
 
                 double? currentPrice = null;
                 if (isForced == false)
                 {
                     var cachedCurrentPrice = CurrentPricesCache.Get(item);
-                    if (cachedCurrentPrice != null) currentPrice = cachedCurrentPrice.Price;
+                    if (cachedCurrentPrice != null)
+                    {
+                        currentPrice = cachedCurrentPrice.Price;
+                    }
                 }
 
                 if (currentPrice == null)
                 {
                     currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
                     if (currentPrice != null && currentPrice != 0)
+                    {
                         CurrentPricesCache.Cache(item.Description.MarketHashName, currentPrice.Value);
+                    }
                 }
 
                 double? averagePrice = null;
                 if (isForced == false)
                 {
                     var cachedCurrentPrice = AveragePricesCache.Get(item);
-                    if (cachedCurrentPrice != null) averagePrice = cachedCurrentPrice.Price;
+                    if (cachedCurrentPrice != null)
+                    {
+                        averagePrice = cachedCurrentPrice.Price;
+                    }
                 }
 
-                if (averagePrice == null)
+                if (averagePrice != null)
                 {
-                    averagePrice = CurrentSession.SteamManager.GetAveragePrice(
-                        item.Asset,
-                        item.Description,
-                        SavedSettings.Get().SettingsAveragePriceParseDays);
-                    if (averagePrice != null && averagePrice != 0)
-                        AveragePricesCache.Cache(item.Description.MarketHashName, averagePrice.Value);
+                    return new Tuple<double?, double?>(currentPrice, averagePrice);
+                }
+
+                averagePrice = CurrentSession.SteamManager.GetAveragePrice(
+                    item.Asset,
+                    item.Description,
+                    SavedSettings.Get().SettingsAveragePriceParseDays);
+
+                if (averagePrice != null && averagePrice != 0)
+                {
+                    AveragePricesCache.Cache(item.Description.MarketHashName, averagePrice.Value);
                 }
 
                 return new Tuple<double?, double?>(currentPrice, averagePrice);

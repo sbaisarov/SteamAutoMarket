@@ -1,18 +1,20 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Net;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using RestSharp;
-using SteamAutoMarket.CustomElements.Controls.Market;
-using SteamAutoMarket.Steam.TradeOffer.Models;
-using SteamAutoMarket.WorkingProcess.Caches;
-
-namespace SteamAutoMarket.Utils
+﻿namespace SteamAutoMarket.Utils
 {
+    using System;
+    using System.ComponentModel;
+    using System.Drawing;
+    using System.Net;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+
+    using RestSharp;
+
+    using SteamAutoMarket.CustomElements.Controls.Market;
+    using SteamAutoMarket.Steam.TradeOffer.Models;
+    using SteamAutoMarket.WorkingProcess.Caches;
+
     internal class ImageUtils
     {
         public static Image DownloadImage(string url)
@@ -22,7 +24,10 @@ namespace SteamAutoMarket.Utils
                 var req = WebRequest.Create(url);
                 var res = req.GetResponse();
                 var imgStream = res.GetResponseStream();
-                if (imgStream == null) return null;
+                if (imgStream == null)
+                {
+                    return null;
+                }
 
                 var img1 = Image.FromStream(imgStream);
                 imgStream.Close();
@@ -38,7 +43,10 @@ namespace SteamAutoMarket.Utils
         {
             try
             {
-                if (img.Width == width && img.Height == height) return img;
+                if (img.Width == width && img.Height == height)
+                {
+                    return img;
+                }
 
                 var res = new Bitmap(width, height);
                 res.SetResolution(img.HorizontalResolution, img.VerticalResolution);
@@ -62,7 +70,10 @@ namespace SteamAutoMarket.Utils
             try
             {
                 var image = ImagesCache.GetImage($"{steamId}");
-                if (image != null) return image;
+                if (image != null)
+                {
+                    return image;
+                }
 
                 var client = new RestClient("https://steamcommunity.com");
                 var request = new RestRequest($"/profiles/{steamId}/?xml=1", Method.GET);
@@ -95,30 +106,32 @@ namespace SteamAutoMarket.Utils
 
         public static void UpdateItemImageOnPanelAsync(string hash, string iconUrl, Panel imageBox)
         {
-            Task.Run(() =>
-            {
-                var image = ImagesCache.GetImage(hash);
+            Task.Run(
+                () =>
+                    {
+                        var image = ImagesCache.GetImage(hash);
 
-                if (image != null)
-                {
-                    imageBox.BackgroundImage = ResizeImage(image, 100, 100);
-                }
-                else
-                {
-                    image = DownloadImage("https://steamcommunity-a.akamaihd.net/economy/image/" + iconUrl +
-                                          "/192fx192f");
-                    if (image != null)
-                    {
-                        ImagesCache.CacheImage(hash, image);
-                        imageBox.BackgroundImage = ResizeImage(image, 100, 100);
-                    }
-                    else
-                    {
-                        imageBox.BackgroundImage =
-                            GetDefaultResourceImage("ItemImageBox.BackgroundImage", typeof(SaleControl));
-                    }
-                }
-            });
+                        if (image != null)
+                        {
+                            imageBox.BackgroundImage = ResizeImage(image, 100, 100);
+                        }
+                        else
+                        {
+                            image = DownloadImage(
+                                "https://steamcommunity-a.akamaihd.net/economy/image/" + iconUrl + "/192fx192f");
+                            if (image != null)
+                            {
+                                ImagesCache.CacheImage(hash, image);
+                                imageBox.BackgroundImage = ResizeImage(image, 100, 100);
+                            }
+                            else
+                            {
+                                imageBox.BackgroundImage = GetDefaultResourceImage(
+                                    "ItemImageBox.BackgroundImage",
+                                    typeof(SaleControl));
+                            }
+                        }
+                    });
         }
 
         public static Image GetDefaultResourceImage(string name, Type type)

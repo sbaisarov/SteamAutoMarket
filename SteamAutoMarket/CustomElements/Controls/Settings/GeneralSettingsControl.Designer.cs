@@ -222,7 +222,7 @@
             this.BrowseMafilePathButton.TabIndex = 11;
             this.AddAllToolTip.SetToolTip(this.BrowseMafilePathButton, "Mafile path selecting dialog");
             this.BrowseMafilePathButton.UseVisualStyleBackColor = true;
-            this.BrowseMafilePathButton.Click += new System.EventHandler(this.BrowseMafilePath_Click);
+            this.BrowseMafilePathButton.Click += new System.EventHandler(this.BrowseMafilePathClick);
             // 
             // MafilePathTextBox
             // 
@@ -321,7 +321,7 @@
             this.LoggingLevelComboBox.Size = new System.Drawing.Size(127, 21);
             this.LoggingLevelComboBox.TabIndex = 0;
             this.AddAllToolTip.SetToolTip(this.LoggingLevelComboBox, "With large amounts of work, disabling logs will speed up the program");
-            this.LoggingLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.LoggingLevelComboBox_SelectedIndexChanged);
+            this.LoggingLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.LoggingLevelComboBoxSelectedIndexChanged);
             // 
             // SteamApiLinkLable
             // 
@@ -335,7 +335,7 @@
             this.SteamApiLinkLable.TabStop = true;
             this.SteamApiLinkLable.Text = "(Link)";
             this.AddAllToolTip.SetToolTip(this.SteamApiLinkLable, "Open Steam API page on browser");
-            this.SteamApiLinkLable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SteamApiLinkLable_LinkClicked);
+            this.SteamApiLinkLable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SteamApiLinkLabelLinkClicked);
             // 
             // AvrPriceGroupBox
             // 
@@ -360,7 +360,7 @@
             this.AveragePriceDaysNumericUpDown.Name = "AveragePriceDaysNumericUpDown";
             this.AveragePriceDaysNumericUpDown.Size = new System.Drawing.Size(127, 20);
             this.AveragePriceDaysNumericUpDown.TabIndex = 0;
-            this.AveragePriceDaysNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePriceDaysNumericUpDown_ValueChanged);
+            this.AveragePriceDaysNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePriceDaysNumericUpDownValueChanged);
             // 
             // DeleteAccountButton
             // 
@@ -375,7 +375,7 @@
             this.DeleteAccountButton.TabIndex = 99;
             this.AddAllToolTip.SetToolTip(this.DeleteAccountButton, "Remove the selected account from the list");
             this.DeleteAccountButton.UseVisualStyleBackColor = true;
-            this.DeleteAccountButton.Click += new System.EventHandler(this.DeleteAccountButton_Click);
+            this.DeleteAccountButton.Click += new System.EventHandler(this.DeleteAccountButtonClick);
             // 
             // EditAccountButton
             // 
@@ -390,7 +390,7 @@
             this.EditAccountButton.TabIndex = 99;
             this.AddAllToolTip.SetToolTip(this.EditAccountButton, "Edit selected account");
             this.EditAccountButton.UseVisualStyleBackColor = true;
-            this.EditAccountButton.Click += new System.EventHandler(this.EditAccountButton_Click);
+            this.EditAccountButton.Click += new System.EventHandler(this.EditAccountButtonClick);
             // 
             // AddNewAccountButton
             // 
@@ -405,7 +405,7 @@
             this.AddNewAccountButton.TabIndex = 99;
             this.AddAllToolTip.SetToolTip(this.AddNewAccountButton, "Add account to the list");
             this.AddNewAccountButton.UseVisualStyleBackColor = true;
-            this.AddNewAccountButton.Click += new System.EventHandler(this.AddNewAccountButton_Click);
+            this.AddNewAccountButton.Click += new System.EventHandler(this.AddNewAccountButtonClick);
             // 
             // LoginButton
             // 
@@ -420,7 +420,7 @@
             this.LoginButton.TabIndex = 5;
             this.AddAllToolTip.SetToolTip(this.LoginButton, "Login using selected account");
             this.LoginButton.UseVisualStyleBackColor = true;
-            this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
+            this.LoginButton.Click += new System.EventHandler(this.LoginButtonClick);
             // 
             // Confirm2FACountGroupBox
             // 
@@ -461,7 +461,7 @@
             0,
             0,
             0});
-            this.Confirm2FANumericUpDown.ValueChanged += new System.EventHandler(this.Confirm2FANumericUpDown_ValueChanged);
+            this.Confirm2FANumericUpDown.ValueChanged += new System.EventHandler(this.Confirm2FaNumericUpDownValueChanged);
             // 
             // groupBox1
             // 
@@ -530,7 +530,7 @@
             this.LogTextBox.Size = new System.Drawing.Size(426, 331);
             this.LogTextBox.TabIndex = 0;
             this.LogTextBox.Text = "";
-            this.LogTextBox.TextChanged += new System.EventHandler(this.LogTextBox_TextChanged);
+            this.LogTextBox.TextChanged += new System.EventHandler(this.LogTextBoxTextChanged);
             // 
             // SettingsGroupBox
             // 

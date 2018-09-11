@@ -1,12 +1,12 @@
-﻿using System.Windows.Forms;
-
-namespace SteamAutoMarket.CustomElements.Tabs
+﻿namespace SteamAutoMarket.CustomElements.Tabs
 {
+    using System.Windows.Forms;
+
     public partial class TradeControlTab : UserControl
     {
         public TradeControlTab()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

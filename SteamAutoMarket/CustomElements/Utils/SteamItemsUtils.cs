@@ -1,7 +1,7 @@
-﻿using SteamAutoMarket.Steam.TradeOffer.Models.Full;
-
-namespace SteamAutoMarket.CustomElements.Utils
+﻿namespace SteamAutoMarket.CustomElements.Utils
 {
+    using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+
     internal class SteamItemsUtils
     {
         public static string GetClearType(FullRgItem item)
@@ -21,14 +21,46 @@ namespace SteamAutoMarket.CustomElements.Utils
 
         private static string GetClearType(string type)
         {
-            if (type == null) return "[None]";
-            if (type.Contains("Sale Foil Trading Card")) return "Sale Foil Trading Card";
-            if (type.Contains("Sale Trading Card")) return "Sale Trading Card";
-            if (type.Contains("Foil Trading Card")) return "Foil Trading Card";
-            if (type.Contains("Trading Card")) return "Trading Card";
-            if (type.Contains("Emoticon")) return "Emoticon";
-            if (type.Contains("Background")) return "Background";
-            if (type.Contains("Sale Item")) return "Sale Item";
+            if (type == null)
+            {
+                return "[None]";
+            }
+
+            if (type.Contains("Sale Foil Trading Card"))
+            {
+                return "Sale Foil Trading Card";
+            }
+
+            if (type.Contains("Sale Trading Card"))
+            {
+                return "Sale Trading Card";
+            }
+
+            if (type.Contains("Foil Trading Card"))
+            {
+                return "Foil Trading Card";
+            }
+
+            if (type.Contains("Trading Card"))
+            {
+                return "Trading Card";
+            }
+
+            if (type.Contains("Emoticon"))
+            {
+                return "Emoticon";
+            }
+
+            if (type.Contains("Background"))
+            {
+                return "Background";
+            }
+
+            if (type.Contains("Sale Item"))
+            {
+                return "Sale Item";
+            }
+
             return type;
         }
     }

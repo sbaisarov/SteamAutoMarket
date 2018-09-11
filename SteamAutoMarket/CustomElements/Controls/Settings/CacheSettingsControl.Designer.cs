@@ -117,7 +117,7 @@
             this.ImagesCacheClearButton.TabIndex = 24;
             this.ImagesCacheClearButton.Text = "Clear cache";
             this.ImagesCacheClearButton.UseVisualStyleBackColor = false;
-            this.ImagesCacheClearButton.Click += new System.EventHandler(this.ImagesCacheClearButton_Click);
+            this.ImagesCacheClearButton.Click += new System.EventHandler(this.ImagesCacheClearButtonClick);
             // 
             // ImagesCacheOpenButton
             // 
@@ -131,7 +131,7 @@
             this.ImagesCacheOpenButton.TabIndex = 23;
             this.ImagesCacheOpenButton.Text = "Open folder";
             this.ImagesCacheOpenButton.UseVisualStyleBackColor = false;
-            this.ImagesCacheOpenButton.Click += new System.EventHandler(this.ImagesCacheOpenButton_Click);
+            this.ImagesCacheOpenButton.Click += new System.EventHandler(this.ImagesCacheOpenButtonClick);
             // 
             // ImagesCacheCountLable
             // 
@@ -196,7 +196,7 @@
             this.MarketIdCacheClearButton.TabIndex = 24;
             this.MarketIdCacheClearButton.Text = "Clear cache";
             this.MarketIdCacheClearButton.UseVisualStyleBackColor = false;
-            this.MarketIdCacheClearButton.Click += new System.EventHandler(this.MarketIdCacheClearButton_Click);
+            this.MarketIdCacheClearButton.Click += new System.EventHandler(this.MarketIdCacheClearButtonClick);
             // 
             // MarketIdCacheOpenButton
             // 
@@ -210,7 +210,7 @@
             this.MarketIdCacheOpenButton.TabIndex = 23;
             this.MarketIdCacheOpenButton.Text = "Open file";
             this.MarketIdCacheOpenButton.UseVisualStyleBackColor = false;
-            this.MarketIdCacheOpenButton.Click += new System.EventHandler(this.MarketIdCacheOpenButton_Click);
+            this.MarketIdCacheOpenButton.Click += new System.EventHandler(this.MarketIdCacheOpenButtonClick);
             // 
             // AddAllToolTip
             // 
@@ -275,7 +275,7 @@
             this.CurrentCacheNumericUpDown.Name = "CurrentCacheNumericUpDown";
             this.CurrentCacheNumericUpDown.Size = new System.Drawing.Size(151, 20);
             this.CurrentCacheNumericUpDown.TabIndex = 0;
-            this.CurrentCacheNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentCacheNumericUpDown_ValueChanged);
+            this.CurrentCacheNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentCacheNumericUpDownValueChanged);
             // 
             // AverageInfoLable
             // 
@@ -316,7 +316,7 @@
             this.AverageCacheNumericUpDown.Name = "AverageCacheNumericUpDown";
             this.AverageCacheNumericUpDown.Size = new System.Drawing.Size(151, 20);
             this.AverageCacheNumericUpDown.TabIndex = 0;
-            this.AverageCacheNumericUpDown.ValueChanged += new System.EventHandler(this.AverageCacheNumericUpDown_ValueChanged);
+            this.AverageCacheNumericUpDown.ValueChanged += new System.EventHandler(this.AverageCacheNumericUpDownValueChanged);
             // 
             // CurrentGroupBox
             // 
@@ -369,7 +369,7 @@
             this.CurrentClearObsoleteButton.TabIndex = 31;
             this.CurrentClearObsoleteButton.Text = "Clear obsolete";
             this.CurrentClearObsoleteButton.UseVisualStyleBackColor = false;
-            this.CurrentClearObsoleteButton.Click += new System.EventHandler(this.CurrentClearObsoleteButton_Click);
+            this.CurrentClearObsoleteButton.Click += new System.EventHandler(this.CurrentClearObsoleteButtonClick);
             // 
             // CurrentClearButton
             // 
@@ -383,7 +383,7 @@
             this.CurrentClearButton.TabIndex = 24;
             this.CurrentClearButton.Text = "Clear cache";
             this.CurrentClearButton.UseVisualStyleBackColor = false;
-            this.CurrentClearButton.Click += new System.EventHandler(this.CurrentClearButton_Click);
+            this.CurrentClearButton.Click += new System.EventHandler(this.CurrentClearButtonClick);
             // 
             // CurrentOpenButton
             // 
@@ -397,7 +397,7 @@
             this.CurrentOpenButton.TabIndex = 23;
             this.CurrentOpenButton.Text = "Open file";
             this.CurrentOpenButton.UseVisualStyleBackColor = false;
-            this.CurrentOpenButton.Click += new System.EventHandler(this.CurrentOpenButton_Click);
+            this.CurrentOpenButton.Click += new System.EventHandler(this.CurrentOpenButtonClick);
             // 
             // SettingsGroupBox
             // 
@@ -436,7 +436,7 @@
             this.SettingsRestoreDefaultButton.TabIndex = 24;
             this.SettingsRestoreDefaultButton.Text = "Restore default";
             this.SettingsRestoreDefaultButton.UseVisualStyleBackColor = false;
-            this.SettingsRestoreDefaultButton.Click += new System.EventHandler(this.SettingsRestoreDefaultButton_Click);
+            this.SettingsRestoreDefaultButton.Click += new System.EventHandler(this.SettingsRestoreDefaultButtonClick);
             // 
             // SettingsOpenButton
             // 
@@ -450,7 +450,7 @@
             this.SettingsOpenButton.TabIndex = 23;
             this.SettingsOpenButton.Text = "Open file";
             this.SettingsOpenButton.UseVisualStyleBackColor = false;
-            this.SettingsOpenButton.Click += new System.EventHandler(this.SettingsOpenButton_Click);
+            this.SettingsOpenButton.Click += new System.EventHandler(this.SettingsOpenButtonClick);
             // 
             // AverageGroupBox
             // 
@@ -503,7 +503,7 @@
             this.AverageClearObsoleteButton.TabIndex = 31;
             this.AverageClearObsoleteButton.Text = "Clear obsolete";
             this.AverageClearObsoleteButton.UseVisualStyleBackColor = false;
-            this.AverageClearObsoleteButton.Click += new System.EventHandler(this.AverageClearObsoleteButton_Click);
+            this.AverageClearObsoleteButton.Click += new System.EventHandler(this.AverageClearObsoleteButtonClick);
             // 
             // AverageClearButton
             // 
@@ -517,7 +517,7 @@
             this.AverageClearButton.TabIndex = 24;
             this.AverageClearButton.Text = "Clear cache";
             this.AverageClearButton.UseVisualStyleBackColor = false;
-            this.AverageClearButton.Click += new System.EventHandler(this.AverageClearButton_Click);
+            this.AverageClearButton.Click += new System.EventHandler(this.AverageClearButtonClick);
             // 
             // AverageOpenButton
             // 
@@ -531,7 +531,7 @@
             this.AverageOpenButton.TabIndex = 23;
             this.AverageOpenButton.Text = "Open file";
             this.AverageOpenButton.UseVisualStyleBackColor = false;
-            this.AverageOpenButton.Click += new System.EventHandler(this.AverageOpenButton_Click);
+            this.AverageOpenButton.Click += new System.EventHandler(this.AverageOpenButtonClick);
             // 
             // UpdateButton
             // 
@@ -547,7 +547,7 @@
             this.UpdateButton.TabIndex = 34;
             this.AddAllToolTip.SetToolTip(this.UpdateButton, "Update cached items quantity");
             this.UpdateButton.UseVisualStyleBackColor = true;
-            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButtonClick);
             // 
             // MidleImagePanel
             // 

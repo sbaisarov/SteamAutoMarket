@@ -1,16 +1,17 @@
-﻿using System;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-
-namespace SteamAutoMarket.WorkingProcess.Settings
+﻿namespace SteamAutoMarket.WorkingProcess.Settings
 {
+    using System;
+    using System.IO;
+    using System.Runtime.CompilerServices;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Newtonsoft.Json;
+
     internal class SavedSettings
     {
         public static string SettingsFilePath = AppDomain.CurrentDomain.BaseDirectory + "settings.ini";
-        private static SavedSettings _cached;
+        private static SavedSettings cached;
 
         public bool ActiveTradesActiveOnly = true;
 
@@ -71,22 +72,22 @@ namespace SteamAutoMarket.WorkingProcess.Settings
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static SavedSettings Get()
         {
-            if (_cached != null) return _cached;
+            if (cached != null) return cached;
             if (!File.Exists(SettingsFilePath))
             {
-                _cached = new SavedSettings();
+                cached = new SavedSettings();
                 UpdateAll();
-                return _cached;
+                return cached;
             }
 
-            _cached = JsonConvert.DeserializeObject<SavedSettings>(
+            cached = JsonConvert.DeserializeObject<SavedSettings>(
                 File.ReadAllText(SettingsFilePath));
-            return _cached;
+            return cached;
         }
 
         public static void RestoreDefault()
         {
-            _cached = new SavedSettings();
+            cached = new SavedSettings();
             SettingsUpdater.IsPending = false;
             File.WriteAllText(SettingsFilePath, JsonConvert.SerializeObject(Get(), Formatting.Indented));
         }

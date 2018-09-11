@@ -11,9 +11,9 @@
             this.Value = CellGetter.GetCellValue<TValue>(cell);
         }
 
-        public TCell Cell { get; private set; }
+        public TCell Cell { get; }
 
-        public TValue Value { get; private set; }
+        public TValue Value { get; }
 
         public void ChangeCellValue(TValue value)
         {

@@ -151,8 +151,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.CurrentTradesGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.CurrentTradesGridView.Size = new System.Drawing.Size(283, 271);
             this.CurrentTradesGridView.TabIndex = 7;
-            this.CurrentTradesGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CurrentTradesGridView_CellContentClick);
-            this.CurrentTradesGridView.SelectionChanged += new System.EventHandler(this.CurrentTradesGridView_SelectionChanged);
+            this.CurrentTradesGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CurrentTradesGridViewCellContentClick);
+            this.CurrentTradesGridView.SelectionChanged += new System.EventHandler(this.CurrentTradesGridViewSelectionChanged);
             // 
             // TradeofferIdColumn
             // 
@@ -229,8 +229,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.MyItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.MyItemsGridView.Size = new System.Drawing.Size(288, 271);
             this.MyItemsGridView.TabIndex = 7;
-            this.MyItemsGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsGridView_CellContentClick);
-            this.MyItemsGridView.SelectionChanged += new System.EventHandler(this.ItemsGridView_SelectionChanged);
+            this.MyItemsGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsGridViewCellContentClick);
+            this.MyItemsGridView.SelectionChanged += new System.EventHandler(this.ItemsGridViewSelectionChanged);
             // 
             // NameColumn
             // 
@@ -429,8 +429,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.HisItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.HisItemsGridView.Size = new System.Drawing.Size(288, 276);
             this.HisItemsGridView.TabIndex = 7;
-            this.HisItemsGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsGridView_CellContentClick);
-            this.HisItemsGridView.SelectionChanged += new System.EventHandler(this.ItemsGridView_SelectionChanged);
+            this.HisItemsGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsGridViewCellContentClick);
+            this.HisItemsGridView.SelectionChanged += new System.EventHandler(this.ItemsGridViewSelectionChanged);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -501,7 +501,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.TradeIdComboBox.Name = "TradeIdComboBox";
             this.TradeIdComboBox.Size = new System.Drawing.Size(149, 21);
             this.TradeIdComboBox.TabIndex = 44;
-            this.TradeIdComboBox.TextChanged += new System.EventHandler(this.TradeIdComboBox_TextChanged);
+            this.TradeIdComboBox.TextChanged += new System.EventHandler(this.TradeIdComboBoxTextChanged);
             // 
             // LanguageComboBox
             // 
@@ -519,7 +519,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.LanguageComboBox.Size = new System.Drawing.Size(69, 21);
             this.LanguageComboBox.TabIndex = 33;
             this.LanguageComboBox.Text = "en_US";
-            this.LanguageComboBox.TextChanged += new System.EventHandler(this.LanguageComboBox_TextChanged);
+            this.LanguageComboBox.TextChanged += new System.EventHandler(this.LanguageComboBoxTextChanged);
             // 
             // TimeLable
             // 
@@ -551,7 +551,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             0,
             0,
             0});
-            this.MaxTradesNumericUpDown.ValueChanged += new System.EventHandler(this.MaxTradesNumericUpDown_ValueChanged);
+            this.MaxTradesNumericUpDown.ValueChanged += new System.EventHandler(this.MaxTradesNumericUpDownValueChanged);
             // 
             // SentOffersCheckBox
             // 
@@ -565,7 +565,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.toolTip1.SetToolTip(this.SentOffersCheckBox, "Filter only sent offers (result amount will be lower then \'Max trades\' parameter)" +
         "");
             this.SentOffersCheckBox.UseVisualStyleBackColor = true;
-            this.SentOffersCheckBox.CheckStateChanged += new System.EventHandler(this.SentOffersCheckBox_CheckStateChanged);
+            this.SentOffersCheckBox.CheckStateChanged += new System.EventHandler(this.SentOffersCheckBoxCheckStateChanged);
             // 
             // ReceivedOffersCheckBox
             // 
@@ -579,7 +579,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.toolTip1.SetToolTip(this.ReceivedOffersCheckBox, "Filter only Received offers (result amount will be lower then \'Max trades\' parame" +
         "ter)");
             this.ReceivedOffersCheckBox.UseVisualStyleBackColor = true;
-            this.ReceivedOffersCheckBox.CheckedChanged += new System.EventHandler(this.ReceivedOffersCheckBox_CheckedChanged);
+            this.ReceivedOffersCheckBox.CheckedChanged += new System.EventHandler(this.ReceivedOffersCheckBoxCheckedChanged);
             // 
             // IncludeFailedCheckBox
             // 
@@ -593,7 +593,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.toolTip1.SetToolTip(this.IncludeFailedCheckBox, "If set, trades in status Failed, RollbackFailed, RollbackAbandoned, and EscrowRol" +
         "lback will be included");
             this.IncludeFailedCheckBox.UseVisualStyleBackColor = true;
-            this.IncludeFailedCheckBox.CheckedChanged += new System.EventHandler(this.IncludeFailedCheckBox_CheckedChanged);
+            this.IncludeFailedCheckBox.CheckedChanged += new System.EventHandler(this.IncludeFailedCheckBoxCheckedChanged);
             // 
             // NavigatingBackCheckBox
             // 
@@ -606,7 +606,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.NavigatingBackCheckBox.Text = "Navigating back ";
             this.toolTip1.SetToolTip(this.NavigatingBackCheckBox, "Return the previous \'Max trades\' trades before the start time and ID");
             this.NavigatingBackCheckBox.UseVisualStyleBackColor = true;
-            this.NavigatingBackCheckBox.CheckedChanged += new System.EventHandler(this.NavigatingBackCheckBox_CheckedChanged);
+            this.NavigatingBackCheckBox.CheckedChanged += new System.EventHandler(this.NavigatingBackCheckBoxCheckedChanged);
             // 
             // TradeIdLabel
             // 
@@ -655,7 +655,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.LoadTradesButton.TabIndex = 25;
             this.toolTip1.SetToolTip(this.LoadTradesButton, "Load trades");
             this.LoadTradesButton.UseVisualStyleBackColor = false;
-            this.LoadTradesButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
+            this.LoadTradesButton.Click += new System.EventHandler(this.LoadInventoryButtonClick);
             // 
             // AccountNameLable
             // 

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace SteamAutoMarket.CustomElements.Utils
+﻿namespace SteamAutoMarket.CustomElements.Utils
 {
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     internal class CommonUtils
     {
         public static void AppendBoldText(RichTextBox textBox, string text)
@@ -29,14 +29,17 @@ namespace SteamAutoMarket.CustomElements.Utils
 
         public static DateTime ParseSteamUnixDate(int date)
         {
-            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddSeconds(date).ToLocalTime();
-            return dtDateTime;
+            var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(date).ToLocalTime();
+            return dateTime;
         }
 
         public static void ClearGrids(params DataGridView[] grids)
         {
-            foreach (var grid in grids) grid.Rows.Clear();
+            foreach (var grid in grids)
+            {
+                grid.Rows.Clear();
+            }
         }
     }
 }

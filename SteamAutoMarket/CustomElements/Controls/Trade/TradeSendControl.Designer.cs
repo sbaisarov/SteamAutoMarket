@@ -133,7 +133,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.TradeParthenIdTextBox.Name = "TradeParthenIdTextBox";
             this.TradeParthenIdTextBox.Size = new System.Drawing.Size(123, 20);
             this.TradeParthenIdTextBox.TabIndex = 27;
-            this.TradeParthenIdTextBox.TextChanged += new System.EventHandler(this.TradeParthenIdTextBox_TextChanged);
+            this.TradeParthenIdTextBox.TextChanged += new System.EventHandler(this.TradePartnerIdTextBoxTextChanged);
             // 
             // TradeTokenLable
             // 
@@ -153,7 +153,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.TradeTokenTextBox.Name = "TradeTokenTextBox";
             this.TradeTokenTextBox.Size = new System.Drawing.Size(123, 20);
             this.TradeTokenTextBox.TabIndex = 29;
-            this.TradeTokenTextBox.TextChanged += new System.EventHandler(this.TradeTokenTextBox_TextChanged);
+            this.TradeTokenTextBox.TextChanged += new System.EventHandler(this.TradeTokenTextBoxTextChanged);
             // 
             // TradeGroupBox
             // 
@@ -184,9 +184,9 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.LoadedAccountCombobox.Name = "LoadedAccountCombobox";
             this.LoadedAccountCombobox.Size = new System.Drawing.Size(123, 21);
             this.LoadedAccountCombobox.TabIndex = 31;
-            this.LoadedAccountCombobox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ComboboxWithImage1_DrawItem);
-            this.LoadedAccountCombobox.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.ComboboxWithImage1_MeasureItem_1);
-            this.LoadedAccountCombobox.SelectedIndexChanged += new System.EventHandler(this.LoadedAccountCombobox_SelectedIndexChanged);
+            this.LoadedAccountCombobox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ComboboxWithImageDrawItem);
+            this.LoadedAccountCombobox.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.ComboboxWithImageMeasureItem);
+            this.LoadedAccountCombobox.SelectedIndexChanged += new System.EventHandler(this.LoadedAccountComboboxSelectedIndexChanged);
             // 
             // LoadedAccountLable
             // 
@@ -256,9 +256,9 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.ItemsToTradeGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ItemsToTradeGridView.Size = new System.Drawing.Size(558, 201);
             this.ItemsToTradeGridView.TabIndex = 13;
-            this.ItemsToTradeGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToTradeGridView_CellClick);
-            this.ItemsToTradeGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridView_CellEndEdit);
-            this.ItemsToTradeGridView.CurrentCellChanged += new System.EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
+            this.ItemsToTradeGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToTradeGridViewCellClick);
+            this.ItemsToTradeGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridViewCellEndEdit);
+            this.ItemsToTradeGridView.CurrentCellChanged += new System.EventHandler(this.ItemsToSaleGridViewCurrentCellChanged);
             // 
             // AddedToSaleListItemName
             // 
@@ -318,7 +318,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.DeleteSelectedItemButton.Size = new System.Drawing.Size(47, 40);
             this.DeleteSelectedItemButton.TabIndex = 22;
             this.DeleteSelectedItemButton.UseVisualStyleBackColor = true;
-            this.DeleteSelectedItemButton.Click += new System.EventHandler(this.DeleteAccountButton_Click);
+            this.DeleteSelectedItemButton.Click += new System.EventHandler(this.DeleteAccountButtonClick);
             // 
             // TradeSendGroupBox
             // 
@@ -343,7 +343,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.SendTradeButton.TabIndex = 14;
             this.SendTradeButton.Text = "Send trade offer";
             this.SendTradeButton.UseVisualStyleBackColor = false;
-            this.SendTradeButton.Click += new System.EventHandler(this.SendTradeButton_Click);
+            this.SendTradeButton.Click += new System.EventHandler(this.SendTradeButtonClick);
             // 
             // ItemNameLable
             // 
@@ -445,9 +445,9 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.AllSteamItemsToTradeGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.AllSteamItemsToTradeGridView.Size = new System.Drawing.Size(560, 295);
             this.AllSteamItemsToTradeGridView.TabIndex = 8;
-            this.AllSteamItemsToTradeGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AllSteamItemsToTradeGridView_CellClick);
-            this.AllSteamItemsToTradeGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsToTradeGridView_CurrentCellChanged);
-            this.AllSteamItemsToTradeGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.AllSteamItemsToTradeGridView_EditingControlShowing);
+            this.AllSteamItemsToTradeGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AllSteamItemsToTradeGridViewCellClick);
+            this.AllSteamItemsToTradeGridView.CurrentCellChanged += new System.EventHandler(this.AllSteamItemsToTradeGridViewCurrentCellChanged);
+            this.AllSteamItemsToTradeGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.AllSteamItemsToTradeGridViewEditingControlShowing);
             // 
             // checkInvent
             // 
@@ -545,7 +545,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.InventoryAppIdComboBox.Name = "InventoryAppIdComboBox";
             this.InventoryAppIdComboBox.Size = new System.Drawing.Size(97, 21);
             this.InventoryAppIdComboBox.TabIndex = 0;
-            this.InventoryAppIdComboBox.TextChanged += new System.EventHandler(this.InventoryAppIdComboBox_TextChanged);
+            this.InventoryAppIdComboBox.TextChanged += new System.EventHandler(this.InventoryAppIdComboBoxTextChanged);
             // 
             // InventoryAppIdLabel
             // 
@@ -567,7 +567,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.InventoryContextIdComboBox.Name = "InventoryContextIdComboBox";
             this.InventoryContextIdComboBox.Size = new System.Drawing.Size(97, 21);
             this.InventoryContextIdComboBox.TabIndex = 2;
-            this.InventoryContextIdComboBox.TextChanged += new System.EventHandler(this.InventoryContextIdComboBox_TextChanged);
+            this.InventoryContextIdComboBox.TextChanged += new System.EventHandler(this.InventoryContextIdComboBoxTextChanged);
             // 
             // InventoryContextIdLabel
             // 
@@ -609,7 +609,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.LoadInventoryButton.TabIndex = 25;
             this.AddAllToolTip.SetToolTip(this.LoadInventoryButton, "Load selected inventory");
             this.LoadInventoryButton.UseVisualStyleBackColor = false;
-            this.LoadInventoryButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
+            this.LoadInventoryButton.Click += new System.EventHandler(this.LoadInventoryButtonClick);
             // 
             // AddAllToolTip
             // 
@@ -635,7 +635,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.OpenGameInventoryPageButton.TabIndex = 30;
             this.AddAllToolTip.SetToolTip(this.OpenGameInventoryPageButton, "Open loaded inventory on browser");
             this.OpenGameInventoryPageButton.UseVisualStyleBackColor = false;
-            this.OpenGameInventoryPageButton.Click += new System.EventHandler(this.OpenGameInventoryPageButton_Click);
+            this.OpenGameInventoryPageButton.Click += new System.EventHandler(this.OpenGameInventoryPageButtonClick);
             // 
             // OpenMarketPageButtonClick
             // 
@@ -651,7 +651,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.OpenMarketPageButtonClick.TabIndex = 29;
             this.AddAllToolTip.SetToolTip(this.OpenMarketPageButtonClick, "Find selected item on Steam Market");
             this.OpenMarketPageButtonClick.UseVisualStyleBackColor = false;
-            this.OpenMarketPageButtonClick.Click += new System.EventHandler(this.OpenMarketPageButtonClick_Click);
+            this.OpenMarketPageButtonClick.Click += new System.EventHandler(this.OpenMarketPageButtonClickClick);
             // 
             // RefreshInventoryButton
             // 
@@ -667,7 +667,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.RefreshInventoryButton.TabIndex = 27;
             this.AddAllToolTip.SetToolTip(this.RefreshInventoryButton, "Reload inventory");
             this.RefreshInventoryButton.UseVisualStyleBackColor = false;
-            this.RefreshInventoryButton.Click += new System.EventHandler(this.RefreshInventoryButton_Click);
+            this.RefreshInventoryButton.Click += new System.EventHandler(this.RefreshInventoryButtonClick);
             // 
             // AddAllButton
             // 
@@ -683,7 +683,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.AddAllButton.TabIndex = 28;
             this.AddAllToolTip.SetToolTip(this.AddAllButton, "Add all selected items to trade list");
             this.AddAllButton.UseVisualStyleBackColor = false;
-            this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
+            this.AddAllButton.Click += new System.EventHandler(this.AddAllButtonClick);
             // 
             // SplitterPanel
             // 
@@ -785,7 +785,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.Name = "TradeSendControl";
             this.Size = new System.Drawing.Size(885, 599);
-            this.Load += new System.EventHandler(this.SaleControl_Load);
+            this.Load += new System.EventHandler(this.SaleControlLoad);
             this.TradeGroupBox.ResumeLayout(false);
             this.TradeGroupBox.PerformLayout();
             this.ItemsToSaleGroupBox.ResumeLayout(false);

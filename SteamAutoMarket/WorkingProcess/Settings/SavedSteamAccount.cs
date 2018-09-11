@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
-using SteamAuth;
-
-namespace SteamAutoMarket.WorkingProcess.Settings
+﻿namespace SteamAutoMarket.WorkingProcess.Settings
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Runtime.CompilerServices;
+
+    using Newtonsoft.Json;
+
+    using SteamAuth;
+
     internal class SavedSteamAccount
     {
         public static string AccountsFilePath = AppDomain.CurrentDomain.BaseDirectory + "accounts.ini";

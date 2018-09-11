@@ -1,36 +1,48 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace SteamAutoMarket.Utils
+﻿namespace SteamAutoMarket.Utils
 {
-    internal class Logger
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+
+    internal enum LoggerLevel
     {
+        Debug,
+
+        Info,
+
+        Error,
+
+        None
+    }
+
+    internal static class Logger
+    {
+        public const string DateFormat = "HH:mm:ss";
+
+        private static readonly LoggerLevel[] NoneShouldBeIgnored =
+            {
+                LoggerLevel.Debug, LoggerLevel.Info, LoggerLevel.Error, LoggerLevel.None
+            };
+
+        private static readonly LoggerLevel[] DebugShouldBeIgnored =
+            {
+                LoggerLevel.Info, LoggerLevel.Error, LoggerLevel.None
+            };
+
+        private static readonly LoggerLevel[] InfoShouldBeIgnored = { LoggerLevel.Error, LoggerLevel.None };
+
+        private static readonly LoggerLevel[] ErrorShouldBeIgnored = { LoggerLevel.None };
+
         static Logger()
         {
             Directory.CreateDirectory("logs");
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        private static void LogToFile(string s)
-        {
-            Task.Run(() =>
-            {
-                try
-                {
-                    File.AppendAllText($"logs/log {DateTime.Now:dd-MM-yy}.log", $@"{s}\n");
-                }
-                catch
-                {
-                    Thread.Sleep(1000);
-                    LogToFile(s);
-                }
-            });
-        }
+        public static LoggerLevel LoggerLevel { get; set; } = LoggerLevel.Info;
 
         public static void Working(string message)
         {
@@ -40,7 +52,10 @@ namespace SteamAutoMarket.Utils
 
         public static void Debug(string message)
         {
-            if (_ignoreLogs(LoggerLevel.Debug)) return;
+            if (IgnoreLogs(LoggerLevel.Debug))
+            {
+                return;
+            }
 
             message = $"{GetCurrentDate()} [DEBUG] - {message}";
             LogToFile(message);
@@ -49,50 +64,109 @@ namespace SteamAutoMarket.Utils
 
         public static void Info(string message)
         {
-            if (_ignoreLogs(LoggerLevel.Info)) return;
+            if (IgnoreLogs(LoggerLevel.Info))
+            {
+                return;
+            }
 
             message = $"{GetCurrentDate()} [INFO] - {message}";
             LogToFile(message);
             LogToLogBox(message);
         }
 
-
         public static void Warning(string message, Exception e = null)
         {
-            if (_ignoreLogs(LoggerLevel.Info)) return;
+            if (IgnoreLogs(LoggerLevel.Info))
+            {
+                return;
+            }
 
             message = $"{GetCurrentDate()} [WARN] - {message}";
 
             LogToLogBox(message);
-            LogToFile(message + (e != null ? e.Message + " " + e.StackTrace : ""));
+            LogToFile(message + (e != null ? e.Message + " " + e.StackTrace : string.Empty));
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void Error(string message, Exception e = null)
         {
-            if (_ignoreLogs(LoggerLevel.Error)) return;
+            if (IgnoreLogs(LoggerLevel.Error))
+            {
+                return;
+            }
 
             message = $"{GetCurrentDate()} [ERROR] - {message}";
-            if (e != null) message += $". {e.Message}";
+            if (e != null)
+            {
+                message += $". {e.Message}";
+            }
 
-            File.AppendAllText("logs/error.log", message + @" " + (e != null ? e.Message + " " + e.StackTrace : "") + @"\n");
+            File.AppendAllText(
+                "logs/error.log",
+                message + @" " + (e != null ? e.Message + " " + e.StackTrace : string.Empty) + @"\n");
             LogToLogBox(message);
+        }
+
+        public static void Critical(Exception ex)
+        {
+            Critical(string.Empty, ex);
         }
 
         public static void Critical(string message, Exception ex)
         {
-            message = $"{GetCurrentDate()} [CRITICAL] - {message}. {ex.Message}";
-            File.AppendAllText("logs/error.log", $@"{message} {ex.StackTrace}\n");
+            var shortMessage = $"{ex.Message}";
+            if (message != string.Empty)
+            {
+                shortMessage = $"{message}. {shortMessage}";
+            }
 
-            MessageBox.Show(message, message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            var logMessage = $"{GetCurrentDate()} [CRITICAL] - {shortMessage}";
+
+            File.AppendAllText("logs/error.log", $@"{logMessage} {ex.StackTrace}\n");
+            MessageBox.Show(shortMessage, @"Critical exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            LogCriticalErrorToServer(message, ex);
         }
 
         public static void LogToLogBox(string s)
         {
             if (Program.IsMainThread)
+            {
                 AppendTextToLogTextBox(s);
+            }
             else
+            {
                 Dispatcher.AsMainForm(() => { AppendTextToLogTextBox(s); });
+            }
+        }
+
+        public static string GetCurrentDate()
+        {
+            return DateTime.Now.ToString(DateFormat);
+        }
+
+        private static void LogCriticalErrorToServer(string message, Exception ex)
+        {
+            // todo Send to server
+            message = $"Log: {message} + {GetDetailedExceptionInfo(ex)}";
+        }
+
+        private static string GetDetailedExceptionInfo(Exception e)
+        {
+            if (e == null)
+            {
+                return string.Empty;
+            }
+
+            var message = $"Exception: {e.Message} \nSource object: {e.Source} "
+                          + $"\nMethod: {e.TargetSite.Name} \nStack trace: {e.StackTrace}";
+
+            if (e.InnerException != null)
+            {
+                message += $"\nInner exception: {GetDetailedExceptionInfo(e.InnerException)}";
+            }
+
+            return message;
         }
 
         private static void AppendTextToLogTextBox(string s)
@@ -108,12 +182,7 @@ namespace SteamAutoMarket.Utils
             textBox.AppendText(s + "\n");
         }
 
-        public static string GetCurrentDate()
-        {
-            return DateTime.Now.ToString(DateFormat);
-        }
-
-        private static bool _ignoreLogs(LoggerLevel invoked)
+        private static bool IgnoreLogs(LoggerLevel invoked)
         {
             switch (invoked)
             {
@@ -125,25 +194,22 @@ namespace SteamAutoMarket.Utils
             }
         }
 
-        public const string DateFormat = "HH:mm:ss";
-
-        private static readonly LoggerLevel[] NoneShouldBeIgnored =
-            {LoggerLevel.Debug, LoggerLevel.Info, LoggerLevel.Error, LoggerLevel.None};
-
-        private static readonly LoggerLevel[] DebugShouldBeIgnored =
-            {LoggerLevel.Info, LoggerLevel.Error, LoggerLevel.None};
-
-        private static readonly LoggerLevel[] InfoShouldBeIgnored = { LoggerLevel.Error, LoggerLevel.None };
-        private static readonly LoggerLevel[] ErrorShouldBeIgnored = { LoggerLevel.None };
-
-        public static LoggerLevel LoggerLevel { get; set; } = LoggerLevel.Info;
-    }
-
-    internal enum LoggerLevel
-    {
-        Debug,
-        Info,
-        Error,
-        None
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        private static void LogToFile(string s)
+        {
+            Task.Run(
+                () =>
+                    {
+                        try
+                        {
+                            File.AppendAllText($"logs/log {DateTime.Now:dd-MM-yy}.log", $@"{s}\n");
+                        }
+                        catch
+                        {
+                            Thread.Sleep(1000);
+                            LogToFile(s);
+                        }
+                    });
+        }
     }
 }

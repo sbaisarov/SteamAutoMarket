@@ -50,7 +50,7 @@
             this.StopWorkingProcessButton.TabIndex = 15;
             this.StopWorkingProcessButton.Text = "Stop working process";
             this.StopWorkingProcessButton.UseVisualStyleBackColor = false;
-            this.StopWorkingProcessButton.Click += new System.EventHandler(this.StopWorkingProcessButton_Click);
+            this.StopWorkingProcessButton.Click += new System.EventHandler(this.StopWorkingProcessButtonClick);
             // 
             // ProgressBar
             // 
@@ -130,7 +130,7 @@
             this.Name = "LoadingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Loading";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InventoryLoadingForm_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InventoryLoadingFormFormClosing);
             this.ResumeLayout(false);
 
         }

@@ -254,7 +254,7 @@ namespace SteamAutoMarket
             this.appExitButton.Size = new System.Drawing.Size(27, 23);
             this.appExitButton.TabIndex = 6;
             this.appExitButton.UseVisualStyleBackColor = true;
-            this.appExitButton.Click += new System.EventHandler(this.AppExitButton_Click);
+            this.appExitButton.Click += new System.EventHandler(this.AppExitButtonClick);
             // 
             // RightEdge
             // 

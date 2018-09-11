@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Forms;
-using SteamAutoMarket.CustomElements.Utils;
-using SteamAutoMarket.Steam.TradeOffer.Models.Full;
-
-namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
+﻿namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Windows.Forms;
+
+    using SteamAutoMarket.CustomElements.Utils;
+    using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+
     internal class PriceShaper
     {
-        public PriceShaper(DataGridView itemsToSaleGridView, MarketSaleType type, double lowerValue,
+        public PriceShaper(
+            DataGridView itemsToSaleGridView,
+            MarketSaleType type,
+            double lowerValue,
             double lowerPercentValue)
         {
             Grid = itemsToSaleGridView;
@@ -20,8 +24,11 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
         }
 
         private static DataGridView Grid { get; set; }
+
         private static MarketSaleType Type { get; set; }
+
         private static double LowerValue { get; set; }
+
         private static double LowerPercentValue { get; set; }
 
         public ToSaleObject GetItemsForSales()
@@ -31,19 +38,19 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
             switch (Type)
             {
                 case MarketSaleType.Recommended:
-                    itemsForSales = GetRecomendedPriceItemsForSale();
+                    itemsForSales = this.GetRecommendedPriceItemsForSale();
                     break;
 
                 case MarketSaleType.LowerThanAverage:
-                    itemsForSales = GetAveragePriceItemsForSale();
+                    itemsForSales = this.GetAveragePriceItemsForSale();
                     break;
 
                 case MarketSaleType.LowerThanCurrent:
-                    itemsForSales = GetCurrentPriceItemsForSale();
+                    itemsForSales = this.GetCurrentPriceItemsForSale();
                     break;
 
                 case MarketSaleType.Manual:
-                    itemsForSales = GetManualPriceItemsForSale();
+                    itemsForSales = this.GetManualPriceItemsForSale();
                     break;
 
                 default: throw new InvalidOperationException("Not implemented market sale type");
@@ -52,12 +59,12 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
             var changeValueType = ChangeValueType.ChangeValueTypeNone;
             double changeValue = 0;
 
-            if (LowerValue != 0d)
+            if (LowerValue > 0)
             {
                 changeValueType = ChangeValueType.ChangeValueTypeByValue;
                 changeValue = LowerValue;
             }
-            else if (LowerPercentValue != 0)
+            else if (LowerPercentValue > 0)
             {
                 changeValueType = ChangeValueType.ChangeValueTypeByPercent;
                 changeValue = LowerPercentValue;
@@ -66,26 +73,38 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
             return new ToSaleObject(itemsForSales, Type, changeValueType, changeValue);
         }
 
-        private List<ItemsForSale> GetRecomendedPriceItemsForSale()
+        private List<ItemsForSale> GetRecommendedPriceItemsForSale()
         {
             var itemsForSale = new List<ItemsForSale>();
 
             foreach (var row in Grid.Rows.Cast<DataGridViewRow>())
             {
-                var items = GetGridItemsList(row.Index);
-                if (items == null) continue;
+                var items = this.GetGridItemsList(row.Index);
+                if (items == null)
+                {
+                    continue;
+                }
 
                 double? resultPrice = null;
-                var averagePrice = GetGridAveragePrice(row.Index);
-                var currentPrice = GetGridCurrentPrice(row.Index);
+                var averagePrice = this.GetGridAveragePrice(row.Index);
+                var currentPrice = this.GetGridCurrentPrice(row.Index);
 
                 if (averagePrice != null && currentPrice != null)
                 {
-                    if (averagePrice > currentPrice) resultPrice = averagePrice;
-                    else if (currentPrice >= averagePrice) resultPrice = currentPrice - 0.01;
+                    if (averagePrice > currentPrice)
+                    {
+                        resultPrice = averagePrice;
+                    }
+                    else if (currentPrice >= averagePrice)
+                    {
+                        resultPrice = currentPrice - 0.01;
+                    }
                 }
 
-                if (resultPrice == null || resultPrice.Value <= 0) resultPrice = null;
+                if (resultPrice == null || resultPrice.Value <= 0)
+                {
+                    resultPrice = null;
+                }
 
                 itemsForSale.Add(new ItemsForSale(items, resultPrice));
             }
@@ -97,18 +116,25 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
         {
             var itemsForSale = new List<ItemsForSale>();
 
-            var priceShapingStrategy = GetPriceShapingStrategy();
+            var priceShapingStrategy = this.GetPriceShapingStrategy();
 
             foreach (var row in Grid.Rows.Cast<DataGridViewRow>())
             {
-                var items = GetGridItemsList(row.Index);
-                if (items == null) continue;
+                var items = this.GetGridItemsList(row.Index);
+                if (items == null)
+                {
+                    continue;
+                }
 
-                var price = GetGridCurrentPrice(row.Index);
+                var price = this.GetGridCurrentPrice(row.Index);
                 if (price == null || price.Value <= 0)
+                {
                     price = null;
+                }
                 else
+                {
                     price = priceShapingStrategy.Format(price.Value);
+                }
 
                 itemsForSale.Add(new ItemsForSale(items, price));
             }
@@ -120,18 +146,25 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
         {
             var itemsForSale = new List<ItemsForSale>();
 
-            var priceShapingStrategy = GetPriceShapingStrategy();
+            var priceShapingStrategy = this.GetPriceShapingStrategy();
 
             foreach (var row in Grid.Rows.Cast<DataGridViewRow>())
             {
-                var items = GetGridItemsList(row.Index);
-                if (items == null) continue;
+                var items = this.GetGridItemsList(row.Index);
+                if (items == null)
+                {
+                    continue;
+                }
 
-                var price = GetGridAveragePrice(row.Index);
+                var price = this.GetGridAveragePrice(row.Index);
                 if (price == null || price.Value <= 0)
+                {
                     price = null;
+                }
                 else
+                {
                     price = priceShapingStrategy.Format(price.Value);
+                }
 
                 itemsForSale.Add(new ItemsForSale(items, price));
             }
@@ -145,11 +178,17 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
 
             foreach (var row in Grid.Rows.Cast<DataGridViewRow>())
             {
-                var items = GetGridItemsList(row.Index);
-                if (items == null) continue;
+                var items = this.GetGridItemsList(row.Index);
+                if (items == null)
+                {
+                    continue;
+                }
 
-                var price = GetGridCurrentPrice(row.Index);
-                if (price == null) continue;
+                var price = this.GetGridCurrentPrice(row.Index);
+                if (!price.HasValue)
+                {
+                    continue;
+                }
 
                 itemsForSale.Add(new ItemsForSale(items, price.Value));
             }
@@ -162,10 +201,16 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
             var items = new List<FullRgItem>();
 
             var row = ItemsToSaleGridUtils.GetGridHidenItemsListCell(Grid, index);
-            if (row?.Value == null) return items;
+            if (row?.Value == null)
+            {
+                return items;
+            }
 
             items = row.Value as List<FullRgItem>;
-            if (items != null && items.Count == 0) return null;
+            if (items != null && items.Count == 0)
+            {
+                return null;
+            }
 
             return items;
         }
@@ -173,56 +218,78 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
         private double? GetGridCurrentPrice(int index)
         {
             var row = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(Grid, index);
-            if (row == null || row.Value == null) return null;
-
-            if (GetDouble(row.Value, out var price))
+            if (row?.Value == null)
             {
-                if (price == 0) return null;
-                return price;
+                return null;
             }
 
-            return null;
+            if (!this.GetDouble(row.Value, out var price))
+            {
+                return null;
+            }
+
+            if (price <= 0)
+            {
+                return null;
+            }
+
+            return price;
         }
 
         private double? GetGridAveragePrice(int index)
         {
             var row = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(Grid, index);
-            if (row == null || row.Value == null) return null;
-
-            if (GetDouble(row.Value, out var price))
+            if (row?.Value == null)
             {
-                if (price == 0) return null;
-                return price;
+                return null;
             }
 
-            return null;
+            if (!this.GetDouble(row.Value, out var price))
+            {
+                return null;
+            }
+
+            if (price <= 0)
+            {
+                return null;
+            }
+
+            return price;
         }
 
         private bool GetDouble(object value, out double result)
         {
             string stringValue;
-            if (value is double)
+            switch (value)
             {
-                result = (double)value;
-                return true;
+                case double _:
+                    result = (double)value;
+                    return true;
+                case string _:
+                    stringValue = (string)value;
+                    break;
+                default:
+                    stringValue = value.ToString();
+                    break;
             }
 
-            if (value is string)
-                stringValue = (string)value;
-            else
-                stringValue = value.ToString();
-
-            if (!double.TryParse(stringValue, NumberStyles.Any, CultureInfo.CurrentCulture, out result) &&
-                !double.TryParse(stringValue, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out result) &&
-                !double.TryParse(stringValue, NumberStyles.Any, CultureInfo.InvariantCulture, out result))
-                return false;
-            return true;
+            return double.TryParse(stringValue, NumberStyles.Any, CultureInfo.CurrentCulture, out result)
+                   || double.TryParse(stringValue, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out result)
+                   || double.TryParse(stringValue, NumberStyles.Any, CultureInfo.InvariantCulture, out result);
         }
 
         private PriceShapingStrategy GetPriceShapingStrategy()
         {
-            if (LowerValue != 0) return PriceShapingStrategyContainer.ByValue;
-            if (LowerPercentValue != 0) return PriceShapingStrategyContainer.ByPercent;
+            if (LowerValue > 0)
+            {
+                return PriceShapingStrategyContainer.ByValue;
+            }
+
+            if (LowerPercentValue > 0)
+            {
+                return PriceShapingStrategyContainer.ByPercent;
+            }
+
             return PriceShapingStrategyContainer.DoNotChange;
         }
 
@@ -257,9 +324,11 @@ namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
 
         public class PriceShapingStrategyContainer
         {
-            public static PriceShapingStrategy ByValue = new ChangeByValueStrategy();
-            public static PriceShapingStrategy ByPercent = new ChangeByPercentStrategy();
-            public static PriceShapingStrategy DoNotChange = new DoNotChangeStrategy();
+            public static PriceShapingStrategy ByValue { get; } = new ChangeByValueStrategy();
+
+            public static PriceShapingStrategy ByPercent { get; } = new ChangeByPercentStrategy();
+
+            public static PriceShapingStrategy DoNotChange { get; } = new DoNotChangeStrategy();
         }
     }
 }

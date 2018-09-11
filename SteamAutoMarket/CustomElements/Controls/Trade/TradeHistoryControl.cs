@@ -1,213 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-using SteamAutoMarket.CustomElements.Utils;
-using SteamAutoMarket.Steam.TradeOffer.Models;
-using SteamAutoMarket.Steam.TradeOffer.Models.Full;
-using SteamAutoMarket.Utils;
-using SteamAutoMarket.WorkingProcess;
-using SteamAutoMarket.WorkingProcess.Settings;
-
-namespace SteamAutoMarket.CustomElements.Controls.Trade
+﻿namespace SteamAutoMarket.CustomElements.Controls.Trade
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+
+    using SteamAutoMarket.CustomElements.Utils;
+    using SteamAutoMarket.Steam.TradeOffer.Models;
+    using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+    using SteamAutoMarket.Utils;
+    using SteamAutoMarket.WorkingProcess;
+    using SteamAutoMarket.WorkingProcess.Settings;
+
     public partial class TradeHistoryControl : UserControl
     {
-        private readonly Dictionary<string, FullHistoryTradeOffer> ALL_TRADES =
+        private readonly Dictionary<string, FullHistoryTradeOffer> allTrades =
             new Dictionary<string, FullHistoryTradeOffer>();
 
-        private AssetDescription SELECTED_ITEM_DESCRIPTION;
+        private AssetDescription selectedItemDescription;
 
-        private string SELECTED_OFFER_ID;
+        private string selectedOfferId;
 
         public TradeHistoryControl()
         {
-            InitializeComponent();
+            try
+            {
+                this.InitializeComponent();
 
-            var settings = SavedSettings.Get();
-            TradeIdComboBox.Text = settings.TradeHistoryTradeId;
-            MaxTradesNumericUpDown.Value = settings.TradeHistoryMaxTrades;
-            LanguageComboBox.Text = settings.TradeHistoryLanguage;
-            NavigatingBackCheckBox.Checked = settings.TradeHistoryNavigatingBack;
-            IncludeFailedCheckBox.Checked = settings.TradeHistoryIncludeFailed;
-            ReceivedOffersCheckBox.Checked = settings.TradeHistoryReceived;
-            SentOffersCheckBox.Checked = settings.TradeHistorySent;
+                var settings = SavedSettings.Get();
+                this.TradeIdComboBox.Text = settings.TradeHistoryTradeId;
+                this.MaxTradesNumericUpDown.Value = settings.TradeHistoryMaxTrades;
+                this.LanguageComboBox.Text = settings.TradeHistoryLanguage;
+                this.NavigatingBackCheckBox.Checked = settings.TradeHistoryNavigatingBack;
+                this.IncludeFailedCheckBox.Checked = settings.TradeHistoryIncludeFailed;
+                this.ReceivedOffersCheckBox.Checked = settings.TradeHistoryReceived;
+                this.SentOffersCheckBox.Checked = settings.TradeHistorySent;
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
         public void AuthCurrentAccount()
         {
-            AccountNameLable.Text = CurrentSession.SteamManager.Guard.AccountName;
-            SplitterPanel.BackgroundImage = CurrentSession.AccountImage;
-        }
-
-        private void LoadInventoryButton_Click(object sender, EventArgs e)
-        {
-            if (CurrentSession.SteamManager == null)
+            try
             {
-                MessageBox.Show(
-                    "You should login first",
-                    "Error trades history loading",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                Logger.Error("Error on trades history loading. No logined account found.");
-                return;
+                this.AccountNameLable.Text = CurrentSession.SteamManager.Guard.AccountName;
+                this.SplitterPanel.BackgroundImage = CurrentSession.AccountImage;
             }
-
-            var sentOffers = SentOffersCheckBox.Checked;
-            var ReceivedOffers = ReceivedOffersCheckBox.Checked;
-
-            if (!sentOffers && !ReceivedOffers)
+            catch (Exception ex)
             {
-                MessageBox.Show(
-                    "You should select at least one type of offers to load (Received/Sent)",
-                    "Error trades history loading",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                Logger.Error("Error on trades history loading. No trades type selected.");
-                return;
-            }
-
-            var startTime = CommonUtils.GetSecondsFromDateTime(CommonUtils.ResetTimeToDauStart(this.SteamDateTimePicker.Value));
-            var startTradeId = TradeIdComboBox.Text;
-            var maxTrades = (int)MaxTradesNumericUpDown.Value;
-            var navigatingBack = NavigatingBackCheckBox.Checked;
-            var includeFailed = IncludeFailedCheckBox.Checked;
-            var language = LanguageComboBox.Text ?? "en_US";
-
-            CommonUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
-
-            Task.Run(
-                () =>
-                    {
-                        ALL_TRADES.Clear();
-
-                        Program.LoadingForm.InitTradesHistoryLoadingProcess(
-                            maxTrades,
-                            startTime,
-                            startTradeId,
-                            navigatingBack,
-                            true,
-                            language,
-                            includeFailed);
-                        var fullTradeOffers = Program.LoadingForm.GetLoadedTradesHistory();
-                        Program.LoadingForm.DeactivateForm();
-
-                        Dispatcher.AsMainForm(
-                            () =>
-                                {
-                                    TradeIdComboBox.Items.Clear();
-                                    foreach (var trade in fullTradeOffers)
-                                    {
-                                        ALL_TRADES.Add(trade.TradeId, trade);
-
-                                        CurrentTradesGridView.Rows.Add(
-                                            trade.TradeId,
-                                            trade.SteamIdOther.ConvertToUInt64(),
-                                            trade.Status.ToString().Replace("TradeState", string.Empty));
-
-                                        TradeIdComboBox.Items.Add(trade.TradeId);
-                                    }
-
-                                    LoadTradesButton.Enabled = true;
-                                });
-                    });
-        }
-
-        private void CurrentTradesGridView_SelectionChanged(object sender, EventArgs e)
-        {
-            if (CurrentTradesGridView.SelectedCells.Count == 0) return;
-
-            var index = CurrentTradesGridView.SelectedCells[0].RowIndex;
-            if (index < 0) return;
-
-            var selected = (string)CurrentTradesGridView.Rows[index].Cells[0].Value;
-            if (selected == SELECTED_OFFER_ID) return;
-
-            SELECTED_OFFER_ID = selected;
-            ChangeSelectedTrade();
-        }
-
-        private void ChangeSelectedTrade()
-        {
-            CommonUtils.ClearGrids(MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
-            var tradeOffer = ALL_TRADES[SELECTED_OFFER_ID];
-
-            if (tradeOffer.MyItems != null)
-            {
-                var gropedItems = tradeOffer.MyItems.GroupBy(item => item.Description.MarketHashName);
-                foreach (var groupedList in gropedItems)
-                {
-                    var firstItem = groupedList.First();
-                    MyItemsGridView.Rows.Add(
-                        firstItem.Description.Name,
-                        groupedList.Sum(x => int.Parse(x.Asset.Amount)),
-                        SteamItemsUtils.GetClearType(firstItem),
-                        firstItem.Description);
-                }
-            }
-
-            if (tradeOffer.HisItems != null)
-            {
-                var gropedItems = tradeOffer.HisItems.GroupBy(item => item.Description.MarketHashName);
-                foreach (var groupedList in gropedItems)
-                {
-                    var firstItem = groupedList.First();
-                    HisItemsGridView.Rows.Add(
-                        firstItem.Description.Name,
-                        groupedList.Sum(x => int.Parse(x.Asset.Amount)),
-                        SteamItemsUtils.GetClearType(firstItem),
-                        firstItem.Description);
-                }
-            }
-
-            ExtraTradeInfoGridView.Rows.Add("TradeId", tradeOffer.TradeId);
-            ExtraTradeInfoGridView.Rows.Add("TradeOfferState", tradeOffer.Status.ToString().Replace("TradeState", string.Empty));
-            ExtraTradeInfoGridView.Rows.Add("SteamIdOtherIdOther", tradeOffer.SteamIdOther);
-            ExtraTradeInfoGridView.Rows.Add("TimeInit", tradeOffer.TimeInit);
-            ExtraTradeInfoGridView.Rows.Add("TimeEscrowEnd", tradeOffer.TimeEscrowEnd);
-        }
-
-        private void CurrentTradesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            if (e.ColumnIndex == 1)
-            {
-                var cell = CurrentTradesGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                if (cell == null) return;
-
-                var steamId = cell.Value;
-                if (steamId == null) return;
-
-                Process.Start($"https://steamcommunity.com/profiles/{steamId}/");
+                Logger.Critical(ex);
             }
         }
 
-        private void ItemsGridView_SelectionChanged(object sender, EventArgs e)
-        {
-            var grid = sender as DataGridView;
-            var selectedRows = grid.SelectedRows;
-            if (selectedRows.Count == 0) return;
-
-            var index = selectedRows[0].Index;
-            var description = (AssetDescription)grid.Rows[index].Cells[3].Value;
-            if (!description.Equals(SELECTED_ITEM_DESCRIPTION))
-            {
-                SELECTED_ITEM_DESCRIPTION = description;
-                ChangeSelectedItem();
-            }
-        }
-
-        private void ChangeSelectedItem()
-        {
-            ImageUtils.UpdateItemImageOnPanelAsync(SELECTED_ITEM_DESCRIPTION, ItemImageBox);
-            UpdateItemDescriptionTextBox(ItemDescriptionTextBox, ItemNameLable, SELECTED_ITEM_DESCRIPTION);
-        }
-
-        private void UpdateItemDescriptionTextBox(RichTextBox textBox, Label label, AssetDescription description)
+        private static void UpdateItemDescriptionTextBox(RichTextBox textBox, Label label, AssetDescription description)
         {
             textBox.Clear();
 
@@ -219,11 +69,16 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                 foreach (var item in description.Descriptions)
                 {
                     var text = item.Value.Trim();
-                    if (!string.IsNullOrWhiteSpace(text)) descriptionText += text + ", ";
+                    if (!string.IsNullOrWhiteSpace(text))
+                    {
+                        descriptionText += text + ", ";
+                    }
                 }
 
                 if (descriptionText.EndsWith(", "))
+                {
                     descriptionText = descriptionText.Substring(0, descriptionText.Length - 2);
+                }
             }
 
             var tagsText = string.Empty;
@@ -252,59 +107,345 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             }
         }
 
-        private void ItemsGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void LoadInventoryButtonClick(object sender, EventArgs e)
         {
-            var grid = sender as DataGridView;
-            if (grid.Rows.Count == 1)
+            try
             {
-                var selectedRows = grid.SelectedRows;
-                if (selectedRows.Count == 0) return;
-
-                var index = selectedRows[0].Index;
-                var description = (AssetDescription)grid.Rows[index].Cells[3].Value;
-                if (!description.Equals(SELECTED_ITEM_DESCRIPTION))
+                if (CurrentSession.SteamManager == null)
                 {
-                    SELECTED_ITEM_DESCRIPTION = description;
-                    ChangeSelectedItem();
+                    MessageBox.Show(
+                        @"You should login first",
+                        @"Error trades history loading",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    Logger.Error("Error on trades history loading. No signed in account found.");
+                    return;
                 }
+
+                var sentOffers = this.SentOffersCheckBox.Checked;
+                var receivedOffers = this.ReceivedOffersCheckBox.Checked;
+
+                if (!sentOffers && !receivedOffers)
+                {
+                    MessageBox.Show(
+                        @"You should select at least one type of offers to load (Received/Sent)",
+                        @"Error trades history loading",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    Logger.Error("Error on trades history loading. No trades type selected.");
+                    return;
+                }
+
+                var startTime =
+                    CommonUtils.GetSecondsFromDateTime(CommonUtils.ResetTimeToDauStart(this.SteamDateTimePicker.Value));
+                var startTradeId = this.TradeIdComboBox.Text;
+                var maxTrades = (int)this.MaxTradesNumericUpDown.Value;
+                var navigatingBack = this.NavigatingBackCheckBox.Checked;
+                var includeFailed = this.IncludeFailedCheckBox.Checked;
+                var language = this.LanguageComboBox.Text ?? "en_US";
+
+                CommonUtils.ClearGrids(
+                    this.CurrentTradesGridView,
+                    this.MyItemsGridView,
+                    this.HisItemsGridView,
+                    this.ExtraTradeInfoGridView);
+
+                Task.Run(
+                    () =>
+                        {
+                            this.allTrades.Clear();
+
+                            Program.LoadingForm.InitTradesHistoryLoadingProcess(
+                                maxTrades,
+                                startTime,
+                                startTradeId,
+                                navigatingBack,
+                                true,
+                                language,
+                                includeFailed);
+                            var fullTradeOffers = Program.LoadingForm.GetLoadedTradesHistory();
+                            Program.LoadingForm.DeactivateForm();
+
+                            Dispatcher.AsMainForm(
+                                () =>
+                                    {
+                                        this.TradeIdComboBox.Items.Clear();
+                                        foreach (var trade in fullTradeOffers)
+                                        {
+                                            this.allTrades.Add(trade.TradeId, trade);
+
+                                            this.CurrentTradesGridView.Rows.Add(
+                                                trade.TradeId,
+                                                trade.SteamIdOther.ConvertToUInt64(),
+                                                trade.Status.ToString().Replace("TradeState", string.Empty));
+
+                                            this.TradeIdComboBox.Items.Add(trade.TradeId);
+                                        }
+
+                                        this.LoadTradesButton.Enabled = true;
+                                    });
+                        });
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+                this.LoadTradesButton.Enabled = true;
             }
         }
 
-        private void SentOffersCheckBox_CheckStateChanged(object sender, EventArgs e)
+        private void CurrentTradesGridViewSelectionChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistorySent, SentOffersCheckBox.Checked);
+            try
+            {
+                if (this.CurrentTradesGridView.SelectedCells.Count == 0)
+                {
+                    return;
+                }
+
+                var index = this.CurrentTradesGridView.SelectedCells[0].RowIndex;
+                if (index < 0)
+                {
+                    return;
+                }
+
+                var selected = (string)this.CurrentTradesGridView.Rows[index].Cells[0].Value;
+                if (selected == this.selectedOfferId)
+                {
+                    return;
+                }
+
+                this.selectedOfferId = selected;
+                this.ChangeSelectedTrade();
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
-        private void ReceivedOffersCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void ChangeSelectedTrade()
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryReceived, ReceivedOffersCheckBox.Checked);
+            CommonUtils.ClearGrids(this.MyItemsGridView, this.HisItemsGridView, this.ExtraTradeInfoGridView);
+            var tradeOffer = this.allTrades[this.selectedOfferId];
+
+            if (tradeOffer.MyItems != null)
+            {
+                var gropedItems = tradeOffer.MyItems.GroupBy(item => item.Description.MarketHashName);
+                foreach (var groupedList in gropedItems)
+                {
+                    var firstItem = groupedList.First();
+                    this.MyItemsGridView.Rows.Add(
+                        firstItem.Description.Name,
+                        groupedList.Sum(x => int.Parse(x.Asset.Amount)),
+                        SteamItemsUtils.GetClearType(firstItem),
+                        firstItem.Description);
+                }
+            }
+
+            if (tradeOffer.HisItems != null)
+            {
+                var gropedItems = tradeOffer.HisItems.GroupBy(item => item.Description.MarketHashName);
+                foreach (var groupedList in gropedItems)
+                {
+                    var firstItem = groupedList.First();
+                    this.HisItemsGridView.Rows.Add(
+                        firstItem.Description.Name,
+                        groupedList.Sum(x => int.Parse(x.Asset.Amount)),
+                        SteamItemsUtils.GetClearType(firstItem),
+                        firstItem.Description);
+                }
+            }
+
+            this.ExtraTradeInfoGridView.Rows.Add("TradeId", tradeOffer.TradeId);
+            this.ExtraTradeInfoGridView.Rows.Add(
+                "TradeOfferState",
+                tradeOffer.Status.ToString().Replace("TradeState", string.Empty));
+            this.ExtraTradeInfoGridView.Rows.Add("SteamIdOtherIdOther", tradeOffer.SteamIdOther);
+            this.ExtraTradeInfoGridView.Rows.Add("TimeInit", tradeOffer.TimeInit);
+            this.ExtraTradeInfoGridView.Rows.Add("TimeEscrowEnd", tradeOffer.TimeEscrowEnd);
         }
 
-        private void TradeIdComboBox_TextChanged(object sender, EventArgs e)
+        private void CurrentTradesGridViewCellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryTradeId, TradeIdComboBox.Text);
+            try
+            {
+                if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex != 1)
+                {
+                    return;
+                }
+
+                var cell = this.CurrentTradesGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+                var steamId = cell?.Value;
+                if (steamId == null)
+                {
+                    return;
+                }
+
+                Process.Start($"https://steamcommunity.com/profiles/{steamId}/");
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
-        private void MaxTradesNumericUpDown_ValueChanged(object sender, EventArgs e)
+        private void ItemsGridViewSelectionChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryMaxTrades, (int)MaxTradesNumericUpDown.Value);
+            try
+            {
+                if (!(sender is DataGridView grid))
+                {
+                    return;
+                }
+
+                var selectedRows = grid.SelectedRows;
+                if (selectedRows.Count == 0)
+                {
+                    return;
+                }
+
+                var index = selectedRows[0].Index;
+                var description = (AssetDescription)grid.Rows[index].Cells[3].Value;
+                if (description.Equals(this.selectedItemDescription))
+                {
+                    return;
+                }
+
+                this.selectedItemDescription = description;
+                this.ChangeSelectedItem();
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
-        private void LanguageComboBox_TextChanged(object sender, EventArgs e)
+        private void ChangeSelectedItem()
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryLanguage, LanguageComboBox.Text);
+            ImageUtils.UpdateItemImageOnPanelAsync(this.selectedItemDescription, this.ItemImageBox);
+            UpdateItemDescriptionTextBox(this.ItemDescriptionTextBox, this.ItemNameLable, this.selectedItemDescription);
         }
 
-        private void NavigatingBackCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void ItemsGridViewCellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            SavedSettings.UpdateField(
-                ref SavedSettings.Get().TradeHistoryNavigatingBack,
-                NavigatingBackCheckBox.Checked);
+            try
+            {
+                if (!(sender is DataGridView grid))
+                {
+                    return;
+                }
+
+                var selectedRows = grid.SelectedRows;
+                if (selectedRows.Count == 0)
+                {
+                    return;
+                }
+
+                var index = selectedRows[0].Index;
+                var description = (AssetDescription)grid.Rows[index].Cells[3].Value;
+                if (description.Equals(this.selectedItemDescription))
+                {
+                    return;
+                }
+
+                this.selectedItemDescription = description;
+                this.ChangeSelectedItem();
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
 
-        private void IncludeFailedCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void SentOffersCheckBoxCheckStateChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryIncludeFailed, IncludeFailedCheckBox.Checked);
+            try
+            {
+                SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistorySent, this.SentOffersCheckBox.Checked);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
+        }
+
+        private void ReceivedOffersCheckBoxCheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryReceived, this.ReceivedOffersCheckBox.Checked);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
+        }
+
+        private void TradeIdComboBoxTextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryTradeId, this.TradeIdComboBox.Text);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
+        }
+
+        private void MaxTradesNumericUpDownValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SavedSettings.UpdateField(
+                    ref SavedSettings.Get().TradeHistoryMaxTrades,
+                    (int)this.MaxTradesNumericUpDown.Value);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
+        }
+
+        private void LanguageComboBoxTextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SavedSettings.UpdateField(ref SavedSettings.Get().TradeHistoryLanguage, this.LanguageComboBox.Text);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
+        }
+
+        private void NavigatingBackCheckBoxCheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SavedSettings.UpdateField(
+                    ref SavedSettings.Get().TradeHistoryNavigatingBack,
+                    this.NavigatingBackCheckBox.Checked);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
+        }
+
+        private void IncludeFailedCheckBoxCheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SavedSettings.UpdateField(
+                    ref SavedSettings.Get().TradeHistoryIncludeFailed,
+                    this.IncludeFailedCheckBox.Checked);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
         }
     }
 }

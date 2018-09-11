@@ -217,7 +217,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.ForcePricesReloadButton.TabIndex = 23;
             this.AddAllToolTip.SetToolTip(this.ForcePricesReloadButton, "Force prices reload of items for sale");
             this.ForcePricesReloadButton.UseVisualStyleBackColor = true;
-            this.ForcePricesReloadButton.Click += new System.EventHandler(this.ForcePricesReloadButton_Click);
+            this.ForcePricesReloadButton.Click += new System.EventHandler(this.ForcePricesReloadButtonClick);
             // 
             // ItemsToSaleGridView
             // 
@@ -264,9 +264,9 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.ItemsToSaleGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ItemsToSaleGridView.Size = new System.Drawing.Size(558, 201);
             this.ItemsToSaleGridView.TabIndex = 13;
-            this.ItemsToSaleGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridView_CellClick);
-            this.ItemsToSaleGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridView_CellEndEdit);
-            this.ItemsToSaleGridView.CurrentCellChanged += new System.EventHandler(this.ItemsToSaleGridView_CurrentCellChanged);
+            this.ItemsToSaleGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridViewCellClick);
+            this.ItemsToSaleGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.ItemsToSaleGridViewCellEndEdit);
+            this.ItemsToSaleGridView.CurrentCellChanged += new System.EventHandler(this.ItemsToSaleGridViewCurrentCellChanged);
             // 
             // AddedToSaleListItemName
             // 
@@ -328,7 +328,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.DeleteSelectedItemButton.TabIndex = 22;
             this.AddAllToolTip.SetToolTip(this.DeleteSelectedItemButton, "Remove selected item from to sale list");
             this.DeleteSelectedItemButton.UseVisualStyleBackColor = true;
-            this.DeleteSelectedItemButton.Click += new System.EventHandler(this.DeleteAccountButtonClick);
+            this.DeleteSelectedItemButton.Click += new System.EventHandler(this.DeleteSelectedItemButtonClick);
             // 
             // ItemsForSaleUpdateOneButtonClick
             // 
@@ -343,7 +343,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.ItemsForSaleUpdateOneButtonClick.TabIndex = 24;
             this.AddAllToolTip.SetToolTip(this.ItemsForSaleUpdateOneButtonClick, "Force selected items price reload (cached prices will be ignored)");
             this.ItemsForSaleUpdateOneButtonClick.UseVisualStyleBackColor = true;
-            this.ItemsForSaleUpdateOneButtonClick.Click += new System.EventHandler(this.ItemsForSaleUpdateOneButtonClick_Click);
+            this.ItemsForSaleUpdateOneButtonClick.Click += new System.EventHandler(this.ItemsForSaleUpdateOneButtonClickClick);
             // 
             // AllSteamItemsGroupBox
             // 
@@ -388,7 +388,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.LoadInventoryButton.TabIndex = 25;
             this.AddAllToolTip.SetToolTip(this.LoadInventoryButton, "Load selected inventory");
             this.LoadInventoryButton.UseVisualStyleBackColor = true;
-            this.LoadInventoryButton.Click += new System.EventHandler(this.LoadInventoryButton_Click);
+            this.LoadInventoryButton.Click += new System.EventHandler(this.LoadInventoryButtonClick);
             // 
             // CurrentMinusPriceRadioButton
             // 
@@ -402,7 +402,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AddAllToolTip.SetToolTip(this.CurrentMinusPriceRadioButton, "The value to add to the current calculated price (minimum and maximum are respect" +
         "ed)");
             this.CurrentMinusPriceRadioButton.UseVisualStyleBackColor = true;
-            this.CurrentMinusPriceRadioButton.CheckedChanged += new System.EventHandler(this.HalfAutoPriceRadioButton_CheckedChanged);
+            this.CurrentMinusPriceRadioButton.CheckedChanged += new System.EventHandler(this.HalfAutoPriceRadioButtonCheckedChanged);
             // 
             // CurrentPriceNumericUpDown
             // 
@@ -438,7 +438,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             0,
             -2147352576});
             this.CurrentPriceNumericUpDown.Visible = false;
-            this.CurrentPriceNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPriceNumericUpDown_ValueChanged);
+            this.CurrentPriceNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPriceNumericUpDownValueChanged);
             // 
             // AddAllButton
             // 
@@ -454,7 +454,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AddAllButton.TabIndex = 24;
             this.AddAllToolTip.SetToolTip(this.AddAllButton, "Add all selected items to sale list");
             this.AddAllButton.UseVisualStyleBackColor = false;
-            this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
+            this.AddAllButton.Click += new System.EventHandler(this.AddAllButtonClick);
             // 
             // RefreshPricesButton
             // 
@@ -470,7 +470,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.RefreshPricesButton.TabIndex = 24;
             this.AddAllToolTip.SetToolTip(this.RefreshPricesButton, "Force all prices reload (cached prices will be ignored)");
             this.RefreshPricesButton.UseVisualStyleBackColor = false;
-            this.RefreshPricesButton.Click += new System.EventHandler(this.RefreshPricesButton_Click);
+            this.RefreshPricesButton.Click += new System.EventHandler(this.RefreshPricesButtonClick);
             // 
             // OpenMarketPageButtonClick
             // 
@@ -486,7 +486,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.OpenMarketPageButtonClick.TabIndex = 25;
             this.AddAllToolTip.SetToolTip(this.OpenMarketPageButtonClick, "Find selected item on Steam Market");
             this.OpenMarketPageButtonClick.UseVisualStyleBackColor = false;
-            this.OpenMarketPageButtonClick.Click += new System.EventHandler(this.OpenMarketPageButtonClick_Click);
+            this.OpenMarketPageButtonClick.Click += new System.EventHandler(this.OpenMarketPageButtonClickClick);
             // 
             // AllItemsUpdateOneButtonClick
             // 
@@ -502,7 +502,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AllItemsUpdateOneButtonClick.TabIndex = 26;
             this.AddAllToolTip.SetToolTip(this.AllItemsUpdateOneButtonClick, "Force selected items price reload (cached prices will be ignored)");
             this.AllItemsUpdateOneButtonClick.UseVisualStyleBackColor = false;
-            this.AllItemsUpdateOneButtonClick.Click += new System.EventHandler(this.AllItemsUpdateOneButtonClick_Click);
+            this.AllItemsUpdateOneButtonClick.Click += new System.EventHandler(this.AllItemsUpdateOneButtonClickClick);
             // 
             // AveragePriceNumericUpDown
             // 
@@ -538,7 +538,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             0,
             -2147352576});
             this.AveragePriceNumericUpDown.Visible = false;
-            this.AveragePriceNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePriceNumericUpDown_ValueChanged);
+            this.AveragePriceNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePriceNumericUpDownValueChanged);
             // 
             // AveregeMinusPriceRadioButton
             // 
@@ -552,7 +552,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AddAllToolTip.SetToolTip(this.AveregeMinusPriceRadioButton, "The value to add to the average calculated price (minimum and maximum are respect" +
         "ed)");
             this.AveregeMinusPriceRadioButton.UseVisualStyleBackColor = true;
-            this.AveregeMinusPriceRadioButton.CheckedChanged += new System.EventHandler(this.AveregeMinusPriceRadioButton_CheckedChanged);
+            this.AveregeMinusPriceRadioButton.CheckedChanged += new System.EventHandler(this.AverageMinusPriceRadioButtonCheckedChanged);
             // 
             // ManualPriceRadioButton
             // 
@@ -615,7 +615,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.InventoryContextIdComboBox.Name = "InventoryContextIdComboBox";
             this.InventoryContextIdComboBox.Size = new System.Drawing.Size(97, 21);
             this.InventoryContextIdComboBox.TabIndex = 2;
-            this.InventoryContextIdComboBox.TextChanged += new System.EventHandler(this.InventoryContextIdComboBox_TextChanged);
+            this.InventoryContextIdComboBox.TextChanged += new System.EventHandler(this.InventoryContextIdComboBoxTextChanged);
             // 
             // InventoryAppIdLabel
             // 
@@ -668,7 +668,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.StartSteamSellButton.TabIndex = 14;
             this.StartSteamSellButton.Text = "Sell on STEAM Market";
             this.StartSteamSellButton.UseVisualStyleBackColor = false;
-            this.StartSteamSellButton.Click += new System.EventHandler(this.StartSteamSellButton_Click);
+            this.StartSteamSellButton.Click += new System.EventHandler(this.StartSteamSellButtonClick);
             // 
             // SellGroupBox
             // 
@@ -741,7 +741,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AddAllToolTip.SetToolTip(this.AveragePricePercentNumericUpDown, "Only one value type can be used");
             this.AveragePricePercentNumericUpDown.TrailingSign = "%";
             this.AveragePricePercentNumericUpDown.Visible = false;
-            this.AveragePricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePricePercentNumericUpDown_ValueChanged);
+            this.AveragePricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePricePercentNumericUpDownValueChanged);
             // 
             // CurrentPricePercentNumericUpDown
             // 
@@ -773,7 +773,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AddAllToolTip.SetToolTip(this.CurrentPricePercentNumericUpDown, "Only one value type can be used");
             this.CurrentPricePercentNumericUpDown.TrailingSign = "%";
             this.CurrentPricePercentNumericUpDown.Visible = false;
-            this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDown_ValueChanged);
+            this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDownValueChanged);
             // 
             // NameColumn
             // 
