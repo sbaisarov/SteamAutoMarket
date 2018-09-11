@@ -45,7 +45,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.checkInvent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
-            this.ItemDescriptionTextBox = new SteamAutoMarket.CustomElements.Elements.RichTextBoxWithNoPaint();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemsToSaleGroupBox = new System.Windows.Forms.GroupBox();
             this.ForcePricesReloadButton = new System.Windows.Forms.Button();
@@ -72,8 +71,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AveregeMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.ManualPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.RecomendedPriceRadioButton = new System.Windows.Forms.RadioButton();
-            this.AveragePricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
-            this.CurrentPricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
             this.InventoryGroupBox = new System.Windows.Forms.GroupBox();
             this.InventoryContextIdLabel = new System.Windows.Forms.Label();
             this.InventoryContextIdComboBox = new System.Windows.Forms.ComboBox();
@@ -83,6 +80,9 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.StartSteamSellButton = new System.Windows.Forms.Button();
             this.SellGroupBox = new System.Windows.Forms.GroupBox();
             this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemDescriptionTextBox = new SteamAutoMarket.CustomElements.Elements.RichTextBoxWithNoPaint();
+            this.AveragePricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
+            this.CurrentPricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -98,18 +98,17 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AllSteamItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
             this.InventoryGroupBox.SuspendLayout();
             this.SellGroupBox.SuspendLayout();
             this.PriceSettingsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // AllSteamItemsGridView
             // 
             this.AllSteamItemsGridView.AllowUserToAddRows = false;
             this.AllSteamItemsGridView.AllowUserToDeleteRows = false;
-            this.AllSteamItemsGridView.AllowUserToResizeRows = false;
             this.AllSteamItemsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.AllSteamItemsGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AllSteamItemsGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
@@ -147,7 +146,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AllSteamItemsGridView.Location = new System.Drawing.Point(3, 16);
             this.AllSteamItemsGridView.Name = "AllSteamItemsGridView";
             this.AllSteamItemsGridView.RowHeadersVisible = false;
-            this.AllSteamItemsGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.AllSteamItemsGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.AllSteamItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.AllSteamItemsGridView.Size = new System.Drawing.Size(560, 295);
@@ -183,18 +181,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.ItemDescriptionGroupBox.TabIndex = 14;
             this.ItemDescriptionGroupBox.TabStop = false;
             this.ItemDescriptionGroupBox.Text = "Item description";
-            // 
-            // ItemDescriptionTextBox
-            // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
-            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
-            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
-            this.ItemDescriptionTextBox.TabIndex = 11;
-            this.ItemDescriptionTextBox.Text = "";
             // 
             // ItemNameLable
             // 
@@ -594,6 +580,137 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AddAllToolTip.SetToolTip(this.RecomendedPriceRadioButton, "The largest of the maximum and current prices");
             this.RecomendedPriceRadioButton.UseVisualStyleBackColor = true;
             // 
+            // InventoryGroupBox
+            // 
+            this.InventoryGroupBox.Controls.Add(this.LoadInventoryButton);
+            this.InventoryGroupBox.Controls.Add(this.InventoryContextIdLabel);
+            this.InventoryGroupBox.Controls.Add(this.InventoryContextIdComboBox);
+            this.InventoryGroupBox.Controls.Add(this.InventoryAppIdLabel);
+            this.InventoryGroupBox.Controls.Add(this.InventoryAppIdComboBox);
+            this.InventoryGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.InventoryGroupBox.Location = new System.Drawing.Point(580, 296);
+            this.InventoryGroupBox.Name = "InventoryGroupBox";
+            this.InventoryGroupBox.Size = new System.Drawing.Size(296, 79);
+            this.InventoryGroupBox.TabIndex = 18;
+            this.InventoryGroupBox.TabStop = false;
+            this.InventoryGroupBox.Text = "Inventory loading settings";
+            // 
+            // InventoryContextIdLabel
+            // 
+            this.InventoryContextIdLabel.AutoSize = true;
+            this.InventoryContextIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.InventoryContextIdLabel.Location = new System.Drawing.Point(8, 49);
+            this.InventoryContextIdLabel.Name = "InventoryContextIdLabel";
+            this.InventoryContextIdLabel.Size = new System.Drawing.Size(66, 16);
+            this.InventoryContextIdLabel.TabIndex = 3;
+            this.InventoryContextIdLabel.Text = "Context id";
+            // 
+            // InventoryContextIdComboBox
+            // 
+            this.InventoryContextIdComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.InventoryContextIdComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InventoryContextIdComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.InventoryContextIdComboBox.FormattingEnabled = true;
+            this.InventoryContextIdComboBox.Location = new System.Drawing.Point(92, 46);
+            this.InventoryContextIdComboBox.Name = "InventoryContextIdComboBox";
+            this.InventoryContextIdComboBox.Size = new System.Drawing.Size(97, 21);
+            this.InventoryContextIdComboBox.TabIndex = 2;
+            this.InventoryContextIdComboBox.TextChanged += new System.EventHandler(this.InventoryContextIdComboBox_TextChanged);
+            // 
+            // InventoryAppIdLabel
+            // 
+            this.InventoryAppIdLabel.AutoSize = true;
+            this.InventoryAppIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.InventoryAppIdLabel.Location = new System.Drawing.Point(8, 22);
+            this.InventoryAppIdLabel.Name = "InventoryAppIdLabel";
+            this.InventoryAppIdLabel.Size = new System.Drawing.Size(47, 16);
+            this.InventoryAppIdLabel.TabIndex = 1;
+            this.InventoryAppIdLabel.Text = "App id";
+            // 
+            // InventoryAppIdComboBox
+            // 
+            this.InventoryAppIdComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.InventoryAppIdComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InventoryAppIdComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.InventoryAppIdComboBox.FormattingEnabled = true;
+            this.InventoryAppIdComboBox.Items.AddRange(new object[] {
+            "STEAM",
+            "CS:GO",
+            "PUBG",
+            "TF",
+            "DOTA"});
+            this.InventoryAppIdComboBox.Location = new System.Drawing.Point(92, 19);
+            this.InventoryAppIdComboBox.Name = "InventoryAppIdComboBox";
+            this.InventoryAppIdComboBox.Size = new System.Drawing.Size(97, 21);
+            this.InventoryAppIdComboBox.TabIndex = 0;
+            this.InventoryAppIdComboBox.TextChanged += new System.EventHandler(this.InventoryAppIdComboBoxSelectedIndexChanged);
+            // 
+            // AccountNameLable
+            // 
+            this.AccountNameLable.BackColor = System.Drawing.Color.Transparent;
+            this.AccountNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AccountNameLable.Location = new System.Drawing.Point(658, 48);
+            this.AccountNameLable.Name = "AccountNameLable";
+            this.AccountNameLable.Size = new System.Drawing.Size(140, 18);
+            this.AccountNameLable.TabIndex = 11;
+            this.AccountNameLable.Text = "Not logged in";
+            this.AccountNameLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // StartSteamSellButton
+            // 
+            this.StartSteamSellButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.StartSteamSellButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.StartSteamSellButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.StartSteamSellButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.StartSteamSellButton.Location = new System.Drawing.Point(50, 28);
+            this.StartSteamSellButton.Name = "StartSteamSellButton";
+            this.StartSteamSellButton.Size = new System.Drawing.Size(203, 35);
+            this.StartSteamSellButton.TabIndex = 14;
+            this.StartSteamSellButton.Text = "Sell on STEAM Market";
+            this.StartSteamSellButton.UseVisualStyleBackColor = false;
+            this.StartSteamSellButton.Click += new System.EventHandler(this.StartSteamSellButton_Click);
+            // 
+            // SellGroupBox
+            // 
+            this.SellGroupBox.Controls.Add(this.StartSteamSellButton);
+            this.SellGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.SellGroupBox.Location = new System.Drawing.Point(580, 498);
+            this.SellGroupBox.Name = "SellGroupBox";
+            this.SellGroupBox.Size = new System.Drawing.Size(296, 92);
+            this.SellGroupBox.TabIndex = 18;
+            this.SellGroupBox.TabStop = false;
+            this.SellGroupBox.Text = "Sell";
+            // 
+            // PriceSettingsGroupBox
+            // 
+            this.PriceSettingsGroupBox.Controls.Add(this.AveragePricePercentNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.AveragePriceNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.AveregeMinusPriceRadioButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.CurrentPricePercentNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.CurrentPriceNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.ManualPriceRadioButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.CurrentMinusPriceRadioButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.RecomendedPriceRadioButton);
+            this.PriceSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(580, 385);
+            this.PriceSettingsGroupBox.Name = "PriceSettingsGroupBox";
+            this.PriceSettingsGroupBox.Size = new System.Drawing.Size(296, 107);
+            this.PriceSettingsGroupBox.TabIndex = 17;
+            this.PriceSettingsGroupBox.TabStop = false;
+            this.PriceSettingsGroupBox.Text = "The price formation setting ";
+            // 
+            // ItemDescriptionTextBox
+            // 
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
+            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
+            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(290, 80);
+            this.ItemDescriptionTextBox.TabIndex = 11;
+            this.ItemDescriptionTextBox.Text = "";
+            // 
             // AveragePricePercentNumericUpDown
             // 
             this.AveragePricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -658,134 +775,14 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.CurrentPricePercentNumericUpDown.Visible = false;
             this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDown_ValueChanged);
             // 
-            // InventoryGroupBox
-            // 
-            this.InventoryGroupBox.Controls.Add(this.LoadInventoryButton);
-            this.InventoryGroupBox.Controls.Add(this.InventoryContextIdLabel);
-            this.InventoryGroupBox.Controls.Add(this.InventoryContextIdComboBox);
-            this.InventoryGroupBox.Controls.Add(this.InventoryAppIdLabel);
-            this.InventoryGroupBox.Controls.Add(this.InventoryAppIdComboBox);
-            this.InventoryGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.InventoryGroupBox.Location = new System.Drawing.Point(580, 296);
-            this.InventoryGroupBox.Name = "InventoryGroupBox";
-            this.InventoryGroupBox.Size = new System.Drawing.Size(296, 79);
-            this.InventoryGroupBox.TabIndex = 18;
-            this.InventoryGroupBox.TabStop = false;
-            this.InventoryGroupBox.Text = "Inventory loading settings";
-            // 
-            // InventoryContextIdLabel
-            // 
-            this.InventoryContextIdLabel.AutoSize = true;
-            this.InventoryContextIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.InventoryContextIdLabel.Location = new System.Drawing.Point(8, 49);
-            this.InventoryContextIdLabel.Name = "InventoryContextIdLabel";
-            this.InventoryContextIdLabel.Size = new System.Drawing.Size(66, 16);
-            this.InventoryContextIdLabel.TabIndex = 3;
-            this.InventoryContextIdLabel.Text = "Context id";
-            // 
-            // InventoryContextIdComboBox
-            // 
-            this.InventoryContextIdComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.InventoryContextIdComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InventoryContextIdComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.InventoryContextIdComboBox.FormattingEnabled = true;
-            this.InventoryContextIdComboBox.Location = new System.Drawing.Point(92, 46);
-            this.InventoryContextIdComboBox.Name = "InventoryContextIdComboBox";
-            this.InventoryContextIdComboBox.Size = new System.Drawing.Size(97, 21);
-            this.InventoryContextIdComboBox.TabIndex = 2;
-            this.InventoryContextIdComboBox.TextChanged += new System.EventHandler(this.InventoryContextIdComboBox_TextChanged);
-            // 
-            // InventoryAppIdLabel
-            // 
-            this.InventoryAppIdLabel.AutoSize = true;
-            this.InventoryAppIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.InventoryAppIdLabel.Location = new System.Drawing.Point(8, 22);
-            this.InventoryAppIdLabel.Name = "InventoryAppIdLabel";
-            this.InventoryAppIdLabel.Size = new System.Drawing.Size(47, 16);
-            this.InventoryAppIdLabel.TabIndex = 1;
-            this.InventoryAppIdLabel.Text = "App id";
-            // 
-            // InventoryAppIdComboBox
-            // 
-            this.InventoryAppIdComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.InventoryAppIdComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InventoryAppIdComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.InventoryAppIdComboBox.FormattingEnabled = true;
-            this.InventoryAppIdComboBox.Items.AddRange(new object[] {
-            "STEAM",
-            "CS:GO",
-            "PUBG",
-            "TF"});
-            this.InventoryAppIdComboBox.Location = new System.Drawing.Point(92, 19);
-            this.InventoryAppIdComboBox.Name = "InventoryAppIdComboBox";
-            this.InventoryAppIdComboBox.Size = new System.Drawing.Size(97, 21);
-            this.InventoryAppIdComboBox.TabIndex = 0;
-            this.InventoryAppIdComboBox.TextChanged += new System.EventHandler(this.InventoryAppIdComboBox_SelectedIndexChanged);
-            // 
-            // AccountNameLable
-            // 
-            this.AccountNameLable.BackColor = System.Drawing.Color.Transparent;
-            this.AccountNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AccountNameLable.Location = new System.Drawing.Point(658, 48);
-            this.AccountNameLable.Name = "AccountNameLable";
-            this.AccountNameLable.Size = new System.Drawing.Size(140, 18);
-            this.AccountNameLable.TabIndex = 11;
-            this.AccountNameLable.Text = "Not logged in";
-            this.AccountNameLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // StartSteamSellButton
-            // 
-            this.StartSteamSellButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.StartSteamSellButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.StartSteamSellButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.StartSteamSellButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.StartSteamSellButton.Location = new System.Drawing.Point(50, 28);
-            this.StartSteamSellButton.Name = "StartSteamSellButton";
-            this.StartSteamSellButton.Size = new System.Drawing.Size(203, 35);
-            this.StartSteamSellButton.TabIndex = 14;
-            this.StartSteamSellButton.Text = "Sell on STEAM Market";
-            this.StartSteamSellButton.UseVisualStyleBackColor = false;
-            this.StartSteamSellButton.Click += new System.EventHandler(this.StartSteamSellButton_Click);
-            // 
-            // SellGroupBox
-            // 
-            this.SellGroupBox.Controls.Add(this.StartSteamSellButton);
-            this.SellGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.SellGroupBox.Location = new System.Drawing.Point(580, 498);
-            this.SellGroupBox.Name = "SellGroupBox";
-            this.SellGroupBox.Size = new System.Drawing.Size(296, 92);
-            this.SellGroupBox.TabIndex = 18;
-            this.SellGroupBox.TabStop = false;
-            this.SellGroupBox.Text = "Sell";
-            // 
-            // PriceSettingsGroupBox
-            // 
-            this.PriceSettingsGroupBox.Controls.Add(this.AveragePricePercentNumericUpDown);
-            this.PriceSettingsGroupBox.Controls.Add(this.AveragePriceNumericUpDown);
-            this.PriceSettingsGroupBox.Controls.Add(this.AveregeMinusPriceRadioButton);
-            this.PriceSettingsGroupBox.Controls.Add(this.CurrentPricePercentNumericUpDown);
-            this.PriceSettingsGroupBox.Controls.Add(this.CurrentPriceNumericUpDown);
-            this.PriceSettingsGroupBox.Controls.Add(this.ManualPriceRadioButton);
-            this.PriceSettingsGroupBox.Controls.Add(this.CurrentMinusPriceRadioButton);
-            this.PriceSettingsGroupBox.Controls.Add(this.RecomendedPriceRadioButton);
-            this.PriceSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(580, 385);
-            this.PriceSettingsGroupBox.Name = "PriceSettingsGroupBox";
-            this.PriceSettingsGroupBox.Size = new System.Drawing.Size(296, 107);
-            this.PriceSettingsGroupBox.TabIndex = 17;
-            this.PriceSettingsGroupBox.TabStop = false;
-            this.PriceSettingsGroupBox.Text = "The price formation setting ";
-            // 
             // NameColumn
             // 
             this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.NameColumn.FillWeight = 200F;
             this.NameColumn.Frozen = true;
             this.NameColumn.HeaderText = "Item name";
-            this.NameColumn.MinimumWidth = 200;
             this.NameColumn.Name = "NameColumn";
             this.NameColumn.ReadOnly = true;
-            this.NameColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.NameColumn.Width = 200;
             // 
             // CountColumn
@@ -794,31 +791,31 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.CountColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.CountColumn.FillWeight = 40F;
+            this.CountColumn.Frozen = true;
             this.CountColumn.HeaderText = "#";
             this.CountColumn.Name = "CountColumn";
             this.CountColumn.ReadOnly = true;
-            this.CountColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.CountColumn.Width = 40;
             // 
             // ItemTypeColumn
             // 
             this.ItemTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.ItemTypeColumn.FillWeight = 120F;
+            this.ItemTypeColumn.Frozen = true;
             this.ItemTypeColumn.HeaderText = "Type";
             this.ItemTypeColumn.Name = "ItemTypeColumn";
             this.ItemTypeColumn.ReadOnly = true;
-            this.ItemTypeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ItemTypeColumn.Width = 120;
             // 
             // CurrentPriceColumn
             // 
             this.CurrentPriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.CurrentPriceColumn.FillWeight = 20F;
+            this.CurrentPriceColumn.Frozen = true;
             this.CurrentPriceColumn.HeaderText = "Cur";
             this.CurrentPriceColumn.MinimumWidth = 20;
             this.CurrentPriceColumn.Name = "CurrentPriceColumn";
             this.CurrentPriceColumn.ReadOnly = true;
-            this.CurrentPriceColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.CurrentPriceColumn.ToolTipText = "Current price";
             this.CurrentPriceColumn.Width = 45;
             // 
@@ -826,25 +823,25 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             // 
             this.AveragePriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.AveragePriceColumn.FillWeight = 20F;
+            this.AveragePriceColumn.Frozen = true;
             this.AveragePriceColumn.HeaderText = "Avr";
             this.AveragePriceColumn.MinimumWidth = 20;
             this.AveragePriceColumn.Name = "AveragePriceColumn";
             this.AveragePriceColumn.ReadOnly = true;
-            this.AveragePriceColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.AveragePriceColumn.ToolTipText = "Average price";
             this.AveragePriceColumn.Width = 45;
             // 
             // CountToAddColumn
             // 
+            this.CountToAddColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            this.CountToAddColumn.FillWeight = 20F;
+            this.CountToAddColumn.FillWeight = 50F;
             this.CountToAddColumn.HeaderText = "Amount to add";
             this.CountToAddColumn.MaxDropDownItems = 10;
-            this.CountToAddColumn.MinimumWidth = 20;
             this.CountToAddColumn.Name = "CountToAddColumn";
-            this.CountToAddColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.CountToAddColumn.Width = 50;
             // 
             // AddButtonColumn
             // 
@@ -852,7 +849,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AddButtonColumn.FillWeight = 60F;
             this.AddButtonColumn.HeaderText = "Add";
             this.AddButtonColumn.Name = "AddButtonColumn";
-            this.AddButtonColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.AddButtonColumn.Text = "▼";
             this.AddButtonColumn.UseColumnTextForButtonValue = true;
             // 
@@ -860,7 +856,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             // 
             this.HidenItemsListColumn.HeaderText = "HidenItemsList";
             this.HidenItemsListColumn.Name = "HidenItemsListColumn";
-            this.HidenItemsListColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.HidenItemsListColumn.Visible = false;
             // 
             // SaleControl
@@ -892,13 +887,13 @@ namespace SteamAutoMarket.CustomElements.Controls.Market
             this.AllSteamItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
             this.InventoryGroupBox.ResumeLayout(false);
             this.InventoryGroupBox.PerformLayout();
             this.SellGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -404,8 +404,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             this.AllSteamItemsToTradeGridView.AllowUserToAddRows = false;
             this.AllSteamItemsToTradeGridView.AllowUserToDeleteRows = false;
-            this.AllSteamItemsToTradeGridView.AllowUserToResizeColumns = false;
-            this.AllSteamItemsToTradeGridView.AllowUserToResizeRows = false;
             this.AllSteamItemsToTradeGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.AllSteamItemsToTradeGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AllSteamItemsToTradeGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
@@ -443,7 +441,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.AllSteamItemsToTradeGridView.Location = new System.Drawing.Point(3, 16);
             this.AllSteamItemsToTradeGridView.Name = "AllSteamItemsToTradeGridView";
             this.AllSteamItemsToTradeGridView.RowHeadersVisible = false;
-            this.AllSteamItemsToTradeGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.AllSteamItemsToTradeGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.AllSteamItemsToTradeGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.AllSteamItemsToTradeGridView.Size = new System.Drawing.Size(560, 295);
@@ -542,7 +539,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             "STEAM",
             "CS:GO",
             "PUBG",
-            "TF"});
+            "TF",
+            "DOTA"});
             this.InventoryAppIdComboBox.Location = new System.Drawing.Point(92, 19);
             this.InventoryAppIdComboBox.Name = "InventoryAppIdComboBox";
             this.InventoryAppIdComboBox.Size = new System.Drawing.Size(97, 21);
@@ -703,10 +701,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.dataGridViewTextBoxColumn1.FillWeight = 250F;
             this.dataGridViewTextBoxColumn1.Frozen = true;
             this.dataGridViewTextBoxColumn1.HeaderText = "Item name";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 250;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn1.Width = 250;
             // 
             // dataGridViewTextBoxColumn2
@@ -718,7 +714,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.dataGridViewTextBoxColumn2.HeaderText = "#";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn2.Width = 40;
             // 
             // dataGridViewTextBoxColumn3
@@ -728,7 +723,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.dataGridViewTextBoxColumn3.HeaderText = "Type";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn3.Width = 140;
             // 
             // invis1
@@ -750,12 +744,10 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             this.dataGridViewComboBoxColumn1.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewComboBoxColumn1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            this.dataGridViewComboBoxColumn1.FillWeight = 20F;
+            this.dataGridViewComboBoxColumn1.FillWeight = 50F;
             this.dataGridViewComboBoxColumn1.HeaderText = "Amount to add";
             this.dataGridViewComboBoxColumn1.MaxDropDownItems = 10;
-            this.dataGridViewComboBoxColumn1.MinimumWidth = 20;
             this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
-            this.dataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
             // dataGridViewButtonColumn1
             // 
@@ -763,7 +755,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.dataGridViewButtonColumn1.FillWeight = 60F;
             this.dataGridViewButtonColumn1.HeaderText = "Add";
             this.dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
-            this.dataGridViewButtonColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewButtonColumn1.Text = "Add";
             this.dataGridViewButtonColumn1.UseColumnTextForButtonValue = true;
             // 
@@ -771,7 +762,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             this.dataGridViewTextBoxColumn4.HeaderText = "HidenItemsList";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn4.Visible = false;
             // 
             // TradeSendControl

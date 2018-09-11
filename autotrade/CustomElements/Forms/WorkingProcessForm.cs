@@ -1,98 +1,109 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Windows.Forms;
-
-using SteamAutoMarket.Utils;
-
-namespace SteamAutoMarket.CustomElements.Forms
+﻿namespace SteamAutoMarket.CustomElements.Forms
 {
+    using System;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using System.Threading;
+    using System.Windows.Forms;
+
+    using SteamAutoMarket.Utils;
+
     public partial class WorkingProcessForm : Form
     {
-        private bool _stopButtonPressed;
+        private bool stopButtonPressed;
 
-        private Thread _workingThread;
+        private Thread workingThread;
 
         public WorkingProcessForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
-        public void InitProcess(Action process)
+        public static void InitProcess(Action process)
         {
-            ActivateForm();
-            _workingThread = new Thread(
-                () =>
-                    {
-                        process();
-                        DeactivateForm();
-                    });
-            _workingThread.Start();
+            Dispatcher.AsMainForm(() => { Program.WorkingProcessForm = new WorkingProcessForm(); });
+            Program.WorkingProcessForm.StartProcess(process);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AppendWorkingProcessInfo(string message)
         {
-            Dispatcher.AsWorkingProcessForm(
-                () =>
-                    {
-                        logTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
-
-                        if (ScrollCheckBox.Checked)
+            try
+            {
+                Dispatcher.AsWorkingProcessForm(
+                    () =>
                         {
-                            logTextBox.ScrollToCaret();
-                        }
+                            this.LogTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
+                            this.ClearLogBox();
 
-                        Logger.Working(message);
+                            if (this.ScrollCheckBox.Checked)
+                            {
+                                this.LogTextBox.ScrollToCaret();
+                            }
 
-                        ClearLogBox();
-                    });
+                            Logger.Working(message);
+                        });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message, ex);
+            }
         }
 
         private void ClearLogBox()
         {
-            if (logTextBox.Lines.Length <= 300)
+            if (this.LogTextBox.Lines.Length <= 300)
             {
                 return;
             }
 
-            var realCount = logTextBox.Lines.Length;
-            logTextBox.Lines = logTextBox.Lines.ToList().GetRange(100, realCount - 101).ToArray();
+            var realCount = this.LogTextBox.Lines.Length;
+            this.LogTextBox.Lines = this.LogTextBox.Lines.ToList().GetRange(100, realCount - 101).ToArray();
         }
 
-        private void WorkingProcessForm_Load(object sender, EventArgs e)
+        private void WorkingProcessFormLoad(object sender, EventArgs e)
         {
-            AppendWorkingProcessInfo("Working process started.");
-        }
-
-        private void ActivateForm()
-        {
-            Dispatcher.AsMainForm(Show);
+            this.AppendWorkingProcessInfo("Working process started.");
         }
 
         private void DeactivateForm()
         {
-            Dispatcher.AsMainForm(() =>
+            Dispatcher.AsWorkingProcessForm(this.Close);
+        }
+
+        private void StopWorkingProcessButtonClick(object sender, EventArgs e)
+        {
+            this.stopButtonPressed = true;
+            Dispatcher.AsMainForm(
+                () =>
                     {
-                        Close();
-                        Program.WorkingProcessForm = new WorkingProcessForm();
+                        this.workingThread.Abort();
+                        this.DeactivateForm();
                     });
         }
 
-        private void StopWorkingProcessButton_Click(object sender, EventArgs e)
+        private void WorkingProcessFormFormClosing(object sender, FormClosingEventArgs e)
         {
-            _stopButtonPressed = true;
-            Dispatcher.AsWorkingProcessForm(() =>
+            if (!this.stopButtonPressed)
             {
-                _workingThread.Abort();
-                DeactivateForm();
-            });
+                this.StopWorkingProcessButtonClick(sender, e);
+            }
         }
 
-        private void WorkingProcessForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void StartProcess(Action process)
         {
-            if (!_stopButtonPressed) StopWorkingProcessButton_Click(sender, e);
+            Dispatcher.AsMainForm(
+                () =>
+                    {
+                        this.Show();
+                        this.workingThread = new Thread(
+                            () =>
+                                {
+                                    process();
+                                    this.DeactivateForm();
+                                });
+                        this.workingThread.Start();
+                    });
         }
     }
 }

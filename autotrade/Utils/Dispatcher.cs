@@ -1,7 +1,7 @@
-﻿using System.Windows.Forms;
-
-namespace SteamAutoMarket.Utils
+﻿namespace SteamAutoMarket.Utils
 {
+    using System.Windows.Forms;
+
     internal class Dispatcher
     {
         public delegate void AsyncAction();
@@ -21,17 +21,23 @@ namespace SteamAutoMarket.Utils
         public static void AsWorkingProcessForm(AsyncAction action)
         {
             Invoke(Program.WorkingProcessForm, action);
-
         }
 
         private static void Invoke(Form form, AsyncAction action)
         {
-            if (form == null || action == null) return;
+            if (form == null || action == null)
+            {
+                return;
+            }
 
-            if (!form.InvokeRequired)
-                action();
-            else
+            if (form.InvokeRequired)
+            {
                 form.Invoke((DispatcherInvoker)Invoke, form, action);
+            }
+            else
+            {
+                action();
+            }
         }
     }
 }

@@ -6,8 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using Newtonsoft.Json;
+
 using SteamAuth;
+
 using SteamAutoMarket.CustomElements.Utils;
 using SteamAutoMarket.Steam;
 using SteamAutoMarket.Utils;
@@ -42,11 +45,14 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
                 AccountsDataGridUtils.GetDataGridViewSteamApiCell(AccountsDataGridView, row).Value = acc.SteamApi;
                 AccountsDataGridUtils.GetDataGridViewMafileHiddenCell(AccountsDataGridView, row).Value = acc.MaFile;
 
-                Task.Run(() =>
-                {
-                    var profileImage = ImageUtils.GetSteamProfileSmallImage(acc.MaFile.Session.SteamID);
-                    if (profileImage != null) AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
-                });
+                Task.Run(
+                    () =>
+                        {
+                            var profileImage = ImageUtils.GetSteamProfileSmallImage(acc.MaFile.Session.SteamID);
+                            if (profileImage != null)
+                                AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value =
+                                    profileImage;
+                        });
             }
         }
 
@@ -68,17 +74,25 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
 
         private string GetPasswordStars(int count)
         {
-            var result = "";
-            for (var i = 0; i < count; i++) result += "*";
+            var result = string.Empty;
+            for (var i = 0; i < count; i++)
+            {
+                result += "*";
+            }
+
             return result;
         }
 
         private void AddNewAccountButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(LoginTextBox.Text) || string.IsNullOrEmpty(MafilePathTextBox.Text) ||
-                string.IsNullOrEmpty(PasswordTextBox.Text) || string.IsNullOrEmpty(SteamApiTextBox.Text))
+            if (string.IsNullOrEmpty(LoginTextBox.Text) || string.IsNullOrEmpty(MafilePathTextBox.Text)
+                                                        || string.IsNullOrEmpty(PasswordTextBox.Text)
+                                                        || string.IsNullOrEmpty(SteamApiTextBox.Text))
             {
-                MessageBox.Show(@"Some fields are filled - incorrectly", @"Error adding account", MessageBoxButtons.OK,
+                MessageBox.Show(
+                    @"Some fields are filled - incorrectly",
+                    @"Error adding account",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 Logger.Error("Error adding account. Some fields are filled - incorrectly");
                 return;
@@ -87,8 +101,11 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
             if (AccountsDataGridUtils.IsAccountAlreadyExist(AccountsDataGridView, LoginTextBox.Text.Trim()))
             {
                 Logger.Error($"{LoginTextBox.Text.Trim()} already exist in accounts list");
-                MessageBox.Show($@"{LoginTextBox.Text.Trim()} already exist in accounts list",
-                    @"Error on the account add", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    $@"{LoginTextBox.Text.Trim()} already exist in accounts list",
+                    @"Error on the account add",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
 
@@ -123,15 +140,17 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
                 PasswordTextBox.Text.Trim();
             Logger.Debug($"{login} added to accounts list");
 
-            Task.Run(() =>
-            {
-                if (account.Session != null)
-                {
-                    var profileImage = ImageUtils.GetSteamProfileSmallImage(account.Session.SteamID);
-                    if (profileImage != null)
-                        AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value = profileImage;
-                }
-            });
+            Task.Run(
+                () =>
+                    {
+                        if (account.Session != null)
+                        {
+                            var profileImage = ImageUtils.GetSteamProfileSmallImage(account.Session.SteamID);
+                            if (profileImage != null)
+                                AccountsDataGridUtils.GetDataGridViewImageCell(AccountsDataGridView, row).Value =
+                                    profileImage;
+                        }
+                    });
 
             LoginTextBox.Clear();
             PasswordTextBox.Clear();
@@ -140,7 +159,6 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
 
             UpdateAccountsFile();
         }
-
 
         private void UpdateAccountsFile()
         {
@@ -155,13 +173,11 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
                 var mafile = (SteamGuardAccount)AccountsDataGridUtils
                     .GetDataGridViewMafileHiddenCell(AccountsDataGridView, i).Value;
 
-                accounts.Add(new SavedSteamAccount
-                {
-                    Login = login,
-                    Password = password,
-                    SteamApi = opskinsApi,
-                    MaFile = mafile
-                });
+                accounts.Add(
+                    new SavedSteamAccount
+                        {
+                            Login = login, Password = password, SteamApi = opskinsApi, MaFile = mafile
+                        });
             }
 
             SavedSteamAccount.UpdateAll(accounts);
@@ -181,7 +197,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
 
             var accName = AccountsDataGridUtils.GetDataGridViewLoginCell(AccountsDataGridView, row).Value;
 
-            var confirmResult = MessageBox.Show($@"Are you sure you want to delete the account - {accName}?",
+            var confirmResult = MessageBox.Show(
+                $@"Are you sure you want to delete the account - {accName}?",
                 @"Confirm deletion?",
                 MessageBoxButtons.YesNo);
 
@@ -250,33 +267,35 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
 
             Logger.Info($"Steam authentication for {login} started");
 
-            Task.Run(() =>
-            {
-                try
-                {
-                    CurrentSession.SteamManager = new SteamManager(login, password, mafile, api);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("Login failed!", ex);
-                    Dispatcher.AsMainForm(() => LoginButton.Enabled = true);
-                    return;
-                }
+            Task.Run(
+                () =>
+                    {
+                        try
+                        {
+                            CurrentSession.SteamManager = new SteamManager(login, password, mafile, api, this.SessionRefreshCheckBox.Checked);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error("Login failed!", ex);
+                            Dispatcher.AsMainForm(() => LoginButton.Enabled = true);
+                            return;
+                        }
 
-                Dispatcher.AsMainForm(() =>
-                {
-                    CurrentSession.AccountImage = image;
+                        Dispatcher.AsMainForm(
+                            () =>
+                                {
+                                    CurrentSession.AccountImage = image;
 
-                    Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
-                    Program.MainForm.MarketControlTab.RelistControl.AuthCurrentAccount();
-                    Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
-                    Program.MainForm.TradeControlTab.ReceivedTradeManageControl.AuthCurrentAccount();
-                    Program.MainForm.TradeControlTab.TradeHistoryControl.AuthCurrentAccount();
+                                    Program.MainForm.MarketControlTab.SaleControl.AuthCurrentAccount();
+                                    Program.MainForm.MarketControlTab.RelistControl.AuthCurrentAccount();
+                                    Program.MainForm.TradeControlTab.TradeControl.AuthCurrentAccount();
+                                    Program.MainForm.TradeControlTab.ReceivedTradeManageControl.AuthCurrentAccount();
+                                    Program.MainForm.TradeControlTab.TradeHistoryControl.AuthCurrentAccount();
 
-                    Logger.Info($"Steam authentication for {login} successful");
-                    LoginButton.Enabled = true;
-                });
-            });
+                                    Logger.Info($"Steam authentication for {login} successful");
+                                    LoginButton.Enabled = true;
+                                });
+                    });
         }
 
         private void LoggingLevelComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -302,8 +321,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
 
             Logger.LoggerLevel = level;
 
-            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsLoggerLevel,
-                LoggingLevelComboBox.SelectedIndex);
+            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsLoggerLevel, LoggingLevelComboBox.SelectedIndex);
         }
 
         private void SteamApiLinkLable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -313,13 +331,15 @@ namespace SteamAutoMarket.CustomElements.Controls.Settings
 
         private void AveragePriceDaysNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().SettingsAveragePriceParseDays,
+            SavedSettings.UpdateField(
+                ref SavedSettings.Get().SettingsAveragePriceParseDays,
                 (int)AveragePriceDaysNumericUpDown.Value);
         }
 
         private void Confirm2FANumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            SavedSettings.UpdateField(ref SavedSettings.Get().Settings_2FaItemsToConfirm,
+            SavedSettings.UpdateField(
+                ref SavedSettings.Get().Settings_2FaItemsToConfirm,
                 (int)Confirm2FANumericUpDown.Value);
         }
     }

@@ -124,10 +124,9 @@
             this.Controls.Add(this.TotalItemsLable);
             this.Controls.Add(this.ProgressBar);
             this.Controls.Add(this.StopWorkingProcessButton);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "LoadingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Loading";

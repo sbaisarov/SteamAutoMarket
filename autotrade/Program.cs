@@ -29,7 +29,6 @@ namespace SteamAutoMarket
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();
-            WorkingProcessForm = new WorkingProcessForm();
             LoadingForm = new LoadingForm();
 
             Application.Run(MainForm);

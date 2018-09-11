@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
+    using SteamAutoMarket.CustomElements.Forms;
     using SteamAutoMarket.CustomElements.Utils;
     using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.Utils;
@@ -99,8 +100,8 @@
             var rowIndex = 0;
             if (this.AllSteamItemsGridView.SelectedRows.Count > 1)
             {
-                rowIndex = this.AllSteamItemsGridView.SelectedRows[this.AllSteamItemsGridView.SelectedRows.Count - 1].Cells[0]
-                    .RowIndex;
+                rowIndex = this.AllSteamItemsGridView.SelectedRows[this.AllSteamItemsGridView.SelectedRows.Count - 1]
+                    .Cells[0].RowIndex;
             }
             else
             {
@@ -137,8 +138,8 @@
             var rowIndex = 0;
             if (this.ItemsToSaleGridView.SelectedRows.Count > 1)
             {
-                rowIndex = this.ItemsToSaleGridView.SelectedRows[this.ItemsToSaleGridView.SelectedRows.Count - 1].Cells[0]
-                    .RowIndex;
+                rowIndex = this.ItemsToSaleGridView.SelectedRows[this.ItemsToSaleGridView.SelectedRows.Count - 1]
+                    .Cells[0].RowIndex;
             }
             else
             {
@@ -170,7 +171,6 @@
                 cb.MaxDropDownItems = 10;
             }
         }
-
 
         private void DeleteAccountButtonClick(object sender, EventArgs e)
         {
@@ -231,31 +231,37 @@
             ItemsToSaleGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
-        private void InventoryAppIdComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void InventoryAppIdComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (InventoryAppIdComboBox.Text)
+            switch (this.InventoryAppIdComboBox.Text)
             {
                 case "STEAM":
                     {
-                        InventoryContextIdComboBox.Text = "6";
+                        this.InventoryContextIdComboBox.Text = @"6";
                         break;
                     }
 
                 case "TF":
                     {
-                        InventoryContextIdComboBox.Text = "2";
+                        this.InventoryContextIdComboBox.Text = @"2";
                         break;
                     }
 
                 case "CS:GO":
                     {
-                        InventoryContextIdComboBox.Text = "2";
+                        this.InventoryContextIdComboBox.Text = @"2";
                         break;
                     }
 
                 case "PUBG":
                     {
-                        InventoryContextIdComboBox.Text = "2";
+                        this.InventoryContextIdComboBox.Text = @"2";
+                        break;
+                    }
+
+                case "DOTA":
+                    {
+                        this.InventoryContextIdComboBox.Text = @"2";
                         break;
                     }
             }
@@ -304,6 +310,9 @@
                     break;
                 case "PUBG":
                     appid = "578080";
+                    break;                
+                case "DOTA":
+                    appid = "570";
                     break;
                 default:
                     appid = InventoryAppIdComboBox.Text;
@@ -372,7 +381,7 @@
             var itemsToSale = new PriceShaper(ItemsToSaleGridView, marketSaleType, changeValue, changePercentValue)
                 .GetItemsForSales();
 
-            Program.WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale));
+            WorkingProcessForm.InitProcess(() => CurrentSession.SteamManager.SellOnMarket(itemsToSale));
         }
 
         public void DeleteSoldItem(string marketHashName)

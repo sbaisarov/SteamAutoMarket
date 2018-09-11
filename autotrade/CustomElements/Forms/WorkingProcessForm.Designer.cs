@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkingProcessForm));
-            this.logTextBox = new System.Windows.Forms.RichTextBox();
+            this.LogTextBox = new System.Windows.Forms.RichTextBox();
             this.StopWorkingProcessButton = new System.Windows.Forms.Button();
             this.RightEdge = new System.Windows.Forms.Panel();
             this.BottomEdge = new System.Windows.Forms.Panel();
@@ -37,19 +37,19 @@
             this.ScrollCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
-            // logTextBox
+            // LogTextBox
             // 
-            this.logTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.logTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.logTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.logTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.logTextBox.Location = new System.Drawing.Point(0, 0);
-            this.logTextBox.Name = "logTextBox";
-            this.logTextBox.ReadOnly = true;
-            this.logTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.logTextBox.Size = new System.Drawing.Size(441, 433);
-            this.logTextBox.TabIndex = 0;
-            this.logTextBox.Text = "";
+            this.LogTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.LogTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LogTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LogTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.LogTextBox.Location = new System.Drawing.Point(0, 0);
+            this.LogTextBox.Name = "LogTextBox";
+            this.LogTextBox.ReadOnly = true;
+            this.LogTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.LogTextBox.Size = new System.Drawing.Size(441, 433);
+            this.LogTextBox.TabIndex = 0;
+            this.LogTextBox.Text = "";
             // 
             // StopWorkingProcessButton
             // 
@@ -63,7 +63,7 @@
             this.StopWorkingProcessButton.TabIndex = 15;
             this.StopWorkingProcessButton.Text = "Stop working process";
             this.StopWorkingProcessButton.UseVisualStyleBackColor = false;
-            this.StopWorkingProcessButton.Click += new System.EventHandler(this.StopWorkingProcessButton_Click);
+            this.StopWorkingProcessButton.Click += new System.EventHandler(this.StopWorkingProcessButtonClick);
             // 
             // RightEdge
             // 
@@ -116,16 +116,15 @@
             this.Controls.Add(this.BottomEdge);
             this.Controls.Add(this.RightEdge);
             this.Controls.Add(this.StopWorkingProcessButton);
-            this.Controls.Add(this.logTextBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Controls.Add(this.LogTextBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "WorkingProcessForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Working process";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WorkingProcessForm_FormClosing);
-            this.Load += new System.EventHandler(this.WorkingProcessForm_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WorkingProcessFormFormClosing);
+            this.Load += new System.EventHandler(this.WorkingProcessFormLoad);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -133,7 +132,7 @@
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox logTextBox;
+        private System.Windows.Forms.RichTextBox LogTextBox;
         private System.Windows.Forms.Button StopWorkingProcessButton;
         private System.Windows.Forms.Panel RightEdge;
         private System.Windows.Forms.Panel BottomEdge;
