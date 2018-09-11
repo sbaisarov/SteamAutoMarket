@@ -70,13 +70,12 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
                 return;
             }
 
-            var startTime = CommonUtils.GetSecondsFromDateTime(CommonUtils.ResetTimeToDauStart(DateTime.Now)); // todo
+            var startTime = CommonUtils.GetSecondsFromDateTime(CommonUtils.ResetTimeToDauStart(this.SteamDateTimePicker.Value));
             var startTradeId = TradeIdComboBox.Text;
             var maxTrades = (int)MaxTradesNumericUpDown.Value;
             var navigatingBack = NavigatingBackCheckBox.Checked;
             var includeFailed = IncludeFailedCheckBox.Checked;
-            var language = LanguageComboBox.Text;
-            if (language == null) language = "en_US";
+            var language = LanguageComboBox.Text ?? "en_US";
 
             CommonUtils.ClearGrids(CurrentTradesGridView, MyItemsGridView, HisItemsGridView, ExtraTradeInfoGridView);
 

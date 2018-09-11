@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -20,12 +21,12 @@ namespace SteamAutoMarket.CustomElements.Forms
 
         public void InitProcess(Action process)
         {
-            _activate();
+            ActivateForm();
             _workingThread = new Thread(
                 () =>
                     {
                         process();
-                        _disactivate();
+                        DeactivateForm();
                     });
             _workingThread.Start();
         }
@@ -36,11 +37,28 @@ namespace SteamAutoMarket.CustomElements.Forms
             Dispatcher.AsWorkingProcessForm(
                 () =>
                     {
-                        this.logTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
-                        this.logTextBox.ScrollToCaret();
+                        logTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
+
+                        if (ScrollCheckBox.Checked)
+                        {
+                            logTextBox.ScrollToCaret();
+                        }
 
                         Logger.Working(message);
+
+                        ClearLogBox();
                     });
+        }
+
+        private void ClearLogBox()
+        {
+            if (logTextBox.Lines.Length <= 300)
+            {
+                return;
+            }
+
+            var realCount = logTextBox.Lines.Length;
+            logTextBox.Lines = logTextBox.Lines.ToList().GetRange(100, realCount - 101).ToArray();
         }
 
         private void WorkingProcessForm_Load(object sender, EventArgs e)
@@ -48,15 +66,14 @@ namespace SteamAutoMarket.CustomElements.Forms
             AppendWorkingProcessInfo("Working process started.");
         }
 
-        private void _activate()
+        private void ActivateForm()
         {
-            Dispatcher.AsWorkingProcessForm(this.Show);
+            Dispatcher.AsMainForm(Show);
         }
 
-        private void _disactivate()
+        private void DeactivateForm()
         {
-            Dispatcher.AsMainForm(
-                () =>
+            Dispatcher.AsMainForm(() =>
                     {
                         Close();
                         Program.WorkingProcessForm = new WorkingProcessForm();
@@ -66,8 +83,11 @@ namespace SteamAutoMarket.CustomElements.Forms
         private void StopWorkingProcessButton_Click(object sender, EventArgs e)
         {
             _stopButtonPressed = true;
-            _workingThread.Abort();
-            _disactivate();
+            Dispatcher.AsWorkingProcessForm(() =>
+            {
+                _workingThread.Abort();
+                DeactivateForm();
+            });
         }
 
         private void WorkingProcessForm_FormClosing(object sender, FormClosingEventArgs e)

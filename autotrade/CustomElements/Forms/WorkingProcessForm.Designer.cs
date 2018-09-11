@@ -34,6 +34,7 @@
             this.RightEdge = new System.Windows.Forms.Panel();
             this.BottomEdge = new System.Windows.Forms.Panel();
             this.LeftEdge = new System.Windows.Forms.Panel();
+            this.ScrollCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // logTextBox
@@ -91,12 +92,26 @@
             this.LeftEdge.Size = new System.Drawing.Size(2, 47);
             this.LeftEdge.TabIndex = 23;
             // 
+            // ScrollCheckBox
+            // 
+            this.ScrollCheckBox.AutoSize = true;
+            this.ScrollCheckBox.Checked = true;
+            this.ScrollCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ScrollCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ScrollCheckBox.Location = new System.Drawing.Point(384, 462);
+            this.ScrollCheckBox.Name = "ScrollCheckBox";
+            this.ScrollCheckBox.Size = new System.Drawing.Size(52, 17);
+            this.ScrollCheckBox.TabIndex = 24;
+            this.ScrollCheckBox.Text = "Scroll";
+            this.ScrollCheckBox.UseVisualStyleBackColor = true;
+            // 
             // WorkingProcessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
             this.ClientSize = new System.Drawing.Size(441, 482);
+            this.Controls.Add(this.ScrollCheckBox);
             this.Controls.Add(this.LeftEdge);
             this.Controls.Add(this.BottomEdge);
             this.Controls.Add(this.RightEdge);
@@ -112,6 +127,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WorkingProcessForm_FormClosing);
             this.Load += new System.EventHandler(this.WorkingProcessForm_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -122,5 +138,6 @@
         private System.Windows.Forms.Panel RightEdge;
         private System.Windows.Forms.Panel BottomEdge;
         private System.Windows.Forms.Panel LeftEdge;
+        private System.Windows.Forms.CheckBox ScrollCheckBox;
     }
 }

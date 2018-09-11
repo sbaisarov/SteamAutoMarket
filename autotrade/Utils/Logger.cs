@@ -10,6 +10,10 @@ namespace SteamAutoMarket.Utils
 {
     internal class Logger
     {
+        static Logger()
+        {
+            Directory.CreateDirectory("logs");
+        }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         private static void LogToFile(string s)
@@ -18,7 +22,7 @@ namespace SteamAutoMarket.Utils
             {
                 try
                 {
-                    File.AppendAllText("log.log", $@"{s}\n");
+                    File.AppendAllText($"logs/log {DateTime.Now:dd-MM-yy}.log", $@"{s}\n");
                 }
                 catch
                 {
@@ -71,14 +75,14 @@ namespace SteamAutoMarket.Utils
             message = $"{GetCurrentDate()} [ERROR] - {message}";
             if (e != null) message += $". {e.Message}";
 
-            File.AppendAllText("error.log", message + @" " + (e != null ? e.Message + " " + e.StackTrace : "") + @"\n");
+            File.AppendAllText("logs/error.log", message + @" " + (e != null ? e.Message + " " + e.StackTrace : "") + @"\n");
             LogToLogBox(message);
         }
 
         public static void Critical(string message, Exception ex)
         {
             message = $"{GetCurrentDate()} [CRITICAL] - {message}. {ex.Message}";
-            File.AppendAllText("error.log", $@"{message} {ex.StackTrace}\n");
+            File.AppendAllText("logs/error.log", $@"{message} {ex.StackTrace}\n");
 
             MessageBox.Show(message, message, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

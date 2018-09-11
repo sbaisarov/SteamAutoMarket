@@ -21,6 +21,7 @@ namespace SteamAutoMarket.Utils
         public static void AsWorkingProcessForm(AsyncAction action)
         {
             Invoke(Program.WorkingProcessForm, action);
+
         }
 
         private static void Invoke(Form form, AsyncAction action)
@@ -30,7 +31,7 @@ namespace SteamAutoMarket.Utils
             if (!form.InvokeRequired)
                 action();
             else
-                form.Invoke((DispatcherInvoker) Invoke, form, action);
+                form.Invoke((DispatcherInvoker)Invoke, form, action);
         }
     }
 }
