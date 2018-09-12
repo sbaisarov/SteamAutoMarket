@@ -29,6 +29,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -224,6 +225,7 @@
     <Compile Include="WorkingProcess\PriceLoader\LoadedItemPrice.cs" />
     <Compile Include="WorkingProcess\PriceLoader\PricesCache.cs" />
     <Compile Include="WorkingProcess\PriceLoader\TableToLoad.cs" />
+    <Compile Include="WorkingProcess\SellTimeTracker.cs" />
     <Compile Include="WorkingProcess\Settings\SavedSettings.cs" />
     <Compile Include="WorkingProcess\Settings\SavedSteamAccount.cs" />
     <Compile Include="CustomElements\Controls\Settings\GeneralSettingsControl.cs">

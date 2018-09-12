@@ -56,9 +56,9 @@
             {
                 return;
             }
-
+            
             var realCount = this.LogTextBox.Lines.Length;
-            this.LogTextBox.Lines = this.LogTextBox.Lines.ToList().GetRange(100, realCount - 101).ToArray();
+            this.LogTextBox.Lines = this.LogTextBox.Lines.ToList().GetRange(100, realCount - 100).ToArray();
         }
 
         private void WorkingProcessFormLoad(object sender, EventArgs e)

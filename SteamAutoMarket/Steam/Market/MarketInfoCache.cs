@@ -1,33 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
-using SteamAutoMarket.Steam.Market.Models;
-
-namespace SteamAutoMarket.Steam.Market
+﻿namespace SteamAutoMarket.Steam.Market
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Runtime.CompilerServices;
+
+    using Newtonsoft.Json;
+
+    using SteamAutoMarket.Steam.Market.Models;
+
     internal class MarketInfoCache
     {
         public static readonly string CachePricesPath = AppDomain.CurrentDomain.BaseDirectory + "item_ids_cache.ini";
-        private static Dictionary<string, MarketItemInfo> _cache;
+
+        private static Dictionary<string, MarketItemInfo> cache;
 
         public static Dictionary<string, MarketItemInfo> Get()
         {
-            if (_cache != null) return _cache;
+            if (cache != null)
+            {
+                return cache;
+            }
 
             if (File.Exists(CachePricesPath))
             {
-                _cache = JsonConvert.DeserializeObject<Dictionary<string, MarketItemInfo>>(
+                cache = JsonConvert.DeserializeObject<Dictionary<string, MarketItemInfo>>(
                     File.ReadAllText(CachePricesPath));
             }
-            else
+
+            if (cache != null)
             {
-                _cache = new Dictionary<string, MarketItemInfo>();
-                UpdateAll();
+                return cache;
             }
 
-            return _cache;
+            cache = new Dictionary<string, MarketItemInfo>();
+            UpdateAll();
+
+            return cache;
         }
 
         public static MarketItemInfo Get(int appid, string hashName)
@@ -51,8 +60,9 @@ namespace SteamAutoMarket.Steam.Market
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void Clear()
         {
-            _cache.Clear();
-            File.WriteAllText(CachePricesPath,
+            cache.Clear();
+            File.WriteAllText(
+                CachePricesPath,
                 JsonConvert.SerializeObject(new Dictionary<string, MarketItemInfo>(), Formatting.Indented));
         }
     }

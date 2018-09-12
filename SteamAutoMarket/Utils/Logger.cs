@@ -8,6 +8,8 @@
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
+    using SteamAutoMarket.WorkingProcess.Settings;
+
     internal enum LoggerLevel
     {
         Debug,
@@ -39,10 +41,36 @@
 
         static Logger()
         {
-            Directory.CreateDirectory("logs");
+            try
+            {
+                Directory.CreateDirectory("logs");
+                switch (SavedSettings.Get().SettingsLoggerLevel)
+                {
+                    case 1:
+                        LoggerLevel = LoggerLevel.Debug;
+                        break;
+                    case 2:
+                        LoggerLevel = LoggerLevel.Info;
+                        break;
+                    case 3:
+                        LoggerLevel = LoggerLevel.Error;
+                        break;
+                    case 4:
+                        LoggerLevel = LoggerLevel.None;
+                        break;
+
+                    default:
+                        LoggerLevel = LoggerLevel.Info;
+                        break;
+                }
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
-        public static LoggerLevel LoggerLevel { get; set; } = LoggerLevel.Info;
+        public static LoggerLevel LoggerLevel { get; set; }
 
         public static void Working(string message)
         {

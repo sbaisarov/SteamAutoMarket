@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Text.RegularExpressions;
@@ -22,6 +23,7 @@
     using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.Utils;
+    using SteamAutoMarket.WorkingProcess;
     using SteamAutoMarket.WorkingProcess.MarketPriceFormation;
     using SteamAutoMarket.WorkingProcess.Settings;
 
@@ -116,9 +118,12 @@
 
         public void SellOnMarket(ToSaleObject items)
         {
-            var index = 1;
-            var itemsToConfirm = SavedSettings.Get().Settings_2FaItemsToConfirm;
-            var total = items.ItemsForSaleList.Sum(x => x.Items.Count());
+            var currentItemIndex = 1;
+            var itemsToConfirmCount = SavedSettings.Get().Settings2FaItemsToConfirm;
+            var totalItemsCount = items.ItemsForSaleList.Sum(x => x.Items.Sum(e => int.Parse(e.Asset.Amount)));
+
+            var timeTracker = new SellTimeTracker(itemsToConfirmCount);
+
             foreach (var package in items.ItemsForSaleList)
             {
                 var itemName = package.Items.First().Description.Name;
@@ -150,7 +155,7 @@
                     try
                     {
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(
-                            $"[{index}/{total}] Selling - '{itemName}' for {package.Price}");
+                            $"[{currentItemIndex}/{totalItemsCount}] Selling - '{itemName}' for {package.Price}");
                         if (package.Price != null)
                         {
                             this.SellOnMarket(item, package.Price.Value);
@@ -160,9 +165,11 @@
                             throw new NullReferenceException($"Price for '{itemName}' is not loaded");
                         }
 
-                        if (index % itemsToConfirm == 0)
+                        if (currentItemIndex % itemsToConfirmCount == 0)
                         {
                             this.ConfirmMarketTransactions();
+
+                            timeTracker.TrackTime(totalItemsCount - currentItemIndex);
                         }
                     }
                     catch (Exception ex)
@@ -172,7 +179,7 @@
                             $"ERROR on selling '{itemName}' - {ex.Message}{ex.InnerException?.Message}");
                     }
 
-                    index++;
+                    currentItemIndex++;
                 }
             }
 
@@ -192,7 +199,7 @@
                         int.Parse(asset.Contextid),
                         long.Parse(asset.Assetid),
                         int.Parse(item.Asset.Amount),
-                        price * 0.87);
+                        price / 1.15);
 
                     var message = resp.Message; // error message
                     if (message != null)
@@ -203,6 +210,8 @@
 
                         if (message.Contains("You already have a listing for this item pending confirmation"))
                         {
+                            Program.WorkingProcessForm.AppendWorkingProcessInfo(
+                                "Confirming listing to avoid this error");
                             this.ConfirmMarketTransactions();
                             continue;
                         }

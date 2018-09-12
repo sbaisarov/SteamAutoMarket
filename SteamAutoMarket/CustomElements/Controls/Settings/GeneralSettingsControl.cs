@@ -31,7 +31,7 @@
 
                 this.LoggingLevelComboBox.SelectedIndex = settings.SettingsLoggerLevel;
                 this.AveragePriceDaysNumericUpDown.Value = settings.SettingsAveragePriceParseDays;
-                this.Confirm2FANumericUpDown.Value = settings.Settings_2FaItemsToConfirm;
+                this.Confirm2FANumericUpDown.Value = settings.Settings2FaItemsToConfirm;
 
                 this.LoadSavedAccount();
             }
@@ -444,7 +444,7 @@
             try
             {
                 SavedSettings.UpdateField(
-                    ref SavedSettings.Get().Settings_2FaItemsToConfirm,
+                    ref SavedSettings.Get().Settings2FaItemsToConfirm,
                     (int)this.Confirm2FANumericUpDown.Value);
             }
             catch (Exception ex)
