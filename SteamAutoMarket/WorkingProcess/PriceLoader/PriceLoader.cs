@@ -24,9 +24,11 @@
 
         private static BackgroundWorker allItemsWorkingThread;
 
+        private static bool allItemsWorkingThreadWorking = false;
+
         private static BackgroundWorker itemsToSaleWorkingThread;
 
-        private static bool allItemThreadShouldWait;
+        private static bool itemsToSaleWorkingThreadWorking = false;
 
         public static PricesCache CurrentPricesCache { get; private set; }
 
@@ -48,6 +50,7 @@
 
             itemsToSaleWorkingThread = new BackgroundWorker { WorkerSupportsCancellation = true };
             itemsToSaleWorkingThread.DoWork += async (o, e) => await LoadItemsToSalePrices();
+            itemsToSaleWorkingThread.RunWorkerCompleted += (o, e) => allItemsWorkingThread.RunWorkerAsync();
 
             if (CurrentPricesCache == null)
             {
@@ -66,12 +69,12 @@
 
         public static void StopAll()
         {
-            if (allItemsWorkingThread.IsBusy)
+            if (allItemsWorkingThreadWorking)
             {
                 allItemsWorkingThread.CancelAsync();
             }
 
-            if (itemsToSaleWorkingThread.IsBusy)
+            if (itemsToSaleWorkingThreadWorking)
             {
                 itemsToSaleWorkingThread.CancelAsync();
             }
@@ -89,40 +92,34 @@
             {
                 case TableToLoad.AllItemsTable:
                     {
-                        if (allItemsWorkingThread.IsBusy)
+                        if (allItemsWorkingThreadWorking)
                         {
                             return;
                         }
 
-                        if (itemsToSaleWorkingThread.IsBusy)
+                        if (!itemsToSaleWorkingThreadWorking)
                         {
-                            allItemThreadShouldWait = true;
+                            allItemsWorkingThread.RunWorkerAsync();
                         }
 
-                        allItemsWorkingThread.RunWorkerAsync();
                         break;
                     }
 
                 case TableToLoad.ItemsToSaleTable:
                     {
-                        if (itemsToSaleWorkingThread.IsBusy)
+                        if (itemsToSaleWorkingThreadWorking)
                         {
                             return;
                         }
 
-                        allItemThreadShouldWait = true;
+                        if (allItemsWorkingThreadWorking)
+                        {
+                            allItemsWorkingThreadWorking = false;
+                        }
 
                         itemsToSaleWorkingThread.RunWorkerAsync();
                         break;
                     }
-            }
-        }
-
-        private static void WaitForAllItemThreadShouldWait()
-        {
-            while (allItemThreadShouldWait)
-            {
-                Thread.Sleep(1000);
             }
         }
 
@@ -179,10 +176,18 @@
 
         private static async Task LoadAllItemsToSalePrices()
         {
+            allItemsWorkingThreadWorking = true;
+
             var rows = GetAllItemsRowsWithNoPrice();
             var tasks = rows.Select(SetAllItemsListGridValues).ToList();
+            while (tasks.Count > 0 || allItemsWorkingThreadWorking == false)
+            {
+                var tasksCount = tasks.Count > 10 ? 10 : tasks.Count;
+                var tasksToWait = tasks.GetRange(0, tasksCount);
+                await Task.WhenAll(tasksToWait);
+                tasks.RemoveRange(0, tasksCount);
+            }
 
-            await Task.WhenAll(tasks);
             Thread.Sleep(1000);
             rows = GetItemsToSaleRowsWithNoPrice();
             if (rows.Count() != 0)
@@ -190,13 +195,18 @@
                 await LoadItemsToSalePrices();
             }
 
-            allItemThreadShouldWait = false;
+            allItemsWorkingThreadWorking = false;
         }
 
         private static async Task SetAllItemsListGridValues(DataGridViewRow row)
         {
             try
             {
+                if (allItemsWorkingThreadWorking == false)
+                {
+                    return;
+                }
+
                 var currentPriceCell = allItemsListGridUtils.GetGridCurrentPriceTextBoxCell(row.Index).Cell;
                 var averagePriceCell = allItemsListGridUtils.GetGridAveragePriceTextBoxCell(row.Index).Cell;
 
@@ -218,8 +228,6 @@
             {
                 Logger.Warning("Error on parsing item price", ex);
             }
-
-            WaitForAllItemThreadShouldWait();
         }
 
         private static IEnumerable<DataGridViewRow> GetAllItemsRowsWithNoPrice()
@@ -304,12 +312,20 @@
 
         private static async Task LoadItemsToSalePrices()
         {
+            itemsToSaleWorkingThreadWorking = true;
+
             while (true)
             {
                 var rows = GetItemsToSaleRowsWithNoPrice();
                 var tasks = rows.Select(SetRowCurrentPrices).ToList();
 
-                await Task.WhenAll(tasks);
+                while (tasks.Count > 0 || itemsToSaleWorkingThreadWorking == false)
+                {
+                    var tasksCount = tasks.Count > 10 ? 10 : tasks.Count;
+                    var tasksToWait = tasks.GetRange(0, tasksCount);
+                    await Task.WhenAll(tasksToWait);
+                    tasks.RemoveRange(0, tasksCount);
+                }
 
                 Thread.Sleep(1000);
                 rows = GetItemsToSaleRowsWithNoPrice();
@@ -318,10 +334,10 @@
                     continue;
                 }
 
-                allItemThreadShouldWait = false;
-
                 break;
             }
+
+            itemsToSaleWorkingThreadWorking = false;
         }
 
         private static async Task SetRowCurrentPrices(DataGridViewRow row)
