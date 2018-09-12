@@ -11,6 +11,18 @@
     {
         public static readonly string ImagesPath = AppDomain.CurrentDomain.BaseDirectory + "images";
 
+        static ImagesCache()
+        {
+            try
+            {
+                Directory.CreateDirectory(ImagesPath);
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         public static Dictionary<string, Image> ImageCache { get; set; } = new Dictionary<string, Image>();
 
         [MethodImpl(MethodImplOptions.Synchronized)]

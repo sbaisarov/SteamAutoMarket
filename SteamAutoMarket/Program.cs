@@ -5,6 +5,7 @@
     using System.Windows.Forms;
 
     using SteamAutoMarket.CustomElements.Forms;
+    using SteamAutoMarket.Utils;
 
     internal static class Program
     {
@@ -29,7 +30,14 @@
             MainForm = new MainForm();
             LoadingForm = new LoadingForm();
 
-            Application.Run(MainForm);
+            try
+            {
+                Application.Run(MainForm);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical("Critical program exception", ex);
+            }
         }
 
         private static void CheckLicense()

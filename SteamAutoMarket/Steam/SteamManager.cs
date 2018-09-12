@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Text.RegularExpressions;
@@ -116,9 +117,12 @@
 
         public void SellOnMarket(ToSaleObject items)
         {
-            var index = 1;
-            var itemsToConfirm = SavedSettings.Get().Settings_2FaItemsToConfirm;
-            var total = items.ItemsForSaleList.Sum(x => x.Items.Count());
+            var currentItemIndex = 1;
+            var itemsToConfirmCount = SavedSettings.Get().Settings2FaItemsToConfirm;
+            var totalItemsCount = items.ItemsForSaleList.Sum(x => x.Items.Sum(e => int.Parse(e.Asset.Amount)));
+            var timeCounter = Stopwatch.StartNew();
+            var oneItemTimeDivider = 1000d / itemsToConfirmCount;
+
             foreach (var package in items.ItemsForSaleList)
             {
                 var itemName = package.Items.First().Description.Name;
@@ -150,7 +154,7 @@
                     try
                     {
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(
-                            $"[{index}/{total}] Selling - '{itemName}' for {package.Price}");
+                            $"[{currentItemIndex}/{totalItemsCount}] Selling - '{itemName}' for {package.Price}");
                         if (package.Price != null)
                         {
                             this.SellOnMarket(item, package.Price.Value);
@@ -160,9 +164,27 @@
                             throw new NullReferenceException($"Price for '{itemName}' is not loaded");
                         }
 
-                        if (index % itemsToConfirm == 0)
+                        if (currentItemIndex % itemsToConfirmCount == 0)
                         {
                             this.ConfirmMarketTransactions();
+
+                            timeCounter.Stop();
+                            var seconds = timeCounter.ElapsedMilliseconds / oneItemTimeDivider;
+                            Program.WorkingProcessForm.AppendWorkingProcessInfo(
+                                $"[TIME INFO] Sell speed - {Math.Round(seconds, 2)} sec/item.");
+
+                            var itemsLeft = totalItemsCount - currentItemIndex;
+                            var secondsLeft = seconds * itemsLeft;
+
+                            var timeLeft = TimeSpan.FromSeconds(secondsLeft).Duration();
+                            var timeLeftText = "[TIME INFO] Time left - ";
+                            timeLeftText += (timeLeft.TotalHours > 1) ? $"{timeLeft.Hours} hours " : null;
+                            timeLeftText += (timeLeft.TotalMinutes > 1) ? $"{timeLeft.Minutes} minutes " : null;
+                            timeLeftText += (timeLeft.TotalSeconds > 1) ? $"{timeLeft.Seconds} seconds " : null;
+
+                            Program.WorkingProcessForm.AppendWorkingProcessInfo(timeLeftText);
+
+                            timeCounter.Restart();
                         }
                     }
                     catch (Exception ex)
@@ -172,7 +194,7 @@
                             $"ERROR on selling '{itemName}' - {ex.Message}{ex.InnerException?.Message}");
                     }
 
-                    index++;
+                    currentItemIndex++;
                 }
             }
 
@@ -192,7 +214,7 @@
                         int.Parse(asset.Contextid),
                         long.Parse(asset.Assetid),
                         int.Parse(item.Asset.Amount),
-                        price * 0.87);
+                        price / 1.15);
 
                     var message = resp.Message; // error message
                     if (message != null)
@@ -203,6 +225,8 @@
 
                         if (message.Contains("You already have a listing for this item pending confirmation"))
                         {
+                            Program.WorkingProcessForm.AppendWorkingProcessInfo(
+                                "Confirming listing to avoid this error");
                             this.ConfirmMarketTransactions();
                             continue;
                         }
