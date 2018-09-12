@@ -65,7 +65,7 @@
                 var row = this.AccountsDataGridView.Rows.Add();
                 AccountsDataGridUtils.GetDataGridViewLoginCell(this.AccountsDataGridView, row).Value = acc.Login;
                 AccountsDataGridUtils.GetDataGridViewPasswordCell(this.AccountsDataGridView, row).Value =
-                    GetPasswordStars(acc.Password.Count());
+                    GetPasswordStars(acc.Password.Length);
                 AccountsDataGridUtils.GetDataGridViewTruePasswordHiddenCell(this.AccountsDataGridView, row).Value =
                     acc.Password;
                 AccountsDataGridUtils.GetDataGridViewSteamApiCell(this.AccountsDataGridView, row).Value = acc.SteamApi;

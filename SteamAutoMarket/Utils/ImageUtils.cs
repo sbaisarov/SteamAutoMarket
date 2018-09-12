@@ -1,7 +1,6 @@
 ﻿namespace SteamAutoMarket.Utils
 {
     using System;
-    using System.ComponentModel;
     using System.Drawing;
     using System.Net;
     using System.Text.RegularExpressions;
@@ -10,13 +9,14 @@
     using System.Windows.Forms;
 
     using RestSharp;
-
-    using SteamAutoMarket.CustomElements.Controls.Market;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.WorkingProcess.Caches;
 
     internal class ImageUtils
     {
+        private static string lastRequestedImageHashName;
+
         public static Image DownloadImage(string url)
         {
             try
@@ -96,47 +96,57 @@
 
         public static void UpdateItemImageOnPanelAsync(AssetDescription assetDescription, Panel imageBox)
         {
-            UpdateItemImageOnPanelAsync(assetDescription.MarketHashName, assetDescription.IconUrl, imageBox);
+            UpdateImageOnItemPanelAsync(assetDescription.MarketHashName, assetDescription.IconUrl, imageBox);
         }
 
         public static void UpdateItemImageOnPanelAsync(RgDescription description, Panel imageBox)
         {
-            UpdateItemImageOnPanelAsync(description.MarketHashName, description.IconUrl, imageBox);
+            UpdateImageOnItemPanelAsync(description.MarketHashName, description.IconUrl, imageBox);
         }
 
-        public static void UpdateItemImageOnPanelAsync(string hash, string iconUrl, Panel imageBox)
+        public static void UpdateImageOnItemPanelAsync(string hash, string iconUrl, Panel imageBox)
         {
             Task.Run(
                 () =>
                     {
+                        lastRequestedImageHashName = hash;
+
                         var image = ImagesCache.GetImage(hash);
 
                         if (image != null)
                         {
-                            imageBox.BackgroundImage = ResizeImage(image, 100, 100);
+                            if (lastRequestedImageHashName == hash)
+                            {
+                                imageBox.BackgroundImage = ResizeImage(image, 100, 100);
+                            }
                         }
                         else
                         {
+                            if (lastRequestedImageHashName == hash)
+                            {
+                                imageBox.BackgroundImage = Resources.DefaultItem;
+                            }
+
                             image = DownloadImage(
-                                "https://steamcommunity-a.akamaihd.net/economy/image/" + iconUrl + "/192fx192f");
+                                $"https://steamcommunity-a.akamaihd.net/economy/image/{iconUrl}/192fx192f");
+
                             if (image != null)
                             {
                                 ImagesCache.CacheImage(hash, image);
-                                imageBox.BackgroundImage = ResizeImage(image, 100, 100);
+                                if (lastRequestedImageHashName == hash)
+                                {
+                                    imageBox.BackgroundImage = ResizeImage(image, 100, 100);
+                                }
                             }
                             else
                             {
-                                imageBox.BackgroundImage = GetDefaultResourceImage(
-                                    "ItemImageBox.BackgroundImage",
-                                    typeof(SaleControl));
+                                if (lastRequestedImageHashName == hash)
+                                {
+                                    imageBox.BackgroundImage = Resources.DefaultItem;
+                                }
                             }
                         }
                     });
-        }
-
-        public static Image GetDefaultResourceImage(string name, Type type)
-        {
-            return (Image)new ComponentResourceManager(type).GetObject(name);
         }
     }
 }
