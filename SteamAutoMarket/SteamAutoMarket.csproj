@@ -225,6 +225,7 @@
     <Compile Include="WorkingProcess\PriceLoader\LoadedItemPrice.cs" />
     <Compile Include="WorkingProcess\PriceLoader\PricesCache.cs" />
     <Compile Include="WorkingProcess\PriceLoader\TableToLoad.cs" />
+    <Compile Include="WorkingProcess\SellTimeTracker.cs" />
     <Compile Include="WorkingProcess\Settings\SavedSettings.cs" />
     <Compile Include="WorkingProcess\Settings\SavedSteamAccount.cs" />
     <Compile Include="CustomElements\Controls\Settings\GeneralSettingsControl.cs">

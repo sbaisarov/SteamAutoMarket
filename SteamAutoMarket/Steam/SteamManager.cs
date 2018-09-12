@@ -23,6 +23,7 @@
     using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.Utils;
+    using SteamAutoMarket.WorkingProcess;
     using SteamAutoMarket.WorkingProcess.MarketPriceFormation;
     using SteamAutoMarket.WorkingProcess.Settings;
 
@@ -120,8 +121,8 @@
             var currentItemIndex = 1;
             var itemsToConfirmCount = SavedSettings.Get().Settings2FaItemsToConfirm;
             var totalItemsCount = items.ItemsForSaleList.Sum(x => x.Items.Sum(e => int.Parse(e.Asset.Amount)));
-            var timeCounter = Stopwatch.StartNew();
-            var oneItemTimeDivider = 1000d / itemsToConfirmCount;
+
+            var timeTracker = new SellTimeTracker(itemsToConfirmCount);
 
             foreach (var package in items.ItemsForSaleList)
             {
@@ -168,23 +169,7 @@
                         {
                             this.ConfirmMarketTransactions();
 
-                            timeCounter.Stop();
-                            var seconds = timeCounter.ElapsedMilliseconds / oneItemTimeDivider;
-                            Program.WorkingProcessForm.AppendWorkingProcessInfo(
-                                $"[TIME INFO] Sell speed - {Math.Round(seconds, 2)} sec/item.");
-
-                            var itemsLeft = totalItemsCount - currentItemIndex;
-                            var secondsLeft = seconds * itemsLeft;
-
-                            var timeLeft = TimeSpan.FromSeconds(secondsLeft).Duration();
-                            var timeLeftText = "[TIME INFO] Time left - ";
-                            timeLeftText += (timeLeft.TotalHours > 1) ? $"{timeLeft.Hours} hours " : null;
-                            timeLeftText += (timeLeft.TotalMinutes > 1) ? $"{timeLeft.Minutes} minutes " : null;
-                            timeLeftText += (timeLeft.TotalSeconds > 1) ? $"{timeLeft.Seconds} seconds " : null;
-
-                            Program.WorkingProcessForm.AppendWorkingProcessInfo(timeLeftText);
-
-                            timeCounter.Restart();
+                            timeTracker.TrackTime(totalItemsCount - currentItemIndex);
                         }
                     }
                     catch (Exception ex)
