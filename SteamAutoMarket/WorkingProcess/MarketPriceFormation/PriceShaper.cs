@@ -280,12 +280,12 @@
 
         private PriceShapingStrategy GetPriceShapingStrategy()
         {
-            if (LowerValue > 0)
+            if (LowerValue != 0)
             {
                 return PriceShapingStrategyContainer.ByValue;
             }
 
-            if (LowerPercentValue > 0)
+            if (LowerPercentValue != 0)
             {
                 return PriceShapingStrategyContainer.ByPercent;
             }

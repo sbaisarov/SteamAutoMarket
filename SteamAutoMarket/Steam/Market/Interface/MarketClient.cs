@@ -15,6 +15,8 @@ using SteamAutoMarket.Steam.Market.Models.Json;
 
 namespace SteamAutoMarket.Steam.Market.Interface
 {
+    using System.Web;
+
     public class MarketClient
     {
         public const int PublisherFeePercentDefault = 10;
@@ -231,7 +233,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
             if (string.IsNullOrEmpty(hashName))
                 throw new SteamException("HashName should not be empty");
 
-            var resp = _steam.Request(Urls.Market + $"/listings/{appId}/{hashName}", Method.GET, Urls.Market, null,
+            var resp = _steam.Request(Urls.Market + $"/listings/{appId}/{Uri.EscapeDataString(hashName)}", Method.GET, Urls.Market, null,
                 true);
             var content = resp.Data.Content;
 
@@ -677,7 +679,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
         public List<PriceHistoryDay> PriceHistory(int appId, string hashName)
         {
-            var url = Urls.Market + $"/pricehistory/?appid={appId}&market_hash_name={hashName}";
+            var url = Urls.Market + $"/pricehistory/?appid={appId}&market_hash_name={Uri.EscapeDataString(hashName)}";
 
             var resp = _steam.Request(url, Method.GET, Urls.Market, null, true);
 

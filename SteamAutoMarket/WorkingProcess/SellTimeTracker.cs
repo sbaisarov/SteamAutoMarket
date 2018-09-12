@@ -14,6 +14,7 @@
         public SellTimeTracker(int itemsPerIterationCount)
         {
             this.oneItemTimeDivider = 0.001 / itemsPerIterationCount;
+            stopwatch.Start();
         }
 
         public void TrackTime(int itemsLeft)
@@ -45,16 +46,12 @@
 
             Program.WorkingProcessForm.AppendWorkingProcessInfo(
                 $"[TIME INFO] Current sell speed - {Math.Round(oneItemSeconds, 2)} sec/item.");
-
-            var timeLeft = TimeSpan.FromSeconds(oneItemSeconds * itemsLeft).Duration();
-            Program.WorkingProcessForm.AppendWorkingProcessInfo(
-                $"[TIME INFO] Current time left - {this.GetClearTimeLeft(timeLeft)}");
         }
 
         private string GetClearTimeLeft(TimeSpan timeSpan)
         {
             var text = string.Empty;
-            text += (timeSpan.TotalHours > 1) ? $"{timeSpan.Hours} hours " : null;
+            text += (timeSpan.TotalHours > 1) ? $"{timeSpan.TotalHours}" : null;
             text += (timeSpan.TotalMinutes > 1) ? $"{timeSpan.Minutes} minutes " : null;
             text += (timeSpan.TotalSeconds > 1) ? $"{timeSpan.Seconds} seconds " : null;
 
