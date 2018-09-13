@@ -382,9 +382,9 @@
         {
             try
             {
-                var selectedLevel = this.LoggingLevelComboBox.SelectedValue;
+                var selectedLevel = this.LoggingLevelComboBox.Text;
 
-                var level = LoggerLevel.Info;
+                LoggerLevel? level = null;
                 switch (selectedLevel)
                 {
                     case "Debug":
@@ -401,7 +401,12 @@
                         break;
                 }
 
-                Logger.LoggerLevel = level;
+                if (level == null)
+                {
+                    return;
+                }
+
+                Logger.CurrentLoggerLevel = level.Value;
 
                 SavedSettings.UpdateField(
                     ref SavedSettings.Get().SettingsLoggerLevel,

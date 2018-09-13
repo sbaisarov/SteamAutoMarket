@@ -52,13 +52,14 @@
 
         private void ClearLogBox()
         {
-            if (this.LogTextBox.Lines.Length <= 300)
+            if (this.LogTextBox.Lines.Length <= 1000)
             {
                 return;
             }
-            
-            var realCount = this.LogTextBox.Lines.Length;
-            this.LogTextBox.Lines = this.LogTextBox.Lines.ToList().GetRange(100, realCount - 100).ToArray();
+
+            var list = this.LogTextBox.Lines.ToList();
+            list.RemoveRange(0, 500);
+            this.LogTextBox.Lines = list.ToArray();
         }
 
         private void WorkingProcessFormLoad(object sender, EventArgs e)

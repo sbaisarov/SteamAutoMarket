@@ -12,32 +12,18 @@
 
     internal enum LoggerLevel
     {
-        Debug,
+        Debug = 0,
 
-        Info,
+        Info = 1,
 
-        Error,
+        Error = 2,
 
-        None
+        None = 3
     }
 
     internal static class Logger
     {
         public const string DateFormat = "HH:mm:ss";
-
-        private static readonly LoggerLevel[] NoneShouldBeIgnored =
-            {
-                LoggerLevel.Debug, LoggerLevel.Info, LoggerLevel.Error, LoggerLevel.None
-            };
-
-        private static readonly LoggerLevel[] DebugShouldBeIgnored =
-            {
-                LoggerLevel.Info, LoggerLevel.Error, LoggerLevel.None
-            };
-
-        private static readonly LoggerLevel[] InfoShouldBeIgnored = { LoggerLevel.Error, LoggerLevel.None };
-
-        private static readonly LoggerLevel[] ErrorShouldBeIgnored = { LoggerLevel.None };
 
         static Logger()
         {
@@ -46,21 +32,21 @@
                 Directory.CreateDirectory("logs");
                 switch (SavedSettings.Get().SettingsLoggerLevel)
                 {
+                    case 0:
+                        CurrentLoggerLevel = LoggerLevel.Debug;
+                        break;
                     case 1:
-                        LoggerLevel = LoggerLevel.Debug;
+                        CurrentLoggerLevel = LoggerLevel.Info;
                         break;
                     case 2:
-                        LoggerLevel = LoggerLevel.Info;
+                        CurrentLoggerLevel = LoggerLevel.Error;
                         break;
                     case 3:
-                        LoggerLevel = LoggerLevel.Error;
-                        break;
-                    case 4:
-                        LoggerLevel = LoggerLevel.None;
+                        CurrentLoggerLevel = LoggerLevel.None;
                         break;
 
                     default:
-                        LoggerLevel = LoggerLevel.Info;
+                        CurrentLoggerLevel = LoggerLevel.Info;
                         break;
                 }
             }
@@ -70,7 +56,7 @@
             }
         }
 
-        public static LoggerLevel LoggerLevel { get; set; }
+        public static LoggerLevel CurrentLoggerLevel { get; set; }
 
         public static void Working(string message)
         {
@@ -131,7 +117,7 @@
 
             File.AppendAllText(
                 "logs/error.log",
-                message + @" " + (e != null ? e.Message + " " + e.StackTrace : string.Empty) + @"\n");
+                message + @" " + (e != null ? e.Message + " " + e.StackTrace : string.Empty) + Environment.NewLine);
             LogToLogBox(message);
         }
 
@@ -150,7 +136,7 @@
 
             var logMessage = $"{GetCurrentDate()} [CRITICAL] - {shortMessage}";
 
-            File.AppendAllText("logs/error.log", $@"{logMessage} {ex.StackTrace}\n");
+            File.AppendAllText("logs/error.log", $@"{logMessage} {ex.StackTrace}" + Environment.NewLine);
             MessageBox.Show(shortMessage, @"Critical exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             LogCriticalErrorToServer(message, ex);
@@ -158,14 +144,7 @@
 
         public static void LogToLogBox(string s)
         {
-            if (Program.IsMainThread)
-            {
-                AppendTextToLogTextBox(s);
-            }
-            else
-            {
-                Dispatcher.AsMainForm(() => { AppendTextToLogTextBox(s); });
-            }
+            Dispatcher.AsMainForm(() => { AppendTextToLogTextBox(s); });
         }
 
         public static string GetCurrentDate()
@@ -194,7 +173,7 @@
                 message += $"\nInner exception: {GetDetailedExceptionInfo(e.InnerException)}";
             }
 
-            return message;
+            return message + Environment.NewLine;
         }
 
         private static void AppendTextToLogTextBox(string s)
@@ -207,19 +186,12 @@
                 textBox.Lines = list.ToArray();
             }
 
-            textBox.AppendText(s + "\n");
+            textBox.AppendText(s + Environment.NewLine);
         }
 
         private static bool IgnoreLogs(LoggerLevel invoked)
         {
-            switch (invoked)
-            {
-                case LoggerLevel.Debug: return DebugShouldBeIgnored.Contains(invoked);
-                case LoggerLevel.Info: return InfoShouldBeIgnored.Contains(invoked);
-                case LoggerLevel.Error: return ErrorShouldBeIgnored.Contains(invoked);
-                case LoggerLevel.None: return NoneShouldBeIgnored.Contains(invoked);
-                default: return false;
-            }
+            return invoked < CurrentLoggerLevel;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -230,7 +202,7 @@
                     {
                         try
                         {
-                            File.AppendAllText($"logs/log {DateTime.Now:dd-MM-yy}.log", $@"{s}\n");
+                            File.AppendAllText($"logs/log {DateTime.Now:dd-MM-yy}.log", s + Environment.NewLine);
                         }
                         catch
                         {
