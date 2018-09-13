@@ -8,7 +8,9 @@
     public class SellTimeTracker
     {
         private readonly Stopwatch stopwatch = new Stopwatch();
+
         private readonly List<double> savedOneItemSecondsValues = new List<double>();
+
         private readonly double oneItemTimeDivider;
 
         public SellTimeTracker(int itemsPerIterationCount)
@@ -29,7 +31,8 @@
 
         private void ProcessAverageStatus(int itemsLeft)
         {
-            var oneItemSeconds = this.savedOneItemSecondsValues.Count > 0 ? this.savedOneItemSecondsValues.Average() : 0d;
+            var oneItemSeconds =
+                this.savedOneItemSecondsValues.Count > 0 ? this.savedOneItemSecondsValues.Average() : 0d;
 
             Program.WorkingProcessForm.AppendWorkingProcessInfo(
                 $"[TIME INFO] Average sell speed - {Math.Round(oneItemSeconds, 2)} sec/item.");
@@ -51,7 +54,7 @@
         private string GetClearTimeLeft(TimeSpan timeSpan)
         {
             var text = string.Empty;
-            text += (timeSpan.TotalHours > 1) ? $"{timeSpan.TotalHours}" : null;
+            text += (timeSpan.Hours > 1) ? $"{Math.Floor(timeSpan.TotalHours)} hours " : null;
             text += (timeSpan.TotalMinutes > 1) ? $"{timeSpan.Minutes} minutes " : null;
             text += (timeSpan.TotalSeconds > 1) ? $"{timeSpan.Seconds} seconds " : null;
 
