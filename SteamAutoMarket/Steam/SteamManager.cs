@@ -231,6 +231,19 @@
             }
         }
 
+        public bool RemoveListing(long orderid)
+        {
+            var attempts = 0;
+            while (attempts < 3)
+            {
+                var status = MarketClient.CancelSellOrder(orderid);
+                if (status == ECancelSellOrderStatus.Canceled) return true;
+                attempts++;
+            }
+
+            return false;
+        }
+
         public void ConfirmMarketTransactions()
         {
             Program.WorkingProcessForm.AppendWorkingProcessInfo("Fetching confirmations");

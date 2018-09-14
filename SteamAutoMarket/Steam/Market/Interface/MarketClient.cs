@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
@@ -277,6 +278,40 @@ namespace SteamAutoMarket.Steam.Market.Interface
             var result = new Task<ECancelBuyOrderStatus>(() => CancelBuyOrder(orderId));
             result.Start();
             return result;
+        }
+
+        public ECancelSellOrderStatus CancelSellOrder(long orderid)
+        {
+            var headers = new Dictionary<string, string>
+            {
+                {"X-Prototype-Version", "1.7"},
+                {"X-Requested-With", "XMLHttpRequest"},
+                {"Referer", "https://steamcommunity.com/market/"},
+                {"Origin", "https://steamcommunity.com"},
+                {"Host", "steamcommunity.com"}
+            };
+            var data = new Dictionary<string, string>()
+            {
+                {"sessionid", _steam.Auth.SessionId()}
+            };
+            var url = "https://steamcommunity.com/market/removelisting/";
+            var resp = _steam.Request(url + orderid, Method.POST, Urls.Market, data, headers: headers);
+            JSuccessInt respDes = null;
+            try
+            {
+                respDes = JsonConvert.DeserializeObject<JSuccessInt>(resp.Data.Content);
+            }
+            catch (JsonSerializationException ex) {}
+
+            if (respDes == null) return ECancelSellOrderStatus.Fail;
+            
+            switch (respDes.Success)
+            {
+                case 1:
+                    return ECancelSellOrderStatus.Canceled;
+                default:
+                    return ECancelSellOrderStatus.Fail;
+            }
         }
 
         public ECancelBuyOrderStatus CancelBuyOrder(long orderId)

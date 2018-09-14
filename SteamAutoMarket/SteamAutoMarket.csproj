@@ -172,6 +172,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Steam\Market\Enums\ECancelSellOrderStatus.cs" />
     <Compile Include="Steam\TradeOffer\Models\ApiResponse.cs" />
     <Compile Include="Steam\TradeOffer\Models\AssetDescription.cs" />
     <Compile Include="Steam\TradeOffer\Models\CEconAsset.cs" />

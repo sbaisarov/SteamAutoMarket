@@ -4,6 +4,6 @@ namespace SteamAutoMarket.Steam.Market.Models.Json
 {
     public class JSuccessInt
     {
-        [JsonProperty("success")] public int Success { get; set; }
+        [JsonProperty("success")] public int Success { get; set; } = 0;
     }
 }
