@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
     using System.Threading;
     using System.Windows.Forms;
 
@@ -10,9 +11,9 @@
 
     public partial class WorkingProcessForm : Form
     {
-        private bool stopButtonPressed;
+        private static Thread workingThread;
 
-        private Thread workingThread;
+        private bool invokedFromStopButton;
 
         public WorkingProcessForm()
         {
@@ -33,12 +34,15 @@
                 Dispatcher.AsWorkingProcessForm(
                     () =>
                         {
-                            this.LogTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
                             this.ClearLogBox();
 
                             if (this.ScrollCheckBox.Checked)
                             {
-                                this.LogTextBox.ScrollToCaret();
+                                this.LogTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
+                            }
+                            else
+                            {
+                                this.AppendWithoutScroll($"{Logger.GetCurrentDate()} - {message}\n");
                             }
 
                             Logger.Working(message);
@@ -48,6 +52,20 @@
             {
                 Logger.Error(ex.Message, ex);
             }
+        }
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern IntPtr LockWindowUpdate(IntPtr handle);
+
+        private void AppendWithoutScroll(string text)
+        {
+            LockWindowUpdate(this.Handle);
+            var pos = this.LogTextBox.SelectionStart;
+            var len = this.LogTextBox.SelectionLength;
+            this.LogTextBox.AppendText(text);
+            this.LogTextBox.SelectionStart = pos;
+            this.LogTextBox.SelectionLength = len;
+            LockWindowUpdate(IntPtr.Zero);
         }
 
         private void ClearLogBox()
@@ -74,18 +92,19 @@
 
         private void StopWorkingProcessButtonClick(object sender, EventArgs e)
         {
-            this.stopButtonPressed = true;
+            this.invokedFromStopButton = true;
             Dispatcher.AsMainForm(
                 () =>
                     {
-                        this.workingThread.Abort();
+                        workingThread.Abort();
                         this.DeactivateForm();
                     });
         }
 
         private void WorkingProcessFormFormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!this.stopButtonPressed)
+            // if invoked from [X] button
+            if (this.invokedFromStopButton == false)
             {
                 this.StopWorkingProcessButtonClick(sender, e);
             }
@@ -97,13 +116,13 @@
                 () =>
                     {
                         this.Show();
-                        this.workingThread = new Thread(
+                        workingThread = new Thread(
                             () =>
                                 {
                                     process();
                                     this.DeactivateForm();
                                 });
-                        this.workingThread.Start();
+                        workingThread.Start();
                     });
         }
     }

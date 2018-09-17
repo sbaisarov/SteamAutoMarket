@@ -50,7 +50,13 @@
 
             itemsToSaleWorkingThread = new BackgroundWorker { WorkerSupportsCancellation = true };
             itemsToSaleWorkingThread.DoWork += async (o, e) => await LoadItemsToSalePrices();
-            itemsToSaleWorkingThread.RunWorkerCompleted += (o, e) => allItemsWorkingThread.RunWorkerAsync();
+            itemsToSaleWorkingThread.RunWorkerCompleted += (o, e) =>
+                {
+                    if (!allItemsWorkingThread.IsBusy)
+                    {
+                        allItemsWorkingThread.RunWorkerAsync();
+                    }
+                };
 
             if (CurrentPricesCache == null)
             {

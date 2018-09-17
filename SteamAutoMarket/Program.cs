@@ -1,7 +1,6 @@
 ﻿namespace SteamAutoMarket
 {
     using System;
-    using System.Threading;
     using System.Windows.Forms;
 
     using SteamAutoMarket.CustomElements.Forms;
@@ -9,6 +8,8 @@
 
     internal static class Program
     {
+        public static string Version { get; } = "0.1";
+
         public static MainForm MainForm { get; set; }
 
         public static WorkingProcessForm WorkingProcessForm { get; set; }
