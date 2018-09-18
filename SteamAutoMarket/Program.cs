@@ -1,23 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Management;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Management;
 using System.Net;
 using System.Text;
+
 using Newtonsoft.Json;
+
 using RestSharp.Deserializers;
+
 using SteamKit2.Internal;
 
 namespace SteamAutoMarket
 {
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Net.Http;
     using System.Threading;
     using System.Windows.Forms;
-    using System.Net.Http;
 
     using SteamAutoMarket.CustomElements.Forms;
     using SteamAutoMarket.Utils;
@@ -33,13 +37,14 @@ namespace SteamAutoMarket
         [STAThread]
         private static void Main()
         {
-            var access = CheckLicense();
+            /*var access = CheckLicense();
             if (!access)
             {
                 // show the message and quit
             }
-            
-            UpdateProgram();
+            */
+
+            // UpdateProgram();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();
@@ -61,21 +66,18 @@ namespace SteamAutoMarket
             var wb = WebRequest.Create("https://www.steambiz.store/api/checklicense");
             wb.Method = "POST";
             var data = new NameValueCollection();
+
             // read key from user database.
             // read from the input field if key is not present in user database
             data["key"] = "5c2ef522-c99a-487e-b624-652bd9fabacd";
-            string uid = string.Empty;
-            ManagementClass mc = new ManagementClass("win32_processor");
-            ManagementObjectCollection moc = mc.GetInstances();
-            foreach (ManagementObject mo in moc) {
-                uid = mo.Properties["processorID"].Value.ToString();
-                break;
-            }
+            var mc = new ManagementClass("win32_processor");
+            var moc = mc.GetInstances();
+            var uid = moc.Cast<ManagementObject>().Select(x => x.Properties["processorID"]).FirstOrDefault()?.Value
+                .ToString();
 
             try
             {
-                ManagementObject dsk = new ManagementObject(
-                    @"win32_logicaldisk.deviceid=""" + "C" + @":""");
+                var dsk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + "C" + @":""");
                 dsk.Get();
                 uid += dsk["VolumeSerialNumber"].ToString();
             }
@@ -85,23 +87,24 @@ namespace SteamAutoMarket
             }
 
             data["hwid"] = uid;
-            var postDataString = "";
+            var postDataString = string.Empty;
             foreach (string key in data)
             {
                 postDataString += key + "&=" + data[key];
             }
 
-            byte[] postData = Encoding.UTF8.GetBytes(postDataString);
-            Stream dataStream = wb.GetRequestStream();
+            var postData = Encoding.UTF8.GetBytes(postDataString);
+            var dataStream = wb.GetRequestStream();
             dataStream.Write(postData, 0, postData.Length);
             dataStream.Close();
-            WebResponse resp = wb.GetResponse();
-            if (((HttpWebResponse) resp).StatusDescription != "OK")
+            var resp = wb.GetResponse();
+            if (((HttpWebResponse)resp).StatusDescription != "OK")
             {
                 // show failed license checking to the user and quit
             }
+
             dataStream = resp.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
+            var reader = new StreamReader(dataStream);
             dynamic responseJson = JsonConvert.DeserializeObject(
                 Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(reader.ReadToEnd())));
             dataStream.Close();
@@ -113,13 +116,13 @@ namespace SteamAutoMarket
         private static void UpdateProgram()
         {
             // не тестировал, не уверен будет ли правильно работать
-            
+
             // сверить с версией бд и версией на удаленном сервере. Если разные - обновить
             var request = WebRequest.Create("https://software-assembly.com");
-            var response = request.GetResponse();  // get zip archive
-            Stream webStream = response.GetResponseStream();
+            var response = request.GetResponse(); // get zip archive
+            var webStream = response.GetResponseStream();
             Debug.Assert(webStream != null, nameof(webStream) + " != null");
-            ZipArchive archive = new ZipArchive(webStream);
+            var archive = new ZipArchive(webStream);
             archive.ExtractToDirectory(Directory.GetCurrentDirectory());
         }
     }
