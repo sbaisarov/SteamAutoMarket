@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
     using System.Threading;
     using System.Windows.Forms;
 
@@ -35,14 +34,12 @@
                     () =>
                         {
                             this.ClearLogBox();
+                            this.LogTextBox.Text += Logger.GetCurrentDate() + @" - " + message + Environment.NewLine;
 
                             if (this.ScrollCheckBox.Checked)
                             {
-                                this.LogTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
-                            }
-                            else
-                            {
-                                this.AppendWithoutScroll($"{Logger.GetCurrentDate()} - {message}\n");
+                                this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
+                                this.LogTextBox.ScrollToCaret();
                             }
 
                             Logger.Working(message);
@@ -52,20 +49,6 @@
             {
                 Logger.Error(ex.Message, ex);
             }
-        }
-
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern IntPtr LockWindowUpdate(IntPtr handle);
-
-        private void AppendWithoutScroll(string text)
-        {
-            LockWindowUpdate(this.Handle);
-            var pos = this.LogTextBox.SelectionStart;
-            var len = this.LogTextBox.SelectionLength;
-            this.LogTextBox.AppendText(text);
-            this.LogTextBox.SelectionStart = pos;
-            this.LogTextBox.SelectionLength = len;
-            LockWindowUpdate(IntPtr.Zero);
         }
 
         private void ClearLogBox()

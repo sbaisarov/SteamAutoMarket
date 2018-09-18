@@ -156,13 +156,17 @@
                     {
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(
                             $"[{currentItemIndex}/{totalItemsCount}] Selling - '{itemName}' for {package.Price}");
-                        if (package.Price != null)
+
+                        if (package.Price.HasValue)
                         {
                             this.SellOnMarket(item, package.Price.Value);
                         }
                         else
                         {
-                            throw new NullReferenceException($"Price for '{itemName}' is not loaded");
+                            Program.WorkingProcessForm.AppendWorkingProcessInfo(
+                                $"ERROR on selling '{itemName}' - Price cant be loaded. Skipping item.");
+                            currentItemIndex += package.Items.Count();
+                            break;
                         }
 
                         if (currentItemIndex % itemsToConfirmCount == 0)
@@ -207,14 +211,6 @@
                         Logger.Warning(message);
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(
                             $"ERROR on selling '{item.Description.Name}' - {message}");
-
-                        if (message.Contains("You already have a listing for this item pending confirmation"))
-                        {
-                            Program.WorkingProcessForm.AppendWorkingProcessInfo(
-                                "Confirming listing to avoid this error");
-                            this.ConfirmMarketTransactions();
-                            continue;
-                        }
 
                         Thread.Sleep(5000);
                         continue;
