@@ -1,5 +1,6 @@
 ﻿namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -31,6 +32,8 @@
 
         public async Task<double?> GetPrice(FullRgItem item, SteamManager manager)
         {
+            var itemName = item.Description.MarketHashName;
+
             double? price = null;
             switch (this.MarketSaleType)
             {
@@ -44,6 +47,8 @@
                             (double)price);
                     }
 
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Price for '{itemName}' is {price}");
+                    price = this.HandleChangeValue(price);
                     break;
 
                 case MarketSaleType.LowerThanAverage:
@@ -63,6 +68,8 @@
                         }
                     }
 
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Price for '{itemName}' is {price}");
+                    price = this.HandleChangeValue(price);
                     break;
 
                 case MarketSaleType.Recommended:
@@ -104,10 +111,35 @@
                         price = null;
                     }
 
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Average price for '{itemName}' is {averagePrice}");
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Current price for '{itemName}' is {currentPrice}");
                     break;
             }
 
             return price;
+        }
+
+        private double? HandleChangeValue(double? price)
+        {
+            if (!price.HasValue)
+            {
+                return null;
+            }
+
+            switch (this.ChangeValueType)
+            {
+                case ChangeValueType.ChangeValueTypeByValue:
+                    return price.Value + this.ChangeValue;
+
+                case ChangeValueType.ChangeValueTypeByPercent:
+                    return price.Value + (this.ChangeValue / 100 * price.Value);
+
+                case ChangeValueType.ChangeValueTypeNone:
+                    return price;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

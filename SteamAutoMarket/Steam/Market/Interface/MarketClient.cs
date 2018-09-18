@@ -301,7 +301,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
             {
                 respDes = JsonConvert.DeserializeObject<JSuccessInt>(resp.Data.Content);
             }
-            catch (JsonSerializationException ex) {}
+            catch (JsonSerializationException) { }
 
             if (respDes == null) return ECancelSellOrderStatus.Fail;
             

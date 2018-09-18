@@ -23,7 +23,7 @@
         {
             this.stopwatch.Stop();
 
-            this.ProcessCurrentStatus(itemsLeft);
+            this.ProcessCurrentStatus();
             this.ProcessAverageStatus(itemsLeft);
 
             this.stopwatch.Restart();
@@ -42,7 +42,7 @@
                 $"[TIME INFO] Average time left - {this.GetClearTimeLeft(timeLeft)}");
         }
 
-        private void ProcessCurrentStatus(int itemsLeft)
+        private void ProcessCurrentStatus()
         {
             var oneItemSeconds = this.stopwatch.ElapsedMilliseconds * this.oneItemTimeDivider;
             this.savedOneItemSecondsValues.Add(oneItemSeconds);
@@ -54,9 +54,8 @@
         private string GetClearTimeLeft(TimeSpan timeSpan)
         {
             var text = string.Empty;
-            text += (timeSpan.Hours > 1) ? $"{Math.Floor(timeSpan.TotalHours)} hours " : null;
+            text += (timeSpan.TotalHours > 1) ? $"{Math.Floor(timeSpan.TotalHours)} hours " : null;
             text += (timeSpan.TotalMinutes > 1) ? $"{timeSpan.Minutes} minutes " : null;
-            text += (timeSpan.TotalSeconds > 1) ? $"{timeSpan.Seconds} seconds " : null;
 
             return text;
         }

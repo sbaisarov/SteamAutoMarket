@@ -48,9 +48,9 @@ namespace SteamAutoMarket
             this.appCurtailButton = new System.Windows.Forms.Button();
             this.appExitButton = new System.Windows.Forms.Button();
             this.RightEdge = new System.Windows.Forms.Panel();
-            this.MarketControlTab = new MarketControlTab();
-            this.SettingsControlTab = new SettingsControlTab();
-            this.TradeControlTab = new TradeControlTab();
+            this.MarketControlTab = new SteamAutoMarket.CustomElements.Tabs.MarketControlTab();
+            this.SettingsControlTab = new SteamAutoMarket.CustomElements.Tabs.SettingsControlTab();
+            this.TradeControlTab = new SteamAutoMarket.CustomElements.Tabs.TradeControlTab();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoImageBox)).BeginInit();
             this.HeaderPanel.SuspendLayout();
@@ -231,10 +231,11 @@ namespace SteamAutoMarket
             // 
             // appCurtailButton
             // 
+            this.appCurtailButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.MinimizeButton;
+            this.appCurtailButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.appCurtailButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.appCurtailButton.FlatAppearance.BorderSize = 0;
             this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.appCurtailButton.Image = global::SteamAutoMarket.Properties.Resources.MinimizeButton;
             this.appCurtailButton.Location = new System.Drawing.Point(999, 3);
             this.appCurtailButton.Name = "appCurtailButton";
             this.appCurtailButton.Size = new System.Drawing.Size(27, 23);
@@ -245,10 +246,11 @@ namespace SteamAutoMarket
             // 
             // appExitButton
             // 
+            this.appExitButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.CloseButton;
+            this.appExitButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.appExitButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.appExitButton.FlatAppearance.BorderSize = 0;
             this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.appExitButton.Image = global::SteamAutoMarket.Properties.Resources.CloseButton;
             this.appExitButton.Location = new System.Drawing.Point(1029, 3);
             this.appExitButton.Name = "appExitButton";
             this.appExitButton.Size = new System.Drawing.Size(27, 23);
