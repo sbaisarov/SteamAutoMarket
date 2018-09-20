@@ -158,7 +158,7 @@
             message = $"Log: {message} + {GetDetailedExceptionInfo(ex)}";
             using (var wb = new WebClient())
             {
-                var response = wb.UploadString("http://www.steambiz.store/api/logerror", message);
+                var response = wb.UploadString("https://www.steambiz.store/api/logerror", message);
                 Debug("Critical error has been delivered to the server. Response: " + response);
             }
         }

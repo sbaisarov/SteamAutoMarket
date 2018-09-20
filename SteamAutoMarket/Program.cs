@@ -110,7 +110,7 @@ namespace SteamAutoMarket
             dataStream.Close();
             reader.Close();
             resp.Close();
-            return responseJson["sucess"];
+            return responseJson["success_3248237582"];
         }
 
         private static void UpdateProgram()

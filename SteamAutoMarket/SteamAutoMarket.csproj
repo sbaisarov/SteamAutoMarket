@@ -215,6 +215,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Steam\Market\Enums\ECancelSellOrderStatus.cs" />
+    <Compile Include="Steam\Market\Enums\ETransactionType.cs" />
+    <Compile Include="Steam\Market\Models\MyListingsSalesItem.cs" />
     <Compile Include="Steam\TradeOffer\Models\ApiResponse.cs" />
     <Compile Include="Steam\TradeOffer\Models\AssetDescription.cs" />
     <Compile Include="Steam\TradeOffer\Models\CEconAsset.cs" />
@@ -509,6 +511,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <Content Include="Steam\Market\Models\Json\currencies.json" />
     <None Include="Resources\update-1.png" />
     <None Include="Resources\yellow-update-button.png" />
   </ItemGroup>

@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket.CustomElements.Controls.Market
+﻿using SteamAutoMarket.WorkingProcess.MarketPriceFormation;
+
+namespace SteamAutoMarket.CustomElements.Controls.Market
 {
     using System;
     using System.Linq;
@@ -6,6 +8,7 @@
 
     using SteamAutoMarket.Utils;
     using SteamAutoMarket.WorkingProcess;
+    using SteamAutoMarket.Steam.Market.Enums;
 
     public partial class MarketRelistControl : UserControl
     {
