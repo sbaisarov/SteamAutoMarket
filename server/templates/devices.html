@@ -1,0 +1,5 @@
+{% macro render_devices(devices) %}
+	{% for device, data in devices.items() %}
+		<li>{{ device }}: {{ data }}</li>
+	{% endfor %}
+{% endmacro %}
