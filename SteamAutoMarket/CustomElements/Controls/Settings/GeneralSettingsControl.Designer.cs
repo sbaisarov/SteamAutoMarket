@@ -446,12 +446,12 @@
             this.Confirm2FANumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.Confirm2FANumericUpDown.Location = new System.Drawing.Point(3, 16);
             this.Confirm2FANumericUpDown.Maximum = new decimal(new int[] {
-            99999,
+            250,
             0,
             0,
             0});
             this.Confirm2FANumericUpDown.Minimum = new decimal(new int[] {
-            1,
+            10,
             0,
             0,
             0});
@@ -460,7 +460,7 @@
             this.Confirm2FANumericUpDown.TabIndex = 0;
             this.AddAllToolTip.SetToolTip(this.Confirm2FANumericUpDown, "The number of 2FA requests after which all the requests will be confirmed");
             this.Confirm2FANumericUpDown.Value = new decimal(new int[] {
-            10,
+            100,
             0,
             0,
             0});

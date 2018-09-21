@@ -21,7 +21,7 @@
 
         public string MarketInventoryAppId = "";
         public string MarketInventoryContexId = "";
-        public int Settings2FaItemsToConfirm = 10;
+        public int Settings2FaItemsToConfirm = 150;
         public int ErrorsOnSellToSkip = 10;
         public int SettingsAveragePriceParseDays = 7;
         public int SettingsHoursToBecomeOldAveragePrice = 12;
