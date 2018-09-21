@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkingProcessForm));
             this.LogTextBox = new System.Windows.Forms.RichTextBox();
             this.StopWorkingProcessButton = new System.Windows.Forms.Button();
@@ -35,6 +36,7 @@
             this.BottomEdge = new System.Windows.Forms.Panel();
             this.LeftEdge = new System.Windows.Forms.Panel();
             this.ScrollCheckBox = new System.Windows.Forms.CheckBox();
+            this.AddAllToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // LogTextBox
@@ -103,7 +105,18 @@
             this.ScrollCheckBox.Size = new System.Drawing.Size(52, 17);
             this.ScrollCheckBox.TabIndex = 24;
             this.ScrollCheckBox.Text = "Scroll";
+            this.AddAllToolTip.SetToolTip(this.ScrollCheckBox, "Selection will remain on the cursor if disabled");
             this.ScrollCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // AddAllToolTip
+            // 
+            this.AddAllToolTip.AutomaticDelay = 100;
+            this.AddAllToolTip.AutoPopDelay = 50000;
+            this.AddAllToolTip.InitialDelay = 100;
+            this.AddAllToolTip.IsBalloon = true;
+            this.AddAllToolTip.ReshowDelay = 20;
+            this.AddAllToolTip.UseAnimation = false;
+            this.AddAllToolTip.UseFading = false;
             // 
             // WorkingProcessForm
             // 
@@ -138,5 +151,6 @@
         private System.Windows.Forms.Panel BottomEdge;
         private System.Windows.Forms.Panel LeftEdge;
         private System.Windows.Forms.CheckBox ScrollCheckBox;
+        private System.Windows.Forms.ToolTip AddAllToolTip;
     }
 }

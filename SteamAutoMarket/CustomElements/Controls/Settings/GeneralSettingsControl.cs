@@ -457,5 +457,19 @@
                 Logger.Critical(ex);
             }
         }
+
+        private void ErrorsOnSellNumericUpDownValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SavedSettings.UpdateField(
+                    ref SavedSettings.Get().ErrorsOnSellToSkip,
+                    (int)this.Confirm2FANumericUpDown.Value);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
+        }
     }
 }

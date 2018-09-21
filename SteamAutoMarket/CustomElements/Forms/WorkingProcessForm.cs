@@ -6,6 +6,7 @@
     using System.Threading;
     using System.Windows.Forms;
 
+    using SteamAutoMarket.CustomElements.Utils;
     using SteamAutoMarket.Utils;
 
     public partial class WorkingProcessForm : Form
@@ -34,13 +35,8 @@
                     () =>
                         {
                             this.ClearLogBox();
-                            this.LogTextBox.Text += Logger.GetCurrentDate() + @" - " + message + Environment.NewLine;
 
-                            if (this.ScrollCheckBox.Checked)
-                            {
-                                this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
-                                this.LogTextBox.ScrollToCaret();
-                            }
+                            this.AppendLog(Logger.GetCurrentDate() + @" - " + message + Environment.NewLine);
 
                             Logger.Working(message);
                         });
@@ -48,6 +44,31 @@
             catch (Exception ex)
             {
                 Logger.Error(ex.Message, ex);
+            }
+        }
+
+        public void AppendLog(string text)
+        {
+            try
+            {
+                var autoScroll = this.ScrollCheckBox.Checked;
+
+                if (autoScroll)
+                {
+                    this.LogTextBox.AppendText(text);
+                }
+                else
+                {
+                    var selectionStart = this.LogTextBox.SelectionStart;
+                    var selectionLength = this.LogTextBox.SelectionLength;
+                    this.LogTextBox.Text += text;
+                    this.LogTextBox.SelectionStart = selectionStart;
+                    this.LogTextBox.SelectionLength = selectionLength;
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+                // ignored
             }
         }
 

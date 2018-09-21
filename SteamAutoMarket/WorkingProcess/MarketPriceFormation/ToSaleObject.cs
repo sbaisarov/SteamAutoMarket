@@ -32,7 +32,7 @@
 
         public async Task<double?> GetPrice(FullRgItem item, SteamManager manager)
         {
-            var itemName = item.Description.MarketHashName;
+            var itemName = item.Description.Name;
 
             double? price = null;
             switch (this.MarketSaleType)
@@ -47,7 +47,7 @@
                             (double)price);
                     }
 
-                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Price for '{itemName}' is {price}");
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Current price for '{itemName}' is {price}");
                     price = this.HandleChangeValue(price);
                     break;
 
@@ -68,8 +68,8 @@
                         }
                     }
 
-                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Price for '{itemName}' is {price}");
                     price = this.HandleChangeValue(price);
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Average price for '{itemName}' is {price}");
                     break;
 
                 case MarketSaleType.Recommended:
@@ -111,8 +111,8 @@
                         price = null;
                     }
 
-                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Average price for '{itemName}' is {averagePrice}");
                     Program.WorkingProcessForm.AppendWorkingProcessInfo($"Current price for '{itemName}' is {currentPrice}");
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Average price for '{itemName}' is {averagePrice}");
                     break;
             }
 

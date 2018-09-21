@@ -6,9 +6,11 @@
 
     public partial class MainForm : Form
     {
-        public Point DragCursorPoint;
-        public Point DragFormPoint;
-        public bool Dragging;
+        private Point dragCursorPoint;
+
+        private Point dragFormPoint;
+
+        private bool dragging;
 
         public MainForm()
         {
@@ -23,7 +25,7 @@
 
         public void LeftPanelHideShowButton_Click(object sender, EventArgs e)
         {
-            //1051; 630
+            // 1051; 630
             const int SizeChange = 115;
 
             if (this.Width == 1061)
@@ -86,33 +88,35 @@
             BotEdge.BringToFront();
         }
 
-
         public void Move_MouseDown(object sender, MouseEventArgs e)
         {
-            this.Dragging = true;
-            this.DragCursorPoint = Cursor.Position;
-            this.DragFormPoint = Location;
+            this.dragging = true;
+            this.dragCursorPoint = Cursor.Position;
+            this.dragFormPoint = Location;
         }
 
         public void Move_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!this.Dragging)
+            if (!this.dragging)
             {
                 return;
             }
 
-            var dif = Point.Subtract(Cursor.Position, new Size(this.DragCursorPoint));
-            this.Location = Point.Add(this.DragFormPoint, new Size(dif));
+            var dif = Point.Subtract(Cursor.Position, new Size(this.dragCursorPoint));
+            this.Location = Point.Add(this.dragFormPoint, new Size(dif));
         }
 
         public void Move_MouseUp(object sender, MouseEventArgs e)
         {
-            this.Dragging = false;
+            this.dragging = false;
         }
 
         public void AppCurtailButton_Click(object sender, EventArgs e)
         {
-            WindowState = FormWindowState.Minimized;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
         }
 
         public void FocusSidePanelToMenuElement(Panel sidePanel, Button button)
