@@ -89,7 +89,6 @@
             // 
             this.AccountsDataGridView.AllowUserToAddRows = false;
             this.AccountsDataGridView.AllowUserToDeleteRows = false;
-            this.AccountsDataGridView.AllowUserToResizeColumns = false;
             this.AccountsDataGridView.AllowUserToResizeRows = false;
             this.AccountsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.AccountsDataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));

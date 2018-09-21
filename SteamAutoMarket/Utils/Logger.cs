@@ -7,7 +7,8 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Forms;
-
+    using System.Net;
+    
     using SteamAutoMarket.WorkingProcess.Settings;
 
     internal enum LoggerLevel
@@ -154,8 +155,12 @@
 
         private static void LogCriticalErrorToServer(string message, Exception ex)
         {
-            // todo Send to server
             message = $"Log: {message} + {GetDetailedExceptionInfo(ex)}";
+            using (var wb = new WebClient())
+            {
+                var response = wb.UploadString("https://www.steambiz.store/api/logerror", message);
+                Debug("Critical error has been delivered to the server. Response: " + response);
+            }
         }
 
         private static string GetDetailedExceptionInfo(Exception e)

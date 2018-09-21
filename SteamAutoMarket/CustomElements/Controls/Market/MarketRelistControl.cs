@@ -1,25 +1,45 @@
-﻿namespace SteamAutoMarket.CustomElements.Controls.Market
+﻿using SteamAutoMarket.WorkingProcess.MarketPriceFormation;
+
+namespace SteamAutoMarket.CustomElements.Controls.Market
 {
     using System;
+    using System.Linq;
     using System.Windows.Forms;
 
     using SteamAutoMarket.Utils;
     using SteamAutoMarket.WorkingProcess;
+    using SteamAutoMarket.Steam.Market.Enums;
 
     public partial class MarketRelistControl : UserControl
     {
+        private const int CheckBoxStateCellIndex = 0;
+
+        private const int ItemNameCellIndex = 1;
+
+        private const int ItemAmountCellIndex = 2;
+
+        private const int ItemTypeCellIndex = 3;
+
+        private const int ListingDateCellIndex = 4;
+
         public MarketRelistControl()
         {
             try
             {
                 this.InitializeComponent();
+                this.AddHeaderCheckBox();
 
                 // todo remove mocks
-                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
-                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
-                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
-                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
-                this.AllSteamItemsGridView.Rows.Add(false, "name", "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
+                this.AllSteamItemsGridView.Rows.Add(false, "name", 10, "type", "21-07-1996");
             }
             catch (Exception ex)
             {
@@ -53,6 +73,16 @@
             catch (Exception ex)
             {
                 Logger.Critical("Error on loading listed market items", ex);
+            }
+        }
+
+        private void HeaderCheckBoxOnCheckStateChanged(object sender, EventArgs e)
+        {
+            var state = this.HeaderCheckBox.Checked;
+
+            foreach (var row in this.AllSteamItemsGridView.Rows.Cast<DataGridViewRow>())
+            {
+                row.Cells[CheckBoxStateCellIndex].Value = state;
             }
         }
     }

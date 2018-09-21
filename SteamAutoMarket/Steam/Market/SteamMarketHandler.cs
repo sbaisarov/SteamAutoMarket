@@ -81,7 +81,7 @@ namespace SteamAutoMarket.Steam.Market
 
         public SteamResponse Request(string url, Method method, string referer,
             IDictionary<string, string> @params = null, bool useAuthCookie = false,
-            CookieContainer cookieContainer = null)
+            CookieContainer cookieContainer = null, IDictionary<string, string> headers = null)
         {
             RequestsPerSecondGuard();
 
@@ -111,6 +111,10 @@ namespace SteamAutoMarket.Steam.Market
             if (@params != null && @params.Count > 0)
                 foreach (var p in @params)
                     request.AddParameter(p.Key, p.Value);
+            
+            if (headers != null && headers.Count > 0)
+                foreach (var h in headers)
+                    request.AddHeader(h.Key, h.Value);
 
             request.AddHeader("Referer", referer);
             request.AddHeader("Accept", "text/javascript, text/html, application/xml, text/xml, application/json, */*");

@@ -10,9 +10,9 @@
 
     public partial class WorkingProcessForm : Form
     {
-        private bool stopButtonPressed;
+        private static Thread workingThread;
 
-        private Thread workingThread;
+        private bool invokedFromStopButton;
 
         public WorkingProcessForm()
         {
@@ -33,11 +33,12 @@
                 Dispatcher.AsWorkingProcessForm(
                     () =>
                         {
-                            this.LogTextBox.AppendText($"{Logger.GetCurrentDate()} - {message}\n");
                             this.ClearLogBox();
+                            this.LogTextBox.Text += Logger.GetCurrentDate() + @" - " + message + Environment.NewLine;
 
                             if (this.ScrollCheckBox.Checked)
                             {
+                                this.LogTextBox.SelectionStart = this.LogTextBox.Text.Length;
                                 this.LogTextBox.ScrollToCaret();
                             }
 
@@ -74,18 +75,19 @@
 
         private void StopWorkingProcessButtonClick(object sender, EventArgs e)
         {
-            this.stopButtonPressed = true;
+            this.invokedFromStopButton = true;
             Dispatcher.AsMainForm(
                 () =>
                     {
-                        this.workingThread.Abort();
+                        workingThread.Abort();
                         this.DeactivateForm();
                     });
         }
 
         private void WorkingProcessFormFormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!this.stopButtonPressed)
+            // if invoked from [X] button
+            if (this.invokedFromStopButton == false)
             {
                 this.StopWorkingProcessButtonClick(sender, e);
             }
@@ -97,13 +99,13 @@
                 () =>
                     {
                         this.Show();
-                        this.workingThread = new Thread(
+                        workingThread = new Thread(
                             () =>
                                 {
                                     process();
                                     this.DeactivateForm();
                                 });
-                        this.workingThread.Start();
+                        workingThread.Start();
                     });
         }
     }
