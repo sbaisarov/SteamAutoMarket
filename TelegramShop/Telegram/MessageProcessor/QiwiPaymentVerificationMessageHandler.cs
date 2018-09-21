@@ -12,6 +12,8 @@
     using global::TelegramShop.Server;
     using global::TelegramShop.ShopUser;
 
+    using TelegramShop.Qiwi.QiwiApi.Enumerations;
+
     public class QiwiPaymentVerificationMessageHandler : TelegramShopMessageHandler
     {
         private static DateTime lastRequestDate = DateTime.MinValue;
@@ -131,10 +133,9 @@
                 return false;
             }
 
-            /*return payments.Any(
+            return payments.Any(
                 p => p.comment == uniquePaymentBody && p.status == PaymentStatus.SUCCESS
-                                                    && p.total.amount >= requiredMoneyAmount);*/
-            return true;
+                                                    && p.total.amount >= requiredMoneyAmount);
         }
     }
 }
