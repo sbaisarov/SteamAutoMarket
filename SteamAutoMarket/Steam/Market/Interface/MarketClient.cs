@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Text;
 using System.Globalization;
 using System.Linq;
-using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
+
 using HtmlAgilityPack;
+
 using Newtonsoft.Json;
+
 using RestSharp;
+
 using SteamAutoMarket.Steam.Market.Enums;
 using SteamAutoMarket.Steam.Market.Exceptions;
 using SteamAutoMarket.Steam.Market.Interface.Games;
 using SteamAutoMarket.Steam.Market.Models;
 using SteamAutoMarket.Steam.Market.Models.Json;
-using SteamKit2.Unified.Internal;
 
 namespace SteamAutoMarket.Steam.Market.Interface
 {
-    using System.Web;
-
     public class MarketClient
     {
         public const int PublisherFeePercentDefault = 10;
+
         public const int SteamFeePercent = 5;
+
         private readonly SteamMarketHandler _steam;
+
         public readonly Dictionary<string, string> Currencies;
+
         public readonly AvailableGames Games;
 
         public MarketClient(SteamMarketHandler steam)
@@ -60,17 +62,18 @@ namespace SteamAutoMarket.Steam.Market.Interface
             var walletInfoDes = JsonConvert.DeserializeObject<JWalletInfo>(json);
 
             var walletInfo = new WalletInfo
-            {
-                Currency = walletInfoDes.Currency,
-                WalletCountry = walletInfoDes.WalletCountry,
-                WalletBalance = (double) walletInfoDes.WalletBalance / 100,
-                MaxBalance = (double) walletInfoDes.MaxBalance / 100,
-                WalletFee = (double) walletInfoDes.WalletFee / 100,
-                WalletFeeMinimum = (double) walletInfoDes.WalletFeeMinimum / 100,
-                WalletFeePercent = Convert.ToInt32(walletInfoDes.WalletFeePercent * 100),
-                WalletPublisherFeePercent = Convert.ToInt32(walletInfoDes.WalletPublisherFeePercent * 100),
-                WalletTradeMaxBalance = (double) walletInfoDes.WalletTradeMaxBalance / 100
-            };
+                                 {
+                                     Currency = walletInfoDes.Currency,
+                                     WalletCountry = walletInfoDes.WalletCountry,
+                                     WalletBalance = (double)walletInfoDes.WalletBalance / 100,
+                                     MaxBalance = (double)walletInfoDes.MaxBalance / 100,
+                                     WalletFee = (double)walletInfoDes.WalletFee / 100,
+                                     WalletFeeMinimum = (double)walletInfoDes.WalletFeeMinimum / 100,
+                                     WalletFeePercent = Convert.ToInt32(walletInfoDes.WalletFeePercent * 100),
+                                     WalletPublisherFeePercent =
+                                         Convert.ToInt32(walletInfoDes.WalletPublisherFeePercent * 100),
+                                     WalletTradeMaxBalance = (double)walletInfoDes.WalletTradeMaxBalance / 100
+                                 };
 
             return walletInfo;
         }
@@ -123,12 +126,12 @@ namespace SteamAutoMarket.Steam.Market.Interface
             var walletInfo = WalletInfo(walletInfoMatch);
 
             var marketProfile = new MarketProfile
-            {
-                AvatarUrl = userAvatarSrc,
-                Id = userId,
-                Login = userLogin,
-                WalletInfo = walletInfo
-            };
+                                    {
+                                        AvatarUrl = userAvatarSrc,
+                                        Id = userId,
+                                        Login = userLogin,
+                                        WalletInfo = walletInfo
+                                    };
 
             return marketProfile;
         }
@@ -136,20 +139,26 @@ namespace SteamAutoMarket.Steam.Market.Interface
         /// <summary>
         ///     Returns no more than 100 items
         /// </summary>
-        public MarketSearch Search(string query = "", int start = 0, int count = 10, bool searchInDescriptions = false,
-            int appId = 0, EMarketSearchSortColumns sortColumn = EMarketSearchSortColumns.Name, ESort sort = ESort.Desc,
+        public MarketSearch Search(
+            string query = "",
+            int start = 0,
+            int count = 10,
+            bool searchInDescriptions = false,
+            int appId = 0,
+            EMarketSearchSortColumns sortColumn = EMarketSearchSortColumns.Name,
+            ESort sort = ESort.Desc,
             IDictionary<string, string> custom = null)
         {
             var urlQuery = new Dictionary<string, string>
-            {
-                {"query", query},
-                {"start", start.ToString()},
-                {"count", count.ToString()},
-                {"search_descriptions", (searchInDescriptions ? 1 : 0).ToString()},
-                {"appid", appId.ToString()},
-                {"sort_column", Utils.FirstCharacterToLower(sortColumn.ToString())},
-                {"sort_dir", Utils.FirstCharacterToLower(sort.ToString())}
-            };
+                               {
+                                   { "query", query },
+                                   { "start", start.ToString() },
+                                   { "count", count.ToString() },
+                                   { "search_descriptions", (searchInDescriptions ? 1 : 0).ToString() },
+                                   { "appid", appId.ToString() },
+                                   { "sort_column", Utils.FirstCharacterToLower(sortColumn.ToString()) },
+                                   { "sort_dir", Utils.FirstCharacterToLower(sort.ToString()) }
+                               };
 
             if (custom != null && custom.Count > 0)
                 urlQuery = urlQuery.Concat(custom).ToDictionary(x => x.Key, x => x.Value);
@@ -203,8 +212,11 @@ namespace SteamAutoMarket.Steam.Market.Interface
                 if (quantityNode == null)
                     throw new SteamException($"Cannot find quantity. Item [{name}], Index [{tempIndex}]");
 
-                var quantityParse = int.TryParse(quantityNode.InnerText, NumberStyles.AllowThousands,
-                    CultureInfo.InvariantCulture, out var quantity);
+                var quantityParse = int.TryParse(
+                    quantityNode.InnerText,
+                    NumberStyles.AllowThousands,
+                    CultureInfo.InvariantCulture,
+                    out var quantity);
                 if (!quantityParse)
                     throw new SteamException($"Cannot parse quantity. Item [{name}], Index [{tempIndex}]");
 
@@ -213,22 +225,26 @@ namespace SteamAutoMarket.Steam.Market.Interface
                     throw new SteamException($"Cannot find item price. Item [{name}], Index [{tempIndex}]");
                 var minPriceClean = minPriceNode.InnerText.Split(' ')[0];
 
-                var minPriceParse = double.TryParse(minPriceClean, NumberStyles.Currency,
-                    CultureInfo.GetCultureInfo("en-US"), out var minPrice);
+                var minPriceParse = double.TryParse(
+                    minPriceClean,
+                    NumberStyles.Currency,
+                    CultureInfo.GetCultureInfo("en-US"),
+                    out var minPrice);
                 if (!minPriceParse)
                     throw new SteamException($"Cannot parse min. price. Item [{name}], Index [{tempIndex}]");
 
-                marketSearch.Items.Add(new MarketSearchItem
-                {
-                    ImageUrl = imageUrl,
-                    Name = name,
-                    Quantity = quantity,
-                    Game = game,
-                    Url = url,
-                    MinPrice = minPrice,
-                    HashName = Utils.HashNameFromUrl(url),
-                    AppId = Utils.AppIdFromUrl(url)
-                });
+                marketSearch.Items.Add(
+                    new MarketSearchItem
+                        {
+                            ImageUrl = imageUrl,
+                            Name = name,
+                            Quantity = quantity,
+                            Game = game,
+                            Url = url,
+                            MinPrice = minPrice,
+                            HashName = Utils.HashNameFromUrl(url),
+                            AppId = Utils.AppIdFromUrl(url)
+                        });
             }
 
             return marketSearch;
@@ -239,13 +255,17 @@ namespace SteamAutoMarket.Steam.Market.Interface
             if (string.IsNullOrEmpty(hashName))
                 throw new SteamException("HashName should not be empty");
 
-            var resp = _steam.Request(Urls.Market + $"/listings/{appId}/{Uri.EscapeDataString(hashName)}", Method.GET, Urls.Market, null,
+            var resp = _steam.Request(
+                Urls.Market + $"/listings/{appId}/{Uri.EscapeDataString(hashName)}",
+                Method.GET,
+                Urls.Market,
+                null,
                 true);
             var content = resp.Data.Content;
 
-            var nameIdParse =
-                int.TryParse(Regex.Match(content, @"(?<=Market_LoadOrderSpread\()(.*)(?=\);)").Value.Trim(),
-                    out var nameId);
+            var nameIdParse = int.TryParse(
+                Regex.Match(content, @"(?<=Market_LoadOrderSpread\()(.*)(?=\);)").Value.Trim(),
+                out var nameId);
 
             if (!nameIdParse)
                 throw new SteamException($"Unable to find name ID of {hashName}");
@@ -259,21 +279,19 @@ namespace SteamAutoMarket.Steam.Market.Interface
             }
             else
             {
-                var publisherFeePercentParse = decimal.TryParse(publisherFeePercentMatch,
+                var publisherFeePercentParse = decimal.TryParse(
+                    publisherFeePercentMatch,
                     NumberStyles.AllowDecimalPoint,
-                    CultureInfo.InvariantCulture, out var publisherFeePercentOut);
+                    CultureInfo.InvariantCulture,
+                    out var publisherFeePercentOut);
 
                 if (!publisherFeePercentParse)
                     throw new SteamException("Cannot to parse publisher fee percent");
 
-                publisherFeePercent = (int) Math.Round(publisherFeePercentOut * 100);
+                publisherFeePercent = (int)Math.Round(publisherFeePercentOut * 100);
             }
 
-            var item = new MarketItemInfo
-            {
-                NameId = nameId,
-                PublisherFeePercent = publisherFeePercent
-            };
+            var item = new MarketItemInfo { NameId = nameId, PublisherFeePercent = publisherFeePercent };
 
             return item;
         }
@@ -288,17 +306,14 @@ namespace SteamAutoMarket.Steam.Market.Interface
         public ECancelSellOrderStatus CancelSellOrder(long orderid)
         {
             var headers = new Dictionary<string, string>
-            {
-                {"X-Prototype-Version", "1.7"},
-                {"X-Requested-With", "XMLHttpRequest"},
-                {"Referer", "https://steamcommunity.com/market/"},
-                {"Origin", "https://steamcommunity.com"},
-                {"Host", "steamcommunity.com"}
-            };
-            var data = new Dictionary<string, string>()
-            {
-                {"sessionid", _steam.Auth.SessionId()}
-            };
+                              {
+                                  { "X-Prototype-Version", "1.7" },
+                                  { "X-Requested-With", "XMLHttpRequest" },
+                                  { "Referer", "https://steamcommunity.com/market/" },
+                                  { "Origin", "https://steamcommunity.com" },
+                                  { "Host", "steamcommunity.com" }
+                              };
+            var data = new Dictionary<string, string>() { { "sessionid", _steam.Auth.SessionId() } };
             var url = "https://steamcommunity.com/market/removelisting/";
             var resp = _steam.Request(url + orderid, Method.POST, Urls.Market, data, headers: headers);
             JSuccessInt respDes = null;
@@ -306,10 +321,12 @@ namespace SteamAutoMarket.Steam.Market.Interface
             {
                 respDes = JsonConvert.DeserializeObject<JSuccessInt>(resp.Data.Content);
             }
-            catch (JsonSerializationException) { }
+            catch (JsonSerializationException)
+            {
+            }
 
             if (respDes == null) return ECancelSellOrderStatus.Fail;
-            
+
             switch (respDes.Success)
             {
                 case 1:
@@ -322,10 +339,9 @@ namespace SteamAutoMarket.Steam.Market.Interface
         public ECancelBuyOrderStatus CancelBuyOrder(long orderId)
         {
             var data = new Dictionary<string, string>
-            {
-                {"sessionid", _steam.Auth.SessionId()},
-                {"buy_orderid", orderId.ToString()}
-            };
+                           {
+                               { "sessionid", _steam.Auth.SessionId() }, { "buy_orderid", orderId.ToString() }
+                           };
 
             var resp = _steam.Request(Urls.Market + "/cancelbuyorder/", Method.POST, Urls.Market, data, true);
 
@@ -342,7 +358,11 @@ namespace SteamAutoMarket.Steam.Market.Interface
             }
         }
 
-        public Task<CreateBuyOrder> CreateBuyOrderAsync(string hashName, int appId, int currency, double totalPrice,
+        public Task<CreateBuyOrder> CreateBuyOrderAsync(
+            string hashName,
+            int appId,
+            int currency,
+            double totalPrice,
             int quantity = 1)
         {
             var result =
@@ -351,18 +371,22 @@ namespace SteamAutoMarket.Steam.Market.Interface
             return result;
         }
 
-        public CreateBuyOrder CreateBuyOrder(string hashName, int appId, int currency, double totalPrice,
+        public CreateBuyOrder CreateBuyOrder(
+            string hashName,
+            int appId,
+            int currency,
+            double totalPrice,
             int quantity = 1)
         {
             var data = new Dictionary<string, string>
-            {
-                {"sessionid", _steam.Auth.SessionId()},
-                {"currency", currency.ToString()},
-                {"appid", appId.ToString()},
-                {"market_hash_name", hashName},
-                {"price_total", (totalPrice * 100 * quantity).ToString(CultureInfo.InvariantCulture)},
-                {"quantity", quantity.ToString()}
-            };
+                           {
+                               { "sessionid", _steam.Auth.SessionId() },
+                               { "currency", currency.ToString() },
+                               { "appid", appId.ToString() },
+                               { "market_hash_name", hashName },
+                               { "price_total", (totalPrice * 100 * quantity).ToString(CultureInfo.InvariantCulture) },
+                               { "quantity", quantity.ToString() }
+                           };
 
             var resp = _steam.Request(Urls.Market + "/createbuyorder/", Method.POST, Urls.Market, data, true);
             var respDes = JsonConvert.DeserializeObject<JCreateBuyOrder>(resp.Data.Content);
@@ -396,7 +420,10 @@ namespace SteamAutoMarket.Steam.Market.Interface
             return order;
         }
 
-        public Task<ItemOrdersHistogram> ItemOrdersHistogramAsync(int nameId, string country, ELanguage lang,
+        public Task<ItemOrdersHistogram> ItemOrdersHistogramAsync(
+            int nameId,
+            string country,
+            ELanguage lang,
             int currency)
         {
             var result = new Task<ItemOrdersHistogram>(() => ItemOrdersHistogram(nameId, country, lang, currency));
@@ -406,35 +433,29 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
         public ItemOrdersHistogram ItemOrdersHistogram(int nameId, string country, ELanguage lang, int currency)
         {
-            var url = Urls.Market +
-                      $"/itemordershistogram?country={country}&language={lang}&currency={currency}&item_nameid={nameId}";
+            var url = Urls.Market
+                      + $"/itemordershistogram?country={country}&language={lang}&currency={currency}&item_nameid={nameId}";
             var resp = _steam.Request(url, Method.GET, Urls.Market, null, true);
             var respDes = JsonConvert.DeserializeObject<JItemOrdersHistogram>(resp.Data.Content);
 
             if (respDes.Success != 1)
                 throw new SteamException("Cannot load orders histogram");
 
-            var histogram = new ItemOrdersHistogram
-            {
-                SellOrderGraph = ConvertOrderGraph(respDes.SellOrderGraph)
-            };
+            var histogram = new ItemOrdersHistogram { SellOrderGraph = ConvertOrderGraph(respDes.SellOrderGraph) };
 
             if (respDes.BuyOrderGraph != null) histogram.BuyOrderGraph = ConvertOrderGraph(respDes.BuyOrderGraph);
 
             if (respDes.MinSellPrice != null)
-                histogram.MinSellPrice = (double) respDes.MinSellPrice / 100;
+                histogram.MinSellPrice = (double)respDes.MinSellPrice / 100;
             if (respDes.HighBuyOrder != null)
-                histogram.HighBuyOrder = (double) respDes.HighBuyOrder / 100;
+                histogram.HighBuyOrder = (double)respDes.HighBuyOrder / 100;
 
             return histogram;
         }
 
         public OrderGraph ConvertOrderGraph(List<dynamic[]> collection)
         {
-            var graph = new OrderGraph
-            {
-                Orders = new List<OrderGraphItem>()
-            };
+            var graph = new OrderGraph { Orders = new List<OrderGraphItem>() };
 
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
@@ -442,149 +463,143 @@ namespace SteamAutoMarket.Steam.Market.Interface
                 return graph;
 
             var tempCount = 0;
-            var list = collection.Select(x =>
-            {
-                var item = new OrderGraphItem
-                {
-                    Count = (int) x[1] - tempCount,
-                    Price = (double) x[0],
-                    Title = (string) x[2]
-                };
-                tempCount = item.Count;
-                return item;
-            }).ToList();
+            var list = collection.Select(
+                x =>
+                    {
+                        var item = new OrderGraphItem
+                                       {
+                                           Count = (int)x[1] - tempCount, Price = (double)x[0], Title = (string)x[2]
+                                       };
+                        tempCount = item.Count;
+                        return item;
+                    }).ToList();
 
             graph.Orders = list;
-            graph.Total = (int) collection.Last()[1];
+            graph.Total = (int)collection.Last()[1];
 
             return graph;
         }
 
-//        public Task<MyListings> MyListingsAsync()
-//        {
-//            var result = new Task<MyListings>(MyListings);
-//            result.Start();
-//            return result;
-//        }
+        // public Task<MyListings> MyListingsAsync()
+        // {
+        // var result = new Task<MyListings>(MyListings);
+        // result.Start();
+        // return result;
+        // }
 
-        //public List<HistoryItem> History(int count = 100, int start = 0)
-        //{
-        //    count = count > 500 ? 500 : count;
+        // public List<HistoryItem> History(int count = 100, int start = 0)
+        // {
+        // count = count > 500 ? 500 : count;
 
-        //    var data = new Dictionary<string, string>
-        //    {
-        //        {"count", count.ToString()},
-        //        {"start", start.ToString()}
-        //    };
+        // var data = new Dictionary<string, string>
+        // {
+        // {"count", count.ToString()},
+        // {"start", start.ToString()}
+        // };
 
-        //    var resp = _steam.Request(Urls.Market + "/myhistory/render/", Method.GET, Urls.Market, data, true);
-        //    JMyHistory respDes;
+        // var resp = _steam.Request(Urls.Market + "/myhistory/render/", Method.GET, Urls.Market, data, true);
+        // JMyHistory respDes;
 
-        //    try
-        //    {
-        //        respDes = JsonConvert.DeserializeObject<JMyHistory>(resp.Data.Content);
-        //    }
-        //    catch
-        //    {
-        //        throw new SteamException("Cannot load market history");
-        //    }
+        // try
+        // {
+        // respDes = JsonConvert.DeserializeObject<JMyHistory>(resp.Data.Content);
+        // }
+        // catch
+        // {
+        // throw new SteamException("Cannot load market history");
+        // }
 
-        //    if (!respDes.Success)
-        //        throw new SteamException("Cannot load market history");
+        // if (!respDes.Success)
+        // throw new SteamException("Cannot load market history");
 
-        //    if (respDes.TotalCount == null || respDes.TotalCount == 0)
-        //        return new List<HistoryItem>();
+        // if (respDes.TotalCount == null || respDes.TotalCount == 0)
+        // return new List<HistoryItem>();
 
-        //    var doc = new HtmlDocument();
-        //    doc.LoadHtml(respDes.Html);
+        // var doc = new HtmlDocument();
+        // doc.LoadHtml(respDes.Html);
 
-        //    var historyNodes =
-        //        doc.DocumentNode.SelectNodes(
-        //            "//div[contains(@id, 'history_row_') and @class='market_listing_row market_recent_listing_row']");
+        // var historyNodes =
+        // doc.DocumentNode.SelectNodes(
+        // "//div[contains(@id, 'history_row_') and @class='market_listing_row market_recent_listing_row']");
 
-        //    var hoversMatches = Regex.Matches(respDes.Hovers,
-        //        @"(?<=CreateItemHoverFromContainer\( g_rgAssets,)(.*?)(?=\))");
+        // var hoversMatches = Regex.Matches(respDes.Hovers,
+        // @"(?<=CreateItemHoverFromContainer\( g_rgAssets,)(.*?)(?=\))");
 
-        //    var hovers = hoversMatches.Cast<Match>()
-        //        .Select(s => s.Value.Split(',').Apply(a => a.Trim(' ', '\''))) - Apply function is unknown, the method is unnecessary so far
-        //        .Where(w => w[0].Contains("_name"))
-        //        .Select(s => new HistoryItemHover
-        //        {
-        //            AppId = int.Parse(s[1]),
-        //            ContextId = int.Parse(s[2]),
-        //            AssetId = long.Parse(s[3]),
-        //            HoverId = s[0].Replace("_name", "")
-        //        });
+        // var hovers = hoversMatches.Cast<Match>()
+        // .Select(s => s.Value.Split(',').Apply(a => a.Trim(' ', '\''))) - Apply function is unknown, the method is unnecessary so far
+        // .Where(w => w[0].Contains("_name"))
+        // .Select(s => new HistoryItemHover
+        // {
+        // AppId = int.Parse(s[1]),
+        // ContextId = int.Parse(s[2]),
+        // AssetId = long.Parse(s[3]),
+        // HoverId = s[0].Replace("_name", "")
+        // });
 
-        //    var assets = respDes.Assets.SelectMany(s => s.Value.SelectMany(c => c.Value.Select(m => m.Value)));
+        // var assets = respDes.Assets.SelectMany(s => s.Value.SelectMany(c => c.Value.Select(m => m.Value)));
 
-        //    var hoverAssetCompare = hovers
-        //        .Select(s => new KeyValuePair<HistoryItemHover, JDescription>(s, assets.First(f => f.Id == s.AssetId)));
+        // var hoverAssetCompare = hovers
+        // .Select(s => new KeyValuePair<HistoryItemHover, JDescription>(s, assets.First(f => f.Id == s.AssetId)));
 
-        //    var history = historyNodes.Select(s =>
-        //    {
-        //        var actionTypeString =
-        //            s.SelectSingleNode("div[@class='market_listing_left_cell market_listing_gainorloss']")
-        //                .InnerText.Trim();
+        // var history = historyNodes.Select(s =>
+        // {
+        // var actionTypeString =
+        // s.SelectSingleNode("div[@class='market_listing_left_cell market_listing_gainorloss']")
+        // .InnerText.Trim();
 
-        //        EMyHistoryActionType actionType;
-        //        switch (actionTypeString)
-        //        {
-        //            case "+":
-        //                actionType = EMyHistoryActionType.Buy;
-        //                break;
-        //            case "-":
-        //                actionType = EMyHistoryActionType.Sell;
-        //                break;
-        //            default:
-        //                actionType = EMyHistoryActionType.None;
-        //                break;
-        //        }
+        // EMyHistoryActionType actionType;
+        // switch (actionTypeString)
+        // {
+        // case "+":
+        // actionType = EMyHistoryActionType.Buy;
+        // break;
+        // case "-":
+        // actionType = EMyHistoryActionType.Sell;
+        // break;
+        // default:
+        // actionType = EMyHistoryActionType.None;
+        // break;
+        // }
 
-        //        var priceString = s.SelectSingleNode("div[contains(@class, 'market_listing_their_price')]")
-        //            .InnerText.Trim()
-        //            .Split(' ')[0];
+        // var priceString = s.SelectSingleNode("div[contains(@class, 'market_listing_their_price')]")
+        // .InnerText.Trim()
+        // .Split(' ')[0];
 
-        //        var dates =
-        //            s.SelectNodes("div[contains(@class, 'market_listing_listed_date')]")
-        //                .Select(x => x.InnerText.Trim()).ToArray();
+        // var dates =
+        // s.SelectNodes("div[contains(@class, 'market_listing_listed_date')]")
+        // .Select(x => x.InnerText.Trim()).ToArray();
 
-        //        var memberString = s.SelectSingleNode(".//div[@class='market_listing_whoactedwith_name_block']");
-        //        var member = memberString?.ChildNodes[2].InnerText.Trim() ?? s.SelectSingleNode("div[contains(@class, 'market_listing_whoactedwith')]").InnerText.Trim();
+        // var memberString = s.SelectSingleNode(".//div[@class='market_listing_whoactedwith_name_block']");
+        // var member = memberString?.ChildNodes[2].InnerText.Trim() ?? s.SelectSingleNode("div[contains(@class, 'market_listing_whoactedwith')]").InnerText.Trim();
 
-        //        return new HistoryItem
-        //        {
-        //            Asset = hoverAssetCompare.FirstOrDefault(w => w.Key.HoverId == s.Id).Value,
-        //            Game = s.SelectSingleNode(".//span[contains(@class, 'market_listing_game_name')]").InnerText.Trim(),
-        //            Name = s.SelectSingleNode(".//span[contains(@class, 'market_listing_item_name')]").InnerText.Trim(),
-        //            ActionType = actionType,
-        //            Member = member,
-        //            PlaceDate = string.IsNullOrEmpty(dates[0]) ? (DateTime?)null : Convert.ToDateTime(dates[0]),
-        //            DealDate = string.IsNullOrEmpty(dates[1]) ? (DateTime?)null : Convert.ToDateTime(dates[1]),
-        //            Price =
-        //                string.IsNullOrEmpty(priceString)
-        //                    ? (double?)null
-        //                    : double.Parse(priceString, NumberStyles.Currency, new CultureInfo("en-US"))
+        // return new HistoryItem
+        // {
+        // Asset = hoverAssetCompare.FirstOrDefault(w => w.Key.HoverId == s.Id).Value,
+        // Game = s.SelectSingleNode(".//span[contains(@class, 'market_listing_game_name')]").InnerText.Trim(),
+        // Name = s.SelectSingleNode(".//span[contains(@class, 'market_listing_item_name')]").InnerText.Trim(),
+        // ActionType = actionType,
+        // Member = member,
+        // PlaceDate = string.IsNullOrEmpty(dates[0]) ? (DateTime?)null : Convert.ToDateTime(dates[0]),
+        // DealDate = string.IsNullOrEmpty(dates[1]) ? (DateTime?)null : Convert.ToDateTime(dates[1]),
+        // Price =
+        // string.IsNullOrEmpty(priceString)
+        // ? (double?)null
+        // : double.Parse(priceString, NumberStyles.Currency, new CultureInfo("en-US"))
 
-        //        };
-        //    }).Where(w => w.ActionType != EMyHistoryActionType.None).ToList();
+        // };
+        // }).Where(w => w.ActionType != EMyHistoryActionType.None).ToList();
 
-        //    return history;
-        //}
-
+        // return history;
+        // }
         public MyListings MyListings(string currency = "5", int start = 0, int count = 100)
         {
-            var @params = new Dictionary<string, string>
-            {
-                {"start", $"{start}"},
-                {"count", $"{count}"}
-            };
+            var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
             var resp = _steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
 
             var respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
 
             if (!respDes.Success) throw new SteamException("Cannot load market listings");
-            
+
             var html = respDes.ResultsHtml;
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
@@ -596,7 +611,6 @@ namespace SteamAutoMarket.Steam.Market.Interface
             var ordersCountParse = int.TryParse(ordersCountNode.InnerText, out var ordersCount);
             if (!ordersCountParse)
                 throw new SteamException("Cannot parse buy listings node value");
-
 
             var sellCountNode = root.SelectSingleNode(".//span[@id='my_market_selllistings_number']");
             if (sellCountNode == null)
@@ -615,44 +629,54 @@ namespace SteamAutoMarket.Steam.Market.Interface
             }
 
             var myListings = new MyListings
-            {
-                ItemsToBuy = ordersCount,
-                ItemsToConfirm = confirmCount,
-                ItemsToSell = sellCount,
-                Orders = new List<MyListingsOrdersItem>(),
-                Sales = new List<MyListingsSalesItem>()
-            };
+                                 {
+                                     ItemsToBuy = ordersCount,
+                                     ItemsToConfirm = confirmCount,
+                                     ItemsToSell = sellCount,
+                                     Orders = new List<MyListingsOrdersItem>(),
+                                     Sales = new List<MyListingsSalesItem>()
+                                 };
 
-            var ordersNodes = root.SelectNodes("//div[contains(@id,'mybuyorder_')]");
-            if (ordersNodes == null)
-                throw new SteamException("Cannot parse orders listings nodes");
             var tempIndex = 0;
-            foreach (var item in ordersNodes)
+            var ordersNodes = root.SelectNodes("//div[contains(@id,'mybuyorder_')]");
+            if (ordersCount > 0)
             {
-                GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency);
+                if (ordersNodes == null)
+                    throw new SteamException("Cannot parse orders listings nodes");
+                foreach (var item in ordersNodes)
+                {
+                    GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency);
 
-                tempIndex++;
+                    tempIndex++;
+                }
+
+                myListings.SumOrderPricesToBuy = Math.Round(myListings.Orders.Sum(s => s.Price), 2);
             }
-            myListings.SumOrderPricesToBuy = Math.Round(myListings.Orders.Sum(s => s.Price), 2);
-            
-            var saleNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
-            if (saleNodes == null)
-                throw new SteamException("Cannot parse sale listings nodes");
-            tempIndex = 0;
-            foreach (var item in saleNodes)
-            {
-                GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency);
 
-                tempIndex++;
+            var saleNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
+            if (sellCount > 0)
+            {
+                if (saleNodes == null)
+                    throw new SteamException("Cannot parse sale listings nodes");
+                tempIndex = 0;
+                foreach (var item in saleNodes)
+                {
+                    GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency);
+
+                    tempIndex++;
+                }
             }
 
             return myListings;
-
         }
 
-        private void GetPendingTransactionData(HtmlNode item, int tempIndex, MyListings myListings,
-                                               ETransactionType type, string currency)
-        {            
+        private void GetPendingTransactionData(
+            HtmlNode item,
+            int tempIndex,
+            MyListings myListings,
+            ETransactionType type,
+            string currency)
+        {
             var node = item.SelectSingleNode(".//span[@class='market_listing_price']");
 
             if (node == null)
@@ -661,18 +685,14 @@ namespace SteamAutoMarket.Steam.Market.Interface
             var date = Regex.Match(item.InnerText, @"Listed: (.+)?\s").Groups[1].Value.Trim();
             if (type == ETransactionType.Order)
             {
-                var priceAndQuantityString = node.InnerText
-                    .Replace("\r", string.Empty)
-                    .Replace("\n", string.Empty)
-                    .Replace("\t", string.Empty)
-                    .Replace(" ", string.Empty);
+                var priceAndQuantityString = node.InnerText.Replace("\r", string.Empty).Replace("\n", string.Empty)
+                    .Replace("\t", string.Empty).Replace(" ", string.Empty);
                 var priceAndQuantitySplit = priceAndQuantityString.Split('@');
 
                 double price;
                 try
                 {
-                    var priceParse = priceAndQuantitySplit[1]
-                        .Replace(".", string.Empty);
+                    var priceParse = priceAndQuantitySplit[1].Replace(".", string.Empty);
                     var currencySymbol = Currencies[currency];
                     double.TryParse(priceParse.Replace(currencySymbol, string.Empty), out price);
                 }
@@ -680,12 +700,12 @@ namespace SteamAutoMarket.Steam.Market.Interface
                 {
                     throw new SteamException($"Cannot parse order listing price. Item index [{tempIndex}]");
                 }
-                
+
                 var quantityParse = int.TryParse(priceAndQuantitySplit[0], out var quantity);
-    
+
                 if (!quantityParse)
                     throw new SteamException($"Cannot parse order listing quantity. Item index [{tempIndex}]");
-            
+
                 var orderIdMatch = Regex.Match(item.InnerHtml, "(?<=mbuyorder_)([0-9]*)(?=_name)");
 
                 if (!orderIdMatch.Success)
@@ -707,30 +727,27 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
                 var nameNode = urlNode.InnerText;
 
-                myListings.Orders.Add(new MyListingsOrdersItem
-                {
-                    AppId = appId,
-                    HashName = hashName,
-                    Name = nameNode,
-                    Date = date,
-                    OrderId = orderId,
-                    Price = price,
-                    Quantity = quantity,
-                    Url = url
-                });
+                myListings.Orders.Add(
+                    new MyListingsOrdersItem
+                        {
+                            AppId = appId,
+                            HashName = hashName,
+                            Name = nameNode,
+                            Date = date,
+                            OrderId = orderId,
+                            Price = price,
+                            Quantity = quantity,
+                            Url = url
+                        });
             }
             else
             {
-                var priceString = node.InnerText
-                    .Replace("\r", string.Empty)
-                    .Replace("\n", string.Empty)
-                    .Replace("\t", string.Empty)
-                    .Replace(" ", string.Empty);
+                var priceString = node.InnerText.Replace("\r", string.Empty).Replace("\n", string.Empty)
+                    .Replace("\t", string.Empty).Replace(" ", string.Empty);
                 double price;
                 try
                 {
-                    var priceParse = priceString.Split('(')[0]
-                        .Replace(".", string.Empty);
+                    var priceParse = priceString.Split('(')[0].Replace(".", string.Empty);
                     var currencySymbol = Currencies[currency];
                     double.TryParse(priceParse.Replace(currencySymbol, string.Empty), out price);
                 }
@@ -738,7 +755,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
                 {
                     throw new SteamException($"Cannot parse order listing price. Item index [{tempIndex}]");
                 }
-                
+
                 var SaleIdMatch = Regex.Match(item.InnerHtml, "(?<=mylisting_)([0-9]*)(?=_name)");
                 if (!SaleIdMatch.Success)
                     throw new SteamException($"Cannot find sale listing ID. Item index [{tempIndex}]");
@@ -759,30 +776,34 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
                 var nameNode = urlNode.InnerText;
 
-                myListings.Sales.Add(new MyListingsSalesItem
-                {
-                    AppId = appId,
-                    HashName = hashName,
-                    Name = nameNode,
-                    Date = date,
-                    SaleId = saleId,
-                    Price = price,
-                    Url = url
-                });
+                myListings.Sales.Add(
+                    new MyListingsSalesItem
+                        {
+                            AppId = appId,
+                            HashName = hashName,
+                            Name = nameNode,
+                            Date = date,
+                            SaleId = saleId,
+                            Price = price,
+                            Url = url
+                        });
             }
         }
 
         public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithoutFee)
         {
             var data = new Dictionary<string, string>
-            {
-                {"appid", appId.ToString()},
-                {"sessionid", _steam.Auth.SessionId()},
-                {"contextid", contextId.ToString()},
-                {"assetid", assetId.ToString()},
-                {"amount", amount.ToString()},
-                {"price", (Math.Round(priceWithoutFee, 2) * 100).ToString(CultureInfo.InvariantCulture)}
-            };
+                           {
+                               { "appid", appId.ToString() },
+                               { "sessionid", _steam.Auth.SessionId() },
+                               { "contextid", contextId.ToString() },
+                               { "assetid", assetId.ToString() },
+                               { "amount", amount.ToString() },
+                               {
+                                   "price",
+                                   (Math.Round(priceWithoutFee, 2) * 100).ToString(CultureInfo.InvariantCulture)
+                               }
+                           };
 
             var resp = _steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true).Data.Content;
             return JsonConvert.DeserializeObject<JSellItem>(resp);
@@ -808,38 +829,35 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
             IEnumerable<dynamic> prices = Enumerable.ToList(respDes.Prices);
 
-            var list = prices
-                .Select((g, index) =>
-                {
-                    var count = 0;
-                    if (g[2] != null && !int.TryParse(g[2].ToString(), out count))
-                        throw new SteamException($"Cannot parse items count in price history. Index: {index}");
-
-                    double price = 0;
-                    if (g[1] != null && !double.TryParse(g[1].ToString(), out price))
-                        throw new SteamException($"Cannot parse item price in price history. Index: {index}");
-
-                    return new PriceHistoryItem
+            var list = prices.Select(
+                (g, index) =>
                     {
-                        DateTime = Utils.SteamTimeConvertor(g[0].ToString()),
-                        Count = count,
-                        Price = Math.Round(price, 2)
-                    };
-                })
-                .GroupBy(x => x.DateTime.Date)
-                .Select(g => new PriceHistoryDay
-                {
-                    Date = g.Key,
-                    History = g.Select(p => p).ToList()
-                })
-                .ToList();
+                        var count = 0;
+                        if (g[2] != null && !int.TryParse(g[2].ToString(), out count))
+                            throw new SteamException($"Cannot parse items count in price history. Index: {index}");
+
+                        double price = 0;
+                        if (g[1] != null && !double.TryParse(g[1].ToString(), out price))
+                            throw new SteamException($"Cannot parse item price in price history. Index: {index}");
+
+                        return new PriceHistoryItem
+                                   {
+                                       DateTime = Utils.SteamTimeConvertor(g[0].ToString()),
+                                       Count = count,
+                                       Price = Math.Round(price, 2)
+                                   };
+                    }).GroupBy(x => x.DateTime.Date).Select(
+                g => new PriceHistoryDay { Date = g.Key, History = g.Select(p => p).ToList() }).ToList();
 
             return list;
         }
 
         public string AppFilters(int appId)
         {
-            var resp = _steam.Request(Urls.Market + "/appfilters/" + appId, Method.GET, Urls.Market,
+            var resp = _steam.Request(
+                Urls.Market + "/appfilters/" + appId,
+                Method.GET,
+                Urls.Market,
                 useAuthCookie: true);
             var respDes = JsonConvert.DeserializeObject<JSuccess>(resp.Data.Content);
 
