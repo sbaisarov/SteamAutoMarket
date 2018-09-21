@@ -153,7 +153,7 @@
                         {
                             File.WriteAllText(FilePath, json);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             isUpdateFileAlreadyPlaned = false;
                             WriteToFile();
