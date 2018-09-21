@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7B6085A2-E073-410C-BC5F-0342FD8CF623}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TelegramShop</RootNamespace>
+    <AssemblyName>TelegramShop</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.3\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Telegram.Bot, Version=14.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Telegram.Bot.14.10.0\lib\net45\Telegram.Bot.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Balance\Balance.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Balance\BalanceType.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\General\CommissionRange.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\General\CurrencyAmount.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Payments\Payment.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Payments\PaymentProvider.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Profile\AuthInfo.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Profile\ContractInfo.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Profile\IdentificationInfo.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Profile\MobilePinInfo.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Profile\PassInfo.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Profile\PinInfo.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Profile\UserInfo.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Transaction\Transaction.cs" />
+    <Compile Include="Qiwi\QiwiApi\Entities\Transaction\TransactionState.cs" />
+    <Compile Include="Qiwi\QiwiApi\Enumerations\Currency.cs" />
+    <Compile Include="Qiwi\QiwiApi\Enumerations\Operation.cs" />
+    <Compile Include="Qiwi\QiwiApi\Enumerations\PaymentStatus.cs" />
+    <Compile Include="Qiwi\QiwiApi\Enumerations\Provider.cs" />
+    <Compile Include="Qiwi\QiwiApi\Enumerations\Source.cs" />
+    <Compile Include="Qiwi\QiwiApi\Exceptions\NotInitializedException.cs" />
+    <Compile Include="Qiwi\QiwiApi\Exceptions\RequestException.cs" />
+    <Compile Include="Qiwi\QiwiApi\Exceptions\RequestLimitException.cs" />
+    <Compile Include="Qiwi\QiwiApi\Exceptions\TransactionNotFoundException.cs" />
+    <Compile Include="Qiwi\QiwiApi\Exceptions\UnauthorizedException.cs" />
+    <Compile Include="Qiwi\QiwiApi\Exceptions\WalletNotFoundException.cs" />
+    <Compile Include="Qiwi\QiwiApi\QiwiApi.cs" />
+    <Compile Include="Qiwi\QiwiApi\Responses\BalanceResponse.cs" />
+    <Compile Include="Qiwi\QiwiApi\Responses\ComissionResponse.cs" />
+    <Compile Include="Qiwi\QiwiApi\Responses\PaymentHistoryResponse.cs" />
+    <Compile Include="Qiwi\QiwiApi\Responses\PaymentResponse.cs" />
+    <Compile Include="Qiwi\QiwiApi\Responses\PaymentStatisticsResponse.cs" />
+    <Compile Include="Qiwi\QiwiApi\Responses\UserProfileResponse.cs" />
+    <Compile Include="Qiwi\QiwiPaymentHistoryHandler.cs" />
+    <Compile Include="Server\LicenseServerHandler.cs" />
+    <Compile Include="SettingsModel.cs" />
+    <Compile Include="ShopUser\LicenseBuyProcessModel.cs" />
+    <Compile Include="ShopUser\ShopUserModel.cs" />
+    <Compile Include="ShopUser\ShopUserRepository.cs" />
+    <Compile Include="Telegram\AnswerMessage.cs" />
+    <Compile Include="Telegram\KeyboardBuilder.cs" />
+    <Compile Include="Telegram\EDialogState.cs" />
+    <Compile Include="Telegram\MessageProcessor\LicenseKeyAddMessageHandler.cs" />
+    <Compile Include="Telegram\MessageProcessor\BackMessageHandler.cs" />
+    <Compile Include="Telegram\MessageProcessor\LicensePurchaseDurationMessageHandler.cs" />
+    <Compile Include="Telegram\MessageProcessor\LicenseManageMessageHandler.cs" />
+    <Compile Include="Telegram\MessageProcessor\LicenseKeyRemoveMessageHandler.cs" />
+    <Compile Include="Telegram\MessageProcessor\LicenseRenewSubscriptionMessageHandler.cs" />
+    <Compile Include="Telegram\MessageProcessor\PaymentMethodMessageHandler.cs" />
+    <Compile Include="Telegram\MessageProcessor\QiwiPaymentMethodMessageHandler.cs" />
+    <Compile Include="Telegram\MessageProcessor\QiwiPaymentVerificationMessageHandler.cs" />
+    <Compile Include="Telegram\MessageProcessor\TextInfoMessageHandler.cs" />
+    <Compile Include="Telegram\MessageLogicHandler.cs" />
+    <Compile Include="Telegram\SpamHandler.cs" />
+    <Compile Include="Telegram\TelegramKeyboard.cs" />
+    <Compile Include="Telegram\MenuMessage.cs" />
+    <Compile Include="Telegram\TelegramShopClient.cs" />
+    <Compile Include="Telegram\MessageProcessor\TelegramShopMessageHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
