@@ -23,7 +23,7 @@
 
         public override async Task Process(TelegramShopClient telegramShop, MessageEventArgs e, ShopUserModel userModel)
         {
-            ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.EPaymentMethod);
+            ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.PaymentMethod);
             ShopUserRepository.UpdateUserLicenseDuration(userModel, this.daysCount, this.price);
 
             await telegramShop.SendMessage(e.Message.Chat.Id, this.GetPaymentMethodMessage(userModel), GetKeyboard(userModel.CurrentDialogState));

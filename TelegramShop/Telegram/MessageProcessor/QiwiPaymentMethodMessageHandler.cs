@@ -12,7 +12,7 @@
     {
         public override async Task Process(TelegramShopClient telegramShop, MessageEventArgs e, ShopUserModel userModel)
         {
-            ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.EQiwiPaymentVerification);
+            ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.QiwiPaymentVerification);
 
             await telegramShop.SendMessage(e.Message.Chat.Id, GetQiwiPaymentMessage(userModel), GetKeyboard(userModel.CurrentDialogState));
         }

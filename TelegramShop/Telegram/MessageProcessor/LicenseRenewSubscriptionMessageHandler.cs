@@ -12,7 +12,7 @@
     {
         public override async Task Process(TelegramShopClient telegramShop, MessageEventArgs e, ShopUserModel userModel)
         {
-            ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.ELicenseRenewSubscription);
+            ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.LicenseRenewSubscription);
             var keyboard = GetKeyboard(userModel.CurrentDialogState);
 
             await telegramShop.SendMessage(e.Message.Chat.Id, GetAllUsersLicenseMessage(userModel), keyboard);

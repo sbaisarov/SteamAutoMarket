@@ -9,7 +9,7 @@
     {
         public string Telegram { get; set; }
 
-        public EDialogState CurrentDialogState { get; set; } = EDialogState.EMain;
+        public EDialogState CurrentDialogState { get; set; } = EDialogState.Main;
 
         public HashSet<string> LicenseKeys { get; set; } = new HashSet<string>();
 

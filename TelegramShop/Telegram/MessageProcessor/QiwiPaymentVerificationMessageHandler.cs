@@ -20,7 +20,7 @@
 
         public override async Task Process(TelegramShopClient telegramShop, MessageEventArgs e, ShopUserModel userModel)
         {
-            ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.EQiwiPaymentVerification);
+            ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.QiwiPaymentVerification);
 
             if (cachedPayments != null && IsCachedOld() == false)
             {
@@ -43,7 +43,7 @@
 
             if (isPaymentPresent)
             {
-                ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.EMain);
+                ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.Main);
 
                 if (userModel.LicenseBuyProcess.LicenseKey == null)
                 {

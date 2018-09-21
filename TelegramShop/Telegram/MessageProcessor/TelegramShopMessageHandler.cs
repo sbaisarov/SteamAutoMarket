@@ -14,28 +14,28 @@
         {
             switch (state)
             {
-                case EDialogState.EMain:
+                case EDialogState.Main:
                     return TelegramKeyboard.MainKeyboard;
 
-                case EDialogState.EManageLicense:
+                case EDialogState.ManageLicense:
                     return TelegramKeyboard.ManageLicenseKeyboard;
 
-                case EDialogState.ELicenseRenewSubscription:
+                case EDialogState.LicenseRenewSubscription:
                     return TelegramKeyboard.LicenseRenewSubscriptionKeyboard;
 
-                case EDialogState.ELicenseDuration:
+                case EDialogState.LicenseDuration:
                     return TelegramKeyboard.LicenseDurationKeyboard;
 
-                case EDialogState.ELicenseKeyAdd:
+                case EDialogState.LicenseKeyAdd:
                     return TelegramKeyboard.LicenseAddKeyKeyboard;
 
-                case EDialogState.ELicenseKeyRemove:
+                case EDialogState.LicenseKeyRemove:
                     return TelegramKeyboard.LicenseRemoveKeyboard;
 
-                case EDialogState.EPaymentMethod:
+                case EDialogState.PaymentMethod:
                     return TelegramKeyboard.PaymentMethodKeyboard;
 
-                case EDialogState.EQiwiPaymentVerification:
+                case EDialogState.QiwiPaymentVerification:
                     return TelegramKeyboard.QiwiPaymentMethodKeyboard;
 
                 default:

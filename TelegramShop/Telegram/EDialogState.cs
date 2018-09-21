@@ -2,20 +2,20 @@
 {
     public enum EDialogState
     {
-        EMain,
+        Main,
 
-        EManageLicense,
+        ManageLicense,
 
-        ELicenseRenewSubscription,
+        LicenseRenewSubscription,
 
-        ELicenseDuration,
+        LicenseDuration,
 
-        ELicenseKeyAdd,
+        LicenseKeyAdd,
 
-        ELicenseKeyRemove,
+        LicenseKeyRemove,
 
-        EPaymentMethod,
+        PaymentMethod,
 
-        EQiwiPaymentVerification,
+        QiwiPaymentVerification,
     }
 }

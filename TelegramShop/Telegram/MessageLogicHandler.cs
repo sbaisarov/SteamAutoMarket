@@ -39,35 +39,35 @@
 
             switch (user.CurrentDialogState)
             {
-                case EDialogState.EMain:
+                case EDialogState.Main:
                     messageProcessor = GetMainPageProcessor(e, user);
                     break;
 
-                case EDialogState.EManageLicense:
+                case EDialogState.ManageLicense:
                     messageProcessor = GetManageLicensePageProcessor(e);
                     break;
 
-                case EDialogState.ELicenseRenewSubscription:
+                case EDialogState.LicenseRenewSubscription:
                     messageProcessor = GetLicenseRenewSubscriptionPageProcessor(e, user);
                     break;
 
-                case EDialogState.ELicenseDuration:
+                case EDialogState.LicenseDuration:
                     messageProcessor = GetLicenseDurationPageProcessor(e, user);
                     break;
 
-                case EDialogState.ELicenseKeyAdd:
+                case EDialogState.LicenseKeyAdd:
                     messageProcessor = GetLicenseKeyAddPageProcessor(e, user);
                     break;
 
-                case EDialogState.ELicenseKeyRemove:
+                case EDialogState.LicenseKeyRemove:
                     messageProcessor = GetLicenseKeyRemovePageProcessor(e, user);
                     break;
 
-                case EDialogState.EPaymentMethod:
+                case EDialogState.PaymentMethod:
                     messageProcessor = GetPaymentMethodPageProcessor(e);
                     break;
 
-                case EDialogState.EQiwiPaymentVerification:
+                case EDialogState.QiwiPaymentVerification:
                     messageProcessor = GetQiwiPaymentPageProcessor(e);
                     break;
 
@@ -96,7 +96,7 @@
                 case MenuMessage.BuyNewLicense: return new LicensePurchaseDurationMessageHandler(null);
                 case MenuMessage.LicenseRenewSubscription: return new LicenseRenewSubscriptionMessageHandler();
                 case MenuMessage.DemoLicense: return new TextInfoMessageHandler(AnswerMessage.DemoLicense);
-                case MenuMessage.Back: return new BackMessageHandler(EDialogState.EMain, AnswerMessage.MainMenu);
+                case MenuMessage.Back: return new BackMessageHandler(EDialogState.Main, AnswerMessage.MainMenu);
                 default: throw new ArgumentException(AnswerMessage.IncorrectCommand);
             }
         }
@@ -112,7 +112,7 @@
             {
                 case MenuMessage.LicenseAddNewKey: return new LicenseKeyAddMessageHandler();
                 case MenuMessage.LicenseRemoveKey: return new LicenseKeyRemoveMessageHandler();
-                case MenuMessage.Back: return new BackMessageHandler(EDialogState.EMain, AnswerMessage.MainMenu);
+                case MenuMessage.Back: return new BackMessageHandler(EDialogState.Main, AnswerMessage.MainMenu);
                 default: throw new ArgumentException(AnswerMessage.IncorrectCommand);
             }
         }
@@ -126,7 +126,7 @@
                 case MenuMessage.ThreeMonthDuration: return new PaymentMethodMessageHandler(90, 800, user.LicenseBuyProcess.LicenseKey);
                 case MenuMessage.SixMonthDuration: return new PaymentMethodMessageHandler(180, 1500, user.LicenseBuyProcess.LicenseKey);
                 case MenuMessage.OneYearDuration: return new PaymentMethodMessageHandler(365, 2800, user.LicenseBuyProcess.LicenseKey);
-                case MenuMessage.Back: return new BackMessageHandler(EDialogState.EMain, AnswerMessage.MainMenu);
+                case MenuMessage.Back: return new BackMessageHandler(EDialogState.Main, AnswerMessage.MainMenu);
                 default: throw new ArgumentException(AnswerMessage.IncorrectCommand);
             }
         }
@@ -135,7 +135,7 @@
         {
             if (e.Message.Text == MenuMessage.Back)
             {
-                return new BackMessageHandler(EDialogState.EMain, AnswerMessage.MainMenu);
+                return new BackMessageHandler(EDialogState.Main, AnswerMessage.MainMenu);
             }
         
             if (LicenseServerHandler.IsLicenseExist(e.Message.Text))
@@ -151,7 +151,7 @@
         {
             if (e.Message.Text == MenuMessage.Back)
             {
-                return new BackMessageHandler(EDialogState.EMain, AnswerMessage.MainMenu);
+                return new BackMessageHandler(EDialogState.Main, AnswerMessage.MainMenu);
             }
 
             if (user.LicenseKeys.Contains(e.Message.Text))
@@ -168,7 +168,7 @@
             switch (e.Message.Text)
             {
                 case MenuMessage.QiwiPaymentMethod: return new QiwiPaymentMethodMessageHandler();
-                case MenuMessage.Back: return new BackMessageHandler(EDialogState.EMain, AnswerMessage.MainMenu);
+                case MenuMessage.Back: return new BackMessageHandler(EDialogState.Main, AnswerMessage.MainMenu);
                 default: throw new ArgumentException(AnswerMessage.IncorrectCommand);
             }
         }
@@ -178,7 +178,7 @@
             switch (e.Message.Text)
             {
                 case MenuMessage.QiwiCheckTransactionStatus: return new QiwiPaymentVerificationMessageHandler();
-                case MenuMessage.Back: return new BackMessageHandler(EDialogState.EMain, AnswerMessage.MainMenu);
+                case MenuMessage.Back: return new BackMessageHandler(EDialogState.Main, AnswerMessage.MainMenu);
                 default: throw new ArgumentException(AnswerMessage.IncorrectCommand);
             }
         }
