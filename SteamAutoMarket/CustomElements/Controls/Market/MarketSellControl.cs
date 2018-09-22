@@ -26,7 +26,8 @@
             {
                 this.InitializeComponent();
                 this.allItemsListGridUtils = new AllItemsListGridUtils(this.AllSteamItemsGridView);
-                PriceLoader.Init(this.AllSteamItemsGridView, this.ItemsToSaleGridView);
+                PriceLoader.Init(this.AllSteamItemsGridView, ETableToLoad.AllItemsTable);
+                PriceLoader.Init(this.ItemsToSaleGridView, ETableToLoad.ItemsToSaleTable);
 
                 this.InventoryAppIdComboBox.Text = SavedSettings.Get().MarketInventoryAppId;
                 this.InventoryContextIdComboBox.Text = SavedSettings.Get().MarketInventoryContexId;
@@ -387,7 +388,7 @@
                                 contextId);
                             Logger.Info($"Inventory {appid} - {contextId} loading finished");
                             Dispatcher.AsMainForm(() => { this.LoadInventoryButton.Enabled = true; });
-                            PriceLoader.StartPriceLoading(TableToLoad.AllItemsTable);
+                            PriceLoader.StartPriceLoading(ETableToLoad.AllItemsTable);
                         });
             }
             catch (Exception ex)
@@ -470,7 +471,7 @@
                 this.ItemsToSaleGridView.CurrentCellChanged += this.ItemsToSaleGridViewCurrentCellChanged;
 
                 Logger.Debug("All selected items was added to sale list");
-                PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable);
+                PriceLoader.StartPriceLoading(ETableToLoad.ItemsToSaleTable);
             }
             catch (Exception ex)
             {
@@ -657,8 +658,8 @@
         {
             try
             {
-                PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable, true);
-                PriceLoader.StartPriceLoading(TableToLoad.AllItemsTable, true);
+                PriceLoader.StartPriceLoading(ETableToLoad.ItemsToSaleTable, true);
+                PriceLoader.StartPriceLoading(ETableToLoad.AllItemsTable, true);
             }
             catch (Exception ex)
             {
@@ -670,7 +671,7 @@
         {
             try
             {
-                PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable, true);
+                PriceLoader.StartPriceLoading(ETableToLoad.ItemsToSaleTable, true);
             }
             catch (Exception ex)
             {
@@ -765,7 +766,7 @@
                         break;
                     case 6:
                         this.allItemsListGridUtils.GridAddButtonClick(e.RowIndex, this.ItemsToSaleGridView);
-                        PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable);
+                        PriceLoader.StartPriceLoading(ETableToLoad.ItemsToSaleTable);
                         break;
                 }
             }

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneralSettingsControl));
             this.AccountsDataGridView = new System.Windows.Forms.DataGridView();
             this.AvatarColumn = new System.Windows.Forms.DataGridViewImageColumn();
@@ -71,6 +71,8 @@
             this.UpdateButton = new System.Windows.Forms.Button();
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.SessionRefreshCheckBox = new System.Windows.Forms.CheckBox();
+            this.PriceLoadThreadsGroupBox = new System.Windows.Forms.GroupBox();
+            this.PriceLoadThreadsNumericUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.AccountsDataGridView)).BeginInit();
             this.AccountGroupBox.SuspendLayout();
             this.MafilePathGroupBox.SuspendLayout();
@@ -87,6 +89,8 @@
             this.SteamApiGroupBox.SuspendLayout();
             this.LogGroupBox.SuspendLayout();
             this.SettingsGroupBox.SuspendLayout();
+            this.PriceLoadThreadsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PriceLoadThreadsNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // AccountsDataGridView
@@ -97,14 +101,14 @@
             this.AccountsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.AccountsDataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AccountsDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.AccountsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.AccountsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.AccountsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.AccountsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AvatarColumn,
@@ -113,14 +117,14 @@
             this.SteamApiColumn,
             this.AccountObjectHidenColumn,
             this.TruePasswordColumn});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.AccountsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AccountsDataGridView.DefaultCellStyle = dataGridViewCellStyle5;
             this.AccountsDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AccountsDataGridView.EnableHeadersVisualStyles = false;
             this.AccountsDataGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -130,9 +134,9 @@
             this.AccountsDataGridView.ReadOnly = true;
             this.AccountsDataGridView.RowHeadersVisible = false;
             this.AccountsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.AccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.AccountsDataGridView.RowTemplate.Height = 32;
             this.AccountsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.AccountsDataGridView.Size = new System.Drawing.Size(426, 331);
@@ -579,6 +583,7 @@
             // SettingsGroupBox
             // 
             this.SettingsGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.SettingsGroupBox.Controls.Add(this.PriceLoadThreadsGroupBox);
             this.SettingsGroupBox.Controls.Add(this.ErrorsOnSellGroupBox);
             this.SettingsGroupBox.Controls.Add(this.Confirm2FACountGroupBox);
             this.SettingsGroupBox.Controls.Add(this.AvrPriceGroupBox);
@@ -627,6 +632,47 @@
             this.SessionRefreshCheckBox.Text = "Force session refresh";
             this.SessionRefreshCheckBox.UseVisualStyleBackColor = true;
             // 
+            // PriceLoadThreadsGroupBox
+            // 
+            this.PriceLoadThreadsGroupBox.Controls.Add(this.PriceLoadThreadsNumericUpDown);
+            this.PriceLoadThreadsGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PriceLoadThreadsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.PriceLoadThreadsGroupBox.Location = new System.Drawing.Point(147, 65);
+            this.PriceLoadThreadsGroupBox.Name = "PriceLoadThreadsGroupBox";
+            this.PriceLoadThreadsGroupBox.Size = new System.Drawing.Size(134, 40);
+            this.PriceLoadThreadsGroupBox.TabIndex = 19;
+            this.PriceLoadThreadsGroupBox.TabStop = false;
+            this.PriceLoadThreadsGroupBox.Text = "Price load threads";
+            this.AddAllToolTip.SetToolTip(this.PriceLoadThreadsGroupBox, "Count of errors on same items to skip items group on sell on market");
+            // 
+            // PriceLoadThreadsNumericUpDown
+            // 
+            this.PriceLoadThreadsNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.PriceLoadThreadsNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PriceLoadThreadsNumericUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PriceLoadThreadsNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.PriceLoadThreadsNumericUpDown.Location = new System.Drawing.Point(3, 16);
+            this.PriceLoadThreadsNumericUpDown.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.PriceLoadThreadsNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.PriceLoadThreadsNumericUpDown.Name = "PriceLoadThreadsNumericUpDown";
+            this.PriceLoadThreadsNumericUpDown.Size = new System.Drawing.Size(128, 20);
+            this.PriceLoadThreadsNumericUpDown.TabIndex = 0;
+            this.AddAllToolTip.SetToolTip(this.PriceLoadThreadsNumericUpDown, "The number thread with which prices will be loaded in parallel");
+            this.PriceLoadThreadsNumericUpDown.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.PriceLoadThreadsNumericUpDown.ValueChanged += new System.EventHandler(this.PriceLoadThreadsNumericUpDownValueChanged);
+            // 
             // GeneralSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -663,6 +709,8 @@
             this.SteamApiGroupBox.PerformLayout();
             this.LogGroupBox.ResumeLayout(false);
             this.SettingsGroupBox.ResumeLayout(false);
+            this.PriceLoadThreadsGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PriceLoadThreadsNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -708,5 +756,7 @@
         private System.Windows.Forms.CheckBox SessionRefreshCheckBox;
         private System.Windows.Forms.GroupBox ErrorsOnSellGroupBox;
         private System.Windows.Forms.NumericUpDown ErrorsOnSellNumericUpDown;
+        private System.Windows.Forms.GroupBox PriceLoadThreadsGroupBox;
+        private System.Windows.Forms.NumericUpDown PriceLoadThreadsNumericUpDown;
     }
 }

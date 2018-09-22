@@ -1,8 +1,9 @@
 ﻿namespace SteamAutoMarket.WorkingProcess.PriceLoader
 {
-    public enum TableToLoad
+    public enum ETableToLoad
     {
         AllItemsTable,
-        ItemsToSaleTable
+        ItemsToSaleTable,
+        RelistTable
     }
 }

@@ -30,10 +30,10 @@
                 this.InitializeComponent();
                 this.allItemsListGridUtils = new AllItemsListGridUtils(this.AllSteamItemsToTradeGridView);
                 var settings = SavedSettings.Get();
-                this.InventoryAppIdComboBox.Text = settings.TRADE_INVENTORY_APP_ID;
-                this.InventoryContextIdComboBox.Text = settings.TRADE_INVENTORY_CONTEX_ID;
-                this.TradeParthenIdTextBox.Text = settings.TRADE_PARTNER_ID;
-                this.TradeTokenTextBox.Text = settings.TRADE_TOKEN;
+                this.InventoryAppIdComboBox.Text = settings.TradeInventoryAppId;
+                this.InventoryContextIdComboBox.Text = settings.TradeInventoryContexId;
+                this.TradeParthenIdTextBox.Text = settings.TradePartnerId;
+                this.TradeTokenTextBox.Text = settings.TradeToken;
 
                 this.LoadSavedAccountToSendTargetComboBox();
             }
@@ -461,7 +461,7 @@
             try
             {
                 SavedSettings.UpdateField(
-                    ref SavedSettings.Get().TRADE_INVENTORY_CONTEX_ID,
+                    ref SavedSettings.Get().TradeInventoryContexId,
                     this.InventoryContextIdComboBox.Text);
             }
             catch (Exception ex)
@@ -508,7 +508,7 @@
                 }
 
                 SavedSettings.UpdateField(
-                    ref SavedSettings.Get().TRADE_INVENTORY_APP_ID,
+                    ref SavedSettings.Get().TradeInventoryAppId,
                     this.InventoryAppIdComboBox.Text);
             }
             catch (Exception ex)
@@ -521,7 +521,7 @@
         {
             try
             {
-                SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_PARTNER_ID, this.TradeParthenIdTextBox.Text);
+                SavedSettings.UpdateField(ref SavedSettings.Get().TradePartnerId, this.TradeParthenIdTextBox.Text);
             }
             catch (Exception ex)
             {
@@ -533,7 +533,7 @@
         {
             try
             {
-                SavedSettings.UpdateField(ref SavedSettings.Get().TRADE_TOKEN, this.TradeTokenTextBox.Text);
+                SavedSettings.UpdateField(ref SavedSettings.Get().TradeToken, this.TradeTokenTextBox.Text);
             }
             catch (Exception ex)
             {
@@ -647,7 +647,7 @@
                         break;
                     case 6:
                         this.allItemsListGridUtils.GridAddButtonClick(e.RowIndex, this.ItemsToTradeGridView);
-                        PriceLoader.StartPriceLoading(TableToLoad.ItemsToSaleTable);
+                        PriceLoader.StartPriceLoading(ETableToLoad.ItemsToSaleTable);
                         break;
                 }
             }

@@ -3,45 +3,62 @@
     using System;
     using System.IO;
     using System.Runtime.CompilerServices;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     using Newtonsoft.Json;
 
     internal class SavedSettings
     {
-        public static string SettingsFilePath = AppDomain.CurrentDomain.BaseDirectory + "settings.ini";
+        public static readonly string SettingsFilePath = AppDomain.CurrentDomain.BaseDirectory + "settings.ini"; 
+
         private static SavedSettings cached;
 
-        public bool ActiveTradesActiveOnly = true;
+        public bool ActiveTradesActiveOnly  = true;
 
-        public string ActiveTradesLanguage = "";
-        public bool ActiveTradesReceived = true;
-        public bool ActiveTradesSent = true;
+        public string ActiveTradesLanguage  = string.Empty;
 
-        public string MarketInventoryAppId = "";
-        public string MarketInventoryContexId = "";
-        public int Settings2FaItemsToConfirm = 150;
-        public int ErrorsOnSellToSkip = 10;
-        public int SettingsAveragePriceParseDays = 7;
-        public int SettingsHoursToBecomeOldAveragePrice = 12;
-        public int SettingsHoursToBecomeOldCurrentPrice = 1;
+        public bool ActiveTradesReceived  = true;
 
-        public int SettingsLoggerLevel = 0;
-        public bool TradeHistoryIncludeFailed = true;
-        public string TradeHistoryLanguage = "en_US";
-        public int TradeHistoryMaxTrades = 10;
-        public bool TradeHistoryNavigatingBack = true;
-        public bool TradeHistoryReceived = true;
-        public bool TradeHistorySent = true;
+        public bool ActiveTradesSent  = true;
 
-        public string TradeHistoryTradeId = "";
+        public string MarketInventoryAppId  = string.Empty;
 
-        public string TRADE_INVENTORY_APP_ID = "";
-        public string TRADE_INVENTORY_CONTEX_ID = "";
-        public string TRADE_PARTNER_ID = "";
-        public string TRADE_TOKEN = "";
+        public string MarketInventoryContexId  = string.Empty;
 
+        public int Settings2FaItemsToConfirm  = 150;
+
+        public int ErrorsOnSellToSkip  = 10;
+
+        public int PriceLoadingThreads  = 3;
+
+        public int SettingsAveragePriceParseDays  = 7;
+
+        public int SettingsHoursToBecomeOldAveragePrice  = 12;
+
+        public int SettingsHoursToBecomeOldCurrentPrice  = 1;
+
+        public int SettingsLoggerLevel  = 0;
+
+        public bool TradeHistoryIncludeFailed  = true;
+
+        public string TradeHistoryLanguage  = "en_US";
+
+        public int TradeHistoryMaxTrades  = 10;
+
+        public bool TradeHistoryNavigatingBack  = true;
+
+        public bool TradeHistoryReceived  = true;
+
+        public bool TradeHistorySent  = true;
+
+        public string TradeHistoryTradeId  = string.Empty;
+
+        public string TradeInventoryAppId  = string.Empty;
+
+        public string TradeInventoryContexId  = string.Empty;
+
+        public string TradePartnerId  = string.Empty;
+
+        public string TradeToken  = string.Empty;
 
         public static void UpdateField(ref string fieldToUpdate, string newValue)
         {
@@ -73,7 +90,11 @@
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static SavedSettings Get()
         {
-            if (cached != null) return cached;
+            if (cached != null)
+            {
+                return cached;
+            }
+
             if (!File.Exists(SettingsFilePath))
             {
                 cached = new SavedSettings();
@@ -81,8 +102,7 @@
                 return cached;
             }
 
-            cached = JsonConvert.DeserializeObject<SavedSettings>(
-                File.ReadAllText(SettingsFilePath));
+            cached = JsonConvert.DeserializeObject<SavedSettings>(File.ReadAllText(SettingsFilePath));
             return cached;
         }
 
@@ -96,27 +116,6 @@
         private static void UpdateAll()
         {
             SettingsUpdater.UpdateSettings();
-        }
-    }
-
-    internal class SettingsUpdater
-    {
-        internal static bool IsPending;
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void UpdateSettings()
-        {
-            if (IsPending) return;
-            IsPending = true;
-
-            Task.Run(() =>
-            {
-                Thread.Sleep(5000);
-                File.WriteAllText(SavedSettings.SettingsFilePath,
-                    JsonConvert.SerializeObject(SavedSettings.Get(), Formatting.Indented));
-                ;
-                IsPending = false;
-            });
         }
     }
 }

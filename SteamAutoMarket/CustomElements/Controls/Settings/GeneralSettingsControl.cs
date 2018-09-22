@@ -464,7 +464,21 @@
             {
                 SavedSettings.UpdateField(
                     ref SavedSettings.Get().ErrorsOnSellToSkip,
-                    (int)this.Confirm2FANumericUpDown.Value);
+                    (int)this.ErrorsOnSellNumericUpDown.Value);
+            }
+            catch (Exception ex)
+            {
+                Logger.Critical(ex);
+            }
+        }
+
+        private void PriceLoadThreadsNumericUpDownValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SavedSettings.UpdateField(
+                    ref SavedSettings.Get().PriceLoadingThreads,
+                    (int)this.PriceLoadThreadsNumericUpDown.Value);
             }
             catch (Exception ex)
             {

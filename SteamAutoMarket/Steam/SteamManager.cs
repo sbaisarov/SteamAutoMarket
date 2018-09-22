@@ -22,6 +22,7 @@
     using SteamAutoMarket.Utils;
     using SteamAutoMarket.WorkingProcess;
     using SteamAutoMarket.WorkingProcess.MarketPriceFormation;
+    using SteamAutoMarket.WorkingProcess.PriceLoader;
     using SteamAutoMarket.WorkingProcess.Settings;
 
     using SteamKit2;
@@ -115,6 +116,9 @@
 
         public void SellOnMarket(ToSaleObject items)
         {
+            Program.WorkingProcessForm.AppendWorkingProcessInfo($"Waiting for price loading process finish.");
+            PriceLoader.WaitForLoadFinish();
+
             var maxErrorsCount = SavedSettings.Get().ErrorsOnSellToSkip;
             var currentItemIndex = 1;
             var itemsToConfirmCount = SavedSettings.Get().Settings2FaItemsToConfirm;
@@ -421,6 +425,12 @@
                 "GET",
                 string.Empty,
                 this.Cookies);
+
+            if (response == null)
+            {
+                return false;
+            }
+
             var token = Regex.Match(response, @"https://steamcommunity\.com/tradeoffer/new/\?partner=.+&token=(.+?)\b")
                 .Groups[1].Value;
 

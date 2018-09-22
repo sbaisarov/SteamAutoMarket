@@ -267,9 +267,10 @@
       <DependentUpon>WorkingProcessForm.cs</DependentUpon>
     </Compile>
     <Compile Include="WorkingProcess\MarketPriceFormation\ToSaleObject.cs" />
+    <Compile Include="WorkingProcess\PriceLoader\PriceLoadTask.cs" />
     <Compile Include="WorkingProcess\PriceLoader\LoadedItemPrice.cs" />
     <Compile Include="WorkingProcess\PriceLoader\PricesCache.cs" />
-    <Compile Include="WorkingProcess\PriceLoader\TableToLoad.cs" />
+    <Compile Include="WorkingProcess\PriceLoader\ETableToLoad.cs" />
     <Compile Include="WorkingProcess\SellTimeTracker.cs" />
     <Compile Include="WorkingProcess\Settings\SavedSettings.cs" />
     <Compile Include="WorkingProcess\Settings\SavedSteamAccount.cs" />
@@ -367,6 +368,7 @@
     <Compile Include="WorkingProcess\Caches\ImagesCache.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\MarketSaleType.cs" />
     <Compile Include="WorkingProcess\PriceLoader\PriceLoader.cs" />
+    <Compile Include="WorkingProcess\Settings\SettingsUpdater.cs" />
     <EmbeddedResource Include="CustomElements\Controls\Market\MarketRelistControl.resx">
       <DependentUpon>MarketRelistControl.cs</DependentUpon>
     </EmbeddedResource>

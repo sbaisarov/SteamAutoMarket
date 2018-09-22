@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -14,79 +13,75 @@
 
     internal class PriceLoader
     {
-        private static AllItemsListGridUtils allItemsListGridUtils;
+        private static readonly Queue<PriceLoadTask> WorkingTasksQueue = new Queue<PriceLoadTask>();
+
+        private static Thread workingThread = new Thread(ProcessPendingTasks);
+
+        private static Semaphore semaphore = new Semaphore(
+            SavedSettings.Get().PriceLoadingThreads,
+            SavedSettings.Get().PriceLoadingThreads);
 
         private static bool isForced;
 
         private static DataGridView allItemsGrid;
 
+        private static AllItemsListGridUtils allItemsListGridUtils;
+
         private static DataGridView itemsToSaleGrid;
 
-        private static BackgroundWorker allItemsWorkingThread;
+        private static DataGridView relistGridView;
 
-        private static bool allItemsWorkingThreadWorking = false;
+        public static PricesCache AveragePricesCache { get; } = new PricesCache(
+            "average_prices_cache.ini",
+            SavedSettings.Get().SettingsHoursToBecomeOldAveragePrice);
 
-        private static BackgroundWorker itemsToSaleWorkingThread;
+        public static PricesCache CurrentPricesCache { get; } = new PricesCache(
+            "current_prices_cache.ini",
+            SavedSettings.Get().SettingsHoursToBecomeOldCurrentPrice);
 
-        private static bool itemsToSaleWorkingThreadWorking = false;
-
-        public static PricesCache CurrentPricesCache { get; private set; }
-
-        public static PricesCache AveragePricesCache { get; private set; }
-
-        public static void Init(DataGridView allItemsGrid, DataGridView itemsToSaleGrid)
+        public static void Init(DataGridView table, ETableToLoad tableToLoad)
         {
-            if (PriceLoader.itemsToSaleGrid != null && PriceLoader.allItemsGrid != null)
+            switch (tableToLoad)
             {
-                return;
-            }
+                case ETableToLoad.AllItemsTable:
+                    allItemsGrid = table;
+                    allItemsListGridUtils = new AllItemsListGridUtils(table);
+                    break;
 
-            PriceLoader.allItemsGrid = allItemsGrid;
-            allItemsListGridUtils = new AllItemsListGridUtils(allItemsGrid);
-            PriceLoader.itemsToSaleGrid = itemsToSaleGrid;
+                case ETableToLoad.ItemsToSaleTable:
+                    itemsToSaleGrid = table;
+                    break;
 
-            allItemsWorkingThread = new BackgroundWorker { WorkerSupportsCancellation = true };
-            allItemsWorkingThread.DoWork += async (o, e) => await LoadAllItemsToSalePrices();
+                case ETableToLoad.RelistTable:
+                    relistGridView = table;
+                    break;
 
-            itemsToSaleWorkingThread = new BackgroundWorker { WorkerSupportsCancellation = true };
-            itemsToSaleWorkingThread.DoWork += async (o, e) => await LoadItemsToSalePrices();
-            itemsToSaleWorkingThread.RunWorkerCompleted += (o, e) =>
-                {
-                    if (!allItemsWorkingThread.IsBusy)
-                    {
-                        allItemsWorkingThread.RunWorkerAsync();
-                    }
-                };
-
-            if (CurrentPricesCache == null)
-            {
-                CurrentPricesCache = new PricesCache(
-                    "current_prices_cache.ini",
-                    SavedSettings.Get().SettingsHoursToBecomeOldCurrentPrice);
-            }
-
-            if (AveragePricesCache == null)
-            {
-                AveragePricesCache = new PricesCache(
-                    "average_prices_cache.ini",
-                    SavedSettings.Get().SettingsHoursToBecomeOldAveragePrice);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(tableToLoad), tableToLoad, null);
             }
         }
 
         public static void StopAll()
         {
-            if (allItemsWorkingThreadWorking)
-            {
-                allItemsWorkingThread.CancelAsync();
-            }
+            WorkingTasksQueue.Clear();
+        }
 
-            if (itemsToSaleWorkingThreadWorking)
+        public static void WaitForLoadFinish()
+        {
+            try
             {
-                itemsToSaleWorkingThread.CancelAsync();
+                if (workingThread.IsAlive)
+                {
+                    workingThread.Join();
+                }
+            }
+            catch
+            {
+                // ignored
             }
         }
 
-        public static void StartPriceLoading(TableToLoad tableToLoad, bool force = false)
+        public static void StartPriceLoading(ETableToLoad tableToLoad, bool force = false)
         {
             isForced = force;
             if (isForced)
@@ -96,46 +91,84 @@
 
             switch (tableToLoad)
             {
-                case TableToLoad.AllItemsTable:
+                case ETableToLoad.AllItemsTable:
                     {
-                        if (allItemsWorkingThreadWorking)
-                        {
-                            return;
-                        }
-
-                        if (!itemsToSaleWorkingThreadWorking)
-                        {
-                            allItemsWorkingThread.RunWorkerAsync();
-                        }
-
+                        AddAllItemsToSaleTasksToQueue();
+                        StartWorkingThread();
                         break;
                     }
 
-                case TableToLoad.ItemsToSaleTable:
+                case ETableToLoad.ItemsToSaleTable:
                     {
-                        if (itemsToSaleWorkingThreadWorking)
-                        {
-                            return;
-                        }
+                        WorkingTasksQueue.Clear();
+                        AddItemsToSaleTasksToQueue();
+                        AddAllItemsToSaleTasksToQueue();
 
-                        if (allItemsWorkingThreadWorking)
-                        {
-                            allItemsWorkingThreadWorking = false;
-                        }
-
-                        itemsToSaleWorkingThread.RunWorkerAsync();
+                        StartWorkingThread();
                         break;
                     }
+
+                case ETableToLoad.RelistTable:
+                    {
+                        // todo
+                        break;
+                    }
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(tableToLoad), tableToLoad, null);
             }
         }
 
-        public static void ClearAllPriceCells(TableToLoad tableToLoad)
+        private static void ProcessPendingTasks()
+        {
+            while (WorkingTasksQueue.Count > 0)
+            {
+                try
+                {
+                    semaphore.WaitOne();
+                    var priceLoadTask = WorkingTasksQueue.Dequeue();
+
+                    Task.Run(
+                        () =>
+                            {
+                                if (priceLoadTask.Task.Status == TaskStatus.Created)
+                                {
+                                    priceLoadTask.Task.Start();
+                                    Task.WaitAll(priceLoadTask.Task);
+                                }
+
+                                semaphore.Release();
+                            });
+                }
+                catch (Exception ex)
+                {
+                    if (ex is SemaphoreFullException || ex is InvalidOperationException)
+                    {
+                        continue;
+                    }
+                }
+            }
+        }
+
+        private static void StartWorkingThread()
+        {
+            if (workingThread.ThreadState == ThreadState.Running)
+            {
+                return;
+            }
+
+            semaphore = new Semaphore(SavedSettings.Get().PriceLoadingThreads, SavedSettings.Get().PriceLoadingThreads);
+            workingThread = new Thread(ProcessPendingTasks);
+            workingThread.Start();
+        }
+
+        private static void ClearAllPriceCells(ETableToLoad tableToLoad)
         {
             DataGridViewTextBoxCell cell;
 
             switch (tableToLoad)
             {
-                case TableToLoad.AllItemsTable:
+                case ETableToLoad.AllItemsTable:
                     {
                         foreach (var row in allItemsGrid.Rows.Cast<DataGridViewRow>())
                         {
@@ -155,7 +188,7 @@
                         break;
                     }
 
-                case TableToLoad.ItemsToSaleTable:
+                case ETableToLoad.ItemsToSaleTable:
                     foreach (var row in itemsToSaleGrid.Rows.Cast<DataGridViewRow>())
                     {
                         cell = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, row.Index);
@@ -173,6 +206,10 @@
 
                     break;
 
+                case ETableToLoad.RelistTable:
+                    // todo
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(tableToLoad), tableToLoad, null);
             }
@@ -180,39 +217,17 @@
 
         #region ALL ITEMS
 
-        private static async Task LoadAllItemsToSalePrices()
+        private static void AddAllItemsToSaleTasksToQueue()
         {
-            allItemsWorkingThreadWorking = true;
-
             var rows = GetAllItemsRowsWithNoPrice();
-            var tasks = rows.Select(SetAllItemsListGridValues).ToList();
-            while (tasks.Count > 0 || allItemsWorkingThreadWorking == false)
-            {
-                var tasksCount = tasks.Count > 10 ? 10 : tasks.Count;
-                var tasksToWait = tasks.GetRange(0, tasksCount);
-                await Task.WhenAll(tasksToWait);
-                tasks.RemoveRange(0, tasksCount);
-            }
-
-            Thread.Sleep(1000);
-            rows = GetItemsToSaleRowsWithNoPrice();
-            if (rows.Count() != 0)
-            {
-                await LoadItemsToSalePrices();
-            }
-
-            allItemsWorkingThreadWorking = false;
+            var tasks = rows.Select(row => new Task(async () => await SetAllItemsListGridValues(row))).ToList();
+            tasks.ForEach(t => WorkingTasksQueue.Enqueue(new PriceLoadTask(ETableToLoad.AllItemsTable, t)));
         }
 
         private static async Task SetAllItemsListGridValues(DataGridViewRow row)
         {
             try
             {
-                if (allItemsWorkingThreadWorking == false)
-                {
-                    return;
-                }
-
                 var currentPriceCell = allItemsListGridUtils.GetGridCurrentPriceTextBoxCell(row.Index).Cell;
                 var averagePriceCell = allItemsListGridUtils.GetGridAveragePriceTextBoxCell(row.Index).Cell;
 
@@ -316,37 +331,14 @@
 
         #region ITEMS TO SALE
 
-        private static async Task LoadItemsToSalePrices()
+        private static void AddItemsToSaleTasksToQueue()
         {
-            itemsToSaleWorkingThreadWorking = true;
-
-            while (true)
-            {
-                var rows = GetItemsToSaleRowsWithNoPrice();
-                var tasks = rows.Select(SetRowCurrentPrices).ToList();
-
-                while (tasks.Count > 0 || itemsToSaleWorkingThreadWorking == false)
-                {
-                    var tasksCount = tasks.Count > 10 ? 10 : tasks.Count;
-                    var tasksToWait = tasks.GetRange(0, tasksCount);
-                    await Task.WhenAll(tasksToWait);
-                    tasks.RemoveRange(0, tasksCount);
-                }
-
-                Thread.Sleep(1000);
-                rows = GetItemsToSaleRowsWithNoPrice();
-                if (rows.Count() != 0)
-                {
-                    continue;
-                }
-
-                break;
-            }
-
-            itemsToSaleWorkingThreadWorking = false;
+            var rows = GetItemsToSaleRowsWithNoPrice();
+            var tasks = rows.Select(row => new Task(async () => await SetItemToSaleRowCurrentPrices(row))).ToList();
+            tasks.ForEach(t => WorkingTasksQueue.Enqueue(new PriceLoadTask(ETableToLoad.ItemsToSaleTable, t)));
         }
 
-        private static async Task SetRowCurrentPrices(DataGridViewRow row)
+        private static async Task SetItemToSaleRowCurrentPrices(DataGridViewRow row)
         {
             try
             {
