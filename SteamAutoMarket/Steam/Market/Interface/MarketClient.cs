@@ -419,8 +419,8 @@
             double totalPrice,
             int quantity = 1)
         {
-            var result =
-                new Task<CreateBuyOrder>(() => this.CreateBuyOrder(hashName, appId, currency, totalPrice, quantity));
+            var result = new Task<CreateBuyOrder>(
+                () => this.CreateBuyOrder(hashName, appId, currency, totalPrice, quantity));
             result.Start();
             return result;
         }
@@ -717,43 +717,41 @@
                                      ItemsToConfirm = confirmCount,
                                      ItemsToSell = sellCount,
                                      Orders = new List<MyListingsOrdersItem>(),
-                                     Sales = new List<MyListingsSalesItem>()
+                                     Sales = new List<MyListingsSalesItem>(),
+                                     ConfirmationSales = new List<MyListingsSalesItem>()
                                  };
 
-            var ordersNodes = root.SelectNodes("//div[contains(@id,'mybuyorder_')]");
-            if (ordersNodes == null)
-            {
-                throw new SteamException("Cannot parse orders listings nodes");
-            }
-
             var tempIndex = 0;
-            foreach (var item in ordersNodes)
+            var ordersNodes = root.SelectNodes("//div[contains(@id,'mybuyorder_')]");
+            if (ordersNodes != null)
             {
-                this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency);
+                foreach (var item in ordersNodes)
+                {
+                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency);
 
-                tempIndex++;
+                    tempIndex++;
+                }
+
+                myListings.SumOrderPricesToBuy = Math.Round(myListings.Orders.Sum(s => s.Price), 2);
             }
-
-            myListings.SumOrderPricesToBuy = Math.Round(myListings.Orders.Sum(s => s.Price), 2);
 
             var saleNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
-            if (saleNodes == null)
+            if (saleNodes != null)
             {
-                throw new SteamException("Cannot parse sale listings nodes");
-            }
 
-            tempIndex = 0;
-            foreach (var item in saleNodes)
-            {
-                this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency);
+                tempIndex = 0;
+                foreach (var item in saleNodes)
+                {
+                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency);
 
-                tempIndex++;
+                    tempIndex++;
+                }
             }
 
             return myListings;
         }
 
-       public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithoutFee)
+        public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithoutFee)
         {
             var data = new Dictionary<string, string>
                            {
@@ -840,11 +838,11 @@
         }
 
         private void GetPendingTransactionData(
-           HtmlNode item,
-           int tempIndex,
-           MyListings myListings,
-           ETransactionType type,
-           string currency)
+            HtmlNode item,
+            int tempIndex,
+            MyListings myListings,
+            ETransactionType type,
+            string currency)
         {
             var node = item.SelectSingleNode(".//span[@class='market_listing_price']");
             if (node == null)
@@ -911,18 +909,18 @@
 
                 myListings.Orders.Add(
                     new MyListingsOrdersItem
-                    {
-                        AppId = appId,
-                        HashName = hashName,
-                        Name = nameNode,
-                        Date = date,
-                        OrderId = orderId,
-                        Price = price,
-                        Quantity = quantity,
-                        Url = url,
-                        ImageUrl = imageUrl,
-                        Game = game
-                    });
+                        {
+                            AppId = appId,
+                            HashName = hashName,
+                            Name = nameNode,
+                            Date = date,
+                            OrderId = orderId,
+                            Price = price,
+                            Quantity = quantity,
+                            Url = url,
+                            ImageUrl = imageUrl,
+                            Game = game
+                        });
             }
             else
             {
@@ -969,17 +967,17 @@
                 var nameNode = urlNode.InnerText;
 
                 var result = new MyListingsSalesItem
-                {
-                    AppId = appId,
-                    HashName = hashName,
-                    Name = nameNode,
-                    Date = date,
-                    SaleId = saleId,
-                    Price = price,
-                    Url = url,
-                    ImageUrl = imageUrl,
-                    Game = game,
-                };
+                                 {
+                                     AppId = appId,
+                                     HashName = hashName,
+                                     Name = nameNode,
+                                     Date = date,
+                                     SaleId = saleId,
+                                     Price = price,
+                                     Url = url,
+                                     ImageUrl = imageUrl,
+                                     Game = game,
+                                 };
 
                 var isConfirmation = item.InnerHtml.Contains("CancelMarketListingConfirmation");
 
