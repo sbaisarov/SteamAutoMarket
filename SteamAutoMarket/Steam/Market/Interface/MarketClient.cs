@@ -34,8 +34,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
         {
             _steam = steam;
             Games = new AvailableGames(_steam);
-            Currencies = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(
-                Directory.GetCurrentDirectory() + @"\currencies.json"));
+            Currencies = JsonConvert.DeserializeObject<Dictionary<string, string>>(Properties.Resources.Currencies);
         }
 
         public Task<MarketProfile> ProfileAsync()
@@ -722,8 +721,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
                     Quantity = quantity,
                     Url = url,
                     ImageUrl = imageUrl,
-                    Game = game
-                });
+                    Game = game});
             }
             else
             {

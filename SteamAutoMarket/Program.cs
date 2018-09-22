@@ -1,27 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Management;
-using System.Net;
-using System.Text;
-
-using Newtonsoft.Json;
-
-using RestSharp.Deserializers;
-
-using SteamKit2.Internal;
-
-namespace SteamAutoMarket
+﻿namespace SteamAutoMarket
 {
     using System;
+    using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
-    using System.Net.Http;
-    using System.Threading;
+    using System.Management;
+    using System.Net;
+    using System.Text;
     using System.Windows.Forms;
+
+    using Newtonsoft.Json;
 
     using SteamAutoMarket.CustomElements.Forms;
     using SteamAutoMarket.Utils;

@@ -511,7 +511,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
-    <Content Include="Resources\currencies.json" />
+    <Content Include="Steam\Market\Models\Json\currencies.json" />
     <None Include="Resources\update-1.png" />
     <None Include="Resources\yellow-update-button.png" />
   </ItemGroup>

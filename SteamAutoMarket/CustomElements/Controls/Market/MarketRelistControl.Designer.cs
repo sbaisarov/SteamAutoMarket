@@ -33,36 +33,38 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.AccountNameLable = new System.Windows.Forms.Label();
             this.AllSteamItemsGroupBox = new System.Windows.Forms.GroupBox();
             this.AllSteamItemsGridView = new System.Windows.Forms.DataGridView();
-            this.StartSteamSellButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.CancleSelectedButton = new System.Windows.Forms.Button();
             this.SplitterPanel = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.CalcleAllButton = new System.Windows.Forms.Button();
             this.LoadListingButton = new System.Windows.Forms.Button();
             this.AddAllToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemNameLable = new System.Windows.Forms.Label();
+            this.ItemImageBox = new System.Windows.Forms.Panel();
             this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemTypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ListedPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CurrentPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AveragePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
-            this.ItemNameLable = new System.Windows.Forms.Label();
-            this.ItemImageBox = new System.Windows.Forms.Panel();
+            this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.AveregeMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
+            this.CurrentMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
+            this.RecomendedPriceRadioButton = new System.Windows.Forms.RadioButton();
+            this.CancleOverpricedButton = new System.Windows.Forms.Button();
             this.ItemDescriptionTextBox = new SteamAutoMarket.CustomElements.Elements.RichTextBoxWithNoPaint();
             this.AllSteamItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).BeginInit();
             this.ItemDescriptionGroupBox.SuspendLayout();
+            this.PriceSettingsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // AccountNameLable
@@ -110,21 +112,21 @@
             this.CheckBoxColumn,
             this.NameColumn,
             this.Amount,
-            this.ItemTypeColumn,
+            this.TypeColumn,
             this.CurrentPriceColumn,
             this.ListedPrice,
             this.CurrentPrice,
             this.AveragePrice,
             this.AddButtonColumn,
             this.HidenItemMarketHashName});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.AllSteamItemsGridView.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AllSteamItemsGridView.DefaultCellStyle = dataGridViewCellStyle2;
             this.AllSteamItemsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AllSteamItemsGridView.EnableHeadersVisualStyles = false;
             this.AllSteamItemsGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -136,32 +138,20 @@
             this.AllSteamItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.AllSteamItemsGridView.Size = new System.Drawing.Size(612, 568);
             this.AllSteamItemsGridView.TabIndex = 7;
+            this.AllSteamItemsGridView.SelectionChanged += new System.EventHandler(this.AllSteamItemsGridViewSelectionChanged);
             // 
-            // StartSteamSellButton
+            // CancleSelectedButton
             // 
-            this.StartSteamSellButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.StartSteamSellButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.StartSteamSellButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.StartSteamSellButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.StartSteamSellButton.Location = new System.Drawing.Point(660, 418);
-            this.StartSteamSellButton.Name = "StartSteamSellButton";
-            this.StartSteamSellButton.Size = new System.Drawing.Size(203, 35);
-            this.StartSteamSellButton.TabIndex = 15;
-            this.StartSteamSellButton.Text = "Cancle selected";
-            this.StartSteamSellButton.UseVisualStyleBackColor = false;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.button1.Location = new System.Drawing.Point(660, 459);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(203, 35);
-            this.button1.TabIndex = 25;
-            this.button1.Text = "Relist selected";
-            this.button1.UseVisualStyleBackColor = false;
+            this.CancleSelectedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.CancleSelectedButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.CancleSelectedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CancleSelectedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.CancleSelectedButton.Location = new System.Drawing.Point(660, 511);
+            this.CancleSelectedButton.Name = "CancleSelectedButton";
+            this.CancleSelectedButton.Size = new System.Drawing.Size(203, 35);
+            this.CancleSelectedButton.TabIndex = 15;
+            this.CancleSelectedButton.Text = "Cancle selected";
+            this.CancleSelectedButton.UseVisualStyleBackColor = false;
             // 
             // SplitterPanel
             // 
@@ -172,31 +162,18 @@
             this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
             this.SplitterPanel.TabIndex = 22;
             // 
-            // button2
+            // CalcleAllButton
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.button2.Location = new System.Drawing.Point(660, 552);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(203, 35);
-            this.button2.TabIndex = 27;
-            this.button2.Text = "Relist all";
-            this.button2.UseVisualStyleBackColor = false;
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.button3.Location = new System.Drawing.Point(660, 511);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(203, 35);
-            this.button3.TabIndex = 26;
-            this.button3.Text = "Cancle all";
-            this.button3.UseVisualStyleBackColor = false;
+            this.CalcleAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.CalcleAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.CalcleAllButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CalcleAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.CalcleAllButton.Location = new System.Drawing.Point(660, 552);
+            this.CalcleAllButton.Name = "CalcleAllButton";
+            this.CalcleAllButton.Size = new System.Drawing.Size(203, 35);
+            this.CalcleAllButton.TabIndex = 26;
+            this.CalcleAllButton.Text = "Cancle all";
+            this.CalcleAllButton.UseVisualStyleBackColor = false;
             // 
             // LoadListingButton
             // 
@@ -205,7 +182,7 @@
             this.LoadListingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadListingButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.LoadListingButton.Image = global::SteamAutoMarket.Properties.Resources.Download;
-            this.LoadListingButton.Location = new System.Drawing.Point(721, 323);
+            this.LoadListingButton.Location = new System.Drawing.Point(172, 8);
             this.LoadListingButton.Name = "LoadListingButton";
             this.LoadListingButton.Size = new System.Drawing.Size(76, 84);
             this.LoadListingButton.TabIndex = 28;
@@ -222,93 +199,6 @@
             this.AddAllToolTip.ReshowDelay = 20;
             this.AddAllToolTip.UseAnimation = false;
             this.AddAllToolTip.UseFading = false;
-            // 
-            // CheckBoxColumn
-            // 
-            this.CheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.CheckBoxColumn.FillWeight = 30F;
-            this.CheckBoxColumn.HeaderText = "";
-            this.CheckBoxColumn.Name = "CheckBoxColumn";
-            this.CheckBoxColumn.Width = 30;
-            // 
-            // NameColumn
-            // 
-            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.NameColumn.FillWeight = 140F;
-            this.NameColumn.HeaderText = "Item name";
-            this.NameColumn.Name = "NameColumn";
-            this.NameColumn.ReadOnly = true;
-            this.NameColumn.Width = 140;
-            // 
-            // Amount
-            // 
-            this.Amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Amount.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Amount.HeaderText = "#";
-            this.Amount.Name = "Amount";
-            this.Amount.Width = 40;
-            // 
-            // ItemTypeColumn
-            // 
-            this.ItemTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ItemTypeColumn.FillWeight = 120F;
-            this.ItemTypeColumn.HeaderText = "Type";
-            this.ItemTypeColumn.Name = "ItemTypeColumn";
-            this.ItemTypeColumn.ReadOnly = true;
-            this.ItemTypeColumn.Width = 120;
-            // 
-            // CurrentPriceColumn
-            // 
-            this.CurrentPriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.CurrentPriceColumn.DefaultCellStyle = dataGridViewCellStyle3;
-            this.CurrentPriceColumn.FillWeight = 80F;
-            this.CurrentPriceColumn.HeaderText = "Listed on";
-            this.CurrentPriceColumn.Name = "CurrentPriceColumn";
-            this.CurrentPriceColumn.ReadOnly = true;
-            this.CurrentPriceColumn.ToolTipText = "ListedOn";
-            this.CurrentPriceColumn.Width = 80;
-            // 
-            // ListedPrice
-            // 
-            this.ListedPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ListedPrice.FillWeight = 50F;
-            this.ListedPrice.HeaderText = "Listed price";
-            this.ListedPrice.Name = "ListedPrice";
-            this.ListedPrice.Width = 50;
-            // 
-            // CurrentPrice
-            // 
-            this.CurrentPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.CurrentPrice.FillWeight = 50F;
-            this.CurrentPrice.HeaderText = "Cur price";
-            this.CurrentPrice.Name = "CurrentPrice";
-            this.CurrentPrice.Width = 50;
-            // 
-            // AveragePrice
-            // 
-            this.AveragePrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.AveragePrice.FillWeight = 50F;
-            this.AveragePrice.HeaderText = "Avr price";
-            this.AveragePrice.Name = "AveragePrice";
-            this.AveragePrice.Width = 50;
-            // 
-            // AddButtonColumn
-            // 
-            this.AddButtonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.AddButtonColumn.FillWeight = 30F;
-            this.AddButtonColumn.HeaderText = "Cancel";
-            this.AddButtonColumn.Name = "AddButtonColumn";
-            this.AddButtonColumn.Text = "❌";
-            this.AddButtonColumn.UseColumnTextForButtonValue = true;
-            // 
-            // HidenItemMarketHashName
-            // 
-            this.HidenItemMarketHashName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.HidenItemMarketHashName.HeaderText = "HidenIdColumn";
-            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
-            this.HidenItemMarketHashName.Visible = false;
             // 
             // ItemDescriptionGroupBox
             // 
@@ -342,6 +232,156 @@
             this.ItemImageBox.Size = new System.Drawing.Size(139, 120);
             this.ItemImageBox.TabIndex = 8;
             // 
+            // CheckBoxColumn
+            // 
+            this.CheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.CheckBoxColumn.FillWeight = 30F;
+            this.CheckBoxColumn.HeaderText = "";
+            this.CheckBoxColumn.Name = "CheckBoxColumn";
+            this.CheckBoxColumn.Width = 30;
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NameColumn.FillWeight = 160F;
+            this.NameColumn.HeaderText = "Item name";
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.ReadOnly = true;
+            this.NameColumn.Width = 160;
+            // 
+            // Amount
+            // 
+            this.Amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Amount.FillWeight = 45F;
+            this.Amount.HeaderText = "#";
+            this.Amount.Name = "Amount";
+            this.Amount.Width = 45;
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.TypeColumn.FillWeight = 105F;
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Name = "TypeColumn";
+            this.TypeColumn.Width = 105;
+            // 
+            // CurrentPriceColumn
+            // 
+            this.CurrentPriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.CurrentPriceColumn.FillWeight = 55F;
+            this.CurrentPriceColumn.HeaderText = "Listed on";
+            this.CurrentPriceColumn.Name = "CurrentPriceColumn";
+            this.CurrentPriceColumn.ReadOnly = true;
+            this.CurrentPriceColumn.ToolTipText = "ListedOn";
+            this.CurrentPriceColumn.Width = 55;
+            // 
+            // ListedPrice
+            // 
+            this.ListedPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ListedPrice.FillWeight = 55F;
+            this.ListedPrice.HeaderText = "Listed price";
+            this.ListedPrice.Name = "ListedPrice";
+            this.ListedPrice.Width = 55;
+            // 
+            // CurrentPrice
+            // 
+            this.CurrentPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.CurrentPrice.FillWeight = 55F;
+            this.CurrentPrice.HeaderText = "Cur price";
+            this.CurrentPrice.Name = "CurrentPrice";
+            this.CurrentPrice.Width = 55;
+            // 
+            // AveragePrice
+            // 
+            this.AveragePrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.AveragePrice.FillWeight = 55F;
+            this.AveragePrice.HeaderText = "Avr price";
+            this.AveragePrice.Name = "AveragePrice";
+            this.AveragePrice.Width = 55;
+            // 
+            // AddButtonColumn
+            // 
+            this.AddButtonColumn.FillWeight = 30F;
+            this.AddButtonColumn.HeaderText = "Cancel";
+            this.AddButtonColumn.Name = "AddButtonColumn";
+            this.AddButtonColumn.Text = "❌";
+            this.AddButtonColumn.UseColumnTextForButtonValue = true;
+            // 
+            // HidenItemMarketHashName
+            // 
+            this.HidenItemMarketHashName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.HidenItemMarketHashName.HeaderText = "HidenIdColumn";
+            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
+            this.HidenItemMarketHashName.Visible = false;
+            // 
+            // PriceSettingsGroupBox
+            // 
+            this.PriceSettingsGroupBox.Controls.Add(this.CancleOverpricedButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.AveregeMinusPriceRadioButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.CurrentMinusPriceRadioButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.LoadListingButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.RecomendedPriceRadioButton);
+            this.PriceSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(631, 329);
+            this.PriceSettingsGroupBox.Name = "PriceSettingsGroupBox";
+            this.PriceSettingsGroupBox.Size = new System.Drawing.Size(254, 150);
+            this.PriceSettingsGroupBox.TabIndex = 30;
+            this.PriceSettingsGroupBox.TabStop = false;
+            this.PriceSettingsGroupBox.Text = "Relist price formation setting ";
+            // 
+            // AveregeMinusPriceRadioButton
+            // 
+            this.AveregeMinusPriceRadioButton.AutoSize = true;
+            this.AveregeMinusPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AveregeMinusPriceRadioButton.Location = new System.Drawing.Point(12, 45);
+            this.AveregeMinusPriceRadioButton.Name = "AveregeMinusPriceRadioButton";
+            this.AveregeMinusPriceRadioButton.Size = new System.Drawing.Size(111, 20);
+            this.AveregeMinusPriceRadioButton.TabIndex = 5;
+            this.AveregeMinusPriceRadioButton.Text = "Average price";
+            this.AddAllToolTip.SetToolTip(this.AveregeMinusPriceRadioButton, "The value to add to the average calculated price (minimum and maximum are respect" +
+        "ed)");
+            this.AveregeMinusPriceRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // CurrentMinusPriceRadioButton
+            // 
+            this.CurrentMinusPriceRadioButton.AutoSize = true;
+            this.CurrentMinusPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurrentMinusPriceRadioButton.Location = new System.Drawing.Point(12, 71);
+            this.CurrentMinusPriceRadioButton.Name = "CurrentMinusPriceRadioButton";
+            this.CurrentMinusPriceRadioButton.Size = new System.Drawing.Size(101, 20);
+            this.CurrentMinusPriceRadioButton.TabIndex = 1;
+            this.CurrentMinusPriceRadioButton.Text = "Current price";
+            this.AddAllToolTip.SetToolTip(this.CurrentMinusPriceRadioButton, "The value to add to the current calculated price (minimum and maximum are respect" +
+        "ed)");
+            this.CurrentMinusPriceRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // RecomendedPriceRadioButton
+            // 
+            this.RecomendedPriceRadioButton.AutoSize = true;
+            this.RecomendedPriceRadioButton.Checked = true;
+            this.RecomendedPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RecomendedPriceRadioButton.Location = new System.Drawing.Point(12, 19);
+            this.RecomendedPriceRadioButton.Name = "RecomendedPriceRadioButton";
+            this.RecomendedPriceRadioButton.Size = new System.Drawing.Size(153, 20);
+            this.RecomendedPriceRadioButton.TabIndex = 0;
+            this.RecomendedPriceRadioButton.TabStop = true;
+            this.RecomendedPriceRadioButton.Text = "Recommended price";
+            this.AddAllToolTip.SetToolTip(this.RecomendedPriceRadioButton, "The largest of the maximum and current prices");
+            this.RecomendedPriceRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // CancleOverpricedButton
+            // 
+            this.CancleOverpricedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.CancleOverpricedButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.CancleOverpricedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CancleOverpricedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.CancleOverpricedButton.Location = new System.Drawing.Point(29, 102);
+            this.CancleOverpricedButton.Name = "CancleOverpricedButton";
+            this.CancleOverpricedButton.Size = new System.Drawing.Size(203, 35);
+            this.CancleOverpricedButton.TabIndex = 31;
+            this.CancleOverpricedButton.Text = "Cancle overpriced";
+            this.CancleOverpricedButton.UseVisualStyleBackColor = false;
+            // 
             // ItemDescriptionTextBox
             // 
             this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -360,12 +400,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
+            this.Controls.Add(this.PriceSettingsGroupBox);
             this.Controls.Add(this.ItemDescriptionGroupBox);
-            this.Controls.Add(this.LoadListingButton);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.StartSteamSellButton);
+            this.Controls.Add(this.CalcleAllButton);
+            this.Controls.Add(this.CancleSelectedButton);
             this.Controls.Add(this.AllSteamItemsGroupBox);
             this.Controls.Add(this.SplitterPanel);
             this.Controls.Add(this.AccountNameLable);
@@ -376,6 +414,8 @@
             this.AllSteamItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).EndInit();
             this.ItemDescriptionGroupBox.ResumeLayout(false);
+            this.PriceSettingsGroupBox.ResumeLayout(false);
+            this.PriceSettingsGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -410,26 +450,29 @@
         private System.Windows.Forms.Label AccountNameLable;
         private System.Windows.Forms.GroupBox AllSteamItemsGroupBox;
         private System.Windows.Forms.DataGridView AllSteamItemsGridView;
-        private System.Windows.Forms.Button StartSteamSellButton;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button CancleSelectedButton;
+        private System.Windows.Forms.Button CalcleAllButton;
         private System.Windows.Forms.Button LoadListingButton;
         private System.Windows.Forms.ToolTip AddAllToolTip;
         private CheckBox HeaderCheckBox;
+        private GroupBox ItemDescriptionGroupBox;
+        private Elements.RichTextBoxWithNoPaint ItemDescriptionTextBox;
+        private Label ItemNameLable;
+        private Panel ItemImageBox;
         private DataGridViewCheckBoxColumn CheckBoxColumn;
         private DataGridViewTextBoxColumn NameColumn;
         private DataGridViewTextBoxColumn Amount;
-        private DataGridViewTextBoxColumn ItemTypeColumn;
+        private DataGridViewTextBoxColumn TypeColumn;
         private DataGridViewTextBoxColumn CurrentPriceColumn;
         private DataGridViewTextBoxColumn ListedPrice;
         private DataGridViewTextBoxColumn CurrentPrice;
         private DataGridViewTextBoxColumn AveragePrice;
         private DataGridViewButtonColumn AddButtonColumn;
         private DataGridViewTextBoxColumn HidenItemMarketHashName;
-        private GroupBox ItemDescriptionGroupBox;
-        private Elements.RichTextBoxWithNoPaint ItemDescriptionTextBox;
-        private Label ItemNameLable;
-        private Panel ItemImageBox;
+        private GroupBox PriceSettingsGroupBox;
+        private RadioButton AveregeMinusPriceRadioButton;
+        private RadioButton CurrentMinusPriceRadioButton;
+        private RadioButton RecomendedPriceRadioButton;
+        private Button CancleOverpricedButton;
     }
 }

@@ -2,14 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Newtonsoft.Json;
 
     using SteamAuth;
 
@@ -118,10 +115,10 @@
 
         public void SellOnMarket(ToSaleObject items)
         {
+            var maxErrorsCount = SavedSettings.Get().ErrorsOnSellToSkip;
             var currentItemIndex = 1;
             var itemsToConfirmCount = SavedSettings.Get().Settings2FaItemsToConfirm;
-            var totalItemsCount = items.ItemsForSaleList.Sum(x => x.Items.Sum(e => int.Parse(e.Asset.Amount)));
-
+            var totalItemsCount = items.ItemsForSaleList.Sum(x => x.Items.Count());
             var timeTracker = new SellTimeTracker(itemsToConfirmCount);
 
             foreach (var package in items.ItemsForSaleList)
@@ -139,24 +136,33 @@
                         if (price != null)
                         {
                             package.Price = price;
-                            Program.WorkingProcessForm.AppendWorkingProcessInfo($"Price for '{itemName}' is {price}");
                         }
                     }
                     catch (Exception ex)
                     {
+                        if (ex is ThreadAbortException)
+                        {
+                            return;
+                        }
+
                         Logger.Error("Error on market price parse", ex);
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(
                             $"ERROR on selling '{itemName}' - {ex.Message}{ex.InnerException?.Message}");
+
+                        totalItemsCount -= package.Items.Sum(e => int.Parse(e.Asset.Amount));
+                        continue;
                     }
                 }
 
+                var packageElementIndex = 1;
+                var packageTotalItemsCount = package.Items.Count();
                 foreach (var item in package.Items)
                 {
+                    var errorsCount = 0;
                     try
                     {
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(
-                            $"[{currentItemIndex}/{totalItemsCount}] Selling - '{itemName}' for {package.Price}");
-
+                            $"[{currentItemIndex}/{totalItemsCount}] Selling - [{packageElementIndex++}/{packageTotalItemsCount}] - '{itemName}' for {package.Price}");
                         if (package.Price.HasValue)
                         {
                             this.SellOnMarket(item, package.Price.Value);
@@ -164,7 +170,7 @@
                         else
                         {
                             Program.WorkingProcessForm.AppendWorkingProcessInfo(
-                                $"ERROR on selling '{itemName}' - Price cant be loaded. Skipping item.");
+                                $"ERROR on selling '{itemName}' - Price is not loaded. Skipping item.");
                             currentItemIndex += package.Items.Count();
                             break;
                         }
@@ -178,9 +184,22 @@
                     }
                     catch (Exception ex)
                     {
+                        if (ex is ThreadAbortException)
+                        {
+                            return;
+                        }
+
                         Logger.Error("Error on market sell", ex);
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(
                             $"ERROR on selling '{itemName}' - {ex.Message}{ex.InnerException?.Message}");
+
+                        if (++errorsCount == maxErrorsCount)
+                        {
+                            Program.WorkingProcessForm.AppendWorkingProcessInfo(
+                                $"{maxErrorsCount} fails limit on sell {itemName} reached. Skipping item.");
+                            totalItemsCount -= packageTotalItemsCount - packageElementIndex;
+                            break;
+                        }
                     }
 
                     currentItemIndex++;
@@ -194,36 +213,18 @@
         {
             var asset = item.Asset;
             var description = item.Description;
-            while (true)
+
+            JSellItem resp = this.MarketClient.SellItem(
+                description.Appid,
+                int.Parse(asset.Contextid),
+                long.Parse(asset.Assetid),
+                int.Parse(item.Asset.Amount),
+                price / 1.15);
+
+            var message = resp.Message; // error message
+            if (message != null)
             {
-                try
-                {
-                    JSellItem resp = this.MarketClient.SellItem(
-                        description.Appid,
-                        int.Parse(asset.Contextid),
-                        long.Parse(asset.Assetid),
-                        int.Parse(item.Asset.Amount),
-                        price / 1.15);
-
-                    var message = resp.Message; // error message
-                    if (message != null)
-                    {
-                        Logger.Warning(message);
-                        Program.WorkingProcessForm.AppendWorkingProcessInfo(
-                            $"ERROR on selling '{item.Description.Name}' - {message}");
-
-                        Thread.Sleep(5000);
-                        continue;
-                    }
-
-                    break;
-                }
-                catch (JsonSerializationException ex)
-                {
-                    Logger.Warning(ex.Message);
-                    Program.WorkingProcessForm.AppendWorkingProcessInfo(
-                        $"ERROR on selling '{item.Description.Name}' - {ex.Message}{ex.InnerException?.Message}");
-                }
+                throw new SteamException(message);
             }
         }
 

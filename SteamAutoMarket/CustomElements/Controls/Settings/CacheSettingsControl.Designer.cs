@@ -47,6 +47,7 @@
             this.AverageInfoLable = new System.Windows.Forms.Label();
             this.AverageCacheGroupBox = new System.Windows.Forms.GroupBox();
             this.AverageCacheNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.UpdateButton = new System.Windows.Forms.Button();
             this.CurrentGroupBox = new System.Windows.Forms.GroupBox();
             this.CurrentObsoleteCacheCountLable = new System.Windows.Forms.Label();
             this.CurrentCacheCountLable = new System.Windows.Forms.Label();
@@ -63,7 +64,6 @@
             this.AverageClearObsoleteButton = new System.Windows.Forms.Button();
             this.AverageClearButton = new System.Windows.Forms.Button();
             this.AverageOpenButton = new System.Windows.Forms.Button();
-            this.UpdateButton = new System.Windows.Forms.Button();
             this.MidleImagePanel = new System.Windows.Forms.Panel();
             this.ImagesCacheGroupBox.SuspendLayout();
             this.MarketIdCacheGroupBox.SuspendLayout();
@@ -318,6 +318,22 @@
             this.AverageCacheNumericUpDown.TabIndex = 0;
             this.AverageCacheNumericUpDown.ValueChanged += new System.EventHandler(this.AverageCacheNumericUpDownValueChanged);
             // 
+            // UpdateButton
+            // 
+            this.UpdateButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.yellow_update_button;
+            this.UpdateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.UpdateButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.UpdateButton.FlatAppearance.BorderSize = 0;
+            this.UpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UpdateButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.UpdateButton.Location = new System.Drawing.Point(265, 513);
+            this.UpdateButton.Name = "UpdateButton";
+            this.UpdateButton.Size = new System.Drawing.Size(351, 66);
+            this.UpdateButton.TabIndex = 34;
+            this.AddAllToolTip.SetToolTip(this.UpdateButton, "Update cached items quantity");
+            this.UpdateButton.UseVisualStyleBackColor = true;
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButtonClick);
+            // 
             // CurrentGroupBox
             // 
             this.CurrentGroupBox.Controls.Add(this.CurrentObsoleteCacheCountLable);
@@ -533,29 +549,13 @@
             this.AverageOpenButton.UseVisualStyleBackColor = false;
             this.AverageOpenButton.Click += new System.EventHandler(this.AverageOpenButtonClick);
             // 
-            // UpdateButton
-            // 
-            this.UpdateButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.yellow_update_button;
-            this.UpdateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.UpdateButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.UpdateButton.FlatAppearance.BorderSize = 0;
-            this.UpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UpdateButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
-            this.UpdateButton.Location = new System.Drawing.Point(265, 513);
-            this.UpdateButton.Name = "UpdateButton";
-            this.UpdateButton.Size = new System.Drawing.Size(351, 66);
-            this.UpdateButton.TabIndex = 34;
-            this.AddAllToolTip.SetToolTip(this.UpdateButton, "Update cached items quantity");
-            this.UpdateButton.UseVisualStyleBackColor = true;
-            this.UpdateButton.Click += new System.EventHandler(this.UpdateButtonClick);
-            // 
             // MidleImagePanel
             // 
             this.MidleImagePanel.BackgroundImage = global::SteamAutoMarket.Properties.Resources.ClearCacheImage3;
             this.MidleImagePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.MidleImagePanel.Location = new System.Drawing.Point(265, 47);
+            this.MidleImagePanel.Location = new System.Drawing.Point(369, 147);
             this.MidleImagePanel.Name = "MidleImagePanel";
-            this.MidleImagePanel.Size = new System.Drawing.Size(351, 420);
+            this.MidleImagePanel.Size = new System.Drawing.Size(144, 176);
             this.MidleImagePanel.TabIndex = 33;
             // 
             // CacheSettingsControl

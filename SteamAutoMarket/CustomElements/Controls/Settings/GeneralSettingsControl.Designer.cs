@@ -60,6 +60,8 @@
             this.LoginButton = new System.Windows.Forms.Button();
             this.Confirm2FACountGroupBox = new System.Windows.Forms.GroupBox();
             this.Confirm2FANumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.ErrorsOnSellGroupBox = new System.Windows.Forms.GroupBox();
+            this.ErrorsOnSellNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SteamApiGroupBox = new System.Windows.Forms.GroupBox();
             this.SteamApiTextBox = new System.Windows.Forms.TextBox();
@@ -79,6 +81,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.AveragePriceDaysNumericUpDown)).BeginInit();
             this.Confirm2FACountGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Confirm2FANumericUpDown)).BeginInit();
+            this.ErrorsOnSellGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorsOnSellNumericUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SteamApiGroupBox.SuspendLayout();
             this.LogGroupBox.SuspendLayout();
@@ -442,12 +446,12 @@
             this.Confirm2FANumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.Confirm2FANumericUpDown.Location = new System.Drawing.Point(3, 16);
             this.Confirm2FANumericUpDown.Maximum = new decimal(new int[] {
-            99999,
+            250,
             0,
             0,
             0});
             this.Confirm2FANumericUpDown.Minimum = new decimal(new int[] {
-            1,
+            10,
             0,
             0,
             0});
@@ -456,11 +460,52 @@
             this.Confirm2FANumericUpDown.TabIndex = 0;
             this.AddAllToolTip.SetToolTip(this.Confirm2FANumericUpDown, "The number of 2FA requests after which all the requests will be confirmed");
             this.Confirm2FANumericUpDown.Value = new decimal(new int[] {
-            10,
+            100,
             0,
             0,
             0});
             this.Confirm2FANumericUpDown.ValueChanged += new System.EventHandler(this.Confirm2FaNumericUpDownValueChanged);
+            // 
+            // ErrorsOnSellGroupBox
+            // 
+            this.ErrorsOnSellGroupBox.Controls.Add(this.ErrorsOnSellNumericUpDown);
+            this.ErrorsOnSellGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ErrorsOnSellGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.ErrorsOnSellGroupBox.Location = new System.Drawing.Point(6, 65);
+            this.ErrorsOnSellGroupBox.Name = "ErrorsOnSellGroupBox";
+            this.ErrorsOnSellGroupBox.Size = new System.Drawing.Size(134, 40);
+            this.ErrorsOnSellGroupBox.TabIndex = 18;
+            this.ErrorsOnSellGroupBox.TabStop = false;
+            this.ErrorsOnSellGroupBox.Text = "To skip on sell";
+            this.AddAllToolTip.SetToolTip(this.ErrorsOnSellGroupBox, "Count of errors on same items to skip items group on sell on market");
+            // 
+            // ErrorsOnSellNumericUpDown
+            // 
+            this.ErrorsOnSellNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ErrorsOnSellNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ErrorsOnSellNumericUpDown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ErrorsOnSellNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.ErrorsOnSellNumericUpDown.Location = new System.Drawing.Point(3, 16);
+            this.ErrorsOnSellNumericUpDown.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.ErrorsOnSellNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ErrorsOnSellNumericUpDown.Name = "ErrorsOnSellNumericUpDown";
+            this.ErrorsOnSellNumericUpDown.Size = new System.Drawing.Size(128, 20);
+            this.ErrorsOnSellNumericUpDown.TabIndex = 0;
+            this.AddAllToolTip.SetToolTip(this.ErrorsOnSellNumericUpDown, "The number of 2FA requests after which all the requests will be confirmed");
+            this.ErrorsOnSellNumericUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ErrorsOnSellNumericUpDown.ValueChanged += new System.EventHandler(this.ErrorsOnSellNumericUpDownValueChanged);
             // 
             // groupBox1
             // 
@@ -534,6 +579,7 @@
             // SettingsGroupBox
             // 
             this.SettingsGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.SettingsGroupBox.Controls.Add(this.ErrorsOnSellGroupBox);
             this.SettingsGroupBox.Controls.Add(this.Confirm2FACountGroupBox);
             this.SettingsGroupBox.Controls.Add(this.AvrPriceGroupBox);
             this.SettingsGroupBox.Controls.Add(this.UpdateButton);
@@ -610,6 +656,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.AveragePriceDaysNumericUpDown)).EndInit();
             this.Confirm2FACountGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Confirm2FANumericUpDown)).EndInit();
+            this.ErrorsOnSellGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorsOnSellNumericUpDown)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.SteamApiGroupBox.ResumeLayout(false);
             this.SteamApiGroupBox.PerformLayout();
@@ -658,5 +706,7 @@
         private System.Windows.Forms.GroupBox Confirm2FACountGroupBox;
         private System.Windows.Forms.NumericUpDown Confirm2FANumericUpDown;
         private System.Windows.Forms.CheckBox SessionRefreshCheckBox;
+        private System.Windows.Forms.GroupBox ErrorsOnSellGroupBox;
+        private System.Windows.Forms.NumericUpDown ErrorsOnSellNumericUpDown;
     }
 }

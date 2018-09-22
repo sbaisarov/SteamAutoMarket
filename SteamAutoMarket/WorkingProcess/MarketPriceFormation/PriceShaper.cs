@@ -59,12 +59,12 @@
             var changeValueType = ChangeValueType.ChangeValueTypeNone;
             double changeValue = 0;
 
-            if (LowerValue > 0)
+            if (LowerValue != 0)
             {
                 changeValueType = ChangeValueType.ChangeValueTypeByValue;
                 changeValue = LowerValue;
             }
-            else if (LowerPercentValue > 0)
+            else if (LowerPercentValue != 0)
             {
                 changeValueType = ChangeValueType.ChangeValueTypeByPercent;
                 changeValue = LowerPercentValue;
