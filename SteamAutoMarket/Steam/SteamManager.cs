@@ -177,7 +177,7 @@
 
                         if (currentItemIndex % itemsToConfirmCount == 0)
                         {
-                            new Task(() => this.ConfirmMarketTransactions()).Start();
+                            Task.Run(this.ConfirmMarketTransactions);
 
                             timeTracker.TrackTime(totalItemsCount - currentItemIndex);
                         }
@@ -206,7 +206,7 @@
                 }
             }
 
-            new Task(() => this.ConfirmMarketTransactions()).Start();
+            Task.Run(this.ConfirmMarketTransactions);
         }
 
         public void SellOnMarket(FullRgItem item, double price)
