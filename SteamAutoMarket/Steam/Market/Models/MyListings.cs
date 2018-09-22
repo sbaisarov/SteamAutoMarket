@@ -10,5 +10,6 @@ namespace SteamAutoMarket.Steam.Market.Models
         public double SumOrderPricesToBuy { get; set; }
         public List<MyListingsOrdersItem> Orders { get; set; }
         public List<MyListingsSalesItem> Sales { get; set; }
+        public List<MyListingsSalesItem> ConfirmationSales { get; set; }
     }
 }

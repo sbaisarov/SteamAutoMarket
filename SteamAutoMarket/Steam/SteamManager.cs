@@ -171,7 +171,7 @@
 
                         if (currentItemIndex % itemsToConfirmCount == 0)
                         {
-                            this.ConfirmMarketTransactions();
+                            new Task(() => this.ConfirmMarketTransactions()).Start();
 
                             timeTracker.TrackTime(totalItemsCount - currentItemIndex);
                         }
@@ -187,7 +187,7 @@
                 }
             }
 
-            this.ConfirmMarketTransactions();
+            new Task(() => this.ConfirmMarketTransactions()).Start();
         }
 
         public void SellOnMarket(FullRgItem item, double price)
@@ -240,7 +240,7 @@
             return false;
         }
 
-        public void ConfirmMarketTransactions()
+        public async Task ConfirmMarketTransactions()
         {
             Program.WorkingProcessForm.AppendWorkingProcessInfo("Fetching confirmations");
             try

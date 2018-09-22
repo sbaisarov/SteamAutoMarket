@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Drawing.Text;
 using System.Globalization;
 using System.Linq;
@@ -653,15 +654,17 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
         private void GetPendingTransactionData(HtmlNode item, int tempIndex, MyListings myListings,
                                                ETransactionType type, string currency)
-        {            
+        {   
             var node = item.SelectSingleNode(".//span[@class='market_listing_price']");
-
             if (node == null)
                 throw new SteamException(
                     $"Cannot parse order listing price and quantity node. Item index [{tempIndex}]");
             var date = Regex.Match(item.InnerText, @"Listed: (.+)?\s").Groups[1].Value.Trim();
+            var game = item.SelectSingleNode("//span[@class='market_listing_game_name']").InnerText;
             if (type == ETransactionType.Order)
             {
+            var imageUrl = item.SelectSingleNode("//img[contains(@id, 'mybuyorder')]").Attributes["src"].Value
+                .Replace("38fx38f", "330x192");
                 var priceAndQuantityString = node.InnerText
                     .Replace("\r", string.Empty)
                     .Replace("\n", string.Empty)
@@ -717,11 +720,15 @@ namespace SteamAutoMarket.Steam.Market.Interface
                     OrderId = orderId,
                     Price = price,
                     Quantity = quantity,
-                    Url = url
+                    Url = url,
+                    ImageUrl = imageUrl,
+                    Game = game
                 });
             }
             else
             {
+                var imageUrl = item.SelectSingleNode("//img[contains(@id, 'mylisting')]").Attributes["src"].Value
+                    .Replace("38fx38f", "330x192");
                 var priceString = node.InnerText
                     .Replace("\r", string.Empty)
                     .Replace("\n", string.Empty)
@@ -760,7 +767,8 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
                 var nameNode = urlNode.InnerText;
 
-                myListings.Sales.Add(new MyListingsSalesItem
+
+                var result = new MyListingsSalesItem
                 {
                     AppId = appId,
                     HashName = hashName,
@@ -768,8 +776,21 @@ namespace SteamAutoMarket.Steam.Market.Interface
                     Date = date,
                     SaleId = saleId,
                     Price = price,
-                    Url = url
-                });
+                    Url = url,
+                    ImageUrl = imageUrl,
+                    Game = game,
+                };
+
+                var isConfirmation = item.InnerHtml.Contains("CancelMarketListingConfirmation");
+
+                if (isConfirmation)
+                {
+                    myListings.ConfirmationSales.Add(result);
+                }
+                else
+                {
+                    myListings.Sales.Add(result);
+                }
             }
         }
 
