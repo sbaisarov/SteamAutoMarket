@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -17,11 +18,11 @@
 
         private static readonly List<PriceLoadTask> ProcessingTasks = new List<PriceLoadTask>();
 
-        private static Thread workingThread = new Thread(ProcessPendingTasks);
-
-        private static Semaphore semaphore = new Semaphore(
+        private static readonly Semaphore Semaphore = new Semaphore(
             SavedSettings.Get().PriceLoadingThreads,
             SavedSettings.Get().PriceLoadingThreads);
+
+        private static BackgroundWorker workingThread;
 
         private static bool isForced;
 
@@ -74,7 +75,8 @@
             {
                 if (ProcessingTasks.Count > 0)
                 {
-                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Waiting for {ProcessingTasks.Count} price loading threads finish.");
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo(
+                        $"Waiting for {ProcessingTasks.Count} price loading threads finish.");
                 }
 
                 while (ProcessingTasks.Count > 0)
@@ -90,6 +92,12 @@
 
         public static void StartPriceLoading(ETableToLoad tableToLoad, bool force = false)
         {
+            if (workingThread == null)
+            {
+                workingThread = new BackgroundWorker();
+                workingThread.DoWork += ProcessPendingTasks;
+            }
+
             isForced = force;
             if (isForced)
             {
@@ -126,14 +134,20 @@
             }
         }
 
-        private static void ProcessPendingTasks()
+        private static void ProcessPendingTasks(object sender, DoWorkEventArgs args)
         {
             while (WorkingTasksQueue.Count > 0)
             {
                 try
                 {
-                    semaphore.WaitOne();
+                    Semaphore.WaitOne();
                     var priceLoadTask = WorkingTasksQueue.Dequeue();
+
+                    if (priceLoadTask == null)
+                    {
+                        Semaphore.Release();
+                        continue;
+                    }
 
                     Task.Run(
                         () =>
@@ -146,35 +160,26 @@
                                     Task.WaitAll(priceLoadTask.Task);
                                 }
 
-                                try
-                                {
-                                    ProcessingTasks.Remove(priceLoadTask);
-                                    semaphore.Release();
-                                }
-                                catch (SemaphoreFullException)
-                                {
-                                    // ignored 
-                                }
+                                ProcessingTasks.Remove(priceLoadTask);
 
+                                Semaphore.Release();
                             });
                 }
                 catch (InvalidOperationException)
                 {
-                    // ignored
+                    Semaphore.Release();
                 }
             }
         }
 
         private static void StartWorkingThread()
         {
-            if (workingThread.ThreadState == ThreadState.Running)
+            if (workingThread.IsBusy)
             {
                 return;
             }
 
-            semaphore = new Semaphore(SavedSettings.Get().PriceLoadingThreads, SavedSettings.Get().PriceLoadingThreads);
-            workingThread = new Thread(ProcessPendingTasks);
-            workingThread.Start();
+            workingThread.RunWorkerAsync();
         }
 
         private static void ClearAllPriceCells(ETableToLoad tableToLoad)
@@ -235,18 +240,18 @@
         private static void AddAllItemsToSaleTasksToQueue()
         {
             var rows = GetAllItemsRowsWithNoPrice();
-            var tasks = rows.Select(row => new Task(async () => await SetAllItemsListGridValues(row))).ToList();
+            var tasks = rows.Select(row => new Task(() => { SetAllItemsListGridValues(row); })).ToList();
             tasks.ForEach(t => WorkingTasksQueue.Enqueue(new PriceLoadTask(ETableToLoad.AllItemsTable, t)));
         }
 
-        private static async Task SetAllItemsListGridValues(DataGridViewRow row)
+        private static void SetAllItemsListGridValues(DataGridViewRow row)
         {
             try
             {
                 var currentPriceCell = allItemsListGridUtils.GetGridCurrentPriceTextBoxCell(row.Index).Cell;
                 var averagePriceCell = allItemsListGridUtils.GetGridAveragePriceTextBoxCell(row.Index).Cell;
 
-                var prices = await GetAllItemsRowPrice(row);
+                var prices = GetAllItemsRowPrice(row).Result;
 
                 var currentPrice = prices.Item1;
                 if (currentPrice != null && currentPrice != -1)
@@ -349,18 +354,18 @@
         private static void AddItemsToSaleTasksToQueue()
         {
             var rows = GetItemsToSaleRowsWithNoPrice();
-            var tasks = rows.Select(row => new Task(async () => await SetItemToSaleRowCurrentPrices(row))).ToList();
+            var tasks = rows.Select(row => new Task(() => SetItemToSaleRowCurrentPrices(row))).ToList();
             tasks.ForEach(t => WorkingTasksQueue.Enqueue(new PriceLoadTask(ETableToLoad.ItemsToSaleTable, t)));
         }
 
-        private static async Task SetItemToSaleRowCurrentPrices(DataGridViewRow row)
+        private static void SetItemToSaleRowCurrentPrices(DataGridViewRow row)
         {
             try
             {
                 var currentPriceCell = ItemsToSaleGridUtils.GetGridCurrentPriceTextBoxCell(itemsToSaleGrid, row.Index);
                 var averagePriceCell = ItemsToSaleGridUtils.GetGridAveragePriceTextBoxCell(itemsToSaleGrid, row.Index);
 
-                var prices = await GetItemsToSaleRowPrice(row);
+                var prices = GetItemsToSaleRowPrice(row).Result;
 
                 var currentPrice = prices.Item1;
                 if (currentPrice != -1)

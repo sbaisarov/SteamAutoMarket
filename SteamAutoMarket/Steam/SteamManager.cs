@@ -159,9 +159,9 @@
 
                 var packageElementIndex = 1;
                 var packageTotalItemsCount = package.Items.Count();
+                var errorsCount = 0;
                 foreach (var item in package.Items)
                 {
-                    var errorsCount = 0;
                     try
                     {
                         Program.WorkingProcessForm.AppendWorkingProcessInfo(

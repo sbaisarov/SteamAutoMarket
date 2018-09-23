@@ -88,7 +88,7 @@ namespace SteamAutoMarket.Steam.Market
             var client = new RestClient(url)
             {
                 UserAgent = Settings.UserAgent,
-                Timeout = 30 * 1000
+                Timeout = 60 * 1000
             };
 
             if (useAuthCookie)
