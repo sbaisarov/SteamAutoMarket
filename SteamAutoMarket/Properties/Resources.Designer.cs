@@ -63,6 +63,16 @@ namespace SteamAutoMarket.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Account {
+            get {
+                object obj = ResourceManager.GetObject("Account", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AddAllButton {
             get {
                 object obj = ResourceManager.GetObject("AddAllButton", resourceCulture);
@@ -245,6 +255,16 @@ namespace SteamAutoMarket.Properties {
         internal static System.Drawing.Bitmap MinimizeButton {
             get {
                 object obj = ResourceManager.GetObject("MinimizeButton", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NoAvatar {
+            get {
+                object obj = ResourceManager.GetObject("NoAvatar", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

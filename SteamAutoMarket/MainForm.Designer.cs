@@ -40,17 +40,19 @@ namespace SteamAutoMarket
             this.SaleLinkButton = new System.Windows.Forms.Button();
             this.LogoImageBox = new System.Windows.Forms.PictureBox();
             this.TradeLinkButton = new System.Windows.Forms.Button();
+            this.UserLinkButton = new System.Windows.Forms.Button();
             this.BotEdge = new System.Windows.Forms.Panel();
             this.BottomEdge1 = new System.Windows.Forms.Panel();
             this.HeaderPanel = new System.Windows.Forms.Panel();
             this.ProgramLogo = new System.Windows.Forms.PictureBox();
-            this.titleLable = new System.Windows.Forms.Label();
-            this.appCurtailButton = new System.Windows.Forms.Button();
-            this.appExitButton = new System.Windows.Forms.Button();
+            this.TitleLable = new System.Windows.Forms.Label();
+            this.AppCurtailButton = new System.Windows.Forms.Button();
+            this.AppExitButton = new System.Windows.Forms.Button();
             this.RightEdge = new System.Windows.Forms.Panel();
-            this.MarketControlTab = new SteamAutoMarket.CustomElements.Tabs.MarketControlTab();
             this.SettingsControlTab = new SteamAutoMarket.CustomElements.Tabs.SettingsControlTab();
+            this.MarketControlTab = new SteamAutoMarket.CustomElements.Tabs.MarketControlTab();
             this.TradeControlTab = new SteamAutoMarket.CustomElements.Tabs.TradeControlTab();
+            this.UserControlTab = new SteamAutoMarket.CustomElements.Tabs.UserControlTab();
             this.leftHeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoImageBox)).BeginInit();
             this.HeaderPanel.SuspendLayout();
@@ -67,6 +69,7 @@ namespace SteamAutoMarket
             this.leftHeaderPanel.Controls.Add(this.SaleLinkButton);
             this.leftHeaderPanel.Controls.Add(this.LogoImageBox);
             this.leftHeaderPanel.Controls.Add(this.TradeLinkButton);
+            this.leftHeaderPanel.Controls.Add(this.UserLinkButton);
             this.leftHeaderPanel.Location = new System.Drawing.Point(0, 31);
             this.leftHeaderPanel.Name = "leftHeaderPanel";
             this.leftHeaderPanel.Size = new System.Drawing.Size(166, 641);
@@ -104,7 +107,7 @@ namespace SteamAutoMarket
             this.SettingsLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SettingsLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.SettingsLinkButton.UseVisualStyleBackColor = true;
-            this.SettingsLinkButton.Click += new System.EventHandler(this.SettingsLinkButton_Click);
+            this.SettingsLinkButton.Click += new System.EventHandler(this.SettingsLinkButtonClick);
             // 
             // LeftPanelHideShowButton
             // 
@@ -119,7 +122,7 @@ namespace SteamAutoMarket
             this.LeftPanelHideShowButton.TabIndex = 4;
             this.LeftPanelHideShowButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.LeftPanelHideShowButton.UseVisualStyleBackColor = true;
-            this.LeftPanelHideShowButton.Click += new System.EventHandler(this.LeftPanelHideShowButton_Click);
+            this.LeftPanelHideShowButton.Click += new System.EventHandler(this.LeftPanelHideShowButtonClick);
             // 
             // SaleLinkButton
             // 
@@ -136,7 +139,7 @@ namespace SteamAutoMarket
             this.SaleLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SaleLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.SaleLinkButton.UseVisualStyleBackColor = true;
-            this.SaleLinkButton.Click += new System.EventHandler(this.SaleLinkButton_Click);
+            this.SaleLinkButton.Click += new System.EventHandler(this.SaleLinkButtonClick);
             // 
             // LogoImageBox
             // 
@@ -160,11 +163,28 @@ namespace SteamAutoMarket
             this.TradeLinkButton.Location = new System.Drawing.Point(0, 294);
             this.TradeLinkButton.Name = "TradeLinkButton";
             this.TradeLinkButton.Size = new System.Drawing.Size(166, 45);
-            this.TradeLinkButton.TabIndex = 7;
+            this.TradeLinkButton.TabIndex = 3;
             this.TradeLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TradeLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.TradeLinkButton.UseVisualStyleBackColor = true;
-            this.TradeLinkButton.Click += new System.EventHandler(this.TradeLinkButton_Click);
+            this.TradeLinkButton.Click += new System.EventHandler(this.TradeLinkButtonClick);
+            // 
+            // UserLinkButton
+            // 
+            this.UserLinkButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.UserLinkButton.FlatAppearance.BorderSize = 0;
+            this.UserLinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UserLinkButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.UserLinkButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
+            this.UserLinkButton.Image = global::SteamAutoMarket.Properties.Resources.Account;
+            this.UserLinkButton.Location = new System.Drawing.Point(3, 355);
+            this.UserLinkButton.Name = "UserLinkButton";
+            this.UserLinkButton.Size = new System.Drawing.Size(166, 45);
+            this.UserLinkButton.TabIndex = 4;
+            this.UserLinkButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.UserLinkButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.UserLinkButton.UseVisualStyleBackColor = true;
+            this.UserLinkButton.Click += new System.EventHandler(this.UserLinkButtonClick);
             // 
             // BotEdge
             // 
@@ -188,17 +208,17 @@ namespace SteamAutoMarket
             // 
             this.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
             this.HeaderPanel.Controls.Add(this.ProgramLogo);
-            this.HeaderPanel.Controls.Add(this.titleLable);
-            this.HeaderPanel.Controls.Add(this.appCurtailButton);
-            this.HeaderPanel.Controls.Add(this.appExitButton);
+            this.HeaderPanel.Controls.Add(this.TitleLable);
+            this.HeaderPanel.Controls.Add(this.AppCurtailButton);
+            this.HeaderPanel.Controls.Add(this.AppExitButton);
             this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
             this.HeaderPanel.Name = "HeaderPanel";
             this.HeaderPanel.Size = new System.Drawing.Size(1061, 31);
             this.HeaderPanel.TabIndex = 2;
-            this.HeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Move_MouseDown);
-            this.HeaderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
-            this.HeaderPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Move_MouseUp);
+            this.HeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveMouseDown);
+            this.HeaderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveMouseMove);
+            this.HeaderPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MoveMouseUp);
             // 
             // ProgramLogo
             // 
@@ -211,52 +231,52 @@ namespace SteamAutoMarket
             this.ProgramLogo.Size = new System.Drawing.Size(28, 24);
             this.ProgramLogo.TabIndex = 11;
             this.ProgramLogo.TabStop = false;
-            this.ProgramLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Move_MouseDown);
-            this.ProgramLogo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
-            this.ProgramLogo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Move_MouseUp);
+            this.ProgramLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveMouseDown);
+            this.ProgramLogo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveMouseMove);
+            this.ProgramLogo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MoveMouseUp);
             // 
-            // titleLable
+            // TitleLable
             // 
-            this.titleLable.AutoSize = true;
-            this.titleLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.titleLable.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.titleLable.Location = new System.Drawing.Point(38, 8);
-            this.titleLable.Name = "titleLable";
-            this.titleLable.Size = new System.Drawing.Size(154, 18);
-            this.titleLable.TabIndex = 7;
-            this.titleLable.Text = "Steam-Auto-Market";
-            this.titleLable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Move_MouseDown);
-            this.titleLable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Move_MouseMove);
-            this.titleLable.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Move_MouseUp);
+            this.TitleLable.AutoSize = true;
+            this.TitleLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.TitleLable.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.TitleLable.Location = new System.Drawing.Point(38, 8);
+            this.TitleLable.Name = "TitleLable";
+            this.TitleLable.Size = new System.Drawing.Size(154, 18);
+            this.TitleLable.TabIndex = 7;
+            this.TitleLable.Text = "Steam-Auto-Market";
+            this.TitleLable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveMouseDown);
+            this.TitleLable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveMouseMove);
+            this.TitleLable.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MoveMouseUp);
             // 
-            // appCurtailButton
+            // AppCurtailButton
             // 
-            this.appCurtailButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.MinimizeButton;
-            this.appCurtailButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.appCurtailButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.appCurtailButton.FlatAppearance.BorderSize = 0;
-            this.appCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.appCurtailButton.Location = new System.Drawing.Point(999, 3);
-            this.appCurtailButton.Name = "appCurtailButton";
-            this.appCurtailButton.Size = new System.Drawing.Size(27, 23);
-            this.appCurtailButton.TabIndex = 5;
-            this.appCurtailButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.appCurtailButton.UseVisualStyleBackColor = true;
-            this.appCurtailButton.Click += new System.EventHandler(this.AppCurtailButton_Click);
+            this.AppCurtailButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.MinimizeButton;
+            this.AppCurtailButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.AppCurtailButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AppCurtailButton.FlatAppearance.BorderSize = 0;
+            this.AppCurtailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AppCurtailButton.Location = new System.Drawing.Point(999, 3);
+            this.AppCurtailButton.Name = "AppCurtailButton";
+            this.AppCurtailButton.Size = new System.Drawing.Size(27, 23);
+            this.AppCurtailButton.TabIndex = 5;
+            this.AppCurtailButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.AppCurtailButton.UseVisualStyleBackColor = true;
+            this.AppCurtailButton.Click += new System.EventHandler(this.AppCurtailButtonClick);
             // 
-            // appExitButton
+            // AppExitButton
             // 
-            this.appExitButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.CloseButton;
-            this.appExitButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.appExitButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.appExitButton.FlatAppearance.BorderSize = 0;
-            this.appExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.appExitButton.Location = new System.Drawing.Point(1029, 3);
-            this.appExitButton.Name = "appExitButton";
-            this.appExitButton.Size = new System.Drawing.Size(27, 23);
-            this.appExitButton.TabIndex = 6;
-            this.appExitButton.UseVisualStyleBackColor = true;
-            this.appExitButton.Click += new System.EventHandler(this.AppExitButtonClick);
+            this.AppExitButton.BackgroundImage = global::SteamAutoMarket.Properties.Resources.CloseButton;
+            this.AppExitButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.AppExitButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AppExitButton.FlatAppearance.BorderSize = 0;
+            this.AppExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AppExitButton.Location = new System.Drawing.Point(1029, 3);
+            this.AppExitButton.Name = "AppExitButton";
+            this.AppExitButton.Size = new System.Drawing.Size(27, 23);
+            this.AppExitButton.TabIndex = 6;
+            this.AppExitButton.UseVisualStyleBackColor = true;
+            this.AppExitButton.Click += new System.EventHandler(this.AppExitButtonClick);
             // 
             // RightEdge
             // 
@@ -266,14 +286,6 @@ namespace SteamAutoMarket
             this.RightEdge.Name = "RightEdge";
             this.RightEdge.Size = new System.Drawing.Size(3, 637);
             this.RightEdge.TabIndex = 6;
-            // 
-            // MarketControlTab
-            // 
-            this.MarketControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.MarketControlTab.Location = new System.Drawing.Point(165, 36);
-            this.MarketControlTab.Name = "MarketControlTab";
-            this.MarketControlTab.Size = new System.Drawing.Size(894, 632);
-            this.MarketControlTab.TabIndex = 8;
             // 
             // SettingsControlTab
             // 
@@ -286,6 +298,14 @@ namespace SteamAutoMarket
             this.SettingsControlTab.Size = new System.Drawing.Size(894, 632);
             this.SettingsControlTab.TabIndex = 8;
             // 
+            // MarketControlTab
+            // 
+            this.MarketControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.MarketControlTab.Location = new System.Drawing.Point(165, 36);
+            this.MarketControlTab.Name = "MarketControlTab";
+            this.MarketControlTab.Size = new System.Drawing.Size(894, 632);
+            this.MarketControlTab.TabIndex = 8;
+            // 
             // TradeControlTab
             // 
             this.TradeControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
@@ -293,6 +313,15 @@ namespace SteamAutoMarket
             this.TradeControlTab.Name = "TradeControlTab";
             this.TradeControlTab.Size = new System.Drawing.Size(894, 632);
             this.TradeControlTab.TabIndex = 9;
+            // 
+            // UserControlTab
+            // 
+            this.UserControlTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.UserControlTab.Font = new System.Drawing.Font("Impact", 14.25F);
+            this.UserControlTab.Location = new System.Drawing.Point(165, 36);
+            this.UserControlTab.Name = "UserControlTab";
+            this.UserControlTab.Size = new System.Drawing.Size(894, 632);
+            this.UserControlTab.TabIndex = 10;
             // 
             // MainForm
             // 
@@ -308,6 +337,7 @@ namespace SteamAutoMarket
             this.Controls.Add(this.HeaderPanel);
             this.Controls.Add(this.MarketControlTab);
             this.Controls.Add(this.TradeControlTab);
+            this.Controls.Add(this.UserControlTab);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(214)))), ((int)(((byte)(201)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -331,19 +361,21 @@ namespace SteamAutoMarket
         private System.Windows.Forms.Button LeftPanelHideShowButton;
         private System.Windows.Forms.Panel SidePanel;
         private System.Windows.Forms.Button SettingsLinkButton;
-        private System.Windows.Forms.Button appExitButton;
-        private System.Windows.Forms.Button appCurtailButton;
+        private System.Windows.Forms.Button AppExitButton;
+        private System.Windows.Forms.Button AppCurtailButton;
         private System.Windows.Forms.Panel HeaderPanel;
-        private System.Windows.Forms.Label titleLable;
+        private System.Windows.Forms.Label TitleLable;
         private System.Windows.Forms.PictureBox ProgramLogo;
         private System.Windows.Forms.Panel LeftEdge;
         private System.Windows.Forms.Panel BottomEdge1;
         private System.Windows.Forms.Panel RightEdge;
         private System.Windows.Forms.Panel BotEdge;
         private System.Windows.Forms.Button TradeLinkButton;
+        private System.Windows.Forms.Button UserLinkButton;
 
         public SettingsControlTab SettingsControlTab;
         public CustomElements.Tabs.MarketControlTab MarketControlTab;
         public CustomElements.Tabs.TradeControlTab TradeControlTab;
+        public UserControlTab UserControlTab;
     }
 }

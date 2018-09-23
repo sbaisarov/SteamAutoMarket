@@ -32,6 +32,8 @@
                 this.LoggingLevelComboBox.SelectedIndex = settings.SettingsLoggerLevel;
                 this.AveragePriceDaysNumericUpDown.Value = settings.SettingsAveragePriceParseDays;
                 this.Confirm2FANumericUpDown.Value = settings.Settings2FaItemsToConfirm;
+                this.ErrorsOnSellNumericUpDown.Value = settings.ErrorsOnSellToSkip;
+                this.PriceLoadThreadsNumericUpDown.Value = settings.PriceLoadingThreads;
 
                 this.LoadSavedAccount();
             }
@@ -365,6 +367,7 @@
                                         Program.MainForm.TradeControlTab.ReceivedTradeManageControl
                                             .AuthCurrentAccount();
                                         Program.MainForm.TradeControlTab.TradeHistoryControl.AuthCurrentAccount();
+                                        Program.MainForm.UserControlTab.AccountInfoControl.AuthCurrentAccount();
 
                                         Logger.Info($"Steam authentication for {login} successful");
                                         this.LoginButton.Enabled = true;

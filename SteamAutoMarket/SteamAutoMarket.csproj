@@ -140,6 +140,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomElements\Controls\Account\AccountInfoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomElements\Controls\Account\AccountInfoControl.Designer.cs">
+      <DependentUpon>AccountInfoControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomElements\Controls\Market\MarketRelistControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -160,6 +166,12 @@
     </Compile>
     <Compile Include="CustomElements\Elements\ComboboxWithImage.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomElements\Tabs\UserControlTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomElements\Tabs\UserControlTab.Designer.cs">
+      <DependentUpon>UserControlTab.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomElements\Utils\AccountsDataGridUtils.cs" />
     <Compile Include="CustomElements\Elements\CustomNumericUpDown.cs">
@@ -369,6 +381,9 @@
     <Compile Include="WorkingProcess\MarketPriceFormation\MarketSaleType.cs" />
     <Compile Include="WorkingProcess\PriceLoader\PriceLoader.cs" />
     <Compile Include="WorkingProcess\Settings\SettingsUpdater.cs" />
+    <EmbeddedResource Include="CustomElements\Controls\Account\AccountInfoControl.resx">
+      <DependentUpon>AccountInfoControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomElements\Controls\Market\MarketRelistControl.resx">
       <DependentUpon>MarketRelistControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -396,6 +411,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomElements\Forms\LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomElements\Tabs\UserControlTab.resx">
+      <DependentUpon>UserControlTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -513,6 +531,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <None Include="Resources\Account.png" />
+    <None Include="Resources\NoAvatar.jpg" />
     <Content Include="Steam\Market\Models\Json\currencies.json" />
     <None Include="Resources\update-1.png" />
     <None Include="Resources\yellow-update-button.png" />

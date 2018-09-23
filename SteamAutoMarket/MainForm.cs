@@ -15,7 +15,7 @@
         public MainForm()
         {
             this.InitializeComponent();
-            this.FocusSidePanelToMenuElement(this.SidePanel, this.SettingsLinkButton);
+            this.FocusSidePanelToMenuElement(this.SettingsLinkButton);
         }
 
         public void AppExitButtonClick(object sender, EventArgs e)
@@ -23,79 +23,88 @@
             Application.Exit();
         }
 
-        public void LeftPanelHideShowButton_Click(object sender, EventArgs e)
+        public void LeftPanelHideShowButtonClick(object sender, EventArgs e)
         {
             // 1051; 630
             const int SizeChange = 115;
 
             if (this.Width == 1061)
             {
-                LogoImageBox.Visible = false;
-                leftHeaderPanel.Width -= SizeChange;
-                BotEdge.Left -= SizeChange;
-                RightEdge.Left -= SizeChange;
-                LeftPanelHideShowButton.Left = 13;
-                MarketControlTab.Left -= SizeChange;
-                SettingsControlTab.Left -= SizeChange;
-                appCurtailButton.Left -= SizeChange;
-                appExitButton.Left -= SizeChange;
-                TradeControlTab.Left -= SizeChange;
-                Width -= SizeChange;
+                this.LogoImageBox.Visible = false;
+                this.leftHeaderPanel.Width -= SizeChange;
+                this.BotEdge.Left -= SizeChange;
+                this.RightEdge.Left -= SizeChange;
+                this.LeftPanelHideShowButton.Left = 13;
+                this.MarketControlTab.Left -= SizeChange;
+                this.SettingsControlTab.Left -= SizeChange;
+                this.AppCurtailButton.Left -= SizeChange;
+                this.AppExitButton.Left -= SizeChange;
+                this.TradeControlTab.Left -= SizeChange;
+                this.Width -= SizeChange;
             }
             else
             {
-                LogoImageBox.Visible = true;
-                leftHeaderPanel.Width += SizeChange;
-                BotEdge.Left += SizeChange;
-                RightEdge.Left += SizeChange;
-                LeftPanelHideShowButton.Left = 132;
-                MarketControlTab.Left += SizeChange;
-                SettingsControlTab.Left += SizeChange;
-                appCurtailButton.Left += SizeChange;
-                appExitButton.Left += SizeChange;
-                TradeControlTab.Left += SizeChange;
-                Width += SizeChange;
+                this.LogoImageBox.Visible = true;
+                this.leftHeaderPanel.Width += SizeChange;
+                this.BotEdge.Left += SizeChange;
+                this.RightEdge.Left += SizeChange;
+                this.LeftPanelHideShowButton.Left = 132;
+                this.MarketControlTab.Left += SizeChange;
+                this.SettingsControlTab.Left += SizeChange;
+                this.AppCurtailButton.Left += SizeChange;
+                this.AppExitButton.Left += SizeChange;
+                this.TradeControlTab.Left += SizeChange;
+                this.Width += SizeChange;
             }
         }
 
-        public void SettingsLinkButton_Click(object sender, EventArgs e)
+        public void SettingsLinkButtonClick(object sender, EventArgs e)
         {
-            FocusSidePanelToMenuElement(SidePanel, SettingsLinkButton);
-            SettingsControlTab.BringToFront();
+            this.FocusSidePanelToMenuElement(this.SettingsLinkButton);
+            this.SettingsControlTab.BringToFront();
 
-            RightEdge.BringToFront();
-            LeftEdge.BringToFront();
-            BotEdge.BringToFront();
+            this.BringEdgesToFront();
         }
 
-        public void SaleLinkButton_Click(object sender, EventArgs e)
+        public void SaleLinkButtonClick(object sender, EventArgs e)
         {
-            FocusSidePanelToMenuElement(SidePanel, SaleLinkButton);
-            MarketControlTab.BringToFront();
+            this.FocusSidePanelToMenuElement(this.SaleLinkButton);
+            this.MarketControlTab.BringToFront();
 
-            RightEdge.BringToFront();
-            LeftEdge.BringToFront();
-            BotEdge.BringToFront();
+            this.BringEdgesToFront();
         }
 
-        private void TradeLinkButton_Click(object sender, EventArgs e)
+        public void TradeLinkButtonClick(object sender, EventArgs e)
         {
-            FocusSidePanelToMenuElement(SidePanel, TradeLinkButton);
-            TradeControlTab.BringToFront();
+            this.FocusSidePanelToMenuElement(this.TradeLinkButton);
+            this.TradeControlTab.BringToFront();
 
-            RightEdge.BringToFront();
-            LeftEdge.BringToFront();
-            BotEdge.BringToFront();
+            this.BringEdgesToFront();
         }
 
-        public void Move_MouseDown(object sender, MouseEventArgs e)
+        public void UserLinkButtonClick(object sender, EventArgs e)
+        {
+            this.FocusSidePanelToMenuElement(this.UserLinkButton);
+            this.UserControlTab.BringToFront();
+
+            this.BringEdgesToFront();
+        }
+
+        public void BringEdgesToFront()
+        {
+            this.RightEdge.BringToFront();
+            this.LeftEdge.BringToFront();
+            this.BotEdge.BringToFront();
+        }
+
+        public void MoveMouseDown(object sender, MouseEventArgs e)
         {
             this.dragging = true;
             this.dragCursorPoint = Cursor.Position;
-            this.dragFormPoint = Location;
+            this.dragFormPoint = this.Location;
         }
 
-        public void Move_MouseMove(object sender, MouseEventArgs e)
+        public void MoveMouseMove(object sender, MouseEventArgs e)
         {
             if (!this.dragging)
             {
@@ -106,12 +115,12 @@
             this.Location = Point.Add(this.dragFormPoint, new Size(dif));
         }
 
-        public void Move_MouseUp(object sender, MouseEventArgs e)
+        public void MoveMouseUp(object sender, MouseEventArgs e)
         {
             this.dragging = false;
         }
 
-        public void AppCurtailButton_Click(object sender, EventArgs e)
+        public void AppCurtailButtonClick(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Normal)
             {
@@ -119,10 +128,10 @@
             }
         }
 
-        public void FocusSidePanelToMenuElement(Panel sidePanel, Button button)
+        public void FocusSidePanelToMenuElement(Button button)
         {
-            sidePanel.Height = button.Height;
-            sidePanel.Top = button.Top;
+            this.SidePanel.Height = button.Height;
+            this.SidePanel.Top = button.Top;
         }
     }
 }

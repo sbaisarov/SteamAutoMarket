@@ -94,6 +94,36 @@
             }
         }
 
+        public static Image GetSteamProfileBigImage(ulong steamId)
+        {
+            try
+            {
+                var image = ImagesCache.GetImage($"{steamId}-big");
+                if (image != null)
+                {
+                    return image;
+                }
+
+                var client = new RestClient("https://steamcommunity.com");
+                var request = new RestRequest($"/profiles/{steamId}/?xml=1", Method.GET);
+                var response = client.Execute(request);
+                var content = response.Content;
+
+                var result = Regex.Match(content, @"<avatarFull><!\[CDATA\[(.*)\]\]></avatarFull>");
+                var imageUrl = result.Groups[1].ToString();
+
+                image = DownloadImage(imageUrl);
+                ImagesCache.CacheImage($"{steamId}-big", image);
+                return image;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error on getting profile image", ex);
+                return null;
+            }
+        }
+
+
         public static void UpdateItemImageOnPanelAsync(AssetDescription assetDescription, Panel imageBox)
         {
             UpdateImageOnItemPanelAsync(assetDescription.MarketHashName, assetDescription.IconUrl, imageBox);

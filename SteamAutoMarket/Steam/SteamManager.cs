@@ -430,8 +430,27 @@
                 return false;
             }
 
-            var token = Regex.Match(response, @"https://steamcommunity\.com/tradeoffer/new/\?partner=.+&token=(.+?)\b")
-                .Groups[1].Value;
+            var token = string.Empty;
+
+            try
+            {
+                token = Regex.Match(response, @"https://steamcommunity\.com/tradeoffer/new/\?partner=.+&token=(.+?)""")
+                    .Groups[1].Value;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            if (token != string.Empty)
+            {
+                var acc = SavedSteamAccount.Get().FirstOrDefault(a => a.Login == this.Guard.AccountName);
+                if (acc != null)
+                {
+                    acc.TradeToken = token;
+                    SavedSteamAccount.UpdateAll(SavedSteamAccount.Get());
+                }
+            }
 
             return !string.IsNullOrEmpty(token);
         }

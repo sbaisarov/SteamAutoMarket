@@ -18,6 +18,7 @@
         public string Login { get; set; }
         public string Password { get; set; }
         public string SteamApi { get; set; }
+        public string TradeToken { get; set; }
         public SteamGuardAccount MaFile { get; set; }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
