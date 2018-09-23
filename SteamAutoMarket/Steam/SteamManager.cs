@@ -116,7 +116,6 @@
 
         public void SellOnMarket(ToSaleObject items)
         {
-            Program.WorkingProcessForm.AppendWorkingProcessInfo($"Waiting for price loading process finish.");
             PriceLoader.WaitForLoadFinish();
 
             var maxErrorsCount = SavedSettings.Get().ErrorsOnSellToSkip;

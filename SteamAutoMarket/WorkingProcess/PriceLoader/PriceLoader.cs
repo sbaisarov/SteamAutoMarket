@@ -15,6 +15,8 @@
     {
         private static readonly Queue<PriceLoadTask> WorkingTasksQueue = new Queue<PriceLoadTask>();
 
+        private static readonly List<PriceLoadTask> ProcessingTasks = new List<PriceLoadTask>();
+
         private static Thread workingThread = new Thread(ProcessPendingTasks);
 
         private static Semaphore semaphore = new Semaphore(
@@ -70,9 +72,14 @@
         {
             try
             {
-                if (workingThread.IsAlive)
+                if (ProcessingTasks.Count > 0)
                 {
-                    workingThread.Join();
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo($"Waiting for {ProcessingTasks.Count} price loading threads finish.");
+                }
+
+                while (ProcessingTasks.Count > 0)
+                {
+                    Task.Delay(500).ConfigureAwait(true);
                 }
             }
             catch
@@ -131,21 +138,29 @@
                     Task.Run(
                         () =>
                             {
+                                ProcessingTasks.Add(priceLoadTask);
+
                                 if (priceLoadTask.Task.Status == TaskStatus.Created)
                                 {
                                     priceLoadTask.Task.Start();
                                     Task.WaitAll(priceLoadTask.Task);
                                 }
 
-                                semaphore.Release();
+                                try
+                                {
+                                    ProcessingTasks.Remove(priceLoadTask);
+                                    semaphore.Release();
+                                }
+                                catch (SemaphoreFullException)
+                                {
+                                    // ignored 
+                                }
+
                             });
                 }
-                catch (Exception ex)
+                catch (InvalidOperationException)
                 {
-                    if (ex is SemaphoreFullException || ex is InvalidOperationException)
-                    {
-                        continue;
-                    }
+                    // ignored
                 }
             }
         }
