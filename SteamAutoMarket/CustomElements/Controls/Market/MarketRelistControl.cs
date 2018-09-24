@@ -72,7 +72,7 @@
                     return;
                 }
 
-                var listings = CurrentSession.SteamManager.MarketClient.MyListings();
+                var listings = CurrentSession.SteamManager.MarketClient.MyListings(1000);
                 var groupedListings = listings.Sales.GroupBy(x => new { x.HashName, x.Price });
                 foreach (var group in groupedListings)
                 {
@@ -83,7 +83,7 @@
                     }
 
                     this.myListings.Add(item.HashName + item.Price, group.ToList());
-                    this.AddListing(item.Name, group.Count(), "TODO TYPE", item.Date, item.Price, item.HashName);
+                    this.AddListing(item.Name, group.Count(), item.Game, item.Date, item.Price, item.HashName);
                 }
             }
             catch (Exception ex)
@@ -127,13 +127,19 @@
                 return;
             }
 
-            CommonUtils.AppendBoldText(this.ItemDescriptionTextBox, "Bold info: ");
-            this.ItemDescriptionTextBox.AppendText("Some info\n\n");
+            CommonUtils.AppendBoldText(this.ItemDescriptionTextBox, "Hash name: ");
+            this.ItemDescriptionTextBox.AppendText(item.HashName + Environment.NewLine);
 
-            CommonUtils.AppendBoldText(this.ItemDescriptionTextBox, item.Url + Environment.NewLine);
-            this.ItemDescriptionTextBox.AppendText(item.SaleId.ToString());
+            CommonUtils.AppendBoldText(this.ItemDescriptionTextBox, "Game: ");
+            this.ItemDescriptionTextBox.AppendText(item.Game + Environment.NewLine);
 
-            // ImageUtils.UpdateItemImageOnPanelAsync(description, imageBox);
+            CommonUtils.AppendBoldText(this.ItemDescriptionTextBox, "Appid: ");
+            this.ItemDescriptionTextBox.AppendText(item.AppId + Environment.NewLine);   
+            
+            CommonUtils.AppendBoldText(this.ItemDescriptionTextBox, "Url: ");
+            this.ItemDescriptionTextBox.AppendText(item.Url);
+
+            ImageUtils.UpdateImageOnItemPanelAsync(item.HashName, item.ImageUrl, this.ItemImageBox);
         }
     }
 }

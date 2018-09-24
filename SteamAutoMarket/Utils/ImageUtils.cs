@@ -9,6 +9,7 @@
     using System.Windows.Forms;
 
     using RestSharp;
+
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.WorkingProcess.Caches;
@@ -123,15 +124,20 @@
             }
         }
 
-
         public static void UpdateItemImageOnPanelAsync(AssetDescription assetDescription, Panel imageBox)
         {
-            UpdateImageOnItemPanelAsync(assetDescription.MarketHashName, assetDescription.IconUrl, imageBox);
+            UpdateImageOnItemPanelAsync(
+                assetDescription.MarketHashName,
+                $"https://steamcommunity-a.akamaihd.net/economy/image/{assetDescription.IconUrl}/192fx192f",
+                imageBox);
         }
 
         public static void UpdateItemImageOnPanelAsync(RgDescription description, Panel imageBox)
         {
-            UpdateImageOnItemPanelAsync(description.MarketHashName, description.IconUrl, imageBox);
+            UpdateImageOnItemPanelAsync(
+                description.MarketHashName,
+                $"https://steamcommunity-a.akamaihd.net/economy/image/{description.IconUrl}/192fx192f",
+                imageBox);
         }
 
         public static void UpdateImageOnItemPanelAsync(string hash, string iconUrl, Panel imageBox)
@@ -157,8 +163,7 @@
                                 imageBox.BackgroundImage = Resources.DefaultItem;
                             }
 
-                            image = DownloadImage(
-                                $"https://steamcommunity-a.akamaihd.net/economy/image/{iconUrl}/192fx192f");
+                            image = DownloadImage(iconUrl);
 
                             if (image != null)
                             {
