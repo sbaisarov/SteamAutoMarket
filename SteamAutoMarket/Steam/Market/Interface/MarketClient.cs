@@ -659,95 +659,102 @@
 
         // return history;
         // }
-        public MyListings MyListings(string currency = "5", int start = 0, int count = 100)
+        public MyListings MyListings(int itemsCount, string currency = "5", int count = 100)
         {
-            var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
-            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
-
-            var respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
-
-            if (!respDes.Success)
-            {
-                throw new SteamException("Cannot load market listings");
-            }
-
-            var html = respDes.ResultsHtml;
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var root = doc.DocumentNode;
-
-            var ordersCountNode = root.SelectSingleNode(".//span[@id='my_market_buylistings_number']");
-            if (ordersCountNode == null)
-            {
-                throw new SteamException("Cannot find buy listings node");
-            }
-
-            var ordersCountParse = int.TryParse(ordersCountNode.InnerText, out var ordersCount);
-            if (!ordersCountParse)
-            {
-                throw new SteamException("Cannot parse buy listings node value");
-            }
-
-            var sellCountNode = root.SelectSingleNode(".//span[@id='my_market_selllistings_number']");
-            if (sellCountNode == null)
-            {
-                throw new SteamException("Cannot find sell listings node");
-            }
-
-            var sellCountParse = int.TryParse(sellCountNode.InnerText, out var sellCount);
-            if (!sellCountParse)
-            {
-                throw new SteamException("Cannot parse sell listings node value");
-            }
-
-            var confirmCountNode = root.SelectSingleNode(".//span[@id='my_market_listingstoconfirm_number']");
-            var confirmCount = 0;
-            if (confirmCountNode != null)
-            {
-                var confirmCountParse = int.TryParse(confirmCountNode.InnerText, out confirmCount);
-                if (!confirmCountParse)
-                {
-                    throw new SteamException("Cannot parse confirm listings node value");
-                }
-            }
-
             var myListings = new MyListings
-                                 {
-                                     ItemsToBuy = ordersCount,
-                                     ItemsToConfirm = confirmCount,
-                                     ItemsToSell = sellCount,
-                                     Orders = new List<MyListingsOrdersItem>(),
-                                     Sales = new List<MyListingsSalesItem>(),
-                                     ConfirmationSales = new List<MyListingsSalesItem>()
-                                 };
-
-            var tempIndex = 0;
-            var ordersNodes = root.SelectNodes("//div[contains(@id,'mybuyorder_')]");
-            if (ordersNodes != null)
             {
-                foreach (var item in ordersNodes)
-                {
-                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency);
+                Orders = new List<MyListingsOrdersItem>(),
+                Sales = new List<MyListingsSalesItem>(),
+                ConfirmationSales = new List<MyListingsSalesItem>()
+            };
+            
+            int start = 0;
+            while (start < itemsCount)
+            {
+                var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
+                var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
 
-                    tempIndex++;
+                var respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
+
+                if (!respDes.Success)
+                {
+                    throw new SteamException("Cannot load market listings");
                 }
 
-                myListings.SumOrderPricesToBuy = Math.Round(myListings.Orders.Sum(s => s.Price), 2);
-            }
+                var html = respDes.ResultsHtml;
+                var doc = new HtmlDocument();
+                doc.LoadHtml(html);
+                var root = doc.DocumentNode;
 
-            var saleNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
-            if (saleNodes != null)
-            {
-
-                tempIndex = 0;
-                foreach (var item in saleNodes)
+                var ordersCountNode = root.SelectSingleNode(".//span[@id='my_market_buylistings_number']");
+                if (ordersCountNode == null)
                 {
-                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency);
-
-                    tempIndex++;
+                    throw new SteamException("Cannot find buy listings node");
                 }
-            }
 
+                var ordersCountParse = int.TryParse(ordersCountNode.InnerText, out var ordersCount);
+                if (!ordersCountParse)
+                {
+                    throw new SteamException("Cannot parse buy listings node value");
+                }
+
+                var sellCountNode = root.SelectSingleNode(".//span[@id='my_market_selllistings_number']");
+                if (sellCountNode == null)
+                {
+                    throw new SteamException("Cannot find sell listings node");
+                }
+
+                var sellCountParse = int.TryParse(sellCountNode.InnerText, out var sellCount);
+                if (!sellCountParse)
+                {
+                    throw new SteamException("Cannot parse sell listings node value");
+                }
+
+                var confirmCountNode = root.SelectSingleNode(".//span[@id='my_market_listingstoconfirm_number']");
+                var confirmCount = 0;
+                if (confirmCountNode != null)
+                {
+                    var confirmCountParse = int.TryParse(confirmCountNode.InnerText, out confirmCount);
+                    if (!confirmCountParse)
+                    {
+                        throw new SteamException("Cannot parse confirm listings node value");
+                    }
+                }
+                
+                myListings.ItemsToBuy = ordersCount;
+                myListings.ItemsToConfirm = confirmCount;
+                myListings.ItemsToSell = sellCount;
+                    
+                var tempIndex = 0;
+                var ordersNodes = root.SelectNodes("//div[contains(@id,'mybuyorder_')]");
+                if (ordersNodes != null)
+                {
+                    foreach (var item in ordersNodes)
+                    {
+                        this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency);
+
+                        tempIndex++;
+                    }
+
+                    myListings.SumOrderPricesToBuy = Math.Round(myListings.Orders.Sum(s => s.Price), 2);
+                }
+
+                var saleNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
+                if (saleNodes != null)
+                {
+
+                    tempIndex = 0;
+                    foreach (var item in saleNodes)
+                    {
+                        this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency);
+
+                        tempIndex++;
+                    }
+                }
+
+                start += count;
+            }
+            
             return myListings;
         }
 
