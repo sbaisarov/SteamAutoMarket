@@ -41,6 +41,7 @@
                 this.AppExitButton.Left -= SizeChange;
                 this.TradeControlTab.Left -= SizeChange;
                 this.Width -= SizeChange;
+                this.UserControlTab.Left -= SizeChange;
             }
             else
             {
@@ -55,6 +56,7 @@
                 this.AppExitButton.Left += SizeChange;
                 this.TradeControlTab.Left += SizeChange;
                 this.Width += SizeChange;
+                this.UserControlTab.Left += SizeChange;
             }
         }
 

@@ -263,7 +263,7 @@
             }
         }
 
-        public double? GetAveragePrice(RgInventory asset, RgDescription description, int days)
+        public double? GetAveragePrice(int appid, string hashName, int days)
         {
             double? price = null;
             var attempts = 0;
@@ -271,7 +271,7 @@
             {
                 try
                 {
-                    var history = this.MarketClient.PriceHistory(asset.Appid, description.MarketHashName);
+                    var history = this.MarketClient.PriceHistory(appid, hashName);
                     price = this.CountAveragePrice(history, days);
                     if (price.HasValue)
                     {
@@ -284,7 +284,7 @@
                 {
                     if (++attempts == 3)
                     {
-                        Logger.Warning($"Error on getting average price of {description.MarketHashName}", ex);
+                        Logger.Warning($"Error on getting average price of {hashName}", ex);
                     }
                 }
             }
@@ -292,14 +292,14 @@
             return price;
         }
 
-        public async Task<double?> GetCurrentPrice(RgInventory asset, RgDescription description)
+        public async Task<double?> GetCurrentPrice(int appid, string hashName)
         {
-            var itemPageInfo = MarketInfoCache.Get(asset.Appid, description.MarketHashName);
+            var itemPageInfo = MarketInfoCache.Get(appid, hashName);
 
             if (itemPageInfo == null)
             {
-                itemPageInfo = this.MarketClient.ItemPage(asset.Appid, description.MarketHashName);
-                MarketInfoCache.Cache(asset.Appid, description.MarketHashName, itemPageInfo);
+                itemPageInfo = this.MarketClient.ItemPage(appid, hashName);
+                MarketInfoCache.Cache(appid, hashName, itemPageInfo);
             }
 
             var attempts = 0;
@@ -320,7 +320,7 @@
                 {
                     if (++attempts == 3)
                     {
-                        Logger.Warning($"Error on getting current price of {description.MarketHashName}", ex);
+                        Logger.Warning($"Error on getting current price of {hashName}", ex);
                     }
                 }
             }

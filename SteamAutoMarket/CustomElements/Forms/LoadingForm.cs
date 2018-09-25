@@ -6,6 +6,7 @@
     using System.Threading;
     using System.Windows.Forms;
 
+    using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.Utils;
     using SteamAutoMarket.WorkingProcess;
@@ -42,8 +43,9 @@
             Dispatcher.AsLoadingForm(
                 () =>
                     {
-                        this.PageLable.Text = text.Replace("{currentPage}", (++this.currentPage).ToString())
-                            .Replace("{totalPages}", this.totalPagesCount.ToString());
+                        this.PageLable.Text = text.Replace("{currentPage}", (++this.currentPage).ToString()).Replace(
+                            "{totalPages}",
+                            this.totalPagesCount.ToString());
 
                         if (this.currentPage > this.ProgressBar.Maximum)
                         {
@@ -79,6 +81,7 @@
                             $"Inventory {CurrentSession.CurrentInventoryAppId}-{CurrentSession.CurrentInventoryContextId} loading process aborted");
                         this.items = new List<FullRgItem>();
                         this.currentTrades = new List<FullTradeOffer>();
+                        this.myListings = new MyListings();
                         this.workingThread.Abort();
                         this.DeactivateForm();
                     });
@@ -267,6 +270,35 @@
             }
 
             return this.tradesHistory;
+        }
+
+        #endregion
+
+        #region MyListings
+
+        private MyListings myListings;
+
+        public void InitMyListingsLoadingProcess()
+        {
+            this.Text = $@"Market listings loading";
+            this.ActivateForm();
+            this.workingThread = new Thread(this.LoadMyListings);
+            this.workingThread.Start();
+        }
+
+        public void LoadMyListings()
+        {
+            this.myListings = CurrentSession.SteamManager.MarketClient.MyListings();
+        }
+
+        public MyListings GetMyListings()
+        {
+            while (this.myListings == null)
+            {
+                Thread.Sleep(500);
+            }
+
+            return this.myListings;
         }
 
         #endregion

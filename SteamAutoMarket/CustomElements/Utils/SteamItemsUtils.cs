@@ -19,7 +19,7 @@
             return GetClearType(item.Description.Type);
         }
 
-        private static string GetClearType(string type)
+        public static string GetClearType(string type)
         {
             if (type == null)
             {

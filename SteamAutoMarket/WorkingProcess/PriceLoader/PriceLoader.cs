@@ -8,6 +8,7 @@
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
+    using SteamAutoMarket.CustomElements.Controls.Market;
     using SteamAutoMarket.CustomElements.Utils;
     using SteamAutoMarket.Utils;
     using SteamAutoMarket.WorkingProcess.Settings;
@@ -297,7 +298,7 @@
                 double? currentPrice = null;
                 if (isForced == false)
                 {
-                    var cachedCurrentPrice = CurrentPricesCache.Get(item);
+                    var cachedCurrentPrice = CurrentPricesCache.Get(item.Description.MarketHashName);
                     if (cachedCurrentPrice != null)
                     {
                         currentPrice = cachedCurrentPrice.Price;
@@ -306,7 +307,7 @@
 
                 if (currentPrice == null)
                 {
-                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
+                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset.Appid, item.Description.MarketHashName);
                     if (currentPrice != null && currentPrice > 0)
                     {
                         CurrentPricesCache.Cache(item.Description.MarketHashName, currentPrice.Value);
@@ -316,7 +317,7 @@
                 double? averagePrice = null;
                 if (isForced == false)
                 {
-                    var cachedCurrentPrice = AveragePricesCache.Get(item);
+                    var cachedCurrentPrice = AveragePricesCache.Get(item.Description.MarketHashName);
                     if (cachedCurrentPrice != null)
                     {
                         averagePrice = cachedCurrentPrice.Price;
@@ -329,8 +330,8 @@
                 }
 
                 averagePrice = CurrentSession.SteamManager.GetAveragePrice(
-                    item.Asset,
-                    item.Description,
+                    item.Asset.Appid,
+                    item.Description.MarketHashName,
                     SavedSettings.Get().SettingsAveragePriceParseDays);
 
                 if (averagePrice != null && (double)averagePrice > 0)
@@ -411,7 +412,7 @@
                 double? currentPrice = null;
                 if (isForced == false)
                 {
-                    var cachedCurrentPrice = CurrentPricesCache.Get(item);
+                    var cachedCurrentPrice = CurrentPricesCache.Get(item.Description.MarketHashName);
                     if (cachedCurrentPrice != null)
                     {
                         currentPrice = cachedCurrentPrice.Price;
@@ -420,7 +421,7 @@
 
                 if (currentPrice == null)
                 {
-                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
+                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset.Appid, item.Description.MarketHashName);
                     if (currentPrice != null && currentPrice != 0)
                     {
                         CurrentPricesCache.Cache(item.Description.MarketHashName, currentPrice.Value);
@@ -430,7 +431,7 @@
                 double? averagePrice = null;
                 if (isForced == false)
                 {
-                    var cachedCurrentPrice = AveragePricesCache.Get(item);
+                    var cachedCurrentPrice = AveragePricesCache.Get(item.Description.MarketHashName);
                     if (cachedCurrentPrice != null)
                     {
                         averagePrice = cachedCurrentPrice.Price;
@@ -443,13 +444,137 @@
                 }
 
                 averagePrice = CurrentSession.SteamManager.GetAveragePrice(
-                    item.Asset,
-                    item.Description,
+                    item.Asset.Appid,
+                    item.Description.MarketHashName,
                     SavedSettings.Get().SettingsAveragePriceParseDays);
 
                 if (averagePrice != null && averagePrice != 0)
                 {
                     AveragePricesCache.Cache(item.Description.MarketHashName, averagePrice.Value);
+                }
+
+                return new Tuple<double?, double?>(currentPrice, averagePrice);
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug($"Error on parsing item price - {ex.Message}");
+                return new Tuple<double?, double?>(0, 0);
+            }
+        }
+
+        #endregion
+
+        #region Relist
+
+        private static void AddRelistTasksToQueue()
+        {
+            var rows = GetRelistRowsWithNoPrice();
+            var tasks = rows.Select(row => new Task(() => SetRelistRowCurrentPrices(row))).ToList();
+            tasks.ForEach(t => WorkingTasksQueue.Enqueue(new PriceLoadTask(ETableToLoad.RelistTable, t)));
+        }
+
+        private static void SetRelistRowCurrentPrices(DataGridViewRow row)
+        {
+            try
+            {
+                var currentPriceCell = relistGridView.Rows[row.Index].Cells[MarketRelistControl.ListingCurrentPriceCellIndex];
+                var averagePriceCell = relistGridView.Rows[row.Index].Cells[MarketRelistControl.ListingAveragePriceCellIndex];
+
+                var prices = GetRelistRowPrice(row).Result;
+
+                var currentPrice = prices.Item1;
+                if (currentPrice != -1)
+                {
+                    currentPriceCell.Value = currentPrice;
+                }
+
+                var averagePrice = prices.Item2;
+                if (averagePrice != -1)
+                {
+                    averagePriceCell.Value = averagePrice;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning("Error on parsing item price", ex);
+            }
+        }
+
+        private static IEnumerable<DataGridViewRow> GetRelistRowsWithNoPrice()
+        {
+            return relistGridView.Rows.Cast<DataGridViewRow>().Where(
+                r => GetMyListingsCurrentRowPrice(r.Index).HasValue == false
+                     || GetMyListingsAverageRowPrice(r.Index).HasValue == false);
+        }
+
+        private static double? GetMyListingsCurrentRowPrice(int index)
+        {
+            return (double?)relistGridView.Rows[index].Cells[MarketRelistControl.ListingCurrentPriceCellIndex].Value;
+        }
+
+        private static double? GetMyListingsAverageRowPrice(int index)
+        {
+            return (double?)relistGridView.Rows[index].Cells[MarketRelistControl.ListingAveragePriceCellIndex].Value;
+        }
+
+        private static async Task<Tuple<double?, double?>> GetRelistRowPrice(DataGridViewRow row)
+        {
+            try
+            {
+                var hashCell = relistGridView.Rows[row.Index].Cells[MarketRelistControl.ListingHiddenMarketHashNameCellIndex];
+                if (hashCell?.Value == null)
+                {
+                    return new Tuple<double?, double?>(-1, -1);
+                }
+
+                var item = MarketRelistControl.MyListings?[(string)hashCell.Value]?.FirstOrDefault();
+                if (item == null)
+                {
+                    return new Tuple<double?, double?>(-1, -1);
+                }
+
+                double? currentPrice = null;
+                if (isForced == false)
+                {
+                    var cachedCurrentPrice = CurrentPricesCache.Get(item.HashName);
+                    if (cachedCurrentPrice != null)
+                    {
+                        currentPrice = cachedCurrentPrice.Price;
+                    }
+                }
+
+                if (currentPrice == null)
+                {
+                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.AppId, item.HashName);
+                    if (currentPrice != null && currentPrice != 0)
+                    {
+                        CurrentPricesCache.Cache(item.HashName, currentPrice.Value);
+                    }
+                }
+
+                double? averagePrice = null;
+                if (isForced == false)
+                {
+                    var cachedCurrentPrice = AveragePricesCache.Get(item.HashName);
+                    if (cachedCurrentPrice != null)
+                    {
+                        averagePrice = cachedCurrentPrice.Price;
+                    }
+                }
+
+                if (averagePrice != null)
+                {
+                    return new Tuple<double?, double?>(currentPrice, averagePrice);
+                }
+
+                averagePrice = CurrentSession.SteamManager.GetAveragePrice(
+                    item.AppId,
+                    item.HashName,
+                    SavedSettings.Get().SettingsAveragePriceParseDays);
+
+                if (averagePrice != null && averagePrice != 0)
+                {
+                    AveragePricesCache.Cache(item.HashName, averagePrice.Value);
                 }
 
                 return new Tuple<double?, double?>(currentPrice, averagePrice);

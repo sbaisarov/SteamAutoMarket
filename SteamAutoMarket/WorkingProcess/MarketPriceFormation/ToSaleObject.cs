@@ -38,10 +38,10 @@
             switch (this.MarketSaleType)
             {
                 case MarketSaleType.LowerThanCurrent:
-                    price = PriceLoader.PriceLoader.CurrentPricesCache.Get(item)?.Price;
+                    price = PriceLoader.PriceLoader.CurrentPricesCache.Get(item.Description.MarketHashName)?.Price;
                     if (!price.HasValue)
                     {
-                        price = await manager.GetCurrentPrice(item.Asset, item.Description);
+                        price = await manager.GetCurrentPrice(item.Asset.Appid, item.Description.MarketHashName);
                         PriceLoader.PriceLoader.CurrentPricesCache.Cache(
                             item.Description.MarketHashName,
                             (double)price);
@@ -52,13 +52,13 @@
                     break;
 
                 case MarketSaleType.LowerThanAverage:
-                    price = PriceLoader.PriceLoader.AveragePricesCache.Get(item)?.Price;
+                    price = PriceLoader.PriceLoader.AveragePricesCache.Get(item.Description.MarketHashName)?.Price;
 
                     if (!price.HasValue)
                     {
                         price = manager.GetAveragePrice(
-                            item.Asset,
-                            item.Description,
+                            item.Asset.Appid,
+                            item.Description.MarketHashName,
                             SavedSettings.Get().SettingsAveragePriceParseDays);
                         if (price != null)
                         {
@@ -73,21 +73,21 @@
                     break;
 
                 case MarketSaleType.Recommended:
-                    var currentPrice = PriceLoader.PriceLoader.CurrentPricesCache.Get(item)?.Price;
+                    var currentPrice = PriceLoader.PriceLoader.CurrentPricesCache.Get(item.Description.MarketHashName)?.Price;
                     if (!currentPrice.HasValue)
                     {
-                        currentPrice = await manager.GetCurrentPrice(item.Asset, item.Description);
+                        currentPrice = await manager.GetCurrentPrice(item.Asset.Appid, item.Description.MarketHashName);
                         PriceLoader.PriceLoader.CurrentPricesCache.Cache(
                             item.Description.MarketHashName,
                             (double)currentPrice);
                     }
 
-                    var averagePrice = PriceLoader.PriceLoader.AveragePricesCache.Get(item)?.Price;
+                    var averagePrice = PriceLoader.PriceLoader.AveragePricesCache.Get(item.Description.MarketHashName)?.Price;
                     if (!averagePrice.HasValue)
                     {
                         averagePrice = manager.GetAveragePrice(
-                            item.Asset,
-                            item.Description,
+                            item.Asset.Appid,
+                            item.Description.MarketHashName,
                             SavedSettings.Get().SettingsAveragePriceParseDays);
                         if (averagePrice != null)
                         {

@@ -54,8 +54,8 @@
                 var averagePriceCell = GetGridAveragePriceTextBoxCell(itemsToSaleGrid, rowIndex);
 
                 var firstItem = items.First();
-                var currentPriceObj = PriceLoader.CurrentPricesCache.Get(firstItem);
-                var averagePriceObj = PriceLoader.AveragePricesCache.Get(firstItem);
+                var currentPriceObj = PriceLoader.CurrentPricesCache.Get(firstItem.Description.MarketHashName);
+                var averagePriceObj = PriceLoader.AveragePricesCache.Get(firstItem.Description.MarketHashName);
 
                 nameCell.Value = firstItem.Description.Name;
                 countCell.Value = items.Sum(item => int.Parse(item.Asset.Amount));

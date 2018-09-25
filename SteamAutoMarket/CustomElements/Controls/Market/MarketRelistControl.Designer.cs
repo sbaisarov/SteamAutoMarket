@@ -37,20 +37,6 @@
             this.AccountNameLable = new System.Windows.Forms.Label();
             this.AllSteamItemsGroupBox = new System.Windows.Forms.GroupBox();
             this.AllSteamItemsGridView = new System.Windows.Forms.DataGridView();
-            this.CancleSelectedButton = new System.Windows.Forms.Button();
-            this.SplitterPanel = new System.Windows.Forms.Panel();
-            this.CalcleAllButton = new System.Windows.Forms.Button();
-            this.LoadListingButton = new System.Windows.Forms.Button();
-            this.AddAllToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.AveregeMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
-            this.CurrentMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
-            this.RecomendedPriceRadioButton = new System.Windows.Forms.RadioButton();
-            this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
-            this.ItemDescriptionTextBox = new SteamAutoMarket.CustomElements.Elements.RichTextBoxWithNoPaint();
-            this.ItemNameLable = new System.Windows.Forms.Label();
-            this.ItemImageBox = new System.Windows.Forms.Panel();
-            this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.CancleOverpricedButton = new System.Windows.Forms.Button();
             this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,8 +47,32 @@
             this.AveragePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CancleSelectedButton = new System.Windows.Forms.Button();
+            this.SplitterPanel = new System.Windows.Forms.Panel();
+            this.CalcleAllButton = new System.Windows.Forms.Button();
+            this.LoadListingButton = new System.Windows.Forms.Button();
+            this.AddAllToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.AverageMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
+            this.CurrentMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
+            this.RecomendedPriceRadioButton = new System.Windows.Forms.RadioButton();
+            this.AveragePricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
+            this.AveragePriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.CurrentPricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
+            this.CurrentPriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+            this.ItemDescriptionTextBox = new SteamAutoMarket.CustomElements.Elements.RichTextBoxWithNoPaint();
+            this.ItemNameLable = new System.Windows.Forms.Label();
+            this.ItemImageBox = new System.Windows.Forms.Panel();
+            this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.CancleOverpricedButton = new System.Windows.Forms.Button();
+            this.RefreshPricesButton = new System.Windows.Forms.Button();
+            this.AllItemsUpdateOneButtonClick = new System.Windows.Forms.Button();
             this.AllSteamItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).BeginInit();
             this.ItemDescriptionGroupBox.SuspendLayout();
             this.PriceSettingsGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -84,7 +94,7 @@
             this.AllSteamItemsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.AllSteamItemsGroupBox.Location = new System.Drawing.Point(7, 3);
             this.AllSteamItemsGroupBox.Name = "AllSteamItemsGroupBox";
-            this.AllSteamItemsGroupBox.Size = new System.Drawing.Size(618, 587);
+            this.AllSteamItemsGroupBox.Size = new System.Drawing.Size(618, 593);
             this.AllSteamItemsGroupBox.TabIndex = 24;
             this.AllSteamItemsGroupBox.TabStop = false;
             this.AllSteamItemsGroupBox.Text = "All items";
@@ -136,182 +146,9 @@
             this.AllSteamItemsGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.AllSteamItemsGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.AllSteamItemsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.AllSteamItemsGridView.Size = new System.Drawing.Size(612, 568);
+            this.AllSteamItemsGridView.Size = new System.Drawing.Size(612, 574);
             this.AllSteamItemsGridView.TabIndex = 7;
             this.AllSteamItemsGridView.SelectionChanged += new System.EventHandler(this.AllSteamItemsGridViewSelectionChanged);
-            // 
-            // CancleSelectedButton
-            // 
-            this.CancleSelectedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.CancleSelectedButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CancleSelectedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CancleSelectedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.CancleSelectedButton.Location = new System.Drawing.Point(660, 511);
-            this.CancleSelectedButton.Name = "CancleSelectedButton";
-            this.CancleSelectedButton.Size = new System.Drawing.Size(203, 35);
-            this.CancleSelectedButton.TabIndex = 15;
-            this.CancleSelectedButton.Text = "Cancle selected";
-            this.CancleSelectedButton.UseVisualStyleBackColor = false;
-            // 
-            // SplitterPanel
-            // 
-            this.SplitterPanel.BackgroundImage = global::SteamAutoMarket.Properties.Resources.NotLogined;
-            this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.SplitterPanel.Location = new System.Drawing.Point(720, 3);
-            this.SplitterPanel.Name = "SplitterPanel";
-            this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
-            this.SplitterPanel.TabIndex = 22;
-            // 
-            // CalcleAllButton
-            // 
-            this.CalcleAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.CalcleAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CalcleAllButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CalcleAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.CalcleAllButton.Location = new System.Drawing.Point(660, 552);
-            this.CalcleAllButton.Name = "CalcleAllButton";
-            this.CalcleAllButton.Size = new System.Drawing.Size(203, 35);
-            this.CalcleAllButton.TabIndex = 26;
-            this.CalcleAllButton.Text = "Cancle all";
-            this.CalcleAllButton.UseVisualStyleBackColor = false;
-            // 
-            // LoadListingButton
-            // 
-            this.LoadListingButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LoadListingButton.FlatAppearance.BorderSize = 0;
-            this.LoadListingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadListingButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.LoadListingButton.Image = global::SteamAutoMarket.Properties.Resources.Download;
-            this.LoadListingButton.Location = new System.Drawing.Point(172, 8);
-            this.LoadListingButton.Name = "LoadListingButton";
-            this.LoadListingButton.Size = new System.Drawing.Size(76, 84);
-            this.LoadListingButton.TabIndex = 28;
-            this.AddAllToolTip.SetToolTip(this.LoadListingButton, "Load market listings");
-            this.LoadListingButton.UseVisualStyleBackColor = true;
-            this.LoadListingButton.Click += new System.EventHandler(this.LoadListingButtonClick);
-            // 
-            // AddAllToolTip
-            // 
-            this.AddAllToolTip.AutomaticDelay = 100;
-            this.AddAllToolTip.AutoPopDelay = 50000;
-            this.AddAllToolTip.InitialDelay = 100;
-            this.AddAllToolTip.IsBalloon = true;
-            this.AddAllToolTip.ReshowDelay = 20;
-            this.AddAllToolTip.UseAnimation = false;
-            this.AddAllToolTip.UseFading = false;
-            // 
-            // AveregeMinusPriceRadioButton
-            // 
-            this.AveregeMinusPriceRadioButton.AutoSize = true;
-            this.AveregeMinusPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AveregeMinusPriceRadioButton.Location = new System.Drawing.Point(12, 45);
-            this.AveregeMinusPriceRadioButton.Name = "AveregeMinusPriceRadioButton";
-            this.AveregeMinusPriceRadioButton.Size = new System.Drawing.Size(111, 20);
-            this.AveregeMinusPriceRadioButton.TabIndex = 5;
-            this.AveregeMinusPriceRadioButton.Text = "Average price";
-            this.AddAllToolTip.SetToolTip(this.AveregeMinusPriceRadioButton, "The value to add to the average calculated price (minimum and maximum are respect" +
-        "ed)");
-            this.AveregeMinusPriceRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // CurrentMinusPriceRadioButton
-            // 
-            this.CurrentMinusPriceRadioButton.AutoSize = true;
-            this.CurrentMinusPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CurrentMinusPriceRadioButton.Location = new System.Drawing.Point(12, 71);
-            this.CurrentMinusPriceRadioButton.Name = "CurrentMinusPriceRadioButton";
-            this.CurrentMinusPriceRadioButton.Size = new System.Drawing.Size(101, 20);
-            this.CurrentMinusPriceRadioButton.TabIndex = 1;
-            this.CurrentMinusPriceRadioButton.Text = "Current price";
-            this.AddAllToolTip.SetToolTip(this.CurrentMinusPriceRadioButton, "The value to add to the current calculated price (minimum and maximum are respect" +
-        "ed)");
-            this.CurrentMinusPriceRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // RecomendedPriceRadioButton
-            // 
-            this.RecomendedPriceRadioButton.AutoSize = true;
-            this.RecomendedPriceRadioButton.Checked = true;
-            this.RecomendedPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RecomendedPriceRadioButton.Location = new System.Drawing.Point(12, 19);
-            this.RecomendedPriceRadioButton.Name = "RecomendedPriceRadioButton";
-            this.RecomendedPriceRadioButton.Size = new System.Drawing.Size(153, 20);
-            this.RecomendedPriceRadioButton.TabIndex = 0;
-            this.RecomendedPriceRadioButton.TabStop = true;
-            this.RecomendedPriceRadioButton.Text = "Recommended price";
-            this.AddAllToolTip.SetToolTip(this.RecomendedPriceRadioButton, "The largest of the maximum and current prices");
-            this.RecomendedPriceRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // ItemDescriptionGroupBox
-            // 
-            this.ItemDescriptionGroupBox.Controls.Add(this.ItemDescriptionTextBox);
-            this.ItemDescriptionGroupBox.Controls.Add(this.ItemNameLable);
-            this.ItemDescriptionGroupBox.Controls.Add(this.ItemImageBox);
-            this.ItemDescriptionGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionGroupBox.Location = new System.Drawing.Point(631, 71);
-            this.ItemDescriptionGroupBox.Name = "ItemDescriptionGroupBox";
-            this.ItemDescriptionGroupBox.Size = new System.Drawing.Size(254, 243);
-            this.ItemDescriptionGroupBox.TabIndex = 29;
-            this.ItemDescriptionGroupBox.TabStop = false;
-            this.ItemDescriptionGroupBox.Text = "Item description";
-            // 
-            // ItemDescriptionTextBox
-            // 
-            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
-            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
-            this.ItemDescriptionTextBox.ReadOnly = true;
-            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(248, 99);
-            this.ItemDescriptionTextBox.TabIndex = 11;
-            this.ItemDescriptionTextBox.Text = "";
-            // 
-            // ItemNameLable
-            // 
-            this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ItemNameLable.Location = new System.Drawing.Point(150, 15);
-            this.ItemNameLable.Name = "ItemNameLable";
-            this.ItemNameLable.Size = new System.Drawing.Size(98, 120);
-            this.ItemNameLable.TabIndex = 10;
-            // 
-            // ItemImageBox
-            // 
-            this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.ItemImageBox.BackgroundImage = global::SteamAutoMarket.Properties.Resources.DefaultItem;
-            this.ItemImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ItemImageBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
-            this.ItemImageBox.Name = "ItemImageBox";
-            this.ItemImageBox.Size = new System.Drawing.Size(139, 120);
-            this.ItemImageBox.TabIndex = 8;
-            // 
-            // PriceSettingsGroupBox
-            // 
-            this.PriceSettingsGroupBox.Controls.Add(this.CancleOverpricedButton);
-            this.PriceSettingsGroupBox.Controls.Add(this.AveregeMinusPriceRadioButton);
-            this.PriceSettingsGroupBox.Controls.Add(this.CurrentMinusPriceRadioButton);
-            this.PriceSettingsGroupBox.Controls.Add(this.LoadListingButton);
-            this.PriceSettingsGroupBox.Controls.Add(this.RecomendedPriceRadioButton);
-            this.PriceSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(631, 329);
-            this.PriceSettingsGroupBox.Name = "PriceSettingsGroupBox";
-            this.PriceSettingsGroupBox.Size = new System.Drawing.Size(254, 150);
-            this.PriceSettingsGroupBox.TabIndex = 30;
-            this.PriceSettingsGroupBox.TabStop = false;
-            this.PriceSettingsGroupBox.Text = "Relist price formation setting ";
-            // 
-            // CancleOverpricedButton
-            // 
-            this.CancleOverpricedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.CancleOverpricedButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CancleOverpricedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CancleOverpricedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.CancleOverpricedButton.Location = new System.Drawing.Point(29, 102);
-            this.CancleOverpricedButton.Name = "CancleOverpricedButton";
-            this.CancleOverpricedButton.Size = new System.Drawing.Size(203, 35);
-            this.CancleOverpricedButton.TabIndex = 31;
-            this.CancleOverpricedButton.Text = "Cancle overpriced";
-            this.CancleOverpricedButton.UseVisualStyleBackColor = false;
             // 
             // CheckBoxColumn
             // 
@@ -387,7 +224,7 @@
             // 
             // AddButtonColumn
             // 
-            this.AddButtonColumn.FillWeight = 30F;
+            this.AddButtonColumn.FillWeight = 35F;
             this.AddButtonColumn.HeaderText = "Cancel";
             this.AddButtonColumn.Name = "AddButtonColumn";
             this.AddButtonColumn.ReadOnly = true;
@@ -402,12 +239,359 @@
             this.HidenItemMarketHashName.ReadOnly = true;
             this.HidenItemMarketHashName.Visible = false;
             // 
+            // CancleSelectedButton
+            // 
+            this.CancleSelectedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.CancleSelectedButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.CancleSelectedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CancleSelectedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.CancleSelectedButton.Location = new System.Drawing.Point(632, 489);
+            this.CancleSelectedButton.Name = "CancleSelectedButton";
+            this.CancleSelectedButton.Size = new System.Drawing.Size(162, 35);
+            this.CancleSelectedButton.TabIndex = 15;
+            this.CancleSelectedButton.Text = "Cancle selected";
+            this.CancleSelectedButton.UseVisualStyleBackColor = false;
+            // 
+            // SplitterPanel
+            // 
+            this.SplitterPanel.BackgroundImage = global::SteamAutoMarket.Properties.Resources.NotLogined;
+            this.SplitterPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SplitterPanel.Location = new System.Drawing.Point(720, 3);
+            this.SplitterPanel.Name = "SplitterPanel";
+            this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
+            this.SplitterPanel.TabIndex = 22;
+            // 
+            // CalcleAllButton
+            // 
+            this.CalcleAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.CalcleAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.CalcleAllButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CalcleAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.CalcleAllButton.Location = new System.Drawing.Point(631, 536);
+            this.CalcleAllButton.Name = "CalcleAllButton";
+            this.CalcleAllButton.Size = new System.Drawing.Size(163, 35);
+            this.CalcleAllButton.TabIndex = 26;
+            this.CalcleAllButton.Text = "Cancle all";
+            this.CalcleAllButton.UseVisualStyleBackColor = false;
+            // 
+            // LoadListingButton
+            // 
+            this.LoadListingButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LoadListingButton.FlatAppearance.BorderSize = 0;
+            this.LoadListingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadListingButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.LoadListingButton.Image = global::SteamAutoMarket.Properties.Resources.Download;
+            this.LoadListingButton.Location = new System.Drawing.Point(801, 489);
+            this.LoadListingButton.Name = "LoadListingButton";
+            this.LoadListingButton.Size = new System.Drawing.Size(76, 84);
+            this.LoadListingButton.TabIndex = 28;
+            this.AddAllToolTip.SetToolTip(this.LoadListingButton, "Load market listings");
+            this.LoadListingButton.UseVisualStyleBackColor = true;
+            this.LoadListingButton.Click += new System.EventHandler(this.LoadListingButtonClick);
+            // 
+            // AddAllToolTip
+            // 
+            this.AddAllToolTip.AutomaticDelay = 100;
+            this.AddAllToolTip.AutoPopDelay = 50000;
+            this.AddAllToolTip.InitialDelay = 100;
+            this.AddAllToolTip.IsBalloon = true;
+            this.AddAllToolTip.ReshowDelay = 20;
+            this.AddAllToolTip.UseAnimation = false;
+            this.AddAllToolTip.UseFading = false;
+            // 
+            // AverageMinusPriceRadioButton
+            // 
+            this.AverageMinusPriceRadioButton.AutoSize = true;
+            this.AverageMinusPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AverageMinusPriceRadioButton.Location = new System.Drawing.Point(12, 45);
+            this.AverageMinusPriceRadioButton.Name = "AverageMinusPriceRadioButton";
+            this.AverageMinusPriceRadioButton.Size = new System.Drawing.Size(111, 20);
+            this.AverageMinusPriceRadioButton.TabIndex = 5;
+            this.AverageMinusPriceRadioButton.Text = "Average price";
+            this.AddAllToolTip.SetToolTip(this.AverageMinusPriceRadioButton, "The value to add to the average calculated price (minimum and maximum are respect" +
+        "ed)");
+            this.AverageMinusPriceRadioButton.UseVisualStyleBackColor = true;
+            this.AverageMinusPriceRadioButton.CheckedChanged += new System.EventHandler(this.AverageMinusPriceRadioButtonCheckedChanged);
+            // 
+            // CurrentMinusPriceRadioButton
+            // 
+            this.CurrentMinusPriceRadioButton.AutoSize = true;
+            this.CurrentMinusPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurrentMinusPriceRadioButton.Location = new System.Drawing.Point(12, 71);
+            this.CurrentMinusPriceRadioButton.Name = "CurrentMinusPriceRadioButton";
+            this.CurrentMinusPriceRadioButton.Size = new System.Drawing.Size(101, 20);
+            this.CurrentMinusPriceRadioButton.TabIndex = 1;
+            this.CurrentMinusPriceRadioButton.Text = "Current price";
+            this.AddAllToolTip.SetToolTip(this.CurrentMinusPriceRadioButton, "The value to add to the current calculated price (minimum and maximum are respect" +
+        "ed)");
+            this.CurrentMinusPriceRadioButton.UseVisualStyleBackColor = true;
+            this.CurrentMinusPriceRadioButton.CheckedChanged += new System.EventHandler(this.CurrentMinusPriceRadioButtonCheckedChanged);
+            // 
+            // RecomendedPriceRadioButton
+            // 
+            this.RecomendedPriceRadioButton.AutoSize = true;
+            this.RecomendedPriceRadioButton.Checked = true;
+            this.RecomendedPriceRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RecomendedPriceRadioButton.Location = new System.Drawing.Point(12, 19);
+            this.RecomendedPriceRadioButton.Name = "RecomendedPriceRadioButton";
+            this.RecomendedPriceRadioButton.Size = new System.Drawing.Size(153, 20);
+            this.RecomendedPriceRadioButton.TabIndex = 0;
+            this.RecomendedPriceRadioButton.TabStop = true;
+            this.RecomendedPriceRadioButton.Text = "Recommended price";
+            this.AddAllToolTip.SetToolTip(this.RecomendedPriceRadioButton, "The largest of the maximum and current prices");
+            this.RecomendedPriceRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // AveragePricePercentNumericUpDown
+            // 
+            this.AveragePricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AveragePricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AveragePricePercentNumericUpDown.DecimalPlaces = 2;
+            this.AveragePricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AveragePricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AveragePricePercentNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.AveragePricePercentNumericUpDown.Location = new System.Drawing.Point(192, 45);
+            this.AveragePricePercentNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.AveragePricePercentNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.AveragePricePercentNumericUpDown.Name = "AveragePricePercentNumericUpDown";
+            this.AveragePricePercentNumericUpDown.Size = new System.Drawing.Size(57, 22);
+            this.AveragePricePercentNumericUpDown.TabIndex = 34;
+            this.AveragePricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.AveragePricePercentNumericUpDown, "Only one value type can be used");
+            this.AveragePricePercentNumericUpDown.TrailingSign = "%";
+            this.AveragePricePercentNumericUpDown.Visible = false;
+            this.AveragePricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePricePercentNumericUpDownValueChanged);
+            // 
+            // AveragePriceNumericUpDown
+            // 
+            this.AveragePriceNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AveragePriceNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AveragePriceNumericUpDown.DecimalPlaces = 2;
+            this.AveragePriceNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AveragePriceNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AveragePriceNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.AveragePriceNumericUpDown.Location = new System.Drawing.Point(129, 45);
+            this.AveragePriceNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.AveragePriceNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.AveragePriceNumericUpDown.Name = "AveragePriceNumericUpDown";
+            this.AveragePriceNumericUpDown.Size = new System.Drawing.Size(57, 22);
+            this.AveragePriceNumericUpDown.TabIndex = 33;
+            this.AveragePriceNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.AveragePriceNumericUpDown, "Only one value type can be used");
+            this.AveragePriceNumericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147352576});
+            this.AveragePriceNumericUpDown.Visible = false;
+            this.AveragePriceNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePriceNumericUpDownValueChanged);
+            // 
+            // CurrentPricePercentNumericUpDown
+            // 
+            this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
+            this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(192, 67);
+            this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.CurrentPricePercentNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.CurrentPricePercentNumericUpDown.Name = "CurrentPricePercentNumericUpDown";
+            this.CurrentPricePercentNumericUpDown.Size = new System.Drawing.Size(57, 22);
+            this.CurrentPricePercentNumericUpDown.TabIndex = 32;
+            this.CurrentPricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.CurrentPricePercentNumericUpDown, "Only one value type can be used");
+            this.CurrentPricePercentNumericUpDown.TrailingSign = "%";
+            this.CurrentPricePercentNumericUpDown.Visible = false;
+            this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDownValueChanged);
+            // 
+            // CurrentPriceNumericUpDown
+            // 
+            this.CurrentPriceNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.CurrentPriceNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CurrentPriceNumericUpDown.DecimalPlaces = 2;
+            this.CurrentPriceNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentPriceNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.CurrentPriceNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.CurrentPriceNumericUpDown.Location = new System.Drawing.Point(129, 67);
+            this.CurrentPriceNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.CurrentPriceNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.CurrentPriceNumericUpDown.Name = "CurrentPriceNumericUpDown";
+            this.CurrentPriceNumericUpDown.Size = new System.Drawing.Size(57, 22);
+            this.CurrentPriceNumericUpDown.TabIndex = 31;
+            this.CurrentPriceNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.CurrentPriceNumericUpDown, "Only one value type can be used");
+            this.CurrentPriceNumericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147352576});
+            this.CurrentPriceNumericUpDown.Visible = false;
+            this.CurrentPriceNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPriceNumericUpDownValueChanged);
+            // 
+            // ItemDescriptionGroupBox
+            // 
+            this.ItemDescriptionGroupBox.Controls.Add(this.ItemDescriptionTextBox);
+            this.ItemDescriptionGroupBox.Controls.Add(this.ItemNameLable);
+            this.ItemDescriptionGroupBox.Controls.Add(this.ItemImageBox);
+            this.ItemDescriptionGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionGroupBox.Location = new System.Drawing.Point(631, 65);
+            this.ItemDescriptionGroupBox.Name = "ItemDescriptionGroupBox";
+            this.ItemDescriptionGroupBox.Size = new System.Drawing.Size(254, 243);
+            this.ItemDescriptionGroupBox.TabIndex = 29;
+            this.ItemDescriptionGroupBox.TabStop = false;
+            this.ItemDescriptionGroupBox.Text = "Item description";
+            // 
+            // ItemDescriptionTextBox
+            // 
+            this.ItemDescriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ItemDescriptionTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.ItemDescriptionTextBox.Location = new System.Drawing.Point(3, 141);
+            this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
+            this.ItemDescriptionTextBox.ReadOnly = true;
+            this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(248, 99);
+            this.ItemDescriptionTextBox.TabIndex = 11;
+            this.ItemDescriptionTextBox.Text = "";
+            // 
+            // ItemNameLable
+            // 
+            this.ItemNameLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ItemNameLable.Location = new System.Drawing.Point(150, 15);
+            this.ItemNameLable.Name = "ItemNameLable";
+            this.ItemNameLable.Size = new System.Drawing.Size(98, 120);
+            this.ItemNameLable.TabIndex = 10;
+            // 
+            // ItemImageBox
+            // 
+            this.ItemImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.ItemImageBox.BackgroundImage = global::SteamAutoMarket.Properties.Resources.DefaultItem;
+            this.ItemImageBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.ItemImageBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ItemImageBox.Location = new System.Drawing.Point(3, 15);
+            this.ItemImageBox.Name = "ItemImageBox";
+            this.ItemImageBox.Size = new System.Drawing.Size(139, 120);
+            this.ItemImageBox.TabIndex = 8;
+            // 
+            // PriceSettingsGroupBox
+            // 
+            this.PriceSettingsGroupBox.Controls.Add(this.AveragePricePercentNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.CancleOverpricedButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.AveragePriceNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.CurrentPricePercentNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.AverageMinusPriceRadioButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.CurrentPriceNumericUpDown);
+            this.PriceSettingsGroupBox.Controls.Add(this.CurrentMinusPriceRadioButton);
+            this.PriceSettingsGroupBox.Controls.Add(this.RecomendedPriceRadioButton);
+            this.PriceSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(631, 322);
+            this.PriceSettingsGroupBox.Name = "PriceSettingsGroupBox";
+            this.PriceSettingsGroupBox.Size = new System.Drawing.Size(254, 148);
+            this.PriceSettingsGroupBox.TabIndex = 30;
+            this.PriceSettingsGroupBox.TabStop = false;
+            this.PriceSettingsGroupBox.Text = "Relist price formation setting ";
+            // 
+            // CancleOverpricedButton
+            // 
+            this.CancleOverpricedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            this.CancleOverpricedButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.CancleOverpricedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CancleOverpricedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.CancleOverpricedButton.Location = new System.Drawing.Point(46, 101);
+            this.CancleOverpricedButton.Name = "CancleOverpricedButton";
+            this.CancleOverpricedButton.Size = new System.Drawing.Size(163, 35);
+            this.CancleOverpricedButton.TabIndex = 31;
+            this.CancleOverpricedButton.Text = "Cancle overpriced";
+            this.CancleOverpricedButton.UseVisualStyleBackColor = false;
+            // 
+            // RefreshPricesButton
+            // 
+            this.RefreshPricesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.RefreshPricesButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RefreshPricesButton.FlatAppearance.BorderSize = 0;
+            this.RefreshPricesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RefreshPricesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.RefreshPricesButton.Image = global::SteamAutoMarket.Properties.Resources.RefreshButton;
+            this.RefreshPricesButton.Location = new System.Drawing.Point(823, 1);
+            this.RefreshPricesButton.Name = "RefreshPricesButton";
+            this.RefreshPricesButton.Size = new System.Drawing.Size(47, 40);
+            this.RefreshPricesButton.TabIndex = 31;
+            this.AddAllToolTip.SetToolTip(this.RefreshPricesButton, "Force all prices reload (cached prices will be ignored)");
+            this.RefreshPricesButton.UseVisualStyleBackColor = false;
+            // 
+            // AllItemsUpdateOneButtonClick
+            // 
+            this.AllItemsUpdateOneButtonClick.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.AllItemsUpdateOneButtonClick.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AllItemsUpdateOneButtonClick.FlatAppearance.BorderSize = 0;
+            this.AllItemsUpdateOneButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AllItemsUpdateOneButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AllItemsUpdateOneButtonClick.Image = global::SteamAutoMarket.Properties.Resources.update_1;
+            this.AllItemsUpdateOneButtonClick.Location = new System.Drawing.Point(643, 1);
+            this.AllItemsUpdateOneButtonClick.Name = "AllItemsUpdateOneButtonClick";
+            this.AllItemsUpdateOneButtonClick.Size = new System.Drawing.Size(47, 40);
+            this.AllItemsUpdateOneButtonClick.TabIndex = 32;
+            this.AddAllToolTip.SetToolTip(this.AllItemsUpdateOneButtonClick, "Force selected items price reload (cached prices will be ignored)");
+            this.AllItemsUpdateOneButtonClick.UseVisualStyleBackColor = false;
+            // 
             // MarketRelistControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(26)))), ((int)(((byte)(33)))));
+            this.Controls.Add(this.RefreshPricesButton);
+            this.Controls.Add(this.AllItemsUpdateOneButtonClick);
             this.Controls.Add(this.PriceSettingsGroupBox);
+            this.Controls.Add(this.LoadListingButton);
             this.Controls.Add(this.ItemDescriptionGroupBox);
             this.Controls.Add(this.CalcleAllButton);
             this.Controls.Add(this.CancleSelectedButton);
@@ -420,6 +604,10 @@
             this.Size = new System.Drawing.Size(885, 599);
             this.AllSteamItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).EndInit();
             this.ItemDescriptionGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.PerformLayout();
@@ -467,7 +655,7 @@
         private Label ItemNameLable;
         private Panel ItemImageBox;
         private GroupBox PriceSettingsGroupBox;
-        private RadioButton AveregeMinusPriceRadioButton;
+        private RadioButton AverageMinusPriceRadioButton;
         private RadioButton CurrentMinusPriceRadioButton;
         private RadioButton RecomendedPriceRadioButton;
         private Button CancleOverpricedButton;
@@ -481,5 +669,11 @@
         private DataGridViewTextBoxColumn AveragePrice;
         private DataGridViewButtonColumn AddButtonColumn;
         private DataGridViewTextBoxColumn HidenItemMarketHashName;
+        private Elements.CustomNumericUpDown AveragePricePercentNumericUpDown;
+        private NumericUpDown AveragePriceNumericUpDown;
+        private Elements.CustomNumericUpDown CurrentPricePercentNumericUpDown;
+        private NumericUpDown CurrentPriceNumericUpDown;
+        private Button RefreshPricesButton;
+        private Button AllItemsUpdateOneButtonClick;
     }
 }

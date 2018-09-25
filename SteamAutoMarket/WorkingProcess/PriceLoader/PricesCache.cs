@@ -8,6 +8,7 @@
 
     using Newtonsoft.Json;
 
+    using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
 
     internal class PricesCache
@@ -55,9 +56,9 @@
             return this.cache;
         }
 
-        public LoadedItemPrice Get(FullRgItem item)
+        public LoadedItemPrice Get(string hashName)
         {
-            this.Get().TryGetValue(item.Description.MarketHashName, out var cached);
+            this.Get().TryGetValue(hashName, out var cached);
             if (cached == null)
             {
                 return null;
@@ -68,9 +69,8 @@
                 return cached;
             }
 
-            this.Uncache(item.Description.MarketHashName);
+            this.Uncache(hashName);
             return null;
-
         }
 
         public void Cache(string hashName, double price)

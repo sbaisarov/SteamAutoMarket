@@ -515,8 +515,8 @@
                                 }
 
                                 var averagePrice = CurrentSession.SteamManager.GetAveragePrice(
-                                    item.Asset,
-                                    item.Description,
+                                    item.Asset.Appid,
+                                    item.Description.MarketHashName,
                                     SavedSettings.Get().SettingsAveragePriceParseDays);
 
                                 if (averagePrice.HasValue)
@@ -527,7 +527,7 @@
                                 }
 
                                 var currentPrice =
-                                    await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
+                                    await CurrentSession.SteamManager.GetCurrentPrice(item.Asset.Appid, item.Description.MarketHashName);
                                 PriceLoader.CurrentPricesCache.Cache(
                                     item.Description.MarketHashName,
                                     currentPrice.Value);
@@ -699,8 +699,8 @@
                                     }
 
                                     var averagePrice = CurrentSession.SteamManager.GetAveragePrice(
-                                        item.Asset,
-                                        item.Description,
+                                        item.Asset.Appid,
+                                        item.Description.MarketHashName,
                                         SavedSettings.Get().SettingsAveragePriceParseDays);
 
                                     if (averagePrice.HasValue)
@@ -711,7 +711,7 @@
                                     }
 
                                     var currentPrice =
-                                        await CurrentSession.SteamManager.GetCurrentPrice(item.Asset, item.Description);
+                                        await CurrentSession.SteamManager.GetCurrentPrice(item.Asset.Appid, item.Description.MarketHashName);
                                     PriceLoader.CurrentPricesCache.Cache(
                                         item.Description.MarketHashName,
                                         currentPrice.Value);
