@@ -659,7 +659,7 @@
 
         // return history;
         // }
-        public MyListings MyListings(int itemsCount, string currency = "5", int count = 100)
+        public MyListings MyListings(string currency = "5", int count = 100)
         {
             var myListings = new MyListings
             {
@@ -669,7 +669,8 @@
             };
             
             int start = 0;
-            while (start < itemsCount)
+            int totalCount = 1;
+            while (start < totalCount)
             {
                 var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
                 var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
@@ -680,6 +681,8 @@
                 {
                     throw new SteamException("Cannot load market listings");
                 }
+
+                totalCount = respDes.ActiveListingsCount;
 
                 var html = respDes.ResultsHtml;
                 var doc = new HtmlDocument();
@@ -862,8 +865,6 @@
             var game = item.SelectSingleNode("//span[@class='market_listing_game_name']").InnerText;
             if (type == ETransactionType.Order)
             {
-                var imageUrl = item.SelectSingleNode("//img[contains(@id, 'mybuyorder')]").Attributes["src"].Value
-                    .Replace("38fx38f", "330x192");
                 var priceAndQuantityString = node.InnerText.Replace("\r", string.Empty).Replace("\n", string.Empty)
                     .Replace("\t", string.Empty).Replace(" ", string.Empty);
                 var priceAndQuantitySplit = priceAndQuantityString.Split('@');
@@ -895,11 +896,16 @@
                 }
 
                 var orderIdParse = long.TryParse(orderIdMatch.Value, out var orderId);
+                
 
                 if (!orderIdParse)
                 {
                     throw new SteamException($"Cannot parse order listing ID. Item index [{tempIndex}]");
                 }
+                
+                var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mybuyorder_{orderId}_image')]")
+                    .Attributes["src"].Value
+                    .Replace("38fx38f", "330x192");
 
                 var urlNode = item.SelectSingleNode(".//a[@class='market_listing_item_name_link']");
                 if (urlNode == null)
@@ -931,8 +937,6 @@
             }
             else
             {
-                var imageUrl = item.SelectSingleNode("//img[contains(@id, 'mylisting')]").Attributes["src"].Value
-                    .Replace("38fx38f", "330x192");
                 var priceString = node.InnerText.Replace("\r", string.Empty).Replace("\n", string.Empty)
                     .Replace("\t", string.Empty).Replace(" ", string.Empty);
                 double price;
@@ -959,6 +963,10 @@
                 {
                     throw new SteamException($"Cannot parse sale listing ID. Item index [{tempIndex}]");
                 }
+                
+                var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mylisting_{saleId}_image')]")
+                    .Attributes["src"].Value
+                    .Replace("38fx38f", "330x192");
 
                 var urlNode = item.SelectSingleNode(".//a[@class='market_listing_item_name_link']");
                 if (urlNode == null)

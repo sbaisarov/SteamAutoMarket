@@ -72,7 +72,7 @@
                     return;
                 }
 
-                var listings = CurrentSession.SteamManager.MarketClient.MyListings(1000);
+                var listings = CurrentSession.SteamManager.MarketClient.MyListings();
                 var groupedListings = listings.Sales.GroupBy(x => new { x.HashName, x.Price });
                 foreach (var group in groupedListings)
                 {
