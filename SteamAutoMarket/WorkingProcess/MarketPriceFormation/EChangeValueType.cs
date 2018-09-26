@@ -1,6 +1,6 @@
 ﻿namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
 {
-    public enum ChangeValueType
+    public enum EChangeValueType
     {
         ChangeValueTypeByValue,
         ChangeValueTypeByPercent,

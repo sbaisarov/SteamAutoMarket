@@ -1,6 +1,6 @@
 ﻿namespace SteamAutoMarket.WorkingProcess.MarketPriceFormation
 {
-    public enum MarketSaleType
+    public enum EMarketSaleType
     {
         Manual,
         Recommended,

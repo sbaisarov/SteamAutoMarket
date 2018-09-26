@@ -41,34 +41,35 @@
                             Logger.Working(message);
                         });
             }
+            catch (ThreadAbortException)
+            {
+                // ignored
+            }
+            catch (ObjectDisposedException)
+            {
+                // ignored
+            }
             catch (Exception ex)
             {
                 Logger.Error(ex.Message, ex);
             }
         }
 
-        public void AppendLog(string text)
+        private void AppendLog(string text)
         {
-            try
-            {
-                var autoScroll = this.ScrollCheckBox.Checked;
+            var autoScroll = this.ScrollCheckBox.Checked;
 
-                if (autoScroll)
-                {
-                    this.LogTextBox.AppendText(text);
-                }
-                else
-                {
-                    var selectionStart = this.LogTextBox.SelectionStart;
-                    var selectionLength = this.LogTextBox.SelectionLength;
-                    this.LogTextBox.Text += text;
-                    this.LogTextBox.SelectionStart = selectionStart;
-                    this.LogTextBox.SelectionLength = selectionLength;
-                }
-            }
-            catch (ObjectDisposedException)
+            if (autoScroll)
             {
-                // ignored
+                this.LogTextBox.AppendText(text);
+            }
+            else
+            {
+                var selectionStart = this.LogTextBox.SelectionStart;
+                var selectionLength = this.LogTextBox.SelectionLength;
+                this.LogTextBox.Text += text;
+                this.LogTextBox.SelectionStart = selectionStart;
+                this.LogTextBox.SelectionLength = selectionLength;
             }
         }
 
@@ -97,19 +98,27 @@
         private void StopWorkingProcessButtonClick(object sender, EventArgs e)
         {
             this.invokedFromStopButton = true;
-            Dispatcher.AsMainForm(
-                () =>
-                    {
-                        workingThread.Abort();
-                        this.DeactivateForm();
-                    });
+            try
+            {
+                Dispatcher.AsMainForm(
+                    () =>
+                        {
+                            workingThread.Abort();
+                            this.DeactivateForm();
+                        });
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
         }
 
         private void WorkingProcessFormFormClosing(object sender, FormClosingEventArgs e)
         {
-            // if invoked from [X] button
             if (this.invokedFromStopButton == false)
             {
+                // if invoked from [X] button
                 this.StopWorkingProcessButtonClick(sender, e);
             }
         }

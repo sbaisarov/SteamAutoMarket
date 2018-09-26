@@ -13,7 +13,7 @@
     {
         public PriceShaper(
             DataGridView itemsToSaleGridView,
-            MarketSaleType type,
+            EMarketSaleType type,
             double lowerValue,
             double lowerPercentValue)
         {
@@ -25,7 +25,7 @@
 
         private static DataGridView Grid { get; set; }
 
-        private static MarketSaleType Type { get; set; }
+        private static EMarketSaleType Type { get; set; }
 
         private static double LowerValue { get; set; }
 
@@ -37,36 +37,36 @@
 
             switch (Type)
             {
-                case MarketSaleType.Recommended:
+                case EMarketSaleType.Recommended:
                     itemsForSales = this.GetRecommendedPriceItemsForSale();
                     break;
 
-                case MarketSaleType.LowerThanAverage:
+                case EMarketSaleType.LowerThanAverage:
                     itemsForSales = this.GetAveragePriceItemsForSale();
                     break;
 
-                case MarketSaleType.LowerThanCurrent:
+                case EMarketSaleType.LowerThanCurrent:
                     itemsForSales = this.GetCurrentPriceItemsForSale();
                     break;
 
-                case MarketSaleType.Manual:
+                case EMarketSaleType.Manual:
                     itemsForSales = this.GetManualPriceItemsForSale();
                     break;
 
                 default: throw new InvalidOperationException("Not implemented market sale type");
             }
 
-            var changeValueType = ChangeValueType.ChangeValueTypeNone;
+            var changeValueType = EChangeValueType.ChangeValueTypeNone;
             double changeValue = 0;
 
             if (LowerValue != 0)
             {
-                changeValueType = ChangeValueType.ChangeValueTypeByValue;
+                changeValueType = EChangeValueType.ChangeValueTypeByValue;
                 changeValue = LowerValue;
             }
             else if (LowerPercentValue != 0)
             {
-                changeValueType = ChangeValueType.ChangeValueTypeByPercent;
+                changeValueType = EChangeValueType.ChangeValueTypeByPercent;
                 changeValue = LowerPercentValue;
             }
 

@@ -88,7 +88,7 @@
 
         private static void SetCacheCount(Control label, int count)
         {
-            label.Text = CachedText + count;
+            Dispatcher.AsMainForm(() => { label.Text = CachedText + count; });
         }
 
         private static void SetObsoleteCacheCount(Control label, int count)

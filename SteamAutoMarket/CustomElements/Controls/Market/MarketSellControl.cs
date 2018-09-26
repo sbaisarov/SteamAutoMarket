@@ -414,24 +414,24 @@
 
                 double changeValue = 0, changePercentValue = 0;
 
-                MarketSaleType marketSaleType;
+                EMarketSaleType marketSaleType;
                 if (this.ManualPriceRadioButton.Checked)
                 {
-                    marketSaleType = MarketSaleType.Manual;
+                    marketSaleType = EMarketSaleType.Manual;
                 }
                 else if (this.RecomendedPriceRadioButton.Checked)
                 {
-                    marketSaleType = MarketSaleType.Recommended;
+                    marketSaleType = EMarketSaleType.Recommended;
                 }
                 else if (this.AveregeMinusPriceRadioButton.Checked)
                 {
-                    marketSaleType = MarketSaleType.LowerThanAverage;
+                    marketSaleType = EMarketSaleType.LowerThanAverage;
                     changeValue = (double)this.AveragePriceNumericUpDown.Value;
                     changePercentValue = (double)this.AveragePricePercentNumericUpDown.Value;
                 }
                 else if (this.CurrentMinusPriceRadioButton.Checked)
                 {
-                    marketSaleType = MarketSaleType.LowerThanCurrent;
+                    marketSaleType = EMarketSaleType.LowerThanCurrent;
                     changeValue = (double)this.CurrentPriceNumericUpDown.Value;
                     changePercentValue = (double)this.CurrentPricePercentNumericUpDown.Value;
                 }

@@ -12,8 +12,8 @@
     {
         public ToSaleObject(
             List<ItemsForSale> itemsForSales,
-            MarketSaleType marketSaleType,
-            ChangeValueType changeValueType,
+            EMarketSaleType marketSaleType,
+            EChangeValueType changeValueType,
             double changeValue)
         {
             this.ItemsForSaleList = itemsForSales;
@@ -24,9 +24,9 @@
 
         public List<ItemsForSale> ItemsForSaleList { get; set; }
 
-        public MarketSaleType MarketSaleType { get; set; }
+        public EMarketSaleType MarketSaleType { get; set; }
 
-        public ChangeValueType ChangeValueType { get; set; }
+        public EChangeValueType ChangeValueType { get; set; }
 
         public double ChangeValue { get; set; }
 
@@ -37,7 +37,7 @@
             double? price = null;
             switch (this.MarketSaleType)
             {
-                case MarketSaleType.LowerThanCurrent:
+                case EMarketSaleType.LowerThanCurrent:
                     price = PriceLoader.PriceLoader.CurrentPricesCache.Get(item.Description.MarketHashName)?.Price;
                     if (!price.HasValue)
                     {
@@ -51,7 +51,7 @@
                     price = this.HandleChangeValue(price);
                     break;
 
-                case MarketSaleType.LowerThanAverage:
+                case EMarketSaleType.LowerThanAverage:
                     price = PriceLoader.PriceLoader.AveragePricesCache.Get(item.Description.MarketHashName)?.Price;
 
                     if (!price.HasValue)
@@ -72,7 +72,7 @@
                     Program.WorkingProcessForm.AppendWorkingProcessInfo($"Average price for '{itemName}' is {price}");
                     break;
 
-                case MarketSaleType.Recommended:
+                case EMarketSaleType.Recommended:
                     var currentPrice = PriceLoader.PriceLoader.CurrentPricesCache.Get(item.Description.MarketHashName)?.Price;
                     if (!currentPrice.HasValue)
                     {
@@ -128,13 +128,13 @@
 
             switch (this.ChangeValueType)
             {
-                case ChangeValueType.ChangeValueTypeByValue:
+                case EChangeValueType.ChangeValueTypeByValue:
                     return price.Value + this.ChangeValue;
 
-                case ChangeValueType.ChangeValueTypeByPercent:
+                case EChangeValueType.ChangeValueTypeByPercent:
                     return price.Value + (this.ChangeValue / 100 * price.Value);
 
-                case ChangeValueType.ChangeValueTypeNone:
+                case EChangeValueType.ChangeValueTypeNone:
                     return price;
 
                 default:

@@ -13,12 +13,11 @@
 
     internal class PricesCache
     {
-        private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
-                                                                          {
-                                                                              DateFormatHandling =
-                                                                                  DateFormatHandling.IsoDateFormat
-                                                                          };
-
+        // private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
+        // {
+        // DateFormatHandling =
+        // DateFormatHandling.IsoDateFormat
+        // };
         private readonly int hoursToBecomeOld;
 
         private Dictionary<string, LoadedItemPrice> cache;
@@ -43,8 +42,9 @@
             if (File.Exists(this.CachePricesPath))
             {
                 this.cache = JsonConvert.DeserializeObject<Dictionary<string, LoadedItemPrice>>(
-                    File.ReadAllText(this.CachePricesPath),
-                    JsonSettings);
+                    File.ReadAllText(this.CachePricesPath));
+
+                // JsonSettings);
                 this.UpdateAll();
             }
             else
@@ -115,7 +115,7 @@
 
             File.WriteAllText(
                 this.CachePricesPath,
-                JsonConvert.SerializeObject(this.Get(), Formatting.Indented, JsonSettings));
+                JsonConvert.SerializeObject(this.Get(), Formatting.Indented)); // JsonSettings));
             this.counter = 0;
         }
 

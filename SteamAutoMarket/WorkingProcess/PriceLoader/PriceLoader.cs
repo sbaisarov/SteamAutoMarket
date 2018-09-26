@@ -19,9 +19,11 @@
 
         private static readonly List<PriceLoadTask> ProcessingTasks = new List<PriceLoadTask>();
 
-        private static readonly Semaphore Semaphore = new Semaphore(
+        private static readonly Semaphore PriceLoadingSemaphore = new Semaphore(
             SavedSettings.Get().PriceLoadingThreads,
             SavedSettings.Get().PriceLoadingThreads);
+
+        private static readonly Semaphore ThreadStartSemaphore = new Semaphore(1, 1);
 
         private static BackgroundWorker workingThread;
 
@@ -74,6 +76,8 @@
         {
             try
             {
+                var tries = 0;
+
                 if (ProcessingTasks.Count > 0)
                 {
                     Program.WorkingProcessForm.AppendWorkingProcessInfo(
@@ -82,7 +86,13 @@
 
                 while (ProcessingTasks.Count > 0)
                 {
-                    Task.Delay(500).ConfigureAwait(true);
+                    Thread.Sleep(500);
+                    if (tries == 20)
+                    {
+                        ProcessingTasks.Clear();
+                    }
+
+                    tries++;
                 }
             }
             catch
@@ -126,7 +136,10 @@
 
                 case ETableToLoad.RelistTable:
                     {
-                        // todo
+                        WorkingTasksQueue.Clear();
+                        AddMyListingsTasksToQueue();
+
+                        StartWorkingThread();
                         break;
                     }
 
@@ -139,37 +152,30 @@
         {
             while (WorkingTasksQueue.Count > 0)
             {
-                try
-                {
-                    Semaphore.WaitOne();
-                    var priceLoadTask = WorkingTasksQueue.Dequeue();
+                PriceLoadingSemaphore.WaitOne();
+                ThreadStartSemaphore.WaitOne();
 
-                    if (priceLoadTask == null)
-                    {
-                        Semaphore.Release();
-                        continue;
-                    }
+                var priceLoadTask = WorkingTasksQueue.Dequeue();
 
-                    Task.Run(
-                        () =>
+
+                Task.Run(
+                    () =>
+                        {
+                            if (priceLoadTask == null)
                             {
-                                ProcessingTasks.Add(priceLoadTask);
+                                ThreadStartSemaphore.Release();
+                                PriceLoadingSemaphore.Release();
+                                return;
+                            }
 
-                                if (priceLoadTask.Task.Status == TaskStatus.Created)
-                                {
-                                    priceLoadTask.Task.Start();
-                                    Task.WaitAll(priceLoadTask.Task);
-                                }
+                            ProcessingTasks.Add(priceLoadTask);
+                            priceLoadTask.Task.Start();
+                            ThreadStartSemaphore.Release();
+                            Task.WaitAll(priceLoadTask.Task);
+                            ProcessingTasks.Remove(priceLoadTask);
 
-                                ProcessingTasks.Remove(priceLoadTask);
-
-                                Semaphore.Release();
-                            });
-                }
-                catch (InvalidOperationException)
-                {
-                    Semaphore.Release();
-                }
+                            PriceLoadingSemaphore.Release();
+                        });
             }
         }
 
@@ -307,7 +313,9 @@
 
                 if (currentPrice == null)
                 {
-                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset.Appid, item.Description.MarketHashName);
+                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(
+                                       item.Asset.Appid,
+                                       item.Description.MarketHashName);
                     if (currentPrice != null && currentPrice > 0)
                     {
                         CurrentPricesCache.Cache(item.Description.MarketHashName, currentPrice.Value);
@@ -421,7 +429,9 @@
 
                 if (currentPrice == null)
                 {
-                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(item.Asset.Appid, item.Description.MarketHashName);
+                    currentPrice = await CurrentSession.SteamManager.GetCurrentPrice(
+                                       item.Asset.Appid,
+                                       item.Description.MarketHashName);
                     if (currentPrice != null && currentPrice != 0)
                     {
                         CurrentPricesCache.Cache(item.Description.MarketHashName, currentPrice.Value);
@@ -466,7 +476,7 @@
 
         #region Relist
 
-        private static void AddRelistTasksToQueue()
+        private static void AddMyListingsTasksToQueue()
         {
             var rows = GetRelistRowsWithNoPrice();
             var tasks = rows.Select(row => new Task(() => SetRelistRowCurrentPrices(row))).ToList();
@@ -477,8 +487,10 @@
         {
             try
             {
-                var currentPriceCell = relistGridView.Rows[row.Index].Cells[MarketRelistControl.ListingCurrentPriceCellIndex];
-                var averagePriceCell = relistGridView.Rows[row.Index].Cells[MarketRelistControl.ListingAveragePriceCellIndex];
+                var currentPriceCell = relistGridView.Rows[row.Index]
+                    .Cells[MarketRelistControl.ListingCurrentPriceCellIndex];
+                var averagePriceCell = relistGridView.Rows[row.Index]
+                    .Cells[MarketRelistControl.ListingAveragePriceCellIndex];
 
                 var prices = GetRelistRowPrice(row).Result;
 
@@ -521,13 +533,23 @@
         {
             try
             {
-                var hashCell = relistGridView.Rows[row.Index].Cells[MarketRelistControl.ListingHiddenMarketHashNameCellIndex];
+                var hashCell = relistGridView.Rows[row.Index]
+                    .Cells[MarketRelistControl.ListingHiddenMarketHashNameCellIndex];
                 if (hashCell?.Value == null)
                 {
                     return new Tuple<double?, double?>(-1, -1);
                 }
 
-                var item = MarketRelistControl.MyListings?[(string)hashCell.Value]?.FirstOrDefault();
+                var priceCell = relistGridView.Rows[row.Index].Cells[MarketRelistControl.ListingPriceCellIndex];
+                if (priceCell?.Value == null)
+                {
+                    return new Tuple<double?, double?>(-1, -1);
+                }
+
+                var hashName = (string)hashCell.Value;
+                var price = (double)priceCell.Value;
+
+                var item = MarketRelistControl.MyListings?[hashName + price]?.FirstOrDefault();
                 if (item == null)
                 {
                     return new Tuple<double?, double?>(-1, -1);

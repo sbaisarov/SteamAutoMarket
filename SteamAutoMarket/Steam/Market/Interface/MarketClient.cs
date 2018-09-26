@@ -366,28 +366,9 @@
                               };
             var data = new Dictionary<string, string>() { { "sessionid", this.steam.Auth.SessionId() } };
 
-            var resp = this.steam.Request(RemoveListingUrl + orderid, Method.POST, Urls.Market, data, headers: headers);
-            JSuccessInt respDes = null;
-            try
-            {
-                respDes = JsonConvert.DeserializeObject<JSuccessInt>(resp.Data.Content);
-            }
-            catch (JsonSerializationException)
-            {
-            }
+            var resp = this.steam.Request(RemoveListingUrl + orderid, Method.POST, Urls.Market, data, true, headers: headers);
 
-            if (respDes == null)
-            {
-                return ECancelSellOrderStatus.Fail;
-            }
-
-            switch (respDes.Success)
-            {
-                case 1:
-                    return ECancelSellOrderStatus.Canceled;
-                default:
-                    return ECancelSellOrderStatus.Fail;
-            }
+            return resp.Data.IsSuccessful == false ? ECancelSellOrderStatus.Fail : ECancelSellOrderStatus.Canceled;
         }
 
         public ECancelBuyOrderStatus CancelBuyOrder(long orderId)
@@ -754,7 +735,7 @@
 
             this.ProcessMyListingsSellOrders(root, currency, myListings);
 
-            /*while (start < totalCount)
+            while (start < totalCount)
             {
                 @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
                 resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
@@ -767,7 +748,7 @@
                 start += count;
 
                 Program.LoadingForm.TrackLoadedIteration("Page {currentPage} of {totalPages} loaded");
-            }*/
+            }
 
             return myListings;
         }

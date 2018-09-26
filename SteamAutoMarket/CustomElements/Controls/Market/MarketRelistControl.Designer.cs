@@ -55,24 +55,24 @@
             this.AverageMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.CurrentMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
             this.RecomendedPriceRadioButton = new System.Windows.Forms.RadioButton();
-            this.AveragePricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
             this.AveragePriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.CurrentPricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
             this.CurrentPriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.RefreshPricesButton = new System.Windows.Forms.Button();
+            this.AllItemsUpdateOneButtonClick = new System.Windows.Forms.Button();
+            this.AveragePricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
+            this.CurrentPricePercentNumericUpDown = new SteamAutoMarket.CustomElements.Elements.CustomNumericUpDown();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
             this.ItemDescriptionTextBox = new SteamAutoMarket.CustomElements.Elements.RichTextBoxWithNoPaint();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.CancleOverpricedButton = new System.Windows.Forms.Button();
-            this.RefreshPricesButton = new System.Windows.Forms.Button();
-            this.AllItemsUpdateOneButtonClick = new System.Windows.Forms.Button();
             this.AllSteamItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).BeginInit();
             this.ItemDescriptionGroupBox.SuspendLayout();
             this.PriceSettingsGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -233,7 +233,7 @@
             // 
             // HidenItemMarketHashName
             // 
-            this.HidenItemMarketHashName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.HidenItemMarketHashName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.HidenItemMarketHashName.HeaderText = "HidenIdColumn";
             this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
             this.HidenItemMarketHashName.ReadOnly = true;
@@ -251,6 +251,7 @@
             this.CancleSelectedButton.TabIndex = 15;
             this.CancleSelectedButton.Text = "Cancle selected";
             this.CancleSelectedButton.UseVisualStyleBackColor = false;
+            this.CancleSelectedButton.Click += new System.EventHandler(this.CancelSelectedButtonClick);
             // 
             // SplitterPanel
             // 
@@ -273,6 +274,7 @@
             this.CalcleAllButton.TabIndex = 26;
             this.CalcleAllButton.Text = "Cancle all";
             this.CalcleAllButton.UseVisualStyleBackColor = false;
+            this.CalcleAllButton.Click += new System.EventHandler(this.CancelAllButtonClick);
             // 
             // LoadListingButton
             // 
@@ -281,7 +283,7 @@
             this.LoadListingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadListingButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.LoadListingButton.Image = global::SteamAutoMarket.Properties.Resources.Download;
-            this.LoadListingButton.Location = new System.Drawing.Point(801, 489);
+            this.LoadListingButton.Location = new System.Drawing.Point(802, 489);
             this.LoadListingButton.Name = "LoadListingButton";
             this.LoadListingButton.Size = new System.Drawing.Size(76, 84);
             this.LoadListingButton.TabIndex = 28;
@@ -341,38 +343,6 @@
             this.AddAllToolTip.SetToolTip(this.RecomendedPriceRadioButton, "The largest of the maximum and current prices");
             this.RecomendedPriceRadioButton.UseVisualStyleBackColor = true;
             // 
-            // AveragePricePercentNumericUpDown
-            // 
-            this.AveragePricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.AveragePricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AveragePricePercentNumericUpDown.DecimalPlaces = 2;
-            this.AveragePricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AveragePricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AveragePricePercentNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.AveragePricePercentNumericUpDown.Location = new System.Drawing.Point(192, 45);
-            this.AveragePricePercentNumericUpDown.Maximum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            0});
-            this.AveragePricePercentNumericUpDown.Minimum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            -2147483648});
-            this.AveragePricePercentNumericUpDown.Name = "AveragePricePercentNumericUpDown";
-            this.AveragePricePercentNumericUpDown.Size = new System.Drawing.Size(57, 22);
-            this.AveragePricePercentNumericUpDown.TabIndex = 34;
-            this.AveragePricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.AddAllToolTip.SetToolTip(this.AveragePricePercentNumericUpDown, "Only one value type can be used");
-            this.AveragePricePercentNumericUpDown.TrailingSign = "%";
-            this.AveragePricePercentNumericUpDown.Visible = false;
-            this.AveragePricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePricePercentNumericUpDownValueChanged);
-            // 
             // AveragePriceNumericUpDown
             // 
             this.AveragePriceNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -409,38 +379,6 @@
             this.AveragePriceNumericUpDown.Visible = false;
             this.AveragePriceNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePriceNumericUpDownValueChanged);
             // 
-            // CurrentPricePercentNumericUpDown
-            // 
-            this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
-            this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(192, 67);
-            this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            0});
-            this.CurrentPricePercentNumericUpDown.Minimum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            -2147483648});
-            this.CurrentPricePercentNumericUpDown.Name = "CurrentPricePercentNumericUpDown";
-            this.CurrentPricePercentNumericUpDown.Size = new System.Drawing.Size(57, 22);
-            this.CurrentPricePercentNumericUpDown.TabIndex = 32;
-            this.CurrentPricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.AddAllToolTip.SetToolTip(this.CurrentPricePercentNumericUpDown, "Only one value type can be used");
-            this.CurrentPricePercentNumericUpDown.TrailingSign = "%";
-            this.CurrentPricePercentNumericUpDown.Visible = false;
-            this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDownValueChanged);
-            // 
             // CurrentPriceNumericUpDown
             // 
             this.CurrentPriceNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
@@ -476,6 +414,100 @@
             -2147352576});
             this.CurrentPriceNumericUpDown.Visible = false;
             this.CurrentPriceNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPriceNumericUpDownValueChanged);
+            // 
+            // RefreshPricesButton
+            // 
+            this.RefreshPricesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.RefreshPricesButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RefreshPricesButton.FlatAppearance.BorderSize = 0;
+            this.RefreshPricesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RefreshPricesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.RefreshPricesButton.Image = global::SteamAutoMarket.Properties.Resources.RefreshButton;
+            this.RefreshPricesButton.Location = new System.Drawing.Point(823, 1);
+            this.RefreshPricesButton.Name = "RefreshPricesButton";
+            this.RefreshPricesButton.Size = new System.Drawing.Size(47, 40);
+            this.RefreshPricesButton.TabIndex = 31;
+            this.AddAllToolTip.SetToolTip(this.RefreshPricesButton, "Force all prices reload (cached prices will be ignored)");
+            this.RefreshPricesButton.UseVisualStyleBackColor = false;
+            // 
+            // AllItemsUpdateOneButtonClick
+            // 
+            this.AllItemsUpdateOneButtonClick.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            this.AllItemsUpdateOneButtonClick.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.AllItemsUpdateOneButtonClick.FlatAppearance.BorderSize = 0;
+            this.AllItemsUpdateOneButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AllItemsUpdateOneButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AllItemsUpdateOneButtonClick.Image = global::SteamAutoMarket.Properties.Resources.update_1;
+            this.AllItemsUpdateOneButtonClick.Location = new System.Drawing.Point(643, 1);
+            this.AllItemsUpdateOneButtonClick.Name = "AllItemsUpdateOneButtonClick";
+            this.AllItemsUpdateOneButtonClick.Size = new System.Drawing.Size(47, 40);
+            this.AllItemsUpdateOneButtonClick.TabIndex = 32;
+            this.AddAllToolTip.SetToolTip(this.AllItemsUpdateOneButtonClick, "Force selected items price reload (cached prices will be ignored)");
+            this.AllItemsUpdateOneButtonClick.UseVisualStyleBackColor = false;
+            // 
+            // AveragePricePercentNumericUpDown
+            // 
+            this.AveragePricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.AveragePricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AveragePricePercentNumericUpDown.DecimalPlaces = 2;
+            this.AveragePricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AveragePricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.AveragePricePercentNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.AveragePricePercentNumericUpDown.Location = new System.Drawing.Point(192, 45);
+            this.AveragePricePercentNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.AveragePricePercentNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.AveragePricePercentNumericUpDown.Name = "AveragePricePercentNumericUpDown";
+            this.AveragePricePercentNumericUpDown.Size = new System.Drawing.Size(57, 22);
+            this.AveragePricePercentNumericUpDown.TabIndex = 34;
+            this.AveragePricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.AveragePricePercentNumericUpDown, "Only one value type can be used");
+            this.AveragePricePercentNumericUpDown.TrailingSign = "%";
+            this.AveragePricePercentNumericUpDown.Visible = false;
+            this.AveragePricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.AveragePricePercentNumericUpDownValueChanged);
+            // 
+            // CurrentPricePercentNumericUpDown
+            // 
+            this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
+            this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(192, 67);
+            this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.CurrentPricePercentNumericUpDown.Minimum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            -2147483648});
+            this.CurrentPricePercentNumericUpDown.Name = "CurrentPricePercentNumericUpDown";
+            this.CurrentPricePercentNumericUpDown.Size = new System.Drawing.Size(57, 22);
+            this.CurrentPricePercentNumericUpDown.TabIndex = 32;
+            this.CurrentPricePercentNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddAllToolTip.SetToolTip(this.CurrentPricePercentNumericUpDown, "Only one value type can be used");
+            this.CurrentPricePercentNumericUpDown.TrailingSign = "%";
+            this.CurrentPricePercentNumericUpDown.Visible = false;
+            this.CurrentPricePercentNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentPricePercentNumericUpDownValueChanged);
             // 
             // ItemDescriptionGroupBox
             // 
@@ -550,38 +582,9 @@
             this.CancleOverpricedButton.Name = "CancleOverpricedButton";
             this.CancleOverpricedButton.Size = new System.Drawing.Size(163, 35);
             this.CancleOverpricedButton.TabIndex = 31;
-            this.CancleOverpricedButton.Text = "Cancle overpriced";
+            this.CancleOverpricedButton.Text = "Mark items";
             this.CancleOverpricedButton.UseVisualStyleBackColor = false;
-            // 
-            // RefreshPricesButton
-            // 
-            this.RefreshPricesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.RefreshPricesButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RefreshPricesButton.FlatAppearance.BorderSize = 0;
-            this.RefreshPricesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RefreshPricesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.RefreshPricesButton.Image = global::SteamAutoMarket.Properties.Resources.RefreshButton;
-            this.RefreshPricesButton.Location = new System.Drawing.Point(823, 1);
-            this.RefreshPricesButton.Name = "RefreshPricesButton";
-            this.RefreshPricesButton.Size = new System.Drawing.Size(47, 40);
-            this.RefreshPricesButton.TabIndex = 31;
-            this.AddAllToolTip.SetToolTip(this.RefreshPricesButton, "Force all prices reload (cached prices will be ignored)");
-            this.RefreshPricesButton.UseVisualStyleBackColor = false;
-            // 
-            // AllItemsUpdateOneButtonClick
-            // 
-            this.AllItemsUpdateOneButtonClick.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.AllItemsUpdateOneButtonClick.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.AllItemsUpdateOneButtonClick.FlatAppearance.BorderSize = 0;
-            this.AllItemsUpdateOneButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AllItemsUpdateOneButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AllItemsUpdateOneButtonClick.Image = global::SteamAutoMarket.Properties.Resources.update_1;
-            this.AllItemsUpdateOneButtonClick.Location = new System.Drawing.Point(643, 1);
-            this.AllItemsUpdateOneButtonClick.Name = "AllItemsUpdateOneButtonClick";
-            this.AllItemsUpdateOneButtonClick.Size = new System.Drawing.Size(47, 40);
-            this.AllItemsUpdateOneButtonClick.TabIndex = 32;
-            this.AddAllToolTip.SetToolTip(this.AllItemsUpdateOneButtonClick, "Force selected items price reload (cached prices will be ignored)");
-            this.AllItemsUpdateOneButtonClick.UseVisualStyleBackColor = false;
+            this.CancleOverpricedButton.Click += new System.EventHandler(this.CancelOverpricedButtonClick);
             // 
             // MarketRelistControl
             // 
@@ -604,10 +607,10 @@
             this.Size = new System.Drawing.Size(885, 599);
             this.AllSteamItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentPriceNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AveragePricePercentNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentPricePercentNumericUpDown)).EndInit();
             this.ItemDescriptionGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.ResumeLayout(false);
             this.PriceSettingsGroupBox.PerformLayout();
@@ -659,6 +662,12 @@
         private RadioButton CurrentMinusPriceRadioButton;
         private RadioButton RecomendedPriceRadioButton;
         private Button CancleOverpricedButton;
+        private Elements.CustomNumericUpDown AveragePricePercentNumericUpDown;
+        private NumericUpDown AveragePriceNumericUpDown;
+        private Elements.CustomNumericUpDown CurrentPricePercentNumericUpDown;
+        private NumericUpDown CurrentPriceNumericUpDown;
+        private Button RefreshPricesButton;
+        private Button AllItemsUpdateOneButtonClick;
         private DataGridViewCheckBoxColumn CheckBoxColumn;
         private DataGridViewTextBoxColumn NameColumn;
         private DataGridViewTextBoxColumn Amount;
@@ -669,11 +678,5 @@
         private DataGridViewTextBoxColumn AveragePrice;
         private DataGridViewButtonColumn AddButtonColumn;
         private DataGridViewTextBoxColumn HidenItemMarketHashName;
-        private Elements.CustomNumericUpDown AveragePricePercentNumericUpDown;
-        private NumericUpDown AveragePriceNumericUpDown;
-        private Elements.CustomNumericUpDown CurrentPricePercentNumericUpDown;
-        private NumericUpDown CurrentPriceNumericUpDown;
-        private Button RefreshPricesButton;
-        private Button AllItemsUpdateOneButtonClick;
     }
 }

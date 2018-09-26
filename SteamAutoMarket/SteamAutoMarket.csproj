@@ -263,7 +263,7 @@
     <Compile Include="Steam\TradeOffer\Models\TradeStatusUser.cs" />
     <Compile Include="Steam\TradeOffer\TradeAssetsConverter.cs" />
     <Compile Include="Steam\TradeOffer\TradeStatus.cs" />
-    <Compile Include="WorkingProcess\MarketPriceFormation\ChangeValueType.cs" />
+    <Compile Include="WorkingProcess\MarketPriceFormation\EChangeValueType.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\ItemsForSale.cs" />
     <Compile Include="WorkingProcess\MarketPriceFormation\PriceShaper.cs" />
     <Compile Include="CustomElements\Utils\SteamItemsUtils.cs" />
@@ -374,7 +374,7 @@
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="WorkingProcess\CurrentSession.cs" />
     <Compile Include="WorkingProcess\Caches\ImagesCache.cs" />
-    <Compile Include="WorkingProcess\MarketPriceFormation\MarketSaleType.cs" />
+    <Compile Include="WorkingProcess\MarketPriceFormation\EMarketSaleType.cs" />
     <Compile Include="WorkingProcess\PriceLoader\PriceLoader.cs" />
     <Compile Include="WorkingProcess\Settings\SettingsUpdater.cs" />
     <EmbeddedResource Include="CustomElements\Controls\Account\AccountInfoControl.resx">

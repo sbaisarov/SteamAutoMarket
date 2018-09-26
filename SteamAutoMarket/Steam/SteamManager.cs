@@ -468,5 +468,53 @@
                 return false;
             }
         }
+
+        public void CancelSellOrder(List<MyListingsSalesItem> itemsToCancel)
+        {
+            var index = 1;
+            const int ThreadsCount = 2;
+            var semaphore = new Semaphore(ThreadsCount, ThreadsCount);
+            var timeTrackCount = SavedSettings.Get().Settings2FaItemsToConfirm;
+            var timeTracker = new SellTimeTracker(timeTrackCount);
+
+            PriceLoader.StopAll();
+            PriceLoader.WaitForLoadFinish();
+
+            foreach (var item in itemsToCancel)
+            {
+                try
+                {
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo(
+                        $"[{index++}/{itemsToCancel.Count}] Canceling - '{item.Name}'");
+
+                    var realIndex = index;
+                    semaphore.WaitOne();
+
+                    Task.Run(
+                        () =>
+                            {
+                                var response = this.MarketClient.CancelSellOrder(item.SaleId);
+
+                                if (response == ECancelSellOrderStatus.Fail)
+                                {
+                                    Program.WorkingProcessForm.AppendWorkingProcessInfo(
+                                        $"[{realIndex}/{itemsToCancel.Count}] Error on market cancel item");
+                                }
+
+                                if (realIndex % timeTrackCount == 0)
+                                {
+                                    timeTracker.TrackTime(itemsToCancel.Count - realIndex);
+                                }
+
+                                semaphore.Release();
+                            });
+                }
+                catch (Exception e)
+                {
+                    Program.WorkingProcessForm.AppendWorkingProcessInfo(
+                        $"[{index++}/{itemsToCancel.Count}] Error on cancel market item - {e.Message}");
+                }
+            }
+        }
     }
 }
