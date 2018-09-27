@@ -154,28 +154,34 @@
             {
                 PriceLoadingSemaphore.WaitOne();
                 ThreadStartSemaphore.WaitOne();
+                try
+                {
+                    var priceLoadTask = WorkingTasksQueue.Dequeue();
 
-                var priceLoadTask = WorkingTasksQueue.Dequeue();
 
-
-                Task.Run(
-                    () =>
-                        {
-                            if (priceLoadTask == null)
+                    Task.Run(
+                        () =>
                             {
+                                if (priceLoadTask == null)
+                                {
+                                    ThreadStartSemaphore.Release();
+                                    PriceLoadingSemaphore.Release();
+                                    return;
+                                }
+
+                                ProcessingTasks.Add(priceLoadTask);
+                                priceLoadTask.Task.Start();
                                 ThreadStartSemaphore.Release();
+                                Task.WaitAll(priceLoadTask.Task);
+                                ProcessingTasks.Remove(priceLoadTask);
+
                                 PriceLoadingSemaphore.Release();
-                                return;
-                            }
-
-                            ProcessingTasks.Add(priceLoadTask);
-                            priceLoadTask.Task.Start();
-                            ThreadStartSemaphore.Release();
-                            Task.WaitAll(priceLoadTask.Task);
-                            ProcessingTasks.Remove(priceLoadTask);
-
-                            PriceLoadingSemaphore.Release();
-                        });
+                            });
+                }
+                catch (InvalidOperationException)
+                {
+                    // ignored
+                }
             }
         }
 

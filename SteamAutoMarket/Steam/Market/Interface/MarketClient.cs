@@ -649,8 +649,7 @@
                                      ConfirmationSales = new List<MyListingsSalesItem>()
                                  };
 
-            int start = 0;
-            int totalCount = 1;
+            var start = 0;
             var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
             var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
 
@@ -668,7 +667,7 @@
                 throw new SteamException("Cannot load market listings");
             }
 
-            totalCount = respDes.ActiveListingsCount;
+            var totalCount = respDes.ActiveListingsCount;
 
             Program.LoadingForm.SetTotalItemsCount(
                 totalCount,

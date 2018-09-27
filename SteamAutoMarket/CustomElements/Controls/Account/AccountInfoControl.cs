@@ -1,13 +1,11 @@
 ﻿namespace SteamAutoMarket.CustomElements.Controls.Account
 {
-    using System;
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
     using SteamAutoMarket.Steam.Market.Exceptions;
-    using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Utils;
     using SteamAutoMarket.WorkingProcess;
     using SteamAutoMarket.WorkingProcess.Settings;

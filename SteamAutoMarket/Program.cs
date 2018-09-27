@@ -33,7 +33,6 @@
                 // show the message and quit
             }
             */
-
             // UpdateProgram();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -55,11 +54,10 @@
             // какой-то хардкор с пост запросом на шарпе
             var wb = WebRequest.Create("https://www.steambiz.store/api/checklicense");
             wb.Method = "POST";
-            var data = new NameValueCollection();
+            var data = new NameValueCollection { ["key"] = "5c2ef522-c99a-487e-b624-652bd9fabacd" };
 
             // read key from user database.
             // read from the input field if key is not present in user database
-            data["key"] = "5c2ef522-c99a-487e-b624-652bd9fabacd";
             var mc = new ManagementClass("win32_processor");
             var moc = mc.GetInstances();
             var uid = moc.Cast<ManagementObject>().Select(x => x.Properties["processorID"]).FirstOrDefault()?.Value

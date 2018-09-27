@@ -32,9 +32,7 @@
 
         public const int ListingAveragePriceCellIndex = 7;
 
-        public const int ListingCancelButtonCellIndex = 8;
-
-        public const int ListingHiddenMarketHashNameCellIndex = 9;
+        public const int ListingHiddenMarketHashNameCellIndex = 8;
 
         public static readonly Dictionary<string, List<MyListingsSalesItem>> MyListings =
             new Dictionary<string, List<MyListingsSalesItem>>();

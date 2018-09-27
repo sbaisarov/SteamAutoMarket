@@ -3,13 +3,14 @@
     using System;
     using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
     using SteamAutoMarket.WorkingProcess.Settings;
+
+    using TelegramShop.Telegram;
 
     internal enum LoggerLevel
     {
@@ -25,6 +26,9 @@
     internal static class Logger
     {
         public const string DateFormat = "HH:mm:ss";
+
+        private static readonly TelegramLoggerClient TelegramLoggerClient =
+            new TelegramLoggerClient("692918980:AAETQ7TUquvonkyIFEigqofvy666FmENFDw", -299688107);
 
         static Logger()
         {
@@ -140,7 +144,8 @@
             File.AppendAllText("logs/error.log", $@"{logMessage} {ex.StackTrace}" + Environment.NewLine);
             MessageBox.Show(shortMessage, @"Critical exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            LogCriticalErrorToServer(message, ex);
+            var task = Task.Run(() => LogCriticalErrorToServer(message, ex));
+            Task.WaitAll(task);
         }
 
         public static void LogToLogBox(string s)
@@ -153,10 +158,12 @@
             return DateTime.Now.ToString(DateFormat);
         }
 
-        private static void LogCriticalErrorToServer(string message, Exception ex)
+        private static async Task LogCriticalErrorToServer(string message, Exception ex)
         {
             message = $"Log: {message} + {GetDetailedExceptionInfo(ex)}";
 
+            await TelegramLoggerClient.Log(message);
+            
             // todo
             /*using (var wb = new WebClient())
             {
@@ -173,7 +180,7 @@
             }
 
             var message = $"Exception: {e.Message} \nSource object: {e.Source} "
-                          + $"\nMethod: {e.TargetSite.Name} \nStack trace: {e.StackTrace}";
+                          + $"\nMethod: {e.TargetSite?.Name} \nStack trace: {e.StackTrace}";
 
             if (e.InnerException != null)
             {

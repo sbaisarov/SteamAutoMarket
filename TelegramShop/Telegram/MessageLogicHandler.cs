@@ -14,7 +14,9 @@
         public static async Task ProcessMessage(TelegramShopClient telegramShop, MessageEventArgs e)
         {
             var user = ShopUserRepository.GetUser(e.Message.From);
-            
+
+            await telegramShop.Log($"Message from @{user.Telegram} - {e.Message.Text}");
+
             try
             {
                 if (await SpamHandler.IsSpamming(telegramShop, e, user))
@@ -83,8 +85,10 @@
             {
                 case MenuMessage.Contacts: return new TextInfoMessageHandler(AnswerMessage.Contacts);
                 case MenuMessage.ManageLicense: return new LicenseManageMessageHandler();
-                case MenuMessage.LicenseStatus: return new TextInfoMessageHandler(LicenseServerHandler.GetLicenseStatus(user.LicenseKeys));
-                case MenuMessage.SteamAutoMarketInfo: return new TextInfoMessageHandler(AnswerMessage.SteamAutoMarketInfo);
+                case MenuMessage.LicenseStatus:
+                    return new TextInfoMessageHandler(LicenseServerHandler.GetLicenseStatus(user.LicenseKeys));
+                case MenuMessage.SteamAutoMarketInfo:
+                    return new TextInfoMessageHandler(AnswerMessage.SteamAutoMarketInfo);
                 default: throw new ArgumentException(AnswerMessage.IncorrectCommand);
             }
         }
@@ -101,7 +105,9 @@
             }
         }
 
-        private static TelegramShopMessageHandler GetLicenseRenewSubscriptionPageProcessor(MessageEventArgs e, ShopUserModel user)
+        private static TelegramShopMessageHandler GetLicenseRenewSubscriptionPageProcessor(
+            MessageEventArgs e,
+            ShopUserModel user)
         {
             if (user.LicenseKeys.Contains(e.Message.Text))
             {
@@ -117,15 +123,22 @@
             }
         }
 
-        private static TelegramShopMessageHandler GetLicenseDurationPageProcessor(MessageEventArgs e, ShopUserModel user)
+        private static TelegramShopMessageHandler GetLicenseDurationPageProcessor(
+            MessageEventArgs e,
+            ShopUserModel user)
         {
             switch (e.Message.Text)
             {
-                case MenuMessage.OneWeekDuration: return new PaymentMethodMessageHandler(7, 100, user.LicenseBuyProcess.LicenseKey);
-                case MenuMessage.OneMonthDuration: return new PaymentMethodMessageHandler(30, 300, user.LicenseBuyProcess.LicenseKey);
-                case MenuMessage.ThreeMonthDuration: return new PaymentMethodMessageHandler(90, 800, user.LicenseBuyProcess.LicenseKey);
-                case MenuMessage.SixMonthDuration: return new PaymentMethodMessageHandler(180, 1500, user.LicenseBuyProcess.LicenseKey);
-                case MenuMessage.OneYearDuration: return new PaymentMethodMessageHandler(365, 2800, user.LicenseBuyProcess.LicenseKey);
+                case MenuMessage.OneWeekDuration:
+                    return new PaymentMethodMessageHandler(7, 100, user.LicenseBuyProcess.LicenseKey);
+                case MenuMessage.OneMonthDuration:
+                    return new PaymentMethodMessageHandler(30, 300, user.LicenseBuyProcess.LicenseKey);
+                case MenuMessage.ThreeMonthDuration:
+                    return new PaymentMethodMessageHandler(90, 800, user.LicenseBuyProcess.LicenseKey);
+                case MenuMessage.SixMonthDuration:
+                    return new PaymentMethodMessageHandler(180, 1500, user.LicenseBuyProcess.LicenseKey);
+                case MenuMessage.OneYearDuration:
+                    return new PaymentMethodMessageHandler(365, 2800, user.LicenseBuyProcess.LicenseKey);
                 case MenuMessage.Back: return new BackMessageHandler(EDialogState.Main, AnswerMessage.MainMenu);
                 default: throw new ArgumentException(AnswerMessage.IncorrectCommand);
             }
@@ -137,7 +150,7 @@
             {
                 return new BackMessageHandler(EDialogState.Main, AnswerMessage.MainMenu);
             }
-        
+
             if (LicenseServerHandler.IsLicenseExist(e.Message.Text))
             {
                 ShopUserRepository.AddLicenseKey(user, e.Message.Text);
@@ -147,7 +160,9 @@
             throw new ArgumentException(AnswerMessage.LicenseKeyNotExist);
         }
 
-        private static TelegramShopMessageHandler GetLicenseKeyRemovePageProcessor(MessageEventArgs e, ShopUserModel user)
+        private static TelegramShopMessageHandler GetLicenseKeyRemovePageProcessor(
+            MessageEventArgs e,
+            ShopUserModel user)
         {
             if (e.Message.Text == MenuMessage.Back)
             {

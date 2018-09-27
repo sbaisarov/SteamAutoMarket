@@ -1,6 +1,7 @@
 ﻿namespace TelegramShop
 {
     using System.IO;
+    using System.Threading;
 
     using Newtonsoft.Json;
 
@@ -14,9 +15,11 @@
 
         public static void Main(string[] args)
         {
-            var qiwi = new QiwiPaymentHistoryHandler(Settings.QiwiApi, Settings.QiwiNumber);
-            var telegram = new TelegramShopClient(Settings.TelegramBotApi, qiwi);
-            telegram.StartMessageReceive();
+            var qiwiPaymentHistoryHandler = new QiwiPaymentHistoryHandler(Settings.QiwiApi, Settings.QiwiNumber);
+            var telegramShopClient = new TelegramShopClient(Settings.TelegramBotApi, qiwiPaymentHistoryHandler);
+            telegramShopClient.StartMessageReceive();
+
+            Thread.Sleep(Timeout.Infinite);
         }
     }
 }

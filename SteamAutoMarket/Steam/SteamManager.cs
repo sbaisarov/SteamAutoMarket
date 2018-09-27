@@ -259,7 +259,7 @@
             {
                 Program.WorkingProcessForm.AppendWorkingProcessInfo("Session expired. Updating...");
                 this.Guard.RefreshSession();
-                this.ConfirmMarketTransactions();
+                await this.ConfirmMarketTransactions();
             }
         }
 

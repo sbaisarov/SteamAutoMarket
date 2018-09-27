@@ -32,24 +32,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.AccountNameLable = new System.Windows.Forms.Label();
             this.AllSteamItemsGroupBox = new System.Windows.Forms.GroupBox();
             this.AllSteamItemsGridView = new System.Windows.Forms.DataGridView();
-            this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ListedPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AveragePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AddButtonColumn = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CancleSelectedButton = new System.Windows.Forms.Button();
             this.SplitterPanel = new System.Windows.Forms.Panel();
-            this.CalcleAllButton = new System.Windows.Forms.Button();
             this.LoadListingButton = new System.Windows.Forms.Button();
             this.AddAllToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.AverageMinusPriceRadioButton = new System.Windows.Forms.RadioButton();
@@ -67,6 +56,15 @@
             this.ItemImageBox = new System.Windows.Forms.Panel();
             this.PriceSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.CancleOverpricedButton = new System.Windows.Forms.Button();
+            this.CheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ListedPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CurrentPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AveragePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HidenItemMarketHashName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AllSteamItemsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AveragePriceNumericUpDown)).BeginInit();
@@ -108,14 +106,14 @@
             this.AllSteamItemsGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AllSteamItemsGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.AllSteamItemsGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.AllSteamItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.AllSteamItemsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.AllSteamItemsGridView.ColumnHeadersHeight = 30;
             this.AllSteamItemsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.AllSteamItemsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -127,16 +125,15 @@
             this.ListedPrice,
             this.CurrentPrice,
             this.AveragePrice,
-            this.AddButtonColumn,
             this.HidenItemMarketHashName});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.AllSteamItemsGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AllSteamItemsGridView.DefaultCellStyle = dataGridViewCellStyle8;
             this.AllSteamItemsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AllSteamItemsGridView.EnableHeadersVisualStyles = false;
             this.AllSteamItemsGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -150,102 +147,13 @@
             this.AllSteamItemsGridView.TabIndex = 7;
             this.AllSteamItemsGridView.SelectionChanged += new System.EventHandler(this.AllSteamItemsGridViewSelectionChanged);
             // 
-            // CheckBoxColumn
-            // 
-            this.CheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.CheckBoxColumn.FillWeight = 30F;
-            this.CheckBoxColumn.HeaderText = "";
-            this.CheckBoxColumn.Name = "CheckBoxColumn";
-            this.CheckBoxColumn.Width = 30;
-            // 
-            // NameColumn
-            // 
-            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.NameColumn.FillWeight = 160F;
-            this.NameColumn.HeaderText = "Item name";
-            this.NameColumn.Name = "NameColumn";
-            this.NameColumn.ReadOnly = true;
-            this.NameColumn.Width = 160;
-            // 
-            // Amount
-            // 
-            this.Amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Amount.FillWeight = 45F;
-            this.Amount.HeaderText = "#";
-            this.Amount.Name = "Amount";
-            this.Amount.ReadOnly = true;
-            this.Amount.Width = 45;
-            // 
-            // TypeColumn
-            // 
-            this.TypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.TypeColumn.FillWeight = 105F;
-            this.TypeColumn.HeaderText = "Type";
-            this.TypeColumn.Name = "TypeColumn";
-            this.TypeColumn.ReadOnly = true;
-            this.TypeColumn.Width = 105;
-            // 
-            // CurrentPriceColumn
-            // 
-            this.CurrentPriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.CurrentPriceColumn.FillWeight = 55F;
-            this.CurrentPriceColumn.HeaderText = "Listed on";
-            this.CurrentPriceColumn.Name = "CurrentPriceColumn";
-            this.CurrentPriceColumn.ReadOnly = true;
-            this.CurrentPriceColumn.ToolTipText = "ListedOn";
-            this.CurrentPriceColumn.Width = 55;
-            // 
-            // ListedPrice
-            // 
-            this.ListedPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ListedPrice.FillWeight = 55F;
-            this.ListedPrice.HeaderText = "Listed price";
-            this.ListedPrice.Name = "ListedPrice";
-            this.ListedPrice.ReadOnly = true;
-            this.ListedPrice.Width = 55;
-            // 
-            // CurrentPrice
-            // 
-            this.CurrentPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.CurrentPrice.FillWeight = 55F;
-            this.CurrentPrice.HeaderText = "Cur price";
-            this.CurrentPrice.Name = "CurrentPrice";
-            this.CurrentPrice.ReadOnly = true;
-            this.CurrentPrice.Width = 55;
-            // 
-            // AveragePrice
-            // 
-            this.AveragePrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.AveragePrice.FillWeight = 55F;
-            this.AveragePrice.HeaderText = "Avr price";
-            this.AveragePrice.Name = "AveragePrice";
-            this.AveragePrice.ReadOnly = true;
-            this.AveragePrice.Width = 55;
-            // 
-            // AddButtonColumn
-            // 
-            this.AddButtonColumn.FillWeight = 35F;
-            this.AddButtonColumn.HeaderText = "Cancel";
-            this.AddButtonColumn.Name = "AddButtonColumn";
-            this.AddButtonColumn.ReadOnly = true;
-            this.AddButtonColumn.Text = "❌";
-            this.AddButtonColumn.UseColumnTextForButtonValue = true;
-            // 
-            // HidenItemMarketHashName
-            // 
-            this.HidenItemMarketHashName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.HidenItemMarketHashName.HeaderText = "HidenIdColumn";
-            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
-            this.HidenItemMarketHashName.ReadOnly = true;
-            this.HidenItemMarketHashName.Visible = false;
-            // 
             // CancleSelectedButton
             // 
             this.CancleSelectedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
             this.CancleSelectedButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CancleSelectedButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CancleSelectedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.CancleSelectedButton.Location = new System.Drawing.Point(632, 489);
+            this.CancleSelectedButton.Location = new System.Drawing.Point(678, 556);
             this.CancleSelectedButton.Name = "CancleSelectedButton";
             this.CancleSelectedButton.Size = new System.Drawing.Size(162, 35);
             this.CancleSelectedButton.TabIndex = 15;
@@ -262,20 +170,6 @@
             this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
             this.SplitterPanel.TabIndex = 22;
             // 
-            // CalcleAllButton
-            // 
-            this.CalcleAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            this.CalcleAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CalcleAllButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CalcleAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            this.CalcleAllButton.Location = new System.Drawing.Point(631, 536);
-            this.CalcleAllButton.Name = "CalcleAllButton";
-            this.CalcleAllButton.Size = new System.Drawing.Size(163, 35);
-            this.CalcleAllButton.TabIndex = 26;
-            this.CalcleAllButton.Text = "Cancle all";
-            this.CalcleAllButton.UseVisualStyleBackColor = false;
-            this.CalcleAllButton.Click += new System.EventHandler(this.CancelAllButtonClick);
-            // 
             // LoadListingButton
             // 
             this.LoadListingButton.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -283,7 +177,7 @@
             this.LoadListingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoadListingButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.LoadListingButton.Image = global::SteamAutoMarket.Properties.Resources.Download;
-            this.LoadListingButton.Location = new System.Drawing.Point(802, 489);
+            this.LoadListingButton.Location = new System.Drawing.Point(724, 459);
             this.LoadListingButton.Name = "LoadListingButton";
             this.LoadListingButton.Size = new System.Drawing.Size(76, 84);
             this.LoadListingButton.TabIndex = 28;
@@ -423,7 +317,7 @@
             this.RefreshPricesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RefreshPricesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.RefreshPricesButton.Image = global::SteamAutoMarket.Properties.Resources.RefreshButton;
-            this.RefreshPricesButton.Location = new System.Drawing.Point(823, 1);
+            this.RefreshPricesButton.Location = new System.Drawing.Point(823, 9);
             this.RefreshPricesButton.Name = "RefreshPricesButton";
             this.RefreshPricesButton.Size = new System.Drawing.Size(47, 40);
             this.RefreshPricesButton.TabIndex = 31;
@@ -438,7 +332,7 @@
             this.AllItemsUpdateOneButtonClick.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AllItemsUpdateOneButtonClick.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.AllItemsUpdateOneButtonClick.Image = global::SteamAutoMarket.Properties.Resources.update_1;
-            this.AllItemsUpdateOneButtonClick.Location = new System.Drawing.Point(643, 1);
+            this.AllItemsUpdateOneButtonClick.Location = new System.Drawing.Point(643, 9);
             this.AllItemsUpdateOneButtonClick.Name = "AllItemsUpdateOneButtonClick";
             this.AllItemsUpdateOneButtonClick.Size = new System.Drawing.Size(47, 40);
             this.AllItemsUpdateOneButtonClick.TabIndex = 32;
@@ -449,14 +343,8 @@
             // 
             this.AveragePricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AveragePricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AveragePricePercentNumericUpDown.DecimalPlaces = 2;
             this.AveragePricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AveragePricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.AveragePricePercentNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
             this.AveragePricePercentNumericUpDown.Location = new System.Drawing.Point(192, 45);
             this.AveragePricePercentNumericUpDown.Maximum = new decimal(new int[] {
             -727379969,
@@ -481,14 +369,8 @@
             // 
             this.CurrentPricePercentNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.CurrentPricePercentNumericUpDown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CurrentPricePercentNumericUpDown.DecimalPlaces = 2;
             this.CurrentPricePercentNumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CurrentPricePercentNumericUpDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.CurrentPricePercentNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
             this.CurrentPricePercentNumericUpDown.Location = new System.Drawing.Point(192, 67);
             this.CurrentPricePercentNumericUpDown.Maximum = new decimal(new int[] {
             -727379969,
@@ -517,7 +399,7 @@
             this.ItemDescriptionGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.ItemDescriptionGroupBox.Location = new System.Drawing.Point(631, 65);
             this.ItemDescriptionGroupBox.Name = "ItemDescriptionGroupBox";
-            this.ItemDescriptionGroupBox.Size = new System.Drawing.Size(254, 243);
+            this.ItemDescriptionGroupBox.Size = new System.Drawing.Size(254, 231);
             this.ItemDescriptionGroupBox.TabIndex = 29;
             this.ItemDescriptionGroupBox.TabStop = false;
             this.ItemDescriptionGroupBox.Text = "Item description";
@@ -531,7 +413,7 @@
             this.ItemDescriptionTextBox.Name = "ItemDescriptionTextBox";
             this.ItemDescriptionTextBox.ReadOnly = true;
             this.ItemDescriptionTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(248, 99);
+            this.ItemDescriptionTextBox.Size = new System.Drawing.Size(248, 87);
             this.ItemDescriptionTextBox.TabIndex = 11;
             this.ItemDescriptionTextBox.Text = "";
             // 
@@ -565,7 +447,7 @@
             this.PriceSettingsGroupBox.Controls.Add(this.CurrentMinusPriceRadioButton);
             this.PriceSettingsGroupBox.Controls.Add(this.RecomendedPriceRadioButton);
             this.PriceSettingsGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(631, 322);
+            this.PriceSettingsGroupBox.Location = new System.Drawing.Point(631, 302);
             this.PriceSettingsGroupBox.Name = "PriceSettingsGroupBox";
             this.PriceSettingsGroupBox.Size = new System.Drawing.Size(254, 148);
             this.PriceSettingsGroupBox.TabIndex = 30;
@@ -586,6 +468,85 @@
             this.CancleOverpricedButton.UseVisualStyleBackColor = false;
             this.CancleOverpricedButton.Click += new System.EventHandler(this.CancelOverpricedButtonClick);
             // 
+            // CheckBoxColumn
+            // 
+            this.CheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.CheckBoxColumn.FillWeight = 30F;
+            this.CheckBoxColumn.HeaderText = "";
+            this.CheckBoxColumn.Name = "CheckBoxColumn";
+            this.CheckBoxColumn.Width = 30;
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.NameColumn.FillWeight = 160F;
+            this.NameColumn.HeaderText = "Item name";
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.ReadOnly = true;
+            this.NameColumn.Width = 209;
+            // 
+            // Amount
+            // 
+            this.Amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Amount.FillWeight = 45F;
+            this.Amount.HeaderText = "#";
+            this.Amount.Name = "Amount";
+            this.Amount.ReadOnly = true;
+            this.Amount.Width = 45;
+            // 
+            // TypeColumn
+            // 
+            this.TypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.TypeColumn.FillWeight = 105F;
+            this.TypeColumn.HeaderText = "Type";
+            this.TypeColumn.Name = "TypeColumn";
+            this.TypeColumn.ReadOnly = true;
+            this.TypeColumn.Width = 105;
+            // 
+            // CurrentPriceColumn
+            // 
+            this.CurrentPriceColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.CurrentPriceColumn.FillWeight = 55F;
+            this.CurrentPriceColumn.HeaderText = "Listed on";
+            this.CurrentPriceColumn.Name = "CurrentPriceColumn";
+            this.CurrentPriceColumn.ReadOnly = true;
+            this.CurrentPriceColumn.ToolTipText = "ListedOn";
+            this.CurrentPriceColumn.Width = 55;
+            // 
+            // ListedPrice
+            // 
+            this.ListedPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ListedPrice.FillWeight = 55F;
+            this.ListedPrice.HeaderText = "Listed price";
+            this.ListedPrice.Name = "ListedPrice";
+            this.ListedPrice.ReadOnly = true;
+            this.ListedPrice.Width = 55;
+            // 
+            // CurrentPrice
+            // 
+            this.CurrentPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.CurrentPrice.FillWeight = 55F;
+            this.CurrentPrice.HeaderText = "Cur price";
+            this.CurrentPrice.Name = "CurrentPrice";
+            this.CurrentPrice.ReadOnly = true;
+            this.CurrentPrice.Width = 55;
+            // 
+            // AveragePrice
+            // 
+            this.AveragePrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.AveragePrice.FillWeight = 55F;
+            this.AveragePrice.HeaderText = "Avr price";
+            this.AveragePrice.Name = "AveragePrice";
+            this.AveragePrice.ReadOnly = true;
+            // 
+            // HidenItemMarketHashName
+            // 
+            this.HidenItemMarketHashName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.HidenItemMarketHashName.HeaderText = "HidenIdColumn";
+            this.HidenItemMarketHashName.Name = "HidenItemMarketHashName";
+            this.HidenItemMarketHashName.ReadOnly = true;
+            this.HidenItemMarketHashName.Visible = false;
+            // 
             // MarketRelistControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -596,7 +557,6 @@
             this.Controls.Add(this.PriceSettingsGroupBox);
             this.Controls.Add(this.LoadListingButton);
             this.Controls.Add(this.ItemDescriptionGroupBox);
-            this.Controls.Add(this.CalcleAllButton);
             this.Controls.Add(this.CancleSelectedButton);
             this.Controls.Add(this.AllSteamItemsGroupBox);
             this.Controls.Add(this.SplitterPanel);
@@ -649,7 +609,6 @@
         private System.Windows.Forms.GroupBox AllSteamItemsGroupBox;
         private System.Windows.Forms.DataGridView AllSteamItemsGridView;
         private System.Windows.Forms.Button CancleSelectedButton;
-        private System.Windows.Forms.Button CalcleAllButton;
         private System.Windows.Forms.Button LoadListingButton;
         private System.Windows.Forms.ToolTip AddAllToolTip;
         private CheckBox HeaderCheckBox;
@@ -676,7 +635,6 @@
         private DataGridViewTextBoxColumn ListedPrice;
         private DataGridViewTextBoxColumn CurrentPrice;
         private DataGridViewTextBoxColumn AveragePrice;
-        private DataGridViewButtonColumn AddButtonColumn;
         private DataGridViewTextBoxColumn HidenItemMarketHashName;
     }
 }

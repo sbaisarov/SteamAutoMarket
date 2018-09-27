@@ -45,6 +45,8 @@
 
             if (isPaymentPresent)
             {
+                await telegramShop.BoldLog($"@{userModel.Telegram} bought license for {userModel.LicenseBuyProcess.Days} days for {userModel.LicenseBuyProcess.Price} RUB");
+
                 ShopUserRepository.UpdateUserDialogState(userModel, EDialogState.Main);
 
                 if (userModel.LicenseBuyProcess.LicenseKey == null)
