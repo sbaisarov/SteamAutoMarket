@@ -1,6 +1,8 @@
 ﻿namespace SteamAutoMarket
 {
     using System;
+    using System.Reflection;
+    using System.Threading;
     using System.Collections.Specialized;
     using System.Diagnostics;
     using System.IO;
@@ -12,6 +14,7 @@
     using System.Windows.Forms;
 
     using Newtonsoft.Json;
+    using AutoUpdaterDotNET;
 
     using SteamAutoMarket.CustomElements.Forms;
     using SteamAutoMarket.Utils;
@@ -34,6 +37,8 @@
             }
             */
             // UpdateProgram();
+            
+            UpdateProgram();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();
@@ -103,15 +108,22 @@
 
         private static void UpdateProgram()
         {
-            // не тестировал, не уверен будет ли правильно работать
-
-            // сверить с версией бд и версией на удаленном сервере. Если разные - обновить
-            var request = WebRequest.Create("https://software-assembly.com");
-            var response = request.GetResponse(); // get zip archive
-            var webStream = response.GetResponseStream();
-            Debug.Assert(webStream != null, nameof(webStream) + " != null");
-            var archive = new ZipArchive(webStream);
-            archive.ExtractToDirectory(Directory.GetCurrentDirectory());
+            string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();  // SAM current version
+            ServicePointManager.ServerCertificateValidationCallback += 
+                (sender, certificate, chain, sslPolicyErrors) => true;  // NOT FOR PRODUCTION
+            AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;
+            AutoUpdater.ReportErrors = true;
+            AutoUpdater.RunUpdateAsAdmin = true;
+            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+            AutoUpdater.Start("https://www.steambiz.store/release/release.xml");
+            ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + @"\Debug.zip", Directory.GetCurrentDirectory() + @"\uSteamAutoMarket");
+        }
+        
+        private static void AutoUpdater_ApplicationExitEvent()
+        {
+            // let the user know that update has finished and he should launch the software again.
+            Thread.Sleep(5000);
+            Application.Exit();
         }
     }
 }
