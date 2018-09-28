@@ -135,7 +135,6 @@
                     price,
                     null,
                     null,
-                    null,
                     hashName));
         }
 
