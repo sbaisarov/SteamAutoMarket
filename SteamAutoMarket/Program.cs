@@ -30,15 +30,8 @@
         [STAThread]
         private static void Main()
         {
-            /*var access = CheckLicense();
-            if (!access)
-            {
-                // show the message and quit
-            }
-            */
-            // UpdateProgram();
-            
-            UpdateProgram();
+
+            //UpdateProgram();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();
