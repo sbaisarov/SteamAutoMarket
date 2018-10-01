@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket
+﻿using TelegramShop.Qiwi.QiwiApi.Entities.Profile;
+
+namespace SteamAutoMarket
 {
     using System;
     using System.Reflection;
@@ -101,22 +103,28 @@
 
         private static void UpdateProgram()
         {
-            string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();  // SAM current version
             ServicePointManager.ServerCertificateValidationCallback += 
                 (sender, certificate, chain, sslPolicyErrors) => true;  // NOT FOR PRODUCTION
-            AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;
-            AutoUpdater.ReportErrors = true;
+//            AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;
             AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.Start("https://www.steambiz.store/release/release.xml");
-            ZipFile.ExtractToDirectory(Directory.GetCurrentDirectory() + @"\Debug.zip", Directory.GetCurrentDirectory() + @"\uSteamAutoMarket");
         }
         
         private static void AutoUpdater_ApplicationExitEvent()
         {
             // let the user know that update has finished and he should launch the software again.
-            Thread.Sleep(5000);
-            Application.Exit();
+
+//            foreach (string file in Directory.EnumerateFiles(Directory.GetCurrentDirectory()))
+//            {
+//                try
+//                {
+//                    if (!file.EndsWith("SteamAutoMarket.zip")) File.Delete(file);
+//                }
+//                catch (Exception e) {}
+//            }
+
+//            Application.Exit();
         }
     }
 }
