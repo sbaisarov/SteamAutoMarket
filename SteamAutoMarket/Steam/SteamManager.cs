@@ -380,10 +380,10 @@
             return result;
         }
 
-        public bool SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken)
+        public bool SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken, out string offerId)
         {
             var offer = new TradeOffer.TradeOffer(this.OfferSession, new SteamID(ulong.Parse(partnerId)));
-            return offer.SendWithToken(out _, tradeToken);
+            return offer.SendWithToken(out offerId, tradeToken);
         }
 
         public void ConfirmTradeTransactions(List<ulong> offerids)

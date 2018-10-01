@@ -158,9 +158,15 @@
                 false,
                 language: language);
             Program.LoadingForm.SetTotalItemsCount(
-                response.AllOffers.Count(),
-                response.AllOffers.Count(),
+                response.AllOffers?.Count() ?? 0,
+                response.AllOffers?.Count() ?? 0,
                 "Total trades count");
+
+            if (response.AllOffers == null)
+            {
+                this.currentTrades = tradesList;
+                return;
+            }
 
             foreach (var trade in response.AllOffers)
             {

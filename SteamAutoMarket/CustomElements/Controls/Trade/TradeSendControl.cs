@@ -68,6 +68,11 @@
 
             allItemsList.RemoveAll(item => item.Description.IsTradable == false);
 
+            if (this.OnlyUnmarketableCheckBox.Checked)
+            {
+                allItemsList.RemoveAll(item => item.Description.IsMarketable);
+            }
+
             Dispatcher.AsMainForm(() => { this.allItemsListGridUtils.FillSteamSaleDataGrid(allItemsList); });
         }
 
@@ -337,7 +342,13 @@
                 var response = CurrentSession.SteamManager.SendTradeOffer(
                     itemsToSale,
                     this.TradeParthenIdTextBox.Text,
-                    this.TradeTokenTextBox.Text);
+                    this.TradeTokenTextBox.Text,
+                    out var offerId);
+
+                if (this.Confirm2FACheckBox.Checked && response == true)
+                {
+                    CurrentSession.SteamManager.ConfirmTradeTransactions(new List<ulong> { ulong.Parse(offerId) });
+                }
 
                 MessageBox.Show(
                     $@"Trade sent - {response}",
@@ -721,7 +732,7 @@
                 }
 
                 this.TradeParthenIdTextBox.Text = new SteamID(acc.MaFile.Session.SteamID).AccountID.ToString();
-                this.TradeTokenTextBox.Text = @"todo"; // todo
+                this.TradeTokenTextBox.Text = acc.TradeToken;
             }
             catch (Exception ex)
             {

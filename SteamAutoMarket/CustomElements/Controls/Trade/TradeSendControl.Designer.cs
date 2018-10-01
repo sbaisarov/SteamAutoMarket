@@ -32,15 +32,15 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
             this.AccountNameLable = new System.Windows.Forms.Label();
             this.PartnerIdLable = new System.Windows.Forms.Label();
             this.TradeParthenIdTextBox = new System.Windows.Forms.TextBox();
@@ -59,6 +59,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.AddedToSaleListHidenItemsList = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DeleteSelectedItemButton = new System.Windows.Forms.Button();
             this.TradeSendGroupBox = new System.Windows.Forms.GroupBox();
+            this.Confirm2FACheckBox = new System.Windows.Forms.CheckBox();
             this.SendTradeButton = new System.Windows.Forms.Button();
             this.ItemNameLable = new System.Windows.Forms.Label();
             this.ItemDescriptionGroupBox = new System.Windows.Forms.GroupBox();
@@ -95,6 +96,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.RefreshInventoryButton = new System.Windows.Forms.Button();
             this.AddAllButton = new System.Windows.Forms.Button();
             this.SplitterPanel = new System.Windows.Forms.Panel();
+            this.OnlyUnmarketableCheckBox = new System.Windows.Forms.CheckBox();
             this.TradeGroupBox.SuspendLayout();
             this.ItemsToSaleGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToTradeGridView)).BeginInit();
@@ -218,14 +220,14 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.ItemsToTradeGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ItemsToTradeGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.ItemsToTradeGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ItemsToTradeGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ItemsToTradeGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             this.ItemsToTradeGridView.ColumnHeadersHeight = 30;
             this.ItemsToTradeGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.ItemsToTradeGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -235,14 +237,14 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.AveragePrice,
             this.HidenMarketHashNameColumn,
             this.AddedToSaleListHidenItemsList});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ItemsToTradeGridView.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle21.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ItemsToTradeGridView.DefaultCellStyle = dataGridViewCellStyle21;
             this.ItemsToTradeGridView.Dock = System.Windows.Forms.DockStyle.Top;
             this.ItemsToTradeGridView.EnableHeadersVisualStyles = false;
             this.ItemsToTradeGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -269,8 +271,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             // AddedToSaleListItemsCount
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AddedToSaleListItemsCount.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AddedToSaleListItemsCount.DefaultCellStyle = dataGridViewCellStyle20;
             this.AddedToSaleListItemsCount.FillWeight = 35F;
             this.AddedToSaleListItemsCount.HeaderText = "Amount for trade";
             this.AddedToSaleListItemsCount.Name = "AddedToSaleListItemsCount";
@@ -322,6 +324,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             // TradeSendGroupBox
             // 
+            this.TradeSendGroupBox.Controls.Add(this.Confirm2FACheckBox);
             this.TradeSendGroupBox.Controls.Add(this.SendTradeButton);
             this.TradeSendGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.TradeSendGroupBox.Location = new System.Drawing.Point(580, 498);
@@ -330,6 +333,18 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.TradeSendGroupBox.TabIndex = 19;
             this.TradeSendGroupBox.TabStop = false;
             this.TradeSendGroupBox.Text = "Trade";
+            // 
+            // Confirm2FACheckBox
+            // 
+            this.Confirm2FACheckBox.AutoSize = true;
+            this.Confirm2FACheckBox.Checked = true;
+            this.Confirm2FACheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.Confirm2FACheckBox.Location = new System.Drawing.Point(200, 73);
+            this.Confirm2FACheckBox.Name = "Confirm2FACheckBox";
+            this.Confirm2FACheckBox.Size = new System.Drawing.Size(94, 17);
+            this.Confirm2FACheckBox.TabIndex = 19;
+            this.Confirm2FACheckBox.Text = "Confirm 2FA";
+            this.Confirm2FACheckBox.UseVisualStyleBackColor = true;
             // 
             // SendTradeButton
             // 
@@ -410,14 +425,14 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.AllSteamItemsToTradeGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
             this.AllSteamItemsToTradeGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.AllSteamItemsToTradeGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.AllSteamItemsToTradeGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle22.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle22.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.AllSteamItemsToTradeGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
             this.AllSteamItemsToTradeGridView.ColumnHeadersHeight = 30;
             this.AllSteamItemsToTradeGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.AllSteamItemsToTradeGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -429,14 +444,14 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.dataGridViewComboBoxColumn1,
             this.dataGridViewButtonColumn1,
             this.dataGridViewTextBoxColumn4});
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.AllSteamItemsToTradeGridView.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(63)))), ((int)(((byte)(77)))));
+            dataGridViewCellStyle25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle25.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
+            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(218)))), ((int)(((byte)(106)))));
+            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
+            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AllSteamItemsToTradeGridView.DefaultCellStyle = dataGridViewCellStyle25;
             this.AllSteamItemsToTradeGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AllSteamItemsToTradeGridView.EnableHeadersVisualStyles = false;
             this.AllSteamItemsToTradeGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(30)))), ((int)(((byte)(34)))));
@@ -464,8 +479,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle23;
             this.dataGridViewTextBoxColumn2.FillWeight = 40F;
             this.dataGridViewTextBoxColumn2.HeaderText = "#";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
@@ -497,8 +512,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             // dataGridViewComboBoxColumn1
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            this.dataGridViewComboBoxColumn1.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            this.dataGridViewComboBoxColumn1.DefaultCellStyle = dataGridViewCellStyle24;
             this.dataGridViewComboBoxColumn1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
             this.dataGridViewComboBoxColumn1.FillWeight = 53F;
             this.dataGridViewComboBoxColumn1.HeaderText = "Amount to add";
@@ -567,8 +582,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             // CountToAddColumn
             // 
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            this.CountToAddColumn.DefaultCellStyle = dataGridViewCellStyle26;
             this.CountToAddColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
             this.CountToAddColumn.FillWeight = 20F;
             this.CountToAddColumn.HeaderText = "Amount to add";
@@ -590,8 +605,8 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // CountColumn
             // 
             this.CountColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.CountColumn.DefaultCellStyle = dataGridViewCellStyle27;
             this.CountColumn.FillWeight = 35F;
             this.CountColumn.Frozen = true;
             this.CountColumn.HeaderText = "#";
@@ -612,7 +627,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             "PUBG",
             "TF",
             "DOTA"});
-            this.InventoryAppIdComboBox.Location = new System.Drawing.Point(92, 19);
+            this.InventoryAppIdComboBox.Location = new System.Drawing.Point(92, 16);
             this.InventoryAppIdComboBox.Name = "InventoryAppIdComboBox";
             this.InventoryAppIdComboBox.Size = new System.Drawing.Size(97, 21);
             this.InventoryAppIdComboBox.TabIndex = 0;
@@ -622,7 +637,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             this.InventoryAppIdLabel.AutoSize = true;
             this.InventoryAppIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.InventoryAppIdLabel.Location = new System.Drawing.Point(8, 22);
+            this.InventoryAppIdLabel.Location = new System.Drawing.Point(8, 17);
             this.InventoryAppIdLabel.Name = "InventoryAppIdLabel";
             this.InventoryAppIdLabel.Size = new System.Drawing.Size(47, 16);
             this.InventoryAppIdLabel.TabIndex = 1;
@@ -634,7 +649,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.InventoryContextIdComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InventoryContextIdComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.InventoryContextIdComboBox.FormattingEnabled = true;
-            this.InventoryContextIdComboBox.Location = new System.Drawing.Point(92, 46);
+            this.InventoryContextIdComboBox.Location = new System.Drawing.Point(92, 41);
             this.InventoryContextIdComboBox.Name = "InventoryContextIdComboBox";
             this.InventoryContextIdComboBox.Size = new System.Drawing.Size(97, 21);
             this.InventoryContextIdComboBox.TabIndex = 2;
@@ -644,7 +659,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             this.InventoryContextIdLabel.AutoSize = true;
             this.InventoryContextIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.InventoryContextIdLabel.Location = new System.Drawing.Point(8, 49);
+            this.InventoryContextIdLabel.Location = new System.Drawing.Point(8, 42);
             this.InventoryContextIdLabel.Name = "InventoryContextIdLabel";
             this.InventoryContextIdLabel.Size = new System.Drawing.Size(66, 16);
             this.InventoryContextIdLabel.TabIndex = 3;
@@ -652,6 +667,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             // 
             // InventoryGroupBox
             // 
+            this.InventoryGroupBox.Controls.Add(this.OnlyUnmarketableCheckBox);
             this.InventoryGroupBox.Controls.Add(this.LoadInventoryButton);
             this.InventoryGroupBox.Controls.Add(this.InventoryContextIdLabel);
             this.InventoryGroupBox.Controls.Add(this.InventoryContextIdComboBox);
@@ -660,7 +676,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.InventoryGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(220)))));
             this.InventoryGroupBox.Location = new System.Drawing.Point(580, 296);
             this.InventoryGroupBox.Name = "InventoryGroupBox";
-            this.InventoryGroupBox.Size = new System.Drawing.Size(296, 79);
+            this.InventoryGroupBox.Size = new System.Drawing.Size(296, 83);
             this.InventoryGroupBox.TabIndex = 18;
             this.InventoryGroupBox.TabStop = false;
             this.InventoryGroupBox.Text = "Inventory loading settings";
@@ -676,7 +692,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.LoadInventoryButton.Image = global::SteamAutoMarket.Properties.Resources.Download;
             this.LoadInventoryButton.Location = new System.Drawing.Point(206, 9);
             this.LoadInventoryButton.Name = "LoadInventoryButton";
-            this.LoadInventoryButton.Size = new System.Drawing.Size(76, 65);
+            this.LoadInventoryButton.Size = new System.Drawing.Size(76, 68);
             this.LoadInventoryButton.TabIndex = 25;
             this.AddAllToolTip.SetToolTip(this.LoadInventoryButton, "Load selected inventory");
             this.LoadInventoryButton.UseVisualStyleBackColor = false;
@@ -766,6 +782,16 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.SplitterPanel.Size = new System.Drawing.Size(77, 36);
             this.SplitterPanel.TabIndex = 20;
             // 
+            // OnlyUnmarketableCheckBox
+            // 
+            this.OnlyUnmarketableCheckBox.AutoSize = true;
+            this.OnlyUnmarketableCheckBox.Location = new System.Drawing.Point(12, 63);
+            this.OnlyUnmarketableCheckBox.Name = "OnlyUnmarketableCheckBox";
+            this.OnlyUnmarketableCheckBox.Size = new System.Drawing.Size(161, 17);
+            this.OnlyUnmarketableCheckBox.TabIndex = 20;
+            this.OnlyUnmarketableCheckBox.Text = "Load only unmarketable";
+            this.OnlyUnmarketableCheckBox.UseVisualStyleBackColor = true;
+            // 
             // TradeSendControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -793,6 +819,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
             this.ItemsToSaleGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToTradeGridView)).EndInit();
             this.TradeSendGroupBox.ResumeLayout(false);
+            this.TradeSendGroupBox.PerformLayout();
             this.ItemDescriptionGroupBox.ResumeLayout(false);
             this.AllSteamItemsGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AllSteamItemsToTradeGridView)).EndInit();
@@ -877,5 +904,7 @@ namespace SteamAutoMarket.CustomElements.Controls.Trade
         private DataGridViewComboBoxColumn dataGridViewComboBoxColumn1;
         private DataGridViewButtonColumn dataGridViewButtonColumn1;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private CheckBox Confirm2FACheckBox;
+        private CheckBox OnlyUnmarketableCheckBox;
     }
 }
