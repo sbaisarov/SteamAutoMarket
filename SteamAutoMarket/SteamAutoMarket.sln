@@ -4,11 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamAutoMarket", "SteamAutoMarket\SteamAutoMarket.csproj", "{58A5F142-1DC6-49F9-ADB5-C9EF08F2B600}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623} = {7B6085A2-E073-410C-BC5F-0342FD8CF623}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramShop", "TelegramShop\TelegramShop.csproj", "{7B6085A2-E073-410C-BC5F-0342FD8CF623}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,22 +33,6 @@ Global
 		{58A5F142-1DC6-49F9-ADB5-C9EF08F2B600}.Release|x64.Build.0 = Release|Any CPU
 		{58A5F142-1DC6-49F9-ADB5-C9EF08F2B600}.Release|x86.ActiveCfg = Release|Any CPU
 		{58A5F142-1DC6-49F9-ADB5-C9EF08F2B600}.Release|x86.Build.0 = Release|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Debug|ARM.Build.0 = Debug|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Debug|x64.Build.0 = Debug|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Debug|x86.Build.0 = Debug|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Release|ARM.ActiveCfg = Release|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Release|ARM.Build.0 = Release|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Release|x64.ActiveCfg = Release|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Release|x64.Build.0 = Release|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Release|x86.ActiveCfg = Release|Any CPU
-		{7B6085A2-E073-410C-BC5F-0342FD8CF623}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

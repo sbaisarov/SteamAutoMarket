@@ -33,7 +33,7 @@ namespace SteamAutoMarket
         private static void Main()
         {
 
-            //UpdateProgram();
+            UpdateProgram();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();

@@ -468,12 +468,6 @@
     <None Include="Resources\yellow-update-button.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TelegramShop\TelegramShop.csproj">
-      <Project>{7B6085A2-E073-410C-BC5F-0342FD8CF623}</Project>
-      <Name>TelegramShop</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack">
       <Version>1.8.8</Version>
     </PackageReference>
