@@ -732,7 +732,7 @@
                 }
 
                 this.TradeParthenIdTextBox.Text = new SteamID(acc.MaFile.Session.SteamID).AccountID.ToString();
-                this.TradeTokenTextBox.Text = acc.TradeToken;
+                this.TradeTokenTextBox.Text = @"todo"; // todo
             }
             catch (Exception ex)
             {

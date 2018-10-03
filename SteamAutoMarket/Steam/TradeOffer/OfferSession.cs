@@ -234,8 +234,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             string tradeOfferId, out string newTradeOfferId)
         {
             newTradeOfferId = "";
-
-            var resp = SteamWeb.Request(url, "POST", data, referer: referer);
+            var resp = SteamWeb.Request(url, "POST", data, _cookies, referer: referer);
             if (!string.IsNullOrEmpty(resp))
                 try
                 {

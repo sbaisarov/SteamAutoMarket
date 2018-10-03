@@ -383,6 +383,12 @@
         public bool SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken, out string offerId)
         {
             var offer = new TradeOffer.TradeOffer(this.OfferSession, new SteamID(ulong.Parse(partnerId)));
+            foreach(var item in items)
+            {
+                offer.Items.AddMyItem(item.Asset.Appid, long.Parse(item.Asset.Contextid),
+                    long.Parse(item.Asset.Assetid), long.Parse(item.Asset.Amount));
+            }
+            
             return offer.SendWithToken(out offerId, tradeToken);
         }
 

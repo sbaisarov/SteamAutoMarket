@@ -1,12 +1,14 @@
 import traceback
 import shelve
 import logging
-from logging import handlers
-import json
-from pprint import pformat
 import datetime
+import json
+from logging import handlers
+from pprint import pformat
+
 import requests
 from flask import Flask, request, render_template
+from flask_httpauth import HTTPBasicAuth
 
 import key
 
@@ -15,6 +17,7 @@ logging.getLogger('werkzeug').setLevel(logging.ERROR)
 logging.getLogger("requests").setLevel(logging.ERROR)
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()
 
 logger = logging.getLogger()
 logger.setLevel(level=logging.INFO)
@@ -24,7 +27,9 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
+
 @app.route('/api/logerror', methods=['POST'])
+@auth.login_required
 def log_error():
     with open('logs/errors.txt', 'a+', encoding='utf-8') as f:
         f.write(request.data.decode('utf-8') + '\n\n')
@@ -32,12 +37,14 @@ def log_error():
 
 
 @app.route('/api/showerrors', methods=['GET'])
+@auth.login_required
 def show_errors():
     with open('logs/errors.txt', 'r') as f:
         return f.read(), 200
 
 
 @app.route('/api/showdb', methods=['GET'])
+@auth.login_required
 def show_db():
     with shelve.open('database/clients') as db:
         try:
@@ -47,6 +54,7 @@ def show_db():
 
 
 @app.route('/api/getlicense/<int:subscription_time>', methods=['GET'])
+@auth.login_required
 def get_license(subscription_time):
     try:
         licenses = key.generate(subscription_time)
@@ -58,6 +66,7 @@ def get_license(subscription_time):
 
 
 @app.route('/api/getlicensestatus', methods=['POST'])
+@auth.login_required
 def get_license_status():
     keys = request.data.decode("utf-8").split(",")
     response = {}
@@ -72,6 +81,7 @@ def get_license_status():
 
 
 @app.route('/api/extendlicense', methods=['POST'])
+@auth.login_required
 def extend_license():
     data = {key: value for key, value in request.form.items()}
     try:
@@ -136,6 +146,14 @@ def get_city_from_ip(ip_address):
 def update_database(data, db, key):
     db[key] = data
     logger.info('VALID KEY. Added to the database: %s\n', data)
+
+
+@auth.verify_password
+def verify_password(username, password):
+    if username == "steambiz777" and password == "XgnLJjQ0X5cG":
+        return True
+
+    return False
 
 
 if __name__ == '__main__':
