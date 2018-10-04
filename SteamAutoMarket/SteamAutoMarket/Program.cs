@@ -49,12 +49,11 @@ namespace SteamAutoMarket
             }
         }
 
-        private static bool CheckLicense()
+        public static bool CheckLicense(string a)
         {
-            // какой-то хардкор с пост запросом на шарпе
             var wb = WebRequest.Create("https://www.steambiz.store/api/checklicense");
             wb.Method = "POST";
-            var data = new NameValueCollection { ["key"] = "5c2ef522-c99a-487e-b624-652bd9fabacd" };
+            var data = new NameValueCollection { ["key"] = a };
 
             // read key from user database.
             // read from the input field if key is not present in user database

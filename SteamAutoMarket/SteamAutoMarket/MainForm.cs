@@ -2,6 +2,7 @@
 {
     using System;
     using System.Drawing;
+    using System.IO;
     using System.Windows.Forms;
 
     public partial class MainForm : Form
@@ -16,6 +17,16 @@
         {
             this.InitializeComponent();
             this.FocusSidePanelToMenuElement(this.SettingsLinkButton);
+            if (!File.Exists("license.txt"))
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            var a = File.ReadAllText("license.txt");
+            if (!Program.CheckLicense(a))
+            {
+                throw new UnauthorizedAccessException();
+            }
         }
 
         public void AppExitButtonClick(object sender, EventArgs e)
