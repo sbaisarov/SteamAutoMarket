@@ -35,6 +35,8 @@
             {
                 throw new UnauthorizedAccessException("Access denied");
             }
+
+            this.UpdateProgram();
         }
 
         public bool Check(string main)
@@ -90,28 +92,12 @@
 
         private void UpdateProgram()
         {
-            ServicePointManager.ServerCertificateValidationCallback +=
-                (sender, certificate, chain, sslPolicyErrors) => true;  // NOT FOR PRODUCTION
-                                                                        //            AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;
+//            ServicePointManager.ServerCertificateValidationCallback +=
+//                (sender, certificate, chain, sslPolicyErrors) => true;  // NOT FOR PRODUCTION
+//                                                                        //            AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;
             AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.Start("https://www.steambiz.store/release/release.xml");
-        }
-
-        private void AutoUpdater_ApplicationExitEvent()
-        {
-            // let the user know that update has finished and he should launch the software again.
-
-            //            foreach (string file in Directory.EnumerateFiles(Directory.GetCurrentDirectory()))
-            //            {
-            //                try
-            //                {
-            //                    if (!file.EndsWith("SteamAutoMarket.zip")) File.Delete(file);
-            //                }
-            //                catch (Exception e) {}
-            //            }
-
-            //            Application.Exit();
         }
 
         public void AppExitButtonClick(object sender, EventArgs e)
