@@ -32,8 +32,6 @@ namespace SteamAutoMarket
         [STAThread]
         private static void Main()
         {
-
-            UpdateProgram();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();
@@ -100,30 +98,13 @@ namespace SteamAutoMarket
             return responseJson["success_3248237582"];
         }
 
-        private static void UpdateProgram()
+        public static void Update()
         {
-            ServicePointManager.ServerCertificateValidationCallback += 
-                (sender, certificate, chain, sslPolicyErrors) => true;  // NOT FOR PRODUCTION
-//            AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;
+//            ServicePointManager.ServerCertificateValidationCallback += 
+//                (sender, certificate, chain, sslPolicyErrors) => true;  // NOT FOR PRODUCTION
             AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.Start("https://www.steambiz.store/release/release.xml");
-        }
-        
-        private static void AutoUpdater_ApplicationExitEvent()
-        {
-            // let the user know that update has finished and he should launch the software again.
-
-//            foreach (string file in Directory.EnumerateFiles(Directory.GetCurrentDirectory()))
-//            {
-//                try
-//                {
-//                    if (!file.EndsWith("SteamAutoMarket.zip")) File.Delete(file);
-//                }
-//                catch (Exception e) {}
-//            }
-
-//            Application.Exit();
         }
     }
 }

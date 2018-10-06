@@ -27,6 +27,8 @@
             {
                 throw new UnauthorizedAccessException();
             }
+
+            Program.Update();
         }
 
         public void AppExitButtonClick(object sender, EventArgs e)
