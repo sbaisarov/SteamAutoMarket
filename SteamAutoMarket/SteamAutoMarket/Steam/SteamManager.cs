@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket.Steam
+﻿using Newtonsoft.Json;
+
+namespace SteamAutoMarket.Steam
 {
     using System;
     using System.Collections.Generic;
@@ -37,8 +39,8 @@
             bool forceSessionRefresh = false)
         {
             this.Guard = mafile;
-            this.SteamClient = new UserLogin(login, password) { TwoFactorCode = this.Guard.GenerateSteamGuardCode() };
-
+            this.SteamClient = new UserLogin(login, password) { TwoFactorCode = this.GenerateSteamGuardCode() };
+            this.Guard.DeviceID = this.GetDeviceId();
             var isSessionRefreshed = this.Guard.RefreshSession();
             if (isSessionRefreshed == false || forceSessionRefresh)
             {
@@ -80,6 +82,26 @@
             market.Auth = auth;
             this.MarketClient = new MarketClient(market);
             this.Inventory = new Inventory();
+        }
+
+        private string GetDeviceId()
+        {
+            using (var wb = new WebClient())
+            {
+                var response = wb.UploadString(
+                    "https://www.steambiz.store/api/gdevid", this.SteamClient.SteamID.ToString());
+                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+            }
+        }
+
+        private string GenerateSteamGuardCode()
+        {
+            using (var wb = new WebClient())
+            {
+                var response = wb.UploadString("https://www.steambiz.store/api/gguardcode",
+                    this.Guard.SharedSecret + "," + TimeAligner.GetSteamTime().ToString());
+                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+            }
         }
 
         public string ApiKey { get; set; }

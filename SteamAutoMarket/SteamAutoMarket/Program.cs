@@ -17,7 +17,6 @@
         [STAThread]
         private static void Main()
         {
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new MainForm();
@@ -32,7 +31,5 @@
                 Logger.Critical("Critical program exception", ex);
             }
         }
-
-       
     }
 }

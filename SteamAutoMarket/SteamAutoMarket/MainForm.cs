@@ -94,7 +94,6 @@
         {
 //            ServicePointManager.ServerCertificateValidationCallback +=
 //                (sender, certificate, chain, sslPolicyErrors) => true;  // NOT FOR PRODUCTION
-//                                                                        //            AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;
             AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.Start("https://www.steambiz.store/release/release.xml");
