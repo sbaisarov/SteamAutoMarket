@@ -52,7 +52,7 @@
                 if (userModel.LicenseBuyProcess.LicenseKey == null)
                 {
                     var newLicenseKey = GetNewLicenseKey(userModel.Telegram);
-                    LicenseServerHandler.AddNewLicense(newLicenseKey, userModel.LicenseBuyProcess.Days);
+                    LicenseServerHandler.GetNewLicense(userModel.LicenseBuyProcess.Days);
 
                     ShopUserRepository.AddLicenseKey(userModel, newLicenseKey);
 
