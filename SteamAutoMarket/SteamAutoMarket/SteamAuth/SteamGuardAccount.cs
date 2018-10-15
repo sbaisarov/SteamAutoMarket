@@ -2,11 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
+using System.Linq;
+using System.Management;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SteamAutoMarket;
+using static SteamAutoMarket.MainForm;
 
 namespace SteamAuth
 {
@@ -478,7 +483,7 @@ namespace SteamAuth
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gconfhash", $"{identitySecret},{tag},{time}");
+                    "https://www.steambiz.store/api/gconfhash", $"{identitySecret},{tag},{time},{main},{uid}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }

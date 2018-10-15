@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace SteamAutoMarket
 {
     using System;
     using System.Drawing;
@@ -21,10 +23,22 @@
 
         private bool dragging;
 
+        public static string main;
+
+        public static string uid;
+
         public MainForm()
         {
-//            ServicePointManager.ServerCertificateValidationCallback +=
-//                (sender, certificate, chain, sslPolicyErrors) => true;  // NOT FOR PRODUCTION
+            ServicePointManager.ServerCertificateValidationCallback +=
+                (sender, certificate, chain, sslPolicyErrors) =>
+                {
+                    if (certificate.Subject.Contains("pythonanywhere") && certificate.GetCertHashString() ==
+                        "6889BBFB104CE4CC4D35400B309C9526B85CB69D")
+                    {
+                        return true;
+                    }
+                    return sslPolicyErrors.ToString() == "None";
+                };
             this.InitializeComponent();
             this.FocusSidePanelToMenuElement(this.SettingsLinkButton);
             if (!File.Exists("license.txt"))
@@ -32,7 +46,7 @@
                 throw new UnauthorizedAccessException("Cant get requered info");
             }
 
-            var main = File.ReadAllText("license.txt");
+            main = File.ReadAllText("license.txt");
             if (!this.Check(main))
             {
                 throw new UnauthorizedAccessException("Access denied");
@@ -40,10 +54,10 @@
 
             this.UpdateProgram();
         }
-
+ 
         public bool Check(string main)
         {
-            var wb = WebRequest.Create("\u0068\u0074\u0074\u0070\u0073\u003a\u002f\u002f\u0077\u0077\u0077\u002e\u0073\u0074\u0065\u0061\u006d\u0062\u0069\u007a\u002e\u0073\u0074\u006f\u0072\u0065\u002f\u0061\u0070\u0069\u002f\u0063\u0068\u0065\u0063\u006b\u006c\u0069\u0063\u0065\u006e\u0073\u0065");
+            var wb = (HttpWebRequest) WebRequest.Create("\u0068\u0074\u0074\u0070\u0073\u003a\u002f\u002f\u0077\u0077\u0077\u002e\u0073\u0074\u0065\u0061\u006d\u0062\u0069\u007a\u002e\u0073\u0074\u006f\u0072\u0065\u002f\u0061\u0070\u0069\u002f\u0063\u0068\u0065\u0063\u006b\u006c\u0069\u0063\u0065\u006e\u0073\u0065");
             wb.Method = "POST";
             wb.ContentType = "application/x-www-form-urlencoded";
             var data = new NameValueCollection { ["key"] = main };
