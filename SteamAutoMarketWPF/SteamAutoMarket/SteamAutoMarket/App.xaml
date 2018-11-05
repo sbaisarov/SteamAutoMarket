@@ -1,0 +1,146 @@
+﻿<Application x:Class="SteamAutoMarket.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+             StartupUri="MainWindow.xaml"
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <ControlTemplate x:Key="GroupBoxTemplate" TargetType="GroupBox">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0"
+                            BorderThickness="1"
+                            BorderBrush="{DynamicResource DataGridBackground}"
+                            Background="{DynamicResource DataGridCellBackgroundSelected}">
+                        <Label Foreground="Black">
+                            <ContentPresenter Margin="4"
+                                              ContentSource="Header"
+                                              RecognizesAccessKey="True" />
+                        </Label>
+                    </Border>
+
+                    <Border Grid.Row="1"
+                            BorderThickness="1,0,1,1"
+                            BorderBrush="{DynamicResource DataGridBackground}">
+                        <ContentPresenter Margin="4" />
+                    </Border>
+
+                </Grid>
+            </ControlTemplate>
+
+            <Style x:Key="Geometry" TargetType="Path">
+                <Setter Property="Fill" Value="{StaticResource DataGridCellBackgroundSelected}" />
+                <Setter Property="StrokeThickness" Value="0" />
+                <Setter Property="Stroke" Value="{StaticResource DataGridCellBackgroundSelected}" />
+                <Setter Property="Opacity" Value="1" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+            </Style>
+
+            <Style x:Key="GridStyle" TargetType="xcdg:DataGridControl">
+                <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
+                <Setter Property="Foreground" Value="{StaticResource DataGridForeground}" />
+            </Style>
+
+            <xcdg:IndexToOddConverter x:Key="RowIndexConverter" />
+
+            <Style TargetType="{x:Type xcdg:DataRow}">
+                <Style.Triggers>
+                    <DataTrigger
+                        Binding="{Binding RelativeSource={RelativeSource Self}, 
+                    Path=(xcdg:DataGridVirtualizingPanel.ItemIndex), 
+                    Converter={StaticResource RowIndexConverter}}"
+                        Value="True">
+                        <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
+                        <Setter Property="SelectionBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
+                        <Setter Property="InactiveSelectionBackground"
+                                Value="{StaticResource DataGridCellBackgroundSelected}" />
+                    </DataTrigger>
+                </Style.Triggers>
+                <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
+                <Setter Property="SelectionBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
+                <Setter Property="InactiveSelectionBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
+            </Style>
+
+            <Style TargetType="toolkit:DoubleUpDown">
+                <Setter Property="Foreground" Value="{DynamicResource ItemText}" />
+                <Setter Property="Background" Value="{DynamicResource DataGridBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource DataGridCellBackgroundSelected}" />
+            </Style>
+
+            <Style x:Key="TextBoxStyle" BasedOn="{x:Null}" TargetType="{x:Type toolkit:RichTextBox}">
+                <Setter Property="Foreground" Value="{DynamicResource ItemText}" />
+                <Setter Property="Background" Value="{DynamicResource DataGridBackground}" />
+                <Setter Property="SelectionBrush" Value="{DynamicResource DataGridCellBackgroundSelected}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource DataGridCellBackgroundSelected}" />
+                <Setter Property="VerticalScrollBarVisibility" Value="Visible" />
+                <Setter Property="AllowDrop" Value="true" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type toolkit:RichTextBox}">
+                            <Border x:Name="bg" BorderBrush="{DynamicResource DataGridCellBackgroundSelected}"
+                                    BorderThickness="1">
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" TargetName="bg"
+                                            Value="{DynamicResource DataGridCellBackgroundSelected}" />
+                                    <Setter Property="BorderThickness" TargetName="bg" Value="1" />
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter Property="BorderBrush" TargetName="bg"
+                                            Value="{DynamicResource DataGridCellBackgroundSelected}" />
+                                    <Setter Property="BorderThickness" TargetName="bg" Value="1" />
+                                </Trigger>
+
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type xcdg:HierarchicalGroupByControl}">
+                <Setter Property="Background" Value="{StaticResource DataGridCellBackgroundSelected}" />
+            </Style>
+
+            <Style TargetType="{x:Type xcdg:GroupHeaderControl}">
+                <Setter Property="Background" Value="{StaticResource DataGridCellBackgroundSelected}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="Black" />
+            </Style>
+
+            <Style TargetType="{x:Type xcdg:ColumnManagerRow}">
+                <Setter Property="Background" Value="{StaticResource DataGridCellBackgroundSelected}" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+
+            <Style TargetType="{x:Type xcdg:ColumnManagerCell}">
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Background" Value="{StaticResource DataGridCellBackgroundSelected}" />
+            </Style>
+
+            <Style TargetType="{x:Type xcdg:DataCell}">
+                <Setter Property="CurrentBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
+                <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
+                <ResourceDictionary />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
