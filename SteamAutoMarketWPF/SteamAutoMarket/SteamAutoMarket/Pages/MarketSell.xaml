@@ -272,12 +272,24 @@
                         Padding="0" />
             </Grid>
 
-            <StackPanel Grid.Column="0"
-                        Grid.Row="2"
-                        Orientation="Vertical"
-                        VerticalAlignment="Center" Margin="0,5">
+            <Grid Grid.Column="0"
+                  Grid.Row="2"
+                  VerticalAlignment="Center" Margin="0,5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="55" MinWidth="55" MaxWidth="55" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="22" />
+                    <RowDefinition Height="22" />
+                    <RowDefinition Height="22" />
+                    <RowDefinition Height="22" />
+                </Grid.RowDefinitions>
 
                 <RadioButton
+                    Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                     Height="20"
                     Name="RecommendedPriceRb"
                     GroupName="MarketSellType"
@@ -286,55 +298,47 @@
                     IsChecked="True" />
 
                 <RadioButton
+                    Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     Height="20"
                     Name="ManualPriceRb"
                     GroupName="MarketSellType"
                     Margin="1"
                     Content="Manual price" />
 
-                <Grid Height="21">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="56" />
-                    </Grid.ColumnDefinitions>
+                <RadioButton
+                    Grid.Row="2" Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Name="AveragePriceRb"
+                    GroupName="MarketSellType"
+                    Margin="1,1,15,1"
+                    Content="Average price" />
 
-                    <RadioButton
-                        Name="AveragePriceRb"
-                        GroupName="MarketSellType"
-                        Margin="1"
-                        Content="Average price" />
+                <xctk:DoubleUpDown
+                    Grid.Row="2" Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Value="-0.01"
+                    Increment="0.01"
+                    FormatString="F2" Margin="1,0,0,0"
+                    Visibility="{Binding IsChecked,ElementName=AveragePriceRb,Converter={StaticResource B2V}}" />
 
-                    <xctk:DoubleUpDown
-                        Grid.Column="1"
-                        Value="-0.01"
-                        Increment="0.01"
-                        FormatString="F2" Margin="1,0,0,0"
-                        Visibility="{Binding IsChecked,ElementName=AveragePriceRb,Converter={StaticResource B2V}}" />
+                <RadioButton
+                    Grid.Row="3" Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Name="CurrentPriceRb"
+                    GroupName="MarketSellType"
+                    Margin="1,1,15,1"
+                    Content="Current price" />
 
-                </Grid>
-
-                <Grid Height="21">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="55" MinWidth="55" MaxWidth="55" />
-                    </Grid.ColumnDefinitions>
-
-                    <RadioButton
-                        Name="CurrentPriceRb"
-                        GroupName="MarketSellType"
-                        Margin="1"
-                        Content="Current price" />
-
-                    <xctk:DoubleUpDown
-                        Width="55"
-                        Grid.Column="1"
-                        Value="-0.01"
-                        Increment="0.01"
-                        FormatString="F2"
-                        Visibility="{Binding IsChecked,ElementName=CurrentPriceRb,Converter={StaticResource B2V}}" />
-
-                </Grid>
-            </StackPanel>
+                <xctk:DoubleUpDown
+                    Grid.Row="3" Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Width="55"
+                    Value="-0.01"
+                    Increment="0.01"
+                    FormatString="F2"
+                    HorizontalAlignment="Left"
+                    Visibility="{Binding IsChecked,ElementName=CurrentPriceRb,Converter={StaticResource B2V}}" />
+            </Grid>
 
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
