@@ -31,7 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -182,7 +183,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icon.ico" />
     <Resource Include="Images\NoAvatar.jpg" />
     <Resource Include="Images\NoAvatarSmall.jpg" />
     <Resource Include="Images\Serious_Sam_Logo.svg" />
