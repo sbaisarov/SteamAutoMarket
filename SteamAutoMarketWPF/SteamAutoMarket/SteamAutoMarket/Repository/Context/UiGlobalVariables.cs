@@ -11,5 +11,7 @@
         public static SteamAccountLogin SteamAccountLogin { get; set; }
 
         public static MarketRelist MarketRelist { get; set; }
+
+        public static LogsWindow LogsWindow { get; set; }
     }
 }
