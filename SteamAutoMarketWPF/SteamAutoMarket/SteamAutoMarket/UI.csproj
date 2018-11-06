@@ -59,10 +59,11 @@
     <Compile Include="Models\MarketRelistModel.cs" />
     <Compile Include="Models\CheckedModel.cs" />
     <Compile Include="Models\MarketSellModel.cs" />
-    <Compile Include="Models\MarketSellNumericUpDownModel.cs" />
+    <Compile Include="Models\NumericUpDownModel.cs" />
     <Compile Include="Models\PriceModel.cs" />
     <Compile Include="Models\SteamAppId.cs" />
     <Compile Include="Models\SettingsSteamAccount.cs" />
+    <Compile Include="Models\TradeSendModel.cs" />
     <Compile Include="Pages\ActiveTrades.xaml.cs">
       <DependentUpon>ActiveTrades.xaml</DependentUpon>
     </Compile>

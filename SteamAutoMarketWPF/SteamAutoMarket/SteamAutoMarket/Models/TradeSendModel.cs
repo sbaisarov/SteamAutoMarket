@@ -13,15 +13,9 @@
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Image;
 
-    public class MarketSellModel : INotifyPropertyChanged
+    public class TradeSendModel : INotifyPropertyChanged
     {
-        private double? averagePrice;
-
-        private double? currentPrice;
-
-        private PriceModel sellPrice;
-
-        public MarketSellModel(List<FullRgItem> itemsList)
+        public TradeSendModel(List<FullRgItem> itemsList)
         {
             this.ItemsList = new ObservableCollection<FullRgItem>(itemsList);
 
@@ -35,9 +29,7 @@
 
             this.Description = "TODO - GENERATE DESCRIPTION" + RandomUtils.RandomString(500);
 
-            this.MarketSellNumericUpDown = new NumericUpDownModel(this.Count);
-
-            this.SellPrice = new PriceModel();
+            this.NumericUpDown = new NumericUpDownModel(this.Count);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -59,42 +51,10 @@
                 this.ItemModel?.Description?.MarketHashName,
                 this.ItemModel?.Description?.IconUrlLarge);
 
-        public NumericUpDownModel MarketSellNumericUpDown { get; }
-
-        public double? AveragePrice
-        {
-            get => this.averagePrice;
-            set
-            {
-                this.averagePrice = value;
-                this.ProcessSellPrice();
-                this.OnPropertyChanged();
-            }
-        }
-
-        public double? CurrentPrice
-        {
-            get => this.currentPrice;
-            set
-            {
-                this.currentPrice = value;
-                this.ProcessSellPrice();
-                this.OnPropertyChanged();
-            }
-        }
-
-        public PriceModel SellPrice { get; }
+        public NumericUpDownModel NumericUpDown { get; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        private void ProcessSellPrice()
-        {
-            if (this.averagePrice != null || this.currentPrice != null)
-            {
-                this.SellPrice.Value = 228;
-            }
-        }
     }
 }

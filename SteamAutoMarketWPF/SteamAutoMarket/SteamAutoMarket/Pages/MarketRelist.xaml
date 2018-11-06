@@ -30,7 +30,7 @@
                               Margin="10, 10, 30, 10"
                               AutoCreateColumns="False"
                               Style="{StaticResource GridStyle}"
-                              ItemsSource="{Binding Path=RelistItemsList, Mode=TwoWay}"
+                              ItemsSource="{Binding Path=RelistItemsList, Mode=OneWay}"
                               SelectedItem="{Binding Path=RelistSelectedItem, Mode=TwoWay}">
 
             <xcdg:DataGridControl.View>

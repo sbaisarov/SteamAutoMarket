@@ -5,11 +5,11 @@
 
     using SteamAutoMarket.Annotations;
 
-    public class MarketSellNumericUpDownModel : INotifyPropertyChanged
+    public class NumericUpDownModel : INotifyPropertyChanged
     {
         private int amountToSell;
 
-        public MarketSellNumericUpDownModel(int maxAllowedCount)
+        public NumericUpDownModel(int maxAllowedCount)
         {
             this.MaxAllowedCount = maxAllowedCount;
             this.amountToSell = 0;
@@ -27,6 +27,11 @@
                 this.amountToSell = value;
                 this.OnPropertyChanged();
             }
+        }
+
+        public void SetToMaximum()
+        {
+            this.AmountToSell = this.MaxAllowedCount;
         }
 
         [NotifyPropertyChangedInvocator]

@@ -30,7 +30,7 @@
                               Margin="10, 10, 30, 10"
                               AutoCreateColumns="False"
                               Style="{StaticResource GridStyle}"
-                              ItemsSource="{Binding Path=MarketSellItems, Mode=TwoWay}"
+                              ItemsSource="{Binding Path=MarketSellItems, Mode=OneWay}"
                               SelectedItem="{Binding Path=MarketSellSelectedItem}">
 
             <xcdg:DataGridControl.View>
@@ -150,7 +150,7 @@
                                 Width="55"
                                 Value="0"
                                 Increment="1"
-                                d:DataContext="{d:DesignInstance models:MarketSellNumericUpDownModel}"
+                                d:DataContext="{d:DesignInstance models:NumericUpDownModel}"
                                 Maximum="{Binding Path=MaxAllowedCount}"
                                 Text="{Binding Path=AmountToSell}"
                                 Minimum="0"

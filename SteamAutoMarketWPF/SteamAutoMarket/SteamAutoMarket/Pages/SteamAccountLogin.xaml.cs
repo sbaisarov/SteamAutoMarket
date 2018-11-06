@@ -25,6 +25,9 @@
     {
         #region Private variables
 
+        public static readonly ObservableCollection<SettingsSteamAccount> GlobalSteamAccountList =
+            new ObservableCollection<SettingsSteamAccount>();
+
         private string newAccountLogin;
 
         private string newAccountPassword;
@@ -109,15 +112,7 @@
             }
         }
 
-        public ObservableCollection<SettingsSteamAccount> SteamAccountList
-        {
-            get => this.steamAccountList;
-            set
-            {
-                this.steamAccountList = value;
-                this.OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<SettingsSteamAccount> SteamAccountList => GlobalSteamAccountList;
 
         public SettingsSteamAccount SelectSteamAccount
         {

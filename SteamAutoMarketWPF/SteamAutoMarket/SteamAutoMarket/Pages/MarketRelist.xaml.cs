@@ -53,15 +53,7 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<MarketRelistModel> RelistItemsList
-        {
-            get => this.relistItemsList;
-            set
-            {
-                this.relistItemsList = value;
-                this.OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<MarketRelistModel> RelistItemsList { get; } = new ObservableCollection<MarketRelistModel>();
 
         public MarketRelistModel RelistSelectedItem
         {

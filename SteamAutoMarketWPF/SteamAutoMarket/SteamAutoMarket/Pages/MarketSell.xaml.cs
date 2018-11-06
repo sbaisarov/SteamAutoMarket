@@ -22,14 +22,9 @@
     {
         #region Private variables
 
-        private static MarketSellModel marketSellSelectedItem;
+        private MarketSellModel marketSellSelectedItem;
 
-        private static ObservableCollection<MarketSellModel> marketSellItems =
-            new ObservableCollection<MarketSellModel>();
-
-        private static SteamAppId marketSellSelectedAppid = SettingsProvider.GetInstance().MarketSellSelectedAppid;
-
-        private static SteamAppId selectedTradeAppid = SettingsProvider.GetInstance().TradeSelectedAppId;
+        private SteamAppId marketSellSelectedAppid = SettingsProvider.GetInstance().MarketSellSelectedAppid;
 
         #endregion
 
@@ -46,7 +41,14 @@
                             new FullRgItem
                                 {
                                     Asset = new RgInventory { Amount = "5", },
-                                    Description = new RgDescription { Type = "Type1", MarketHashName = "HashName", MarketName = "MarketName", IconUrlLarge = "https://steamcommunity-a.akamaihd.net/economy/image/IzMF03bk9WpSBq-S-ekoE33L-iLqGFHVaU25ZzQNQcXdA3g5gMEPvUZZEaiHLrVJRsl8q3CWTo7Qi89ehDNVzDMFfXqviiQrcex4NM6b5gni6vaCV2D_bXzpIC7XWldlHOQLOG7cqzKs4rmSEDCYQu4pEl9SKPcB9zZBPpvbOxpvgIcNrTDgxhQkS0RmYstBNg202HAWI4IsxSAVIJYEzyKkd8bQhFhgOUViDOq0Au2WbNCmkSgmXExvG_RJNdiWv3Puq5-ndLfYeu5xafCepGZ_Rg/360fx360f" }
+                                    Description = new RgDescription
+                                                      {
+                                                          Type = "Type1",
+                                                          MarketHashName = "HashName",
+                                                          MarketName = "MarketName",
+                                                          IconUrlLarge =
+                                                              "https://steamcommunity-a.akamaihd.net/economy/image/IzMF03bk9WpSBq-S-ekoE33L-iLqGFHVaU25ZzQNQcXdA3g5gMEPvUZZEaiHLrVJRsl8q3CWTo7Qi89ehDNVzDMFfXqviiQrcex4NM6b5gni6vaCV2D_bXzpIC7XWldlHOQLOG7cqzKs4rmSEDCYQu4pEl9SKPcB9zZBPpvbOxpvgIcNrTDgxhQkS0RmYstBNg202HAWI4IsxSAVIJYEzyKkd8bQhFhgOUViDOq0Au2WbNCmkSgmXExvG_RJNdiWv3Puq5-ndLfYeu5xafCepGZ_Rg/360fx360f"
+                                                      }
                                 }
                         }));
 
@@ -56,8 +58,15 @@
                         {
                             new FullRgItem
                                 {
-                                    Asset = new RgInventory { Amount = "4"},
-                                    Description = new RgDescription { Type = "Type2", MarketHashName = "HashName1", MarketName = "SomeName", IconUrl = "https://steamcommunity-a.akamaihd.net/economy/image/IzMF03bk9WpSBq-S-ekoE33L-iLqGFHVaU25ZzQNQcXdA3g5gMEPvUZZEaiHLrVJRsl8q3CWTo7Qi89ehDNVzDMFfXqviiQrcex4NM6b5gni6vaCV2D_bXzpIC7XWldlHOQLOG7cqzKs4rmSEDCYQu4pEl9SKPcB9zZBPpvbOxpvgIcNrTDgxhQkS0RmYstBNg202HAWI4IsxSAVIJYEzyKkd8bQhFhgOUViDOq0Au2WbNCmkSgmXExvG_RJNdiWv3Puq5-ndLfYeu5xafCepGZ_Rg/360fx360f"}
+                                    Asset = new RgInventory { Amount = "4" },
+                                    Description = new RgDescription
+                                                      {
+                                                          Type = "Type2",
+                                                          MarketHashName = "HashName1",
+                                                          MarketName = "SomeName",
+                                                          IconUrl =
+                                                              "https://steamcommunity-a.akamaihd.net/economy/image/IzMF03bk9WpSBq-S-ekoE33L-iLqGFHVaU25ZzQNQcXdA3g5gMEPvUZZEaiHLrVJRsl8q3CWTo7Qi89ehDNVzDMFfXqviiQrcex4NM6b5gni6vaCV2D_bXzpIC7XWldlHOQLOG7cqzKs4rmSEDCYQu4pEl9SKPcB9zZBPpvbOxpvgIcNrTDgxhQkS0RmYstBNg202HAWI4IsxSAVIJYEzyKkd8bQhFhgOUViDOq0Au2WbNCmkSgmXExvG_RJNdiWv3Puq5-ndLfYeu5xafCepGZ_Rg/360fx360f"
+                                                      }
                                 }
                         }));
         }
@@ -68,38 +77,29 @@
 
         public SteamAppId MarketSellSelectedAppid
         {
-            get => marketSellSelectedAppid;
+            get => this.marketSellSelectedAppid;
 
             set
             {
-                if (marketSellSelectedAppid == value) return;
-                marketSellSelectedAppid = value;
+                if (this.marketSellSelectedAppid == value) return;
+                this.marketSellSelectedAppid = value;
                 this.OnPropertyChanged();
             }
         }
 
         public MarketSellModel MarketSellSelectedItem
         {
-            get => marketSellSelectedItem;
+            get => this.marketSellSelectedItem;
 
             set
             {
-                if (marketSellSelectedItem == value) return;
-                marketSellSelectedItem = value;
+                if (this.marketSellSelectedItem == value) return;
+                this.marketSellSelectedItem = value;
                 this.OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<MarketSellModel> MarketSellItems
-        {
-            get => marketSellItems;
-
-            set
-            {
-                marketSellItems = value;
-                this.OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<MarketSellModel> MarketSellItems { get; } = new ObservableCollection<MarketSellModel>();
 
         public string MarketSellNewAppid
         {
@@ -127,7 +127,10 @@
 
         private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
         {
-            this.MarketSellItems.ToList().ForEach(item => item.MarketSellNumericUpDown.AmountToSell = item.Count);
+            for (var i = 0; i < this.MarketSellItems.Count; i++)
+            {
+                this.MarketSellItems[i].MarketSellNumericUpDown.SetToMaximum();
+            }
         }
     }
 }
