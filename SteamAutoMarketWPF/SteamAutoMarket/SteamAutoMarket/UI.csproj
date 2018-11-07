@@ -108,6 +108,7 @@
     <Compile Include="Utils\Converter\IfNullVisibleConverter.cs" />
     <Compile Include="Utils\Logger\ErrorNotify.cs" />
     <Compile Include="Utils\Logger\UiLogAppender.cs" />
+    <Compile Include="WorkingProcessExample.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -14,5 +14,10 @@
         {
             MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+        public static void InfoMessageBox(string message)
+        {
+            MessageBox.Show(message, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }
