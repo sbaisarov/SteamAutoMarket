@@ -132,5 +132,10 @@
                 this.MarketSellItems[i].MarketSellNumericUpDown.SetToMaximum();
             }
         }
+
+        private void StartMarketSellButtonClick_OnClick(object sender, RoutedEventArgs e)
+        {
+            WorkingProcessForm.NewWorkingProcessWindow();
+        }
     }
 }

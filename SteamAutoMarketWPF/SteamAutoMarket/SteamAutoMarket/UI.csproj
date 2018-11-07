@@ -91,6 +91,9 @@
     <Compile Include="Pages\TradeSend.xaml.cs">
       <DependentUpon>TradeSend.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\WorkingProcessForm.xaml.cs">
+      <DependentUpon>WorkingProcessForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Repository\Context\UiDefaultValues.cs" />
@@ -176,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\TradeSend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\WorkingProcessForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
