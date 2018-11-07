@@ -5,6 +5,7 @@
     using log4net.Appender;
     using log4net.Core;
 
+    using SteamAutoMarket.Pages;
     using SteamAutoMarket.Repository.Context;
 
     public class UiLogAppender : AppenderSkeleton
@@ -13,7 +14,7 @@
 
         protected override void Append(LoggingEvent e)
         {
-            //UiGlobalVariables.Logs += $"{GetCurrentDate()} ({e.Level}) - {e.RenderedMessage}{Environment.NewLine}";
+            LogsWindow.GlobalLogs += $"{GetCurrentDate()} ({e.Level}) - {e.RenderedMessage}{Environment.NewLine}";
         }
 
         private static string GetCurrentDate() => DateTime.Now.ToString(DateFormat);
