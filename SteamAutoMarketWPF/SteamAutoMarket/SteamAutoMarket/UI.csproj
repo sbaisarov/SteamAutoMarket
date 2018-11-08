@@ -105,6 +105,7 @@
     <Compile Include="Repository\Context\UiGlobalVariables.cs" />
     <Compile Include="Repository\Settings\SettingsProvider.cs" />
     <Compile Include="Repository\Settings\SettingsUpdated.cs" />
+    <Compile Include="Steam\UiSteamManager.cs" />
     <Compile Include="Utils\Converter\SolidColorBrushToColorConverter.cs" />
     <Compile Include="Utils\Converter\IfNullInvisibleConverter.cs" />
     <Compile Include="Utils\Converter\InvertBooleanConverter.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="Utils\Logger\UiLogAppender.cs" />
     <Compile Include="Utils\Resources\BindingProxy.cs" />
     <Compile Include="Utils\Resources\BindingTrigger.cs" />
-    <Compile Include="Utils\Resources\DynamicResourceWithConverter.cs" />
+    <Compile Include="Utils\Resources\DynamicResourceBinding.cs" />
     <Compile Include="Utils\Resources\InlineMultiConverter.cs" />
     <Compile Include="WorkingProcessExample.cs" />
     <Page Include="MainWindow.xaml">

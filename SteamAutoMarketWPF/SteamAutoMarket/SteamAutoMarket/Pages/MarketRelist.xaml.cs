@@ -81,7 +81,7 @@ namespace SteamAutoMarket.Pages
             try
             {
                 MyListings.Clear();
-                Task.Run(
+                /*Task.Run(
                     () =>
                         {
                             // get listings var listings = 
@@ -102,7 +102,7 @@ namespace SteamAutoMarket.Pages
                             }
 
                             WorkingProcessForm.PriceLoader.StartPriceLoading(ETableToLoad.RelistTable);
-                        });
+                        });*/
             }
             catch (Exception ex)
             {

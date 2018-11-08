@@ -27,8 +27,6 @@ namespace SteamAutoMarket.Pages
         private MarketSellModel marketSellSelectedItem;
 
         private SteamAppId marketSellSelectedAppid = SettingsProvider.GetInstance().MarketSellSelectedAppid;
-        
-        private bool IncludeLogs { get; set; }
 
         #endregion
 
@@ -39,7 +37,7 @@ namespace SteamAutoMarket.Pages
             UiGlobalVariables.MarketSellPage = this;
 
             this.MarketSellSelectedAppid = this.AppIdList.FirstOrDefault(
-                appid => appid.Name == SettingsProvider.GetInstance().MarketSellSelectedAppid.Name);
+                appid => appid?.Name == SettingsProvider.GetInstance().MarketSellSelectedAppid?.Name);
 
             this.MarketSellItems.Add(
                 new MarketSellModel(
@@ -146,20 +144,20 @@ namespace SteamAutoMarket.Pages
         {
             WorkingProcessExample.Test();
         }
-        
+
         private void LoadInventoryItems(object sender, RoutedEventArgs e)
         {
-           var items = UiGlobalVariables.SteamManager.LoadInventory(UiGlobalVariables.SteamManager.SteamClient.SteamID.ToString(),
-                MarketSellSelectedAppid.AppId.ToString(), MarketSellSelectedAppid.ContextId.ToString(), IncludeLogs);
-            var result = new List<FullRgItem>();
-            items.Sort((firstItem, secondItem) => String.Compare(firstItem.Description.MarketHashName,
-                secondItem.Description.MarketHashName, StringComparison.Ordinal));
-            foreach (var item in items)
-            {
-                result.Append(item);
-            }
-            
-            marketSellSelectedItem = new MarketSellModel(result);
+            // var items = UiGlobalVariables.SteamManager.LoadInventory(UiGlobalVariables.SteamManager.SteamClient.SteamID.ToString(),
+            // MarketSellSelectedAppid.AppId.ToString(), MarketSellSelectedAppid.ContextId.ToString(), IncludeLogs);
+            // var result = new List<FullRgItem>();
+            // items.Sort((firstItem, secondItem) => String.Compare(firstItem.Description.MarketHashName,
+            // secondItem.Description.MarketHashName, StringComparison.Ordinal));
+            // foreach (var item in items)
+            // {
+            // result.Append(item);
+            // }
+
+            // marketSellSelectedItem = new MarketSellModel(result);
         }
     }
 }

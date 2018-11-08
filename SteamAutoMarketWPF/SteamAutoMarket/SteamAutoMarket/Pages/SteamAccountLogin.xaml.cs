@@ -153,6 +153,7 @@
                     this.SelectSteamAccount.Mafile,
                     this.SelectSteamAccount.SteamApi,
                     this.ForceSessionRefresh);
+
                 UiGlobalVariables.MainWindow.Account.DisplayName = this.SelectSteamAccount.Login;
             }
             catch (Exception ex)

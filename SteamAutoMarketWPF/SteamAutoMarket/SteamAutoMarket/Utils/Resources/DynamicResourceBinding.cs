@@ -7,17 +7,17 @@
     using System.Windows.Data;
     using System.Windows.Markup;
 
-    public class DynamicResourceBindingExtension : MarkupExtension
+    public class DynamicResourceBinding : MarkupExtension
     {
         private BindingProxy bindingSource;
 
         private BindingTrigger bindingTrigger;
 
-        public DynamicResourceBindingExtension()
+        public DynamicResourceBinding()
         {
         }
 
-        public DynamicResourceBindingExtension(object resourceKey)
+        public DynamicResourceBinding(object resourceKey)
         {
             this.ResourceKey = resourceKey ?? throw new ArgumentNullException(nameof(resourceKey));
         }
