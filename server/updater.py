@@ -5,5 +5,6 @@ with shelve.open("database/clients", writeback=True) as db:
 		client = db[key]
 		active_devices = client["devices"]
 		for device in active_devices:
-			client["subscription_time"] -= 1
+		    if client["subscription_time"] != 0:
+			    client["subscription_time"] -= 1
 		active_devices.clear()

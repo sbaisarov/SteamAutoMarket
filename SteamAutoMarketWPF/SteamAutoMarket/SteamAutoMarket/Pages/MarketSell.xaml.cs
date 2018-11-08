@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket.Pages
+﻿using System;
+
+namespace SteamAutoMarket.Pages
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -25,6 +27,8 @@
         private MarketSellModel marketSellSelectedItem;
 
         private SteamAppId marketSellSelectedAppid = SettingsProvider.GetInstance().MarketSellSelectedAppid;
+        
+        private bool IncludeLogs { get; set; }
 
         #endregion
 
@@ -136,6 +140,21 @@
         private void StartMarketSellButtonClick_OnClick(object sender, RoutedEventArgs e)
         {
             WorkingProcessExample.Test();
+        }
+        
+        private void LoadInventoryItems(object sender, RoutedEventArgs e)
+        {
+           var items = UiGlobalVariables.SteamManager.LoadInventory(UiGlobalVariables.SteamManager.SteamClient.SteamID.ToString(),
+                MarketSellSelectedAppid.AppId.ToString(), MarketSellSelectedAppid.ContextId.ToString(), IncludeLogs);
+            var result = new List<FullRgItem>();
+            items.Sort((firstItem, secondItem) => String.Compare(firstItem.Description.MarketHashName,
+                secondItem.Description.MarketHashName, StringComparison.Ordinal));
+            foreach (var item in items)
+            {
+                result.Append(item);
+            }
+            
+            marketSellSelectedItem = new MarketSellModel(result);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Steam.TradeOffer
+﻿using System.Threading;
+
+namespace Steam.TradeOffer
 {
     using System;
     using System.Collections.Generic;
@@ -109,7 +111,7 @@
             return this.NumSlots % 100 == 50;
         }
 
-        private static List<FullRgItem> ProcessInventoryPage(InventoryRootModel inventoryRoot)
+        public List<FullRgItem> ProcessInventoryPage(InventoryRootModel inventoryRoot)
         {
             var result = new List<FullRgItem>();
 
@@ -125,7 +127,7 @@
             return result;
         }
 
-        private InventoryRootModel LoadInventoryPage(
+        public InventoryRootModel LoadInventoryPage(
             SteamID steamid,
             int appid,
             int contextid,

@@ -1,4 +1,7 @@
-﻿namespace SteamAutoMarket.Pages
+﻿using System;
+using System.Threading.Tasks;
+
+namespace SteamAutoMarket.Pages
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -14,6 +17,7 @@
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Repository.Context;
+    using SteamAutoMarket.Utils;
 
     /// <summary>
     /// Interaction logic for MarketRelist.xaml
@@ -23,6 +27,9 @@
         private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
 
         private MarketRelistModel relistSelectedItem;
+        
+        private static readonly Dictionary<string, List<MyListingsSalesItem>> MyListings =
+            new Dictionary<string, List<MyListingsSalesItem>>();
 
         public MarketRelist()
         {
@@ -71,29 +78,38 @@
 
         private void LoadMarketListingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < 10; i++)
+            try
             {
-                this.RelistItemsList.Add(
-                    new MarketRelistModel(
-                        new List<MyListingsSalesItem>
+                MyListings.Clear();
+                Task.Run(
+                    () =>
+                        {
+                            // get listings var listings = 
+
+                            var groupedListings = listings?.Sales?.GroupBy(x => new { x.HashName, x.Price });
+                            if (groupedListings == null)
                             {
-                                new MyListingsSalesItem
-                                    {
-                                        AppId = RandomUtils.RandomInt(0,700),
-                                        Date = RandomUtils.RandomString(10),
-                                        Game = RandomUtils.RandomString(3),
-                                        HashName = RandomUtils.RandomString(10),
-                                        ImageUrl =
-                                            "https://steamcommunity-a.akamaihd.net/economy/image/IzMF03bk9WpSBq-S-ekoE33L-iLqGFHVaU25ZzQNQcXdA3g5gMEPvUZZEaiHLrVJRsl8q3CWTo7Qi89ehDNVzDMAe3eriSQrcex4NM6b4wTppfHLFXn2bzKZf3LcS11rGbRfMz2I-mf35LuVRTqYFL59SwgCL6MDp2EcNc6JOBds1ZlLpWL-lUtvGhM6TcxLcQi-l3BGYuVzmXARI8kGmCbyIsGLgwlmbkZuWbizVe3LPNX2kikhWB02FqYEJNXCrmPh-WVoRmmi/360fx360f",
-                                        Name = RandomUtils.RandomString(10),
-                                        Price = RandomUtils.RandomInt(0, 10),
-                                        SaleId = RandomUtils.RandomInt(0, 10),
-                                        Url = "https://steamcommunity.com/market/listings/753/615340-Cards?filter=card"
-                                    }
-                            }));
+                                return;
+                            }
+
+                            foreach (var group in groupedListings)
+                            {
+                                var item = group.FirstOrDefault();
+                                if (item == null)
+                                {
+                                    return;
+                                }
+                            }
+
+                            WorkingProcessForm.PriceLoader.StartPriceLoading(ETableToLoad.RelistTable);
+                        });
+            }
+            catch (Exception ex)
+            {
+                Logger.Log.Error("Error on loading listed market items", ex);
             }
         }
-
+       
         private void RelistMarkAllItemsButtonClick(object sender, RoutedEventArgs e)
         {
             foreach (var item in this.RelistItemsList)

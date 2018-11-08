@@ -102,15 +102,6 @@
             }
         }
 
-        public SettingsSteamAccount CurrentLoggedAccount
-        {
-            get => this.currentLoggedAccount;
-            set
-            {
-                this.currentLoggedAccount = value;
-                this.OnPropertyChanged();
-            }
-        }
 
         public ObservableCollection<SettingsSteamAccount> SteamAccountList => GlobalSteamAccountList;
 
@@ -123,6 +114,8 @@
                 this.OnPropertyChanged();
             }
         }
+
+        public bool ForceSessionRefresh { get; set; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
@@ -150,9 +143,21 @@
                 ErrorNotify.CriticalMessageBox("No account selected!");
                 return;
             }
-
-            this.CurrentLoggedAccount = this.SelectSteamAccount;
-            UiGlobalVariables.MainWindow.Account.DisplayName = this.CurrentLoggedAccount.Login;
+            
+            try
+            {
+                UiGlobalVariables.SteamManager = new SteamManager(
+                    this.SelectSteamAccount.Login,
+                    this.SelectSteamAccount.Password,
+                    this.SelectSteamAccount.Mafile,
+                    this.SelectSteamAccount.SteamApi,
+                    this.ForceSessionRefresh);
+                UiGlobalVariables.MainWindow.Account.DisplayName = this.SelectSteamAccount.Login;
+            }
+            catch (Exception ex)
+            {
+                ErrorNotify.CriticalMessageBox("Failed to log in. Please check credentials provided");
+            }
         }
 
         private void AddNewAccountButtonClick(object sender, RoutedEventArgs e)
