@@ -1,11 +1,14 @@
 ﻿namespace SteamAutoMarket.Pages
 {
     using System;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using Core;
+
+    using OxyPlot;
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Utils.Logger;
@@ -110,6 +113,8 @@
             }
         }
 
+        public ObservableCollection<DataPoint> ChartModel { get; set; } = new ObservableCollection<DataPoint>();
+
         public static WorkingProcessForm NewWorkingProcessWindow(string title, int maximumProgressBarValue)
         {
             var window = new WorkingProcessForm { Title = title, ProgressBarMaximum = maximumProgressBarValue };
@@ -123,7 +128,7 @@
             try
             {
                 this.workingAction = Task.Run(action);
-                this.workingAction.ContinueWith(tsk => ErrorNotify.InfoMessageBox("Working process finished"));
+                this.workingAction.ContinueWith(tsk => this.AppendLog("Working process finished"));
             }
             catch (Exception e)
             {

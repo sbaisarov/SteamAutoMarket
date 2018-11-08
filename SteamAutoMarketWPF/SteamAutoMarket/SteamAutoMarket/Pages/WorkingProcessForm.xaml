@@ -1,20 +1,22 @@
 ﻿<mui:ModernWindow x:Class="SteamAutoMarket.Pages.WorkingProcessForm"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
-        xmlns:pages="clr-namespace:SteamAutoMarket.Pages"
-        mc:Ignorable="d"
-        Width="500" Height="500"
-        MinWidth="500" MinHeight="500"
-        Style="{StaticResource BlankWindow}" d:DataContext="{d:DesignInstance pages:WorkingProcessForm}">
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  xmlns:pages="clr-namespace:SteamAutoMarket.Pages"
+                  xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
+                  xmlns:oxy="http://oxyplot.org/wpf"
+                  mc:Ignorable="d"
+                  Width="500" Height="500"
+                  MinWidth="500" MinHeight="500"
+                  Style="{StaticResource BlankWindow}" d:DataContext="{d:DesignInstance pages:WorkingProcessForm}">
 
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -35,6 +37,7 @@
             <Grid Grid.Row="0" Grid.Column="1" Margin="0,3,10,0">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -106,6 +109,21 @@
                                Grid.Column="2"
                                Text="minutes"
                                Margin="2, 5, 2, 5" />
+
+                    <Grid Grid.Row="4"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="3"
+                          Margin="0,40,0,0">
+                        <oxy:Plot MinHeight="200"
+                                  Padding="0"
+                                  Style="{StaticResource PlotStyle}"
+                                  PlotType="Cartesian">
+
+                            <oxy:Plot.Series>
+                                <oxy:LineSeries ItemsSource="{Binding ChartModel}" />
+                            </oxy:Plot.Series>
+                        </oxy:Plot>
+                    </Grid>
 
                 </Grid>
 

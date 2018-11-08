@@ -103,9 +103,11 @@
     <Compile Include="Repository\Context\UiGlobalVariables.cs" />
     <Compile Include="Repository\Settings\SettingsProvider.cs" />
     <Compile Include="Repository\Settings\SettingsUpdated.cs" />
+    <Compile Include="Utils\Converter\SolidColorBrushToColorConverter.cs" />
     <Compile Include="Utils\Converter\IfNullInvisibleConverter.cs" />
     <Compile Include="Utils\Converter\InvertBooleanConverter.cs" />
     <Compile Include="Utils\Converter\IfNullVisibleConverter.cs" />
+    <Compile Include="Utils\Extension\CollectionDispatcher.cs" />
     <Compile Include="Utils\Logger\ErrorNotify.cs" />
     <Compile Include="Utils\Logger\UiLogAppender.cs" />
     <Compile Include="WorkingProcessExample.cs" />
@@ -215,6 +217,9 @@
     </PackageReference>
     <PackageReference Include="ModernUI.WPF">
       <Version>1.0.9</Version>
+    </PackageReference>
+    <PackageReference Include="OxyPlot.Wpf">
+      <Version>1.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

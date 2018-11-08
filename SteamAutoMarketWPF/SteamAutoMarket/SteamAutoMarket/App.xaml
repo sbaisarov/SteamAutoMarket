@@ -3,11 +3,78 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
              StartupUri="MainWindow.xaml"
-             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit">
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:converter="clr-namespace:SteamAutoMarket.Utils.Converter"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:oxyPlot="clr-namespace:OxyPlot;assembly=OxyPlot"
+             mc:Ignorable="d">
     <Application.Resources>
+
         <ResourceDictionary>
 
-                      <ControlTemplate x:Key="GroupBoxTemplate" TargetType="GroupBox">
+            <converter:SolidColorBrushToColorConverter x:Key="SolidColorBrushToColorConverter" />
+
+            <Style x:Key="PlotStyle" TargetType="oxy:Plot">
+                <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
+                <Setter Property="TextColor"
+                        Value="{Binding Source={StaticResource ItemText}, Converter={StaticResource SolidColorBrushToColorConverter}}" />
+                <Setter Property="PlotAreaBorderColor"
+                        Value="{Binding Source={StaticResource DataGridCellBackgroundSelected}, Converter={StaticResource SolidColorBrushToColorConverter}}" />
+                <Setter Property="SelectionColor"
+                        Value="{Binding Source={StaticResource DataGridCellBackgroundSelected}, Converter={StaticResource SolidColorBrushToColorConverter}}" />
+                <Setter Property="DefaultTrackerTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <oxy:TrackerControl Background="{StaticResource DataGridBackground}"
+                                                LineExtents="{Binding PlotModel.PlotArea}"
+                                                LineStroke="{StaticResource DataGridCellBackgroundSelected}"
+                                                Position="{Binding Position}"
+                                                d:DataContext="{d:DesignInstance oxyPlot:TrackerHitResult}">
+                                <Border
+                                    Margin="2" BorderBrush="Black">
+                                    <Grid Margin="6">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            Margin="2"
+                                            Text="Iteration:" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Grid.Row="0"
+                                            Margin="2"
+                                            Text="{Binding DataPoint.X, StringFormat={}{0:0.##}}" />
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Grid.Row="1"
+                                            Margin="2"
+                                            Text="Minutes:" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Grid.Row="1"
+                                            Margin="2"
+                                            Text="{Binding DataPoint.Y, StringFormat={}{0:0.##}}" />
+                                    </Grid>
+                                </Border>
+                            </oxy:TrackerControl>
+
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+
+            </Style>
+
+            <ControlTemplate x:Key="GroupBoxTemplate" TargetType="GroupBox">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
