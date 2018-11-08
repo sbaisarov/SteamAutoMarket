@@ -99,6 +99,7 @@
             {
                 this.mafilesPath = value;
                 this.OnPropertyChanged();
+                SettingsProvider.GetInstance().MafilesPath = value;
             }
         }
 

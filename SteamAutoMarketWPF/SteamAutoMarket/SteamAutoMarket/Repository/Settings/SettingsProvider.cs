@@ -1,33 +1,33 @@
 ﻿namespace SteamAutoMarket.Repository.Settings
 {
-    using System;
     using System.IO;
 
     using Newtonsoft.Json;
 
     public static class SettingsProvider
     {
-        private static readonly string SettingsPath = AppDomain.CurrentDomain.BaseDirectory + "settings.ini";
-
         private static SettingsModel instance;
 
         public static SettingsModel GetInstance()
         {
             if (instance != null) return instance;
 
-            if (File.Exists(SettingsPath) == false)
+            if (File.Exists(SettingsUpdated.SettingsPath) == false)
             {
                 instance = new SettingsModel();
 
-                File.WriteAllText(SettingsPath, JsonConvert.SerializeObject(instance, Formatting.Indented));
+                File.WriteAllText(
+                    SettingsUpdated.SettingsPath,
+                    JsonConvert.SerializeObject(instance, Formatting.Indented));
             }
             else
             {
                 instance = JsonConvert.DeserializeObject<SettingsModel>(
-                    File.ReadAllText(SettingsPath),
+                    File.ReadAllText(SettingsUpdated.SettingsPath),
                     new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace });
             }
 
+            instance.IsSettingsLoaded = true;
             return instance;
         }
     }

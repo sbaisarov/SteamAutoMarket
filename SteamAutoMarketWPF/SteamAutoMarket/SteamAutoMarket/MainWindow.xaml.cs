@@ -6,6 +6,7 @@
     using log4net.Config;
 
     using SteamAutoMarket.Repository.Context;
+    using SteamAutoMarket.Repository.Settings;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -14,6 +15,7 @@
     {
         public MainWindow()
         {
+            SettingsProvider.GetInstance();
             XmlConfigurator.Configure();
 
             this.InitializeComponent();

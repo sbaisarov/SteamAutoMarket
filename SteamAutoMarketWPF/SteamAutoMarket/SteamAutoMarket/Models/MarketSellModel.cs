@@ -19,8 +19,6 @@
 
         private double? currentPrice;
 
-        private PriceModel sellPrice;
-
         public MarketSellModel(List<FullRgItem> itemsList)
         {
             this.ItemsList = new ObservableCollection<FullRgItem>(itemsList);

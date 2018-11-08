@@ -24,7 +24,7 @@
 
         private MarketSellModel marketSellSelectedItem;
 
-        private SteamAppId marketSellSelectedAppid = SettingsProvider.GetInstance().MarketSellSelectedAppid;
+        private SteamAppId marketSellSelectedAppid;
 
         #endregion
 
@@ -33,6 +33,9 @@
             this.InitializeComponent();
             this.DataContext = this;
             UiGlobalVariables.MarketSellPage = this;
+
+            this.MarketSellSelectedAppid = this.AppIdList.FirstOrDefault(
+                appid => appid.Name == SettingsProvider.GetInstance().MarketSellSelectedAppid.Name);
 
             this.MarketSellItems.Add(
                 new MarketSellModel(
@@ -83,6 +86,7 @@
             {
                 if (this.marketSellSelectedAppid == value) return;
                 this.marketSellSelectedAppid = value;
+                SettingsProvider.GetInstance().MarketSellSelectedAppid = value;
                 this.OnPropertyChanged();
             }
         }
@@ -99,7 +103,8 @@
             }
         }
 
-        public ObservableCollection<MarketSellModel> MarketSellItems { get; } = new ObservableCollection<MarketSellModel>();
+        public ObservableCollection<MarketSellModel> MarketSellItems { get; } =
+            new ObservableCollection<MarketSellModel>();
 
         public string MarketSellNewAppid
         {
