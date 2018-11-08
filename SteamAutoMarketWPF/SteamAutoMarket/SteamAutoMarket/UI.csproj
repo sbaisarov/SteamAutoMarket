@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>
@@ -110,6 +112,10 @@
     <Compile Include="Utils\Extension\CollectionDispatcher.cs" />
     <Compile Include="Utils\Logger\ErrorNotify.cs" />
     <Compile Include="Utils\Logger\UiLogAppender.cs" />
+    <Compile Include="Utils\Resources\BindingProxy.cs" />
+    <Compile Include="Utils\Resources\BindingTrigger.cs" />
+    <Compile Include="Utils\Resources\DynamicResourceWithConverter.cs" />
+    <Compile Include="Utils\Resources\InlineMultiConverter.cs" />
     <Compile Include="WorkingProcessExample.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

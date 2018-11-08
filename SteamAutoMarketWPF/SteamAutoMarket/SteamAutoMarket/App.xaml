@@ -9,6 +9,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxyPlot="clr-namespace:OxyPlot;assembly=OxyPlot"
+             xmlns:resources="clr-namespace:SteamAutoMarket.Utils.Resources"
              mc:Ignorable="d">
     <Application.Resources>
 
@@ -17,13 +18,13 @@
             <converter:SolidColorBrushToColorConverter x:Key="SolidColorBrushToColorConverter" />
 
             <Style x:Key="PlotStyle" TargetType="oxy:Plot">
-                <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
+                <Setter Property="Background" Value="{DynamicResource DataGridBackground}" />
                 <Setter Property="TextColor"
-                        Value="{Binding Source={StaticResource ItemText}, Converter={StaticResource SolidColorBrushToColorConverter}}" />
+                        Value="{resources:DynamicResourceBinding ItemText, Converter={StaticResource SolidColorBrushToColorConverter}}" />
                 <Setter Property="PlotAreaBorderColor"
-                        Value="{Binding Source={StaticResource DataGridCellBackgroundSelected}, Converter={StaticResource SolidColorBrushToColorConverter}}" />
+                        Value="{resources:DynamicResourceBinding DataGridCellBackgroundSelected, Converter={StaticResource SolidColorBrushToColorConverter}}" />
                 <Setter Property="SelectionColor"
-                        Value="{Binding Source={StaticResource DataGridCellBackgroundSelected}, Converter={StaticResource SolidColorBrushToColorConverter}}" />
+                        Value="{resources:DynamicResourceBinding DataGridCellBackgroundSelected, Converter={StaticResource SolidColorBrushToColorConverter}}" />
                 <Setter Property="DefaultTrackerTemplate">
                     <Setter.Value>
                         <ControlTemplate>

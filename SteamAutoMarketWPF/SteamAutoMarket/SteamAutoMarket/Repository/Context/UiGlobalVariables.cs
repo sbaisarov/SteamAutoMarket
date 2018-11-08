@@ -13,5 +13,7 @@
         public static MarketRelist MarketRelist { get; set; }
 
         public static LogsWindow LogsWindow { get; set; }
+        
+        public static SteamManager SteamManager { get; set; }
     }
 }
