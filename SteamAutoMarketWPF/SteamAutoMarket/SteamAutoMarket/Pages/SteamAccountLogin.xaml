@@ -237,6 +237,7 @@
                     Padding="0" />
 
             <Button Name="LoginSteamAccountButton"
+                    IsEnabled="{Binding LoginButtonEnabled}"
                     Click="LoginSteamAccountButton_OnClick"
                     Grid.Column="0"
                     Grid.Row="7"

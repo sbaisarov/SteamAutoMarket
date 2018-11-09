@@ -5,17 +5,17 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Forms;
 
     using Core;
 
-    using Steam;
-
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
+    using SteamAutoMarket.SteamUtils;
     using SteamAutoMarket.Utils.Logger;
 
     using MessageBox = System.Windows.MessageBox;
@@ -37,6 +37,8 @@
 
         private ObservableCollection<SettingsSteamAccount> steamAccountList =
             new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
+
+        private bool loginButtonEnabled = true;
 
         #endregion
 
@@ -103,6 +105,16 @@
 
         public bool ForceSessionRefresh { get; set; }
 
+        public bool LoginButtonEnabled
+        {
+            get => this.loginButtonEnabled;
+            set
+            {
+                this.loginButtonEnabled = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -130,21 +142,29 @@
                 return;
             }
 
-            try
-            {
-                UiGlobalVariables.SteamManager = new SteamManager(
-                    this.SelectSteamAccount.Login,
-                    this.SelectSteamAccount.Password,
-                    this.SelectSteamAccount.Mafile,
-                    this.SelectSteamAccount.SteamApi,
-                    this.ForceSessionRefresh);
+            Task.Run(
+                () =>
+                    {
+                        try
+                        {
+                            this.LoginButtonEnabled = false;
+                            UiGlobalVariables.SteamManager = new UiSteamManager(
+                                this.SelectSteamAccount.Login,
+                                this.SelectSteamAccount.Password,
+                                this.SelectSteamAccount.Mafile,
+                                this.SelectSteamAccount.SteamApi,
+                                this.ForceSessionRefresh);
 
-                UiGlobalVariables.MainWindow.Account.DisplayName = this.SelectSteamAccount.Login;
-            }
-            catch
-            {
-                ErrorNotify.CriticalMessageBox("Failed to log in. Please check credentials provided");
-            }
+                            UiGlobalVariables.MainWindow.Account.DisplayName = this.SelectSteamAccount.Login;
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorNotify.CriticalMessageBox(
+                                $"Failed to log in. Please check credentials provided. {ex.Message}");
+                        }
+
+                        this.LoginButtonEnabled = true;
+                    });
         }
 
         private void AddNewAccountButtonClick(object sender, RoutedEventArgs e)

@@ -29,49 +29,28 @@
         {
             this.Guard = mafile;
             this.SteamClient = new UserLogin(login, password) { TwoFactorCode = this.GenerateSteamGuardCode() };
-            this.Guard.DeviceID = this.GetDeviceId();
+
+            // this.Guard.DeviceID = this.GetDeviceId(); todo
             var isSessionRefreshed = this.Guard.RefreshSession();
             if (isSessionRefreshed == false || forceSessionRefresh)
             {
-                Logger.Log.Info($"Saved steam session for {login} is expired. Refreshing session.");
-                LoginResult loginResult;
-                var tryCount = 0;
-                do
-                {
-                    loginResult = this.SteamClient.DoLogin();
-                    if (loginResult == LoginResult.LoginOkay)
-                    {
-                        continue;
-                    }
-
-                    Logger.Log.Warn($"Login status is - {loginResult}");
-
-                    if (++tryCount == 3)
-                    {
-                        throw new SteamException("Login failed after 3 attempts!");
-                    }
-
-                    Thread.Sleep(3000);
-                }
-                while (loginResult != LoginResult.LoginOkay);
-
-                this.Guard.Session = this.SteamClient.Session;
-
-                // this.SaveAccount(this.Guard); todo
+                this.UpdateSteamSession();
             }
 
-            this.ApiKey = apiKey;
+            this.ApiKey = apiKey; // todo
 
+            // this.UpdateTradeToken(); todo
+            this.Guard.Session.AddCookies(this.Cookies);
+
+            this.Inventory = new Inventory();
             this.TradeOfferWeb = new TradeOfferWebApi(apiKey);
             this.OfferSession = new OfferSession(this.TradeOfferWeb, this.Cookies, this.Guard.Session.SessionID);
-            this.Guard.Session.AddCookies(this.Cookies);
+
             var market = new SteamMarketHandler(ELanguage.English, "user-agent");
             var auth = new Auth(market, this.Cookies) { IsAuthorized = true };
-
-            //this.UpdateTradeToken(); todo
             market.Auth = auth;
+
             this.MarketClient = new MarketClient(market);
-            this.Inventory = new Inventory();
         }
 
         public string ApiKey { get; set; }
@@ -90,8 +69,45 @@
 
         public CookieContainer Cookies { get; set; } = new CookieContainer();
 
+        protected bool IsSessionUpdated { get; set; }
+
+        public void UpdateSteamSession()
+        {
+            Logger.Log.Info($"Saved steam session for {this.Guard.AccountName} is expired. Refreshing session.");
+            this.IsSessionUpdated = true;
+
+            LoginResult loginResult;
+            var tryCount = 0;
+            do
+            {
+                loginResult = this.SteamClient.DoLogin();
+                if (loginResult == LoginResult.LoginOkay)
+                {
+                    continue;
+                }
+
+                Logger.Log.Warn($"Login status is - {loginResult}");
+
+                if (++tryCount == 3)
+                {
+                    throw new SteamException("Login failed after 3 attempts!");
+                }
+
+                Thread.Sleep(3000);
+            }
+            while (loginResult != LoginResult.LoginOkay);
+
+            if (loginResult != LoginResult.LoginOkay)
+            {
+                throw new SteamException("Login failed after 3 attempts");
+            }
+
+            this.Guard.Session = this.SteamClient.Session;
+        }
+
         private string GetDeviceId()
         {
+            // todo add license check
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
@@ -103,6 +119,7 @@
 
         private string GenerateSteamGuardCode()
         {
+            // todo add license check
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
@@ -462,56 +479,42 @@
             }
         }
 
-        //public string UpdateTradeToken()
-        //{
-        //    var response = SteamWeb.Request(
-        //        "https://steamcommunity.com/my/tradeoffers/privacy",
-        //        "GET",
-        //        string.Empty,
-        //        this.Cookies);
-
-        //    if (response == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    var token = string.Empty;
-
-        //    try
-        //    {
-        //        token = Regex.Match(response, @"https://steamcommunity\.com/tradeoffer/new/\?partner=.+&token=(.+?)""")
-        //            .Groups[1].Value;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        // ignored
-        //    }
-
-        //    if (token != string.Empty)
-        //    {
-        //        var acc = SavedSteamAccount.Get().FirstOrDefault(a => a.Login == this.Guard.AccountName);
-        //        if (acc != null)
-        //        {
-        //            acc.TradeToken = token;
-        //            SavedSteamAccount.UpdateAll(SavedSteamAccount.Get());
-        //        }
-        //    }
-
-        //    return token;
-        //}
-
-        // public bool SaveAccount(SteamGuardAccount account)
+        // public string UpdateTradeToken()
         // {
+        // var response = SteamWeb.Request(
+        // "https://steamcommunity.com/my/tradeoffers/privacy",
+        // "GET",
+        // string.Empty,
+        // this.Cookies);
+
+        // if (response == null)
+        // {
+        // return null;
+        // }
+
+        // var token = string.Empty;
+
         // try
         // {
-        // SavedSteamAccount.UpdateByLogin(account.AccountName, account);
-        // return true;
+        // token = Regex.Match(response, @"https://steamcommunity\.com/tradeoffer/new/\?partner=.+&token=(.+?)""")
+        // .Groups[1].Value;
         // }
-        // catch (Exception ex)
+        // catch (Exception)
         // {
-        // Logger.Log.Error("Error on session save", ex);
-        // return false;
+        // // ignored
         // }
+
+        // if (token != string.Empty)
+        // {
+        // var acc = SavedSteamAccount.Get().FirstOrDefault(a => a.Login == this.Guard.AccountName);
+        // if (acc != null)
+        // {
+        // acc.TradeToken = token;
+        // SavedSteamAccount.UpdateAll(SavedSteamAccount.Get());
+        // }
+        // }
+
+        // return token;
         // }
 
         // public void CancelSellOrder(List<MyListingsSalesItem> itemsToCancel)

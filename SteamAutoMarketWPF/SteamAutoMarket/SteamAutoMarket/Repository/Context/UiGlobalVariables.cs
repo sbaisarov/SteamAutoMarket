@@ -1,8 +1,7 @@
 ﻿namespace SteamAutoMarket.Repository.Context
 {
-    using Steam;
-
     using SteamAutoMarket.Pages;
+    using SteamAutoMarket.SteamUtils;
 
     public class UiGlobalVariables
     {
@@ -16,6 +15,6 @@
 
         public static LogsWindow LogsWindow { get; set; }
 
-        public static SteamManager SteamManager { get; set; }
+        public static UiSteamManager SteamManager { get; set; }
     }
 }

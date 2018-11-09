@@ -106,7 +106,7 @@
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null)
+        public void OnPropertyChanged(string propertyName = null)
         {
             if (this.IsSettingsLoaded) SettingsUpdated.UpdateSettingsFile();
         }

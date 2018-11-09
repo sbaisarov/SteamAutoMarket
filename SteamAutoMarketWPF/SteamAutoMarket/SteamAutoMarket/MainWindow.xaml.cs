@@ -1,5 +1,7 @@
 ﻿namespace SteamAutoMarket
 {
+    using System.Net;
+
     using FirstFloor.ModernUI.Presentation;
     using FirstFloor.ModernUI.Windows.Controls;
 
@@ -18,6 +20,8 @@
         {
             SettingsProvider.GetInstance();
             XmlConfigurator.Configure();
+            ServicePointManager.ServerCertificateValidationCallback +=
+                (sender, certificate, chain, sslPolicyErrors) => true;
 
             this.InitializeComponent();
             UiGlobalVariables.MainWindow = this;

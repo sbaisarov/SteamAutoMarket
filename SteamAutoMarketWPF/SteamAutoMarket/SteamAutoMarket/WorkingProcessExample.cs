@@ -4,6 +4,8 @@
 
     using Core;
 
+    using OxyPlot;
+
     using SteamAutoMarket.Pages;
     using SteamAutoMarket.Utils.Extension;
 
