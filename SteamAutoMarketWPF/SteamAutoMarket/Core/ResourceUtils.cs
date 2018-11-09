@@ -28,6 +28,8 @@
 
         public static List<T> ToList<T>(params T[] values) => new List<T>(values);
 
+        public static T[] ToArray<T>(params T[] values) => values;
+
         private static Bitmap BitmapImage2Bitmap(BitmapSource bitmapImage)
         {
             using (var outStream = new MemoryStream())

@@ -5,16 +5,14 @@
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using System.Windows;
-    using System.Windows.Controls;
 
     using Core;
 
-    using Steam.TradeOffer.Models;
-    using Steam.TradeOffer.Models.Full;
+    using global::Steam.TradeOffer.Models;
+    using global::Steam.TradeOffer.Models.Full;
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
-    using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
 
     /// <summary>
@@ -64,7 +62,7 @@
         }
 
         public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
-            SteamAccountLogin.GlobalSteamAccountList;
+            new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>

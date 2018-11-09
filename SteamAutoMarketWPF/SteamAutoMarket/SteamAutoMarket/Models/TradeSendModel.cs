@@ -8,7 +8,7 @@
 
     using Core;
 
-    using Steam.TradeOffer.Models.Full;
+    using global::Steam.TradeOffer.Models.Full;
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Image;

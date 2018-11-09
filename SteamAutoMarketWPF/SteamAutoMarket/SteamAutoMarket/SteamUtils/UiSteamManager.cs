@@ -1,6 +1,7 @@
-﻿namespace SteamAutoMarket.Steam
+﻿namespace SteamAutoMarket.SteamUtils
 {
-    using global::Steam.SteamAuth;
+    using Steam;
+    using Steam.SteamAuth;
 
     public class UiSteamManager : SteamManager
     {

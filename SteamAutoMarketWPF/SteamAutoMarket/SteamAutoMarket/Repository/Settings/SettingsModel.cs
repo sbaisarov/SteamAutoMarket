@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Drawing;
 
     using Newtonsoft.Json;
 
@@ -12,16 +13,44 @@
     {
         private SteamAppId marketSellSelectedAppid;
 
-        private List<SteamAppId> appIdList = UiDefaultValues.AppIdList;
+        private List<SteamAppId> appIdList = new List<SteamAppId>(UiDefaultValues.AppIdList);
 
         private string mafilesPath;
 
         private SteamAppId tradeSelectedAppId;
 
+        private List<SettingsSteamAccount> steamAccounts = new List<SettingsSteamAccount>();
+
+        private string theme;
+
+        private string color;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [JsonIgnore]
         public bool IsSettingsLoaded { get; set; }
+
+        public string Theme
+        {
+            get => this.theme;
+            set
+            {
+                if (this.theme == value) return;
+                this.theme = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string Color
+        {
+            get => this.color;
+            set
+            {
+                if (this.color == value) return;
+                this.color = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public SteamAppId MarketSellSelectedAppid
         {
@@ -63,6 +92,17 @@
             {
                 if (this.mafilesPath == value) return;
                 this.mafilesPath = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public List<SettingsSteamAccount> SteamAccounts
+        {
+            get => this.steamAccounts;
+            set
+            {
+                if (this.steamAccounts == value) return;
+                this.steamAccounts = value;
                 this.OnPropertyChanged();
             }
         }

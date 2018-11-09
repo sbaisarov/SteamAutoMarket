@@ -2,17 +2,18 @@
 {
     using System;
     using System.ComponentModel;
-    using System.Drawing;
     using System.IO;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
 
     using Core;
 
+    using global::Steam.SteamAuth;
+
     using Newtonsoft.Json;
 
-    using Steam.SteamAuth;
-
     using SteamAutoMarket.Annotations;
+    using SteamAutoMarket.Repository.Image;
 
     public class SettingsSteamAccount : INotifyPropertyChanged
     {
@@ -42,7 +43,13 @@
                 throw new ArgumentException($"Error on mafile process - {e.Message}");
             }
 
-            this.SteamId = this.Mafile.Session.SteamID;
+            try
+            {
+                this.SteamId = this.Mafile.Session.SteamID;
+            }
+            catch
+            {
+            }
         }
 
         public SettingsSteamAccount()
@@ -87,6 +94,11 @@
                 this.tradeToken = value;
                 this.OnPropertyChanged();
             }
+        }
+
+        public void DownloadAvatarAsync()
+        {
+            Task.Run(() => { this.Avatar = ImageProvider.GetSmallSteamProfileImage(this.SteamId.ToString()); });
         }
 
         [NotifyPropertyChangedInvocator]

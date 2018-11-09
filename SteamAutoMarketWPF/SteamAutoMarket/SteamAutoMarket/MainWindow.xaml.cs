@@ -7,6 +7,7 @@
 
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
+    using SteamAutoMarket.Utils.Resources;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -22,8 +23,9 @@
             UiGlobalVariables.MainWindow = this;
             this.DataContext = this;
 
-            AppearanceManager.Current.ThemeSource = AppearanceManager.DarkThemeSource;
+            AppearanceManager.Current.ThemeSource = ModernUiThemeUtils.GetTheme(SettingsProvider.GetInstance().Theme);
 
+            AppearanceManager.Current.AccentColor = ModernUiThemeUtils.GetColor(SettingsProvider.GetInstance().Color);
         }
     }
 }

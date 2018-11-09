@@ -5,14 +5,16 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Forms;
+
+    using Core;
+
+    using Steam;
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Repository.Context;
-    using SteamAutoMarket.Repository.Image;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Logger;
 
@@ -25,21 +27,16 @@
     {
         #region Private variables
 
-        public static readonly ObservableCollection<SettingsSteamAccount> GlobalSteamAccountList =
-            new ObservableCollection<SettingsSteamAccount>();
-
         private string newAccountLogin;
 
         private string newAccountPassword;
 
         private string mafilesPath = SettingsProvider.GetInstance().MafilesPath;
 
-        private SettingsSteamAccount currentLoggedAccount;
+        private SettingsSteamAccount selectSteamAccount;
 
         private ObservableCollection<SettingsSteamAccount> steamAccountList =
-            new ObservableCollection<SettingsSteamAccount>();
-
-        private SettingsSteamAccount selectSteamAccount;
+            new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
 
         #endregion
 
@@ -48,26 +45,6 @@
             this.InitializeComponent();
             UiGlobalVariables.SteamAccountLogin = this;
             this.DataContext = this;
-
-            this.SteamAccountList.Add(
-                new SettingsSteamAccount
-                    {
-                        Login = "login1",
-                        Password = "password1",
-                        SteamApi = "ap1i",
-                        SteamId = 123,
-                        TradeToken = "tok1en"
-                    });
-
-            this.SteamAccountList.Add(
-                new SettingsSteamAccount
-                    {
-                        Login = "log2in",
-                        Password = "pas2sword",
-                        SteamApi = "ap2i",
-                        SteamId = 345,
-                        TradeToken = "to2ken"
-                    });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -103,8 +80,16 @@
             }
         }
 
-
-        public ObservableCollection<SettingsSteamAccount> SteamAccountList => GlobalSteamAccountList;
+        public ObservableCollection<SettingsSteamAccount> SteamAccountList
+        {
+            get => this.steamAccountList;
+            set
+            {
+                this.steamAccountList = value;
+                this.OnPropertyChanged();
+                SettingsProvider.GetInstance().SteamAccounts = value.ToList();
+            }
+        }
 
         public SettingsSteamAccount SelectSteamAccount
         {
@@ -144,7 +129,7 @@
                 ErrorNotify.CriticalMessageBox("No account selected!");
                 return;
             }
-            
+
             try
             {
                 UiGlobalVariables.SteamManager = new SteamManager(
@@ -156,7 +141,7 @@
 
                 UiGlobalVariables.MainWindow.Account.DisplayName = this.SelectSteamAccount.Login;
             }
-            catch (Exception ex)
+            catch
             {
                 ErrorNotify.CriticalMessageBox("Failed to log in. Please check credentials provided");
             }
@@ -179,13 +164,15 @@
                     $"{this.MafilesPath}\\{this.NewAccountLogin?.ToLower()}.maFile");
 
                 this.SteamAccountList.Add(newAccount);
+                SettingsProvider.GetInstance().SteamAccounts = this.SteamAccountList.ToList();
 
                 this.SelectSteamAccount = newAccount;
 
-                this.RefreshSteamAccountFields(newAccount);
+                newAccount.DownloadAvatarAsync();
             }
             catch (Exception ex)
             {
+                Logger.Log.Error("Error on new account add", ex);
                 ErrorNotify.CriticalMessageBox(ex);
             }
         }
@@ -208,16 +195,6 @@
             {
                 this.SteamAccountList.Remove(this.SelectSteamAccount);
             }
-        }
-
-        private void RefreshSteamAccountFields(SettingsSteamAccount account)
-        {
-            Task.Run(
-                () =>
-                    {
-                        account.Avatar =
-                            ImageProvider.GetSmallSteamProfileImage(this.SelectSteamAccount.SteamId.ToString());
-                    });
         }
     }
 }
