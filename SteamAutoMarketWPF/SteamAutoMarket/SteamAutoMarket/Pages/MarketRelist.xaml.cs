@@ -1,14 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace SteamAutoMarket.Pages
+﻿namespace SteamAutoMarket.Pages
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using System.Windows;
-    using System.Windows.Controls;
 
     using Core;
 
@@ -17,7 +14,6 @@ namespace SteamAutoMarket.Pages
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Repository.Context;
-    using SteamAutoMarket.Utils;
 
     /// <summary>
     /// Interaction logic for MarketRelist.xaml
@@ -27,7 +23,7 @@ namespace SteamAutoMarket.Pages
         private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
 
         private MarketRelistModel relistSelectedItem;
-        
+
         private static readonly Dictionary<string, List<MyListingsSalesItem>> MyListings =
             new Dictionary<string, List<MyListingsSalesItem>>();
 
@@ -60,7 +56,8 @@ namespace SteamAutoMarket.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<MarketRelistModel> RelistItemsList { get; } = new ObservableCollection<MarketRelistModel>();
+        public ObservableCollection<MarketRelistModel> RelistItemsList { get; } =
+            new ObservableCollection<MarketRelistModel>();
 
         public MarketRelistModel RelistSelectedItem
         {
@@ -109,7 +106,7 @@ namespace SteamAutoMarket.Pages
                 Logger.Log.Error("Error on loading listed market items", ex);
             }
         }
-       
+
         private void RelistMarkAllItemsButtonClick(object sender, RoutedEventArgs e)
         {
             foreach (var item in this.RelistItemsList)

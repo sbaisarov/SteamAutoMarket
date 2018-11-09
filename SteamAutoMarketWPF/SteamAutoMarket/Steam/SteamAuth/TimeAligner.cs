@@ -12,45 +12,43 @@
     /// </summary>
     public class TimeAligner
     {
-        private static bool _aligned = false;
+        private static bool _aligned;
 
-        private static int _timeDifference = 0;
+        private static int _timeDifference;
 
         public static void AlignTime()
         {
-            long currentTime = Util.GetSystemUnixTime();
-            using (WebClient client = new WebClient())
+            var currentTime = Util.GetSystemUnixTime();
+            using (var client = new WebClient())
             {
                 try
                 {
-                    string response = client.UploadString(APIEndpoints.TWO_FACTOR_TIME_QUERY, "steamid=0");
-                    TimeQuery query = JsonConvert.DeserializeObject<TimeQuery>(response);
+                    var response = client.UploadString(APIEndpoints.TWO_FACTOR_TIME_QUERY, "steamid=0");
+                    var query = JsonConvert.DeserializeObject<TimeQuery>(response);
                     _timeDifference = (int)(query.Response.ServerTime - currentTime);
                     _aligned = true;
                 }
                 catch (WebException)
                 {
-                    return;
                 }
             }
         }
 
         public static async Task AlignTimeAsync()
         {
-            long currentTime = Util.GetSystemUnixTime();
-            WebClient client = new WebClient();
+            var currentTime = Util.GetSystemUnixTime();
+            var client = new WebClient();
             try
             {
-                string response = await client.UploadStringTaskAsync(
-                                      new Uri(APIEndpoints.TWO_FACTOR_TIME_QUERY),
-                                      "steamid=0");
-                TimeQuery query = JsonConvert.DeserializeObject<TimeQuery>(response);
+                var response = await client.UploadStringTaskAsync(
+                                   new Uri(APIEndpoints.TWO_FACTOR_TIME_QUERY),
+                                   "steamid=0");
+                var query = JsonConvert.DeserializeObject<TimeQuery>(response);
                 _timeDifference = (int)(query.Response.ServerTime - currentTime);
                 _aligned = true;
             }
             catch (WebException)
             {
-                return;
             }
         }
 

@@ -39,7 +39,7 @@
             var dynamicResource = new DynamicResourceExtension(this.ResourceKey);
             this.bindingSource = new BindingProxy(dynamicResource.ProvideValue(null));
 
-            var dynamicResourceBinding = new Binding()
+            var dynamicResourceBinding = new Binding
                                              {
                                                  Source = this.bindingSource,
                                                  Path = new PropertyPath(BindingProxy.ValueProperty),
@@ -64,11 +64,11 @@
                 return dynamicResourceBinding.ProvideValue(serviceProvider);
             }
 
-            var findTargetBinding = new Binding() { RelativeSource = new RelativeSource(RelativeSourceMode.Self) };
+            var findTargetBinding = new Binding { RelativeSource = new RelativeSource(RelativeSourceMode.Self) };
 
             this.bindingTrigger = new BindingTrigger();
 
-            var wrapperBinding = new MultiBinding()
+            var wrapperBinding = new MultiBinding
                                      {
                                          Bindings =
                                              {
@@ -111,7 +111,7 @@
 
             targetFrameworkElement.Resources[this.bindingSource] = this.bindingSource;
 
-            SynchronizationContext.Current.Post((state) => { this.bindingTrigger.Refresh(); }, null);
+            SynchronizationContext.Current.Post(state => { this.bindingTrigger.Refresh(); }, null);
 
             return dynamicResourceBindingResult;
         }

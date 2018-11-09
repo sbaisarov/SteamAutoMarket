@@ -13,11 +13,10 @@
 
     public class SteamGuardAccount
     {
-        private static byte[] steamGuardCodeTranslations = new byte[]
-                                                               {
-                                                                   50, 51, 52, 53, 54, 55, 56, 57, 66, 67, 68, 70, 71,
-                                                                   72, 74, 75, 77, 78, 80, 81, 82, 84, 86, 87, 88, 89
-                                                               };
+        private static readonly byte[] steamGuardCodeTranslations =
+            {
+                50, 51, 52, 53, 54, 55, 56, 57, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 86, 87, 88, 89
+            };
 
         [JsonProperty("account_name")]
         public string AccountName { get; set; }
@@ -82,7 +81,7 @@
 
             try
             {
-                string response = SteamWeb.MobileLoginRequest(
+                var response = SteamWeb.MobileLoginRequest(
                     APIEndpoints.STEAMAPI_BASE + "/ITwoFactorService/RemoveAuthenticator/v0001",
                     "POST",
                     postData);
@@ -110,18 +109,18 @@
 
         public Confirmation[] FetchConfirmations()
         {
-            string url = this.GenerateConfirmationURL();
+            var url = this.GenerateConfirmationURL();
 
-            CookieContainer cookies = new CookieContainer();
+            var cookies = new CookieContainer();
             this.Session.AddCookies(cookies);
 
-            string response = SteamWeb.Request(url, "GET", string.Empty, cookies);
+            var response = SteamWeb.Request(url, "GET", string.Empty, cookies);
 
             /*So you're going to see this abomination and you're going to be upset.
               It's understandable. But the thing is, regex for HTML -- while awful -- makes this way faster than parsing a DOM, plus we don't need another library.
               And because the data is always in the same place and same format... It's not as if we're trying to naturally understand HTML here. Just extract strings.
               I'm sorry. */
-            Regex confRegex = new Regex(
+            var confRegex = new Regex(
                 "<div class=\"mobileconf_list_entry\" id=\"conf[0-9]+\" data-confid=\"(\\d+)\" data-key=\"(\\d+)\" data-type=\"(\\d+)\" data-creator=\"(\\d+)\"");
 
             if (response == null || !confRegex.IsMatch(response))
@@ -134,18 +133,18 @@
                 return new Confirmation[0];
             }
 
-            MatchCollection confirmations = confRegex.Matches(response);
+            var confirmations = confRegex.Matches(response);
 
-            List<Confirmation> ret = new List<Confirmation>();
+            var ret = new List<Confirmation>();
             foreach (Match confirmation in confirmations)
             {
                 if (confirmation.Groups.Count != 5) continue;
 
-                if (!ulong.TryParse(confirmation.Groups[1].Value, out ulong confID)
-                    || !ulong.TryParse(confirmation.Groups[2].Value, out ulong confKey)
-                    || !int.TryParse(confirmation.Groups[3].Value, out int confType) || !ulong.TryParse(
+                if (!ulong.TryParse(confirmation.Groups[1].Value, out var confID)
+                    || !ulong.TryParse(confirmation.Groups[2].Value, out var confKey)
+                    || !int.TryParse(confirmation.Groups[3].Value, out var confType) || !ulong.TryParse(
                         confirmation.Groups[4].Value,
-                        out ulong confCreator))
+                        out var confCreator))
                 {
                     continue;
                 }
@@ -158,18 +157,18 @@
 
         public async Task<Confirmation[]> FetchConfirmationsAsync()
         {
-            string url = this.GenerateConfirmationURL();
+            var url = this.GenerateConfirmationURL();
 
-            CookieContainer cookies = new CookieContainer();
+            var cookies = new CookieContainer();
             this.Session.AddCookies(cookies);
 
-            string response = await SteamWeb.RequestAsync(url, "GET", null, cookies);
+            var response = await SteamWeb.RequestAsync(url, "GET", null, cookies);
 
             /*So you're going to see this abomination and you're going to be upset.
                           It's understandable. But the thing is, regex for HTML -- while awful -- makes this way faster than parsing a DOM, plus we don't need another library.
                           And because the data is always in the same place and same format... It's not as if we're trying to naturally understand HTML here. Just extract strings.
                           I'm sorry. */
-            Regex confRegex = new Regex(
+            var confRegex = new Regex(
                 "<div class=\"mobileconf_list_entry\" id=\"conf[0-9]+\" data-confid=\"(\\d+)\" data-key=\"(\\d+)\" data-type=\"(\\d+)\" data-creator=\"(\\d+)\"");
 
             if (response == null || !confRegex.IsMatch(response))
@@ -182,18 +181,18 @@
                 return new Confirmation[0];
             }
 
-            MatchCollection confirmations = confRegex.Matches(response);
+            var confirmations = confRegex.Matches(response);
 
-            List<Confirmation> ret = new List<Confirmation>();
+            var ret = new List<Confirmation>();
             foreach (Match confirmation in confirmations)
             {
                 if (confirmation.Groups.Count != 5) continue;
 
-                if (!ulong.TryParse(confirmation.Groups[1].Value, out ulong confID)
-                    || !ulong.TryParse(confirmation.Groups[2].Value, out ulong confKey)
-                    || !int.TryParse(confirmation.Groups[3].Value, out int confType) || !ulong.TryParse(
+                if (!ulong.TryParse(confirmation.Groups[1].Value, out var confID)
+                    || !ulong.TryParse(confirmation.Groups[2].Value, out var confKey)
+                    || !int.TryParse(confirmation.Groups[3].Value, out var confType) || !ulong.TryParse(
                         confirmation.Groups[4].Value,
-                        out ulong confCreator))
+                        out var confCreator))
                 {
                     continue;
                 }
@@ -220,7 +219,7 @@
             if (string.IsNullOrEmpty(this.DeviceID))
                 throw new ArgumentException("Device ID is not present");
 
-            long time = TimeAligner.GetSteamTime();
+            var time = TimeAligner.GetSteamTime();
 
             var ret = new NameValueCollection
                           {
@@ -237,8 +236,8 @@
 
         public string GenerateConfirmationURL(string tag = "conf")
         {
-            string endpoint = APIEndpoints.COMMUNITY_BASE + "/mobileconf/conf?";
-            string queryString = this.GenerateConfirmationQueryParams(tag);
+            var endpoint = APIEndpoints.COMMUNITY_BASE + "/mobileconf/conf?";
+            var queryString = this.GenerateConfirmationQueryParams(tag);
             return endpoint + queryString;
         }
 
@@ -254,29 +253,29 @@
                 return string.Empty;
             }
 
-            string sharedSecretUnescaped = Regex.Unescape(this.SharedSecret);
-            byte[] sharedSecretArray = Convert.FromBase64String(sharedSecretUnescaped);
-            byte[] timeArray = new byte[8];
+            var sharedSecretUnescaped = Regex.Unescape(this.SharedSecret);
+            var sharedSecretArray = Convert.FromBase64String(sharedSecretUnescaped);
+            var timeArray = new byte[8];
 
             time /= 30L;
 
-            for (int i = 8; i > 0; i--)
+            for (var i = 8; i > 0; i--)
             {
                 timeArray[i - 1] = (byte)time;
                 time >>= 8;
             }
 
-            HMACSHA1 hmacGenerator = new HMACSHA1 { Key = sharedSecretArray };
-            byte[] hashedData = hmacGenerator.ComputeHash(timeArray);
-            byte[] codeArray = new byte[5];
+            var hmacGenerator = new HMACSHA1 { Key = sharedSecretArray };
+            var hashedData = hmacGenerator.ComputeHash(timeArray);
+            var codeArray = new byte[5];
             try
             {
-                byte b = (byte)(hashedData[19] & 0xF);
-                int codePoint = (hashedData[b] & 0x7F) << 24 | (hashedData[b + 1] & 0xFF) << 16
+                var b = (byte)(hashedData[19] & 0xF);
+                var codePoint = (hashedData[b] & 0x7F) << 24 | (hashedData[b + 1] & 0xFF) << 16
                                                              | (hashedData[b + 2] & 0xFF) << 8
                                                              | (hashedData[b + 3] & 0xFF);
 
-                for (int i = 0; i < 5; ++i)
+                for (var i = 0; i < 5; ++i)
                 {
                     codeArray[i] = steamGuardCodeTranslations[codePoint % steamGuardCodeTranslations.Length];
                     codePoint /= steamGuardCodeTranslations.Length;
@@ -309,8 +308,8 @@
         /// <returns></returns>
         public bool RefreshSession()
         {
-            string url = APIEndpoints.MOBILEAUTH_GETWGTOKEN;
-            NameValueCollection postData = new NameValueCollection { { "access_token", this.Session.OAuthToken } };
+            var url = APIEndpoints.MOBILEAUTH_GETWGTOKEN;
+            var postData = new NameValueCollection { { "access_token", this.Session.OAuthToken } };
 
             string response = null;
             try
@@ -331,8 +330,8 @@
                                             || string.IsNullOrEmpty(refreshResponse.Response.Token))
                     return false;
 
-                string token = this.Session.SteamID + "%7C%7C" + refreshResponse.Response.Token;
-                string tokenSecure = this.Session.SteamID + "%7C%7C" + refreshResponse.Response.TokenSecure;
+                var token = this.Session.SteamID + "%7C%7C" + refreshResponse.Response.Token;
+                var tokenSecure = this.Session.SteamID + "%7C%7C" + refreshResponse.Response.TokenSecure;
 
                 this.Session.SteamLogin = token;
                 this.Session.SteamLoginSecure = tokenSecure;
@@ -350,8 +349,8 @@
         /// <returns></returns>
         public async Task<bool> RefreshSessionAsync()
         {
-            string url = APIEndpoints.MOBILEAUTH_GETWGTOKEN;
-            NameValueCollection postData = new NameValueCollection { { "access_token", this.Session.OAuthToken } };
+            var url = APIEndpoints.MOBILEAUTH_GETWGTOKEN;
+            var postData = new NameValueCollection { { "access_token", this.Session.OAuthToken } };
 
             string response = null;
             try
@@ -372,8 +371,8 @@
                                             || string.IsNullOrEmpty(refreshResponse.Response.Token))
                     return false;
 
-                string token = this.Session.SteamID + "%7C%7C" + refreshResponse.Response.Token;
-                string tokenSecure = this.Session.SteamID + "%7C%7C" + refreshResponse.Response.TokenSecure;
+                var token = this.Session.SteamID + "%7C%7C" + refreshResponse.Response.Token;
+                var tokenSecure = this.Session.SteamID + "%7C%7C" + refreshResponse.Response.TokenSecure;
 
                 this.Session.SteamLogin = token;
                 this.Session.SteamLoginSecure = tokenSecure;
@@ -387,8 +386,8 @@
 
         private string _generateConfirmationHashForTime(long time, string tag)
         {
-            byte[] decode = Convert.FromBase64String(this.IdentitySecret);
-            int n2 = 8;
+            var decode = Convert.FromBase64String(this.IdentitySecret);
+            var n2 = 8;
             if (tag != null)
             {
                 if (tag.Length > 32)
@@ -401,11 +400,11 @@
                 }
             }
 
-            byte[] array = new byte[n2];
-            int n3 = 8;
+            var array = new byte[n2];
+            var n3 = 8;
             while (true)
             {
-                int n4 = n3 - 1;
+                var n4 = n3 - 1;
                 if (n3 <= 0)
                 {
                     break;
@@ -423,10 +422,10 @@
 
             try
             {
-                HMACSHA1 hmacGenerator = new HMACSHA1 { Key = decode };
-                byte[] hashedData = hmacGenerator.ComputeHash(array);
-                string encodedData = Convert.ToBase64String(hashedData, Base64FormattingOptions.None);
-                string hash = WebUtility.UrlEncode(encodedData);
+                var hmacGenerator = new HMACSHA1 { Key = decode };
+                var hashedData = hmacGenerator.ComputeHash(array);
+                var encodedData = Convert.ToBase64String(hashedData, Base64FormattingOptions.None);
+                var hash = WebUtility.UrlEncode(encodedData);
                 return hash;
             }
             catch
@@ -449,15 +448,15 @@
 
         private ConfirmationDetailsResponse _getConfirmationDetails(Confirmation conf)
         {
-            string url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/details/" + conf.ID + "?";
-            string queryString = this.GenerateConfirmationQueryParams("details");
+            var url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/details/" + conf.ID + "?";
+            var queryString = this.GenerateConfirmationQueryParams("details");
             url += queryString;
 
-            CookieContainer cookies = new CookieContainer();
+            var cookies = new CookieContainer();
             this.Session.AddCookies(cookies);
-            string referer = this.GenerateConfirmationURL();
+            var referer = this.GenerateConfirmationURL();
 
-            string response = SteamWeb.Request(url, "GET", string.Empty, cookies, null);
+            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null);
             if (string.IsNullOrEmpty(response)) return null;
 
             var confResponse = JsonConvert.DeserializeObject<ConfirmationDetailsResponse>(response);
@@ -467,41 +466,41 @@
 
         private bool _sendConfirmationAjax(Confirmation conf, string op)
         {
-            string url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/ajaxop";
-            string queryString = "?op=" + op + "&";
+            var url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/ajaxop";
+            var queryString = "?op=" + op + "&";
             queryString += this.GenerateConfirmationQueryParams(op);
             queryString += "&cid=" + conf.ID + "&ck=" + conf.Key;
             url += queryString;
 
-            CookieContainer cookies = new CookieContainer();
+            var cookies = new CookieContainer();
             this.Session.AddCookies(cookies);
-            string referer = this.GenerateConfirmationURL();
+            var referer = this.GenerateConfirmationURL();
 
-            string response = SteamWeb.Request(url, "GET", string.Empty, cookies, null);
+            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null);
             if (response == null) return false;
 
-            SendConfirmationResponse confResponse = JsonConvert.DeserializeObject<SendConfirmationResponse>(response);
+            var confResponse = JsonConvert.DeserializeObject<SendConfirmationResponse>(response);
             return confResponse.Success;
         }
 
         private bool _sendMultiConfirmationAjax(Confirmation[] confs, string op)
         {
-            string url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/multiajaxop";
+            var url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/multiajaxop";
 
-            string query = "op=" + op + "&" + this.GenerateConfirmationQueryParams(op);
+            var query = "op=" + op + "&" + this.GenerateConfirmationQueryParams(op);
             foreach (var conf in confs)
             {
                 query += "&cid[]=" + conf.ID + "&ck[]=" + conf.Key;
             }
 
-            CookieContainer cookies = new CookieContainer();
+            var cookies = new CookieContainer();
             this.Session.AddCookies(cookies);
-            string referer = this.GenerateConfirmationURL();
+            var referer = this.GenerateConfirmationURL();
 
-            string response = SteamWeb.Request(url, "POST", query, cookies, null);
+            var response = SteamWeb.Request(url, "POST", query, cookies, null);
             if (response == null) return false;
 
-            SendConfirmationResponse confResponse = JsonConvert.DeserializeObject<SendConfirmationResponse>(response);
+            var confResponse = JsonConvert.DeserializeObject<SendConfirmationResponse>(response);
             return confResponse.Success;
         }
 

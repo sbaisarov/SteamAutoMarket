@@ -14,7 +14,7 @@
     /// </summary>
     public class UserLogin
     {
-        public string CaptchaGID = null;
+        public string CaptchaGID;
 
         public string CaptchaText = null;
 
@@ -22,7 +22,7 @@
 
         public string EmailDomain = null;
 
-        public bool LoggedIn = false;
+        public bool LoggedIn;
 
         public string Password;
 
@@ -32,7 +32,7 @@
 
         public bool RequiresEmail;
 
-        public SessionData Session = null;
+        public SessionData Session;
 
         public ulong SteamID;
 
@@ -40,7 +40,7 @@
 
         public string Username;
 
-        private CookieContainer _cookies = new CookieContainer();
+        private readonly CookieContainer _cookies = new CookieContainer();
 
         public UserLogin(string username, string password)
         {
@@ -61,7 +61,7 @@
                 cookies.Add(new Cookie("mobileClient", "android", "/", ".steamcommunity.com"));
                 cookies.Add(new Cookie("Steam_Language", "english", "/", ".steamcommunity.com"));
 
-                NameValueCollection headers = new NameValueCollection();
+                var headers = new NameValueCollection();
                 headers.Add("X-Requested-With", "com.valvesoftware.android.steam.community");
 
                 SteamWeb.MobileLoginRequest(
@@ -91,7 +91,7 @@
 
             Thread.Sleep(350); // Sleep for a bit to give Steam a chance to catch up??
 
-            RNGCryptoServiceProvider secureRandom = new RNGCryptoServiceProvider();
+            var secureRandom = new RNGCryptoServiceProvider();
             byte[] encryptedPasswordBytes;
             using (var rsaEncryptor = new RSACryptoServiceProvider())
             {
@@ -103,7 +103,7 @@
                 encryptedPasswordBytes = rsaEncryptor.Encrypt(passwordBytes, false);
             }
 
-            string encryptedPassword = Convert.ToBase64String(encryptedPasswordBytes);
+            var encryptedPassword = Convert.ToBase64String(encryptedPasswordBytes);
 
             postData.Clear();
             postData.Add("donotcache", (TimeAligner.GetSteamTime() * 1000).ToString());
@@ -116,7 +116,9 @@
             postData.Add("loginfriendlyname", string.Empty);
             postData.Add("captchagid", this.RequiresCaptcha ? this.CaptchaGID : "-1");
             postData.Add("captcha_text", this.RequiresCaptcha ? this.CaptchaText : string.Empty);
-            postData.Add("emailsteamid", (this.Requires2FA || this.RequiresEmail) ? this.SteamID.ToString() : string.Empty);
+            postData.Add(
+                "emailsteamid",
+                (this.Requires2FA || this.RequiresEmail) ? this.SteamID.ToString() : string.Empty);
 
             postData.Add("rsatimestamp", rsaResponse.Timestamp);
             postData.Add("remember_login", "true");
@@ -172,22 +174,20 @@
             {
                 return LoginResult.BadCredentials;
             }
-            else
-            {
-                var readableCookies = cookies.GetCookies(new Uri("https://steamcommunity.com"));
-                var oAuthData = loginResponse.OAuthData;
 
-                SessionData session = new SessionData();
-                session.OAuthToken = oAuthData.OAuthToken;
-                session.SteamID = oAuthData.SteamID;
-                session.SteamLogin = session.SteamID + "%7C%7C" + oAuthData.SteamLogin;
-                session.SteamLoginSecure = session.SteamID + "%7C%7C" + oAuthData.SteamLoginSecure;
-                session.WebCookie = oAuthData.Webcookie;
-                session.SessionID = readableCookies["sessionid"].Value;
-                this.Session = session;
-                this.LoggedIn = true;
-                return LoginResult.LoginOkay;
-            }
+            var readableCookies = cookies.GetCookies(new Uri("https://steamcommunity.com"));
+            var oAuthData = loginResponse.OAuthData;
+
+            var session = new SessionData();
+            session.OAuthToken = oAuthData.OAuthToken;
+            session.SteamID = oAuthData.SteamID;
+            session.SteamLogin = session.SteamID + "%7C%7C" + oAuthData.SteamLogin;
+            session.SteamLoginSecure = session.SteamID + "%7C%7C" + oAuthData.SteamLoginSecure;
+            session.WebCookie = oAuthData.Webcookie;
+            session.SessionID = readableCookies["sessionid"].Value;
+            this.Session = session;
+            this.LoggedIn = true;
+            return LoginResult.LoginOkay;
         }
 
         private class LoginResponse

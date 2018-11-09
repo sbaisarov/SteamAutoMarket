@@ -14,7 +14,5 @@
             : base(login, password, mafile, apiKey, forceSessionRefresh)
         {
         }
-
-
     }
 }

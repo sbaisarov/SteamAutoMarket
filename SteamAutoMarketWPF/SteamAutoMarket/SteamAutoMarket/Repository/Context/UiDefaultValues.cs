@@ -20,10 +20,18 @@
             new SteamAppId(218620, "PAYDAY 2", 2));
 
         public static readonly LinkCollection Themes = new LinkCollection
-                                {
-                                    new Link { DisplayName = "dark", Source = AppearanceManager.DarkThemeSource },
-                                    new Link { DisplayName = "light", Source = AppearanceManager.LightThemeSource }
-                                };
+                                                           {
+                                                               new Link
+                                                                   {
+                                                                       DisplayName = "dark",
+                                                                       Source = AppearanceManager.DarkThemeSource
+                                                                   },
+                                                               new Link
+                                                                   {
+                                                                       DisplayName = "light",
+                                                                       Source = AppearanceManager.LightThemeSource
+                                                                   }
+                                                           };
 
         public static readonly Dictionary<string, Color> Colors = new Dictionary<string, Color>
                                                                       {

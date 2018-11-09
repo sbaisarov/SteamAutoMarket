@@ -22,13 +22,13 @@
 
         private string workingLogs;
 
-        private double averageSpeed = 0;
+        private double averageSpeed;
 
-        private double currentSpeed = 0;
+        private double currentSpeed;
 
-        private int minutesLeft = 0;
+        private int minutesLeft;
 
-        private int averageMinutesLeft = 0;
+        private int averageMinutesLeft;
 
         private int progressBarMaximum;
 

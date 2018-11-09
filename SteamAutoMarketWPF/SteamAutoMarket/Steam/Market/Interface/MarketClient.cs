@@ -97,7 +97,7 @@
                                   { "Origin", "https://steamcommunity.com" },
                                   { "Host", "steamcommunity.com" }
                               };
-            var data = new Dictionary<string, string>() { { "sessionid", this.steam.Auth.SessionId() } };
+            var data = new Dictionary<string, string> { { "sessionid", this.steam.Auth.SessionId() } };
 
             var resp = this.steam.Request(
                 RemoveListingUrl + orderid,
@@ -980,7 +980,7 @@
                                      Price = price,
                                      Url = url,
                                      ImageUrl = imageUrl,
-                                     Game = game,
+                                     Game = game
                                  };
 
                 var isConfirmation = item.InnerHtml.Contains("CancelMarketListingConfirmation");
@@ -1001,7 +1001,7 @@
             var saleNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
             if (saleNodes != null)
             {
-                int tempIndex = 0;
+                var tempIndex = 0;
                 foreach (var item in saleNodes)
                 {
                     this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency, false);

@@ -8,7 +8,7 @@
     public class CheckedModel : INotifyPropertyChanged
     {
         private bool checkBoxChecked;
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public bool CheckBoxChecked

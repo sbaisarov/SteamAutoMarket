@@ -5,6 +5,6 @@
     public class JSuccessInt
     {
         [JsonProperty("success")]
-        public int Success { get; set; } = 0;
+        public int Success { get; set; }
     }
 }

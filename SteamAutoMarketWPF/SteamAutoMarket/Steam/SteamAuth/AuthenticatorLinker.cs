@@ -23,9 +23,9 @@
         /// </summary>
         public string PhoneNumber = null;
 
-        private CookieContainer _cookies;
+        private readonly CookieContainer _cookies;
 
-        private SessionData _session;
+        private readonly SessionData _session;
 
         public AuthenticatorLinker(SessionData session)
         {
@@ -63,7 +63,7 @@
         /// <summary>
         /// Randomly-generated device ID. Should only be generated once per linker.
         /// </summary>
-        public string DeviceID { get; private set; }
+        public string DeviceID { get; }
 
         /// <summary>
         /// After the initial link step, if successful, this will be the SteamGuard data for the account. PLEASE save this somewhere after generating it; it's vital data.
@@ -74,12 +74,12 @@
         {
             using (var sha1 = new SHA1Managed())
             {
-                RNGCryptoServiceProvider secureRandom = new RNGCryptoServiceProvider();
-                byte[] randomBytes = new byte[8];
+                var secureRandom = new RNGCryptoServiceProvider();
+                var randomBytes = new byte[8];
                 secureRandom.GetBytes(randomBytes);
 
-                byte[] hashedBytes = sha1.ComputeHash(randomBytes);
-                string random32 = BitConverter.ToString(hashedBytes).Replace("-", string.Empty).Substring(0, 32).ToLower();
+                var hashedBytes = sha1.ComputeHash(randomBytes);
+                var random32 = BitConverter.ToString(hashedBytes).Replace("-", string.Empty).Substring(0, 32).ToLower();
 
                 return "android:" + SplitOnRatios(random32, new[] { 8, 4, 4, 4, 12 }, "-");
             }
@@ -87,7 +87,7 @@
 
         public LinkResult AddAuthenticator()
         {
-            bool hasPhone = this._hasPhoneAttached();
+            var hasPhone = this._hasPhoneAttached();
             if (hasPhone && this.PhoneNumber != null)
                 return LinkResult.MustRemovePhoneNumber;
             if (!hasPhone && this.PhoneNumber == null)
@@ -108,7 +108,7 @@
             postData.Add("device_identifier", this.DeviceID);
             postData.Add("sms_phone_id", "1");
 
-            string response = SteamWeb.MobileLoginRequest(
+            var response = SteamWeb.MobileLoginRequest(
                 APIEndpoints.STEAMAPI_BASE + "/ITwoFactorService/AddAuthenticator/v0001",
                 "POST",
                 postData);
@@ -150,13 +150,13 @@
             postData.Add("steamid", this._session.SteamID.ToString());
             postData.Add("access_token", this._session.OAuthToken);
             postData.Add("activation_code", smsCode);
-            int tries = 0;
+            var tries = 0;
             while (tries <= 30)
             {
                 postData.Set("authenticator_code", this.LinkedAccount.GenerateSteamGuardCode());
                 postData.Set("authenticator_time", TimeAligner.GetSteamTime().ToString());
 
-                string response = SteamWeb.MobileLoginRequest(
+                var response = SteamWeb.MobileLoginRequest(
                     APIEndpoints.STEAMAPI_BASE + "/ITwoFactorService/FinalizeAddAuthenticator/v0001",
                     "POST",
                     postData);
@@ -202,10 +202,10 @@
 
         private static string SplitOnRatios(string str, int[] ratios, string intermediate)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
-            int pos = 0;
-            for (int index = 0; index < ratios.Length; index++)
+            var pos = 0;
+            for (var index = 0; index < ratios.Length; index++)
             {
                 result += str.Substring(pos, ratios[index]);
                 pos = ratios[index];
@@ -224,7 +224,7 @@
             postData.Add("arg", this.PhoneNumber);
             postData.Add("sessionid", this._session.SessionID);
 
-            string response = SteamWeb.Request(
+            var response = SteamWeb.Request(
                 APIEndpoints.COMMUNITY_BASE + "/steamguard/phoneajax",
                 "POST",
                 postData,
@@ -244,7 +244,7 @@
             postData.Add("skipvoip", "1");
             postData.Add("sessionid", this._session.SessionID);
 
-            string response = SteamWeb.Request(
+            var response = SteamWeb.Request(
                 APIEndpoints.COMMUNITY_BASE + "/steamguard/phoneajax",
                 "POST",
                 postData,
@@ -270,7 +270,7 @@
             postData.Add("arg", "null");
             postData.Add("sessionid", this._session.SessionID);
 
-            string response = SteamWeb.Request(
+            var response = SteamWeb.Request(
                 APIEndpoints.COMMUNITY_BASE + "/steamguard/phoneajax",
                 "POST",
                 postData,

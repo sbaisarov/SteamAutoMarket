@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SteamAutoMarket.Pages
+﻿namespace SteamAutoMarket.Pages
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -45,7 +43,7 @@ namespace SteamAutoMarket.Pages
                         {
                             new FullRgItem
                                 {
-                                    Asset = new RgInventory { Amount = "5", },
+                                    Asset = new RgInventory { Amount = "5" },
                                     Description = new RgDescription
                                                       {
                                                           Type = "Type1",

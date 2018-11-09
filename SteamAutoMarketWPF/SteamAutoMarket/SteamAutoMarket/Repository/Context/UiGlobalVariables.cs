@@ -1,6 +1,6 @@
 ﻿namespace SteamAutoMarket.Repository.Context
 {
-    using global::Steam;
+    using Steam;
 
     using SteamAutoMarket.Pages;
 
@@ -15,7 +15,7 @@
         public static MarketRelist MarketRelist { get; set; }
 
         public static LogsWindow LogsWindow { get; set; }
-        
+
         public static SteamManager SteamManager { get; set; }
     }
 }

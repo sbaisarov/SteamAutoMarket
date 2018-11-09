@@ -4,8 +4,6 @@
 
     using Core;
 
-    using OxyPlot;
-
     using SteamAutoMarket.Pages;
     using SteamAutoMarket.Utils.Extension;
 
@@ -35,7 +33,7 @@
                         form.IncrementProgress();
                         form.ChartModel.AddDispatch(new DataPoint(4, 3));
 
-                        for (int i = 5; i < 100; i++)
+                        for (var i = 5; i < 100; i++)
                         {
                             form.ChartModel.AddDispatch(new DataPoint(i, RandomUtils.RandomInt(4, 6)));
                         }

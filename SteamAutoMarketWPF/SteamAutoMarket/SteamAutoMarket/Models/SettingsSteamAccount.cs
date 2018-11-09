@@ -8,9 +8,9 @@
 
     using Core;
 
-    using global::Steam.SteamAuth;
-
     using Newtonsoft.Json;
+
+    using Steam.SteamAuth;
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Image;

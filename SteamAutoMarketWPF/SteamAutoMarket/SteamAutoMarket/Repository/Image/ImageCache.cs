@@ -73,7 +73,6 @@
             }
         }
 
-
         private static string MakeValidFileName(string name)
         {
             var invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));

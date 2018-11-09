@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace Steam.TradeOffer
+﻿namespace Steam.TradeOffer
 {
     using System;
     using System.Collections.Generic;

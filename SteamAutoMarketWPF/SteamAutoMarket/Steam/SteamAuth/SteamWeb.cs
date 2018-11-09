@@ -41,16 +41,16 @@
             NameValueCollection headers = null,
             string referer = APIEndpoints.COMMUNITY_BASE)
         {
-            string query = (data == null
-                                ? string.Empty
-                                : string.Join(
-                                    "&",
-                                    Array.ConvertAll(
-                                        data.AllKeys,
-                                        key => string.Format(
-                                            "{0}={1}",
-                                            WebUtility.UrlEncode(key),
-                                            WebUtility.UrlEncode(data[key])))));
+            var query = (data == null
+                             ? string.Empty
+                             : string.Join(
+                                 "&",
+                                 Array.ConvertAll(
+                                     data.AllKeys,
+                                     key => string.Format(
+                                         "{0}={1}",
+                                         WebUtility.UrlEncode(key),
+                                         WebUtility.UrlEncode(data[key])))));
             if (method == "GET")
             {
                 url += (url.Contains("?") ? "&" : "?") + query;
@@ -67,7 +67,7 @@
             NameValueCollection headers = null,
             string referer = APIEndpoints.COMMUNITY_BASE)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
             request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";
             request.UserAgent =
@@ -90,14 +90,14 @@
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 request.ContentLength = dataString.Length;
 
-                StreamWriter requestStream = new StreamWriter(request.GetRequestStream());
+                var requestStream = new StreamWriter(request.GetRequestStream());
                 requestStream.Write(dataString);
                 requestStream.Close();
             }
 
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     if (response.StatusCode != HttpStatusCode.OK)
                     {
@@ -105,9 +105,9 @@
                         return null;
                     }
 
-                    using (StreamReader responseStream = new StreamReader(response.GetResponseStream()))
+                    using (var responseStream = new StreamReader(response.GetResponseStream()))
                     {
-                        string responseData = responseStream.ReadToEnd();
+                        var responseData = responseStream.ReadToEnd();
                         return responseData;
                     }
                 }
@@ -127,22 +127,22 @@
             NameValueCollection headers = null,
             string referer = APIEndpoints.COMMUNITY_BASE)
         {
-            string query = (data == null
-                                ? string.Empty
-                                : string.Join(
-                                    "&",
-                                    Array.ConvertAll(
-                                        data.AllKeys,
-                                        key => string.Format(
-                                            "{0}={1}",
-                                            WebUtility.UrlEncode(key),
-                                            WebUtility.UrlEncode(data[key])))));
+            var query = (data == null
+                             ? string.Empty
+                             : string.Join(
+                                 "&",
+                                 Array.ConvertAll(
+                                     data.AllKeys,
+                                     key => string.Format(
+                                         "{0}={1}",
+                                         WebUtility.UrlEncode(key),
+                                         WebUtility.UrlEncode(data[key])))));
             if (method == "GET")
             {
                 url += (url.Contains("?") ? "&" : "?") + query;
             }
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
             request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";
             request.UserAgent =
@@ -165,14 +165,14 @@
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 request.ContentLength = query.Length;
 
-                StreamWriter requestStream = new StreamWriter(request.GetRequestStream());
+                var requestStream = new StreamWriter(request.GetRequestStream());
                 requestStream.Write(query);
                 requestStream.Close();
             }
 
             try
             {
-                HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync();
+                var response = (HttpWebResponse)await request.GetResponseAsync();
 
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
@@ -180,9 +180,9 @@
                     return null;
                 }
 
-                using (StreamReader responseStream = new StreamReader(response.GetResponseStream()))
+                using (var responseStream = new StreamReader(response.GetResponseStream()))
                 {
-                    string responseData = responseStream.ReadToEnd();
+                    var responseData = responseStream.ReadToEnd();
                     return responseData;
                 }
             }

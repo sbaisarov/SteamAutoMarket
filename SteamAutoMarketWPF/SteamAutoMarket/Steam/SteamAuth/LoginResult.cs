@@ -16,6 +16,6 @@
 
         NeedEmail,
 
-        TooManyFailedLogins,
+        TooManyFailedLogins
     }
 }

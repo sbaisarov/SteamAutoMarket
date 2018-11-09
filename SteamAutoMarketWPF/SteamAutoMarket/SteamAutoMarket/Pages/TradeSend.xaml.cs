@@ -8,8 +8,8 @@
 
     using Core;
 
-    using global::Steam.TradeOffer.Models;
-    using global::Steam.TradeOffer.Models.Full;
+    using Steam.TradeOffer.Models;
+    using Steam.TradeOffer.Models.Full;
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
@@ -78,7 +78,7 @@
                             {
                                 new FullRgItem
                                     {
-                                        Asset = new RgInventory { Amount = $"{RandomUtils.RandomInt(1, 100)}", },
+                                        Asset = new RgInventory { Amount = $"{RandomUtils.RandomInt(1, 100)}" },
                                         Description = new RgDescription
                                                           {
                                                               Type = RandomUtils.RandomString(15),
