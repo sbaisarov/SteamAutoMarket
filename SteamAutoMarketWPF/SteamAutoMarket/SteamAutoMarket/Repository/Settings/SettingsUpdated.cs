@@ -25,7 +25,7 @@
         private static void PlanSettingsUpdate()
         {
             isUpdatePlanned = true;
-            Thread.Sleep(TimeSpan.FromSeconds(10));
+            Thread.Sleep(TimeSpan.FromSeconds(5));
             UpdateSettings();
             isUpdatePlanned = false;
         }

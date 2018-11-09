@@ -32,7 +32,8 @@
                      Grid.Row="0"
                      Text="{Binding Path=WorkingLogs, Mode=OneWay}"
                      Foreground="{DynamicResource DataGridForeground}"
-                     MaxLength="10000" />
+                     MaxLength="10000"
+                     TextWrapping="Wrap"/>
 
             <Grid Grid.Row="0" Grid.Column="1" Margin="0,3,10,0">
                 <Grid>
@@ -117,7 +118,7 @@
                         <oxy:Plot MinHeight="200"
                                   Padding="0"
                                   Style="{StaticResource PlotStyle}"
-                                  PlotType="Cartesian">
+                                  PlotType="XY">
 
                             <oxy:Plot.Series>
                                 <oxy:LineSeries ItemsSource="{Binding ChartModel}" />

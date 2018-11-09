@@ -58,7 +58,7 @@
                                             Grid.Column="0"
                                             Grid.Row="1"
                                             Margin="2"
-                                            Text="Minutes:" />
+                                            Text="Seconds:" />
                                         <TextBlock
                                             Grid.Column="1"
                                             Grid.Row="1"

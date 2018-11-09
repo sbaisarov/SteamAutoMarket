@@ -118,7 +118,6 @@
     <Compile Include="Utils\Resources\DynamicResourceBinding.cs" />
     <Compile Include="Utils\Resources\InlineMultiConverter.cs" />
     <Compile Include="Utils\Resources\ModernUiThemeUtils.cs" />
-    <Compile Include="WorkingProcessExample.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

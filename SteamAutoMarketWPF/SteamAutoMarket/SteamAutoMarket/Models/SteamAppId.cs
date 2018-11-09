@@ -6,19 +6,19 @@
         {
         }
 
-        public SteamAppId(long appId, string name, int? contextId = null)
+        public SteamAppId(int appId, string name, int? contextId = null)
         {
             this.AppId = appId;
             this.Name = name;
             this.ContextId = contextId;
         }
 
-        public SteamAppId(long appId, int? contextIds = null)
+        public SteamAppId(int appId, int? contextIds = null)
             : this(appId, $"{appId}", contextIds)
         {
         }
 
-        public long AppId { get; set; }
+        public int AppId { get; set; }
 
         public int? ContextId { get; set; }
 

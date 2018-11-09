@@ -3,6 +3,7 @@
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
@@ -11,6 +12,7 @@
     using OxyPlot;
 
     using SteamAutoMarket.Annotations;
+    using SteamAutoMarket.Utils.Extension;
     using SteamAutoMarket.Utils.Logger;
 
     /// <summary>
@@ -18,6 +20,8 @@
     /// </summary>
     public partial class WorkingProcessForm : INotifyPropertyChanged
     {
+        private Stopwatch timer;
+
         private Task workingAction;
 
         private string workingLogs;
@@ -113,17 +117,19 @@
             }
         }
 
-        public ObservableCollection<DataPoint> ChartModel { get; set; } = new ObservableCollection<DataPoint>();
+        public ObservableCollection<DataPoint> ChartModel { get; set; } =
+            new ObservableCollection<DataPoint> { new DataPoint(0, 0) };
 
-        public static WorkingProcessForm NewWorkingProcessWindow(string title, int maximumProgressBarValue)
+        public static WorkingProcessForm NewWorkingProcessWindow(string title)
         {
-            var window = new WorkingProcessForm { Title = title, ProgressBarMaximum = maximumProgressBarValue };
+            var window = new WorkingProcessForm { Title = title };
 
             return window;
         }
 
         public void ProcessMethod(Action action)
         {
+            this.timer = Stopwatch.StartNew();
             this.Show();
             try
             {
@@ -142,7 +148,19 @@
             Logger.Log.Info(message);
         }
 
-        public void IncrementProgress() => this.ProgressBarValue++;
+        public void IncrementProgress()
+        {
+            if (this.ProgressBarValue < this.ProgressBarMaximum)
+            {
+                this.ProgressBarValue++;
+            }
+
+            this.timer.Stop();
+            var elapsedSeconds = this.timer.ElapsedMilliseconds / 1000d;
+            this.ChartModel.AddDispatch(new DataPoint(this.ProgressBarValue, elapsedSeconds));
+
+            this.timer = Stopwatch.StartNew();
+        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -11,5 +11,11 @@
             Action<T> addMethod = collection.Add;
             Application.Current.Dispatcher.BeginInvoke(addMethod, item);
         }
+
+        public static void ClearDispatch<T>(this ICollection<T> collection)
+        {
+            Action method = collection.Clear;
+            Application.Current.Dispatcher.BeginInvoke(method);
+        }
     }
 }

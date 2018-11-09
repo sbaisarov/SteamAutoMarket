@@ -23,7 +23,8 @@
             Grid.Row="0"
             Text="{Binding Path=Logs, Mode=OneWay}"
             Foreground="{DynamicResource DataGridForeground}" 
-            MaxLength="10000"/>
+            MaxLength="10000"
+            TextWrapping="Wrap"/>
 
         <Grid Grid.Column="1"
               Grid.Row="0"

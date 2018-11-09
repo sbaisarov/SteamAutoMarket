@@ -14,6 +14,7 @@
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
+    using SteamAutoMarket.Utils.Logger;
 
     /// <summary>
     /// Interaction logic for Account.xaml
@@ -110,7 +111,7 @@
         {
             set
             {
-                if (string.IsNullOrEmpty(value) || !long.TryParse(value, out var longValue))
+                if (string.IsNullOrEmpty(value) || !int.TryParse(value, out var longValue))
                 {
                     return;
                 }
@@ -140,22 +141,31 @@
 
         private void StartMarketSellButtonClick_OnClick(object sender, RoutedEventArgs e)
         {
-            WorkingProcessExample.Test();
         }
 
         private void LoadInventoryItems(object sender, RoutedEventArgs e)
         {
-            // var items = UiGlobalVariables.SteamManager.LoadInventory(UiGlobalVariables.SteamManager.SteamClient.SteamID.ToString(),
-            // MarketSellSelectedAppid.AppId.ToString(), MarketSellSelectedAppid.ContextId.ToString(), IncludeLogs);
-            // var result = new List<FullRgItem>();
-            // items.Sort((firstItem, secondItem) => String.Compare(firstItem.Description.MarketHashName,
-            // secondItem.Description.MarketHashName, StringComparison.Ordinal));
-            // foreach (var item in items)
-            // {
-            // result.Append(item);
-            // }
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
 
-            // marketSellSelectedItem = new MarketSellModel(result);
+            if (int.TryParse(this.MarketContextIdTextBox.Text, out var contextId) == false)
+            {
+                ErrorNotify.CriticalMessageBox($"Incorrect context id provided - {contextId}");
+                return;
+            }
+
+            var form = WorkingProcessForm.NewWorkingProcessWindow(
+                $"{this.MarketSellSelectedAppid.Name} inventory loading");
+            this.MarketSellItems.Clear();
+
+            UiGlobalVariables.SteamManager.LoadMyInventoryWorkingProcess(
+                form,
+                this.MarketSellSelectedAppid,
+                contextId,
+                this.MarketSellItems);
         }
     }
 }

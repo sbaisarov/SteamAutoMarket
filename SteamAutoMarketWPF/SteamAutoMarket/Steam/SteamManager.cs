@@ -18,6 +18,8 @@
     using Steam.TradeOffer;
     using Steam.TradeOffer.Models;
 
+    using SteamKit2;
+
     public class SteamManager
     {
         public SteamManager(
@@ -27,7 +29,11 @@
             string apiKey,
             bool forceSessionRefresh = false)
         {
+            this.Login = login;
+            this.Password = password;
             this.Guard = mafile;
+            this.SteamId = new SteamID(this.Guard.Session.SteamID);
+
             this.SteamClient = new UserLogin(login, password) { TwoFactorCode = this.GenerateSteamGuardCode() };
 
             // this.Guard.DeviceID = this.GetDeviceId(); todo
@@ -52,6 +58,12 @@
 
             this.MarketClient = new MarketClient(market);
         }
+
+        public string Login { get; }
+
+        public string Password { get; }
+
+        public SteamID SteamId { get; }
 
         public string ApiKey { get; set; }
 
@@ -103,6 +115,15 @@
             }
 
             this.Guard.Session = this.SteamClient.Session;
+        }
+
+        protected InventoryRootModel LoadInventoryPage(
+            SteamID steamId,
+            int appId,
+            int contextId,
+            string startAssetId = null)
+        {
+            return this.Inventory.LoadInventoryPage(steamId, appId, contextId, startAssetId);
         }
 
         private string GetDeviceId()
