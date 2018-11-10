@@ -19,6 +19,8 @@
 
         private double? currentPrice;
 
+        private string image;
+
         public MarketSellModel(List<FullRgItem> itemsList)
         {
             this.ItemsList = new ObservableCollection<FullRgItem>(itemsList);
@@ -31,7 +33,7 @@
 
             this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description.Type);
 
-            this.Description = "TODO - GENERATE DESCRIPTION" + RandomUtils.RandomString(500);
+            this.Description = SteamUtils.GetClearDescription(this.ItemModel?.Description);
 
             this.MarketSellNumericUpDown = new NumericUpDownModel(this.Count);
 
@@ -52,10 +54,26 @@
 
         public string Description { get; }
 
-        public string Image =>
-            ImageProvider.GetItemImage(
-                this.ItemModel?.Description?.MarketHashName,
-                this.ItemModel?.Description?.IconUrlLarge);
+        public string Image
+        {
+            get
+            {
+                if (this.image != null) return this.image;
+
+                this.image = ImageProvider.GetItemImage(
+                    a => this.Image = a,
+                    this.ItemModel?.Description?.MarketHashName,
+                    this.ItemModel?.Description?.IconUrlLarge ?? this.ItemModel?.Description?.IconUrl);
+
+                return this.image;
+            }
+
+            set
+            {
+                this.image = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public NumericUpDownModel MarketSellNumericUpDown { get; }
 

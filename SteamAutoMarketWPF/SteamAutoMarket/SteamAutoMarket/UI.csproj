@@ -106,6 +106,7 @@
     <Compile Include="Repository\Settings\SettingsProvider.cs" />
     <Compile Include="Repository\Settings\SettingsUpdated.cs" />
     <Compile Include="SteamUtils\UiSteamManager.cs" />
+    <Compile Include="SteamUtils\WorkingProcessType.cs" />
     <Compile Include="Utils\Converter\SolidColorBrushToColorConverter.cs" />
     <Compile Include="Utils\Converter\IfNullInvisibleConverter.cs" />
     <Compile Include="Utils\Converter\InvertBooleanConverter.cs" />

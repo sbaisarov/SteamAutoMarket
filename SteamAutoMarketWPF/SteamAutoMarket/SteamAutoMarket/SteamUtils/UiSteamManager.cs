@@ -6,14 +6,9 @@
     using System.Linq;
     using System.Threading;
 
-    using Core;
-
-    using OxyPlot;
-
     using Steam;
     using Steam.SteamAuth;
     using Steam.TradeOffer.Models;
-    using Steam.TradeOffer.Models.Full;
 
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Pages;
@@ -42,7 +37,7 @@
             SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
         }
 
-        public void LoadMyInventoryWorkingProcess(
+        public void LoadItemsToSaleWorkingProcess(
             WorkingProcessForm form,
             SteamAppId appid,
             int contextId,
@@ -53,7 +48,6 @@
                     {
                         try
                         {
-                            // form.ChartModel.AddDispatch(new DataPoint(0, 0));
                             form.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
 
                             var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId);
@@ -70,6 +64,12 @@
 
                             while (page.MoreItems == 1)
                             {
+                                if (form.CancellationToken.IsCancellationRequested)
+                                {
+                                    form.AppendLog($"{appid.Name} inventory loading was force stopped");
+                                    return;
+                                }
+
                                 page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid);
 
                                 this.ProcessInventoryPage(marketSellItems, page);
@@ -77,6 +77,8 @@
                                 form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
                                 form.IncrementProgress();
                             }
+
+                            form.AppendLog($"{marketSellItems.Sum(i => i.Count)} marketable items was loaded");
                         }
                         catch (Exception e)
                         {
@@ -95,11 +97,9 @@
         {
             var items = this.Inventory.ProcessInventoryPage(inventoryPage);
 
-            var groupedItems = items.GroupBy(i => i.Description.MarketHashName);
-            foreach (var group in groupedItems)
-            {
-                marketSellItems.AddDispatch(new MarketSellModel(group.ToList()));
-            }
+            var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName);
+
+            foreach (var group in groupedItems) marketSellItems.AddDispatch(new MarketSellModel(@group.ToList()));
         }
     }
 }

@@ -147,15 +147,18 @@
                     {
                         try
                         {
+                            var login = this.SelectSteamAccount.Login;
                             this.LoginButtonEnabled = false;
+
                             UiGlobalVariables.SteamManager = new UiSteamManager(
-                                this.SelectSteamAccount.Login,
+                                login,
                                 this.SelectSteamAccount.Password,
                                 this.SelectSteamAccount.Mafile,
                                 this.SelectSteamAccount.SteamApi,
                                 this.ForceSessionRefresh);
 
-                            UiGlobalVariables.MainWindow.Account.DisplayName = this.SelectSteamAccount.Login;
+                            UiGlobalVariables.MainWindow.Account.DisplayName = login;
+                            Logger.Log.Info($"{login} authentication success");
                         }
                         catch (Exception ex)
                         {

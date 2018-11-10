@@ -1,10 +1,12 @@
 ﻿namespace SteamAutoMarket.Pages
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Core;
@@ -20,9 +22,13 @@
     /// </summary>
     public partial class WorkingProcessForm : INotifyPropertyChanged
     {
+        private static bool isAnyWorkingProcessRunning;
+
         private Stopwatch timer;
 
         private Task workingAction;
+
+        private CancellationTokenSource cancellationTokenSource;
 
         private string workingLogs;
 
@@ -34,7 +40,7 @@
 
         private int averageMinutesLeft;
 
-        private int progressBarMaximum;
+        private int progressBarMaximum = 1;
 
         private int progressBarValue;
 
@@ -43,9 +49,13 @@
             this.InitializeComponent();
 
             this.DataContext = this;
+
+            this.Closing += this.OnWindowClosing;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public CancellationToken CancellationToken { get; private set; }
 
         public string WorkingLogs
         {
@@ -129,17 +139,36 @@
 
         public void ProcessMethod(Action action)
         {
+            if (isAnyWorkingProcessRunning)
+            {
+                ErrorNotify.InfoMessageBox(
+                    "Only one working process can be processed at the same time to avoid temporary Steam ban on requests. Wait for an other working process finish and try again.");
+
+                return;
+            }
+
             this.timer = Stopwatch.StartNew();
             this.Show();
+            isAnyWorkingProcessRunning = true;
             try
             {
-                this.workingAction = Task.Run(action);
-                this.workingAction.ContinueWith(tsk => this.AppendLog("Working process finished"));
+                this.cancellationTokenSource = new CancellationTokenSource();
+                this.CancellationToken = this.cancellationTokenSource.Token;
+
+                this.workingAction = Task.Run(action, this.CancellationToken);
+                this.workingAction.ContinueWith(
+                    tsk =>
+                        {
+                            this.AppendLog("Working process finished");
+                            isAnyWorkingProcessRunning = false;
+                        },
+                    this.CancellationToken);
             }
             catch (Exception e)
             {
                 Logger.Log.Error("Error on working process", e);
             }
+
         }
 
         public void AppendLog(string message)
@@ -166,6 +195,13 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            this.AppendLog("Working process is forcing to stop");
+            this.cancellationTokenSource.Cancel();
+            isAnyWorkingProcessRunning = false;
         }
     }
 }

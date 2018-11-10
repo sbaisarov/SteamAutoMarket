@@ -1,6 +1,12 @@
 ﻿namespace SteamAutoMarket.Repository.Image
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Core;
+
+    using SteamAutoMarket.Models;
 
     public static class ImageProvider
     {
@@ -23,7 +29,7 @@
             return localImageUri;
         }
 
-        public static string GetItemImage(string marketHashName, string imageUrl)
+        public static string GetItemImage(Action<string> setOutput, string marketHashName, string imageUrl)
         {
             var fileName = marketHashName;
 
@@ -37,8 +43,17 @@
                 return null;
             }
 
-            localImageUri = ImageCache.CacheImage(fileName, imageUrl);
-            return localImageUri;
+            Task.Run(
+                () =>
+                    {
+                        localImageUri = ImageCache.CacheImage(
+                            fileName,
+                            $"https://steamcommunity-a.akamaihd.net/economy/image/{imageUrl}/192fx192f");
+                        Thread.Sleep(500);
+                        setOutput(localImageUri);
+                    });
+
+            return null;
         }
     }
 }

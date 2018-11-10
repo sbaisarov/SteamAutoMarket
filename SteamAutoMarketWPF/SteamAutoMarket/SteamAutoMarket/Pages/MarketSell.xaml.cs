@@ -37,42 +37,6 @@
 
             this.MarketSellSelectedAppid = this.AppIdList.FirstOrDefault(
                 appid => appid?.Name == SettingsProvider.GetInstance().MarketSellSelectedAppid?.Name);
-
-            this.MarketSellItems.Add(
-                new MarketSellModel(
-                    new List<FullRgItem>
-                        {
-                            new FullRgItem
-                                {
-                                    Asset = new RgInventory { Amount = "5" },
-                                    Description = new RgDescription
-                                                      {
-                                                          Type = "Type1",
-                                                          MarketHashName = "HashName",
-                                                          MarketName = "MarketName",
-                                                          IconUrlLarge =
-                                                              "https://steamcommunity-a.akamaihd.net/economy/image/IzMF03bk9WpSBq-S-ekoE33L-iLqGFHVaU25ZzQNQcXdA3g5gMEPvUZZEaiHLrVJRsl8q3CWTo7Qi89ehDNVzDMFfXqviiQrcex4NM6b5gni6vaCV2D_bXzpIC7XWldlHOQLOG7cqzKs4rmSEDCYQu4pEl9SKPcB9zZBPpvbOxpvgIcNrTDgxhQkS0RmYstBNg202HAWI4IsxSAVIJYEzyKkd8bQhFhgOUViDOq0Au2WbNCmkSgmXExvG_RJNdiWv3Puq5-ndLfYeu5xafCepGZ_Rg/360fx360f"
-                                                      }
-                                }
-                        }));
-
-            this.MarketSellItems.Add(
-                new MarketSellModel(
-                    new List<FullRgItem>
-                        {
-                            new FullRgItem
-                                {
-                                    Asset = new RgInventory { Amount = "4" },
-                                    Description = new RgDescription
-                                                      {
-                                                          Type = "Type2",
-                                                          MarketHashName = "HashName1",
-                                                          MarketName = "SomeName",
-                                                          IconUrl =
-                                                              "https://steamcommunity-a.akamaihd.net/economy/image/IzMF03bk9WpSBq-S-ekoE33L-iLqGFHVaU25ZzQNQcXdA3g5gMEPvUZZEaiHLrVJRsl8q3CWTo7Qi89ehDNVzDMFfXqviiQrcex4NM6b5gni6vaCV2D_bXzpIC7XWldlHOQLOG7cqzKs4rmSEDCYQu4pEl9SKPcB9zZBPpvbOxpvgIcNrTDgxhQkS0RmYstBNg202HAWI4IsxSAVIJYEzyKkd8bQhFhgOUViDOq0Au2WbNCmkSgmXExvG_RJNdiWv3Puq5-ndLfYeu5xafCepGZ_Rg/360fx360f"
-                                                      }
-                                }
-                        }));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -159,9 +123,10 @@
 
             var form = WorkingProcessForm.NewWorkingProcessWindow(
                 $"{this.MarketSellSelectedAppid.Name} inventory loading");
+
             this.MarketSellItems.Clear();
 
-            UiGlobalVariables.SteamManager.LoadMyInventoryWorkingProcess(
+            UiGlobalVariables.SteamManager.LoadItemsToSaleWorkingProcess(
                 form,
                 this.MarketSellSelectedAppid,
                 contextId,

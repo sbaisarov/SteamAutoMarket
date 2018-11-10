@@ -15,6 +15,8 @@
 
     public class TradeSendModel : INotifyPropertyChanged
     {
+        private string image;
+
         public TradeSendModel(List<FullRgItem> itemsList)
         {
             this.ItemsList = new ObservableCollection<FullRgItem>(itemsList);
@@ -46,10 +48,20 @@
 
         public string Description { get; }
 
-        public string Image =>
-            ImageProvider.GetItemImage(
-                this.ItemModel?.Description?.MarketHashName,
-                this.ItemModel?.Description?.IconUrlLarge);
+        public string Image
+        {
+            get =>
+                this.image ?? ImageProvider.GetItemImage(
+                    a => this.Image = a,
+                    this.ItemModel?.Description?.MarketHashName,
+                    this.ItemModel?.Description?.IconUrlLarge);
+
+            set
+            {
+                this.image = value; 
+                this.OnPropertyChanged();
+            }
+        }
 
         public NumericUpDownModel NumericUpDown { get; }
 

@@ -60,7 +60,7 @@
 
         public double? ListedPrice { get; }
 
-        public string Image => ImageProvider.GetItemImage(this.ItemModel?.HashName, this.ItemModel?.ImageUrl);
+        public string Image => null; //ImageProvider.GetItemImage(this.ItemModel?.HashName, this.ItemModel?.ImageUrl);
 
         public CheckedModel Checked { get; }
 

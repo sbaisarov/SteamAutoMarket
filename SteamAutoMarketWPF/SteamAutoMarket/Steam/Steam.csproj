@@ -111,6 +111,7 @@
     <Compile Include="SteamAuth\UserLogin.cs" />
     <Compile Include="SteamAuth\Util.cs" />
     <Compile Include="SteamManager.cs" />
+    <Compile Include="SteamUtils.cs" />
     <Compile Include="TradeOffer\Enums\TradeOfferConfirmationMethod.cs" />
     <Compile Include="TradeOffer\Enums\TradeOfferState.cs" />
     <Compile Include="TradeOffer\Enums\TradeState.cs" />
