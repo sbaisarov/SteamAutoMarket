@@ -83,7 +83,7 @@
 
         protected bool IsSessionUpdated { get; set; }
 
-        public void AcceptOffers(IEnumerable<Offer> offers)
+        public virtual void AcceptOffers(IEnumerable<Offer> offers)
         {
             foreach (var offer in offers)
             {
@@ -109,7 +109,7 @@
         // await this.ConfirmMarketTransactions();
         // }
         // }
-        public double? GetAveragePrice(int appid, string hashName, int days)
+        public virtual double? GetAveragePrice(int appid, string hashName, int days)
         {
             double? price = null;
             var attempts = 0;
@@ -138,7 +138,7 @@
             return price;
         }
 
-        public double? GetCurrentPrice(int appid, string hashName)
+        public virtual double? GetCurrentPrice(int appid, string hashName)
         {
             var itemPageInfo = MarketInfoCache.Get(appid, hashName);
 

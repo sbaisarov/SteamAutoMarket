@@ -1,4 +1,4 @@
-﻿namespace SteamAutoMarket.SteamUtils
+﻿namespace SteamAutoMarket.SteamIntegration
 {
     using System;
     using System.Collections.Generic;
@@ -11,6 +11,7 @@
 
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Pages;
+    using SteamAutoMarket.Repository.PriceCache;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Extension;
     using SteamAutoMarket.Utils.Logger;
@@ -26,7 +27,20 @@
             : base(login, password, mafile, apiKey, forceSessionRefresh)
         {
             this.SaveAccount();
+
+            this.CurrentPriceCache = PriceCacheProvider.GetCurrentPriceCache(
+                "ru", // todo actual currency
+                SettingsProvider.GetInstance().HoursToBecomeOld);
+
+            this.AveragePriceCache = PriceCacheProvider.GetAveragePriceCache(
+                "ru",
+                SettingsProvider.GetInstance().AveragePriceDays,
+                SettingsProvider.GetInstance().HoursToBecomeOld);
         }
+
+        public PriceCache CurrentPriceCache { get; set; }
+
+        public PriceCache AveragePriceCache { get; set; }
 
         public void LoadItemsToSaleWorkingProcess(
             WorkingProcessForm form,
@@ -88,6 +102,20 @@
             this.IsSessionUpdated = false;
 
             SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
+        }
+
+        public override double? GetAveragePrice(int appid, string hashName, int days)
+        {
+            var price = base.GetAveragePrice(appid, hashName, days);
+            if (price.HasValue) this.AveragePriceCache.Cache(hashName, price.Value);
+            return price;
+        }
+
+        public override double? GetCurrentPrice(int appid, string hashName)
+        {
+            var price = base.GetCurrentPrice(appid, hashName);
+            if (price.HasValue) this.CurrentPriceCache.Cache(hashName, price.Value);
+            return price;
         }
 
         private void ProcessInventoryPage(

@@ -1,6 +1,6 @@
-﻿namespace SteamAutoMarket.SteamUtils
+﻿namespace SteamAutoMarket.SteamIntegration
 {
-    using SteamAutoMarket.SteamUtils.Enums;
+    using SteamAutoMarket.Models.Enums;
 
     public class MarketSellStrategy
     {

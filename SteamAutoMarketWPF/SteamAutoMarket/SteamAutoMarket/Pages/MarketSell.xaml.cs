@@ -14,11 +14,11 @@
     using Core.Waiter;
 
     using SteamAutoMarket.Models;
+    using SteamAutoMarket.Models.Enums;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
-    using SteamAutoMarket.SteamUtils;
-    using SteamAutoMarket.SteamUtils.Enums;
+    using SteamAutoMarket.SteamIntegration;
     using SteamAutoMarket.Utils.Logger;
 
     /// <summary>
@@ -175,6 +175,10 @@
                                     });
 
                             var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
+
+                            var currentPriceCache = UiGlobalVariables.SteamManager.CurrentPriceCache;
+                            var averagePriceCache = UiGlobalVariables.SteamManager.AveragePriceCache;
+
                             var priceLoadingSemaphore = new Semaphore(
                                 SettingsProvider.GetInstance().PriceLoadingThreads,
                                 SettingsProvider.GetInstance().PriceLoadingThreads);
@@ -189,9 +193,12 @@
                                 var task = Task.Run(
                                     () =>
                                         {
-                                            var price = UiGlobalVariables.SteamManager.GetCurrentPrice(
-                                                item.ItemModel.Asset.Appid,
-                                                item.ItemModel.Description.MarketHashName);
+                                            var price =
+                                                currentPriceCache.Get(item.ItemModel.Description.MarketHashName)?.Price
+                                                ?? UiGlobalVariables.SteamManager.GetCurrentPrice(
+                                                    item.ItemModel.Asset.Appid,
+                                                    item.ItemModel.Description.MarketHashName);
+
                                             Logger.Log.Debug($"Current price for {item.ItemName} is - {price}");
                                             item.CurrentPrice = price;
                                             item.ProcessSellPrice(this.MarketSellStrategy);
@@ -204,10 +211,12 @@
                                 task = Task.Run(
                                     () =>
                                         {
-                                            var price = UiGlobalVariables.SteamManager.GetAveragePrice(
-                                                item.ItemModel.Asset.Appid,
-                                                item.ItemModel.Description.MarketHashName,
-                                                averagePriceDays);
+                                            var price =
+                                                averagePriceCache.Get(item.ItemModel.Description.MarketHashName)?.Price
+                                                ?? UiGlobalVariables.SteamManager.GetAveragePrice(
+                                                    item.ItemModel.Asset.Appid,
+                                                    item.ItemModel.Description.MarketHashName,
+                                                    averagePriceDays);
 
                                             Logger.Log.Debug(
                                                 $"Average price for {averagePriceDays} days for {item.ItemName} is - {price}");
@@ -272,6 +281,8 @@
                                 $"Average price for {averagePriceDays} days for {item.ItemName} is - {price}");
 
                             item.AveragePrice = price;
+
+                            item.ProcessSellPrice(this.MarketSellStrategy);
                         }
                         catch (Exception ex)
                         {

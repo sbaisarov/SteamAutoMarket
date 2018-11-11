@@ -15,7 +15,7 @@
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
-    using SteamAutoMarket.SteamUtils;
+    using SteamAutoMarket.SteamIntegration;
     using SteamAutoMarket.Utils.Logger;
 
     using MessageBox = System.Windows.MessageBox;

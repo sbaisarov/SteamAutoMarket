@@ -1,4 +1,4 @@
-﻿namespace SteamAutoMarket.SteamUtils
+﻿namespace SteamAutoMarket.SteamIntegration
 {
     public enum WorkingProcessType
     {

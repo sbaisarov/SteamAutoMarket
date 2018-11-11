@@ -1,12 +1,12 @@
-﻿namespace SteamAutoMarket.Repository.Settings
+﻿namespace SteamAutoMarket.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel;
 
     using Newtonsoft.Json;
 
-    using SteamAutoMarket.Models;
     using SteamAutoMarket.Repository.Context;
+    using SteamAutoMarket.Repository.Settings;
 
     public class SettingsModel : INotifyPropertyChanged
     {
@@ -25,6 +25,8 @@
         private string theme;
 
         private SteamAppId tradeSelectedAppId;
+
+        private int hoursToBecomeOld = 10;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -121,6 +123,16 @@
             {
                 if (this.tradeSelectedAppId == value) return;
                 this.tradeSelectedAppId = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int HoursToBecomeOld
+        {
+            get => this.hoursToBecomeOld;
+            set
+            {
+                this.hoursToBecomeOld = value;
                 this.OnPropertyChanged();
             }
         }

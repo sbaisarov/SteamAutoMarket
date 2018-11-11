@@ -1,4 +1,4 @@
-﻿namespace SteamAutoMarket.SteamUtils.Enums
+﻿namespace SteamAutoMarket.Models.Enums
 {
     public enum EMarketSaleType
     {

@@ -15,9 +15,12 @@
 
         private static Dictionary<string, MarketItemInfo> cache;
 
+        private static int newValuesCounter = 0;
+
         public static void Cache(int appid, string hashName, MarketItemInfo info)
         {
             Get()[$"{appid}-{hashName}"] = info;
+            newValuesCounter++;
             UpdateAll();
         }
 
@@ -63,7 +66,11 @@
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateAll()
         {
-            File.WriteAllText(CachePricesPath, JsonConvert.SerializeObject(Get(), Formatting.Indented));
+            if (newValuesCounter == 10)
+            {
+                File.WriteAllText(CachePricesPath, JsonConvert.SerializeObject(Get(), Formatting.Indented));
+                newValuesCounter = 0;
+            }
         }
     }
 }

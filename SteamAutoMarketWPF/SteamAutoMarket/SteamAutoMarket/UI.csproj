@@ -58,6 +58,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\Enums\EPriceCacheType.cs" />
     <Compile Include="Models\MarketRelistModel.cs" />
     <Compile Include="Models\CheckedModel.cs" />
     <Compile Include="Models\MarketSellModel.cs" />
@@ -101,14 +102,17 @@
     <Compile Include="Repository\Context\UiDefaultValues.cs" />
     <Compile Include="Repository\Image\ImageCache.cs" />
     <Compile Include="Repository\Image\ImageProvider.cs" />
-    <Compile Include="Repository\Settings\SettingsModel.cs" />
+    <Compile Include="Repository\PriceCache\PriceCache.cs" />
+    <Compile Include="Models\CachedPriceModel.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Repository\Context\UiGlobalVariables.cs" />
+    <Compile Include="Repository\PriceCache\PriceCacheProvider.cs" />
     <Compile Include="Repository\Settings\SettingsProvider.cs" />
     <Compile Include="Repository\Settings\SettingsUpdated.cs" />
-    <Compile Include="SteamUtils\Enums\EMarketSaleType.cs" />
-    <Compile Include="SteamUtils\MarketSellStrategy.cs" />
-    <Compile Include="SteamUtils\UiSteamManager.cs" />
-    <Compile Include="SteamUtils\WorkingProcessType.cs" />
+    <Compile Include="Models\Enums\EMarketSaleType.cs" />
+    <Compile Include="SteamIntegration\MarketSellStrategy.cs" />
+    <Compile Include="SteamIntegration\UiSteamManager.cs" />
+    <Compile Include="SteamIntegration\WorkingProcessType.cs" />
     <Compile Include="Utils\Converter\SolidColorBrushToColorConverter.cs" />
     <Compile Include="Utils\Converter\IfNullInvisibleConverter.cs" />
     <Compile Include="Utils\Converter\InvertBooleanConverter.cs" />

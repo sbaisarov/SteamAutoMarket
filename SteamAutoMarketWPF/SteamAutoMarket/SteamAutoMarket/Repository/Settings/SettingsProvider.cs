@@ -4,6 +4,8 @@
 
     using Newtonsoft.Json;
 
+    using SteamAutoMarket.Models;
+
     public static class SettingsProvider
     {
         private static SettingsModel instance;

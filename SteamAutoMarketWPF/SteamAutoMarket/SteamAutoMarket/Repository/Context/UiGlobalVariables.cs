@@ -1,7 +1,7 @@
 ﻿namespace SteamAutoMarket.Repository.Context
 {
     using SteamAutoMarket.Pages;
-    using SteamAutoMarket.SteamUtils;
+    using SteamAutoMarket.SteamIntegration;
 
     public class UiGlobalVariables
     {

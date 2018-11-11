@@ -11,9 +11,9 @@
     using Steam.TradeOffer.Models.Full;
 
     using SteamAutoMarket.Annotations;
+    using SteamAutoMarket.Models.Enums;
     using SteamAutoMarket.Repository.Image;
-    using SteamAutoMarket.SteamUtils;
-    using SteamAutoMarket.SteamUtils.Enums;
+    using SteamAutoMarket.SteamIntegration;
 
     public class MarketSellModel : INotifyPropertyChanged
     {
