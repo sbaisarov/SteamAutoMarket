@@ -5,7 +5,6 @@
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:mui="http://firstfloorsoftware.com/ModernUI"
                   xmlns:pages="clr-namespace:SteamAutoMarket.Pages"
-                  xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
                   xmlns:oxy="http://oxyplot.org/wpf"
                   mc:Ignorable="d"
                   Width="500" Height="500"
@@ -15,8 +14,8 @@
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="30*" MinWidth="200" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -33,9 +32,13 @@
                      Text="{Binding Path=WorkingLogs, Mode=OneWay}"
                      Foreground="{DynamicResource DataGridForeground}"
                      MaxLength="10000"
-                     TextWrapping="Wrap"/>
+                     TextWrapping="Wrap" />
 
-            <Grid Grid.Row="0" Grid.Column="1" Margin="0,3,10,0">
+            <Grid Name="RightColumn"
+                  Width="Auto"
+                  Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="0,3,10,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -49,6 +52,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Row="0"
@@ -111,21 +115,19 @@
                                Text="minutes"
                                Margin="2, 5, 2, 5" />
 
-                    <Grid Grid.Row="4"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="3"
-                          Margin="0,40,0,0">
-                        <oxy:Plot MinHeight="200"
-                                  Padding="0"
-                                  Style="{StaticResource PlotStyle}"
-                                  PlotType="XY">
+                    <oxy:Plot Name="Plot"
+                              Grid.Row="4"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="4"
+                              Margin="0,40,2,10"
+                              Height="250"
+                              PlotType="XY"
+                              Style="{StaticResource PlotStyle}">
 
-                            <oxy:Plot.Series>
-                                <oxy:LineSeries ItemsSource="{Binding ChartModel}" />
-                            </oxy:Plot.Series>
-                        </oxy:Plot>
-                    </Grid>
-
+                        <oxy:Plot.Series>
+                            <oxy:LineSeries ItemsSource="{Binding ChartModel}" />
+                        </oxy:Plot.Series>
+                    </oxy:Plot>
                 </Grid>
 
             </Grid>

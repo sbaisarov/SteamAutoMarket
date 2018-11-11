@@ -5,9 +5,11 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Windows;
 
     using Core;
 
@@ -26,6 +28,8 @@
 
         private Stopwatch timer;
 
+        private List<double> times = new List<double>();
+
         private Task workingAction;
 
         private CancellationTokenSource cancellationTokenSource;
@@ -36,9 +40,9 @@
 
         private double currentSpeed;
 
-        private int minutesLeft;
+        private double minutesLeft;
 
-        private int averageMinutesLeft;
+        private double averageMinutesLeft;
 
         private int progressBarMaximum = 1;
 
@@ -51,6 +55,7 @@
             this.DataContext = this;
 
             this.Closing += this.OnWindowClosing;
+            this.SizeChanged += this.PlotContainer_OnSizeChanged;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -87,7 +92,7 @@
             }
         }
 
-        public int MinutesLeft
+        public double MinutesLeft
         {
             get => this.minutesLeft;
             set
@@ -97,7 +102,7 @@
             }
         }
 
-        public int AverageMinutesLeft
+        public double AverageMinutesLeft
         {
             get => this.averageMinutesLeft;
             set
@@ -168,7 +173,6 @@
             {
                 Logger.Log.Error("Error on working process", e);
             }
-
         }
 
         public void AppendLog(string message)
@@ -185,8 +189,35 @@
             }
 
             this.timer.Stop();
+
             var elapsedSeconds = this.timer.ElapsedMilliseconds / 1000d;
+            this.times.Add(elapsedSeconds);
+
             this.ChartModel.AddDispatch(new DataPoint(this.ProgressBarValue, elapsedSeconds));
+
+            var iterationsLeft = this.ProgressBarMaximum - this.ProgressBarValue;
+            this.CurrentSpeed = Math.Round(elapsedSeconds, 2);
+            this.MinutesLeft = Math.Round(iterationsLeft * elapsedSeconds / 60, 2);
+
+            if (this.ChartModel.Count > 1)
+            {
+                var averageSeconds = this.times.ToList().Average();
+                this.AverageSpeed = Math.Round(averageSeconds, 2);
+                this.AverageMinutesLeft = Math.Round(iterationsLeft * averageSeconds / 60);
+            }
+
+            if (this.ChartModel.Count > 50)
+            {
+                var oldChart = this.ChartModel.ToList();
+                var newChart = new List<DataPoint>();
+                for (var j = 3; j < oldChart.Count; j += 2)
+                {
+                    var averageX = (oldChart[j].X + oldChart[j - 1].X) / 2;
+                    var averageY = (oldChart[j].Y + oldChart[j - 1].Y) / 2;
+                    newChart.Add(new DataPoint(averageX, averageY));
+                }
+                this.ChartModel.ReplaceDispatch(newChart);
+            }
 
             this.timer = Stopwatch.StartNew();
         }
@@ -202,6 +233,12 @@
             this.AppendLog("Working process is forcing to stop");
             this.cancellationTokenSource.Cancel();
             isAnyWorkingProcessRunning = false;
+        }
+
+        private void PlotContainer_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.Plot.Width = this.RightColumn.ActualWidth;
+            this.Plot.InvalidateVisual();
         }
     }
 }

@@ -82,10 +82,10 @@
                         }
                         catch (Exception e)
                         {
-                            var message = $"Error on {appid} inventory loading - {e.Message}";
+                            var message = $"Error on {appid} inventory loading";
 
                             form.AppendLog(message);
-                            ErrorNotify.CriticalMessageBox(message);
+                            ErrorNotify.CriticalMessageBox(message, e);
                             marketSellItems.ClearDispatch();
                         }
                     });
@@ -97,7 +97,7 @@
         {
             var items = this.Inventory.ProcessInventoryPage(inventoryPage);
 
-            var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName);
+            var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName).ToList();
 
             foreach (var group in groupedItems) marketSellItems.AddDispatch(new MarketSellModel(@group.ToList()));
         }

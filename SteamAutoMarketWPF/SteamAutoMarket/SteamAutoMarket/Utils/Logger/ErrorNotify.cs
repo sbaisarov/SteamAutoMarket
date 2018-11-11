@@ -19,6 +19,12 @@
             MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        public static void CriticalMessageBox(string message, Exception e)
+        {
+            Logger.Log.Error(message, e);
+            MessageBox.Show($"{message} - {e.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
         public static void InfoMessageBox(string message)
         {
             MessageBox.Show(message, "Info", MessageBoxButton.OK, MessageBoxImage.Information);

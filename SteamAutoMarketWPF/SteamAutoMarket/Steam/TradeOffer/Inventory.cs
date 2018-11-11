@@ -112,11 +112,11 @@
         public List<FullRgItem> ProcessInventoryPage(InventoryRootModel inventoryRoot)
         {
             var result = new List<FullRgItem>();
-
-            foreach (var item in inventoryRoot.Assets)
+            var descriptions = inventoryRoot.Descriptions.ToList();
+            foreach (var item in inventoryRoot.Assets.ToList())
             {
                 var resultItem = new FullRgItem();
-                var description = InventoryRootModel.GetDescription(item, inventoryRoot.Descriptions);
+                var description = InventoryRootModel.GetDescription(item, descriptions);
                 resultItem.Asset = item;
                 resultItem.Description = description;
                 result.Add(resultItem);

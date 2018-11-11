@@ -71,8 +71,6 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-
-
             </Style>
 
             <ControlTemplate x:Key="GroupBoxTemplate" TargetType="GroupBox">
