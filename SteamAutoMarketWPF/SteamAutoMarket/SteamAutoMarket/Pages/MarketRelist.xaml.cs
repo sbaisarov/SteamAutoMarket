@@ -20,12 +20,12 @@
     /// </summary>
     public partial class MarketRelist : INotifyPropertyChanged
     {
+        private static readonly Dictionary<string, List<MyListingsSalesItem>> MyListings =
+            new Dictionary<string, List<MyListingsSalesItem>>();
+
         private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
 
         private MarketRelistModel relistSelectedItem;
-
-        private static readonly Dictionary<string, List<MyListingsSalesItem>> MyListings =
-            new Dictionary<string, List<MyListingsSalesItem>>();
 
         public MarketRelist()
         {

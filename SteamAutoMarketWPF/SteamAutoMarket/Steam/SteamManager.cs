@@ -59,95 +59,157 @@
             this.MarketClient = new MarketClient(market);
         }
 
-        public string Login { get; }
-
-        public string Password { get; }
-
-        public SteamID SteamId { get; }
-
         public string ApiKey { get; set; }
-
-        public OfferSession OfferSession { get; set; }
-
-        public TradeOfferWebApi TradeOfferWeb { get; }
-
-        public Inventory Inventory { get; set; }
-
-        public UserLogin SteamClient { get; set; }
-
-        public MarketClient MarketClient { get; set; }
-
-        public SteamGuardAccount Guard { get; set; }
 
         public CookieContainer Cookies { get; set; } = new CookieContainer();
 
+        public SteamGuardAccount Guard { get; set; }
+
+        public Inventory Inventory { get; set; }
+
+        public string Login { get; }
+
+        public MarketClient MarketClient { get; set; }
+
+        public OfferSession OfferSession { get; set; }
+
+        public string Password { get; }
+
+        public UserLogin SteamClient { get; set; }
+
+        public SteamID SteamId { get; }
+
+        public TradeOfferWebApi TradeOfferWeb { get; }
+
         protected bool IsSessionUpdated { get; set; }
 
-        public void UpdateSteamSession()
+        public void AcceptOffers(IEnumerable<Offer> offers)
         {
-            Logger.Log.Info($"Saved steam session for {this.Guard.AccountName} is expired. Refreshing session.");
-            this.IsSessionUpdated = true;
-
-            LoginResult loginResult;
-            var tryCount = 0;
-            do
+            foreach (var offer in offers)
             {
-                loginResult = this.SteamClient.DoLogin();
-                if (loginResult == LoginResult.LoginOkay)
+                this.OfferSession.Accept(offer.TradeOfferId);
+            }
+        }
+
+        // public async Task ConfirmMarketTransactions()
+        // {
+        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Fetching confirmations");
+        // try
+        // {
+        // var confirmations = this.Guard.FetchConfirmations();
+        // var marketConfirmations = confirmations
+        // .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Accepting confirmations");
+        // this.Guard.AcceptMultipleConfirmations(marketConfirmations);
+        // }
+        // catch (SteamGuardAccount.WGTokenExpiredException)
+        // {
+        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Session expired. Updating...");
+        // this.Guard.RefreshSession();
+        // await this.ConfirmMarketTransactions();
+        // }
+        // }
+        public double? GetAveragePrice(int appid, string hashName, int days)
+        {
+            double? price = null;
+            var attempts = 0;
+            while (attempts < 3)
+            {
+                try
                 {
-                    continue;
+                    var history = this.MarketClient.PriceHistory(appid, hashName);
+                    price = this.CountAveragePrice(history, days);
+                    if (price.HasValue)
+                    {
+                        price = Math.Round(price.Value, 2);
+                    }
+
+                    break;
                 }
-
-                Logger.Log.Warn($"Login status is - {loginResult}");
-
-                if (++tryCount == 3)
+                catch (Exception ex)
                 {
-                    throw new SteamException("Login failed after 3 attempts!");
+                    if (++attempts == 3)
+                    {
+                        Logger.Log.Warn($"Error on getting average price of {hashName}", ex);
+                    }
                 }
-
-                Thread.Sleep(3000);
-            }
-            while (loginResult != LoginResult.LoginOkay);
-
-            if (loginResult != LoginResult.LoginOkay)
-            {
-                throw new SteamException("Login failed after 3 attempts");
             }
 
-            this.Guard.Session = this.SteamClient.Session;
+            return price;
         }
 
-        protected InventoryRootModel LoadInventoryPage(
-            SteamID steamId,
-            int appId,
-            int contextId,
-            string startAssetId = null)
+        public double? GetCurrentPrice(int appid, string hashName)
         {
-            return this.Inventory.LoadInventoryPage(steamId, appId, contextId, startAssetId);
+            var itemPageInfo = MarketInfoCache.Get(appid, hashName);
+
+            if (itemPageInfo == null)
+            {
+                itemPageInfo = this.MarketClient.ItemPage(appid, hashName);
+                MarketInfoCache.Cache(appid, hashName, itemPageInfo);
+            }
+
+            var attempts = 0;
+            double? price = null;
+            while (attempts < 3)
+            {
+                try
+                {
+                    var histogram = this.MarketClient.ItemOrdersHistogramAsync(
+                        itemPageInfo.NameId,
+                        "RU",
+                        ELanguage.Russian,
+                        5).Result;
+
+                    price = histogram.MinSellPrice;
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    if (++attempts == 3)
+                    {
+                        Logger.Log.Warn($"Error on getting current price of {hashName}", ex);
+                    }
+                }
+            }
+
+            return price;
         }
 
-        private string GetDeviceId()
-        {
-            // todo add license check
-            using (var wb = new WebClient())
-            {
-                var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gdevid",
-                    this.SteamClient.SteamID.ToString());
-                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-            }
-        }
+        // public bool SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken, out string offerId)
+        // {
+        // var offer = new TradeOffer.TradeOffer.TradeOffer(this.OfferSession, new SteamID(ulong.Parse(partnerId)));
+        // foreach (var item in items)
+        // {
+        // offer.Items.AddMyItem(
+        // item.Asset.Appid,
+        // long.Parse(item.Asset.Contextid),
+        // long.Parse(item.Asset.Assetid),
+        // long.Parse(item.Asset.Amount));
+        // }
 
-        private string GenerateSteamGuardCode()
+        // return offer.SendWithToken(out offerId, tradeToken);
+        // }
+
+        // public void ConfirmTradeTransactions(List<ulong> offerids)
+        // {
+        // try
+        // {
+        // var confirmations = this.Guard.FetchConfirmations();
+        // var conf = confirmations.Where(
+        // item => item.ConfType == Confirmation.ConfirmationType.Trade && offerids.Contains(item.Creator))
+        // .ToArray()[0];
+        // this.Guard.AcceptConfirmation(conf);
+        // }
+        // catch (SteamGuardAccount.WGTokenExpiredException)
+        // {
+        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Session expired. Updating...");
+        // this.Guard.RefreshSession();
+        // this.ConfirmTradeTransactions(offerids);
+        // }
+        // }
+        public OffersResponse ReceiveTradeOffers()
         {
-            // todo add license check
-            using (var wb = new WebClient())
-            {
-                var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gguardcode",
-                    this.Guard.SharedSecret + "," + TimeAligner.GetSteamTime());
-                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-            }
+            return this.TradeOfferWeb.GetActiveTradeOffers(false, true, true);
         }
 
         // public List<FullRgItem> LoadInventory(string steamid, string appid, string contextid, bool withLogs)
@@ -321,88 +383,49 @@
             return false;
         }
 
-        // public async Task ConfirmMarketTransactions()
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Fetching confirmations");
-        // try
-        // {
-        // var confirmations = this.Guard.FetchConfirmations();
-        // var marketConfirmations = confirmations
-        // .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Accepting confirmations");
-        // this.Guard.AcceptMultipleConfirmations(marketConfirmations);
-        // }
-        // catch (SteamGuardAccount.WGTokenExpiredException)
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Session expired. Updating...");
-        // this.Guard.RefreshSession();
-        // await this.ConfirmMarketTransactions();
-        // }
-        // }
-        public double? GetAveragePrice(int appid, string hashName, int days)
+        public void UpdateSteamSession()
         {
-            double? price = null;
-            var attempts = 0;
-            while (attempts < 3)
-            {
-                try
-                {
-                    var history = this.MarketClient.PriceHistory(appid, hashName);
-                    price = this.CountAveragePrice(history, days);
-                    if (price.HasValue)
-                    {
-                        price = Math.Round(price.Value, 2);
-                    }
+            Logger.Log.Info($"Saved steam session for {this.Guard.AccountName} is expired. Refreshing session.");
+            this.IsSessionUpdated = true;
 
-                    break;
-                }
-                catch (Exception ex)
+            LoginResult loginResult;
+            var tryCount = 0;
+            do
+            {
+                loginResult = this.SteamClient.DoLogin();
+                if (loginResult == LoginResult.LoginOkay)
                 {
-                    if (++attempts == 3)
-                    {
-                        Logger.Log.Warn($"Error on getting average price of {hashName}", ex);
-                    }
+                    continue;
                 }
+
+                Logger.Log.Warn($"Login status is - {loginResult}");
+
+                if (++tryCount == 3)
+                {
+                    throw new SteamException("Login failed after 3 attempts!");
+                }
+
+                Thread.Sleep(3000);
+            }
+            while (loginResult != LoginResult.LoginOkay);
+
+            if (loginResult != LoginResult.LoginOkay)
+            {
+                throw new SteamException("Login failed after 3 attempts");
             }
 
-            return price;
+            this.Guard.Session = this.SteamClient.Session;
         }
 
-        // public async Task<double?> GetCurrentPrice(int appid, string hashName)
-        // {
-        // var itemPageInfo = MarketInfoCache.Get(appid, hashName);
+        protected InventoryRootModel LoadInventoryPage(
+            SteamID steamId,
+            int appId,
+            int contextId,
+            string startAssetId = null)
+        {
+            return this.Inventory.LoadInventoryPage(steamId, appId, contextId, startAssetId);
+        }
 
-        // if (itemPageInfo == null)
-        // {
-        // itemPageInfo = this.MarketClient.ItemPage(appid, hashName);
-        // MarketInfoCache.Cache(appid, hashName, itemPageInfo);
-        // }
-
-        // var attempts = 0;
-        // double? price = null;
-        // while (attempts < 3)
-        // {
-        // try
-        // {
-        // var histogram = await this.MarketClient.ItemOrdersHistogramAsync(
-        // itemPageInfo.NameId,
-        // "RU",
-        // ELanguage.Russian,
-        // 5);
-        // price = histogram.MinSellPrice;
-        // break;
-        // }
-        // catch (Exception ex)
-        // {
-        // if (++attempts == 3)
-        // {
-        // Logger.Log.Warn($"Error on getting current price of {hashName}", ex);
-        // }
-        // }
-        // }
-
-        // return price;
-        // }
         private double? CountAveragePrice(List<PriceHistoryDay> history, int daysCount)
         {
             // days are sorted from oldest to newest, we need the contrary
@@ -419,7 +442,31 @@
             return average;
         }
 
-        private double? IterateHistory(List<PriceHistoryDay> history, double? average = null)
+        private string GenerateSteamGuardCode()
+        {
+            // todo add license check
+            using (var wb = new WebClient())
+            {
+                var response = wb.UploadString(
+                    "https://www.steambiz.store/api/gguardcode",
+                    this.Guard.SharedSecret + "," + TimeAligner.GetSteamTime());
+                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+            }
+        }
+
+        private string GetDeviceId()
+        {
+            // todo add license check
+            using (var wb = new WebClient())
+            {
+                var response = wb.UploadString(
+                    "https://www.steambiz.store/api/gdevid",
+                    this.SteamClient.SteamID.ToString());
+                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+            }
+        }
+
+        private double? IterateHistory(IEnumerable<PriceHistoryDay> history, double? average = null)
         {
             double sum = 0;
             var count = 0;
@@ -453,51 +500,6 @@
             }
 
             return result;
-        }
-
-        // public bool SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken, out string offerId)
-        // {
-        // var offer = new TradeOffer.TradeOffer.TradeOffer(this.OfferSession, new SteamID(ulong.Parse(partnerId)));
-        // foreach (var item in items)
-        // {
-        // offer.Items.AddMyItem(
-        // item.Asset.Appid,
-        // long.Parse(item.Asset.Contextid),
-        // long.Parse(item.Asset.Assetid),
-        // long.Parse(item.Asset.Amount));
-        // }
-
-        // return offer.SendWithToken(out offerId, tradeToken);
-        // }
-
-        // public void ConfirmTradeTransactions(List<ulong> offerids)
-        // {
-        // try
-        // {
-        // var confirmations = this.Guard.FetchConfirmations();
-        // var conf = confirmations.Where(
-        // item => item.ConfType == Confirmation.ConfirmationType.Trade && offerids.Contains(item.Creator))
-        // .ToArray()[0];
-        // this.Guard.AcceptConfirmation(conf);
-        // }
-        // catch (SteamGuardAccount.WGTokenExpiredException)
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Session expired. Updating...");
-        // this.Guard.RefreshSession();
-        // this.ConfirmTradeTransactions(offerids);
-        // }
-        // }
-        public OffersResponse ReceiveTradeOffers()
-        {
-            return this.TradeOfferWeb.GetActiveTradeOffers(false, true, true);
-        }
-
-        public void AcceptOffers(IEnumerable<Offer> offers)
-        {
-            foreach (var offer in offers)
-            {
-                this.OfferSession.Accept(offer.TradeOfferId);
-            }
         }
 
         // public string UpdateTradeToken()

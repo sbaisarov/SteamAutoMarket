@@ -7,7 +7,7 @@
 
     public class ImageUtils
     {
-        public static string GetSteamProfileSmallImageUri(string steamId)
+        public static string GetSteamProfileFullImageUri(string steamId)
         {
             try
             {
@@ -16,7 +16,7 @@
                 var response = client.Execute(request);
                 var content = response.Content;
 
-                var result = Regex.Match(content, @"<avatarMedium><!\[CDATA\[(.*)\]\]></avatarMedium>");
+                var result = Regex.Match(content, @"<avatarFull><!\[CDATA\[(.*)\]\]></avatarFull>");
                 var imageUrl = result.Groups[1].ToString();
 
                 return imageUrl;
@@ -28,7 +28,7 @@
             }
         }
 
-        public static string GetSteamProfileFullImageUri(string steamId)
+        public static string GetSteamProfileSmallImageUri(string steamId)
         {
             try
             {
@@ -37,7 +37,7 @@
                 var response = client.Execute(request);
                 var content = response.Content;
 
-                var result = Regex.Match(content, @"<avatarFull><!\[CDATA\[(.*)\]\]></avatarFull>");
+                var result = Regex.Match(content, @"<avatarMedium><!\[CDATA\[(.*)\]\]></avatarMedium>");
                 var imageUrl = result.Groups[1].ToString();
 
                 return imageUrl;

@@ -19,20 +19,6 @@
             new SteamAppId(440, "TF:2", 2),
             new SteamAppId(218620, "PAYDAY 2", 2));
 
-        public static readonly LinkCollection Themes = new LinkCollection
-                                                           {
-                                                               new Link
-                                                                   {
-                                                                       DisplayName = "dark",
-                                                                       Source = AppearanceManager.DarkThemeSource
-                                                                   },
-                                                               new Link
-                                                                   {
-                                                                       DisplayName = "light",
-                                                                       Source = AppearanceManager.LightThemeSource
-                                                                   }
-                                                           };
-
         public static readonly Dictionary<string, Color> Colors = new Dictionary<string, Color>
                                                                       {
                                                                           { "lime", Color.FromRgb(0xa4, 0xc4, 0x00) },
@@ -62,5 +48,19 @@
                                                                           { "mauve", Color.FromRgb(0x76, 0x60, 0x8a) },
                                                                           { "taupe", Color.FromRgb(0x87, 0x79, 0x4e) }
                                                                       };
+
+        public static readonly LinkCollection Themes = new LinkCollection
+                                                           {
+                                                               new Link
+                                                                   {
+                                                                       DisplayName = "dark",
+                                                                       Source = AppearanceManager.DarkThemeSource
+                                                                   },
+                                                               new Link
+                                                                   {
+                                                                       DisplayName = "light",
+                                                                       Source = AppearanceManager.LightThemeSource
+                                                                   }
+                                                           };
     }
 }

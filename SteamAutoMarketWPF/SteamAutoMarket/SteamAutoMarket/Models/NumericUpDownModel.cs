@@ -17,8 +17,6 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int MaxAllowedCount { get; }
-
         public int AmountToSell
         {
             get => this.amountToSell;
@@ -28,6 +26,8 @@
                 this.OnPropertyChanged();
             }
         }
+
+        public int MaxAllowedCount { get; }
 
         public void SetToMaximum()
         {

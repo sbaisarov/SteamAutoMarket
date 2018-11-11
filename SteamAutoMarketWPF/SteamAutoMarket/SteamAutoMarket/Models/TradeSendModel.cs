@@ -36,15 +36,7 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<FullRgItem> ItemsList { get; }
-
-        public FullRgItem ItemModel { get; }
-
         public int Count { get; }
-
-        public string ItemName { get; }
-
-        public string Type { get; }
 
         public string Description { get; }
 
@@ -58,12 +50,20 @@
 
             set
             {
-                this.image = value; 
+                this.image = value;
                 this.OnPropertyChanged();
             }
         }
 
+        public FullRgItem ItemModel { get; }
+
+        public string ItemName { get; }
+
+        public ObservableCollection<FullRgItem> ItemsList { get; }
+
         public NumericUpDownModel NumericUpDown { get; }
+
+        public string Type { get; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>

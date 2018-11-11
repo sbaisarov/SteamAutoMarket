@@ -58,14 +58,6 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Login { get; set; }
-
-        public string Password { get; set; }
-
-        public ulong SteamId { get; set; }
-
-        public SteamGuardAccount Mafile { get; set; }
-
         public string Avatar
         {
             get => this.avatar;
@@ -76,6 +68,12 @@
             }
         }
 
+        public string Login { get; set; }
+
+        public SteamGuardAccount Mafile { get; set; }
+
+        public string Password { get; set; }
+
         public string SteamApi
         {
             get => this.steamApi;
@@ -85,6 +83,8 @@
                 this.OnPropertyChanged();
             }
         }
+
+        public ulong SteamId { get; set; }
 
         public string TradeToken
         {

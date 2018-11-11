@@ -28,14 +28,6 @@
             this.SaveAccount();
         }
 
-        public void SaveAccount()
-        {
-            if (this.IsSessionUpdated == false) return;
-            this.IsSessionUpdated = false;
-
-            SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
-        }
-
         public void LoadItemsToSaleWorkingProcess(
             WorkingProcessForm form,
             SteamAppId appid,
@@ -77,7 +69,7 @@
                                 form.IncrementProgress();
                             }
 
-                            form.AppendLog($"{marketSellItems.Sum(i => i.Count)} marketable items was loaded");
+                            form.AppendLog($"{marketSellItems.ToList().Sum(i => i.Count)} marketable items was loaded");
                         }
                         catch (Exception e)
                         {
@@ -90,13 +82,22 @@
                     });
         }
 
+        public void SaveAccount()
+        {
+            if (this.IsSessionUpdated == false) return;
+            this.IsSessionUpdated = false;
+
+            SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
+        }
+
         private void ProcessInventoryPage(
             ICollection<MarketSellModel> marketSellItems,
             InventoryRootModel inventoryPage)
         {
             var items = this.Inventory.ProcessInventoryPage(inventoryPage);
 
-            var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName).ToList();
+            var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName)
+                .ToList();
 
             foreach (var group in groupedItems) marketSellItems.AddDispatch(new MarketSellModel(@group.ToList()));
         }

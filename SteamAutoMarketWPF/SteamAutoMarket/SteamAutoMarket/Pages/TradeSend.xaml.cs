@@ -32,10 +32,10 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public List<SteamAppId> AppIdList => SettingsProvider.GetInstance().AppIdList;
+
         public ObservableCollection<TradeSendModel> TradeSendItemsList { get; } =
             new ObservableCollection<TradeSendModel>();
-
-        public List<SteamAppId> AppIdList => SettingsProvider.GetInstance().AppIdList;
 
         public SteamAppId TradeSendSelectedAppid
         {

@@ -9,6 +9,10 @@
 
     public static class ResourceUtils
     {
+        public static string GetResourceImageUri(string name) =>
+            @"pack://application:,,,/" + Assembly.GetCallingAssembly().GetName().Name + ";component/"
+            + $"images/{name}";
+
         public static Image LoadResourceImage(string name)
         {
             if (name[0] == '/')
@@ -22,13 +26,9 @@
             return BitmapImage2Bitmap(bitmap);
         }
 
-        public static string GetResourceImageUri(string name) =>
-            @"pack://application:,,,/" + Assembly.GetCallingAssembly().GetName().Name + ";component/"
-            + $"images/{name}";
+        public static T[] ToArray<T>(params T[] values) => values;
 
         public static List<T> ToList<T>(params T[] values) => new List<T>(values);
-
-        public static T[] ToArray<T>(params T[] values) => values;
 
         private static Bitmap BitmapImage2Bitmap(BitmapSource bitmapImage)
         {

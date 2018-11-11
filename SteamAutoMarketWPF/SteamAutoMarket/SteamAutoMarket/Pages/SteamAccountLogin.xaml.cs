@@ -25,22 +25,18 @@
     /// </summary>
     public partial class SteamAccountLogin : INotifyPropertyChanged
     {
-        #region Private variables
+        private bool loginButtonEnabled = true;
+
+        private string mafilesPath = SettingsProvider.GetInstance().MafilesPath;
 
         private string newAccountLogin;
 
         private string newAccountPassword;
 
-        private string mafilesPath = SettingsProvider.GetInstance().MafilesPath;
-
         private SettingsSteamAccount selectSteamAccount;
 
         private ObservableCollection<SettingsSteamAccount> steamAccountList =
             new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
-
-        private bool loginButtonEnabled = true;
-
-        #endregion
 
         public SteamAccountLogin()
         {
@@ -50,6 +46,29 @@
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool ForceSessionRefresh { get; set; }
+
+        public bool LoginButtonEnabled
+        {
+            get => this.loginButtonEnabled;
+            set
+            {
+                this.loginButtonEnabled = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string MafilesPath
+        {
+            get => this.mafilesPath;
+            set
+            {
+                this.mafilesPath = value;
+                this.OnPropertyChanged();
+                SettingsProvider.GetInstance().MafilesPath = value;
+            }
+        }
 
         public string NewAccountLogin
         {
@@ -71,14 +90,13 @@
             }
         }
 
-        public string MafilesPath
+        public SettingsSteamAccount SelectSteamAccount
         {
-            get => this.mafilesPath;
+            get => this.selectSteamAccount;
             set
             {
-                this.mafilesPath = value;
+                this.selectSteamAccount = value;
                 this.OnPropertyChanged();
-                SettingsProvider.GetInstance().MafilesPath = value;
             }
         }
 
@@ -93,31 +111,39 @@
             }
         }
 
-        public SettingsSteamAccount SelectSteamAccount
-        {
-            get => this.selectSteamAccount;
-            set
-            {
-                this.selectSteamAccount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool ForceSessionRefresh { get; set; }
-
-        public bool LoginButtonEnabled
-        {
-            get => this.loginButtonEnabled;
-            set
-            {
-                this.loginButtonEnabled = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private void AddNewAccountButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (this.SteamAccountList.FirstOrDefault(
+                        a => a.Login.Equals(this.NewAccountLogin, StringComparison.InvariantCultureIgnoreCase)) != null)
+                {
+                    ErrorNotify.CriticalMessageBox($"Account {this.NewAccountLogin} is already in accounts list.");
+                    return;
+                }
+
+                var newAccount = new SettingsSteamAccount(
+                    this.NewAccountLogin,
+                    this.NewAccountPassword,
+                    $"{this.MafilesPath}\\{this.NewAccountLogin?.ToLower()}.maFile");
+
+                this.SteamAccountList.Add(newAccount);
+                SettingsProvider.GetInstance().SteamAccounts = this.SteamAccountList.ToList();
+
+                this.SelectSteamAccount = newAccount;
+
+                newAccount.DownloadAvatarAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log.Error("Error on new account add", ex);
+                ErrorNotify.CriticalMessageBox(ex);
+            }
+        }
 
         private void BrowseFolder(object sender, EventArgs e)
         {
@@ -168,36 +194,6 @@
 
                         this.LoginButtonEnabled = true;
                     });
-        }
-
-        private void AddNewAccountButtonClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (this.SteamAccountList.FirstOrDefault(
-                        a => a.Login.Equals(this.NewAccountLogin, StringComparison.InvariantCultureIgnoreCase)) != null)
-                {
-                    ErrorNotify.CriticalMessageBox($"Account {this.NewAccountLogin} is already in accounts list.");
-                    return;
-                }
-
-                var newAccount = new SettingsSteamAccount(
-                    this.NewAccountLogin,
-                    this.NewAccountPassword,
-                    $"{this.MafilesPath}\\{this.NewAccountLogin?.ToLower()}.maFile");
-
-                this.SteamAccountList.Add(newAccount);
-                SettingsProvider.GetInstance().SteamAccounts = this.SteamAccountList.ToList();
-
-                this.SelectSteamAccount = newAccount;
-
-                newAccount.DownloadAvatarAsync();
-            }
-            catch (Exception ex)
-            {
-                Logger.Log.Error("Error on new account add", ex);
-                ErrorNotify.CriticalMessageBox(ex);
-            }
         }
 
         private void RemoveSelectedAccountButtonClick(object sender, RoutedEventArgs e)

@@ -70,7 +70,7 @@
                 {
                     inventoryPage = this.LoadInventoryPage(steamid, appid, contextid, startAssetid);
                     startAssetid = inventoryPage.LastAssetid;
-                    items.AddRange(ProcessInventoryPage(inventoryPage));
+                    items.AddRange(this.ProcessInventoryPage(inventoryPage));
                 }
                 while (inventoryPage.MoreItems == 1);
             }
@@ -109,6 +109,20 @@
             return this.NumSlots % 100 == 50;
         }
 
+        public InventoryRootModel LoadInventoryPage(
+            SteamID steamid,
+            int appid,
+            int contextid,
+            string startAssetid = "",
+            int count = 5000)
+        {
+            var url = "https://"
+                      + $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{contextid}?l=english&count={count}&start_assetid={startAssetid}";
+            var response = SteamWeb.Request(url, "GET", dataString: null);
+            var inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
+            return inventoryRoot;
+        }
+
         public List<FullRgItem> ProcessInventoryPage(InventoryRootModel inventoryRoot)
         {
             var result = new List<FullRgItem>();
@@ -123,20 +137,6 @@
             }
 
             return result;
-        }
-
-        public InventoryRootModel LoadInventoryPage(
-            SteamID steamid,
-            int appid,
-            int contextid,
-            string startAssetid = "",
-            int count = 5000)
-        {
-            var url = "https://"
-                      + $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{contextid}?l=english&count={count}&start_assetid={startAssetid}";
-            var response = SteamWeb.Request(url, "GET", dataString: null);
-            var inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
-            return inventoryRoot;
         }
     }
 }

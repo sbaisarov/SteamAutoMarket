@@ -22,13 +22,13 @@
             this.ResourceKey = resourceKey ?? throw new ArgumentNullException(nameof(resourceKey));
         }
 
-        public object ResourceKey { get; set; }
-
         public IValueConverter Converter { get; set; }
+
+        public CultureInfo ConverterCulture { get; set; }
 
         public object ConverterParameter { get; set; }
 
-        public CultureInfo ConverterCulture { get; set; }
+        public object ResourceKey { get; set; }
 
         public string StringFormat { get; set; }
 

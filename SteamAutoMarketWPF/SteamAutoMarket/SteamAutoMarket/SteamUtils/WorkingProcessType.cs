@@ -3,6 +3,7 @@
     public enum WorkingProcessType
     {
         InventoryLoading,
+
         MarketSell
     }
 }

@@ -11,7 +11,6 @@
     using Steam.Market.Models;
 
     using SteamAutoMarket.Annotations;
-    using SteamAutoMarket.Repository.Image;
 
     public class MarketRelistModel : INotifyPropertyChanged
     {
@@ -44,28 +43,6 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MyListingsSalesItem ItemModel { get; }
-
-        public ObservableCollection<MyListingsSalesItem> ItemsList { get; }
-
-        public int Count { get; }
-
-        public string ItemName { get; }
-
-        public string Game { get; }
-
-        public string ListedDate { get; }
-
-        public string Description { get; }
-
-        public double? ListedPrice { get; }
-
-        public string Image => null; //ImageProvider.GetItemImage(this.ItemModel?.HashName, this.ItemModel?.ImageUrl);
-
-        public CheckedModel Checked { get; }
-
-        public PriceModel RelistPrice { get; }
-
         public double? AveragePrice
         {
             get => this.averagePrice;
@@ -77,6 +54,10 @@
             }
         }
 
+        public CheckedModel Checked { get; }
+
+        public int Count { get; }
+
         public double? CurrentPrice
         {
             get => this.currentPrice;
@@ -87,6 +68,24 @@
                 this.OnPropertyChanged();
             }
         }
+
+        public string Description { get; }
+
+        public string Game { get; }
+
+        public string Image => null; //ImageProvider.GetItemImage(this.ItemModel?.HashName, this.ItemModel?.ImageUrl);
+
+        public MyListingsSalesItem ItemModel { get; }
+
+        public string ItemName { get; }
+
+        public ObservableCollection<MyListingsSalesItem> ItemsList { get; }
+
+        public string ListedDate { get; }
+
+        public double? ListedPrice { get; }
+
+        public PriceModel RelistPrice { get; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>

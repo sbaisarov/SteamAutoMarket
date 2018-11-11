@@ -12,6 +12,12 @@
             Application.Current.Dispatcher.BeginInvoke(addMethod, item);
         }
 
+        public static void ClearDispatch<T>(this ICollection<T> collection)
+        {
+            Action method = collection.Clear;
+            Application.Current.Dispatcher.BeginInvoke(method);
+        }
+
         public static void ReplaceDispatch<T>(this ICollection<T> collection, ICollection<T> newCollection)
         {
             collection.ClearDispatch();
@@ -19,12 +25,6 @@
             {
                 collection.AddDispatch(item);
             }
-        }
-
-        public static void ClearDispatch<T>(this ICollection<T> collection)
-        {
-            Action method = collection.Clear;
-            Application.Current.Dispatcher.BeginInvoke(method);
         }
     }
 }

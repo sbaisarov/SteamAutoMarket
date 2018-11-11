@@ -7,6 +7,35 @@
 
     public class SteamUtils
     {
+        public static string GetClearDescription(RgDescription description)
+        {
+            if (description == null) return string.Empty;
+
+            var descriptionText = string.Empty;
+
+            descriptionText += $"Game: {description.Appid}{Environment.NewLine}";
+            descriptionText += $"Name: {description.MarketHashName}{Environment.NewLine}";
+            descriptionText += $"Type: {description.Type}{Environment.NewLine}";
+
+            var descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim()))
+                .ToList();
+
+            var tags = description.Tags?.Where(t => !string.IsNullOrWhiteSpace(t.LocalizedTagName.Trim())).ToList();
+            if (tags != null && tags.Any())
+            {
+                descriptionText +=
+                    $"Tags: {string.Join(", ", tags.Select(t => t.LocalizedTagName.Trim()))}{Environment.NewLine}";
+            }
+
+            if (descriptions != null && descriptions.Any())
+            {
+                descriptionText +=
+                    $"Description: {string.Join(", ", descriptions.Select(d => d.Value.Trim()))}{Environment.NewLine}";
+            }
+
+            return descriptionText;
+        }
+
         public static string GetClearItemType(string type)
         {
             if (string.IsNullOrEmpty(type))
@@ -57,35 +86,6 @@
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dateTime = dateTime.AddSeconds(date).ToLocalTime();
             return dateTime;
-        }
-
-        public static string GetClearDescription(RgDescription description)
-        {
-            if (description == null) return string.Empty;
-
-            var descriptionText = string.Empty;
-
-            descriptionText += $"Game: {description.Appid}{Environment.NewLine}";
-            descriptionText += $"Name: {description.MarketHashName}{Environment.NewLine}";
-            descriptionText += $"Type: {description.Type}{Environment.NewLine}";
-
-            var descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim()))
-                .ToList();
-
-            var tags = description.Tags?.Where(t => !string.IsNullOrWhiteSpace(t.LocalizedTagName.Trim())).ToList();
-            if (tags != null && tags.Any())
-            {
-                descriptionText +=
-                    $"Tags: {string.Join(", ", tags.Select(t => t.LocalizedTagName.Trim()))}{Environment.NewLine}";
-            }
-
-            if (descriptions != null && descriptions.Any())
-            {
-                descriptionText +=
-                    $"Description: {string.Join(", ", descriptions.Select(d => d.Value.Trim()))}{Environment.NewLine}";
-            }
-
-            return descriptionText;
         }
     }
 }

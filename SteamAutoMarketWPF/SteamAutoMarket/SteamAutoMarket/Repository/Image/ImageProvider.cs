@@ -6,29 +6,8 @@
 
     using Core;
 
-    using SteamAutoMarket.Models;
-
     public static class ImageProvider
     {
-        public static string GetSmallSteamProfileImage(string steamId)
-        {
-            var fileName = $"{steamId}-small";
-
-            if (ImageCache.TryGetImage(fileName, out var localImageUri))
-            {
-                return localImageUri;
-            }
-
-            var remoteImageUri = ImageUtils.GetSteamProfileSmallImageUri(steamId);
-            if (remoteImageUri == null)
-            {
-                return ResourceUtils.GetResourceImageUri("NoAvatarSmall.jpg");
-            }
-
-            localImageUri = ImageCache.CacheImage(fileName, remoteImageUri);
-            return localImageUri;
-        }
-
         public static string GetItemImage(Action<string> setOutput, string marketHashName, string imageUrl)
         {
             var fileName = marketHashName;
@@ -54,6 +33,25 @@
                     });
 
             return null;
+        }
+
+        public static string GetSmallSteamProfileImage(string steamId)
+        {
+            var fileName = $"{steamId}-small";
+
+            if (ImageCache.TryGetImage(fileName, out var localImageUri))
+            {
+                return localImageUri;
+            }
+
+            var remoteImageUri = ImageUtils.GetSteamProfileSmallImageUri(steamId);
+            if (remoteImageUri == null)
+            {
+                return ResourceUtils.GetResourceImageUri("NoAvatarSmall.jpg");
+            }
+
+            localImageUri = ImageCache.CacheImage(fileName, remoteImageUri);
+            return localImageUri;
         }
     }
 }

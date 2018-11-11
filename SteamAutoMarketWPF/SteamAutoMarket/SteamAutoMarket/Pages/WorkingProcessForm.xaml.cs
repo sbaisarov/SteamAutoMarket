@@ -26,27 +26,27 @@
     {
         private static bool isAnyWorkingProcessRunning;
 
+        private double averageMinutesLeft;
+
+        private double averageSpeed;
+
+        private CancellationTokenSource cancellationTokenSource;
+
+        private double currentSpeed;
+
+        private double minutesLeft;
+
+        private int progressBarMaximum = 1;
+
+        private int progressBarValue;
+
         private Stopwatch timer;
 
         private List<double> times = new List<double>();
 
         private Task workingAction;
 
-        private CancellationTokenSource cancellationTokenSource;
-
         private string workingLogs;
-
-        private double averageSpeed;
-
-        private double currentSpeed;
-
-        private double minutesLeft;
-
-        private double averageMinutesLeft;
-
-        private int progressBarMaximum = 1;
-
-        private int progressBarValue;
 
         private WorkingProcessForm()
         {
@@ -60,14 +60,12 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public CancellationToken CancellationToken { get; private set; }
-
-        public string WorkingLogs
+        public double AverageMinutesLeft
         {
-            get => this.workingLogs;
+            get => this.averageMinutesLeft;
             set
             {
-                this.workingLogs = value;
+                this.averageMinutesLeft = value;
                 this.OnPropertyChanged();
             }
         }
@@ -81,6 +79,11 @@
                 this.OnPropertyChanged();
             }
         }
+
+        public CancellationToken CancellationToken { get; private set; }
+
+        public ObservableCollection<DataPoint> ChartModel { get; set; } =
+            new ObservableCollection<DataPoint> { new DataPoint(0, 0) };
 
         public double CurrentSpeed
         {
@@ -98,16 +101,6 @@
             set
             {
                 this.minutesLeft = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public double AverageMinutesLeft
-        {
-            get => this.averageMinutesLeft;
-            set
-            {
-                this.averageMinutesLeft = value;
                 this.OnPropertyChanged();
             }
         }
@@ -132,47 +125,21 @@
             }
         }
 
-        public ObservableCollection<DataPoint> ChartModel { get; set; } =
-            new ObservableCollection<DataPoint> { new DataPoint(0, 0) };
+        public string WorkingLogs
+        {
+            get => this.workingLogs;
+            set
+            {
+                this.workingLogs = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public static WorkingProcessForm NewWorkingProcessWindow(string title)
         {
             var window = new WorkingProcessForm { Title = title };
 
             return window;
-        }
-
-        public void ProcessMethod(Action action)
-        {
-            if (isAnyWorkingProcessRunning)
-            {
-                ErrorNotify.InfoMessageBox(
-                    "Only one working process can be processed at the same time to avoid temporary Steam ban on requests. Wait for an other working process finish and try again.");
-
-                return;
-            }
-
-            this.timer = Stopwatch.StartNew();
-            this.Show();
-            isAnyWorkingProcessRunning = true;
-            try
-            {
-                this.cancellationTokenSource = new CancellationTokenSource();
-                this.CancellationToken = this.cancellationTokenSource.Token;
-
-                this.workingAction = Task.Run(action, this.CancellationToken);
-                this.workingAction.ContinueWith(
-                    tsk =>
-                        {
-                            this.AppendLog("Working process finished");
-                            isAnyWorkingProcessRunning = false;
-                        },
-                    this.CancellationToken);
-            }
-            catch (Exception e)
-            {
-                Logger.Log.Error("Error on working process", e);
-            }
         }
 
         public void AppendLog(string message)
@@ -216,10 +183,44 @@
                     var averageY = (oldChart[j].Y + oldChart[j - 1].Y) / 2;
                     newChart.Add(new DataPoint(averageX, averageY));
                 }
+
                 this.ChartModel.ReplaceDispatch(newChart);
             }
 
             this.timer = Stopwatch.StartNew();
+        }
+
+        public void ProcessMethod(Action action)
+        {
+            if (isAnyWorkingProcessRunning)
+            {
+                ErrorNotify.InfoMessageBox(
+                    "Only one working process can be processed at the same time to avoid temporary Steam ban on requests. Wait for an other working process finish and try again.");
+
+                return;
+            }
+
+            this.timer = Stopwatch.StartNew();
+            this.Show();
+            isAnyWorkingProcessRunning = true;
+            try
+            {
+                this.cancellationTokenSource = new CancellationTokenSource();
+                this.CancellationToken = this.cancellationTokenSource.Token;
+
+                this.workingAction = Task.Run(action, this.CancellationToken);
+                this.workingAction.ContinueWith(
+                    tsk =>
+                        {
+                            this.AppendLog("Working process finished");
+                            isAnyWorkingProcessRunning = false;
+                        },
+                    this.CancellationToken);
+            }
+            catch (Exception e)
+            {
+                Logger.Log.Error("Error on working process", e);
+            }
         }
 
         [NotifyPropertyChangedInvocator]

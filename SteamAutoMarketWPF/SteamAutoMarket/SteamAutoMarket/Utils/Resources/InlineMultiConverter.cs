@@ -12,13 +12,13 @@
             this._convertBack = convertBack;
         }
 
-        public delegate object ConvertDelegate(object[] values, Type targetType, object parameter, CultureInfo culture);
-
         public delegate object[] ConvertBackDelegate(
             object value,
             Type[] targetTypes,
             object parameter,
             CultureInfo culture);
+
+        public delegate object ConvertDelegate(object[] values, Type targetType, object parameter, CultureInfo culture);
 
         private ConvertDelegate _convert { get; }
 

@@ -16,34 +16,6 @@
 
         public static Dictionary<string, string> Cache { get; set; } = new Dictionary<string, string>();
 
-        public static bool TryGetImage(string name, out string localImageUri)
-        {
-            try
-            {
-                if (Cache.TryGetValue(name, out localImageUri))
-                {
-                    return true;
-                }
-
-                localImageUri = $"{ImagesPath}\\{MakeValidFileName(name)}.{ImageFormat}";
-                if (!File.Exists(localImageUri))
-                {
-                    localImageUri = null;
-                    return false;
-                }
-
-                Cache[name] = localImageUri;
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Logger.Log.Error("Error on getting cached image", e);
-                localImageUri = null;
-                return false;
-            }
-        }
-
         public static string CacheImage(string name, string remoteUri)
         {
             var localFileName = $"{ImagesPath}\\{MakeValidFileName(name)}.{ImageFormat}";
@@ -70,6 +42,34 @@
             catch
             {
                 return null;
+            }
+        }
+
+        public static bool TryGetImage(string name, out string localImageUri)
+        {
+            try
+            {
+                if (Cache.TryGetValue(name, out localImageUri))
+                {
+                    return true;
+                }
+
+                localImageUri = $"{ImagesPath}\\{MakeValidFileName(name)}.{ImageFormat}";
+                if (!File.Exists(localImageUri))
+                {
+                    localImageUri = null;
+                    return false;
+                }
+
+                Cache[name] = localImageUri;
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.Log.Error("Error on getting cached image", e);
+                localImageUri = null;
+                return false;
             }
         }
 

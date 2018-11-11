@@ -114,7 +114,7 @@ namespace SteamAutoMarket.Annotations
         /// </param>
         public StringFormatMethodAttribute([NotNull] string formatParameterName)
         {
-            FormatParameterName = formatParameterName;
+            this.FormatParameterName = formatParameterName;
         }
 
         [NotNull]
@@ -132,7 +132,7 @@ namespace SteamAutoMarket.Annotations
     {
         public ValueProviderAttribute([NotNull] string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         [NotNull]
@@ -202,7 +202,7 @@ namespace SteamAutoMarket.Annotations
 
         public NotifyPropertyChangedInvocatorAttribute([NotNull] string parameterName)
         {
-            ParameterName = parameterName;
+            this.ParameterName = parameterName;
         }
 
         [CanBeNull]
@@ -263,8 +263,8 @@ namespace SteamAutoMarket.Annotations
 
         public ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates)
         {
-            Contract = contract;
-            ForceFullStates = forceFullStates;
+            this.Contract = contract;
+            this.ForceFullStates = forceFullStates;
         }
 
         [NotNull]
@@ -292,7 +292,7 @@ namespace SteamAutoMarket.Annotations
 
         public LocalizationRequiredAttribute(bool required)
         {
-            Required = required;
+            this.Required = required;
         }
 
         public bool Required { get; }
@@ -340,7 +340,7 @@ namespace SteamAutoMarket.Annotations
     {
         public BaseTypeRequiredAttribute([NotNull] Type baseType)
         {
-            BaseType = baseType;
+            this.BaseType = baseType;
         }
 
         [NotNull]
@@ -371,13 +371,13 @@ namespace SteamAutoMarket.Annotations
 
         public UsedImplicitlyAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
         {
-            UseKindFlags = useKindFlags;
-            TargetFlags = targetFlags;
+            this.UseKindFlags = useKindFlags;
+            this.TargetFlags = targetFlags;
         }
 
-        public ImplicitUseKindFlags UseKindFlags { get; }
-
         public ImplicitUseTargetFlags TargetFlags { get; }
+
+        public ImplicitUseKindFlags UseKindFlags { get; }
     }
 
     /// <summary>
@@ -404,15 +404,15 @@ namespace SteamAutoMarket.Annotations
 
         public MeansImplicitUseAttribute(ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
         {
-            UseKindFlags = useKindFlags;
-            TargetFlags = targetFlags;
+            this.UseKindFlags = useKindFlags;
+            this.TargetFlags = targetFlags;
         }
 
         [UsedImplicitly]
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+        public ImplicitUseTargetFlags TargetFlags { get; private set; }
 
         [UsedImplicitly]
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        public ImplicitUseKindFlags UseKindFlags { get; private set; }
     }
 
     [Flags]
@@ -467,7 +467,7 @@ namespace SteamAutoMarket.Annotations
 
         public PublicAPIAttribute([NotNull] string comment)
         {
-            Comment = comment;
+            this.Comment = comment;
         }
 
         [CanBeNull]
@@ -512,7 +512,7 @@ namespace SteamAutoMarket.Annotations
 
         public MustUseReturnValueAttribute([NotNull] string justification)
         {
-            Justification = justification;
+            this.Justification = justification;
         }
 
         [CanBeNull]
@@ -555,7 +555,7 @@ namespace SteamAutoMarket.Annotations
 
         public PathReferenceAttribute([NotNull, PathReference] string basePath)
         {
-            BasePath = basePath;
+            this.BasePath = basePath;
         }
 
         [CanBeNull]
@@ -622,13 +622,6 @@ namespace SteamAutoMarket.Annotations
     public sealed class MacroAttribute : Attribute
     {
         /// <summary>
-        /// Allows specifying a macro that will be executed for a <see cref="SourceTemplateAttribute">source template</see>
-        /// parameter when the template is expanded.
-        /// </summary>
-        [CanBeNull]
-        public string Expression { get; set; }
-
-        /// <summary>
         /// Allows specifying which occurrence of the target parameter becomes editable when the template is deployed.
         /// </summary>
         /// <remarks>
@@ -637,6 +630,13 @@ namespace SteamAutoMarket.Annotations
         /// use values >= 0. To make the parameter non-editable when the template is expanded, use -1.
         /// </remarks>>
         public int Editable { get; set; }
+
+        /// <summary>
+        /// Allows specifying a macro that will be executed for a <see cref="SourceTemplateAttribute">source template</see>
+        /// parameter when the template is expanded.
+        /// </summary>
+        [CanBeNull]
+        public string Expression { get; set; }
 
         /// <summary>
         /// Identifies the target parameter of a <see cref="SourceTemplateAttribute">source template</see> if the
@@ -653,7 +653,7 @@ namespace SteamAutoMarket.Annotations
     {
         public AspMvcAreaMasterLocationFormatAttribute([NotNull] string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         [NotNull]
@@ -667,7 +667,7 @@ namespace SteamAutoMarket.Annotations
     {
         public AspMvcAreaPartialViewLocationFormatAttribute([NotNull] string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         [NotNull]
@@ -681,7 +681,7 @@ namespace SteamAutoMarket.Annotations
     {
         public AspMvcAreaViewLocationFormatAttribute([NotNull] string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         [NotNull]
@@ -695,7 +695,7 @@ namespace SteamAutoMarket.Annotations
     {
         public AspMvcMasterLocationFormatAttribute([NotNull] string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         [NotNull]
@@ -709,7 +709,7 @@ namespace SteamAutoMarket.Annotations
     {
         public AspMvcPartialViewLocationFormatAttribute([NotNull] string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         [NotNull]
@@ -723,7 +723,7 @@ namespace SteamAutoMarket.Annotations
     {
         public AspMvcViewLocationFormatAttribute([NotNull] string format)
         {
-            Format = format;
+            this.Format = format;
         }
 
         [NotNull]
@@ -745,7 +745,7 @@ namespace SteamAutoMarket.Annotations
 
         public AspMvcActionAttribute([NotNull] string anonymousProperty)
         {
-            AnonymousProperty = anonymousProperty;
+            this.AnonymousProperty = anonymousProperty;
         }
 
         [CanBeNull]
@@ -766,7 +766,7 @@ namespace SteamAutoMarket.Annotations
 
         public AspMvcAreaAttribute([NotNull] string anonymousProperty)
         {
-            AnonymousProperty = anonymousProperty;
+            this.AnonymousProperty = anonymousProperty;
         }
 
         [CanBeNull]
@@ -788,7 +788,7 @@ namespace SteamAutoMarket.Annotations
 
         public AspMvcControllerAttribute([NotNull] string anonymousProperty)
         {
-            AnonymousProperty = anonymousProperty;
+            this.AnonymousProperty = anonymousProperty;
         }
 
         [CanBeNull]
@@ -916,7 +916,7 @@ namespace SteamAutoMarket.Annotations
 
         public HtmlElementAttributesAttribute([NotNull] string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         [CanBeNull]
@@ -928,7 +928,7 @@ namespace SteamAutoMarket.Annotations
     {
         public HtmlAttributeValueAttribute([NotNull] string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         [NotNull]
@@ -954,7 +954,7 @@ namespace SteamAutoMarket.Annotations
     {
         public CollectionAccessAttribute(CollectionAccessType collectionAccessType)
         {
-            CollectionAccessType = collectionAccessType;
+            this.CollectionAccessType = collectionAccessType;
         }
 
         public CollectionAccessType CollectionAccessType { get; }
@@ -996,7 +996,7 @@ namespace SteamAutoMarket.Annotations
     {
         public AssertionConditionAttribute(AssertionConditionType conditionType)
         {
-            ConditionType = conditionType;
+            this.ConditionType = conditionType;
         }
 
         public AssertionConditionType ConditionType { get; }
@@ -1097,15 +1097,15 @@ namespace SteamAutoMarket.Annotations
     {
         public AspChildControlTypeAttribute([NotNull] string tagName, [NotNull] Type controlType)
         {
-            TagName = tagName;
-            ControlType = controlType;
+            this.TagName = tagName;
+            this.ControlType = controlType;
         }
 
         [NotNull]
-        public string TagName { get; }
+        public Type ControlType { get; }
 
         [NotNull]
-        public Type ControlType { get; }
+        public string TagName { get; }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
@@ -1128,7 +1128,7 @@ namespace SteamAutoMarket.Annotations
     {
         public AspRequiredAttributeAttribute([NotNull] string attribute)
         {
-            Attribute = attribute;
+            this.Attribute = attribute;
         }
 
         [NotNull]
@@ -1138,12 +1138,12 @@ namespace SteamAutoMarket.Annotations
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class AspTypePropertyAttribute : Attribute
     {
-        public bool CreateConstructorReferences { get; }
-
         public AspTypePropertyAttribute(bool createConstructorReferences)
         {
-            CreateConstructorReferences = createConstructorReferences;
+            this.CreateConstructorReferences = createConstructorReferences;
         }
+
+        public bool CreateConstructorReferences { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1151,7 +1151,7 @@ namespace SteamAutoMarket.Annotations
     {
         public RazorImportNamespaceAttribute([NotNull] string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         [NotNull]
@@ -1163,15 +1163,15 @@ namespace SteamAutoMarket.Annotations
     {
         public RazorInjectionAttribute([NotNull] string type, [NotNull] string fieldName)
         {
-            Type = type;
-            FieldName = fieldName;
+            this.Type = type;
+            this.FieldName = fieldName;
         }
 
         [NotNull]
-        public string Type { get; }
+        public string FieldName { get; }
 
         [NotNull]
-        public string FieldName { get; }
+        public string Type { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1179,7 +1179,7 @@ namespace SteamAutoMarket.Annotations
     {
         public RazorDirectiveAttribute([NotNull] string directive)
         {
-            Directive = directive;
+            this.Directive = directive;
         }
 
         [NotNull]
@@ -1191,13 +1191,13 @@ namespace SteamAutoMarket.Annotations
     {
         public RazorPageBaseTypeAttribute([NotNull] string baseType)
         {
-            BaseType = baseType;
+            this.BaseType = baseType;
         }
 
         public RazorPageBaseTypeAttribute([NotNull] string baseType, string pageName)
         {
-            BaseType = baseType;
-            PageName = pageName;
+            this.BaseType = baseType;
+            this.PageName = pageName;
         }
 
         [NotNull]

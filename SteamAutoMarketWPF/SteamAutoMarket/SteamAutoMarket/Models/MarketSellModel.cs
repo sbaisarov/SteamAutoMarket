@@ -42,15 +42,29 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<FullRgItem> ItemsList { get; }
-
-        public FullRgItem ItemModel { get; }
+        public double? AveragePrice
+        {
+            get => this.averagePrice;
+            set
+            {
+                this.averagePrice = value;
+                this.ProcessSellPrice();
+                this.OnPropertyChanged();
+            }
+        }
 
         public int Count { get; }
 
-        public string ItemName { get; }
-
-        public string Type { get; }
+        public double? CurrentPrice
+        {
+            get => this.currentPrice;
+            set
+            {
+                this.currentPrice = value;
+                this.ProcessSellPrice();
+                this.OnPropertyChanged();
+            }
+        }
 
         public string Description { get; }
 
@@ -75,31 +89,17 @@
             }
         }
 
+        public FullRgItem ItemModel { get; }
+
+        public string ItemName { get; }
+
+        public ObservableCollection<FullRgItem> ItemsList { get; }
+
         public NumericUpDownModel MarketSellNumericUpDown { get; }
 
-        public double? AveragePrice
-        {
-            get => this.averagePrice;
-            set
-            {
-                this.averagePrice = value;
-                this.ProcessSellPrice();
-                this.OnPropertyChanged();
-            }
-        }
-
-        public double? CurrentPrice
-        {
-            get => this.currentPrice;
-            set
-            {
-                this.currentPrice = value;
-                this.ProcessSellPrice();
-                this.OnPropertyChanged();
-            }
-        }
-
         public PriceModel SellPrice { get; }
+
+        public string Type { get; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>

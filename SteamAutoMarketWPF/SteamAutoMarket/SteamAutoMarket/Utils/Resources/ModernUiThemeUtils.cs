@@ -10,16 +10,6 @@
 
     public static class ModernUiThemeUtils
     {
-        public static Uri GetTheme(string themeName) =>
-            UiDefaultValues.Themes.FirstOrDefault(theme => theme.DisplayName == themeName)?.Source
-            ?? AppearanceManager.DarkThemeSource;
-
-        public static string GetThemeName(Uri theme) =>
-            UiDefaultValues.Themes.FirstOrDefault(t => t.Source == theme)?.DisplayName;
-
-        public static string GetColorName(Color color) =>
-            UiDefaultValues.Colors.FirstOrDefault(c => c.Value == color).Key;
-
         public static Color GetColor(string colorName)
         {
             if (colorName == null)
@@ -31,5 +21,15 @@
                        ? color
                        : UiDefaultValues.Colors["cyan"];
         }
+
+        public static string GetColorName(Color color) =>
+            UiDefaultValues.Colors.FirstOrDefault(c => c.Value == color).Key;
+
+        public static Uri GetTheme(string themeName) =>
+            UiDefaultValues.Themes.FirstOrDefault(theme => theme.DisplayName == themeName)?.Source
+            ?? AppearanceManager.DarkThemeSource;
+
+        public static string GetThemeName(Uri theme) =>
+            UiDefaultValues.Themes.FirstOrDefault(t => t.Source == theme)?.DisplayName;
     }
 }

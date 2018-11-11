@@ -375,9 +375,9 @@ namespace SteamAutoMarket.Properties
             this.TargetFlags = targetFlags;
         }
 
-        public ImplicitUseKindFlags UseKindFlags { get; }
-
         public ImplicitUseTargetFlags TargetFlags { get; }
+
+        public ImplicitUseKindFlags UseKindFlags { get; }
     }
 
     /// <summary>
@@ -409,10 +409,10 @@ namespace SteamAutoMarket.Properties
         }
 
         [UsedImplicitly]
-        public ImplicitUseKindFlags UseKindFlags { get; }
+        public ImplicitUseTargetFlags TargetFlags { get; }
 
         [UsedImplicitly]
-        public ImplicitUseTargetFlags TargetFlags { get; }
+        public ImplicitUseKindFlags UseKindFlags { get; }
     }
 
     [Flags]
@@ -622,13 +622,6 @@ namespace SteamAutoMarket.Properties
     public sealed class MacroAttribute : Attribute
     {
         /// <summary>
-        /// Allows specifying a macro that will be executed for a <see cref="SourceTemplateAttribute">source template</see>
-        /// parameter when the template is expanded.
-        /// </summary>
-        [CanBeNull]
-        public string Expression { get; set; }
-
-        /// <summary>
         /// Allows specifying which occurrence of the target parameter becomes editable when the template is deployed.
         /// </summary>
         /// <remarks>
@@ -637,6 +630,13 @@ namespace SteamAutoMarket.Properties
         /// use values >= 0. To make the parameter non-editable when the template is expanded, use -1.
         /// </remarks>>
         public int Editable { get; set; }
+
+        /// <summary>
+        /// Allows specifying a macro that will be executed for a <see cref="SourceTemplateAttribute">source template</see>
+        /// parameter when the template is expanded.
+        /// </summary>
+        [CanBeNull]
+        public string Expression { get; set; }
 
         /// <summary>
         /// Identifies the target parameter of a <see cref="SourceTemplateAttribute">source template</see> if the
@@ -1102,10 +1102,10 @@ namespace SteamAutoMarket.Properties
         }
 
         [NotNull]
-        public string TagName { get; }
+        public Type ControlType { get; }
 
         [NotNull]
-        public Type ControlType { get; }
+        public string TagName { get; }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
@@ -1138,12 +1138,12 @@ namespace SteamAutoMarket.Properties
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class AspTypePropertyAttribute : Attribute
     {
-        public bool CreateConstructorReferences { get; }
-
         public AspTypePropertyAttribute(bool createConstructorReferences)
         {
             this.CreateConstructorReferences = createConstructorReferences;
         }
+
+        public bool CreateConstructorReferences { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1168,10 +1168,10 @@ namespace SteamAutoMarket.Properties
         }
 
         [NotNull]
-        public string Type { get; }
+        public string FieldName { get; }
 
         [NotNull]
-        public string FieldName { get; }
+        public string Type { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
