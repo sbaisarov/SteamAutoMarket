@@ -26,6 +26,8 @@
     /// </summary>
     public partial class MarketSell : INotifyPropertyChanged
     {
+        private readonly List<Task> priceLoadSubTasks = new List<Task>();
+
         private CancellationTokenSource cancellationTokenSource;
 
         private SteamAppId marketSellSelectedAppid = SettingsProvider.GetInstance().MarketSellSelectedAppid;
@@ -152,7 +154,7 @@
         {
             if (this.priceLoadingTask?.IsCompleted == false)
             {
-                this.StopPriceLoadingTask();
+                this.StopPriceLoadingTasks();
             }
 
             this.cancellationTokenSource = new CancellationTokenSource();
@@ -183,8 +185,6 @@
                                 SettingsProvider.GetInstance().PriceLoadingThreads,
                                 SettingsProvider.GetInstance().PriceLoadingThreads);
 
-                            var priceLoadTasks = new List<Task>();
-
                             foreach (var item in items)
                             {
                                 priceLoadingSemaphore.WaitOne();
@@ -205,7 +205,7 @@
                                             priceLoadingSemaphore.Release();
                                         },
                                     cancellationToken);
-                                priceLoadTasks.Add(task);
+                                this.priceLoadSubTasks.Add(task);
 
                                 priceLoadingSemaphore.WaitOne();
                                 task = Task.Run(
@@ -226,19 +226,21 @@
                                             priceLoadingSemaphore.Release();
                                         },
                                     cancellationToken);
-                                priceLoadTasks.Add(task);
+                                this.priceLoadSubTasks.Add(task);
 
                                 if (cancellationToken.IsCancellationRequested)
                                 {
                                     Logger.Log.Debug(
-                                        $"Waiting for {priceLoadTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
-                                    new Waiter().Until(() => priceLoadTasks.All(t => t.IsCompleted));
+                                        $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
+                                    new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
                                     Logger.Log.Debug("Market sell price loading was force stopped");
+                                    this.priceLoadSubTasks.Clear();
                                     break;
                                 }
                             }
 
-                            new Waiter().Until(() => priceLoadTasks.All(t => t.IsCompleted));
+                            new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
+                            this.priceLoadSubTasks.Clear();
                             Logger.Log.Debug("Market sell price loading task is finished");
                         }
                         catch (Exception ex)
@@ -293,13 +295,36 @@
 
         private void StartMarketSellButtonClick_OnClick(object sender, RoutedEventArgs e)
         {
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
+
+            this.StopPriceLoadingTasks();
+
+            var itemsToSell = this.MarketSellItems.ToList().Where(i => i.MarketSellNumericUpDown.AmountToSell > 0)
+                .Select(i => new MarketSellProcessModel(i)).Where(i => i.Count > 0).ToList();
+            if (itemsToSell.Sum(i => i.Count) == 0)
+            {
+                ErrorNotify.CriticalMessageBox("No items was marked to sell! Mark items before starting sell process");
+                return;
+            }
+
+            var form = WorkingProcessForm.NewWorkingProcessWindow("Market sell");
+
+            UiGlobalVariables.SteamManager.SellOnMarket(
+                form,
+                this.priceLoadSubTasks,
+                itemsToSell,
+                this.MarketSellStrategy);
         }
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (this.priceLoadingTask?.IsCompleted == false)
             {
-                Task.Run(() => this.StopPriceLoadingTask());
+                Task.Run(() => this.StopPriceLoadingTasks());
             }
             else
             {
@@ -307,11 +332,14 @@
             }
         }
 
-        private void StopPriceLoadingTask()
+        private void StopPriceLoadingTasks()
         {
-            Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
-            this.cancellationTokenSource.Cancel();
-            new Waiter().Until(() => this.priceLoadingTask?.IsCompleted == true);
+            if (this.cancellationTokenSource != null)
+            {
+                Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
+                this.cancellationTokenSource.Cancel();
+                new Waiter().Until(() => this.priceLoadingTask?.IsCompleted == true);
+            }
         }
 
         private MarketSellStrategy GetMarketSellStrategy()

@@ -28,6 +28,10 @@
 
         private int hoursToBecomeOld = 10;
 
+        private int errorsOnSellToSkip = 20;
+
+        private int itemsTo2FaConfirm = 100;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public List<SteamAppId> AppIdList
@@ -133,6 +137,26 @@
             set
             {
                 this.hoursToBecomeOld = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int ErrorsOnSellToSkip
+        {
+            get => this.errorsOnSellToSkip;
+            set
+            {
+                this.errorsOnSellToSkip = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int ItemsTo2FAConfirm
+        {
+            get => this.itemsTo2FaConfirm;
+            set
+            {
+                this.itemsTo2FaConfirm = value;
                 this.OnPropertyChanged();
             }
         }

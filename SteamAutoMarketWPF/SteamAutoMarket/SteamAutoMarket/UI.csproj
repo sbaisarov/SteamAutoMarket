@@ -62,6 +62,7 @@
     <Compile Include="Models\MarketRelistModel.cs" />
     <Compile Include="Models\CheckedModel.cs" />
     <Compile Include="Models\MarketSellModel.cs" />
+    <Compile Include="Models\MarketSellProcessModel.cs" />
     <Compile Include="Models\NumericUpDownModel.cs" />
     <Compile Include="Models\PriceModel.cs" />
     <Compile Include="Models\SteamAppId.cs" />

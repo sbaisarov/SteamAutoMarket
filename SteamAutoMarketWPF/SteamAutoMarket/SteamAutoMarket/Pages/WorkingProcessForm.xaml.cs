@@ -176,8 +176,8 @@
             if (this.ChartModel.Count > 50)
             {
                 var oldChart = this.ChartModel.ToList();
-                var newChart = new List<DataPoint>();
-                for (var j = 3; j < oldChart.Count; j += 2)
+                var newChart = new List<DataPoint> { oldChart[0] };
+                for (var j = 2; j < oldChart.Count; j += 2)
                 {
                     var averageX = (oldChart[j].X + oldChart[j - 1].X) / 2;
                     var averageY = (oldChart[j].Y + oldChart[j - 1].Y) / 2;

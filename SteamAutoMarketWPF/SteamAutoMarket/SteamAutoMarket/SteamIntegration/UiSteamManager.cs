@@ -4,6 +4,10 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading.Tasks;
+
+    using Core;
+    using Core.Waiter;
 
     using Steam;
     using Steam.SteamAuth;
@@ -11,6 +15,7 @@
 
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Pages;
+    using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.PriceCache;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Extension;
@@ -127,7 +132,153 @@
             var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName)
                 .ToList();
 
-            foreach (var group in groupedItems) marketSellItems.AddDispatch(new MarketSellModel(@group.ToList()));
+            foreach (var group in groupedItems) marketSellItems.AddDispatch(new MarketSellModel(group.ToList()));
+        }
+
+        public void SellOnMarket(
+            WorkingProcessForm form,
+            List<Task> priceLoadTasksList,
+            List<MarketSellProcessModel> marketSellModels,
+            MarketSellStrategy sellStrategy)
+        {
+            form.ProcessMethod(
+                () =>
+                    {
+                        try
+                        {
+                            var notReadyTasksCount = priceLoadTasksList.Count(task => task.IsCompleted == false);
+                            if (notReadyTasksCount > 0)
+                            {
+                                form.AppendLog(
+                                    $"Waiting for {notReadyTasksCount} not finished price load threads to avoid steam ban on requests");
+                                new Waiter { Timeout = TimeSpan.FromMinutes(1) }.UntilSoft(
+                                    () => priceLoadTasksList.All(task => task.IsCompleted));
+                            }
+
+                            var maxErrorsCount = SettingsProvider.GetInstance().ErrorsOnSellToSkip;
+                            var currentItemIndex = 1;
+                            var itemsToConfirmCount = SettingsProvider.GetInstance().ItemsTo2FAConfirm;
+                            var totalItemsCount = marketSellModels.Sum(x => x.Count);
+                            form.ProgressBarMaximum = totalItemsCount;
+                            var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
+
+                            foreach (var marketSellModel in marketSellModels)
+                            {
+                                if (!marketSellModel.SellPrice.HasValue)
+                                {
+                                    try
+                                    {
+                                        var price =
+                                            this.AveragePriceCache.Get(
+                                                marketSellModel.ItemModel.Description.MarketHashName)?.Price
+                                            ?? UiGlobalVariables.SteamManager.GetAveragePrice(
+                                                marketSellModel.ItemModel.Asset.Appid,
+                                                marketSellModel.ItemModel.Description.MarketHashName,
+                                                averagePriceDays);
+
+                                        Logger.Log.Debug(
+                                            $"Average price for {averagePriceDays} days for {marketSellModel.ItemName} is - {price}");
+
+                                        marketSellModel.AveragePrice = price;
+
+                                        price =
+                                            this.CurrentPriceCache.Get(
+                                                marketSellModel.ItemModel.Description.MarketHashName)?.Price
+                                            ?? UiGlobalVariables.SteamManager.GetCurrentPrice(
+                                                marketSellModel.ItemModel.Asset.Appid,
+                                                marketSellModel.ItemModel.Description.MarketHashName);
+
+                                        Logger.Log.Debug($"Current price for {marketSellModel.ItemName} is - {price}");
+                                        marketSellModel.CurrentPrice = price;
+                                        marketSellModel.ProcessSellPrice(sellStrategy);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        form.AppendLog($"Error on market price parse - {ex.Message}");
+                                        form.AppendLog($"Skipping '{marketSellModel.ItemName}'");
+
+                                        totalItemsCount -= marketSellModel.Count;
+                                        form.ProgressBarMaximum = totalItemsCount;
+                                        continue;
+                                    }
+                                }
+
+                                var packageElementIndex = 1;
+                                var errorsCount = 0;
+                                foreach (var item in marketSellModel.ItemsList)
+                                {
+                                    try
+                                    {
+                                        form.AppendLog(
+                                            $"[{currentItemIndex}/{totalItemsCount}] Selling - [{packageElementIndex++}/{marketSellModel.Count}] - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice}");
+
+                                        if (marketSellModel.SellPrice.HasValue)
+                                        {
+                                            this.SellOnMarket(item, marketSellModel.SellPrice.Value);
+                                        }
+                                        else
+                                        {
+                                            form.AppendLog(
+                                                $"Error on selling '{marketSellModel.ItemName}' - Price is not loaded. Skipping item.");
+                                            totalItemsCount -= marketSellModel.Count;
+                                            form.ProgressBarMaximum = totalItemsCount;
+                                            break;
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        form.AppendLog($"Error on selling '{marketSellModel.ItemName}' - {ex.Message}");
+
+                                        if (++errorsCount == maxErrorsCount)
+                                        {
+                                            form.AppendLog(
+                                                $"{maxErrorsCount} fails limit on sell {marketSellModel.ItemName} reached. Skipping item.");
+                                            totalItemsCount -= marketSellModel.Count - packageElementIndex;
+                                            form.ProgressBarMaximum = totalItemsCount;
+                                            break;
+                                        }
+                                    }
+                                    if (currentItemIndex % itemsToConfirmCount == 0)
+                                    {
+                                        Task.Run(() => this.ConfirmMarketTransactions(form));
+                                    }
+                                    currentItemIndex++;
+                                    form.IncrementProgress();
+                                }
+                            }
+
+                            Task.Run(() => this.ConfirmMarketTransactions(form));
+                        }
+                        catch (Exception ex)
+                        {
+                            var message = $"Critical error on market sell - {ex.Message}";
+                            form.AppendLog(message);
+                            ErrorNotify.CriticalMessageBox(message);
+                        }
+                    });
+        }
+
+        public async Task ConfirmMarketTransactions(WorkingProcessForm form)
+        {
+            form.AppendLog("Fetching confirmations");
+            try
+            {
+                var confirmations = this.Guard.FetchConfirmations();
+                var marketConfirmations = confirmations
+                    .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+                form.AppendLog("Accepting confirmations");
+                this.Guard.AcceptMultipleConfirmations(marketConfirmations);
+            }
+            catch (SteamGuardAccount.WGTokenExpiredException)
+            {
+                form.AppendLog("Session expired. Updating...");
+                this.Guard.RefreshSession();
+                await this.ConfirmMarketTransactions(form);
+            }
+            catch (Exception e)
+            {
+                form.AppendLog($"Error on 2FA confirm - {e.Message}");
+            }
         }
     }
 }
