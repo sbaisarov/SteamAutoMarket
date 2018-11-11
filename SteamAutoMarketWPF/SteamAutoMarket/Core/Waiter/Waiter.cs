@@ -12,8 +12,6 @@
         {
             private readonly T input;
 
-            private readonly Clock clock;
-
             private readonly List<Type> ignoredExceptions = new List<Type>();
 
             /// <summary>
@@ -21,16 +19,6 @@
             /// </summary>
             /// <param name="input">The input value to pass to the evaluated conditions.</param>
             public DefaultWait(T input)
-                : this(input, new Clock())
-            {
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="DefaultWait&lt;T&gt;"/> class.
-            /// </summary>
-            /// <param name="input">The input value to pass to the evaluated conditions.</param>
-            /// <param name="clock">The clock to use when measuring the timeout.</param>
-            public DefaultWait(T input, Clock clock)
             {
                 if (input == null)
                 {
@@ -38,7 +26,6 @@
                 }
 
                 this.input = input;
-                this.clock = clock ?? throw new ArgumentNullException(nameof(clock), "clock cannot be null");
             }
 
             /// <summary>
@@ -112,7 +99,7 @@
                 }
 
                 Exception lastException = null;
-                var endTime = this.clock.LaterBy(this.Timeout);
+                var endTime = Clock.LaterBy(this.Timeout);
                 while (true)
                 {
                     try
@@ -146,7 +133,7 @@
 
                     // Check the timeout after evaluating the function to ensure conditions
                     // with a zero timeout can succeed.
-                    if (failOnTimeOver && !this.clock.IsNowBefore(endTime))
+                    if (failOnTimeOver && !Clock.IsNowBefore(endTime))
                     {
                         var timeoutMessage = string.Format(
                             CultureInfo.InvariantCulture,

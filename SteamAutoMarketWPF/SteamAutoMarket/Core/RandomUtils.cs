@@ -14,6 +14,6 @@
 
         public static int RandomInt(int min, int max) => Random.Next(min, max + 1);
 
-        public static double RandomDobule(double min, double max) => Random.NextDouble() * (max - min) + min;
+        public static double RandomDouble(double min, double max) => Random.NextDouble() * (max - min) + min;
     }
 }
