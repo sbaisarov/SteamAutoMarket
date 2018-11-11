@@ -105,6 +105,8 @@
     <Compile Include="Repository\Context\UiGlobalVariables.cs" />
     <Compile Include="Repository\Settings\SettingsProvider.cs" />
     <Compile Include="Repository\Settings\SettingsUpdated.cs" />
+    <Compile Include="SteamUtils\Enums\EMarketSaleType.cs" />
+    <Compile Include="SteamUtils\MarketSellStrategy.cs" />
     <Compile Include="SteamUtils\UiSteamManager.cs" />
     <Compile Include="SteamUtils\WorkingProcessType.cs" />
     <Compile Include="Utils\Converter\SolidColorBrushToColorConverter.cs" />

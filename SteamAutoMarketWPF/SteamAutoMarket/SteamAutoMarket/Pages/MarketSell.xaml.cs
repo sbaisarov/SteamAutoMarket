@@ -17,6 +17,8 @@
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
+    using SteamAutoMarket.SteamUtils;
+    using SteamAutoMarket.SteamUtils.Enums;
     using SteamAutoMarket.Utils.Logger;
 
     /// <summary>
@@ -24,8 +26,6 @@
     /// </summary>
     public partial class MarketSell : INotifyPropertyChanged
     {
-        private CancellationToken cancellationToken;
-
         private CancellationTokenSource cancellationTokenSource;
 
         private SteamAppId marketSellSelectedAppid = SettingsProvider.GetInstance().MarketSellSelectedAppid;
@@ -33,6 +33,8 @@
         private MarketSellModel marketSellSelectedItem;
 
         private Task priceLoadingTask;
+
+        private MarketSellStrategy marketSellStrategy;
 
         public MarketSell()
         {
@@ -42,6 +44,7 @@
 
             this.MarketSellSelectedAppid = this.AppIdList.FirstOrDefault(
                 appid => appid?.Name == SettingsProvider.GetInstance().MarketSellSelectedAppid?.Name);
+            this.marketSellStrategy = this.GetMarketSellStrategy();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -96,6 +99,17 @@
             }
         }
 
+        public MarketSellStrategy MarketSellStrategy
+        {
+            get => this.marketSellStrategy;
+            set
+            {
+                if (this.marketSellStrategy != null && this.marketSellStrategy.Equals(value)) return;
+                this.marketSellStrategy = value;
+                this.ReformatAllSellPrices();
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -142,7 +156,7 @@
             }
 
             this.cancellationTokenSource = new CancellationTokenSource();
-            this.cancellationToken = this.cancellationTokenSource.Token;
+            var cancellationToken = this.cancellationTokenSource.Token;
 
             this.priceLoadingTask = Task.Run(
                 () =>
@@ -180,8 +194,10 @@
                                                 item.ItemModel.Description.MarketHashName);
                                             Logger.Log.Debug($"Current price for {item.ItemName} is - {price}");
                                             item.CurrentPrice = price;
+                                            item.ProcessSellPrice(this.MarketSellStrategy);
                                             priceLoadingSemaphore.Release();
-                                        });
+                                        },
+                                    cancellationToken);
                                 priceLoadTasks.Add(task);
 
                                 priceLoadingSemaphore.WaitOne();
@@ -197,13 +213,13 @@
                                                 $"Average price for {averagePriceDays} days for {item.ItemName} is - {price}");
 
                                             item.AveragePrice = price;
-
+                                            item.ProcessSellPrice(this.MarketSellStrategy);
                                             priceLoadingSemaphore.Release();
                                         },
-                                    this.cancellationToken);
+                                    cancellationToken);
                                 priceLoadTasks.Add(task);
 
-                                if (this.cancellationToken.IsCancellationRequested)
+                                if (cancellationToken.IsCancellationRequested)
                                 {
                                     Logger.Log.Debug(
                                         $"Waiting for {priceLoadTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
@@ -221,7 +237,7 @@
                             ErrorNotify.CriticalMessageBox("Error on items price update", ex);
                         }
                     },
-                this.cancellationToken);
+                cancellationToken);
         }
 
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
@@ -285,6 +301,52 @@
             Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
             this.cancellationTokenSource.Cancel();
             new Waiter().Until(() => this.priceLoadingTask?.IsCompleted == true);
+        }
+
+        private MarketSellStrategy GetMarketSellStrategy()
+        {
+            var sellStrategy = new MarketSellStrategy();
+
+            if (this.ManualPriceRb?.IsChecked != null && this.ManualPriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.Manual;
+            }
+            else if (this.RecommendedPriceRb?.IsChecked != null && this.RecommendedPriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.Recommended;
+            }
+            else if (this.CurrentPriceRb?.IsChecked != null && this.CurrentPriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.LowerThanCurrent;
+                sellStrategy.ChangeValue = this.CurrentPriceNumericUpDown?.Value ?? 0;
+            }
+            else if (this.AveragePriceRb?.IsChecked != null && this.AveragePriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.LowerThanAverage;
+                sellStrategy.ChangeValue = this.AveragePriceNumericUpDown?.Value ?? 0;
+            }
+            else
+            {
+                ErrorNotify.CriticalMessageBox(
+                    "Incorrect market sell strategy. Please check price formation radio buttons state");
+                return null;
+            }
+
+            return sellStrategy;
+        }
+
+        private void ReformatAllSellPrices()
+        {
+            var items = this.MarketSellItems.ToList();
+            foreach (var item in items)
+            {
+                item.ProcessSellPrice(this.MarketSellStrategy);
+            }
+        }
+
+        private void ReformatSellStrategyOnControlStateChanged(object sender, RoutedEventArgs e)
+        {
+            this.MarketSellStrategy = this.GetMarketSellStrategy();
         }
     }
 }

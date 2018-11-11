@@ -12,6 +12,8 @@
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Image;
+    using SteamAutoMarket.SteamUtils;
+    using SteamAutoMarket.SteamUtils.Enums;
 
     public class MarketSellModel : INotifyPropertyChanged
     {
@@ -48,7 +50,6 @@
             set
             {
                 this.averagePrice = value;
-                this.ProcessSellPrice();
                 this.OnPropertyChanged();
             }
         }
@@ -61,7 +62,6 @@
             set
             {
                 this.currentPrice = value;
-                this.ProcessSellPrice();
                 this.OnPropertyChanged();
             }
         }
@@ -105,11 +105,61 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void ProcessSellPrice()
+        public void ProcessSellPrice(MarketSellStrategy strategy)
         {
-            if (this.averagePrice != null || this.currentPrice != null)
+            switch (strategy.SaleType)
             {
-                this.SellPrice.Value = 228;
+                case EMarketSaleType.Recommended:
+                    {
+                        if (this.CurrentPrice == null || this.AveragePrice == null)
+                        {
+                            this.SellPrice.Value = null;
+                        }
+                        else if (this.CurrentPrice > this.AveragePrice)
+                        {
+                            this.SellPrice.Value = this.CurrentPrice - 0.01;
+                        }
+                        else
+                        {
+                            this.SellPrice.Value = this.AveragePrice - 0.01;
+                        }
+
+                        break;
+                    }
+
+                case EMarketSaleType.LowerThanCurrent:
+                    {
+                        if (this.CurrentPrice == null)
+                        {
+                            this.SellPrice.Value = null;
+                        }
+                        else
+                        {
+                            this.SellPrice.Value = this.CurrentPrice + strategy.ChangeValue;
+                        }
+
+                        break;
+                    }
+
+                case EMarketSaleType.LowerThanAverage:
+                    {
+                        if (this.AveragePrice == null)
+                        {
+                            this.SellPrice.Value = null;
+                        }
+                        else
+                        {
+                            this.SellPrice.Value = this.AveragePrice + strategy.ChangeValue;
+                        }
+
+                        break;
+                    }
+
+                default:
+                    {
+                        this.SellPrice.Value = null;
+                        return;
+                    }
             }
         }
     }
