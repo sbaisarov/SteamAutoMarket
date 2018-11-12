@@ -14,25 +14,25 @@
 
         private string color;
 
+        private int errorsOnSellToSkip = 20;
+
+        private int hoursToBecomeOld = 10;
+
+        private int itemsToTwoFactorConfirm = 100;
+
         private string mafilesPath;
 
         private SteamAppId marketSellSelectedAppid;
 
         private int priceLoadingThreads = 3;
 
+        private bool scrollLogsToEnd;
+
         private List<SettingsSteamAccount> steamAccounts = new List<SettingsSteamAccount>();
 
         private string theme;
 
         private SteamAppId tradeSelectedAppId;
-
-        private int hoursToBecomeOld = 10;
-
-        private int errorsOnSellToSkip = 20;
-
-        private int itemsToTwoFactorConfirm = 100;
-
-        private bool scrollLogsToEnd;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -64,8 +64,38 @@
 
         public int CurrentPriceHoursToBecomeOld { get; set; }
 
+        public int ErrorsOnSellToSkip
+        {
+            get => this.errorsOnSellToSkip;
+            set
+            {
+                this.errorsOnSellToSkip = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int HoursToBecomeOld
+        {
+            get => this.hoursToBecomeOld;
+            set
+            {
+                this.hoursToBecomeOld = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         [JsonIgnore]
         public bool IsSettingsLoaded { get; set; }
+
+        public int ItemsToTwoFactorConfirm
+        {
+            get => this.itemsToTwoFactorConfirm;
+            set
+            {
+                this.itemsToTwoFactorConfirm = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public string MafilesPath
         {
@@ -100,6 +130,17 @@
             }
         }
 
+        public bool ScrollLogsToEnd
+        {
+            get => this.scrollLogsToEnd;
+
+            set
+            {
+                this.scrollLogsToEnd = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public List<SettingsSteamAccount> SteamAccounts
         {
             get => this.steamAccounts;
@@ -129,47 +170,6 @@
             {
                 if (this.tradeSelectedAppId == value) return;
                 this.tradeSelectedAppId = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int HoursToBecomeOld
-        {
-            get => this.hoursToBecomeOld;
-            set
-            {
-                this.hoursToBecomeOld = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int ErrorsOnSellToSkip
-        {
-            get => this.errorsOnSellToSkip;
-            set
-            {
-                this.errorsOnSellToSkip = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int ItemsToTwoFactorConfirm
-        {
-            get => this.itemsToTwoFactorConfirm;
-            set
-            {
-                this.itemsToTwoFactorConfirm = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool ScrollLogsToEnd
-        {
-            get => this.scrollLogsToEnd;
-
-            set
-            {
-                this.scrollLogsToEnd = value;
                 this.OnPropertyChanged();
             }
         }

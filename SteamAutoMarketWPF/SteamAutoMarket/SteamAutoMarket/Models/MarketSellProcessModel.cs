@@ -23,19 +23,19 @@
             this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
         }
 
-        public string ItemName { get; set; }
+        public double? AveragePrice { get; set; }
 
         public int Count { get; set; }
 
-        public FullRgItem ItemModel { get; set; }
-
         public double? CurrentPrice { get; set; }
 
-        public double? AveragePrice { get; set; }
+        public FullRgItem ItemModel { get; set; }
 
-        public double? SellPrice { get; set; }
+        public string ItemName { get; set; }
 
         public IEnumerable<FullRgItem> ItemsList { get; set; }
+
+        public double? SellPrice { get; set; }
 
         public void ProcessSellPrice(MarketSellStrategy strategy)
         {

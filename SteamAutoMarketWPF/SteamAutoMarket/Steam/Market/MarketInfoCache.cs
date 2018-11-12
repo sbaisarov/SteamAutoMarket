@@ -15,7 +15,7 @@
 
         private static Dictionary<string, MarketItemInfo> cache;
 
-        private static int newValuesCounter = 0;
+        private static int newValuesCounter;
 
         public static void Cache(int appid, string hashName, MarketItemInfo info)
         {

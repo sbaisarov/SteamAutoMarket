@@ -101,10 +101,6 @@
 
         public string Type { get; }
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
         public void ProcessSellPrice(MarketSellStrategy strategy)
         {
             switch (strategy.SaleType)
@@ -162,5 +158,9 @@
                     }
             }
         }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

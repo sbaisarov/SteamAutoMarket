@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Core;
     using Core.Waiter;
 
     using Steam;
@@ -43,9 +42,41 @@
                 SettingsProvider.GetInstance().HoursToBecomeOld);
         }
 
+        public PriceCache AveragePriceCache { get; set; }
+
         public PriceCache CurrentPriceCache { get; set; }
 
-        public PriceCache AveragePriceCache { get; set; }
+        public async Task ConfirmMarketTransactions(WorkingProcessForm form)
+        {
+            form.AppendLog("Fetching confirmations");
+            try
+            {
+                var confirmations = this.Guard.FetchConfirmations();
+                var marketConfirmations = confirmations
+                    .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+                form.AppendLog($"{marketConfirmations.Length} confirmations found. Accepting confirmations");
+                this.Guard.AcceptMultipleConfirmations(marketConfirmations);
+                form.AppendLog($"{marketConfirmations.Length} confirmations was successfully accepted");
+            }
+            catch (Exception e)
+            {
+                form.AppendLog($"Error on 2FA confirm - {e.Message}");
+            }
+        }
+
+        public override double? GetAveragePrice(int appid, string hashName, int days)
+        {
+            var price = base.GetAveragePrice(appid, hashName, days);
+            if (price.HasValue) this.AveragePriceCache.Cache(hashName, price.Value);
+            return price;
+        }
+
+        public override double? GetCurrentPrice(int appid, string hashName)
+        {
+            var price = base.GetCurrentPrice(appid, hashName);
+            if (price.HasValue) this.CurrentPriceCache.Cache(hashName, price.Value);
+            return price;
+        }
 
         public void LoadItemsToSaleWorkingProcess(
             WorkingProcessForm form,
@@ -109,32 +140,6 @@
             SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
         }
 
-        public override double? GetAveragePrice(int appid, string hashName, int days)
-        {
-            var price = base.GetAveragePrice(appid, hashName, days);
-            if (price.HasValue) this.AveragePriceCache.Cache(hashName, price.Value);
-            return price;
-        }
-
-        public override double? GetCurrentPrice(int appid, string hashName)
-        {
-            var price = base.GetCurrentPrice(appid, hashName);
-            if (price.HasValue) this.CurrentPriceCache.Cache(hashName, price.Value);
-            return price;
-        }
-
-        private void ProcessInventoryPage(
-            ICollection<MarketSellModel> marketSellItems,
-            InventoryRootModel inventoryPage)
-        {
-            var items = this.Inventory.ProcessInventoryPage(inventoryPage);
-
-            var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName)
-                .ToList();
-
-            foreach (var group in groupedItems) marketSellItems.AddDispatch(new MarketSellModel(group.ToList()));
-        }
-
         public void SellOnMarket(
             WorkingProcessForm form,
             List<Task> priceLoadTasksList,
@@ -164,7 +169,8 @@
                             {
                                 if (!marketSellModel.SellPrice.HasValue)
                                 {
-                                    form.AppendLog($"Price for '{marketSellModel.ItemName}' is not loaded. Processing price");
+                                    form.AppendLog(
+                                        $"Price for '{marketSellModel.ItemName}' is not loaded. Processing price");
                                     if (form.CancellationToken.IsCancellationRequested)
                                     {
                                         form.AppendLog("Market sell process was force stopped");
@@ -271,22 +277,16 @@
                     });
         }
 
-        public async Task ConfirmMarketTransactions(WorkingProcessForm form)
+        private void ProcessInventoryPage(
+            ICollection<MarketSellModel> marketSellItems,
+            InventoryRootModel inventoryPage)
         {
-            form.AppendLog("Fetching confirmations");
-            try
-            {
-                var confirmations = this.Guard.FetchConfirmations();
-                var marketConfirmations = confirmations
-                    .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
-                form.AppendLog($"{marketConfirmations.Length} confirmations found. Accepting confirmations");
-                this.Guard.AcceptMultipleConfirmations(marketConfirmations);
-                form.AppendLog($"{marketConfirmations.Length} confirmations was successfully accepted");
-            }
-            catch (Exception e)
-            {
-                form.AppendLog($"Error on 2FA confirm - {e.Message}");
-            }
+            var items = this.Inventory.ProcessInventoryPage(inventoryPage);
+
+            var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName)
+                .ToList();
+
+            foreach (var group in groupedItems) marketSellItems.AddDispatch(new MarketSellModel(group.ToList()));
         }
     }
 }

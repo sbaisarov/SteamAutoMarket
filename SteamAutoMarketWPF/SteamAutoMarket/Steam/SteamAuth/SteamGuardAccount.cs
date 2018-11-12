@@ -444,8 +444,8 @@
             //        $"{identitySecret},{tag},{time}");
             //    return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             //}
-            byte[] decode = Convert.FromBase64String(this.IdentitySecret);
-            int n2 = 8;
+            var decode = Convert.FromBase64String(this.IdentitySecret);
+            var n2 = 8;
             if (tag != null)
             {
                 if (tag.Length > 32)
@@ -457,19 +457,22 @@
                     n2 = 8 + tag.Length;
                 }
             }
-            byte[] array = new byte[n2];
-            int n3 = 8;
+
+            var array = new byte[n2];
+            var n3 = 8;
             while (true)
             {
-                int n4 = n3 - 1;
+                var n4 = n3 - 1;
                 if (n3 <= 0)
                 {
                     break;
                 }
+
                 array[n4] = (byte)time;
                 time >>= 8;
                 n3 = n4;
             }
+
             if (tag != null)
             {
                 Array.Copy(Encoding.UTF8.GetBytes(tag), 0, array, 8, n2 - 8);
@@ -477,11 +480,11 @@
 
             try
             {
-                HMACSHA1 hmacGenerator = new HMACSHA1();
+                var hmacGenerator = new HMACSHA1();
                 hmacGenerator.Key = decode;
-                byte[] hashedData = hmacGenerator.ComputeHash(array);
-                string encodedData = Convert.ToBase64String(hashedData, Base64FormattingOptions.None);
-                string hash = WebUtility.UrlEncode(encodedData);
+                var hashedData = hmacGenerator.ComputeHash(array);
+                var encodedData = Convert.ToBase64String(hashedData, Base64FormattingOptions.None);
+                var hash = WebUtility.UrlEncode(encodedData);
                 return hash;
             }
             catch

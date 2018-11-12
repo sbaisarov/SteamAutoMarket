@@ -26,6 +26,31 @@
 
         public string FilePath { get; }
 
+        public void Cache(string hashName, double price)
+        {
+            if (price == 0 || double.IsNaN(price))
+            {
+                return;
+            }
+
+            this.Get()[hashName] = new CachedPriceModel(DateTime.Now, price);
+            this.UpdateAll();
+        }
+
+        public void Clear()
+        {
+            this.cache.Clear();
+            this.UpdateAll(true);
+        }
+
+        public void ClearOld()
+        {
+            this.cache = this.cache.Where(pair => this.IsOld(pair.Value) == false)
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            this.UpdateAll(true);
+        }
+
         public Dictionary<string, CachedPriceModel> Get()
         {
             if (this.cache != null)
@@ -66,37 +91,14 @@
             return null;
         }
 
-        public void Cache(string hashName, double price)
-        {
-            if (price == 0 || double.IsNaN(price))
-            {
-                return;
-            }
-
-            this.Get()[hashName] = new CachedPriceModel(DateTime.Now, price);
-            this.UpdateAll();
-        }
-
-        public void ClearOld()
-        {
-            this.cache = this.cache.Where(pair => this.IsOld(pair.Value) == false)
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
-
-            this.UpdateAll(true);
-        }
-
-        public void Clear()
-        {
-            this.cache.Clear();
-            this.UpdateAll(true);
-        }
-
         public void Uncache(string hashName)
         {
             this.Get().Remove(hashName);
             this.fileUpdateCounter += 1;
             this.UpdateAll();
         }
+
+        private bool IsOld(CachedPriceModel item) => item.ParseTime.AddHours(this.hoursToBecomeOld) < DateTime.Now;
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void UpdateAll(bool force = false)
@@ -109,7 +111,5 @@
             File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.Get(), Formatting.Indented));
             this.fileUpdateCounter = 0;
         }
-
-        private bool IsOld(CachedPriceModel item) => item.ParseTime.AddHours(this.hoursToBecomeOld) < DateTime.Now;
     }
 }

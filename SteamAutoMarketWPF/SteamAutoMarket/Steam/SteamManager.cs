@@ -120,25 +120,6 @@
             return price;
         }
 
-        public virtual void SellOnMarket(FullRgItem item, double price)
-        {
-            var asset = item.Asset;
-            var description = item.Description;
-
-            JSellItem resp = this.MarketClient.SellItem(
-                description.Appid,
-                int.Parse(asset.Contextid),
-                long.Parse(asset.Assetid),
-                int.Parse(item.Asset.Amount),
-                price / 1.15);
-
-            var message = resp.Message; // error message
-            if (message != null)
-            {
-                throw new SteamException(message);
-            }
-        }
-
         public virtual double? GetCurrentPrice(int appid, string hashName)
         {
             var itemPageInfo = MarketInfoCache.Get(appid, hashName);
@@ -224,6 +205,25 @@
             }
 
             return false;
+        }
+
+        public virtual void SellOnMarket(FullRgItem item, double price)
+        {
+            var asset = item.Asset;
+            var description = item.Description;
+
+            JSellItem resp = this.MarketClient.SellItem(
+                description.Appid,
+                int.Parse(asset.Contextid),
+                long.Parse(asset.Assetid),
+                int.Parse(item.Asset.Amount),
+                price / 1.15);
+
+            var message = resp.Message; // error message
+            if (message != null)
+            {
+                throw new SteamException(message);
+            }
         }
 
         public void UpdateSteamSession()

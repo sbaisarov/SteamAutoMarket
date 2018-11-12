@@ -4,9 +4,9 @@
 
     public class MarketSellStrategy
     {
-        public EMarketSaleType SaleType { get; set; }
-
         public double ChangeValue { get; set; }
+
+        public EMarketSaleType SaleType { get; set; }
 
         public override bool Equals(object obj)
         {

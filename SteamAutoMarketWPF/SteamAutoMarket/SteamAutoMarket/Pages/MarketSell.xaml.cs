@@ -34,9 +34,9 @@
 
         private MarketSellModel marketSellSelectedItem;
 
-        private Task priceLoadingTask;
-
         private MarketSellStrategy marketSellStrategy;
+
+        private Task priceLoadingTask;
 
         public MarketSell()
         {
@@ -116,6 +116,38 @@
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private MarketSellStrategy GetMarketSellStrategy()
+        {
+            var sellStrategy = new MarketSellStrategy();
+
+            if (this.ManualPriceRb?.IsChecked != null && this.ManualPriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.Manual;
+            }
+            else if (this.RecommendedPriceRb?.IsChecked != null && this.RecommendedPriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.Recommended;
+            }
+            else if (this.CurrentPriceRb?.IsChecked != null && this.CurrentPriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.LowerThanCurrent;
+                sellStrategy.ChangeValue = this.CurrentPriceNumericUpDown?.Value ?? 0;
+            }
+            else if (this.AveragePriceRb?.IsChecked != null && this.AveragePriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.LowerThanAverage;
+                sellStrategy.ChangeValue = this.AveragePriceNumericUpDown?.Value ?? 0;
+            }
+            else
+            {
+                ErrorNotify.CriticalMessageBox(
+                    "Incorrect market sell strategy. Please check price formation radio buttons state");
+                return null;
+            }
+
+            return sellStrategy;
+        }
+
         private void LoadInventoryItems(object sender, RoutedEventArgs e)
         {
             if (UiGlobalVariables.SteamManager == null)
@@ -148,6 +180,20 @@
             {
                 this.MarketSellItems[i].MarketSellNumericUpDown.SetToMaximum();
             }
+        }
+
+        private void ReformatAllSellPrices()
+        {
+            var items = this.MarketSellItems.ToList();
+            foreach (var item in items)
+            {
+                item.ProcessSellPrice(this.MarketSellStrategy);
+            }
+        }
+
+        private void ReformatSellStrategyOnControlStateChanged(object sender, RoutedEventArgs e)
+        {
+            this.MarketSellStrategy = this.GetMarketSellStrategy();
         }
 
         private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e)
@@ -340,52 +386,6 @@
                 this.cancellationTokenSource.Cancel();
                 new Waiter().Until(() => this.priceLoadingTask?.IsCompleted == true);
             }
-        }
-
-        private MarketSellStrategy GetMarketSellStrategy()
-        {
-            var sellStrategy = new MarketSellStrategy();
-
-            if (this.ManualPriceRb?.IsChecked != null && this.ManualPriceRb.IsChecked == true)
-            {
-                sellStrategy.SaleType = EMarketSaleType.Manual;
-            }
-            else if (this.RecommendedPriceRb?.IsChecked != null && this.RecommendedPriceRb.IsChecked == true)
-            {
-                sellStrategy.SaleType = EMarketSaleType.Recommended;
-            }
-            else if (this.CurrentPriceRb?.IsChecked != null && this.CurrentPriceRb.IsChecked == true)
-            {
-                sellStrategy.SaleType = EMarketSaleType.LowerThanCurrent;
-                sellStrategy.ChangeValue = this.CurrentPriceNumericUpDown?.Value ?? 0;
-            }
-            else if (this.AveragePriceRb?.IsChecked != null && this.AveragePriceRb.IsChecked == true)
-            {
-                sellStrategy.SaleType = EMarketSaleType.LowerThanAverage;
-                sellStrategy.ChangeValue = this.AveragePriceNumericUpDown?.Value ?? 0;
-            }
-            else
-            {
-                ErrorNotify.CriticalMessageBox(
-                    "Incorrect market sell strategy. Please check price formation radio buttons state");
-                return null;
-            }
-
-            return sellStrategy;
-        }
-
-        private void ReformatAllSellPrices()
-        {
-            var items = this.MarketSellItems.ToList();
-            foreach (var item in items)
-            {
-                item.ProcessSellPrice(this.MarketSellStrategy);
-            }
-        }
-
-        private void ReformatSellStrategyOnControlStateChanged(object sender, RoutedEventArgs e)
-        {
-            this.MarketSellStrategy = this.GetMarketSellStrategy();
         }
     }
 }

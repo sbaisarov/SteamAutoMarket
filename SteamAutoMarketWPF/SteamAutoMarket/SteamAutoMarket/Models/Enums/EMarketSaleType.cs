@@ -3,8 +3,11 @@
     public enum EMarketSaleType
     {
         Manual,
+
         Recommended,
+
         LowerThanCurrent,
+
         LowerThanAverage
     }
 }
