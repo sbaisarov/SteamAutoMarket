@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:settings="clr-namespace:SteamAutoMarket.Pages.Settings"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance settings:MarketSettings}">
     <Grid>
         <ScrollViewer>
             <StackPanel x:Name="Panel" MinWidth="150">
@@ -23,26 +25,58 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="Average price (days)" VerticalAlignment="Center" Margin="0,16,16,12" />
-                    <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Themes}"
-                              SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" DisplayMemberPath="DisplayName"
-                              VerticalAlignment="Center" Margin="0,16,0,12" />
+                    <TextBlock Grid.Row="0"
+                               Text="Average price (days)"
+                               VerticalAlignment="Center"
+                               Margin="0,16,16,12" />
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Confirm 2FA (count)" VerticalAlignment="Center" Margin="0,0,16,12" />
-                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Themes}"
-                              SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" DisplayMemberPath="DisplayName"
-                              VerticalAlignment="Center" Margin="0,0,0,12" />
+                    <xctk:IntegerUpDown Grid.Row="0"
+                                        Style="{StaticResource UpDown}"
+                                        Grid.Column="1"
+                                        Value="{Binding AveragePriceDays, Mode=TwoWay}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,16,0,12"
+                                        Foreground="{DynamicResource ItemText}"
+                                        Background="{DynamicResource DataGridBackground}"/>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="To skip on sell (count)" VerticalAlignment="Center"
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="To confirm 2FA (count)"
+                               VerticalAlignment="Center"
                                Margin="0,0,16,12" />
-                    <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Themes}"
-                              SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" DisplayMemberPath="DisplayName"
-                              VerticalAlignment="Center" Margin="0,0,0,12" />
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Price load threads" VerticalAlignment="Center" Margin="0,0,16,12" />
-                    <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Themes}"
-                              SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" DisplayMemberPath="DisplayName"
-                              VerticalAlignment="Center" Margin="0,0,0,12" />
+                    <xctk:IntegerUpDown Grid.Row="1"
+                                        Style="{StaticResource UpDown}"
+                                        Grid.Column="1"
+                                        Value="{Binding ItemsToTwoFactorConfirm, Mode=TwoWay}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,0,12" />
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0"
+                               Text="To skip on sell (count)"
+                               VerticalAlignment="Center"
+                               Margin="0,0,16,12" />
+
+                    <xctk:IntegerUpDown Grid.Row="2"
+                                        Style="{StaticResource UpDown}"
+                                        Grid.Column="1"
+                                        Value="{Binding ErrorsOnSellToSkip, Mode=TwoWay}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,0,12" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="0"
+                               Text="Price load threads"
+                               VerticalAlignment="Center"
+                               Margin="0,0,16,12" />
+
+                    <xctk:IntegerUpDown Grid.Row="3"
+                                        Style="{StaticResource UpDown}"
+                                        Grid.Column="1"
+                                        Value="{Binding PriceLoadingThreads, Mode=TwoWay}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,0,12" />
                 </Grid>
             </StackPanel>
         </ScrollViewer>

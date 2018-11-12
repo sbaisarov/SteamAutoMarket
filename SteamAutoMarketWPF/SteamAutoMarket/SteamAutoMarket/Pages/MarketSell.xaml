@@ -128,13 +128,13 @@
                              ReadOnly="False">
                     <xcdg:Column.CellContentTemplate>
                         <ItemContainerTemplate>
-                                <TextBox
-                                    TextAlignment="Center"
-                                    BorderThickness="0"
-                                    Text="{Binding Path=(models:PriceModel.Value), Mode=TwoWay}"
-                                    Foreground="{DynamicResource ItemText}"
-                                    Background="{DynamicResource DataGridBackground}"
-                                    d:DataContext="{d:DesignData PriceModel}"/>
+                            <TextBox
+                                TextAlignment="Center"
+                                BorderThickness="0"
+                                Text="{Binding Path=(models:PriceModel.Value), Mode=TwoWay}"
+                                Foreground="{DynamicResource ItemText}"
+                                Background="{DynamicResource DataGridBackground}"
+                                d:DataContext="{d:DesignData PriceModel}" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
@@ -151,15 +151,13 @@
                     <xcdg:Column.CellContentTemplate>
                         <ItemContainerTemplate>
                             <xctk:IntegerUpDown
+                                Style="{StaticResource UpDown}"
                                 Width="55"
                                 Value="0"
                                 Increment="1"
-                                d:DataContext="{d:DesignInstance models:NumericUpDownModel}"
-                                Maximum="{Binding Path=MaxAllowedCount}"
-                                Text="{Binding Path=AmountToSell}"
-                                Minimum="0"
-                                Foreground="{DynamicResource ItemText}"
-                                Background="{DynamicResource DataGridBackground}" />
+                                Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
+                                Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                Minimum="0" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>

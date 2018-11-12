@@ -12,6 +12,8 @@
     {
         private List<SteamAppId> appIdList = new List<SteamAppId>(UiDefaultValues.AppIdList);
 
+        #region Private
+
         private string color;
 
         private int errorsOnSellToSkip = 20;
@@ -33,6 +35,8 @@
         private string theme;
 
         private SteamAppId tradeSelectedAppId;
+
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -10,9 +10,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxyPlot="clr-namespace:OxyPlot;assembly=OxyPlot"
              xmlns:resources="clr-namespace:SteamAutoMarket.Utils.Resources"
+             xmlns:themes="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=Xceed.Wpf.Toolkit"
              mc:Ignorable="d">
     <Application.Resources>
-
         <ResourceDictionary>
 
             <converter:SolidColorBrushToColorConverter x:Key="SolidColorBrushToColorConverter" />
@@ -191,10 +191,33 @@
                 <Setter Property="CurrentBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
             </Style>
 
+            <Style x:Key="UpDown" TargetType="{x:Type toolkit:InputBase}">
+                <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
+                <Setter Property="Foreground" Value="{StaticResource DataGridForeground}" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver"
+                             Value="True">
+                        <Setter Property="BorderBrush"
+                                Value="{DynamicResource DataGridCellBackgroundSelected}" />
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocusWithin"
+                             Value="True">
+                        <Setter Property="BorderBrush"
+                                Value="{DynamicResource DataGridCellBackgroundSelected}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="toolkit:WatermarkTextBox">
+                <Setter Property="SelectionBrush" Value="{DynamicResource DataGridCellBackgroundSelected}" />
+            </Style>
+
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
