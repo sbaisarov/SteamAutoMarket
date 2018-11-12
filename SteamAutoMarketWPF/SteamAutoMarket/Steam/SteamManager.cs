@@ -7,8 +7,6 @@
 
     using Core;
 
-    using Newtonsoft.Json;
-
     using Steam.Market;
     using Steam.Market.Enums;
     using Steam.Market.Exceptions;
@@ -290,26 +288,27 @@
         private string GenerateSteamGuardCode()
         {
             // todo add license check
-            using (var wb = new WebClient())
-            {
-                var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gguardcode",
-                    this.Guard.SharedSecret + "," + TimeAligner.GetSteamTime());
-                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-            }
+            // using (var wb = new WebClient())
+            // {
+            // var response = wb.UploadString(
+            // "https://www.steambiz.store/api/gguardcode",
+            // this.Guard.SharedSecret + "," + TimeAligner.GetSteamTime());
+            // return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+            // }
+            return this.Guard.GenerateSteamGuardCodeForTime(TimeAligner.GetSteamTime());
         }
 
-        private string GetDeviceId()
-        {
-            // todo add license check
-            using (var wb = new WebClient())
-            {
-                var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gdevid",
-                    this.SteamClient.SteamID.ToString());
-                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-            }
-        }
+        //private string GetDeviceId()
+        //{
+        //    todo add license check
+        //     using (var wb = new WebClient())
+        //    {
+        //        var response = wb.UploadString(
+        //        "https://www.steambiz.store/api/gdevid",
+        //        this.SteamClient.SteamID.ToString());
+        //        return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+        //    }
+        //}
 
         private double? IterateHistory(IEnumerable<PriceHistoryDay> history, double? average = null)
         {

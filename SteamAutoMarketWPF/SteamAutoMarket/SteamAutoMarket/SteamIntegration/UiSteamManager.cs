@@ -166,6 +166,11 @@
                             {
                                 if (!marketSellModel.SellPrice.HasValue)
                                 {
+                                    if (form.CancellationToken.IsCancellationRequested)
+                                    {
+                                        form.AppendLog("Market sell process was force stopped");
+                                        return;
+                                    }
                                     try
                                     {
                                         var price =
@@ -207,6 +212,11 @@
                                 var errorsCount = 0;
                                 foreach (var item in marketSellModel.ItemsList)
                                 {
+                                    if (form.CancellationToken.IsCancellationRequested)
+                                    {
+                                        form.AppendLog("Market sell process was force stopped");
+                                        return;
+                                    }
                                     try
                                     {
                                         form.AppendLog(
@@ -238,10 +248,12 @@
                                             break;
                                         }
                                     }
+
                                     if (currentItemIndex % itemsToConfirmCount == 0)
                                     {
                                         Task.Run(() => this.ConfirmMarketTransactions(form));
                                     }
+
                                     currentItemIndex++;
                                     form.IncrementProgress();
                                 }
@@ -266,14 +278,8 @@
                 var confirmations = this.Guard.FetchConfirmations();
                 var marketConfirmations = confirmations
                     .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
-                form.AppendLog("Accepting confirmations");
+                form.AppendLog($"{marketConfirmations.Length} confirmations found. Accepting confirmations");
                 this.Guard.AcceptMultipleConfirmations(marketConfirmations);
-            }
-            catch (SteamGuardAccount.WGTokenExpiredException)
-            {
-                form.AppendLog("Session expired. Updating...");
-                this.Guard.RefreshSession();
-                await this.ConfirmMarketTransactions(form);
             }
             catch (Exception e)
             {

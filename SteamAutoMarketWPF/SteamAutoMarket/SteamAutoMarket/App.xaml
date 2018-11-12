@@ -117,21 +117,10 @@
             <xcdg:IndexToOddConverter x:Key="RowIndexConverter" />
 
             <Style TargetType="{x:Type xcdg:DataRow}">
-                <Style.Triggers>
-                    <DataTrigger
-                        Binding="{Binding RelativeSource={RelativeSource Self}, 
-                    Path=(xcdg:DataGridVirtualizingPanel.ItemIndex), 
-                    Converter={StaticResource RowIndexConverter}}"
-                        Value="True">
-                        <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
-                        <Setter Property="SelectionBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
-                        <Setter Property="InactiveSelectionBackground"
-                                Value="{StaticResource DataGridCellBackgroundSelected}" />
-                    </DataTrigger>
-                </Style.Triggers>
                 <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
                 <Setter Property="SelectionBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
                 <Setter Property="InactiveSelectionBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
+
             </Style>
 
             <Style TargetType="toolkit:DoubleUpDown">
