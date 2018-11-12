@@ -30,7 +30,9 @@
 
         private int errorsOnSellToSkip = 20;
 
-        private int itemsTo2FaConfirm = 100;
+        private int itemsToTwoFactorConfirm = 100;
+
+        private bool scrollLogsToEnd;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -151,12 +153,23 @@
             }
         }
 
-        public int ItemsTo2FAConfirm
+        public int ItemsToTwoFactorConfirm
         {
-            get => this.itemsTo2FaConfirm;
+            get => this.itemsToTwoFactorConfirm;
             set
             {
-                this.itemsTo2FaConfirm = value;
+                this.itemsToTwoFactorConfirm = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool ScrollLogsToEnd
+        {
+            get => this.scrollLogsToEnd;
+
+            set
+            {
+                this.scrollLogsToEnd = value;
                 this.OnPropertyChanged();
             }
         }

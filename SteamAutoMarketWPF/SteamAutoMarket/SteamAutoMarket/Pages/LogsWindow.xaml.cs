@@ -8,6 +8,7 @@
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Context;
+    using SteamAutoMarket.Repository.Settings;
 
     /// <summary>
     /// Interaction logic for Logs.xaml
@@ -15,6 +16,8 @@
     public partial class LogsWindow : INotifyPropertyChanged
     {
         private static string logs;
+
+        private bool scrollLogsToEnd = SettingsProvider.GetInstance().ScrollLogsToEnd;
 
         public LogsWindow()
         {
@@ -48,6 +51,21 @@
             {
                 logs = value;
                 this.OnPropertyChanged();
+                if (this.ScrollLogsToEnd)
+                {
+                    Application.Current.Dispatcher.Invoke(() => this.LogTextBox.ScrollToEnd());
+                }
+            }
+        }
+
+        public bool ScrollLogsToEnd
+        {
+            get => this.scrollLogsToEnd;
+            set
+            {
+                this.scrollLogsToEnd = value;
+                this.OnPropertyChanged();
+                SettingsProvider.GetInstance().ScrollLogsToEnd = value;
             }
         }
 

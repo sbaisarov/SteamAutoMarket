@@ -16,6 +16,7 @@
     using OxyPlot;
 
     using SteamAutoMarket.Annotations;
+    using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Extension;
     using SteamAutoMarket.Utils.Logger;
 
@@ -25,6 +26,8 @@
     public partial class WorkingProcessForm : INotifyPropertyChanged
     {
         private static bool isAnyWorkingProcessRunning;
+
+        private readonly List<double> times = new List<double>();
 
         private double averageMinutesLeft;
 
@@ -42,11 +45,11 @@
 
         private Stopwatch timer;
 
-        private List<double> times = new List<double>();
-
         private Task workingAction;
 
         private string workingLogs;
+
+        private bool scrollLogsToEnd = SettingsProvider.GetInstance().ScrollLogsToEnd;
 
         private WorkingProcessForm()
         {
@@ -132,6 +135,21 @@
             {
                 this.workingLogs = value;
                 this.OnPropertyChanged();
+                if (this.ScrollLogsToEnd)
+                {
+                    Application.Current.Dispatcher.Invoke(() => this.WorkingProcessTextBox.ScrollToEnd());
+                }
+            }
+        }
+
+        public bool ScrollLogsToEnd
+        {
+            get => this.scrollLogsToEnd;
+            set
+            {
+                this.scrollLogsToEnd = value;
+                this.OnPropertyChanged();
+                SettingsProvider.GetInstance().ScrollLogsToEnd = value;
             }
         }
 
@@ -176,7 +194,7 @@
             if (this.ChartModel.Count > 50)
             {
                 var oldChart = this.ChartModel.ToList();
-                var newChart = new List<DataPoint> { oldChart[0] };
+                var newChart = new List<DataPoint>();
                 for (var j = 2; j < oldChart.Count; j += 2)
                 {
                     var averageX = (oldChart[j].X + oldChart[j - 1].X) / 2;

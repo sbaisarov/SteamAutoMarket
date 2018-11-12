@@ -155,9 +155,7 @@
                                     () => priceLoadTasksList.All(task => task.IsCompleted));
                             }
 
-                            var maxErrorsCount = SettingsProvider.GetInstance().ErrorsOnSellToSkip;
                             var currentItemIndex = 1;
-                            var itemsToConfirmCount = SettingsProvider.GetInstance().ItemsTo2FAConfirm;
                             var totalItemsCount = marketSellModels.Sum(x => x.Count);
                             form.ProgressBarMaximum = totalItemsCount;
                             var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
@@ -166,11 +164,13 @@
                             {
                                 if (!marketSellModel.SellPrice.HasValue)
                                 {
+                                    form.AppendLog($"Price for '{marketSellModel.ItemName}' is not loaded. Processing price");
                                     if (form.CancellationToken.IsCancellationRequested)
                                     {
                                         form.AppendLog("Market sell process was force stopped");
                                         return;
                                     }
+
                                     try
                                     {
                                         var price =
@@ -181,8 +181,8 @@
                                                 marketSellModel.ItemModel.Description.MarketHashName,
                                                 averagePriceDays);
 
-                                        Logger.Log.Debug(
-                                            $"Average price for {averagePriceDays} days for {marketSellModel.ItemName} is - {price}");
+                                        form.AppendLog(
+                                            $"Average price for {averagePriceDays} days for '{marketSellModel.ItemName}' is - {price}");
 
                                         marketSellModel.AveragePrice = price;
 
@@ -193,7 +193,7 @@
                                                 marketSellModel.ItemModel.Asset.Appid,
                                                 marketSellModel.ItemModel.Description.MarketHashName);
 
-                                        Logger.Log.Debug($"Current price for {marketSellModel.ItemName} is - {price}");
+                                        form.AppendLog($"Current price for '{marketSellModel.ItemName}' is - {price}");
                                         marketSellModel.CurrentPrice = price;
                                         marketSellModel.ProcessSellPrice(sellStrategy);
                                     }
@@ -217,6 +217,7 @@
                                         form.AppendLog("Market sell process was force stopped");
                                         return;
                                     }
+
                                     try
                                     {
                                         form.AppendLog(
@@ -239,17 +240,17 @@
                                     {
                                         form.AppendLog($"Error on selling '{marketSellModel.ItemName}' - {ex.Message}");
 
-                                        if (++errorsCount == maxErrorsCount)
+                                        if (++errorsCount == SettingsProvider.GetInstance().ErrorsOnSellToSkip)
                                         {
                                             form.AppendLog(
-                                                $"{maxErrorsCount} fails limit on sell {marketSellModel.ItemName} reached. Skipping item.");
+                                                $"{SettingsProvider.GetInstance().ErrorsOnSellToSkip} fails limit on sell {marketSellModel.ItemName} reached. Skipping item.");
                                             totalItemsCount -= marketSellModel.Count - packageElementIndex;
                                             form.ProgressBarMaximum = totalItemsCount;
                                             break;
                                         }
                                     }
 
-                                    if (currentItemIndex % itemsToConfirmCount == 0)
+                                    if (currentItemIndex % SettingsProvider.GetInstance().ItemsToTwoFactorConfirm == 0)
                                     {
                                         Task.Run(() => this.ConfirmMarketTransactions(form));
                                     }
@@ -280,6 +281,7 @@
                     .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
                 form.AppendLog($"{marketConfirmations.Length} confirmations found. Accepting confirmations");
                 this.Guard.AcceptMultipleConfirmations(marketConfirmations);
+                form.AppendLog($"{marketConfirmations.Length} confirmations was successfully accepted");
             }
             catch (Exception e)
             {
