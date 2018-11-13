@@ -11,7 +11,7 @@
     {
         public static string GetResourceImageUri(string name) =>
             @"pack://application:,,,/" + Assembly.GetCallingAssembly().GetName().Name + ";component/"
-            + $"images/{name}";
+            + $"resources/{name}";
 
         public static Image LoadResourceImage(string name)
         {

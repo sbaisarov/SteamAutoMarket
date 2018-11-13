@@ -202,19 +202,16 @@
                     </Path.Data>
                 </Path>
 
-                <ScrollViewer Grid.Row="1"
-                              VerticalScrollBarVisibility="Visible"
-                              HorizontalScrollBarVisibility="Disabled"
-                              Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}">
-                    <TextBox Name="ItemDescriptionTextBox"
-                             MaxHeight="90"
-                             Background="Transparent"
-                             Foreground="{DynamicResource ItemText}"
-                             IsReadOnly="True"
-                             Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
-                             Text="{Binding Path=MarketSellSelectedItem.Description, Mode=OneWay}"
-                             TextWrapping="Wrap" VerticalAlignment="Center" />
-                </ScrollViewer>
+                <TextBox Grid.Row="1"
+                         Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
+                         Name="ItemDescriptionTextBox"
+                         MaxHeight="90"
+                         Background="Transparent"
+                         Foreground="{DynamicResource ItemText}"
+                         IsReadOnly="True"
+                         VerticalScrollBarVisibility="Visible"
+                         Text="{Binding Path=MarketSellSelectedItem.Description, Mode=OneWay}"
+                         TextWrapping="Wrap" VerticalAlignment="Center" />
             </Grid>
 
             <Grid Grid.Column="0"
@@ -323,6 +320,7 @@
 
                 <xctk:DoubleUpDown
                     Grid.Row="2" Grid.Column="1"
+                    Style="{StaticResource UpDown}"
                     Name="AveragePriceNumericUpDown"
                     VerticalAlignment="Center"
                     Value="-0.01"
@@ -342,6 +340,7 @@
 
                 <xctk:DoubleUpDown
                     Grid.Row="3" Grid.Column="1"
+                    Style="{StaticResource UpDown}"
                     Name="CurrentPriceNumericUpDown"
                     VerticalAlignment="Center"
                     Width="55"
@@ -370,12 +369,9 @@
                     Background="Transparent"
                     ToolTip="Find selected item on steam market">
 
-                    <Path Style="{StaticResource Geometry}" Stretch="Fill">
-                        <Path.Data>
-                            <PathGeometry
-                                Figures="M19.406 10.109c0-1.656-1.359-3.016-3.031-3.016-1.656 0-3.016 1.359-3.016 3.016 0 1.672 1.359 3.016 3.016 3.016 1.672 0 3.031-1.344 3.031-3.016zM9.875 19.297c0 1.719-1.375 3.094-3.094 3.094-1.188 0-2.219-0.672-2.734-1.656 0.516 0.203 1.016 0.406 1.531 0.625 1.25 0.5 2.688-0.109 3.203-1.375 0.5-1.25-0.109-2.688-1.375-3.187l-1.281-0.516c0.203-0.047 0.438-0.078 0.656-0.078 1.719 0 3.094 1.375 3.094 3.094zM24 6.5v15c0 2.484-2.016 4.5-4.5 4.5h-15c-2.484 0-4.5-2.016-4.5-4.5v-2.391l2.688 1.078c0.406 1.891 2.094 3.313 4.094 3.313 2.187 0 3.984-1.672 4.188-3.797l5.391-3.938c3.125 0 5.641-2.531 5.641-5.625 0-3.125-2.516-5.641-5.641-5.641-3.078 0-5.594 2.5-5.625 5.578l-3.516 5.031c-0.141-0.016-0.281-0.016-0.438-0.016-0.781 0-1.516 0.203-2.141 0.578l-4.641-1.859v-7.313c0-2.484 2.016-4.5 4.5-4.5h15c2.484 0 4.5 2.016 4.5 4.5zM20.141 10.141c0 2.078-1.687 3.766-3.781 3.766-2.078 0-3.766-1.687-3.766-3.766 0-2.094 1.687-3.781 3.766-3.781 2.094 0 3.781 1.687 3.781 3.781z" />
-                        </Path.Data>
-                    </Path>
+                    <Path Style="{StaticResource Geometry}" 
+                          Stretch="Fill"
+                          Data="{StaticResource SvgSteam}"/>
                 </Button>
 
                 <Button Name="RefreshSinglePriceButton"
@@ -388,12 +384,10 @@
                         ToolTip="Reload selected item price"
                         Click="RefreshSinglePriceButton_OnClick">
 
-                    <Path Style="{StaticResource Geometry}" Stretch="Fill">
-                        <Path.Data>
-                            <PathGeometry
-                                Figures="M12.984 15h-1.5v-3.984h-1.5v-1.031l2.016-0.984h0.984v6zM17.016 17.016v-4.031h1.969v6h-12v3l-3.984-3.984 3.984-3.984v3h10.031zM6.984 6.984v4.031h-1.969v-6h12v-3l3.984 3.984-3.984 3.984v-3h-10.031z" />
-                        </Path.Data>
-                    </Path>
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefreshSingle}" />
+
                 </Button>
 
                 <Button
@@ -406,12 +400,9 @@
                     ToolTip="Reload all prices"
                     Click="RefreshAllPricesPriceButton_OnClick">
 
-                    <Path Style="{StaticResource Geometry}" Stretch="Fill">
-                        <Path.Data>
-                            <PathGeometry
-                                Figures="M17.016 17.016v-4.031h1.969v6h-12v3l-3.984-3.984 3.984-3.984v3h10.031zM6.984 6.984v4.031h-1.969v-6h12v-3l3.984 3.984-3.984 3.984v-3h-10.031z" />
-                        </Path.Data>
-                    </Path>
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefresh}" />
                 </Button>
 
                 <Button Name="StopPriceLoadingButton"
@@ -424,12 +415,10 @@
                         ToolTip="Stop prices load"
                         Click="StopPriceLoadingButton_OnClick">
 
-                    <Path Style="{StaticResource Geometry}" Stretch="Fill">
-                        <Path.Data>
-                            <PathGeometry
-                                Figures="M689.984 64h-369.632l-264.352 263.648v368.672l264.352 263.68 369.632-2.336 262.016-261.344v-368.672l-262.016-263.648zM920 683.168l-243.328 242.656-343.2 2.176-245.472-244.832v-342.368l245.472-244.8h343.232l243.328 244.8v342.368zM774.112 511.264c6.144-1.632 11.296-4.512 15.36-8.64 3.648-3.712 6.336-7.744 8-12.128 1.696-4.416 2.528-9.504 2.528-15.36 0-6.368-1.088-11.904-3.328-16.64-2.208-4.672-5.568-8.544-10.048-11.52-3.936-2.56-8.48-4.384-13.696-5.44s-11.68-1.632-19.424-1.632h-20.512v73.76h16.864c10.016 0 18.112-0.8 24.256-2.4zM640.096 455.2c-4.896-6.432-10.848-11.264-17.824-14.464s-14.784-4.8-23.456-4.8c-8.992 0-16.864 1.568-23.584 4.672-6.72 3.168-12.672 8-17.856 14.592-4.896 6.336-8.672 14.304-11.328 23.872-2.624 9.6-3.936 20.448-3.936 32.544 0 24.448 5.12 43.168 15.36 56.128 10.272 12.96 24.032 19.424 41.312 19.424 17.248 0 31.008-6.464 41.216-19.424s15.328-31.68 15.328-56.128c0-12.352-1.344-23.264-4-32.768-2.656-9.536-6.4-17.408-11.232-23.648zM340.032 112l-236.032 235.392v329.152l236.032 235.424 330.016-2.080 233.952-233.344v-329.152l-233.952-235.392h-330.016zM336.064 573.28c-2.976 7.072-7.136 13.056-12.448 17.984-6.016 5.408-12.8 9.6-20.352 12.512-7.552 2.944-16.992 4.384-28.352 4.384-13.536 0-24.992-1.408-34.464-4.192s-18.368-6.208-26.688-10.304v-31.008h1.76c8.192 7.616 17.44 13.536 27.776 17.728s20.32 6.272 29.92 6.272c13.696 0 24.032-2.848 31.040-8.544 7.040-5.728 10.528-13.216 10.528-22.56 0-7.36-1.856-13.44-5.536-18.080s-9.536-8.096-17.568-10.336c-5.792-1.696-11.040-3.072-15.776-4.128-4.768-1.088-10.752-2.56-17.92-4.416-6.432-1.664-12.224-3.776-17.28-6.368-5.088-2.56-9.632-5.952-13.536-10.112-3.84-4.096-6.848-8.896-8.96-14.432-2.112-5.568-3.2-11.936-3.2-19.232 0-15.104 5.888-27.712 17.664-37.952s26.816-15.328 45.088-15.328c10.432 0 20.32 1.056 29.632 3.136s17.952 5.024 25.888 8.832v29.536h-1.888c-5.952-5.344-13.536-9.984-22.816-14.016s-19.040-6.016-29.216-6.016c-11.52 0-20.832 2.688-27.936 8.064s-10.656 12.416-10.656 21.152c0 7.904 2.080 14.176 6.272 18.848s10.24 8.096 18.176 10.24c5.248 1.408 11.68 3.040 19.296 4.8s13.92 3.424 18.944 4.928c12.832 3.936 22.24 9.856 28.16 17.792 5.952 7.904 8.896 17.664 8.896 29.248 0 7.296-1.472 14.464-4.448 21.568zM508.384 444.416h-60.512v160.256h-30.752v-160.256h-58.496v-28h149.76v28zM708.256 418.4h46.752c11.008 0 20.384 0.928 28.128 2.752 7.744 1.856 14.592 4.8 20.512 8.864 6.912 4.736 12.352 10.784 16.256 18.048 3.904 7.328 5.888 16.128 5.888 26.432 0 8.096-1.44 15.744-4.32 22.944-2.88 7.232-6.848 13.376-11.936 18.432-6.4 6.336-13.984 11.136-22.624 14.368-8.672 3.264-19.616 4.864-32.864 4.864h-20.992v69.504h-24.736v-186.208zM681.12 511.584c0 15.136-1.92 28.768-5.76 40.96s-9.376 22.4-16.672 30.688c-7.584 8.672-16.448 15.104-26.56 19.232-10.144 4.128-21.28 6.176-33.472 6.176-12.608 0-23.936-2.112-34.016-6.368s-18.752-10.592-26.016-19.040c-7.168-8.288-12.672-18.464-16.512-30.56-3.84-12.128-5.76-25.824-5.76-41.088 0-15.68 1.952-29.472 5.824-41.312 3.872-11.872 9.408-22.048 16.576-30.56 7.2-8.288 15.84-14.56 25.984-18.848 10.112-4.32 21.472-6.464 33.984-6.464 12.672 0 24.096 2.208 34.272 6.656 10.144 4.416 18.752 10.624 25.76 18.656 7.104 8.192 12.608 18.304 16.544 30.432 3.872 12.096 5.824 25.92 5.824 41.44z" />
-                        </Path.Data>
-                    </Path>
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgStop}" />
+
                 </Button>
             </Grid>
 

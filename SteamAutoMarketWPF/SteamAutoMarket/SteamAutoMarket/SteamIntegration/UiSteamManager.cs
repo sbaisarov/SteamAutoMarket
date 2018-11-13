@@ -119,11 +119,14 @@
                                 form.IncrementProgress();
                             }
 
-                            form.AppendLog($"{marketSellItems.ToList().Sum(i => i.Count)} marketable items was loaded");
+                            form.AppendLog(
+                                marketSellItems.Any()
+                                    ? $"{marketSellItems.ToList().Sum(i => i.Count)} marketable items was loaded"
+                                    : $"Seems like no items found on {appid.Name} inventory");
                         }
                         catch (Exception e)
                         {
-                            var message = $"Error on {appid} inventory loading";
+                            var message = $"Error on {appid.Name} inventory loading";
 
                             form.AppendLog(message);
                             ErrorNotify.CriticalMessageBox(message, e);

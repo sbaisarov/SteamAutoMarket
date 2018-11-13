@@ -196,14 +196,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Xceed\NumericUpDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Xceed\DataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Svg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\NoAvatar.jpg" />
-    <Resource Include="Images\NoAvatarSmall.jpg" />
-    <Resource Include="Images\Serious_Sam_Logo.svg" />
+    <Resource Include="Resources\NoAvatar.jpg" />
+    <Resource Include="Resources\NoAvatarSmall.jpg" />
+    <Resource Include="Resources\Serious_Sam_Logo.svg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

@@ -13,10 +13,6 @@
 
         private BindingTrigger bindingTrigger;
 
-        public DynamicResourceBinding()
-        {
-        }
-
         public DynamicResourceBinding(object resourceKey)
         {
             this.ResourceKey = resourceKey ?? throw new ArgumentNullException(nameof(resourceKey));
