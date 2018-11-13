@@ -28,8 +28,6 @@
     {
         private readonly List<Task> priceLoadSubTasks = new List<Task>();
 
-        private CancellationTokenSource cancellationTokenSource;
-
         private SteamAppId marketSellSelectedAppid = SettingsProvider.GetInstance().MarketSellSelectedAppid;
 
         private MarketSellModel marketSellSelectedItem;
@@ -37,6 +35,8 @@
         private MarketSellStrategy marketSellStrategy;
 
         private Task priceLoadingTask;
+
+        private CancellationTokenSource cancellationTokenSource;
 
         public MarketSell()
         {
@@ -198,14 +198,13 @@
 
         private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (this.priceLoadingTask?.IsCompleted == false)
+            if (this.priceLoadingTask != null && this.priceLoadingTask.IsCompleted == false)
             {
-                this.StopPriceLoadingTasks();
+                ErrorNotify.InfoMessageBox("Price loading is already in progress");
+                return;
             }
 
             this.cancellationTokenSource = new CancellationTokenSource();
-            var cancellationToken = this.cancellationTokenSource.Token;
-
             this.priceLoadingTask = Task.Run(
                 () =>
                     {
@@ -250,7 +249,7 @@
                                             item.ProcessSellPrice(this.MarketSellStrategy);
                                             priceLoadingSemaphore.Release();
                                         },
-                                    cancellationToken);
+                                    this.cancellationTokenSource.Token);
                                 this.priceLoadSubTasks.Add(task);
 
                                 priceLoadingSemaphore.WaitOne();
@@ -271,10 +270,10 @@
                                             item.ProcessSellPrice(this.MarketSellStrategy);
                                             priceLoadingSemaphore.Release();
                                         },
-                                    cancellationToken);
+                                    this.cancellationTokenSource.Token);
                                 this.priceLoadSubTasks.Add(task);
 
-                                if (cancellationToken.IsCancellationRequested)
+                                if (this.cancellationTokenSource.Token.IsCancellationRequested)
                                 {
                                     Logger.Log.Debug(
                                         $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
@@ -294,7 +293,7 @@
                             ErrorNotify.CriticalMessageBox("Error on items price update", ex);
                         }
                     },
-                cancellationToken);
+                this.cancellationTokenSource.Token);
         }
 
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
@@ -347,10 +346,11 @@
                 return;
             }
 
-            this.StopPriceLoadingTasks();
+            Task.Run(() => this.StopPriceLoadingTasks());
 
             var itemsToSell = this.MarketSellItems.ToList().Where(i => i.MarketSellNumericUpDown.AmountToSell > 0)
                 .Select(i => new MarketSellProcessModel(i)).Where(i => i.Count > 0).ToList();
+
             if (itemsToSell.Sum(i => i.Count) == 0)
             {
                 ErrorNotify.CriticalMessageBox("No items was marked to sell! Mark items before starting sell process");
@@ -368,7 +368,7 @@
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (this.priceLoadingTask?.IsCompleted == false)
+            if (this.priceLoadingTask != null && this.priceLoadingTask.IsCompleted == false)
             {
                 Task.Run(() => this.StopPriceLoadingTasks());
             }
@@ -380,12 +380,13 @@
 
         private void StopPriceLoadingTasks()
         {
-            if (this.cancellationTokenSource != null)
-            {
-                Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
-                this.cancellationTokenSource.Cancel();
-                new Waiter().Until(() => this.priceLoadingTask?.IsCompleted == true);
-            }
+            if (this.cancellationTokenSource == null || this.priceLoadingTask == null
+                                                || this.priceLoadingTask.IsCompleted) return;
+
+            Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
+            this.cancellationTokenSource.Cancel();
+            new Waiter().Until(() => this.priceLoadingTask.IsCompleted);
+            this.cancellationTokenSource = new CancellationTokenSource();
         }
     }
 }

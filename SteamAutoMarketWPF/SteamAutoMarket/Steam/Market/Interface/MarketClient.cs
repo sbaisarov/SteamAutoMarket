@@ -212,7 +212,7 @@
 
             if (respDes.Success != 1)
             {
-                throw new SteamException("Cannot load orders histogram");
+                throw new SteamException($"Cannot load orders histogram - error {respDes.Success}");
             }
 
             var histogram = new ItemOrdersHistogram { SellOrderGraph = this.ConvertOrderGraph(respDes.SellOrderGraph) };

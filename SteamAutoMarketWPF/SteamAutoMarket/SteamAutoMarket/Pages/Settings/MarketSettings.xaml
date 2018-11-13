@@ -37,7 +37,8 @@
                                         VerticalAlignment="Center"
                                         Margin="0,16,0,12"
                                         Foreground="{DynamicResource ItemText}"
-                                        Background="{DynamicResource DataGridBackground}"/>
+                                        Minimum="3"
+                                        Maximum="999" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="0"
@@ -50,7 +51,9 @@
                                         Grid.Column="1"
                                         Value="{Binding ItemsToTwoFactorConfirm, Mode=TwoWay}"
                                         VerticalAlignment="Center"
-                                        Margin="0,0,0,12" />
+                                        Margin="0,0,0,12" 
+                                        Minimum="10"
+                                        Maximum="200"/>
 
                     <TextBlock Grid.Row="2"
                                Grid.Column="0"
@@ -63,7 +66,9 @@
                                         Grid.Column="1"
                                         Value="{Binding ErrorsOnSellToSkip, Mode=TwoWay}"
                                         VerticalAlignment="Center"
-                                        Margin="0,0,0,12" />
+                                        Margin="0,0,0,12"
+                                        Minimum="0"
+                                        Maximum="99999"/>
 
                     <TextBlock Grid.Row="3"
                                Grid.Column="0"
@@ -76,7 +81,9 @@
                                         Grid.Column="1"
                                         Value="{Binding PriceLoadingThreads, Mode=TwoWay}"
                                         VerticalAlignment="Center"
-                                        Margin="0,0,0,12" />
+                                        Margin="0,0,0,12"
+                                        Minimum="1"
+                                        Maximum="100"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>
