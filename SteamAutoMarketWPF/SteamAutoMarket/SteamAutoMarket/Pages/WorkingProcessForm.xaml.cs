@@ -43,8 +43,6 @@
 
         private int progressBarValue;
 
-        private bool scrollLogsToEnd = SettingsProvider.GetInstance().ScrollLogsToEnd;
-
         private Stopwatch timer;
 
         private Task workingAction;
@@ -130,12 +128,11 @@
 
         public bool ScrollLogsToEnd
         {
-            get => this.scrollLogsToEnd;
+            get => SettingsProvider.GetInstance().ScrollLogsToEnd;
             set
             {
-                this.scrollLogsToEnd = value;
-                this.OnPropertyChanged();
                 SettingsProvider.GetInstance().ScrollLogsToEnd = value;
+                this.OnPropertyChanged();
             }
         }
 

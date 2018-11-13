@@ -18,8 +18,6 @@
 
         private int errorsOnSellToSkip = 20;
 
-        private int hoursToBecomeOld = 10;
-
         private int itemsToTwoFactorConfirm = 100;
 
         private string mafilesPath;
@@ -34,7 +32,11 @@
 
         private string theme;
 
-        private SteamAppId tradeSelectedAppId;
+        private int averagePriceDays = 7;
+
+        private int averagePriceHoursToBecomeOld = 12;
+
+        private int currentPriceHoursToBecomeOld = 6;
 
         #endregion
 
@@ -51,9 +53,27 @@
             }
         }
 
-        public int AveragePriceDays { get; set; } = 7;
+        public int AveragePriceDays
+        {
+            get => this.averagePriceDays;
+            set
+            {
+                if (this.averagePriceDays == value) return;
+                this.averagePriceDays = value;
+                this.OnPropertyChanged();
+            }
+        }
 
-        public int AveragePriceHoursToBecomeOld { get; set; }
+        public int AveragePriceHoursToBecomeOld
+        {
+            get => this.averagePriceHoursToBecomeOld;
+            set
+            {
+                if (this.averagePriceHoursToBecomeOld == value) return;
+                this.averagePriceHoursToBecomeOld = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public string Color
         {
@@ -66,24 +86,24 @@
             }
         }
 
-        public int CurrentPriceHoursToBecomeOld { get; set; }
+        public int CurrentPriceHoursToBecomeOld
+        {
+            get => this.currentPriceHoursToBecomeOld;
+            set
+            {
+                if (this.currentPriceHoursToBecomeOld == value) return;
+                this.currentPriceHoursToBecomeOld = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public int ErrorsOnSellToSkip
         {
             get => this.errorsOnSellToSkip;
             set
             {
+                if (this.errorsOnSellToSkip == value) return;
                 this.errorsOnSellToSkip = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int HoursToBecomeOld
-        {
-            get => this.hoursToBecomeOld;
-            set
-            {
-                this.hoursToBecomeOld = value;
                 this.OnPropertyChanged();
             }
         }
@@ -96,6 +116,7 @@
             get => this.itemsToTwoFactorConfirm;
             set
             {
+                if (this.itemsToTwoFactorConfirm == value) return;
                 this.itemsToTwoFactorConfirm = value;
                 this.OnPropertyChanged();
             }
@@ -140,6 +161,7 @@
 
             set
             {
+                if (this.scrollLogsToEnd == value) return;
                 this.scrollLogsToEnd = value;
                 this.OnPropertyChanged();
             }
@@ -163,17 +185,6 @@
             {
                 if (this.theme == value) return;
                 this.theme = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public SteamAppId TradeSelectedAppId
-        {
-            get => this.tradeSelectedAppId;
-            set
-            {
-                if (this.tradeSelectedAppId == value) return;
-                this.tradeSelectedAppId = value;
                 this.OnPropertyChanged();
             }
         }

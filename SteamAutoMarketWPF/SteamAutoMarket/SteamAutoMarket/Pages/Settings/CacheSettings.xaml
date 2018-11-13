@@ -14,6 +14,7 @@
                 <Grid HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition MinWidth="250" />
                     </Grid.ColumnDefinitions>
 
@@ -23,59 +24,96 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,12,0,8">
-                        <TextBlock Text="Images - " VerticalAlignment="Center" Margin="0,0,0,4" />
-                        <TextBlock Text="{Binding Path=CachedImagesCount}" VerticalAlignment="Center" Margin="0,0,20,4" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,12,0,8">
-                        <Button Height="22" Width="80" Content="Open folder" Padding="0" VerticalAlignment="Center"
-                                Margin="0,0,0,4"
-                                Click="ImagesOpenFolderOnClick" />
-                    </StackPanel>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Text="Settings"
+                               VerticalAlignment="Center"
+                               Margin="0,0,20,8" />
+
+                    <Button Grid.Row="0"
+                            Grid.Column="1"
+                            Height="22"
+                            Width="80"
+                            Content="Open file"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            Margin="0,0,0,8"
+                            Click="SettingsButtonClick" />
 
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Images - " VerticalAlignment="Center" Margin="0,0,0,4" />
+                        <TextBlock Text="{Binding Path=CachedImagesCount}" VerticalAlignment="Center" Margin="0,0,0,4" />
+                    </StackPanel>
+                    <Button Grid.Row="1"
+                            Grid.Column="1"
+                            Height="22"
+                            Width="80"
+                            Content="Open folder"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            Margin="0,0,0,8"
+                            Click="ImagesOpenFolderOnClick" />
+
+                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="Market id - " VerticalAlignment="Center" Margin="0,0,0,4" />
                         <TextBlock Text="{Binding Path=MarketIdCount}" VerticalAlignment="Center" Margin="0,0,20,4" />
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
-                        <Button Height="22" Width="80" Content="Open file" Padding="0" VerticalAlignment="Center"
-                                Margin="0,0,0,4"
-                                Click="MarketIdClear" />
-                    </StackPanel>
+                    <Button Grid.Row="2"
+                            Grid.Column="1"
+                            Height="22"
+                            Width="80"
+                            Content="Open file"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            Margin="0,0,0,8"
+                            Click="MarketIdClear" />
 
-                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
+                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="Average prices - " VerticalAlignment="Center" Margin="0,0,0,4" />
                         <TextBlock Text="{Binding Path=AveragePricesCount}" VerticalAlignment="Center"
                                    Margin="0,0,20,4" />
                     </StackPanel>
-                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
-                        <Button Height="22" Width="80" Content="Open file" Padding="0" VerticalAlignment="Center"
-                                Margin="0,0,0,4" />
-                    </StackPanel>
 
-                    
-                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Grid.Row="3"
+                            Grid.Column="1"
+                            Height="22"
+                            Width="80"
+                            Content="Open file"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            Margin="0,0,0,8"
+                            Click="AveragePriceButtonOnClick" />
+
+
+                    <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="Current price - " VerticalAlignment="Center" Margin="0,0,0,4" />
                         <TextBlock Text="{Binding Path=CurrentPricesCount}" VerticalAlignment="Center"
                                    Margin="0,0,20,4" />
                     </StackPanel>
-                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
-                        <Button Height="22" Width="80" Content="Open file" Padding="0" VerticalAlignment="Center"
-                                Margin="0,0,0,4" />
-                    </StackPanel>
 
-                    <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Settings" VerticalAlignment="Center" Margin="0,0,0,4" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
-                        <Button Height="22" Width="80" Content="Open file" Padding="0" VerticalAlignment="Center"
-                                Margin="0,0,20,4" />
-                        <Button Height="22" Width="100" Content="Reset defaults" Padding="0" VerticalAlignment="Center"
-                                Margin="0,0,0,4" />
-                    </StackPanel>
+                    <Button Grid.Row="4"
+                            Grid.Column="1"
+                            Height="22"
+                            Width="80"
+                            Content="Open file"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            Margin="0,0,0,8"
+                            Click="CurrentPriceButtonOnClick" />
+
+                    <Button Grid.Row="5" 
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Height="50"
+                            Margin="0, 20, 0, 20"
+                            Content="Reload"
+                            Click="ReloadButtonClick"/>
                 </Grid>
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

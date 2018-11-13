@@ -1,5 +1,6 @@
 ﻿namespace SteamAutoMarket
 {
+    using System;
     using System.Net;
 
     using FirstFloor.ModernUI.Presentation;
@@ -9,6 +10,7 @@
 
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
+    using SteamAutoMarket.Utils.Logger;
     using SteamAutoMarket.Utils.Resources;
 
     /// <summary>
@@ -18,6 +20,7 @@
     {
         public MainWindow()
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             SettingsProvider.GetInstance();
             XmlConfigurator.Configure();
             ServicePointManager.ServerCertificateValidationCallback +=
@@ -28,8 +31,13 @@
             this.DataContext = this;
 
             AppearanceManager.Current.ThemeSource = ModernUiThemeUtils.GetTheme(SettingsProvider.GetInstance().Theme);
-
             AppearanceManager.Current.AccentColor = ModernUiThemeUtils.GetColor(SettingsProvider.GetInstance().Color);
+        }
+
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            // todo add critical error send here
+            ErrorNotify.CriticalMessageBox("Oops. Seems application is crushed", (Exception)e.ExceptionObject);
         }
     }
 }

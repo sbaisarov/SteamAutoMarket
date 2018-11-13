@@ -23,6 +23,8 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
@@ -83,6 +85,36 @@
                                         VerticalAlignment="Center"
                                         Margin="0,0,0,12"
                                         Minimum="1"
+                                        Maximum="100"/>
+
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="0"
+                               Text="Obsolete avr price (hour)"
+                               VerticalAlignment="Center"
+                               Margin="0,0,16,12" />
+
+                    <xctk:IntegerUpDown Grid.Row="4"
+                                        Style="{StaticResource UpDown}"
+                                        Grid.Column="1"
+                                        Value="{Binding ObsoleteAveragePrice, Mode=TwoWay}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,0,12"
+                                        Minimum="0"
+                                        Maximum="100"/>
+
+                    <TextBlock Grid.Row="5"
+                               Grid.Column="0"
+                               Text="Obsolete cur price (hour)"
+                               VerticalAlignment="Center"
+                               Margin="0,0,16,12" />
+
+                    <xctk:IntegerUpDown Grid.Row="5"
+                                        Style="{StaticResource UpDown}"
+                                        Grid.Column="1"
+                                        Value="{Binding ObsoleteCurrentPrice, Mode=TwoWay}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,0,12"
+                                        Minimum="0"
                                         Maximum="100"/>
                 </Grid>
             </StackPanel>

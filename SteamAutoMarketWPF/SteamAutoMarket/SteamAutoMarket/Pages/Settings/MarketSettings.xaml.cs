@@ -11,14 +11,6 @@
     /// </summary>
     public partial class MarketSettings : INotifyPropertyChanged
     {
-        private int averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
-
-        private int itemsToTwoFactorConfirm = SettingsProvider.GetInstance().ItemsToTwoFactorConfirm;
-
-        private int errorsOnSellToSkip = SettingsProvider.GetInstance().ErrorsOnSellToSkip;
-
-        private int priceLoadingThreads = SettingsProvider.GetInstance().PriceLoadingThreads;
-
         public MarketSettings()
         {
             this.InitializeComponent();
@@ -29,10 +21,9 @@
 
         public int AveragePriceDays
         {
-            get => this.averagePriceDays;
+            get => SettingsProvider.GetInstance().AveragePriceDays;
             set
             {
-                this.averagePriceDays = value;
                 SettingsProvider.GetInstance().AveragePriceDays = value;
                 this.OnPropertyChanged();
             }
@@ -40,10 +31,9 @@
 
         public int ItemsToTwoFactorConfirm
         {
-            get => this.itemsToTwoFactorConfirm;
+            get => SettingsProvider.GetInstance().ItemsToTwoFactorConfirm;
             set
             {
-                this.itemsToTwoFactorConfirm = value;
                 SettingsProvider.GetInstance().ItemsToTwoFactorConfirm = value;
                 this.OnPropertyChanged();
             }
@@ -51,10 +41,9 @@
 
         public int ErrorsOnSellToSkip
         {
-            get => this.errorsOnSellToSkip;
+            get => SettingsProvider.GetInstance().ErrorsOnSellToSkip;
             set
             {
-                this.errorsOnSellToSkip = value;
                 SettingsProvider.GetInstance().ErrorsOnSellToSkip = value;
                 this.OnPropertyChanged();
             }
@@ -62,11 +51,30 @@
 
         public int PriceLoadingThreads
         {
-            get => this.priceLoadingThreads;
+            get => SettingsProvider.GetInstance().PriceLoadingThreads;
             set
             {
-                this.priceLoadingThreads = value;
                 SettingsProvider.GetInstance().PriceLoadingThreads = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int ObsoleteAveragePrice
+        {
+            get => SettingsProvider.GetInstance().AveragePriceHoursToBecomeOld;
+            set
+            {
+                SettingsProvider.GetInstance().AveragePriceHoursToBecomeOld = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int ObsoleteCurrentPrice
+        {
+            get => SettingsProvider.GetInstance().CurrentPriceHoursToBecomeOld;
+            set
+            {
+                SettingsProvider.GetInstance().CurrentPriceHoursToBecomeOld = value;
                 this.OnPropertyChanged();
             }
         }

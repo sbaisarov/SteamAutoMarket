@@ -114,6 +114,7 @@
     <Compile Include="SteamIntegration\MarketSellStrategy.cs" />
     <Compile Include="SteamIntegration\UiSteamManager.cs" />
     <Compile Include="SteamIntegration\WorkingProcessType.cs" />
+    <Compile Include="Utils\AppUtils.cs" />
     <Compile Include="Utils\Converter\SolidColorBrushToColorConverter.cs" />
     <Compile Include="Utils\Converter\IfNullInvisibleConverter.cs" />
     <Compile Include="Utils\Converter\InvertBooleanConverter.cs" />

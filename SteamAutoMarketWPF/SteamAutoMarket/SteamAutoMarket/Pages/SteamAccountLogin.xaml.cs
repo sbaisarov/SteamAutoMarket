@@ -27,8 +27,6 @@
     {
         private bool loginButtonEnabled = true;
 
-        private string mafilesPath = SettingsProvider.GetInstance().MafilesPath;
-
         private string newAccountLogin;
 
         private string newAccountPassword;
@@ -61,12 +59,11 @@
 
         public string MafilesPath
         {
-            get => this.mafilesPath;
+            get => SettingsProvider.GetInstance().MafilesPath;
             set
             {
-                this.mafilesPath = value;
-                this.OnPropertyChanged();
                 SettingsProvider.GetInstance().MafilesPath = value;
+                this.OnPropertyChanged();
             }
         }
 

@@ -9,9 +9,9 @@
 
     using Steam.Market.Models;
 
-    internal class MarketInfoCache
+    public class MarketInfoCache
     {
-        public static readonly string CachePricesPath = AppDomain.CurrentDomain.BaseDirectory + "item_ids_cache.ini";
+        public static readonly string CacheFilePath = AppDomain.CurrentDomain.BaseDirectory + "items_id_cache.ini";
 
         private static Dictionary<string, MarketItemInfo> cache;
 
@@ -29,7 +29,7 @@
         {
             cache.Clear();
             File.WriteAllText(
-                CachePricesPath,
+                CacheFilePath,
                 JsonConvert.SerializeObject(new Dictionary<string, MarketItemInfo>(), Formatting.Indented));
         }
 
@@ -40,10 +40,10 @@
                 return cache;
             }
 
-            if (File.Exists(CachePricesPath))
+            if (File.Exists(CacheFilePath))
             {
                 cache = JsonConvert.DeserializeObject<Dictionary<string, MarketItemInfo>>(
-                    File.ReadAllText(CachePricesPath));
+                    File.ReadAllText(CacheFilePath));
             }
 
             if (cache != null)
@@ -68,7 +68,7 @@
         {
             if (newValuesCounter == 10)
             {
-                File.WriteAllText(CachePricesPath, JsonConvert.SerializeObject(Get(), Formatting.Indented));
+                File.WriteAllText(CacheFilePath, JsonConvert.SerializeObject(Get(), Formatting.Indented));
                 newValuesCounter = 0;
             }
         }

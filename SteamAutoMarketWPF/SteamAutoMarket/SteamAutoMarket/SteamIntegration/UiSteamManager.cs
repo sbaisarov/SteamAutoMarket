@@ -34,12 +34,12 @@
 
             this.CurrentPriceCache = PriceCacheProvider.GetCurrentPriceCache(
                 "ru", // todo actual currency
-                SettingsProvider.GetInstance().HoursToBecomeOld);
+                SettingsProvider.GetInstance().CurrentPriceHoursToBecomeOld);
 
             this.AveragePriceCache = PriceCacheProvider.GetAveragePriceCache(
                 "ru",
                 SettingsProvider.GetInstance().AveragePriceDays,
-                SettingsProvider.GetInstance().HoursToBecomeOld);
+                SettingsProvider.GetInstance().AveragePriceHoursToBecomeOld);
         }
 
         public PriceCache AveragePriceCache { get; set; }

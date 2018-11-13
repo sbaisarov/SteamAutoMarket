@@ -17,8 +17,6 @@
     {
         private static string logs;
 
-        private bool scrollLogsToEnd = SettingsProvider.GetInstance().ScrollLogsToEnd;
-
         public LogsWindow()
         {
             this.InitializeComponent();
@@ -60,12 +58,11 @@
 
         public bool ScrollLogsToEnd
         {
-            get => this.scrollLogsToEnd;
+            get => SettingsProvider.GetInstance().ScrollLogsToEnd;
             set
             {
-                this.scrollLogsToEnd = value;
-                this.OnPropertyChanged();
                 SettingsProvider.GetInstance().ScrollLogsToEnd = value;
+                this.OnPropertyChanged();
             }
         }
 

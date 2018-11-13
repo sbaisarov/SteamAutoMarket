@@ -28,8 +28,6 @@
     {
         private readonly List<Task> priceLoadSubTasks = new List<Task>();
 
-        private SteamAppId marketSellSelectedAppid = SettingsProvider.GetInstance().MarketSellSelectedAppid;
-
         private MarketSellModel marketSellSelectedItem;
 
         private MarketSellStrategy marketSellStrategy;
@@ -46,6 +44,7 @@
 
             this.MarketSellSelectedAppid = this.AppIdList.FirstOrDefault(
                 appid => appid?.Name == SettingsProvider.GetInstance().MarketSellSelectedAppid?.Name);
+
             this.marketSellStrategy = this.GetMarketSellStrategy();
         }
 
@@ -78,12 +77,11 @@
 
         public SteamAppId MarketSellSelectedAppid
         {
-            get => this.marketSellSelectedAppid;
+            get => SettingsProvider.GetInstance().MarketSellSelectedAppid;
 
             set
             {
-                if (this.marketSellSelectedAppid == value) return;
-                this.marketSellSelectedAppid = value;
+                if (SettingsProvider.GetInstance().MarketSellSelectedAppid == value) return;
                 SettingsProvider.GetInstance().MarketSellSelectedAppid = value;
                 this.OnPropertyChanged();
             }
