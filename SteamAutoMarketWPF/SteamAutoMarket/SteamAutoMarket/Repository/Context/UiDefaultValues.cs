@@ -46,7 +46,9 @@
                                                                           { "olive", Color.FromRgb(0x6d, 0x87, 0x64) },
                                                                           { "steel", Color.FromRgb(0x64, 0x76, 0x87) },
                                                                           { "mauve", Color.FromRgb(0x76, 0x60, 0x8a) },
-                                                                          { "taupe", Color.FromRgb(0x87, 0x79, 0x4e) }
+                                                                          { "taupe", Color.FromRgb(0x87, 0x79, 0x4e) },
+                                                                          { "dim_grey", Color.FromRgb(0x45, 0x45, 0x45) },
+                                                                          { "light_grey", Color.FromRgb(0x53, 0x53, 0x53) }
                                                                       };
 
         public static readonly LinkCollection Themes = new LinkCollection
