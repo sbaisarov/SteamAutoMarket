@@ -1,19 +1,14 @@
 ﻿namespace SteamAutoMarket.Pages
 {
-    using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using System.Windows;
 
-    using Core;
-
-    using Steam.Market.Models;
-
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Repository.Context;
+    using SteamAutoMarket.Utils.Logger;
 
     /// <summary>
     /// Interaction logic for MarketRelist.xaml
@@ -52,38 +47,20 @@
 
         private void LoadMarketListingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            try
+            if (UiGlobalVariables.SteamManager == null)
             {
-                /*Task.Run(
-                    () =>
-                        {
-                            // get listings var listings = 
-
-                            var groupedListings = listings?.Sales?.GroupBy(x => new { x.HashName, x.Price });
-                            if (groupedListings == null)
-                            {
-                                return;
-                            }
-
-                            foreach (var group in groupedListings)
-                            {
-                                var item = group.FirstOrDefault();
-                                if (item == null)
-                                {
-                                    return;
-                                }
-                            }
-
-                            WorkingProcessForm.PriceLoader.StartPriceLoading(ETableToLoad.RelistTable);
-                        });*/
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
             }
-            catch (Exception ex)
-            {
-                Logger.Log.Error("Error on loading listed market items", ex);
-            }
+
+            var form = WorkingProcessForm.NewWorkingProcessWindow("Market listings loading");
+
+            this.RelistItemsList.Clear();
+
+            UiGlobalVariables.SteamManager.LoadMarketListings(form, this.RelistItemsList);
         }
 
-        private void MarkAllItemsButtonClick(object sender, RoutedEventArgs e)
+        private void RelistMarkAllItemsButtonClick(object sender, RoutedEventArgs e)
         {
             foreach (var item in this.RelistItemsList)
             {
@@ -106,22 +83,22 @@
 
         private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void MarkOverpricesButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+        }
+
+        private void MarkAllItemsButtonClick(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

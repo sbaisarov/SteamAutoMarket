@@ -141,6 +141,26 @@
                     });
         }
 
+        public void LoadMarketListings(WorkingProcessForm form, ObservableCollection<MarketRelistModel> relistItemsList)
+        {
+            form.ProcessMethod(
+                () =>
+                    {
+                        try
+                        {
+                            form.AppendLog("Market listings loading started");
+                        }
+                        catch (Exception e)
+                        {
+                            var message = $"Error on market listings loading";
+
+                            form.AppendLog(message);
+                            ErrorNotify.CriticalMessageBox(message, e);
+                            relistItemsList.ClearDispatch();
+                        }
+                    });
+        }
+
         public void SaveAccount()
         {
             if (this.IsSessionUpdated == false) return;
