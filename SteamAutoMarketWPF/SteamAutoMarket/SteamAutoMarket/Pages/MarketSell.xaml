@@ -24,7 +24,7 @@
             <ColumnDefinition Width="20*" MinWidth="200" MaxWidth="250" />
         </Grid.ColumnDefinitions>
 
-        <xcdg:DataGridControl x:Name="MerketItemsToSellGrid"
+        <xcdg:DataGridControl x:Name="MarketItemsToSellGrid"
                               Grid.Column="0"
                               Grid.Row="0"
                               Margin="10, 10, 30, 10"
@@ -142,7 +142,7 @@
                              MinWidth="90"
                              MaxWidth="90"
                              Width="*"
-                             FieldName="MarketSellNumericUpDown"
+                             FieldName="NumericUpDown"
                              AllowSort="False"
                              AllowGroup="False"
                              CellHorizontalContentAlignment="Center"

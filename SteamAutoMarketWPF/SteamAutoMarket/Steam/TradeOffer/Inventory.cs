@@ -138,5 +138,19 @@
 
             return result;
         }
+
+        public FullRgItem[] FilterInventory(FullRgItem[] items, bool removeUnmarketable, bool removeUntradable)
+        {
+            if (removeUnmarketable)
+            {
+                items = items.Where(i => i.Description.IsMarketable).ToArray();
+            }
+            else if (removeUntradable)
+            {
+                items = items.Where(i => i.Description.IsTradable).ToArray();
+            }
+
+            return items;
+        }
     }
 }

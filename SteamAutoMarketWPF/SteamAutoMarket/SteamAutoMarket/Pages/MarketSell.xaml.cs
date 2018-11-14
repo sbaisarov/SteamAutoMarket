@@ -176,13 +176,13 @@
         {
             for (var i = 0; i < this.MarketSellItems.Count; i++)
             {
-                this.MarketSellItems[i].MarketSellNumericUpDown.SetToMaximum();
+                this.MarketSellItems[i].NumericUpDown.SetToMaximum();
             }
         }
 
         private void ReformatAllSellPrices()
         {
-            var items = this.MarketSellItems.ToList();
+            var items = this.MarketSellItems.ToArray();
             foreach (var item in items)
             {
                 item.ProcessSellPrice(this.MarketSellStrategy);
@@ -345,9 +345,9 @@
             Task.Run(
                 () =>
                     {
-                        var itemsToSell = this.MarketSellItems.ToList()
-                            .Where(i => i.MarketSellNumericUpDown.AmountToSell > 0)
-                            .Select(i => new MarketSellProcessModel(i)).Where(i => i.Count > 0).ToList();
+                        var itemsToSell = this.MarketSellItems.ToArray()
+                            .Where(i => i.NumericUpDown.AmountToSell > 0)
+                            .Select(i => new MarketSellProcessModel(i)).Where(i => i.Count > 0).ToArray();
 
                         if (itemsToSell.Sum(i => i.Count) == 0)
                         {
@@ -360,7 +360,7 @@
 
                         UiGlobalVariables.SteamManager.SellOnMarket(
                             form,
-                            this.priceLoadSubTasks,
+                            this.priceLoadSubTasks.ToArray(),
                             itemsToSell,
                             this.MarketSellStrategy);
                     });

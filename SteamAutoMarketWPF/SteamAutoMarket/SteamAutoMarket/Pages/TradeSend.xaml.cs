@@ -3,7 +3,9 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using System.Windows;
 
     using Core;
@@ -13,7 +15,9 @@
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
+    using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
+    using SteamAutoMarket.Utils.Logger;
 
     /// <summary>
     /// Interaction logic for TradeSend.xaml
@@ -22,34 +26,37 @@
     {
         private SteamAppId tradeSendSelectedAppid;
 
-        private TradeSendModel tradeSendSelectedItem;
+        private SteamItemsModel tradeSendSelectedItem;
 
         public TradeSend()
         {
             this.InitializeComponent();
             this.DataContext = this;
+
+            this.TradeSendSelectedAppid = this.AppIdList.FirstOrDefault(
+                appid => appid?.Name == SettingsProvider.GetInstance().TradeSendSelectedAppid?.Name);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public List<SteamAppId> AppIdList => SettingsProvider.GetInstance().AppIdList;
 
-        public ObservableCollection<TradeSendModel> TradeSendItemsList { get; } =
-            new ObservableCollection<TradeSendModel>();
+        public ObservableCollection<SteamItemsModel> TradeSendItemsList { get; } =
+            new ObservableCollection<SteamItemsModel>();
 
         public SteamAppId TradeSendSelectedAppid
         {
-            get => this.tradeSendSelectedAppid;
+            get => SettingsProvider.GetInstance().TradeSendSelectedAppid;
 
             set
             {
                 if (this.tradeSendSelectedAppid == value) return;
-                this.tradeSendSelectedAppid = value;
+                SettingsProvider.GetInstance().TradeSendSelectedAppid = value;
                 this.OnPropertyChanged();
             }
         }
 
-        public TradeSendModel TradeSendSelectedItem
+        public SteamItemsModel TradeSendSelectedItem
         {
             get => this.tradeSendSelectedItem;
 
@@ -64,40 +71,103 @@
         public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
             new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
 
+        public string TradeSendNewAppid
+        {
+            set
+            {
+                if (string.IsNullOrEmpty(value) || !int.TryParse(value, out var longValue))
+                {
+                    return;
+                }
+
+                var steamAppId = this.AppIdList.FirstOrDefault(e => e.AppId == longValue);
+                if (steamAppId == null)
+                {
+                    steamAppId = new SteamAppId(longValue);
+                    this.AppIdList.Add(steamAppId);
+                }
+
+                this.TradeSendSelectedAppid = steamAppId;
+            }
+        }
+
+        public bool TradeSendLoadOnlyUnmarketable
+        {
+            get => SettingsProvider.GetInstance().TradeSendLoadOnlyUnmarketable;
+            set
+            {
+                SettingsProvider.GetInstance().TradeSendLoadOnlyUnmarketable = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void LoadInventoryButtonClick(object sender, RoutedEventArgs e)
+        private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
         {
-            for (var i = 0; i < 10; i++)
+            var items = this.TradeSendItemsList.ToArray();
+            foreach (var t in items)
             {
-                this.TradeSendItemsList.Add(
-                    new TradeSendModel(
-                        new List<FullRgItem>
-                            {
-                                new FullRgItem
-                                    {
-                                        Asset = new RgInventory { Amount = $"{RandomUtils.RandomInt(1, 100)}" },
-                                        Description = new RgDescription
-                                                          {
-                                                              Type = RandomUtils.RandomString(15),
-                                                              MarketHashName = RandomUtils.RandomString(15),
-                                                              MarketName = RandomUtils.RandomString(15),
-                                                              IconUrlLarge =
-                                                                  "https://steamcommunity-a.akamaihd.net/economy/image/IzMF03bk9WpSBq-S-ekoE33L-iLqGFHVaU25ZzQNQcXdA3g5gMEPvUZZEaiHLrVJRsl8q3CWTo7Qi89ehDNVzDMFfXqviiQrcex4NM6b5gni6vaCV2D_bXzpIC7XWldlHOQLOG7cqzKs4rmSEDCYQu4pEl9SKPcB9zZBPpvbOxpvgIcNrTDgxhQkS0RmYstBNg202HAWI4IsxSAVIJYEzyKkd8bQhFhgOUViDOq0Au2WbNCmkSgmXExvG_RJNdiWv3Puq5-ndLfYeu5xafCepGZ_Rg/360fx360f"
-                                                          }
-                                    }
-                            }));
+                t.NumericUpDown.SetToMaximum();
             }
         }
 
-        private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
+        private void LoadItemsToTradeButtonClick(object sender, RoutedEventArgs e)
         {
-            for (var i = 0; i < this.TradeSendItemsList.Count; i++)
+            if (UiGlobalVariables.SteamManager == null)
             {
-                this.TradeSendItemsList[i].NumericUpDown.SetToMaximum();
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
             }
+
+            if (int.TryParse(this.MarketContextIdTextBox.Text, out var contextId) == false)
+            {
+                ErrorNotify.CriticalMessageBox($"Incorrect context id provided - {contextId}");
+                return;
+            }
+
+            var form = WorkingProcessForm.NewWorkingProcessWindow(
+                $"{this.TradeSendSelectedAppid.Name} inventory loading");
+
+            var onlyUnmarketable = this.TradeSendLoadOnlyUnmarketable;
+
+            this.TradeSendItemsList.Clear();
+
+            UiGlobalVariables.SteamManager.LoadItemsToTradeWorkingProcess(
+                form,
+                this.TradeSendSelectedAppid,
+                contextId,
+                this.TradeSendItemsList,
+                onlyUnmarketable);
+        }
+
+        private void SendTradeOfferButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
+
+            Task.Run(
+                () =>
+                    {
+                        var itemsToSell = this.TradeSendItemsList.ToArray().Where(i => i.NumericUpDown.AmountToSell > 0)
+                            .SelectMany(i => i.ItemsList).ToArray();
+
+                        if (itemsToSell.Any() == false)
+                        {
+                            ErrorNotify.CriticalMessageBox(
+                                "No items was marked to send! Mark items before starting trade send");
+                            return;
+                        }
+
+                        var form = WorkingProcessForm.NewWorkingProcessWindow("Trade send");
+
+                        UiGlobalVariables.SteamManager.SendTrade(form, itemsToSell, false);
+                    });
         }
     }
 }

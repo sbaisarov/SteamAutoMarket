@@ -9,13 +9,13 @@
         public static void AddDispatch<T>(this ICollection<T> collection, T item)
         {
             Action<T> addMethod = collection.Add;
-            Application.Current.Dispatcher.BeginInvoke(addMethod, item);
+            Application.Current.Dispatcher.Invoke(addMethod, item);
         }
 
         public static void ClearDispatch<T>(this ICollection<T> collection)
         {
             Action method = collection.Clear;
-            Application.Current.Dispatcher.BeginInvoke(method);
+            Application.Current.Dispatcher.Invoke(method);
         }
 
         public static void ReplaceDispatch<T>(this ICollection<T> collection, ICollection<T> newCollection)

@@ -67,7 +67,7 @@
     <Compile Include="Models\PriceModel.cs" />
     <Compile Include="Models\SteamAppId.cs" />
     <Compile Include="Models\SettingsSteamAccount.cs" />
-    <Compile Include="Models\TradeSendModel.cs" />
+    <Compile Include="Models\SteamItemsModel.cs" />
     <Compile Include="Pages\ActiveTrades.xaml.cs">
       <DependentUpon>ActiveTrades.xaml</DependentUpon>
     </Compile>

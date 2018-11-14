@@ -1,6 +1,5 @@
 ﻿namespace SteamAutoMarket.Models
 {
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -13,11 +12,11 @@
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Image;
 
-    public class TradeSendModel : INotifyPropertyChanged
+    public class SteamItemsModel : INotifyPropertyChanged
     {
         private string image;
 
-        public TradeSendModel(List<FullRgItem> itemsList)
+        public SteamItemsModel(FullRgItem[] itemsList)
         {
             this.ItemsList = new ObservableCollection<FullRgItem>(itemsList);
 
@@ -29,7 +28,7 @@
 
             this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description.Type);
 
-            this.Description = "TODO - GENERATE DESCRIPTION" + RandomUtils.RandomString(500);
+            this.Description = SteamUtils.GetClearDescription(this.ItemModel?.Description);
 
             this.NumericUpDown = new NumericUpDownModel(this.Count);
         }
@@ -42,11 +41,17 @@
 
         public string Image
         {
-            get =>
-                this.image ?? ImageProvider.GetItemImage(
+            get
+            {
+                if (this.image != null) return this.image;
+
+                this.image = ImageProvider.GetItemImage(
                     a => this.Image = a,
                     this.ItemModel?.Description?.MarketHashName,
-                    this.ItemModel?.Description?.IconUrlLarge);
+                    this.ItemModel?.Description?.IconUrlLarge ?? this.ItemModel?.Description?.IconUrl);
+
+                return this.image;
+            }
 
             set
             {

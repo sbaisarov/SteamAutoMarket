@@ -183,16 +183,16 @@
 
             if (this.ChartModel.Count > 1)
             {
-                var averageSeconds = this.times.ToList().Average();
+                var averageSeconds = this.times.ToArray().Average();
                 this.AverageSpeed = Math.Round(averageSeconds, 2);
                 this.AverageMinutesLeft = Math.Round(iterationsLeft * averageSeconds / 60);
             }
 
             if (this.ChartModel.Count > 50)
             {
-                var oldChart = this.ChartModel.ToList();
+                var oldChart = this.ChartModel.ToArray();
                 var newChart = new List<DataPoint>();
-                for (var j = 2; j < oldChart.Count; j += 2)
+                for (var j = 2; j < oldChart.Length; j += 2)
                 {
                     var averageX = (oldChart[j].X + oldChart[j - 1].X) / 2;
                     var averageY = (oldChart[j].Y + oldChart[j - 1].Y) / 2;

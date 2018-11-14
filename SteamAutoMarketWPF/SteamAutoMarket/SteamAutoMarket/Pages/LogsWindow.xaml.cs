@@ -93,7 +93,7 @@
                 return;
             }
 
-            Process.Start(ImageCache.ImagesPath);
+            Process.Start(Logger.LogFilePath);
         }
     }
 }

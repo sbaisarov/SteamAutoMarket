@@ -186,8 +186,7 @@
                         }
                         catch (Exception ex)
                         {
-                            ErrorNotify.CriticalMessageBox(
-                                $"Failed to log in. Please check credentials provided. {ex.Message}");
+                            ErrorNotify.CriticalMessageBox("Failed to log in. Please check credentials provided.", ex);
                         }
 
                         this.LoginButtonEnabled = true;

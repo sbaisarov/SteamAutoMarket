@@ -15,6 +15,8 @@
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Image;
 
+    using SteamKit2;
+
     public class SettingsSteamAccount : INotifyPropertyChanged
     {
         private string avatar = ResourceUtils.GetResourceImageUri("NoAvatarSmall.jpg");
@@ -43,13 +45,7 @@
                 throw new ArgumentException($"Error on mafile process - {e.Message}");
             }
 
-            try
-            {
-                this.SteamId = this.Mafile.Session.SteamID;
-            }
-            catch
-            {
-            }
+            this.SteamId = this.Mafile?.Session?.SteamID;
         }
 
         public SettingsSteamAccount()
@@ -84,7 +80,17 @@
             }
         }
 
-        public ulong SteamId { get; set; }
+        public ulong? SteamId { get; set; }
+
+        public uint? AccountId
+        {
+            get
+            {
+                var steamId = this.SteamId;
+                if (steamId != null) return new SteamID(steamId.Value).AccountID;
+                else return null;
+            }
+        }
 
         public string TradeToken
         {

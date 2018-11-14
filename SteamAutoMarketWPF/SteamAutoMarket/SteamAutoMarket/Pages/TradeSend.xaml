@@ -7,8 +7,9 @@
              xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
              xmlns:models="clr-namespace:SteamAutoMarket.Models"
              xmlns:converter="clr-namespace:SteamAutoMarket.Utils.Converter"
+             xmlns:pages="clr-namespace:SteamAutoMarket.Pages"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignData UiDataContext}">
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:TradeSend}">
 
     <UserControl.Resources>
         <converter:IfNullVisibleConverter x:Key="IfNullVisibleConverter" />
@@ -22,7 +23,7 @@
             <ColumnDefinition Width="20*" MinWidth="200" MaxWidth="250" />
         </Grid.ColumnDefinitions>
 
-        <xcdg:DataGridControl x:Name="MerketItemsToSellGrid"
+        <xcdg:DataGridControl x:Name="MarketItemsToTradeGrid"
                               Grid.Column="0"
                               Grid.Row="0"
                               Margin="10, 10, 30, 10"
@@ -69,7 +70,8 @@
                 </xcdg:Column>
 
                 <xcdg:Column Title="Count"
-                             Width="0.5*"
+                             MinWidth="110"
+                             MaxWidth="110"
                              FieldName="Count"
                              ReadOnly="True"
                              CellHorizontalContentAlignment="Center"
@@ -85,9 +87,8 @@
                 </xcdg:Column>
 
                 <xcdg:Column Title="Amount to send"
-                             MinWidth="100"
-                             MaxWidth="100"
-                             Width="*"
+                             MinWidth="110"
+                             MaxWidth="110"
                              FieldName="NumericUpDown"
                              AllowSort="False"
                              AllowGroup="False"
@@ -96,14 +97,13 @@
                     <xcdg:Column.CellContentTemplate>
                         <ItemContainerTemplate>
                             <xctk:IntegerUpDown
+                                Style="{StaticResource UpDown}"
                                 Width="55"
                                 Value="0"
                                 Increment="1"
-                                Maximum="{Binding Path=MaxAllowedCount}"
-                                Text="{Binding Path=AmountToSell}"
-                                Minimum="0"
-                                Foreground="{DynamicResource ItemText}"
-                                Background="{DynamicResource DataGridBackground}" />
+                                Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
+                                Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                Minimum="0" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
@@ -124,49 +124,44 @@
                 <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Column="0"
-                  Grid.Row="0">
+            <Grid Grid.Row="0">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Image Source="{Binding Path=TradeSendSelectedItem.Image}" Stretch="Uniform" MaxHeight="200" />
+                <Image Source="{Binding Path=TradeSendSelectedItem.Image}"
+                       Stretch="Uniform"
+                       Name="ItemImage"
+                       MaxHeight="200" />
 
                 <Path Grid.Row="0"
                       Style="{StaticResource Geometry}"
                       Margin="0,0,0,5"
-                      Visibility="{Binding Path=TradeSendSelectedItem.Image, Converter={StaticResource IfNullVisibleConverter}}">
-                    <Path.Data>
-                        <PathGeometry
-                            Figures="M 66.667969 41.667969 C 58.332031 41.667969 54.167969 54.167969 47.917969 54.167969 C 41.667969 54.167969 41.671875 50 33.332031 50 C 25 50 20.828125 66.667969 20.828125 66.667969 L 79.167969 66.667969 C 79.167969 66.667969 75 41.667969 66.667969 41.667969 Z M 66.667969 41.667969  M 45.832031 35.421875 C 45.832031 41.175781 41.171875 45.835938 35.417969 45.835938 C 29.664062 45.835938 25 41.175781 25 35.421875 C 25 29.667969 29.664062 25.003906 35.417969 25.003906 C 41.171875 25.003906 45.832031 29.667969 45.832031 35.421875 Z M 45.832031 35.421875 M 83.332031 12.5 L 16.667969 12.5 C 12.070312 12.5 8.332031 16.238281 8.332031 20.832031 L 8.332031 70.832031 C 8.332031 75.429688 12.070312 79.167969 16.667969 79.167969 L 83.332031 79.167969 C 87.929688 79.167969 91.667969 75.429688 91.667969 70.832031 L 91.667969 20.832031 C 91.667969 16.238281 87.929688 12.5 83.332031 12.5 Z M 83.332031 70.832031 L 16.667969 70.832031 L 16.667969 20.832031 L 83.332031 20.832031 Z M 83.332031 70.832031 " />
-                    </Path.Data>
-                </Path>
+                      Visibility="{Binding Path=TradeSendSelectedItem.Image, Converter={StaticResource IfNullVisibleConverter}}"
+                      Data="{StaticResource SvgDefaultItemImage}" />
 
-                <ScrollViewer Grid.Row="1"
-                              VerticalScrollBarVisibility="Visible"
-                              HorizontalScrollBarVisibility="Disabled"
-                              Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}">
-                    <TextBox Name="ItemDescriptionTextBox"
-                             MaxHeight="90"
-                             Background="Transparent"
-                             Foreground="{DynamicResource ItemText}"
-                             BorderThickness="0"
-                             IsReadOnly="True"
-                             Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
-                             Text="{Binding Path=TradeSendSelectedItem.Description, Mode=OneWay}"
-                             TextWrapping="Wrap" VerticalAlignment="Center" />
-                </ScrollViewer>
+                <TextBox Grid.Row="1"
+                         Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
+                         Name="ItemDescriptionTextBox"
+                         MaxHeight="90"
+                         Background="Transparent"
+                         Foreground="{DynamicResource ItemText}"
+                         IsReadOnly="True"
+                         VerticalScrollBarVisibility="Visible"
+                         Text="{Binding Path=TradeSendSelectedItem.Description, Mode=OneWay}"
+                         TextWrapping="Wrap" VerticalAlignment="Center" />
             </Grid>
 
             <Grid Grid.Row="1"
-                  Margin="0, 5, 0, 0">
+                  Margin="0, 5, 0, 0"
+                  MaxHeight="200">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -174,12 +169,12 @@
                     <ColumnDefinition Width="0.8*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock
-                    Grid.Column="0"
-                    Grid.Row="0"
-                    Text="App Id"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Left" />
+
+                <TextBlock Grid.Column="0"
+                           Grid.Row="0"
+                           Text="App Id"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left" />
 
                 <TextBlock Text="Context Id"
                            Grid.Column="0"
@@ -191,9 +186,9 @@
                 <ComboBox Grid.Column="1"
                           IsSynchronizedWithCurrentItem="True"
                           Name="MarketAppidCombobox"
+                          Text="{Binding TradeSendNewAppid, UpdateSourceTrigger=LostFocus}"
                           ItemsSource="{Binding AppIdList}"
                           SelectedItem="{Binding TradeSendSelectedAppid}"
-                          Text="{Binding MarketSellNewAppid, UpdateSourceTrigger=LostFocus}"
                           DisplayMemberPath="Name"
                           IsEditable="True"
                           Height="22"
@@ -208,19 +203,21 @@
                     Grid.Row="1"
                     Margin="0, 4" />
 
-                <Button Grid.Column="2" Grid.Row="0"
-                        Name="LoadInventoryButton"
+                <Button Grid.Column="2"
+                        Grid.Row="0"
                         Grid.RowSpan="2"
+                        Click="LoadItemsToTradeButtonClick"
                         MaxHeight="40"
                         Margin="8, 0, 0, 0"
                         Content="Load"
-                        Padding="0" Click="LoadInventoryButtonClick" />
+                        Padding="0" />
 
-                <CheckBox Grid.Row="2" 
-                          Grid.ColumnSpan="3" 
+                <CheckBox Grid.Row="2"
+                          Grid.ColumnSpan="3"
                           Grid.Column="0"
                           Margin="0,0,0,10"
-                          Content="Load only unmarketable" />
+                          Content="Load only unmarketable"
+                          IsChecked="{Binding TradeSendLoadOnlyUnmarketable}" />
             </Grid>
 
             <Grid Grid.Row="2"
@@ -262,8 +259,7 @@
                           Height="22"
                           Grid.Row="0"
                           Margin="0, 4"
-                          ItemsSource="{Binding Path=TradeSteamUserList, Mode=OneWay}"
-                          SelectedItem="{Binding SelectedTradeAppId}">
+                          ItemsSource="{Binding Path=TradeSteamUserList, Mode=OneWay}">
 
                     <ComboBox.ItemTemplate>
                         <DataTemplate DataType="models:SettingsSteamAccount">
@@ -281,14 +277,14 @@
 
                 <TextBox Grid.Column="2"
                          Name="TradeSteamIdTextBox"
-                         Text="{Binding ElementName=TradeSteamAccountComboBox, Path=SelectedItem.(models:SettingsSteamAccount.SteamId)}"
+                         Text="{Binding ElementName=TradeSteamAccountComboBox, Path=SelectedItem.AccountId, Mode=OneWay}"
                          Height="22"
                          Grid.Row="1"
                          Margin="0, 4" />
 
                 <TextBox Grid.Column="2"
                          Name="TradeTokenTextBox"
-                         Text="{Binding ElementName=TradeSteamAccountComboBox, Path=SelectedItem.(models:SettingsSteamAccount.TradeToken)}"
+                         Text="{Binding ElementName=TradeSteamAccountComboBox, Path=SelectedItem.(models:SettingsSteamAccount.TradeToken), Mode=OneWay}"
                          Height="22"
                          Grid.Row="2"
                          Margin="0, 4" />
@@ -299,12 +295,14 @@
                     Content="Mark all items"
                     Name="MarketSellMarkAllItems"
                     Margin="0, 0, 0, 5"
-                    Padding="0" Click="MarketSellMarkAllItemsClick" />
+                    Padding="0" 
+                    Click="MarketSellMarkAllItemsClick" />
 
             <Button Grid.Row="5"
-                    Content="Start market sell"
+                    Content="Send trade offer"
                     Margin="0, 5, 0, 0"
-                    Padding="0" />
+                    Padding="0"
+                    Click="SendTradeOfferButtonOnClick"/>
 
         </Grid>
 

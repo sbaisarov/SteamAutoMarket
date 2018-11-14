@@ -1,7 +1,6 @@
 ﻿namespace SteamAutoMarket.Models
 {
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
     using Core;
@@ -11,7 +10,7 @@
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
 
-    public class SettingsModel : INotifyPropertyChanged
+    public class SettingsModel
     {
         private List<SteamAppId> appIdList = new List<SteamAppId>(UiDefaultValues.AppIdList);
 
@@ -41,7 +40,9 @@
 
         private string theme;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private bool tradeSendLoadOnlyUnmarketable;
+
+        private SteamAppId tradeSendSelectedAppid;
 
         public List<SteamAppId> AppIdList
         {
@@ -197,6 +198,28 @@
             {
                 if (this.theme == value) return;
                 this.theme = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeSendLoadOnlyUnmarketable
+        {
+            get => this.tradeSendLoadOnlyUnmarketable;
+            set
+            {
+                if (this.tradeSendLoadOnlyUnmarketable == value) return;
+                this.tradeSendLoadOnlyUnmarketable = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public SteamAppId TradeSendSelectedAppid
+        {
+            get => this.marketSellSelectedAppid;
+            set
+            {
+                if (this.tradeSendSelectedAppid == value) return;
+                this.tradeSendSelectedAppid = value;
                 this.OnPropertyChanged();
             }
         }

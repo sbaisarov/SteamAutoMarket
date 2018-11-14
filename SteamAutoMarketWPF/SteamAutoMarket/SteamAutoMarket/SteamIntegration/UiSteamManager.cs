@@ -1,7 +1,6 @@
 ﻿namespace SteamAutoMarket.SteamIntegration
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
@@ -11,6 +10,7 @@
     using Steam;
     using Steam.SteamAuth;
     using Steam.TradeOffer.Models;
+    using Steam.TradeOffer.Models.Full;
 
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Pages;
@@ -84,6 +84,64 @@
         public double? GetCurrentPriceWithCache(int appid, string hashName) =>
             this.CurrentPriceCache.Get(hashName)?.Price ?? this.GetCurrentPrice(appid, hashName);
 
+        public void LoadItemsToTradeWorkingProcess(
+            WorkingProcessForm form,
+            SteamAppId appid,
+            int contextId,
+            ObservableCollection<SteamItemsModel> itemsToTrade,
+            bool onlyUnmarketable)
+        {
+            form.ProcessMethod(
+                () =>
+                    {
+                        try
+                        {
+                            form.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
+
+                            var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId);
+                            form.AppendLog($"{page.TotalInventoryCount} items found");
+
+                            var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
+                            var currentPage = 1;
+
+                            form.ProgressBarMaximum = totalPagesCount;
+                            this.ProcessTradeSendInventoryPage(itemsToTrade, page, onlyUnmarketable);
+
+                            form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
+                            form.IncrementProgress();
+
+                            while (page.MoreItems == 1)
+                            {
+                                if (form.CancellationToken.IsCancellationRequested)
+                                {
+                                    form.AppendLog($"{appid.Name} inventory loading was force stopped");
+                                    return;
+                                }
+
+                                page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid);
+
+                                this.ProcessTradeSendInventoryPage(itemsToTrade, page, onlyUnmarketable);
+
+                                form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
+                                form.IncrementProgress();
+                            }
+
+                            form.AppendLog(
+                                itemsToTrade.Any()
+                                    ? $"{itemsToTrade.ToArray().Sum(i => i.Count)} tradable items was loaded"
+                                    : $"Seems like no items found on {appid.Name} inventory");
+                        }
+                        catch (Exception e)
+                        {
+                            var message = $"Error on {appid.Name} inventory loading";
+
+                            form.AppendLog(message);
+                            ErrorNotify.CriticalMessageBox(message, e);
+                            itemsToTrade.ClearDispatch();
+                        }
+                    });
+        }
+
         public void LoadItemsToSaleWorkingProcess(
             WorkingProcessForm form,
             SteamAppId appid,
@@ -104,7 +162,7 @@
                             var currentPage = 1;
 
                             form.ProgressBarMaximum = totalPagesCount;
-                            this.ProcessInventoryPage(marketSellItems, page);
+                            this.ProcessMarketSellInventoryPage(marketSellItems, page);
 
                             form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
                             form.IncrementProgress();
@@ -119,7 +177,7 @@
 
                                 page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid);
 
-                                this.ProcessInventoryPage(marketSellItems, page);
+                                this.ProcessMarketSellInventoryPage(marketSellItems, page);
 
                                 form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
                                 form.IncrementProgress();
@@ -127,7 +185,7 @@
 
                             form.AppendLog(
                                 marketSellItems.Any()
-                                    ? $"{marketSellItems.ToList().Sum(i => i.Count)} marketable items was loaded"
+                                    ? $"{marketSellItems.ToArray().Sum(i => i.Count)} marketable items was loaded"
                                     : $"Seems like no items found on {appid.Name} inventory");
                         }
                         catch (Exception e)
@@ -171,8 +229,8 @@
 
         public void SellOnMarket(
             WorkingProcessForm form,
-            List<Task> priceLoadTasksList,
-            List<MarketSellProcessModel> marketSellModels,
+            Task[] priceLoadTasksList,
+            MarketSellProcessModel[] marketSellModels,
             MarketSellStrategy sellStrategy)
         {
             form.ProcessMethod(
@@ -306,19 +364,49 @@
                     });
         }
 
-        private void ProcessInventoryPage(
-            ICollection<MarketSellModel> marketSellItems,
+
+        public void SendTrade(WorkingProcessForm form, FullRgItem[] itemsToTrade, bool acceptTwoFactor)
+        {
+            //this.OfferSession.SendTradeOffer()
+        }
+
+        private void ProcessMarketSellInventoryPage(
+            ObservableCollection<MarketSellModel> marketSellItems,
             InventoryRootModel inventoryPage)
         {
-            var items = this.Inventory.ProcessInventoryPage(inventoryPage);
+            var items = this.Inventory.ProcessInventoryPage(inventoryPage).ToArray();
 
-            var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName)
-                .ToList();
+            items = this.Inventory.FilterInventory(items, true, false);
+
+            var groupedItems = items.GroupBy(i => i.Description.MarketHashName).ToArray();
 
             foreach (var group in groupedItems)
             {
-                marketSellItems.AddDispatch(new MarketSellModel(group.ToList()));
+                marketSellItems.AddDispatch(new MarketSellModel(group.ToArray()));
             }
         }
+
+        private void ProcessTradeSendInventoryPage(
+            ObservableCollection<SteamItemsModel> marketSellItems,
+            InventoryRootModel inventoryPage,
+            bool onlyUnmarketable)
+        {
+            var items = this.Inventory.ProcessInventoryPage(inventoryPage).ToArray();
+
+            items = this.Inventory.FilterInventory(items, false, true);
+
+            if (onlyUnmarketable)
+            {
+                items = items.Where(i => i.Description.IsMarketable == false).ToArray();
+            }
+
+            var groupedItems = items.GroupBy(i => i.Description.MarketHashName).ToArray();
+
+            foreach (var group in groupedItems)
+            {
+                marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
+            }
+        }
+
     }
 }
