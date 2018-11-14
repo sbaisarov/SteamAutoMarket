@@ -2,6 +2,9 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+
+    using Core;
 
     using Newtonsoft.Json;
 
@@ -37,6 +40,8 @@
         private int averagePriceHoursToBecomeOld = 12;
 
         private int currentPriceHoursToBecomeOld = 6;
+
+        private string loggerLevel = "INFO";
 
         #endregion
 
@@ -189,9 +194,24 @@
             }
         }
 
-        public void OnPropertyChanged(string propertyName = null)
+        public string LoggerLevel
         {
-            if (this.IsSettingsLoaded) SettingsUpdated.UpdateSettingsFile();
+            get => this.loggerLevel;
+            set
+            {
+                if (this.loggerLevel == value) return;
+                this.loggerLevel = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            Logger.Log.Debug($"Updating '{propertyName}' setting");
+            if (this.IsSettingsLoaded)
+            {
+                SettingsUpdated.UpdateSettingsFile();
+            }
         }
     }
 }

@@ -1,14 +1,22 @@
 ﻿namespace SteamAutoMarket.Pages
 {
+    using System;
     using System.ComponentModel;
+    using System.Diagnostics;
+    using System.IO;
     using System.Runtime.CompilerServices;
     using System.Windows;
 
     using Core;
 
+    using log4net;
+    using log4net.Core;
+
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Context;
+    using SteamAutoMarket.Repository.Image;
     using SteamAutoMarket.Repository.Settings;
+    using SteamAutoMarket.Utils.Logger;
 
     /// <summary>
     /// Interaction logic for Logs.xaml
@@ -66,6 +74,17 @@
             }
         }
 
+        public string SelectedLoggerLevel
+        {
+            get => SettingsProvider.GetInstance().LoggerLevel;
+            set
+            {
+                SettingsProvider.GetInstance().LoggerLevel = value;
+                Logger.UpdateLoggerLevel(value);
+                this.OnPropertyChanged();
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -74,11 +93,13 @@
 
         private void OpenLogFileButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Logger.Log.Debug("Debug");
-            Logger.Log.Info("Info");
-            Logger.Log.Warn("Warn");
-            Logger.Log.Error("Error");
-            Logger.Log.Fatal("Fatal");
+            if (File.Exists(Logger.LogFilePath) == false)
+            {
+                ErrorNotify.CriticalMessageBox($"{ImageCache.ImagesPath} directory not found");
+                return;
+            }
+
+            Process.Start(ImageCache.ImagesPath);
         }
     }
 }

@@ -17,17 +17,23 @@
 
         public static void UpdateSettingsFile()
         {
-            if (isUpdatePlanned) return;
+            if (isUpdatePlanned)
+            {
+                Logger.Log.Debug("Settings file update is already planed");
+                return;
+            }
 
             Task.Run(() => PlanSettingsUpdate());
         }
 
         private static void PlanSettingsUpdate()
         {
+            Logger.Log.Debug("Settings file update is already in 5 seconds");
             isUpdatePlanned = true;
             Thread.Sleep(TimeSpan.FromSeconds(5));
             UpdateSettings();
             isUpdatePlanned = false;
+            Logger.Log.Debug("Settings file was updated");
         }
 
         private static void UpdateSettings()

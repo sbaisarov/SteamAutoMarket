@@ -10,14 +10,6 @@
         <ScrollViewer>
             <StackPanel MinWidth="200">
                 <TextBlock Text="TODO: add content" />
-                <xctk:IntegerUpDown
-                    Style="{StaticResource UpDown}"
-                    Width="55"
-                    Value="0"
-                    Increment="1"
-                    Maximum="10"
-                    Text="0"
-                    Minimum="0" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

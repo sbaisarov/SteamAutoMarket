@@ -55,7 +55,13 @@
                 <ComboBox Grid.Column="1"
                           Name="LoggingDetailsCombobox"
                           Margin="0,4"
-                          Height="22" />
+                          Height="22"
+                          Text="{Binding SelectedLoggerLevel}">
+                    <ComboBoxItem Content="DEBUG"/>
+                    <ComboBoxItem Content="INFO"/>
+                    <ComboBoxItem Content="ERROR"/>
+                    <ComboBoxItem Content="NONE"/>
+                </ComboBox>
 
             </Grid>
 

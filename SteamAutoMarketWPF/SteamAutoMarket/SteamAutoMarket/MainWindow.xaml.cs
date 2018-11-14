@@ -3,6 +3,8 @@
     using System;
     using System.Net;
 
+    using Core;
+
     using FirstFloor.ModernUI.Presentation;
     using FirstFloor.ModernUI.Windows.Controls;
 
@@ -23,15 +25,16 @@
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             SettingsProvider.GetInstance();
             XmlConfigurator.Configure();
+            Logger.UpdateLoggerLevel(SettingsProvider.GetInstance().LoggerLevel);
             ServicePointManager.ServerCertificateValidationCallback +=
                 (sender, certificate, chain, sslPolicyErrors) => true;
-
-            this.InitializeComponent();
             UiGlobalVariables.MainWindow = this;
             this.DataContext = this;
 
             AppearanceManager.Current.ThemeSource = ModernUiThemeUtils.GetTheme(SettingsProvider.GetInstance().Theme);
             AppearanceManager.Current.AccentColor = ModernUiThemeUtils.GetColor(SettingsProvider.GetInstance().Color);
+
+            this.InitializeComponent();
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
