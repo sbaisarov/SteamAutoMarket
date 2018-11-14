@@ -171,6 +171,7 @@
                         try
                         {
                             var login = this.SelectSteamAccount.Login;
+                            Logger.Log.Info($"Authentication web session for {login}");
                             this.LoginButtonEnabled = false;
 
                             UiGlobalVariables.SteamManager = new UiSteamManager(

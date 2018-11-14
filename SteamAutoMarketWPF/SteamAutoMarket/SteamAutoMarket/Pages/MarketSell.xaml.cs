@@ -368,20 +368,17 @@
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (this.priceLoadingTask?.IsCompleted == false)
-            {
-                Task.Run(() => this.StopPriceLoadingTasks());
-            }
-            else
-            {
-                Logger.Log.Debug("No active market sell price loading task found. Nothing to stop");
-            }
+            Task.Run(() => this.StopPriceLoadingTasks());
         }
 
         private void StopPriceLoadingTasks()
         {
             if (this.cancellationTokenSource == null || this.priceLoadingTask == null
-                                                     || this.priceLoadingTask.IsCompleted) return;
+                                                     || this.priceLoadingTask.IsCompleted)
+            {
+                Logger.Log.Debug("No active market sell price loading task found. Nothing to stop");
+                return;
+            }
 
             Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
             this.cancellationTokenSource.Cancel();

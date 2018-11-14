@@ -20,9 +20,6 @@
     /// </summary>
     public partial class MarketRelist : INotifyPropertyChanged
     {
-        private static readonly Dictionary<string, List<MyListingsSalesItem>> MyListings =
-            new Dictionary<string, List<MyListingsSalesItem>>();
-
         private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
 
         private MarketRelistModel relistSelectedItem;
@@ -31,27 +28,7 @@
         {
             this.InitializeComponent();
             this.DataContext = this;
-
             UiGlobalVariables.MarketRelist = this;
-
-            this.RelistItemsList.Add(
-                new MarketRelistModel(
-                    new List<MyListingsSalesItem>
-                        {
-                            new MyListingsSalesItem
-                                {
-                                    AppId = 123,
-                                    Date = "21-07-1996",
-                                    Game = "123",
-                                    HashName = "7555-Card",
-                                    ImageUrl =
-                                        "https://steamcommunity-a.akamaihd.net/economy/image/IzMF03bk9WpSBq-S-ekoE33L-iLqGFHVaU25ZzQNQcXdA3g5gMEPvUZZEaiHLrVJRsl8q3CWTo7Qi89ehDNVzDMAe3eriSQrcex4NM6b4wTppfHLFXn2bzKZf3LcS11rGbRfMz2I-mf35LuVRTqYFL59SwgCL6MDp2EcNc6JOBds1ZlLpWL-lUtvGhM6TcxLcQi-l3BGYuVzmXARI8kGmCbyIsGLgwlmbkZuWbizVe3LPNX2kikhWB02FqYEJNXCrmPh-WVoRmmi/360fx360f",
-                                    Name = "Card name",
-                                    Price = 12.1,
-                                    SaleId = 1111,
-                                    Url = "https://steamcommunity.com/market/listings/753/615340-Cards?filter=card"
-                                }
-                        }));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -77,7 +54,6 @@
         {
             try
             {
-                MyListings.Clear();
                 /*Task.Run(
                     () =>
                         {
@@ -107,7 +83,7 @@
             }
         }
 
-        private void RelistMarkAllItemsButtonClick(object sender, RoutedEventArgs e)
+        private void MarkAllItemsButtonClick(object sender, RoutedEventArgs e)
         {
             foreach (var item in this.RelistItemsList)
             {
@@ -121,6 +97,31 @@
             {
                 item.RelistPrice.Value = 123;
             }
+        }
+
+        private void ReformatSellStrategyOnControlStateChanged(object sender, RoutedEventArgs e)
+        {
+            // todo
+        }
+
+        private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void MarkOverpricesButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

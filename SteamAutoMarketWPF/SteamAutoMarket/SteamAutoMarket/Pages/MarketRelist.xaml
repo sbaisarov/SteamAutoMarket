@@ -166,19 +166,23 @@
                 <xcdg:Column Title="Relist price"
                              Width="0.7*"
                              FieldName="RelistPrice"
-                             ReadOnly="False"
-                             CellHorizontalContentAlignment="Center"
-                             CellVerticalContentAlignment="Center">
+                             x:Name="SellingPriceColumn"
+                             CellHorizontalContentAlignment="Stretch"
+                             CellVerticalContentAlignment="Center"
+                             ReadOnly="False">
                     <xcdg:Column.CellContentTemplate>
                         <ItemContainerTemplate>
-                            <TextBlock
-                                Text="{Binding Mode=TwoWay, Path=(models:PriceModel.Value)}"
+                            <TextBox
+                                TextAlignment="Center"
+                                BorderThickness="0"
+                                Text="{Binding Path=(models:PriceModel.Value), Mode=TwoWay}"
                                 Foreground="{DynamicResource ItemText}"
                                 Background="{DynamicResource DataGridBackground}"
                                 d:DataContext="{d:DesignData PriceModel}" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
+
             </xcdg:DataGridControl.Columns>
         </xcdg:DataGridControl>
 
@@ -188,7 +192,7 @@
               MaxWidth="250">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" MinHeight="100" MaxHeight="400" SharedSizeGroup="Image"/>
+                <RowDefinition Height="Auto" MinHeight="100" MaxHeight="400" />
                 <RowDefinition Height="*" MinHeight="46" MaxHeight="76" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition MinHeight="49" MaxHeight="90" />
@@ -198,40 +202,34 @@
                 <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Column="0"
-                  Grid.Row="0">
+            <Grid Grid.Row="0">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Image Source="{Binding Path=RelistSelectedItem.Image}" Stretch="Uniform" MaxHeight="200" />
+                <Image Source="{Binding Path=RelistSelectedItem.Image}"
+                       Stretch="Uniform"
+                       Name="ItemImage"
+                       MaxHeight="200" />
 
                 <Path Grid.Row="0"
                       Style="{StaticResource Geometry}"
                       Margin="0,0,0,5"
-                      Visibility="{Binding Path=RelistSelectedItem.Image, Converter={StaticResource IfNullVisibleConverter}}">
-                    <Path.Data>
-                        <PathGeometry
-                            Figures="M 66.667969 41.667969 C 58.332031 41.667969 54.167969 54.167969 47.917969 54.167969 C 41.667969 54.167969 41.671875 50 33.332031 50 C 25 50 20.828125 66.667969 20.828125 66.667969 L 79.167969 66.667969 C 79.167969 66.667969 75 41.667969 66.667969 41.667969 Z M 66.667969 41.667969  M 45.832031 35.421875 C 45.832031 41.175781 41.171875 45.835938 35.417969 45.835938 C 29.664062 45.835938 25 41.175781 25 35.421875 C 25 29.667969 29.664062 25.003906 35.417969 25.003906 C 41.171875 25.003906 45.832031 29.667969 45.832031 35.421875 Z M 45.832031 35.421875 M 83.332031 12.5 L 16.667969 12.5 C 12.070312 12.5 8.332031 16.238281 8.332031 20.832031 L 8.332031 70.832031 C 8.332031 75.429688 12.070312 79.167969 16.667969 79.167969 L 83.332031 79.167969 C 87.929688 79.167969 91.667969 75.429688 91.667969 70.832031 L 91.667969 20.832031 C 91.667969 16.238281 87.929688 12.5 83.332031 12.5 Z M 83.332031 70.832031 L 16.667969 70.832031 L 16.667969 20.832031 L 83.332031 20.832031 Z M 83.332031 70.832031 " />
-                    </Path.Data>
-                </Path>
+                      Visibility="{Binding Path=RelistSelectedItem.Image, Converter={StaticResource IfNullVisibleConverter}}"
+                      Data="{StaticResource SvgDefaultItemImage}" />
 
-                <ScrollViewer Grid.Row="1"
-                              VerticalScrollBarVisibility="Visible"
-                              HorizontalScrollBarVisibility="Disabled"
-                              Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}">
-                    <TextBox Name="ItemDescriptionTextBox"
-                             MaxHeight="90"
-                             Background="Transparent"
-                             Foreground="{DynamicResource ItemText}"
-                             BorderThickness="0"
-                             IsReadOnly="True"
-                             Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
-                             Text="{Binding Path=RelistSelectedItem.Description, Mode=OneWay}"
-                             TextWrapping="Wrap" VerticalAlignment="Center" />
-                </ScrollViewer>
+                <TextBox Grid.Row="1"
+                         Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
+                         Name="ItemDescriptionTextBox"
+                         MaxHeight="90"
+                         Background="Transparent"
+                         Foreground="{DynamicResource ItemText}"
+                         IsReadOnly="True"
+                         VerticalScrollBarVisibility="Visible"
+                         Text="{Binding Path=RelistSelectedItem.Description, Mode=OneWay}"
+                         TextWrapping="Wrap" VerticalAlignment="Center" />
             </Grid>
 
             <Button Grid.Row="1"
@@ -240,8 +238,7 @@
                     Margin="0, 8, 0, 8"
                     Padding="0" Click="LoadMarketListingsButton_OnClick" />
 
-            <Grid Grid.Column="0"
-                  Grid.Row="2"
+            <Grid Grid.Row="2"
                   VerticalAlignment="Center" Margin="0,5">
 
                 <Grid.ColumnDefinitions>
@@ -263,7 +260,8 @@
                     GroupName="MarketSellType"
                     Margin="1"
                     Content="Recommended price"
-                    IsChecked="True" />
+                    IsChecked="True"
+                    Checked="ReformatSellStrategyOnControlStateChanged" />
 
                 <RadioButton
                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
@@ -271,7 +269,8 @@
                     Name="ManualPriceRb"
                     GroupName="MarketSellType"
                     Margin="1"
-                    Content="Manual price" />
+                    Content="Manual price"
+                    Checked="ReformatSellStrategyOnControlStateChanged" />
 
                 <RadioButton
                     Grid.Row="2" Grid.Column="0"
@@ -279,14 +278,18 @@
                     Name="AveragePriceRb"
                     GroupName="MarketSellType"
                     Margin="1,1,15,1"
-                    Content="Average price" />
+                    Content="Average price"
+                    Checked="ReformatSellStrategyOnControlStateChanged" />
 
                 <xctk:DoubleUpDown
                     Grid.Row="2" Grid.Column="1"
+                    Style="{StaticResource UpDown}"
+                    Name="AveragePriceNumericUpDown"
                     VerticalAlignment="Center"
                     Value="-0.01"
                     Increment="0.01"
                     FormatString="F2" Margin="1,0,0,0"
+                    ValueChanged="ReformatSellStrategyOnControlStateChanged"
                     Visibility="{Binding IsChecked,ElementName=AveragePriceRb,Converter={StaticResource B2V}}" />
 
                 <RadioButton
@@ -295,21 +298,26 @@
                     Name="CurrentPriceRb"
                     GroupName="MarketSellType"
                     Margin="1,1,15,1"
-                    Content="Current price" />
+                    Content="Current price"
+                    Checked="ReformatSellStrategyOnControlStateChanged" />
 
                 <xctk:DoubleUpDown
                     Grid.Row="3" Grid.Column="1"
+                    Style="{StaticResource UpDown}"
+                    Name="CurrentPriceNumericUpDown"
                     VerticalAlignment="Center"
                     Width="55"
                     Value="-0.01"
                     Increment="0.01"
                     FormatString="F2"
                     HorizontalAlignment="Left"
+                    ValueChanged="ReformatSellStrategyOnControlStateChanged"
                     Visibility="{Binding IsChecked,ElementName=CurrentPriceRb,Converter={StaticResource B2V}}" />
             </Grid>
 
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -322,48 +330,58 @@
                     Padding="0"
                     Margin="1,4,1,5"
                     Background="Transparent"
-                    ToolTip="Reload selected item price">
+                    ToolTip="Reload all prices"
+                    Click="RefreshAllPricesPriceButton_OnClick">
 
-                    <Path Style="{StaticResource Geometry}" Stretch="Fill">
-                        <Path.Data>
-                            <PathGeometry
-                                Figures="M12.984 15h-1.5v-3.984h-1.5v-1.031l2.016-0.984h0.984v6zM17.016 17.016v-4.031h1.969v6h-12v3l-3.984-3.984 3.984-3.984v3h10.031zM6.984 6.984v4.031h-1.969v-6h12v-3l3.984 3.984-3.984 3.984v-3h-10.031z" />
-                        </Path.Data>
-                    </Path>
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefresh}" />
+                </Button>
+
+                <Button Name="RefreshSinglePriceButton"
+                        Height="40"
+                        Width="40"
+                        Grid.Column="1"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Reload selected item price"
+                        Click="RefreshSinglePriceButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefreshSingle}" />
+
+                </Button>
+
+                <Button Name="StopPriceLoadingButton"
+                        Height="40"
+                        Width="40"
+                        Grid.Column="2"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Stop prices load"
+                        Click="StopPriceLoadingButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgStop}" />
+
                 </Button>
 
                 <Button
                     Height="40"
                     Width="40"
-                    Grid.Column="1"
+                    Grid.Column="3"
                     Padding="0"
                     Margin="1,4,1,5"
                     Background="Transparent"
                     ToolTip="Find selected item on steam market">
 
-                    <Path Style="{StaticResource Geometry}" Stretch="Fill">
-                        <Path.Data>
-                            <PathGeometry
-                                Figures="M19.406 10.109c0-1.656-1.359-3.016-3.031-3.016-1.656 0-3.016 1.359-3.016 3.016 0 1.672 1.359 3.016 3.016 3.016 1.672 0 3.031-1.344 3.031-3.016zM9.875 19.297c0 1.719-1.375 3.094-3.094 3.094-1.188 0-2.219-0.672-2.734-1.656 0.516 0.203 1.016 0.406 1.531 0.625 1.25 0.5 2.688-0.109 3.203-1.375 0.5-1.25-0.109-2.688-1.375-3.187l-1.281-0.516c0.203-0.047 0.438-0.078 0.656-0.078 1.719 0 3.094 1.375 3.094 3.094zM24 6.5v15c0 2.484-2.016 4.5-4.5 4.5h-15c-2.484 0-4.5-2.016-4.5-4.5v-2.391l2.688 1.078c0.406 1.891 2.094 3.313 4.094 3.313 2.187 0 3.984-1.672 4.188-3.797l5.391-3.938c3.125 0 5.641-2.531 5.641-5.625 0-3.125-2.516-5.641-5.641-5.641-3.078 0-5.594 2.5-5.625 5.578l-3.516 5.031c-0.141-0.016-0.281-0.016-0.438-0.016-0.781 0-1.516 0.203-2.141 0.578l-4.641-1.859v-7.313c0-2.484 2.016-4.5 4.5-4.5h15c2.484 0 4.5 2.016 4.5 4.5zM20.141 10.141c0 2.078-1.687 3.766-3.781 3.766-2.078 0-3.766-1.687-3.766-3.766 0-2.094 1.687-3.781 3.766-3.781 2.094 0 3.781 1.687 3.781 3.781z" />
-                        </Path.Data>
-                    </Path>
-                </Button>
-
-                <Button
-                    Height="40"
-                    Width="40"
-                    Grid.Column="2"
-                    Padding="0"
-                    Margin="1,4,1,5"
-                    Background="Transparent"
-                    ToolTip="Reload all prices">
-
-                    <Path Style="{StaticResource Geometry}" Stretch="Fill">
-                        <Path.Data>
-                            <PathGeometry
-                                Figures="M17.016 17.016v-4.031h1.969v6h-12v3l-3.984-3.984 3.984-3.984v3h10.031zM6.984 6.984v4.031h-1.969v-6h12v-3l3.984 3.984-3.984 3.984v-3h-10.031z" />
-                        </Path.Data>
-                    </Path>
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgSteam}" />
                 </Button>
             </Grid>
 
@@ -371,20 +389,22 @@
                     Name="RelistMarkAllItemsButton"
                     Content="Mark all items"
                     Margin="0, 5, 0, 0"
-                    Padding="0" Click="RelistMarkAllItemsButtonClick" />
+                    Padding="0"
+                    Click="MarkAllItemsButtonClick" />
 
             <Button Grid.Row="6"
                     Name="MarkOverpricesButton"
                     Content="Mark overprices items"
                     Margin="0, 5, 0, 0"
-                    Padding="0" />
+                    Padding="0"
+                    Click="MarkOverpricesButton_OnClick" />
 
             <Button Grid.Row="7"
                     Name="StartRelistButton"
                     Click="StartRelistButton_OnClick"
                     Content="Remove selected"
                     Margin="0, 5, 0, 0"
-                    Padding="0" />            
+                    Padding="0" />
         </Grid>
 
     </Grid>

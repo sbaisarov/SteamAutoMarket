@@ -82,16 +82,14 @@
         }
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         private void OpenLogFileButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (File.Exists(Logger.LogFilePath) == false)
             {
-                ErrorNotify.CriticalMessageBox($"{ImageCache.ImagesPath} directory not found");
+                ErrorNotify.CriticalMessageBox($"{Logger.LogFilePath} directory not found");
                 return;
             }
 
