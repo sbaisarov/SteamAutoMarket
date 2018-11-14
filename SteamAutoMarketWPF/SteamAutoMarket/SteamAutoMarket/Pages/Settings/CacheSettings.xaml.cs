@@ -23,13 +23,13 @@
     /// </summary>
     public partial class CacheSettings : INotifyPropertyChanged
     {
-        private int currentPricesCount;
-
         private int averagePricesCount;
 
-        private int marketIdCount;
-
         private int cachedImagesCount;
+
+        private int currentPricesCount;
+
+        private int marketIdCount;
 
         public CacheSettings()
         {
@@ -39,32 +39,12 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int CurrentPricesCount
-        {
-            get => this.currentPricesCount;
-            set
-            {
-                this.currentPricesCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         public int AveragePricesCount
         {
             get => this.averagePricesCount;
             set
             {
                 this.averagePricesCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int MarketIdCount
-        {
-            get => this.marketIdCount;
-            set
-            {
-                this.marketIdCount = value;
                 this.OnPropertyChanged();
             }
         }
@@ -79,41 +59,46 @@
             }
         }
 
+        public int CurrentPricesCount
+        {
+            get => this.currentPricesCount;
+            set
+            {
+                this.currentPricesCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int MarketIdCount
+        {
+            get => this.marketIdCount;
+            set
+            {
+                this.marketIdCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void ImagesOpenFolderOnClick(object sender, RoutedEventArgs e)
+        private void AveragePriceButtonOnClick(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(ImageCache.ImagesPath) == false)
+            if (UiGlobalVariables.SteamManager == null)
             {
-                ErrorNotify.CriticalMessageBox($"{ImageCache.ImagesPath} directory not found");
+                ErrorNotify.CriticalMessageBox("You should login first!");
                 return;
             }
 
-            Process.Start(ImageCache.ImagesPath);
-        }
-
-        private void MarketIdClear(object sender, RoutedEventArgs e)
-        {
-            if (File.Exists(MarketInfoCache.CacheFilePath) == false)
+            if (File.Exists(UiGlobalVariables.SteamManager.AveragePriceCache.FilePath) == false)
             {
-                ErrorNotify.CriticalMessageBox($"{MarketInfoCache.CacheFilePath} directory not found");
+                ErrorNotify.CriticalMessageBox(
+                    $"{UiGlobalVariables.SteamManager.AveragePriceCache.FilePath} directory not found");
                 return;
             }
 
-            Process.Start(MarketInfoCache.CacheFilePath);
-        }
-
-        private void SettingsButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (File.Exists(SettingsUpdated.SettingsPath) == false)
-            {
-                ErrorNotify.CriticalMessageBox($"{SettingsUpdated.SettingsPath} directory not found");
-                return;
-            }
-
-            Process.Start(SettingsUpdated.SettingsPath);
+            Process.Start(UiGlobalVariables.SteamManager.AveragePriceCache.FilePath);
         }
 
         private void CurrentPriceButtonOnClick(object sender, RoutedEventArgs e)
@@ -134,30 +119,26 @@
             Process.Start(UiGlobalVariables.SteamManager.CurrentPriceCache.FilePath);
         }
 
-        private void AveragePriceButtonOnClick(object sender, RoutedEventArgs e)
+        private int GetAveragePriceCachedItemsCount()
         {
             if (UiGlobalVariables.SteamManager == null)
             {
-                ErrorNotify.CriticalMessageBox("You should login first!");
-                return;
+                Logger.Log.Debug(
+                    "No logged in account found. Average price cache cant be loaded. Cached items count is 0");
+                return 0;
             }
 
-            if (File.Exists(UiGlobalVariables.SteamManager.AveragePriceCache.FilePath) == false)
+            try
             {
-                ErrorNotify.CriticalMessageBox(
-                    $"{UiGlobalVariables.SteamManager.AveragePriceCache.FilePath} directory not found");
-                return;
+                Logger.Log.Debug(
+                    $"Getting count of cached images from {UiGlobalVariables.SteamManager.AveragePriceCache.FilePath}");
+                return UiGlobalVariables.SteamManager.AveragePriceCache.Get().Count;
             }
-
-            Process.Start(UiGlobalVariables.SteamManager.AveragePriceCache.FilePath);
-        }
-
-        private void ReloadButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.CachedImagesCount = this.GetCachedImagesCount();
-            this.MarketIdCount = this.GetCachedMarketIdsCount();
-            this.CurrentPricesCount = this.GetCurrentPriceCachedItemsCount();
-            this.AveragePricesCount = this.GetAveragePriceCachedItemsCount();
+            catch (Exception e)
+            {
+                Logger.Log.Error(e);
+                return 0;
+            }
         }
 
         private int GetCachedImagesCount()
@@ -201,34 +182,12 @@
             }
         }
 
-        private int GetAveragePriceCachedItemsCount()
-        {
-            if (UiGlobalVariables.SteamManager == null)
-            {
-                Logger.Log.Debug(
-                    $"No logged in account found. Average price cache cant be loaded. Cached items count is 0");
-                return 0;
-            }
-
-            try
-            {
-                Logger.Log.Debug(
-                    $"Getting count of cached images from {UiGlobalVariables.SteamManager.AveragePriceCache.FilePath}");
-                return UiGlobalVariables.SteamManager.AveragePriceCache.Get().Count;
-            }
-            catch (Exception e)
-            {
-                Logger.Log.Error(e);
-                return 0;
-            }
-        }
-
         private int GetCurrentPriceCachedItemsCount()
         {
             if (UiGlobalVariables.SteamManager == null)
             {
                 Logger.Log.Debug(
-                    $"No logged in account found. Current price cache cant be loaded. Cached items count is 0");
+                    "No logged in account found. Current price cache cant be loaded. Cached items count is 0");
                 return 0;
             }
 
@@ -243,6 +202,47 @@
                 Logger.Log.Error(e);
                 return 0;
             }
+        }
+
+        private void ImagesOpenFolderOnClick(object sender, RoutedEventArgs e)
+        {
+            if (Directory.Exists(ImageCache.ImagesPath) == false)
+            {
+                ErrorNotify.CriticalMessageBox($"{ImageCache.ImagesPath} directory not found");
+                return;
+            }
+
+            Process.Start(ImageCache.ImagesPath);
+        }
+
+        private void MarketIdClear(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists(MarketInfoCache.CacheFilePath) == false)
+            {
+                ErrorNotify.CriticalMessageBox($"{MarketInfoCache.CacheFilePath} directory not found");
+                return;
+            }
+
+            Process.Start(MarketInfoCache.CacheFilePath);
+        }
+
+        private void ReloadButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.CachedImagesCount = this.GetCachedImagesCount();
+            this.MarketIdCount = this.GetCachedMarketIdsCount();
+            this.CurrentPricesCount = this.GetCurrentPriceCachedItemsCount();
+            this.AveragePricesCount = this.GetAveragePriceCachedItemsCount();
+        }
+
+        private void SettingsButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists(SettingsUpdated.SettingsPath) == false)
+            {
+                ErrorNotify.CriticalMessageBox($"{SettingsUpdated.SettingsPath} directory not found");
+                return;
+            }
+
+            Process.Start(SettingsUpdated.SettingsPath);
         }
     }
 }

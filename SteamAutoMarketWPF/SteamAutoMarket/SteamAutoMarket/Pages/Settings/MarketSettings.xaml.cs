@@ -29,16 +29,6 @@
             }
         }
 
-        public int ItemsToTwoFactorConfirm
-        {
-            get => SettingsProvider.GetInstance().ItemsToTwoFactorConfirm;
-            set
-            {
-                SettingsProvider.GetInstance().ItemsToTwoFactorConfirm = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         public int ErrorsOnSellToSkip
         {
             get => SettingsProvider.GetInstance().ErrorsOnSellToSkip;
@@ -49,12 +39,12 @@
             }
         }
 
-        public int PriceLoadingThreads
+        public int ItemsToTwoFactorConfirm
         {
-            get => SettingsProvider.GetInstance().PriceLoadingThreads;
+            get => SettingsProvider.GetInstance().ItemsToTwoFactorConfirm;
             set
             {
-                SettingsProvider.GetInstance().PriceLoadingThreads = value;
+                SettingsProvider.GetInstance().ItemsToTwoFactorConfirm = value;
                 this.OnPropertyChanged();
             }
         }
@@ -75,6 +65,16 @@
             set
             {
                 SettingsProvider.GetInstance().CurrentPriceHoursToBecomeOld = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int PriceLoadingThreads
+        {
+            get => SettingsProvider.GetInstance().PriceLoadingThreads;
+            set
+            {
+                SettingsProvider.GetInstance().PriceLoadingThreads = value;
                 this.OnPropertyChanged();
             }
         }

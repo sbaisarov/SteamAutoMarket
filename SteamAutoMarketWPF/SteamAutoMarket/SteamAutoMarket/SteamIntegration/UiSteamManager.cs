@@ -46,7 +46,7 @@
 
         public PriceCache CurrentPriceCache { get; set; }
 
-        public async Task ConfirmMarketTransactions(WorkingProcessForm form)
+        public void ConfirmMarketTransactions(WorkingProcessForm form)
         {
             form.AppendLog("Fetching confirmations");
             try
@@ -71,12 +71,18 @@
             return price;
         }
 
+        public double? GetAveragePriceWithCache(int appid, string hashName, int days) =>
+            this.AveragePriceCache.Get(hashName)?.Price ?? this.GetAveragePrice(appid, hashName, days);
+
         public override double? GetCurrentPrice(int appid, string hashName)
         {
             var price = base.GetCurrentPrice(appid, hashName);
             if (price.HasValue) this.CurrentPriceCache.Cache(hashName, price.Value);
             return price;
         }
+
+        public double? GetCurrentPriceWithCache(int appid, string hashName) =>
+            this.CurrentPriceCache.Get(hashName)?.Price ?? this.GetCurrentPrice(appid, hashName);
 
         public void LoadItemsToSaleWorkingProcess(
             WorkingProcessForm form,
@@ -140,7 +146,7 @@
             if (this.IsSessionUpdated == false) return;
             this.IsSessionUpdated = false;
 
-            SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
+            SettingsProvider.GetInstance().OnPropertyChanged($"SteamAccounts");
         }
 
         public void SellOnMarket(
@@ -289,7 +295,10 @@
             var groupedItems = items.Where(i => i.Description.IsMarketable).GroupBy(i => i.Description.MarketHashName)
                 .ToList();
 
-            foreach (var group in groupedItems) marketSellItems.AddDispatch(new MarketSellModel(group.ToList()));
+            foreach (var group in groupedItems)
+            {
+                marketSellItems.AddDispatch(new MarketSellModel(group.ToList()));
+            }
         }
     }
 }

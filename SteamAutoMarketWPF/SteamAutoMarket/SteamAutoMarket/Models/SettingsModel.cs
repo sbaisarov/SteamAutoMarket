@@ -15,13 +15,19 @@
     {
         private List<SteamAppId> appIdList = new List<SteamAppId>(UiDefaultValues.AppIdList);
 
-        #region Private
+        private int averagePriceDays = 7;
+
+        private int averagePriceHoursToBecomeOld = 12;
 
         private string color;
+
+        private int currentPriceHoursToBecomeOld = 6;
 
         private int errorsOnSellToSkip = 20;
 
         private int itemsToTwoFactorConfirm = 100;
+
+        private string loggerLevel = "INFO";
 
         private string mafilesPath;
 
@@ -34,16 +40,6 @@
         private List<SettingsSteamAccount> steamAccounts = new List<SettingsSteamAccount>();
 
         private string theme;
-
-        private int averagePriceDays = 7;
-
-        private int averagePriceHoursToBecomeOld = 12;
-
-        private int currentPriceHoursToBecomeOld = 6;
-
-        private string loggerLevel = "INFO";
-
-        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -127,6 +123,17 @@
             }
         }
 
+        public string LoggerLevel
+        {
+            get => this.loggerLevel;
+            set
+            {
+                if (this.loggerLevel == value) return;
+                this.loggerLevel = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public string MafilesPath
         {
             get => this.mafilesPath;
@@ -190,17 +197,6 @@
             {
                 if (this.theme == value) return;
                 this.theme = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public string LoggerLevel
-        {
-            get => this.loggerLevel;
-            set
-            {
-                if (this.loggerLevel == value) return;
-                this.loggerLevel = value;
                 this.OnPropertyChanged();
             }
         }

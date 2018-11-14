@@ -8,9 +8,9 @@
 
     public class Logger
     {
-        public static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "logs.log";
-
         public static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "logs.log";
 
         public static void UpdateLoggerLevel(Level newLevel)
         {

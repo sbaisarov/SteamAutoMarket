@@ -101,6 +101,13 @@
 
         public string Type { get; }
 
+        public void CleanItemPrices()
+        {
+            this.CurrentPrice = null;
+            this.AveragePrice = null;
+            this.SellPrice.Value = null;
+        }
+
         public void ProcessSellPrice(MarketSellStrategy strategy)
         {
             switch (strategy.SaleType)

@@ -28,13 +28,13 @@
     {
         private readonly List<Task> priceLoadSubTasks = new List<Task>();
 
+        private CancellationTokenSource cancellationTokenSource;
+
         private MarketSellModel marketSellSelectedItem;
 
         private MarketSellStrategy marketSellStrategy;
 
         private Task priceLoadingTask;
-
-        private CancellationTokenSource cancellationTokenSource;
 
         public MarketSell()
         {
@@ -196,7 +196,7 @@
 
         private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (this.priceLoadingTask != null && this.priceLoadingTask.IsCompleted == false)
+            if (this.priceLoadingTask?.IsCompleted == false)
             {
                 ErrorNotify.InfoMessageBox("Price loading is already in progress");
                 return;
@@ -211,18 +211,10 @@
                             Logger.Log.Debug("Starting market sell price loading task");
 
                             var items = this.MarketSellItems.ToList();
-                            items.ForEach(
-                                i =>
-                                    {
-                                        i.CurrentPrice = null;
-                                        i.AveragePrice = null;
-                                        i.SellPrice.Value = null;
-                                    });
+                            items.ForEach(i => i.CleanItemPrices());
 
                             var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
-
-                            var currentPriceCache = UiGlobalVariables.SteamManager.CurrentPriceCache;
-                            var averagePriceCache = UiGlobalVariables.SteamManager.AveragePriceCache;
+                            var sellStrategy = this.MarketSellStrategy;
 
                             var priceLoadingSemaphore = new Semaphore(
                                 SettingsProvider.GetInstance().PriceLoadingThreads,
@@ -236,15 +228,13 @@
                                 var task = Task.Run(
                                     () =>
                                         {
-                                            var price =
-                                                currentPriceCache.Get(item.ItemModel.Description.MarketHashName)?.Price
-                                                ?? UiGlobalVariables.SteamManager.GetCurrentPrice(
-                                                    item.ItemModel.Asset.Appid,
-                                                    item.ItemModel.Description.MarketHashName);
+                                            var price = UiGlobalVariables.SteamManager.GetCurrentPriceWithCache(
+                                                item.ItemModel.Asset.Appid,
+                                                item.ItemModel.Description.MarketHashName);
 
                                             Logger.Log.Debug($"Current price for {item.ItemName} is - {price}");
                                             item.CurrentPrice = price;
-                                            item.ProcessSellPrice(this.MarketSellStrategy);
+                                            item.ProcessSellPrice(sellStrategy);
                                             priceLoadingSemaphore.Release();
                                         },
                                     this.cancellationTokenSource.Token);
@@ -254,18 +244,16 @@
                                 task = Task.Run(
                                     () =>
                                         {
-                                            var price =
-                                                averagePriceCache.Get(item.ItemModel.Description.MarketHashName)?.Price
-                                                ?? UiGlobalVariables.SteamManager.GetAveragePrice(
-                                                    item.ItemModel.Asset.Appid,
-                                                    item.ItemModel.Description.MarketHashName,
-                                                    averagePriceDays);
+                                            var price = UiGlobalVariables.SteamManager.GetAveragePriceWithCache(
+                                                item.ItemModel.Asset.Appid,
+                                                item.ItemModel.Description.MarketHashName,
+                                                averagePriceDays);
 
                                             Logger.Log.Debug(
                                                 $"Average price for {averagePriceDays} days for {item.ItemName} is - {price}");
 
                                             item.AveragePrice = price;
-                                            item.ProcessSellPrice(this.MarketSellStrategy);
+                                            item.ProcessSellPrice(sellStrategy);
                                             priceLoadingSemaphore.Release();
                                         },
                                     this.cancellationTokenSource.Token);
@@ -273,17 +261,13 @@
 
                                 if (this.cancellationTokenSource.Token.IsCancellationRequested)
                                 {
-                                    Logger.Log.Debug(
-                                        $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
-                                    new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
+                                    this.WaitForPriceLoadingSubTasksEnd();
                                     Logger.Log.Debug("Market sell price loading was force stopped");
-                                    this.priceLoadSubTasks.Clear();
-                                    break;
+                                    return;
                                 }
                             }
 
-                            new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
-                            this.priceLoadSubTasks.Clear();
+                            this.WaitForPriceLoadingSubTasksEnd();
                             Logger.Log.Debug("Market sell price loading task is finished");
                         }
                         catch (Exception ex)
@@ -294,18 +278,28 @@
                 this.cancellationTokenSource.Token);
         }
 
+        private void WaitForPriceLoadingSubTasksEnd()
+        {
+            if (this.priceLoadSubTasks.Any(t => t.IsCompleted == false))
+            {
+                Logger.Log.Debug(
+                    $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
+                new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
+            }
+
+            this.priceLoadSubTasks.Clear();
+        }
+
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Task.Run(
+            var task = Task.Run(
                 () =>
                     {
                         var item = this.MarketSellSelectedItem;
                         if (item == null) return;
                         try
                         {
-                            item.CurrentPrice = null;
-                            item.AveragePrice = null;
-                            item.SellPrice.Value = null;
+                            item.CleanItemPrices();
 
                             var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
 
@@ -334,6 +328,8 @@
                             ErrorNotify.CriticalMessageBox("Error on item price update", ex);
                         }
                     });
+
+            this.priceLoadSubTasks.Add(task);
         }
 
         private void StartMarketSellButtonClick_OnClick(object sender, RoutedEventArgs e)
@@ -346,27 +342,33 @@
 
             Task.Run(() => this.StopPriceLoadingTasks());
 
-            var itemsToSell = this.MarketSellItems.ToList().Where(i => i.MarketSellNumericUpDown.AmountToSell > 0)
-                .Select(i => new MarketSellProcessModel(i)).Where(i => i.Count > 0).ToList();
+            Task.Run(
+                () =>
+                    {
+                        var itemsToSell = this.MarketSellItems.ToList()
+                            .Where(i => i.MarketSellNumericUpDown.AmountToSell > 0)
+                            .Select(i => new MarketSellProcessModel(i)).Where(i => i.Count > 0).ToList();
 
-            if (itemsToSell.Sum(i => i.Count) == 0)
-            {
-                ErrorNotify.CriticalMessageBox("No items was marked to sell! Mark items before starting sell process");
-                return;
-            }
+                        if (itemsToSell.Sum(i => i.Count) == 0)
+                        {
+                            ErrorNotify.CriticalMessageBox(
+                                "No items was marked to sell! Mark items before starting sell process");
+                            return;
+                        }
 
-            var form = WorkingProcessForm.NewWorkingProcessWindow("Market sell");
+                        var form = WorkingProcessForm.NewWorkingProcessWindow("Market sell");
 
-            UiGlobalVariables.SteamManager.SellOnMarket(
-                form,
-                this.priceLoadSubTasks,
-                itemsToSell,
-                this.MarketSellStrategy);
+                        UiGlobalVariables.SteamManager.SellOnMarket(
+                            form,
+                            this.priceLoadSubTasks,
+                            itemsToSell,
+                            this.MarketSellStrategy);
+                    });
         }
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (this.priceLoadingTask != null && this.priceLoadingTask.IsCompleted == false)
+            if (this.priceLoadingTask?.IsCompleted == false)
             {
                 Task.Run(() => this.StopPriceLoadingTasks());
             }
@@ -379,7 +381,7 @@
         private void StopPriceLoadingTasks()
         {
             if (this.cancellationTokenSource == null || this.priceLoadingTask == null
-                                                || this.priceLoadingTask.IsCompleted) return;
+                                                     || this.priceLoadingTask.IsCompleted) return;
 
             Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
             this.cancellationTokenSource.Cancel();

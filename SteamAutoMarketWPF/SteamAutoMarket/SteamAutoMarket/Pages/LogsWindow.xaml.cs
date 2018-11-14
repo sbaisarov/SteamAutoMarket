@@ -1,6 +1,5 @@
 ﻿namespace SteamAutoMarket.Pages
 {
-    using System;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.IO;
@@ -8,9 +7,6 @@
     using System.Windows;
 
     using Core;
-
-    using log4net;
-    using log4net.Core;
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Context;
