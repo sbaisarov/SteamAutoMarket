@@ -409,7 +409,7 @@
 
         // return history;
         // }
-        public MyListings MyListings(string currency = "5", int count = 100)
+        public MyListings MyListings(string currency = "5", int start = 0 ,int count = 100)
         {
             var myListings = new MyListings
                                  {
@@ -418,7 +418,6 @@
                                      ConfirmationSales = new List<MyListingsSalesItem>()
                                  };
 
-            var start = 0;
             var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
             var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
 
@@ -479,6 +478,7 @@
                 }
             }
 
+            myListings.Total = totalCount;
             myListings.ItemsToBuy = ordersCount;
             myListings.ItemsToConfirm = confirmCount;
             myListings.ItemsToSell = sellCount;
@@ -499,18 +499,14 @@
 
             this.ProcessMyListingsSellOrders(root, currency, myListings);
 
-            while (start < totalCount)
-            {
-                @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
-                resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
-                respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
-                html = respDes.ResultsHtml;
-                doc.LoadHtml(html);
-                root = doc.DocumentNode;
+            @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
+            resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
+            respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
+            html = respDes.ResultsHtml;
+            doc.LoadHtml(html);
+            root = doc.DocumentNode;
 
-                this.ProcessMyListingsSellOrders(root, currency, myListings);
-                start += count;
-            }
+            this.ProcessMyListingsSellOrders(root, currency, myListings);
 
             return myListings;
         }

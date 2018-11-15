@@ -436,14 +436,12 @@
 
         private string _generateConfirmationHashForTime(long time, string tag, string identitySecret)
         {
-            //using (var wb = new WebClient())
-            //{
-            //    var response = wb.UploadString(
-            //        // "https://www.steambiz.store/api/gconfhash", $"{identitySecret},{tag},{time},{main},{uid}");
-            //        "https://www.steambiz.store/api/gconfhash",
-            //        $"{identitySecret},{tag},{time}");
-            //    return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-            //}
+//            using (var wb = new WebClient())
+//            {
+//                var response = wb.UploadString(
+//                    "https://www.steambiz.store/api/gconfhash", $"{identitySecret},{tag},{time},{main},{uid}");
+//                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+//            }
             var decode = Convert.FromBase64String(this.IdentitySecret);
             var n2 = 8;
             if (tag != null)

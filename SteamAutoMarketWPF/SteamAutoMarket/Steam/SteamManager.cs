@@ -1,4 +1,9 @@
-﻿namespace Steam
+﻿using System.Collections.Specialized;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+
+namespace Steam
 {
     using System;
     using System.Collections.Generic;
@@ -26,7 +31,6 @@
             string login,
             string password,
             SteamGuardAccount mafile,
-            string apiKey,
             bool forceSessionRefresh = false)
         {
             this.Login = login;
@@ -36,20 +40,20 @@
 
             this.SteamClient = new UserLogin(login, password) { TwoFactorCode = this.GenerateSteamGuardCode() };
 
-            // this.Guard.DeviceID = this.GetDeviceId(); todo
+            this.Guard.DeviceID = this.GetDeviceId();
             var isSessionRefreshed = this.Guard.RefreshSession();
             if (isSessionRefreshed == false || forceSessionRefresh)
             {
                 this.UpdateSteamSession();
             }
 
-            this.ApiKey = apiKey; // todo
+            this.ApiKey = FetchApikKey();
 
             // this.UpdateTradeToken(); todo
             this.Guard.Session.AddCookies(this.Cookies);
 
             this.Inventory = new Inventory();
-            this.TradeOfferWeb = new TradeOfferWebApi(apiKey);
+            this.TradeOfferWeb = new TradeOfferWebApi(this.ApiKey);
             this.OfferSession = new OfferSession(this.TradeOfferWeb, this.Cookies, this.Guard.Session.SessionID);
 
             var market = new SteamMarketHandler(ELanguage.English, "user-agent");
@@ -91,6 +95,46 @@
             }
         }
 
+        // public async Task ConfirmMarketTransactions()
+        // {
+        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Fetching confirmations");
+        // try
+        // {
+        // var confirmations = this.Guard.FetchConfirmations();
+        // var marketConfirmations = confirmations
+        // .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Accepting confirmations");
+        // this.Guard.AcceptMultipleConfirmations(marketConfirmations);
+        // }
+        // catch (SteamGuardAccount.WGTokenExpiredException)
+        // {
+        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Session expired. Updating...");
+        // this.Guard.RefreshSession();
+        // await this.ConfirmMarketTransactions();
+        // }
+        // }
+        private string FetchApikKey()
+        {
+            var response = SteamWeb.Request("https://steamcommunity.com/dev/apikey", "GET", data: null, cookies: Cookies);
+            var keyParse = Regex.Match(response, @"Key: (.+)</p").Value.Trim();
+            if (keyParse.Length == 0)
+            {
+                var sessionid = SteamClient.Session.SessionID;
+                var data = new NameValueCollection
+                {
+                    {"domain", "domain.com"},
+                    {"agreeToTerms", "agreed"},
+                    {"sessionid", sessionid},
+                    {"Submit", "Register"}
+                };
+                response = SteamWeb.Request("https://steamcommunity.com/dev/registerkey", "GET", data: data, cookies: Cookies);
+                Logger.Log.Debug(response);
+                return FetchApikKey();
+            }
+
+            return keyParse;
+        }
+        
         public virtual double? GetAveragePrice(int appid, string hashName, int days)
         {
             double? price = null;
@@ -157,38 +201,40 @@
             return price;
         }
 
-        // public bool SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken, out string offerId)
-        // {
-        // var offer = new TradeOffer.TradeOffer.TradeOffer(this.OfferSession, new SteamID(ulong.Parse(partnerId)));
-        // foreach (var item in items)
-        // {
-        // offer.Items.AddMyItem(
-        // item.Asset.Appid,
-        // long.Parse(item.Asset.Contextid),
-        // long.Parse(item.Asset.Assetid),
-        // long.Parse(item.Asset.Amount));
-        // }
+        public string SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken, out string offerId)
+        {
+            var offer = new TradeOffer.TradeOffer(this.OfferSession, new SteamID(ulong.Parse(partnerId)));
+            foreach (var item in items)
+            {
+                offer.Items.AddMyItem(
+                    item.Asset.Appid,
+                    long.Parse(item.Asset.Contextid),
+                    long.Parse(item.Asset.Assetid),
+                    long.Parse(item.Asset.Amount));
+            }
+            var success = offer.SendWithToken(out offerId, tradeToken);
+            if (!success) throw new SteamException();
+            return offer.TradeOfferId;
+        }
 
-        // return offer.SendWithToken(out offerId, tradeToken);
-        // }
-
-        // public void ConfirmTradeTransactions(List<ulong> offerids)
-        // {
-        // try
-        // {
-        // var confirmations = this.Guard.FetchConfirmations();
-        // var conf = confirmations.Where(
-        // item => item.ConfType == Confirmation.ConfirmationType.Trade && offerids.Contains(item.Creator))
-        // .ToArray()[0];
-        // this.Guard.AcceptConfirmation(conf);
-        // }
-        // catch (SteamGuardAccount.WGTokenExpiredException)
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Session expired. Updating...");
-        // this.Guard.RefreshSession();
-        // this.ConfirmTradeTransactions(offerids);
-        // }
-        // }
+        public void ConfirmTradeTransactions(List<ulong> offerids)
+        {
+            try
+            {
+                var confirmations = this.Guard.FetchConfirmations();
+                var conf = confirmations.Where(
+                item => item.ConfType == Confirmation.ConfirmationType.Trade && offerids.Contains(item.Creator))
+                .ToArray()[0];
+                this.Guard.AcceptConfirmation(conf);
+            }
+            catch (SteamGuardAccount.WGTokenExpiredException)
+            {
+                Program.WorkingProcessForm.AppendWorkingProcessInfo("Session expired. Updating...");
+                this.UpdateSteamSession();
+                this.ConfirmTradeTransactions(offerids);
+            }
+        }
+        
         public OffersResponse ReceiveTradeOffers()
         {
             return this.TradeOfferWeb.GetActiveTradeOffers(false, true, true);
@@ -287,28 +333,25 @@
 
         private string GenerateSteamGuardCode()
         {
-            // todo add license check
-            // using (var wb = new WebClient())
-            // {
-            // var response = wb.UploadString(
-            // "https://www.steambiz.store/api/gguardcode",
-            // this.Guard.SharedSecret + "," + TimeAligner.GetSteamTime());
-            // return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-            // }
-            return this.Guard.GenerateSteamGuardCodeForTime(TimeAligner.GetSteamTime());
+            using (var wb = new WebClient())
+            {
+                var response = wb.UploadString(
+                    "https://www.steambiz.store/api/gguardcode",
+                    this.Guard.SharedSecret + "," + TimeAligner.GetSteamTime());
+                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+            }
         }
 
-        //private string GetDeviceId()
-        //{
-        //    todo add license check
-        //     using (var wb = new WebClient())
-        //    {
-        //        var response = wb.UploadString(
-        //        "https://www.steambiz.store/api/gdevid",
-        //        this.SteamClient.SteamID.ToString());
-        //        return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-        //    }
-        //}
+        private string GetDeviceId()
+        {
+             using (var wb = new WebClient())
+            {
+                var response = wb.UploadString(
+                    "https://www.steambiz.store/api/gdevid",
+                    this.SteamClient.SteamID.ToString());
+                return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+            }
+        }
 
         private double? IterateHistory(IEnumerable<PriceHistoryDay> history, double? average = null)
         {
@@ -346,90 +389,90 @@
             return result;
         }
 
-        // public string UpdateTradeToken()
-        // {
-        // var response = SteamWeb.Request(
-        // "https://steamcommunity.com/my/tradeoffers/privacy",
-        // "GET",
-        // string.Empty,
-        // this.Cookies);
+        public string UpdateTradeToken()
+        {
+            var response = SteamWeb.Request(
+                "https://steamcommunity.com/my/tradeoffers/privacy",
+                "GET",
+                string.Empty,
+                this.Cookies);
+    
+            if (response == null)
+            {
+                return null;
+            }
+    
+            var token = string.Empty;
+    
+            try
+            {
+                token = Regex.Match(response, @"https://steamcommunity\.com/tradeoffer/new/\?partner=.+&token=(.+?)""")
+                .Groups[1].Value;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+    
+            if (token != string.Empty)
+            {
+                var acc = SavedSteamAccount.Get().FirstOrDefault(a => a.Login == this.Guard.AccountName);
+                if (acc != null)
+                {
+                    acc.TradeToken = token;
+                    SavedSteamAccount.UpdateAll(SavedSteamAccount.Get());
+                }
+            }
+    
+            return token;
+        }
 
-        // if (response == null)
-        // {
-        // return null;
-        // }
-
-        // var token = string.Empty;
-
-        // try
-        // {
-        // token = Regex.Match(response, @"https://steamcommunity\.com/tradeoffer/new/\?partner=.+&token=(.+?)""")
-        // .Groups[1].Value;
-        // }
-        // catch (Exception)
-        // {
-        // // ignored
-        // }
-
-        // if (token != string.Empty)
-        // {
-        // var acc = SavedSteamAccount.Get().FirstOrDefault(a => a.Login == this.Guard.AccountName);
-        // if (acc != null)
-        // {
-        // acc.TradeToken = token;
-        // SavedSteamAccount.UpdateAll(SavedSteamAccount.Get());
-        // }
-        // }
-
-        // return token;
-        // }
-
-        // public void CancelSellOrder(List<MyListingsSalesItem> itemsToCancel)
-        // {
-        // var index = 1;
-        // const int ThreadsCount = 2;
-        // var semaphore = new Semaphore(ThreadsCount, ThreadsCount);
-        // var timeTrackCount = SavedSettings.Get().Settings2FaItemsToConfirm;
-        // var timeTracker = new SellTimeTracker(timeTrackCount);
-
-        // PriceLoader.StopAll();
-        // PriceLoader.WaitForLoadFinish();
-
-        // foreach (var item in itemsToCancel)
-        // {
-        // try
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo(
-        // $"[{index++}/{itemsToCancel.Count}] Canceling - '{item.Name}'");
-
-        // var realIndex = index;
-        // semaphore.WaitOne();
-
-        // Task.Run(
-        // () =>
-        // {
-        // var response = this.MarketClient.CancelSellOrder(item.SaleId);
-
-        // if (response == ECancelSellOrderStatus.Fail)
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo(
-        // $"[{realIndex}/{itemsToCancel.Count}] Error on market cancel item");
-        // }
-
-        // if (realIndex % timeTrackCount == 0)
-        // {
-        // timeTracker.TrackTime(itemsToCancel.Count - realIndex);
-        // }
-
-        // semaphore.Release();
-        // });
-        // }
-        // catch (Exception e)
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo(
-        // $"[{index++}/{itemsToCancel.Count}] Error on cancel market item - {e.Message}");
-        // }
-        // }
-        // }
+        public void CancelSellOrder(List<MyListingsSalesItem> itemsToCancel)
+        {
+            var index = 1;
+            const int ThreadsCount = 2;
+            var semaphore = new Semaphore(ThreadsCount, ThreadsCount);
+            var timeTrackCount = SavedSettings.Get().Settings2FaItemsToConfirm;
+            var timeTracker = new SellTimeTracker(timeTrackCount);
+    
+            PriceLoader.StopAll();
+            PriceLoader.WaitForLoadFinish();
+    
+            foreach (var item in itemsToCancel)
+            {
+            try
+            {
+            Program.WorkingProcessForm.AppendWorkingProcessInfo(
+            $"[{index++}/{itemsToCancel.Count}] Canceling - '{item.Name}'");
+    
+            var realIndex = index;
+            semaphore.WaitOne();
+    
+            Task.Run(
+            () =>
+            {
+            var response = this.MarketClient.CancelSellOrder(item.SaleId);
+    
+            if (response == ECancelSellOrderStatus.Fail)
+            {
+            Program.WorkingProcessForm.AppendWorkingProcessInfo(
+            $"[{realIndex}/{itemsToCancel.Count}] Error on market cancel item");
+            }
+    
+            if (realIndex % timeTrackCount == 0)
+            {
+            timeTracker.TrackTime(itemsToCancel.Count - realIndex);
+            }
+    
+            semaphore.Release();
+            });
+            }
+            catch (Exception e)
+            {
+            Program.WorkingProcessForm.AppendWorkingProcessInfo(
+            $"[{index++}/{itemsToCancel.Count}] Error on cancel market item - {e.Message}");
+            }
+            }
+        }
     }
 }

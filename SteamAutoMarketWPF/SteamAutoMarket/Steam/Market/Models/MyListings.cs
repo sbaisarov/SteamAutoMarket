@@ -6,6 +6,8 @@
     {
         public List<MyListingsSalesItem> ConfirmationSales { get; set; }
 
+        public int Total { get; set; }
+
         public int ItemsToBuy { get; set; }
 
         public int ItemsToConfirm { get; set; }
