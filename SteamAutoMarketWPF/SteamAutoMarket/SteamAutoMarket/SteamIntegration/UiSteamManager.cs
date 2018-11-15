@@ -8,6 +8,7 @@
     using Core.Waiter;
 
     using Steam;
+    using Steam.Market.Models;
     using Steam.SteamAuth;
     using Steam.TradeOffer.Models;
     using Steam.TradeOffer.Models.Full;
@@ -210,6 +211,32 @@
                         try
                         {
                             form.AppendLog("Market listings loading started");
+
+                            var page = this.MarketClient.FetchSellOrders();
+
+                            form.AppendLog($"{page.TotalCount} items found");
+                            var totalCount = page.TotalCount;
+                            var totalPagesCount = (int)Math.Ceiling(totalCount / 100d);
+                            var currentPage = 1;
+                            form.ProgressBarMaximum = totalPagesCount;
+
+                            this.ProcessMarketSellListingsPage(page, relistItemsList);
+                            form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
+                            form.IncrementProgress();
+
+                            for (var startItemIndex = 100; startItemIndex < totalCount; startItemIndex += 100)
+                            {
+                                if (form.CancellationToken.IsCancellationRequested)
+                                {
+                                    form.AppendLog("Market listings loading was force stopped");
+                                    return;
+                                }
+
+                                page = this.MarketClient.FetchSellOrders(startItemIndex);
+                                this.ProcessMarketSellListingsPage(page, relistItemsList);
+                                form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
+                                form.IncrementProgress();
+                            }
                         }
                         catch (Exception e)
                         {
@@ -387,7 +414,20 @@
 
             foreach (var group in groupedItems)
             {
-                marketSellItems.AddDispatch(new MarketSellModel(group.ToArray()));
+                var existModel = marketSellItems.FirstOrDefault(
+                    item => item.ItemModel.Description.MarketHashName == group.Key);
+
+                if (existModel != null)
+                {
+                    foreach (var groupItem in group.ToArray())
+                    {
+                        existModel.ItemsList.Add(groupItem);
+                    }
+                }
+                else
+                {
+                    marketSellItems.AddDispatch(new MarketSellModel(group.ToArray()));
+                }
             }
         }
 
@@ -409,7 +449,46 @@
 
             foreach (var group in groupedItems)
             {
-                marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
+                var existModel = marketSellItems.FirstOrDefault(
+                    item => item.ItemModel.Description.MarketHashName == group.Key);
+
+                if (existModel != null)
+                {
+                    foreach (var groupItem in group.ToArray())
+                    {
+                        existModel.ItemsList.Add(groupItem);
+                    }
+                }
+                else
+                {
+                    marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
+                }
+            }
+        }
+
+        private void ProcessMarketSellListingsPage(
+            SellListingsPage sellListingsPage,
+            ObservableCollection<MarketRelistModel> marketSellListings)
+        {
+            var groupedItems = sellListingsPage.SellListings.ToArray().GroupBy(x => new { x.HashName, x.Price });
+
+            foreach (var group in groupedItems)
+            {
+                var existModel = marketSellListings.FirstOrDefault(
+                    item => item.ItemModel.HashName == group.Key.HashName && item.ItemModel.Price == group.Key.Price);
+                
+                if (existModel != null)
+                {
+                    foreach (var groupItem in group.ToArray())
+                    {
+                        existModel.ItemsList.Add(groupItem);
+                    }
+                }
+                else
+                {
+                    marketSellListings.AddDispatch(new MarketRelistModel(group.ToArray()));
+                }
+
             }
         }
     }

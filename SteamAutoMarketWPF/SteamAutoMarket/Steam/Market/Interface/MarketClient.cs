@@ -5,6 +5,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using HtmlAgilityPack;
@@ -556,12 +557,11 @@
 
             sellListingsPage.TotalCount = sellCount;
 
-            var ordersNodes = root.SelectNodes("//div[contains(@id,'mybuyorder_')]");
+            var sellNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
 
-            var tempIndex = 0;
-            if (ordersNodes != null)
+            if (sellNodes != null)
             {
-                foreach (var item in ordersNodes)
+                foreach (var item in sellNodes)
                 {
                     var isConfirmation = item.InnerHtml.Contains("CancelMarketListingConfirmation");
                     if (isConfirmation) continue;
@@ -1066,7 +1066,7 @@
             {
                 var priceParse = priceString.Split('(')[0].Replace(".", string.Empty);
                 var currencySymbol = this.Currencies[currency];
-                double.TryParse(priceParse.Replace(currencySymbol, string.Empty), out price);
+                double.TryParse(priceParse.Replace(currencySymbol, string.Empty).Replace(",", Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator), out price);
             }
             catch (Exception)
             {

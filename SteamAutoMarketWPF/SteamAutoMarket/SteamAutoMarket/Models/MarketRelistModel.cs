@@ -18,13 +18,13 @@
 
         private double? currentPrice;
 
-        public MarketRelistModel(List<MyListingsSalesItem> itemsToSaleList)
+        public MarketRelistModel(MyListingsSalesItem[] itemsToSaleList)
         {
             this.ItemsList = new ObservableCollection<MyListingsSalesItem>(itemsToSaleList);
 
             this.ItemModel = itemsToSaleList.FirstOrDefault();
 
-            this.Count = itemsToSaleList.Count;
+            this.Count = itemsToSaleList.Length;
 
             this.ItemName = this.ItemModel?.Name;
 
