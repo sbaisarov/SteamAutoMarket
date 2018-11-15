@@ -93,6 +93,7 @@
     <Compile Include="Market\Models\OrderGraphItem.cs" />
     <Compile Include="Market\Models\PriceHistoryDay.cs" />
     <Compile Include="Market\Models\PriceHistoryItem.cs" />
+    <Compile Include="Market\Models\SellListingsPage.cs" />
     <Compile Include="Market\Models\SteamResponse.cs" />
     <Compile Include="Market\Models\WalletInfo.cs" />
     <Compile Include="Market\Settings.cs" />

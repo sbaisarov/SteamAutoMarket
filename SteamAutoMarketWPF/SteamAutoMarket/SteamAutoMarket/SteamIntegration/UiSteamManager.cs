@@ -22,15 +22,18 @@
 
     public class UiSteamManager : SteamManager
     {
-        public UiSteamManager(
-            string login,
-            string password,
-            SteamGuardAccount mafile,
-            string apiKey,
-            bool forceSessionRefresh = false)
-            : base(login, password, mafile, apiKey, forceSessionRefresh)
+        public UiSteamManager(SettingsSteamAccount account, bool forceSessionRefresh = false)
+            : base(
+                account.Login,
+                account.Password,
+                account.Mafile,
+                account.SteamApi,
+                account.TradeToken,
+                account.Currency,
+                SettingsProvider.GetInstance().UserAgent,
+                forceSessionRefresh)
         {
-            this.SaveAccount();
+            this.SaveAccount(account);
 
             this.CurrentPriceCache = PriceCacheProvider.GetCurrentPriceCache(
                 "ru", // todo actual currency
@@ -219,11 +222,14 @@
                     });
         }
 
-        public void SaveAccount()
+        public void SaveAccount(SettingsSteamAccount account)
         {
             if (this.IsSessionUpdated == false) return;
             this.IsSessionUpdated = false;
 
+            account.SteamApi = this.ApiKey;
+            account.TradeToken = this.TradeToken;
+            account.Currency = this.Currency;
             SettingsProvider.GetInstance().OnPropertyChanged($"SteamAccounts");
         }
 
@@ -364,10 +370,9 @@
                     });
         }
 
-
         public void SendTrade(WorkingProcessForm form, FullRgItem[] itemsToTrade, bool acceptTwoFactor)
         {
-            //this.OfferSession.SendTradeOffer()
+            // this.OfferSession.SendTradeOffer()
         }
 
         private void ProcessMarketSellInventoryPage(
@@ -407,6 +412,5 @@
                 marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
             }
         }
-
     }
 }

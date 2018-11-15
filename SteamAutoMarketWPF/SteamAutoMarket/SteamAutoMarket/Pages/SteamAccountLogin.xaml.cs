@@ -175,11 +175,7 @@
                             this.LoginButtonEnabled = false;
 
                             UiGlobalVariables.SteamManager = new UiSteamManager(
-                                login,
-                                this.SelectSteamAccount.Password,
-                                this.SelectSteamAccount.Mafile,
-                                this.SelectSteamAccount.SteamApi,
-                                this.ForceSessionRefresh);
+                                this.SelectSteamAccount, this.ForceSessionRefresh);
 
                             UiGlobalVariables.MainWindow.Account.DisplayName = login;
                             Logger.Log.Info($"{login} authentication success");

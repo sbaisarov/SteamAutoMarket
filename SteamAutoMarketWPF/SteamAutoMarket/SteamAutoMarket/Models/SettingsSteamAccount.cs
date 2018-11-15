@@ -25,6 +25,8 @@
 
         private string tradeToken;
 
+        private int? currency;
+
         public SettingsSteamAccount(string login, string password, string mafilePath)
         {
             try
@@ -82,6 +84,7 @@
 
         public ulong? SteamId { get; set; }
 
+        [JsonIgnore]
         public uint? AccountId
         {
             get
@@ -98,6 +101,16 @@
             set
             {
                 this.tradeToken = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int? Currency
+        {
+            get => this.currency;
+            set
+            {
+                this.currency = value;
                 this.OnPropertyChanged();
             }
         }

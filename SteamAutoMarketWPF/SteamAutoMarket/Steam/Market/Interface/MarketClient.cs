@@ -41,6 +41,8 @@
                 "{\"1\": \"$\", \"2\": \"\u00a3\", \"3\": \"\u20ac\", \"4\": \"CHF\", \"5\": \"p\u0443\u0431\", \"6\": \"z\u0142\", \"7\": \"R$\", \"8\": \"\u00a5\", \"9\": \"kr\", \"10\": \"Rp\", \"11\": \"RM\", \"12\": \"P\", \"13\": \"S$\", \"14\": \"\u0e3f\", \"15\": \"\u20ab\", \"16\": \"\u20a9\", \"17\": \"TL\", \"18\": \"\u20b4\", \"19\": \"Mex$\", \"20\": \"CDN$\", \"22\": \"NZ$\", \"23\": \"\u00a5\", \"24\": \"\u20b9\", \"25\": \"CLP$\", \"26\": \"S\", \"27\": \"COL$\", \"28\": \"R\", \"29\": \"HK$\", \"30\": \"NT$\", \"31\": \"SR\", \"32\": \"AED\", \"34\": \"ARS$\", \"35\": \"\u20aa\", \"37\": \"\u20b8\", \"38\": \"KD\", \"39\": \"QR\", \"40\": \"\u20a1\", \"41\": \"$U\"}");
         }
 
+        public int? CurrentCurrency { get; set; }
+
         public string AppFilters(int appId)
         {
             var resp = this.steam.Request(
@@ -409,7 +411,7 @@
 
         // return history;
         // }
-        public MyListings MyListings(string currency = "5", int start = 0 ,int count = 100)
+        public MyListings MyListings(string currency = "5", int start = 0, int count = 100)
         {
             var myListings = new MyListings
                                  {
@@ -509,6 +511,66 @@
             this.ProcessMyListingsSellOrders(root, currency, myListings);
 
             return myListings;
+        }
+
+        public SellListingsPage FetchSellOrders(int start = 0, int count = 100)
+        {
+            var sellListingsPage = new SellListingsPage { SellListings = new List<MyListingsSalesItem>() };
+
+            var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
+            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
+
+            JMyListings respDes;
+            try
+            {
+                respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
+            }
+            catch (Exception e)
+            {
+                throw new SteamException($"Cannot load market listings - {e.Message}");
+            }
+
+            if (!respDes.Success)
+            {
+                throw new SteamException("Cannot load market listings");
+            }
+
+            var totalCount = respDes.ActiveListingsCount;
+
+            var html = respDes.ResultsHtml;
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            var root = doc.DocumentNode;
+
+            var sellCountNode = root.SelectSingleNode(".//span[@id='my_market_selllistings_number']");
+            if (sellCountNode == null)
+            {
+                throw new SteamException("Cannot find sell listings node");
+            }
+
+            var sellCountParse = int.TryParse(sellCountNode.InnerText, out var sellCount);
+            if (!sellCountParse)
+            {
+                throw new SteamException("Cannot parse sell listings node value");
+            }
+
+            sellListingsPage.TotalCount = sellCount;
+
+            var ordersNodes = root.SelectNodes("//div[contains(@id,'mybuyorder_')]");
+
+            var tempIndex = 0;
+            if (ordersNodes != null)
+            {
+                foreach (var item in ordersNodes)
+                {
+                    var isConfirmation = item.InnerHtml.Contains("CancelMarketListingConfirmation");
+                    if (isConfirmation) continue;
+
+                    sellListingsPage.SellListings.Add(this.ProcessSellListings(item, $"{this.CurrentCurrency}"));
+                }
+            }
+
+            return sellListingsPage;
         }
 
         public List<PriceHistoryDay> PriceHistory(int appId, string hashName)
@@ -990,6 +1052,70 @@
                     myListings.ConfirmationSales.Add(result);
                 }
             }
+        }
+
+        private MyListingsSalesItem ProcessSellListings(HtmlNode item, string currency)
+        {
+            var node = item.SelectSingleNode(".//span[@class='market_listing_price']");
+            var date = Regex.Match(item.InnerText, @"Listed: (.+)?\s").Groups[1].Value.Trim();
+            var priceString = node.InnerText.Replace("\r", string.Empty).Replace("\n", string.Empty)
+                .Replace("\t", string.Empty).Replace(" ", string.Empty);
+            var game = item.SelectSingleNode("//span[@class='market_listing_game_name']").InnerText;
+            double price;
+            try
+            {
+                var priceParse = priceString.Split('(')[0].Replace(".", string.Empty);
+                var currencySymbol = this.Currencies[currency];
+                double.TryParse(priceParse.Replace(currencySymbol, string.Empty), out price);
+            }
+            catch (Exception)
+            {
+                throw new SteamException($"Cannot parse order listing price");
+            }
+
+            var saleIdMatch = Regex.Match(item.InnerHtml, "(?<=mylisting_)([0-9]*)(?=_name)");
+            if (!saleIdMatch.Success)
+            {
+                throw new SteamException($"Cannot find sale listing ID");
+            }
+
+            var saleIdParse = long.TryParse(saleIdMatch.Value, out var saleId);
+
+            if (!saleIdParse)
+            {
+                throw new SteamException($"Cannot parse sale listing ID");
+            }
+
+            var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mylisting_{saleId}_image')]").Attributes["src"]
+                .Value.Replace("38fx38f", "330x192");
+
+            var urlNode = item.SelectSingleNode(".//a[@class='market_listing_item_name_link']");
+            if (urlNode == null)
+            {
+                throw new SteamException($"Cannot find sale listing url");
+            }
+
+            var url = urlNode.Attributes["href"].Value;
+
+            var hashName = Utils.HashNameFromUrl(url);
+            var appId = Utils.AppIdFromUrl(url);
+
+            var nameNode = urlNode.InnerText;
+
+            var result = new MyListingsSalesItem
+                             {
+                                 AppId = appId,
+                                 HashName = hashName,
+                                 Name = nameNode,
+                                 Date = date,
+                                 SaleId = saleId,
+                                 Price = price,
+                                 Url = url,
+                                 ImageUrl = imageUrl,
+                                 Game = game
+                             };
+
+            return result;
         }
 
         private void ProcessMyListingsSellOrders(HtmlNode root, string currency, MyListings myListings)
