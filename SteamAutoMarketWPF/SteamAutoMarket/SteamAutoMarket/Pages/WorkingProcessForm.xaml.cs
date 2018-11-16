@@ -152,7 +152,7 @@
 
         public static WorkingProcessForm NewWorkingProcessWindow(string title)
         {
-            var window = new WorkingProcessForm { Title = title };
+            var window = Application.Current.Dispatcher.Invoke(() => new WorkingProcessForm { Title = title });
 
             return window;
         }
@@ -216,7 +216,7 @@
             }
 
             this.timer = Stopwatch.StartNew();
-            this.Show();
+            Application.Current.Dispatcher.Invoke(this.Show);
             isAnyWorkingProcessRunning = true;
             try
             {
@@ -229,8 +229,7 @@
                         {
                             this.AppendLog("Working process finished");
                             isAnyWorkingProcessRunning = false;
-                        },
-                    this.CancellationToken);
+                        });
             }
             catch (Exception e)
             {
