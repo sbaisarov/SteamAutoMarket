@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq;
-
+    using Steam.Market.Models;
     using Steam.TradeOffer.Models;
 
     public class SteamUtils
@@ -32,6 +32,20 @@
                 descriptionText +=
                     $"Description: {string.Join(", ", descriptions.Select(d => d.Value.Trim()))}{Environment.NewLine}";
             }
+
+            return descriptionText;
+        }
+
+        public static string GetClearDescription(MyListingsSalesItem item)
+        {
+            if (item == null) return string.Empty;
+
+            var descriptionText = string.Empty;
+            descriptionText += $"Name: {item.HashName}{Environment.NewLine}";
+            descriptionText += $"Game: {item.Game}{Environment.NewLine}";
+            descriptionText += $"App id: {item.AppId}{Environment.NewLine}";
+            descriptionText += $"Sale id: {item.SaleId}{Environment.NewLine}";
+            descriptionText += $"Url: {item.Url}{Environment.NewLine}";
 
             return descriptionText;
         }

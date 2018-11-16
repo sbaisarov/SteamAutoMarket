@@ -952,8 +952,10 @@
                     throw new SteamException($"Cannot parse order listing ID. Item index [{tempIndex}]");
                 }
 
-                var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mybuyorder_{orderId}_image')]")
-                    .Attributes["src"].Value.Replace("38fx38f", "330x192");
+                var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mylisting_{orderId}_image')]").Attributes["src"]
+                    .Value;
+
+                imageUrl = Regex.Match(imageUrl, "image/(.*)/").Groups[1].Value;
 
                 var urlNode = item.SelectSingleNode(".//a[@class='market_listing_item_name_link']");
                 if (urlNode == null)
@@ -1013,7 +1015,9 @@
                 }
 
                 var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mylisting_{saleId}_image')]")
-                    .Attributes["src"].Value.Replace("38fx38f", "330x192");
+                    .Attributes["src"].Value.Replace("38fx38f", string.Empty).Replace(
+                        "https://steamcommunity-a.akamaihd.net/economy/image/",
+                        string.Empty);
 
                 var urlNode = item.SelectSingleNode(".//a[@class='market_listing_item_name_link']");
                 if (urlNode == null)
@@ -1066,7 +1070,11 @@
             {
                 var priceParse = priceString.Split('(')[0].Replace(".", string.Empty);
                 var currencySymbol = this.Currencies[currency];
-                double.TryParse(priceParse.Replace(currencySymbol, string.Empty).Replace(",", Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator), out price);
+                double.TryParse(
+                    priceParse.Replace(currencySymbol, string.Empty).Replace(
+                        ",",
+                        Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator),
+                    out price);
             }
             catch (Exception)
             {
@@ -1087,7 +1095,9 @@
             }
 
             var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mylisting_{saleId}_image')]").Attributes["src"]
-                .Value.Replace("38fx38f", "330x192");
+                .Value;
+
+            imageUrl = Regex.Match(imageUrl, "image/(.*)/").Groups[1].Value;
 
             var urlNode = item.SelectSingleNode(".//a[@class='market_listing_item_name_link']");
             if (urlNode == null)
