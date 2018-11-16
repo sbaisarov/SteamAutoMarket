@@ -13,8 +13,6 @@
     using Core;
     using Core.Waiter;
 
-    using FirstFloor.ModernUI.Windows.Media;
-
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Models.Enums;
@@ -28,17 +26,17 @@
     /// </summary>
     public partial class MarketRelist : INotifyPropertyChanged
     {
-        private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
+        private CancellationTokenSource cancellationTokenSource;
 
-        private MarketRelistModel relistSelectedItem;
+        private MarketSellStrategy marketSellStrategy;
 
         private Task priceLoadingTask;
 
-        private CancellationTokenSource cancellationTokenSource;
+        private readonly List<Task> priceLoadSubTasks = new List<Task>();
 
-        private List<Task> priceLoadSubTasks = new List<Task>();
+        private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
 
-        private MarketSellStrategy marketSellStrategy;
+        private MarketRelistModel relistSelectedItem;
 
         public MarketRelist()
         {
@@ -50,6 +48,17 @@
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public MarketSellStrategy MarketSellStrategy
+        {
+            get => this.marketSellStrategy;
+            set
+            {
+                if (this.marketSellStrategy != null && this.marketSellStrategy.Equals(value)) return;
+                this.marketSellStrategy = value;
+                this.ReformatAllSellPrices();
+            }
+        }
 
         public ObservableCollection<MarketRelistModel> RelistItemsList { get; } =
             new ObservableCollection<MarketRelistModel>();
@@ -68,6 +77,38 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private MarketSellStrategy GetMarketSellStrategy()
+        {
+            var sellStrategy = new MarketSellStrategy();
+
+            if (this.ManualPriceRb?.IsChecked != null && this.ManualPriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.Manual;
+            }
+            else if (this.RecommendedPriceRb?.IsChecked != null && this.RecommendedPriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.Recommended;
+            }
+            else if (this.CurrentPriceRb?.IsChecked != null && this.CurrentPriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.LowerThanCurrent;
+                sellStrategy.ChangeValue = this.CurrentPriceNumericUpDown?.Value ?? 0;
+            }
+            else if (this.AveragePriceRb?.IsChecked != null && this.AveragePriceRb.IsChecked == true)
+            {
+                sellStrategy.SaleType = EMarketSaleType.LowerThanAverage;
+                sellStrategy.ChangeValue = this.AveragePriceNumericUpDown?.Value ?? 0;
+            }
+            else
+            {
+                ErrorNotify.CriticalMessageBox(
+                    "Incorrect market relist strategy. Please check price formation radio buttons state");
+                return null;
+            }
+
+            return sellStrategy;
+        }
+
         private void LoadMarketListingsButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (UiGlobalVariables.SteamManager == null)
@@ -83,17 +124,95 @@
             UiGlobalVariables.SteamManager.LoadMarketListings(form, this.RelistItemsList);
         }
 
-        private void RelistMarkAllItemsButtonClick(object sender, RoutedEventArgs e)
+        private void MarkAllItemsButtonClick(object sender, RoutedEventArgs e)
         {
+            var newState = !this.RelistItemsList.All(i => i.Checked.CheckBoxChecked);
+
             foreach (var item in this.RelistItemsList)
             {
-                item.Checked.CheckBoxChecked = true;
+                item.Checked.CheckBoxChecked = newState;
             }
         }
 
-        private void StartRelistButton_OnClick(object sender, RoutedEventArgs e)
+        private void MarkOverpricesButton_OnClick(object sender, RoutedEventArgs e)
         {
-                
+            var strategy = this.MarketSellStrategy;
+            foreach (var item in this.RelistItemsList)
+            {
+                switch (strategy.SaleType)
+                {
+                    case EMarketSaleType.Manual:
+                        if (item.RelistPrice.Value.HasValue)
+                        {
+                            item.Checked.CheckBoxChecked = true;
+                        }
+                        else
+                        {
+                            item.Checked.CheckBoxChecked = false;
+                        }
+
+                        break;
+
+                    case EMarketSaleType.Recommended:
+                        if (item.RelistPrice.Value.HasValue)
+                        {
+                            if (item.CurrentPrice > item.AveragePrice && item.CurrentPrice != item.ListedPrice)
+                            {
+                                item.Checked.CheckBoxChecked = true;
+                            }
+                            else if (item.CurrentPrice < item.AveragePrice
+                                     && item.AveragePrice - 0.1 != item.ListedPrice)
+                            {
+                                item.Checked.CheckBoxChecked = true;
+                            }
+                            else
+                            {
+                                item.Checked.CheckBoxChecked = false;
+                            }
+                        }
+
+                        break;
+
+                    case EMarketSaleType.LowerThanCurrent:
+                        if (item.RelistPrice.Value.HasValue && item.CurrentPrice != item.ListedPrice)
+                        {
+                            item.Checked.CheckBoxChecked = true;
+                        }
+                        else
+                        {
+                            item.Checked.CheckBoxChecked = false;
+                        }
+
+                        break;
+
+                    case EMarketSaleType.LowerThanAverage:
+                        if (item.RelistPrice.Value.HasValue
+                            && item.AveragePrice + strategy.ChangeValue != item.ListedPrice)
+                        {
+                            item.Checked.CheckBoxChecked = true;
+                        }
+                        else
+                        {
+                            item.Checked.CheckBoxChecked = false;
+                        }
+
+                        break;
+
+                    default:
+                        ErrorNotify.CriticalMessageBox(
+                            "Incorrect market relist strategy. Please check price formation radio buttons state");
+                        return;
+                }
+            }
+        }
+
+        private void ReformatAllSellPrices()
+        {
+            var items = this.RelistItemsList.ToArray();
+            foreach (var item in items)
+            {
+                item.ProcessSellPrice(this.MarketSellStrategy);
+            }
         }
 
         private void ReformatSellStrategyOnControlStateChanged(object sender, RoutedEventArgs e)
@@ -185,38 +304,6 @@
                 this.cancellationTokenSource.Token);
         }
 
-        private void WaitForPriceLoadingSubTasksEnd()
-        {
-            if (this.priceLoadSubTasks.Any(t => t.IsCompleted == false))
-            {
-                Logger.Log.Debug(
-                    $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
-                new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
-            }
-
-            this.priceLoadSubTasks.Clear();
-        }
-
-        public MarketSellStrategy MarketSellStrategy
-        {
-            get => this.marketSellStrategy;
-            set
-            {
-                if (this.marketSellStrategy != null && this.marketSellStrategy.Equals(value)) return;
-                this.marketSellStrategy = value;
-                this.ReformatAllSellPrices();
-            }
-        }
-
-        private void ReformatAllSellPrices()
-        {
-            var items = this.RelistItemsList.ToArray();
-            foreach (var item in items)
-            {
-                item.ProcessSellPrice(this.MarketSellStrategy);
-            }
-        }
-
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
         {
             var task = Task.Run(
@@ -259,90 +346,21 @@
             this.priceLoadSubTasks.Add(task);
         }
 
+        private void RelistMarkAllItemsButtonClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in this.RelistItemsList)
+            {
+                item.Checked.CheckBoxChecked = true;
+            }
+        }
+
+        private void StartRelistButton_OnClick(object sender, RoutedEventArgs e)
+        {
+        }
+
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e)
         {
             Task.Run(() => this.StopPriceLoadingTasks());
-        }
-
-        private void MarkOverpricesButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var strategy = this.MarketSellStrategy;
-            foreach (var item in this.RelistItemsList)
-            {
-                switch (strategy.SaleType)
-                {
-                    case EMarketSaleType.Manual:
-                        if (item.RelistPrice.Value.HasValue)
-                        {
-                            item.Checked.CheckBoxChecked = true;
-                        }
-                        else
-                        {
-                            item.Checked.CheckBoxChecked = false;
-                        }
-
-                        break;
-
-                    case EMarketSaleType.Recommended:
-                        if (item.RelistPrice.Value.HasValue)
-                        {
-                            if (item.CurrentPrice > item.AveragePrice && item.CurrentPrice != item.ListedPrice)
-                            {
-                                item.Checked.CheckBoxChecked = true;
-                            }
-                            else if (item.CurrentPrice < item.AveragePrice
-                                     && item.AveragePrice - 0.1 != item.ListedPrice)
-                            {
-                                item.Checked.CheckBoxChecked = true;
-                            }
-                            else
-                            {
-                                item.Checked.CheckBoxChecked = false;
-                            }
-                        }
-
-                        break;
-
-                    case EMarketSaleType.LowerThanCurrent:
-                        if (item.RelistPrice.Value.HasValue && item.CurrentPrice != item.ListedPrice)
-                        {
-                            item.Checked.CheckBoxChecked = true;
-                        }
-                        else
-                        {
-                            item.Checked.CheckBoxChecked = false;
-                        }
-
-                        break;
-
-                    case EMarketSaleType.LowerThanAverage:
-                        if (item.RelistPrice.Value.HasValue && item.AveragePrice + strategy.ChangeValue != item.ListedPrice)
-                        {
-                            item.Checked.CheckBoxChecked = true;
-                        }
-                        else
-                        {
-                            item.Checked.CheckBoxChecked = false;
-                        }
-
-                        break;
-
-                    default:
-                        ErrorNotify.CriticalMessageBox(
-                            "Incorrect market relist strategy. Please check price formation radio buttons state");
-                        return;
-                }
-            }
-        }
-
-        private void MarkAllItemsButtonClick(object sender, RoutedEventArgs e)
-        {
-            var newState = !this.RelistItemsList.All(i => i.Checked.CheckBoxChecked);
-
-            foreach (var item in this.RelistItemsList)
-            {
-                item.Checked.CheckBoxChecked = newState;
-            }
         }
 
         private void StopPriceLoadingTasks()
@@ -360,36 +378,16 @@
             this.cancellationTokenSource = new CancellationTokenSource();
         }
 
-        private MarketSellStrategy GetMarketSellStrategy()
+        private void WaitForPriceLoadingSubTasksEnd()
         {
-            var sellStrategy = new MarketSellStrategy();
-
-            if (this.ManualPriceRb?.IsChecked != null && this.ManualPriceRb.IsChecked == true)
+            if (this.priceLoadSubTasks.Any(t => t.IsCompleted == false))
             {
-                sellStrategy.SaleType = EMarketSaleType.Manual;
-            }
-            else if (this.RecommendedPriceRb?.IsChecked != null && this.RecommendedPriceRb.IsChecked == true)
-            {
-                sellStrategy.SaleType = EMarketSaleType.Recommended;
-            }
-            else if (this.CurrentPriceRb?.IsChecked != null && this.CurrentPriceRb.IsChecked == true)
-            {
-                sellStrategy.SaleType = EMarketSaleType.LowerThanCurrent;
-                sellStrategy.ChangeValue = this.CurrentPriceNumericUpDown?.Value ?? 0;
-            }
-            else if (this.AveragePriceRb?.IsChecked != null && this.AveragePriceRb.IsChecked == true)
-            {
-                sellStrategy.SaleType = EMarketSaleType.LowerThanAverage;
-                sellStrategy.ChangeValue = this.AveragePriceNumericUpDown?.Value ?? 0;
-            }
-            else
-            {
-                ErrorNotify.CriticalMessageBox(
-                    "Incorrect market relist strategy. Please check price formation radio buttons state");
-                return null;
+                Logger.Log.Debug(
+                    $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
+                new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
             }
 
-            return sellStrategy;
+            this.priceLoadSubTasks.Clear();
         }
     }
 }

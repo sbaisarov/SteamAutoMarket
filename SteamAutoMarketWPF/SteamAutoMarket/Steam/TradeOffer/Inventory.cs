@@ -59,6 +59,20 @@
             return new Inventory(result?.result);
         }
 
+        public FullRgItem[] FilterInventory(FullRgItem[] items, bool removeUnmarketable, bool removeUntradable)
+        {
+            if (removeUnmarketable)
+            {
+                items = items.Where(i => i.Description.IsMarketable).ToArray();
+            }
+            else if (removeUntradable)
+            {
+                items = items.Where(i => i.Description.IsTradable).ToArray();
+            }
+
+            return items;
+        }
+
         public List<FullRgItem> GetInventory(SteamID steamid, int appid, int contextid)
         {
             var items = new List<FullRgItem>();
@@ -137,20 +151,6 @@
             }
 
             return result;
-        }
-
-        public FullRgItem[] FilterInventory(FullRgItem[] items, bool removeUnmarketable, bool removeUntradable)
-        {
-            if (removeUnmarketable)
-            {
-                items = items.Where(i => i.Description.IsMarketable).ToArray();
-            }
-            else if (removeUntradable)
-            {
-                items = items.Where(i => i.Description.IsTradable).ToArray();
-            }
-
-            return items;
         }
     }
 }

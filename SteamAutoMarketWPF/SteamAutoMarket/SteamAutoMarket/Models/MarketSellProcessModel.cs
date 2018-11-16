@@ -17,9 +17,7 @@
             this.CurrentPrice = marketSellModel.CurrentPrice;
             this.AveragePrice = marketSellModel.AveragePrice;
             this.SellPrice = marketSellModel.SellPrice.Value;
-            this.ItemsList = marketSellModel.ItemsList.ToList().GetRange(
-                0,
-                marketSellModel.NumericUpDown.AmountToSell);
+            this.ItemsList = marketSellModel.ItemsList.ToList().GetRange(0, marketSellModel.NumericUpDown.AmountToSell);
             this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
         }
 

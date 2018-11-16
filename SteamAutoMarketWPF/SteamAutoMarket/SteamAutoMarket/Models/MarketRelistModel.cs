@@ -108,9 +108,12 @@
 
         public PriceModel RelistPrice { get; }
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public void CleanItemPrices()
+        {
+            this.CurrentPrice = null;
+            this.AveragePrice = null;
+            this.RelistPrice.Value = null;
+        }
 
         public void ProcessSellPrice(MarketSellStrategy strategy)
         {
@@ -194,12 +197,9 @@
                     }
             }
         }
-        
-        public void CleanItemPrices()
-        {
-            this.CurrentPrice = null;
-            this.AveragePrice = null;
-            this.RelistPrice.Value = null;
-        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -8,11 +8,6 @@
     using System.Threading.Tasks;
     using System.Windows;
 
-    using Core;
-
-    using Steam.TradeOffer.Models;
-    using Steam.TradeOffer.Models.Full;
-
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Repository.Context;
@@ -44,6 +39,36 @@
         public ObservableCollection<SteamItemsModel> TradeSendItemsList { get; } =
             new ObservableCollection<SteamItemsModel>();
 
+        public bool TradeSendLoadOnlyUnmarketable
+        {
+            get => SettingsProvider.GetInstance().TradeSendLoadOnlyUnmarketable;
+            set
+            {
+                SettingsProvider.GetInstance().TradeSendLoadOnlyUnmarketable = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string TradeSendNewAppid
+        {
+            set
+            {
+                if (string.IsNullOrEmpty(value) || !int.TryParse(value, out var longValue))
+                {
+                    return;
+                }
+
+                var steamAppId = this.AppIdList.FirstOrDefault(e => e.AppId == longValue);
+                if (steamAppId == null)
+                {
+                    steamAppId = new SteamAppId(longValue);
+                    this.AppIdList.Add(steamAppId);
+                }
+
+                this.TradeSendSelectedAppid = steamAppId;
+            }
+        }
+
         public SteamAppId TradeSendSelectedAppid
         {
             get => SettingsProvider.GetInstance().TradeSendSelectedAppid;
@@ -71,48 +96,9 @@
         public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
             new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
 
-        public string TradeSendNewAppid
-        {
-            set
-            {
-                if (string.IsNullOrEmpty(value) || !int.TryParse(value, out var longValue))
-                {
-                    return;
-                }
-
-                var steamAppId = this.AppIdList.FirstOrDefault(e => e.AppId == longValue);
-                if (steamAppId == null)
-                {
-                    steamAppId = new SteamAppId(longValue);
-                    this.AppIdList.Add(steamAppId);
-                }
-
-                this.TradeSendSelectedAppid = steamAppId;
-            }
-        }
-
-        public bool TradeSendLoadOnlyUnmarketable
-        {
-            get => SettingsProvider.GetInstance().TradeSendLoadOnlyUnmarketable;
-            set
-            {
-                SettingsProvider.GetInstance().TradeSendLoadOnlyUnmarketable = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
-        {
-            var items = this.TradeSendItemsList.ToArray();
-            foreach (var t in items)
-            {
-                t.NumericUpDown.SetToMaximum();
-            }
-        }
 
         private void LoadItemsToTradeButtonClick(object sender, RoutedEventArgs e)
         {
@@ -141,6 +127,15 @@
                 contextId,
                 this.TradeSendItemsList,
                 onlyUnmarketable);
+        }
+
+        private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
+        {
+            var items = this.TradeSendItemsList.ToArray();
+            foreach (var t in items)
+            {
+                t.NumericUpDown.SetToMaximum();
+            }
         }
 
         private void SendTradeOfferButtonOnClick(object sender, RoutedEventArgs e)

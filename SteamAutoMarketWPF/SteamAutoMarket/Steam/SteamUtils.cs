@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+
     using Steam.Market.Models;
     using Steam.TradeOffer.Models;
 

@@ -206,6 +206,65 @@
             return result;
         }
 
+        public SellListingsPage FetchSellOrders(int start = 0, int count = 100)
+        {
+            var sellListingsPage = new SellListingsPage { SellListings = new List<MyListingsSalesItem>() };
+
+            var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
+            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
+
+            JMyListings respDes;
+            try
+            {
+                respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
+            }
+            catch (Exception e)
+            {
+                throw new SteamException($"Cannot load market listings - {e.Message}");
+            }
+
+            if (!respDes.Success)
+            {
+                throw new SteamException("Cannot load market listings");
+            }
+
+            var totalCount = respDes.ActiveListingsCount;
+
+            var html = respDes.ResultsHtml;
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            var root = doc.DocumentNode;
+
+            var sellCountNode = root.SelectSingleNode(".//span[@id='my_market_selllistings_number']");
+            if (sellCountNode == null)
+            {
+                throw new SteamException("Cannot find sell listings node");
+            }
+
+            var sellCountParse = int.TryParse(sellCountNode.InnerText, out var sellCount);
+            if (!sellCountParse)
+            {
+                throw new SteamException("Cannot parse sell listings node value");
+            }
+
+            sellListingsPage.TotalCount = sellCount;
+
+            var sellNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
+
+            if (sellNodes != null)
+            {
+                foreach (var item in sellNodes)
+                {
+                    var isConfirmation = item.InnerHtml.Contains("CancelMarketListingConfirmation");
+                    if (isConfirmation) continue;
+
+                    sellListingsPage.SellListings.Add(this.ProcessSellListings(item, $"{this.CurrentCurrency}"));
+                }
+            }
+
+            return sellListingsPage;
+        }
+
         public ItemOrdersHistogram ItemOrdersHistogram(int nameId, string country, ELanguage lang, int currency)
         {
             var url = Urls.Market
@@ -512,65 +571,6 @@
             this.ProcessMyListingsSellOrders(root, currency, myListings);
 
             return myListings;
-        }
-
-        public SellListingsPage FetchSellOrders(int start = 0, int count = 100)
-        {
-            var sellListingsPage = new SellListingsPage { SellListings = new List<MyListingsSalesItem>() };
-
-            var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
-            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
-
-            JMyListings respDes;
-            try
-            {
-                respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
-            }
-            catch (Exception e)
-            {
-                throw new SteamException($"Cannot load market listings - {e.Message}");
-            }
-
-            if (!respDes.Success)
-            {
-                throw new SteamException("Cannot load market listings");
-            }
-
-            var totalCount = respDes.ActiveListingsCount;
-
-            var html = respDes.ResultsHtml;
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var root = doc.DocumentNode;
-
-            var sellCountNode = root.SelectSingleNode(".//span[@id='my_market_selllistings_number']");
-            if (sellCountNode == null)
-            {
-                throw new SteamException("Cannot find sell listings node");
-            }
-
-            var sellCountParse = int.TryParse(sellCountNode.InnerText, out var sellCount);
-            if (!sellCountParse)
-            {
-                throw new SteamException("Cannot parse sell listings node value");
-            }
-
-            sellListingsPage.TotalCount = sellCount;
-
-            var sellNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
-
-            if (sellNodes != null)
-            {
-                foreach (var item in sellNodes)
-                {
-                    var isConfirmation = item.InnerHtml.Contains("CancelMarketListingConfirmation");
-                    if (isConfirmation) continue;
-
-                    sellListingsPage.SellListings.Add(this.ProcessSellListings(item, $"{this.CurrentCurrency}"));
-                }
-            }
-
-            return sellListingsPage;
         }
 
         public List<PriceHistoryDay> PriceHistory(int appId, string hashName)
@@ -952,8 +952,8 @@
                     throw new SteamException($"Cannot parse order listing ID. Item index [{tempIndex}]");
                 }
 
-                var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mylisting_{orderId}_image')]").Attributes["src"]
-                    .Value;
+                var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mylisting_{orderId}_image')]")
+                    .Attributes["src"].Value;
 
                 imageUrl = Regex.Match(imageUrl, "image/(.*)/").Groups[1].Value;
 
@@ -1058,6 +1058,21 @@
             }
         }
 
+        private void ProcessMyListingsSellOrders(HtmlNode root, string currency, MyListings myListings)
+        {
+            var saleNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
+            if (saleNodes != null)
+            {
+                var tempIndex = 0;
+                foreach (var item in saleNodes)
+                {
+                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency, false);
+
+                    tempIndex++;
+                }
+            }
+        }
+
         private MyListingsSalesItem ProcessSellListings(HtmlNode item, string currency)
         {
             var node = item.SelectSingleNode(".//span[@class='market_listing_price']");
@@ -1078,20 +1093,20 @@
             }
             catch (Exception)
             {
-                throw new SteamException($"Cannot parse order listing price");
+                throw new SteamException("Cannot parse order listing price");
             }
 
             var saleIdMatch = Regex.Match(item.InnerHtml, "(?<=mylisting_)([0-9]*)(?=_name)");
             if (!saleIdMatch.Success)
             {
-                throw new SteamException($"Cannot find sale listing ID");
+                throw new SteamException("Cannot find sale listing ID");
             }
 
             var saleIdParse = long.TryParse(saleIdMatch.Value, out var saleId);
 
             if (!saleIdParse)
             {
-                throw new SteamException($"Cannot parse sale listing ID");
+                throw new SteamException("Cannot parse sale listing ID");
             }
 
             var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mylisting_{saleId}_image')]").Attributes["src"]
@@ -1102,7 +1117,7 @@
             var urlNode = item.SelectSingleNode(".//a[@class='market_listing_item_name_link']");
             if (urlNode == null)
             {
-                throw new SteamException($"Cannot find sale listing url");
+                throw new SteamException("Cannot find sale listing url");
             }
 
             var url = urlNode.Attributes["href"].Value;
@@ -1126,21 +1141,6 @@
                              };
 
             return result;
-        }
-
-        private void ProcessMyListingsSellOrders(HtmlNode root, string currency, MyListings myListings)
-        {
-            var saleNodes = root.SelectNodes("//div[contains(@id,'mylisting_')]");
-            if (saleNodes != null)
-            {
-                var tempIndex = 0;
-                foreach (var item in saleNodes)
-                {
-                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency, false);
-
-                    tempIndex++;
-                }
-            }
         }
     }
 }

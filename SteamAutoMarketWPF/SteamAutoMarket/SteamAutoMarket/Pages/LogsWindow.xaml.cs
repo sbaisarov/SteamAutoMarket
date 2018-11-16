@@ -10,7 +10,6 @@
 
     using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Repository.Context;
-    using SteamAutoMarket.Repository.Image;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Logger;
 

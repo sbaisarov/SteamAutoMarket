@@ -278,18 +278,6 @@
                 this.cancellationTokenSource.Token);
         }
 
-        private void WaitForPriceLoadingSubTasksEnd()
-        {
-            if (this.priceLoadSubTasks.Any(t => t.IsCompleted == false))
-            {
-                Logger.Log.Debug(
-                    $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
-                new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
-            }
-
-            this.priceLoadSubTasks.Clear();
-        }
-
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
         {
             var task = Task.Run(
@@ -345,8 +333,7 @@
             Task.Run(
                 () =>
                     {
-                        var itemsToSell = this.MarketSellItems.ToArray()
-                            .Where(i => i.NumericUpDown.AmountToSell > 0)
+                        var itemsToSell = this.MarketSellItems.ToArray().Where(i => i.NumericUpDown.AmountToSell > 0)
                             .Select(i => new MarketSellProcessModel(i)).Where(i => i.Count > 0).ToArray();
 
                         if (itemsToSell.Sum(i => i.Count) == 0)
@@ -384,6 +371,18 @@
             this.cancellationTokenSource.Cancel();
             new Waiter().Until(() => this.priceLoadingTask.IsCompleted);
             this.cancellationTokenSource = new CancellationTokenSource();
+        }
+
+        private void WaitForPriceLoadingSubTasksEnd()
+        {
+            if (this.priceLoadSubTasks.Any(t => t.IsCompleted == false))
+            {
+                Logger.Log.Debug(
+                    $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
+                new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
+            }
+
+            this.priceLoadSubTasks.Clear();
         }
     }
 }

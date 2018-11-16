@@ -88,6 +88,63 @@
         public double? GetCurrentPriceWithCache(int appid, string hashName) =>
             this.CurrentPriceCache.Get(hashName)?.Price ?? this.GetCurrentPrice(appid, hashName);
 
+        public void LoadItemsToSaleWorkingProcess(
+            WorkingProcessForm form,
+            SteamAppId appid,
+            int contextId,
+            ObservableCollection<MarketSellModel> marketSellItems)
+        {
+            form.ProcessMethod(
+                () =>
+                    {
+                        try
+                        {
+                            form.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
+
+                            var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId);
+                            form.AppendLog($"{page.TotalInventoryCount} items found");
+
+                            var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
+                            var currentPage = 1;
+
+                            form.ProgressBarMaximum = totalPagesCount;
+                            this.ProcessMarketSellInventoryPage(marketSellItems, page);
+
+                            form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
+                            form.IncrementProgress();
+
+                            while (page.MoreItems == 1)
+                            {
+                                if (form.CancellationToken.IsCancellationRequested)
+                                {
+                                    form.AppendLog($"{appid.Name} inventory loading was force stopped");
+                                    return;
+                                }
+
+                                page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid);
+
+                                this.ProcessMarketSellInventoryPage(marketSellItems, page);
+
+                                form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
+                                form.IncrementProgress();
+                            }
+
+                            form.AppendLog(
+                                marketSellItems.Any()
+                                    ? $"{marketSellItems.ToArray().Sum(i => i.Count)} marketable items was loaded"
+                                    : $"Seems like no items found on {appid.Name} inventory");
+                        }
+                        catch (Exception e)
+                        {
+                            var message = $"Error on {appid.Name} inventory loading";
+
+                            form.AppendLog(message);
+                            ErrorNotify.CriticalMessageBox(message, e);
+                            marketSellItems.ClearDispatch();
+                        }
+                    });
+        }
+
         public void LoadItemsToTradeWorkingProcess(
             WorkingProcessForm form,
             SteamAppId appid,
@@ -146,63 +203,6 @@
                     });
         }
 
-        public void LoadItemsToSaleWorkingProcess(
-            WorkingProcessForm form,
-            SteamAppId appid,
-            int contextId,
-            ObservableCollection<MarketSellModel> marketSellItems)
-        {
-            form.ProcessMethod(
-                () =>
-                    {
-                        try
-                        {
-                            form.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
-
-                            var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId);
-                            form.AppendLog($"{page.TotalInventoryCount} items found");
-
-                            var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
-                            var currentPage = 1;
-
-                            form.ProgressBarMaximum = totalPagesCount;
-                            this.ProcessMarketSellInventoryPage(marketSellItems, page);
-
-                            form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
-                            form.IncrementProgress();
-
-                            while (page.MoreItems == 1)
-                            {
-                                if (form.CancellationToken.IsCancellationRequested)
-                                {
-                                    form.AppendLog($"{appid.Name} inventory loading was force stopped");
-                                    return;
-                                }
-
-                                page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid);
-
-                                this.ProcessMarketSellInventoryPage(marketSellItems, page);
-
-                                form.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
-                                form.IncrementProgress();
-                            }
-
-                            form.AppendLog(
-                                marketSellItems.Any()
-                                    ? $"{marketSellItems.ToArray().Sum(i => i.Count)} marketable items was loaded"
-                                    : $"Seems like no items found on {appid.Name} inventory");
-                        }
-                        catch (Exception e)
-                        {
-                            var message = $"Error on {appid.Name} inventory loading";
-
-                            form.AppendLog(message);
-                            ErrorNotify.CriticalMessageBox(message, e);
-                            marketSellItems.ClearDispatch();
-                        }
-                    });
-        }
-
         public void LoadMarketListings(WorkingProcessForm form, ObservableCollection<MarketRelistModel> relistItemsList)
         {
             form.ProcessMethod(
@@ -240,7 +240,7 @@
                         }
                         catch (Exception e)
                         {
-                            var message = $"Error on market listings loading";
+                            var message = "Error on market listings loading";
 
                             form.AppendLog(message);
                             ErrorNotify.CriticalMessageBox(message, e);
@@ -257,7 +257,7 @@
             account.SteamApi = this.ApiKey;
             account.TradeToken = this.TradeToken;
             account.Currency = this.Currency;
-            SettingsProvider.GetInstance().OnPropertyChanged($"SteamAccounts");
+            SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
         }
 
         public void SellOnMarket(
@@ -431,6 +431,31 @@
             }
         }
 
+        private void ProcessMarketSellListingsPage(
+            SellListingsPage sellListingsPage,
+            ObservableCollection<MarketRelistModel> marketSellListings)
+        {
+            var groupedItems = sellListingsPage.SellListings.ToArray().GroupBy(x => new { x.HashName, x.Price });
+
+            foreach (var group in groupedItems)
+            {
+                var existModel = marketSellListings.FirstOrDefault(
+                    item => item.ItemModel.HashName == group.Key.HashName && item.ItemModel.Price == group.Key.Price);
+
+                if (existModel != null)
+                {
+                    foreach (var groupItem in group.ToArray())
+                    {
+                        existModel.ItemsList.Add(groupItem);
+                    }
+                }
+                else
+                {
+                    marketSellListings.AddDispatch(new MarketRelistModel(group.ToArray()));
+                }
+            }
+        }
+
         private void ProcessTradeSendInventoryPage(
             ObservableCollection<SteamItemsModel> marketSellItems,
             InventoryRootModel inventoryPage,
@@ -463,32 +488,6 @@
                 {
                     marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
                 }
-            }
-        }
-
-        private void ProcessMarketSellListingsPage(
-            SellListingsPage sellListingsPage,
-            ObservableCollection<MarketRelistModel> marketSellListings)
-        {
-            var groupedItems = sellListingsPage.SellListings.ToArray().GroupBy(x => new { x.HashName, x.Price });
-
-            foreach (var group in groupedItems)
-            {
-                var existModel = marketSellListings.FirstOrDefault(
-                    item => item.ItemModel.HashName == group.Key.HashName && item.ItemModel.Price == group.Key.Price);
-                
-                if (existModel != null)
-                {
-                    foreach (var groupItem in group.ToArray())
-                    {
-                        existModel.ItemsList.Add(groupItem);
-                    }
-                }
-                else
-                {
-                    marketSellListings.AddDispatch(new MarketRelistModel(group.ToArray()));
-                }
-
             }
         }
     }

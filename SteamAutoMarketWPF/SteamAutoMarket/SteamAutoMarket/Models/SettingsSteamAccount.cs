@@ -21,11 +21,11 @@
     {
         private string avatar = ResourceUtils.GetResourceImageUri("NoAvatarSmall.jpg");
 
+        private int? currency;
+
         private string steamApi;
 
         private string tradeToken;
-
-        private int? currency;
 
         public SettingsSteamAccount(string login, string password, string mafilePath)
         {
@@ -56,12 +56,33 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        [JsonIgnore]
+        public uint? AccountId
+        {
+            get
+            {
+                var steamId = this.SteamId;
+                if (steamId != null) return new SteamID(steamId.Value).AccountID;
+                return null;
+            }
+        }
+
         public string Avatar
         {
             get => this.avatar;
             set
             {
                 this.avatar = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int? Currency
+        {
+            get => this.currency;
+            set
+            {
+                this.currency = value;
                 this.OnPropertyChanged();
             }
         }
@@ -84,33 +105,12 @@
 
         public ulong? SteamId { get; set; }
 
-        [JsonIgnore]
-        public uint? AccountId
-        {
-            get
-            {
-                var steamId = this.SteamId;
-                if (steamId != null) return new SteamID(steamId.Value).AccountID;
-                else return null;
-            }
-        }
-
         public string TradeToken
         {
             get => this.tradeToken;
             set
             {
                 this.tradeToken = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int? Currency
-        {
-            get => this.currency;
-            set
-            {
-                this.currency = value;
                 this.OnPropertyChanged();
             }
         }
