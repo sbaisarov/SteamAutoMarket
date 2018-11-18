@@ -67,7 +67,7 @@
             this.MarketClient = new MarketClient(market);
 
             this.Currency = currency ?? this.FetchCurrency();
-            this.MarketClient.CurrentCurrency = this.Currency;
+            this.MarketClient.CurrentCurrency = this.Currency.Value;
         }
 
         public string ApiKey { get; set; }
@@ -404,7 +404,7 @@
             }
         }
 
-        private int? FetchCurrency()
+        private int FetchCurrency()
         {
             Logger.Log.Debug("Parsing current currency");
             try
@@ -416,8 +416,7 @@
             }
             catch (Exception e)
             {
-                Logger.Log.Error($"Error on parsing current currency - {e.Message}");
-                return null;
+                throw new SteamException($"Error on parsing current currency - {e.Message}", e);
             }
         }
 

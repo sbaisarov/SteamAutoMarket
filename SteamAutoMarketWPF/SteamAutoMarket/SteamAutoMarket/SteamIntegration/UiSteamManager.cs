@@ -37,11 +37,11 @@
             this.SaveAccount(account);
 
             this.CurrentPriceCache = PriceCacheProvider.GetCurrentPriceCache(
-                "ru", // todo actual currency
+                $"{this.MarketClient.CurrentCurrency}",
                 SettingsProvider.GetInstance().CurrentPriceHoursToBecomeOld);
 
             this.AveragePriceCache = PriceCacheProvider.GetAveragePriceCache(
-                "ru",
+                $"{this.MarketClient.CurrentCurrency}",
                 SettingsProvider.GetInstance().AveragePriceDays,
                 SettingsProvider.GetInstance().AveragePriceHoursToBecomeOld);
         }
