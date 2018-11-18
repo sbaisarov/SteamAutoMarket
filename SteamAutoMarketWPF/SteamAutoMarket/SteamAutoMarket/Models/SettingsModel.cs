@@ -34,6 +34,8 @@
 
         private int priceLoadingThreads = 3;
 
+        private int relistThreadsCount = 2;
+
         private bool scrollLogsToEnd;
 
         private List<SettingsSteamAccount> steamAccounts = new List<SettingsSteamAccount>();
@@ -46,8 +48,6 @@
 
         private string userAgent =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36";
-
-        private int relistThreadsCount = 2;
 
         public List<SteamAppId> AppIdList
         {
@@ -173,6 +173,16 @@
             }
         }
 
+        public int RelistThreadsCount
+        {
+            get => this.relistThreadsCount;
+            set
+            {
+                this.relistThreadsCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public bool ScrollLogsToEnd
         {
             get => this.scrollLogsToEnd;
@@ -235,16 +245,6 @@
             set
             {
                 this.userAgent = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int RelistThreadsCount
-        {
-            get => this.relistThreadsCount;
-            set
-            {
-                this.relistThreadsCount = value;
                 this.OnPropertyChanged();
             }
         }

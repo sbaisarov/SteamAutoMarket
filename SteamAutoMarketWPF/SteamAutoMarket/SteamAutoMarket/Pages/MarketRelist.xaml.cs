@@ -26,13 +26,13 @@
     /// </summary>
     public partial class MarketRelist : INotifyPropertyChanged
     {
+        private readonly List<Task> priceLoadSubTasks = new List<Task>();
+
         private CancellationTokenSource cancellationTokenSource;
 
         private MarketSellStrategy marketSellStrategy;
 
         private Task priceLoadingTask;
-
-        private readonly List<Task> priceLoadSubTasks = new List<Task>();
 
         private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
 
@@ -359,7 +359,8 @@
             Task.Run(
                 () =>
                     {
-                        var itemsToSell = this.RelistItemsList.ToArray().Where(i => i.Checked.CheckBoxChecked).ToArray();
+                        var itemsToSell = this.RelistItemsList.ToArray().Where(i => i.Checked.CheckBoxChecked)
+                            .ToArray();
 
                         if (itemsToSell.Sum(i => i.Count) == 0)
                         {

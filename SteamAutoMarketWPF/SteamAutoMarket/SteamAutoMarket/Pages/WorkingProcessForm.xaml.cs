@@ -196,20 +196,6 @@
             this.timer = Stopwatch.StartNew();
         }
 
-        private void OptimizeChart()
-        {
-            var oldChart = this.ChartModel.ToArray();
-            var newChart = new List<DataPoint>();
-            for (var j = 2; j < oldChart.Length; j += 2)
-            {
-                var averageX = (oldChart[j].X + oldChart[j - 1].X) / 2;
-                var averageY = (oldChart[j].Y + oldChart[j - 1].Y) / 2;
-                newChart.Add(new DataPoint(averageX, averageY));
-            }
-
-            this.ChartModel.ReplaceDispatch(newChart);
-        }
-
         public void ProcessMethod(Action action)
         {
             if (isAnyWorkingProcessRunning)
@@ -256,6 +242,20 @@
                 this.cancellationTokenSource.Cancel();
                 isAnyWorkingProcessRunning = false;
             }
+        }
+
+        private void OptimizeChart()
+        {
+            var oldChart = this.ChartModel.ToArray();
+            var newChart = new List<DataPoint>();
+            for (var j = 2; j < oldChart.Length; j += 2)
+            {
+                var averageX = (oldChart[j].X + oldChart[j - 1].X) / 2;
+                var averageY = (oldChart[j].Y + oldChart[j - 1].Y) / 2;
+                newChart.Add(new DataPoint(averageX, averageY));
+            }
+
+            this.ChartModel.ReplaceDispatch(newChart);
         }
 
         private void PlotContainer_OnSizeChanged(object sender, SizeChangedEventArgs e)

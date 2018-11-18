@@ -18,7 +18,6 @@
 
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Pages;
-    using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.PriceCache;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Extension;
@@ -248,6 +247,95 @@
                             form.AppendLog(message);
                             ErrorNotify.CriticalMessageBox(message, e);
                             relistItemsList.ClearDispatch();
+                        }
+                    });
+        }
+
+        public void RelistListings(
+            WorkingProcessForm form,
+            Task[] priceLoadTasksList,
+            MarketRelistModel[] marketRelistModels,
+            MarketSellStrategy sellStrategy)
+        {
+            form.ProcessMethod(
+                () =>
+                    {
+                        try
+                        {
+                            var notReadyTasksCount = priceLoadTasksList.Count(task => task.IsCompleted == false);
+                            if (notReadyTasksCount > 0)
+                            {
+                                form.AppendLog(
+                                    $"Waiting for {notReadyTasksCount} not finished price load threads to avoid steam ban on requests");
+                                new Waiter { Timeout = TimeSpan.FromMinutes(1) }.UntilSoft(
+                                    () => priceLoadTasksList.All(task => task.IsCompleted));
+                            }
+
+                            var currentItemIndex = 1;
+                            var totalItemsCount = marketRelistModels.Sum(x => x.ItemsList.Count);
+                            form.ProgressBarMaximum = totalItemsCount;
+
+                            var threadsCount = SettingsProvider.GetInstance().RelistThreadsCount;
+                            var semaphore = new Semaphore(threadsCount, threadsCount);
+                            foreach (var marketSellModel in marketRelistModels)
+                            {
+                                var packageElementIndex = 1;
+                                foreach (var item in marketSellModel.ItemsList)
+                                {
+                                    if (form.CancellationToken.IsCancellationRequested)
+                                    {
+                                        form.AppendLog("Market relist process was force stopped");
+                                        return;
+                                    }
+
+                                    try
+                                    {
+                                        semaphore.WaitOne();
+
+                                        form.AppendLog(
+                                            $"[{currentItemIndex}/{totalItemsCount}] Removing - [{packageElementIndex++}/{marketSellModel.Count}] - '{marketSellModel.ItemName}'");
+
+                                        var itemCancelId = item.SaleId;
+                                        var realIndex = currentItemIndex;
+                                        Task.Run(
+                                            () =>
+                                                {
+                                                    try
+                                                    {
+                                                        var result = this.MarketClient.CancelSellOrder(itemCancelId);
+                                                        if (result != ECancelSellOrderStatus.Canceled)
+                                                        {
+                                                            form.AppendLog(
+                                                                $"[{realIndex}/{totalItemsCount}] - Error on canceling sell order {marketSellModel.ItemName}");
+                                                        }
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        form.AppendLog(
+                                                            $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}");
+                                                        Logger.Log.Error(ex);
+                                                    }
+
+                                                    form.IncrementProgress();
+                                                    semaphore.Release();
+                                                });
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        form.AppendLog(
+                                            $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}");
+                                        Logger.Log.Error(ex);
+                                    }
+
+                                    currentItemIndex++;
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            var message = $"Critical error on market relist - {ex.Message}";
+                            form.AppendLog(message);
+                            ErrorNotify.CriticalMessageBox(message);
                         }
                     });
         }
@@ -492,97 +580,6 @@
                     marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
                 }
             }
-        }
-
-        public void RelistListings(
-            WorkingProcessForm form,
-            Task[] priceLoadTasksList,
-            MarketRelistModel[] marketRelistModels,
-            MarketSellStrategy sellStrategy)
-        {
-            form.ProcessMethod(
-                () =>
-                    {
-                        try
-                        {
-                            var notReadyTasksCount = priceLoadTasksList.Count(task => task.IsCompleted == false);
-                            if (notReadyTasksCount > 0)
-                            {
-                                form.AppendLog(
-                                    $"Waiting for {notReadyTasksCount} not finished price load threads to avoid steam ban on requests");
-                                new Waiter { Timeout = TimeSpan.FromMinutes(1) }.UntilSoft(
-                                    () => priceLoadTasksList.All(task => task.IsCompleted));
-                            }
-
-                            var currentItemIndex = 1;
-                            var totalItemsCount = marketRelistModels.Sum(x => x.ItemsList.Count);
-                            form.ProgressBarMaximum = totalItemsCount;
-
-                            var threadsCount = SettingsProvider.GetInstance().RelistThreadsCount;
-                            var semaphore = new Semaphore(threadsCount, threadsCount);
-                            foreach (var marketSellModel in marketRelistModels)
-                            {
-                                var packageElementIndex = 1;
-                                foreach (var item in marketSellModel.ItemsList)
-                                {
-                                    if (form.CancellationToken.IsCancellationRequested)
-                                    {
-                                        form.AppendLog("Market relist process was force stopped");
-                                        return;
-                                    }
-
-                                    try
-                                    {
-                                        semaphore.WaitOne();
-
-                                        form.AppendLog(
-                                            $"[{currentItemIndex}/{totalItemsCount}] Removing - [{packageElementIndex++}/{marketSellModel.Count}] - '{marketSellModel.ItemName}'");
-
-                                        var itemCancelId = item.SaleId;
-                                        var realIndex = currentItemIndex;
-                                        Task.Run(
-                                            () =>
-                                                {
-                                                    try
-                                                    {
-
-
-                                                        var result = this.MarketClient.CancelSellOrder(itemCancelId);
-                                                        if (result != ECancelSellOrderStatus.Canceled)
-                                                        {
-                                                            form.AppendLog(
-                                                                $"[{realIndex}/{totalItemsCount}] - Error on canceling sell order {marketSellModel.ItemName}");
-                                                        }
-                                                    }
-                                                    catch (Exception ex)
-                                                    {
-                                                        form.AppendLog(
-                                                            $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}");
-                                                        Logger.Log.Error(ex);
-                                                    }
-
-                                                    form.IncrementProgress();
-                                                    semaphore.Release();
-                                                });
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        form.AppendLog(
-                                            $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}");
-                                        Logger.Log.Error(ex);
-                                    }
-
-                                    currentItemIndex++;
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            var message = $"Critical error on market relist - {ex.Message}";
-                            form.AppendLog(message);
-                            ErrorNotify.CriticalMessageBox(message);
-                        }
-                    });
         }
     }
 }

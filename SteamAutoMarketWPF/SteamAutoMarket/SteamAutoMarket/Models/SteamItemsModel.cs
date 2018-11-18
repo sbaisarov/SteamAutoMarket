@@ -14,9 +14,9 @@
 
     public class SteamItemsModel : INotifyPropertyChanged
     {
-        private string image;
-
         private int count;
+
+        private string image;
 
         public SteamItemsModel(FullRgItem[] itemsList)
         {

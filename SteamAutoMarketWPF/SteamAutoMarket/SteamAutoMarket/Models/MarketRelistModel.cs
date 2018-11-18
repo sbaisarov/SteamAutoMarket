@@ -18,11 +18,11 @@
     {
         private double? averagePrice;
 
+        private int count;
+
         private double? currentPrice;
 
         private string image;
-
-        private int count;
 
         public MarketRelistModel(MyListingsSalesItem[] itemsToSaleList)
         {
