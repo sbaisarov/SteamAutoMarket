@@ -9,6 +9,8 @@
     {
         private int amountToSell;
 
+        private int maxAllowedCount;
+
         public NumericUpDownModel(int maxAllowedCount)
         {
             this.MaxAllowedCount = maxAllowedCount;
@@ -27,7 +29,16 @@
             }
         }
 
-        public int MaxAllowedCount { get; }
+        public int MaxAllowedCount
+        {
+            get => this.maxAllowedCount;
+            set
+            {
+                if (this.maxAllowedCount == value) return;
+                this.maxAllowedCount = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public void SetToMaximum()
         {

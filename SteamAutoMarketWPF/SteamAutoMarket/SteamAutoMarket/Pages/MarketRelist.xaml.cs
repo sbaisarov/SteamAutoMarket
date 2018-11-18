@@ -346,16 +346,36 @@
             this.priceLoadSubTasks.Add(task);
         }
 
-        private void RelistMarkAllItemsButtonClick(object sender, RoutedEventArgs e)
-        {
-            foreach (var item in this.RelistItemsList)
-            {
-                item.Checked.CheckBoxChecked = true;
-            }
-        }
-
         private void StartRelistButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
+
+            Task.Run(() => this.StopPriceLoadingTasks());
+
+            Task.Run(
+                () =>
+                    {
+                        var itemsToSell = this.RelistItemsList.ToArray().Where(i => i.Checked.CheckBoxChecked).ToArray();
+
+                        if (itemsToSell.Sum(i => i.Count) == 0)
+                        {
+                            ErrorNotify.CriticalMessageBox(
+                                "No items was marked to relist! Mark items before starting relist process");
+                            return;
+                        }
+
+                        var form = WorkingProcessForm.NewWorkingProcessWindow("Market relist");
+
+                        UiGlobalVariables.SteamManager.RelistListings(
+                            form,
+                            this.priceLoadSubTasks.ToArray(),
+                            itemsToSell,
+                            this.MarketSellStrategy);
+                    });
         }
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e)

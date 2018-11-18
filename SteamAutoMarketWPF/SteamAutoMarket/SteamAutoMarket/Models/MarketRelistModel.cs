@@ -22,13 +22,15 @@
 
         private string image;
 
+        private int count;
+
         public MarketRelistModel(MyListingsSalesItem[] itemsToSaleList)
         {
             this.ItemsList = new ObservableCollection<MyListingsSalesItem>(itemsToSaleList);
 
-            this.ItemModel = itemsToSaleList.FirstOrDefault();
-
             this.Count = itemsToSaleList.Length;
+
+            this.ItemModel = itemsToSaleList.FirstOrDefault();
 
             this.ItemName = this.ItemModel?.Name;
 
@@ -59,7 +61,16 @@
 
         public CheckedModel Checked { get; }
 
-        public int Count { get; }
+        public int Count
+        {
+            get => this.count;
+            private set
+            {
+                if (value == this.count) return;
+                this.count = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public double? CurrentPrice
         {
@@ -196,6 +207,11 @@
                         return;
                     }
             }
+        }
+
+        public void RefreshCount()
+        {
+            this.Count = this.ItemsList.Count;
         }
 
         [NotifyPropertyChangedInvocator]

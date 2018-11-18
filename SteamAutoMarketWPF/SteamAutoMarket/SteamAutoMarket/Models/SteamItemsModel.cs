@@ -16,6 +16,8 @@
     {
         private string image;
 
+        private int count;
+
         public SteamItemsModel(FullRgItem[] itemsList)
         {
             this.ItemsList = new ObservableCollection<FullRgItem>(itemsList);
@@ -35,7 +37,16 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int Count { get; }
+        public int Count
+        {
+            get => this.count;
+            private set
+            {
+                if (this.count == value) return;
+                this.count = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public string Description { get; }
 
@@ -70,8 +81,16 @@
 
         public string Type { get; }
 
+        public void RefreshCount()
+        {
+            this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
+            this.NumericUpDown.MaxAllowedCount = this.Count;
+        }
+
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
