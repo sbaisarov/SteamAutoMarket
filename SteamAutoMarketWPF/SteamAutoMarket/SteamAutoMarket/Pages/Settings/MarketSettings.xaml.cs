@@ -79,6 +79,16 @@
             }
         }
 
+        public int RelistThreads
+        {
+            get => SettingsProvider.GetInstance().RelistThreadsCount;
+            set
+            {
+                SettingsProvider.GetInstance().RelistThreadsCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

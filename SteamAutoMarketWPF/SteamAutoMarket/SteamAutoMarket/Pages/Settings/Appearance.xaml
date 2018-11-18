@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:settings="clr-namespace:SteamAutoMarket.Pages.Settings"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance settings:Appearance}">
     <Grid>
         <ScrollViewer>
             <StackPanel x:Name="Panel" MinWidth="150">
@@ -39,10 +41,25 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Theme:" VerticalAlignment="Center" Margin="0,0,16,4" />
-                    <ComboBox Grid.Column="1" ItemsSource="{Binding Themes}"
+                    <TextBlock Text="Theme:" VerticalAlignment="Center" Margin="0,0,16,12" />
+                    <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Themes}"
                               SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" DisplayMemberPath="DisplayName"
-                              VerticalAlignment="Center" Margin="0,0,0,4" />
+                              VerticalAlignment="Center" Margin="0,0,0,12" />
+
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="Working chart (max)"
+                               VerticalAlignment="Center"
+                               Margin="0,0,16,12" />
+
+                    <xctk:IntegerUpDown Grid.Row="2"
+                                        Style="{StaticResource UpDown}"
+                                        Grid.Column="1"
+                                        Value="{Binding WorkingChartMaxCount, Mode=TwoWay}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,0,12"
+                                        Minimum="1"
+                                        Maximum="9999999"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

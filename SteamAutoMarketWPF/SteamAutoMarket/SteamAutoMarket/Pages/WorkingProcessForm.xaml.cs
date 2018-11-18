@@ -188,10 +188,7 @@
                 this.AverageMinutesLeft = Math.Round(iterationsLeft * averageSeconds / 60);
             }
 
-            if (this.ChartModel.Count > 50)
-            {
-                this.OptimizeChart();
-            }
+            this.OptimizeChart();
 
             this.timer = Stopwatch.StartNew();
         }
@@ -246,6 +243,8 @@
 
         private void OptimizeChart()
         {
+            if (this.ChartModel.Count <= SettingsProvider.GetInstance().WorkingChartMaxCount) return;
+
             var oldChart = this.ChartModel.ToArray();
             var newChart = new List<DataPoint>();
             for (var j = 2; j < oldChart.Length; j += 2)

@@ -66,6 +66,16 @@
 
         public LinkCollection Themes { get; } = UiDefaultValues.Themes;
 
+        public int WorkingChartMaxCount
+        {
+            get => SettingsProvider.GetInstance().WorkingChartMaxCount;
+            set
+            {
+                SettingsProvider.GetInstance().WorkingChartMaxCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
