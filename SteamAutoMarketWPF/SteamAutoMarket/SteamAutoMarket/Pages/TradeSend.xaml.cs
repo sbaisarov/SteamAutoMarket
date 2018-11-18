@@ -75,7 +75,6 @@
 
             set
             {
-                if (this.tradeSendSelectedAppid == value) return;
                 SettingsProvider.GetInstance().TradeSendSelectedAppid = value;
                 this.OnPropertyChanged();
             }
@@ -95,6 +94,17 @@
 
         public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
             new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
+
+        public bool TradeSendConfirm2Fa
+        {
+            get => SettingsProvider.GetInstance().TradeSendConfirm2Fa;
+
+            set
+            {
+                SettingsProvider.GetInstance().TradeSendConfirm2Fa = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
@@ -146,22 +156,36 @@
                 return;
             }
 
+            var steamId = this.TradeSteamIdTextBox.Text;
+            if (string.IsNullOrEmpty(steamId) || (steamId.Length != 17 && steamId.Length != 9))
+            {
+                ErrorNotify.CriticalMessageBox("Specified steam id is in incorrect format");
+                return;
+            }
+
+            var tradeToken = this.TradeTokenTextBox.Text;
+            if (string.IsNullOrEmpty(tradeToken))
+            {
+                ErrorNotify.CriticalMessageBox("Specified trade token is in incorrect format");
+                return;
+            }
+
+            var itemsToSell = this.TradeSendItemsList.ToArray().Where(i => i.NumericUpDown.AmountToSell > 0)
+                .SelectMany(i => i.ItemsList).ToArray();
+
+            if (itemsToSell.Any() == false)
+            {
+                ErrorNotify.CriticalMessageBox(
+                    "No items was marked to send! Mark items before starting trade send");
+                return;
+            }
+
             Task.Run(
                 () =>
                     {
-                        var itemsToSell = this.TradeSendItemsList.ToArray().Where(i => i.NumericUpDown.AmountToSell > 0)
-                            .SelectMany(i => i.ItemsList).ToArray();
-
-                        if (itemsToSell.Any() == false)
-                        {
-                            ErrorNotify.CriticalMessageBox(
-                                "No items was marked to send! Mark items before starting trade send");
-                            return;
-                        }
-
                         var form = WorkingProcessForm.NewWorkingProcessWindow("Trade send");
 
-                        UiGlobalVariables.SteamManager.SendTrade(form, itemsToSell, false);
+                        UiGlobalVariables.SteamManager.SendTrade(form, steamId, tradeToken, itemsToSell, this.TradeSendConfirm2Fa);
                     });
         }
     }

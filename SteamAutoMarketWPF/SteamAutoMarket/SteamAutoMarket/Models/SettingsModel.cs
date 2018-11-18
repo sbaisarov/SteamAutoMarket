@@ -51,6 +51,8 @@
 
         private int workingChartMaxCount = 70;
 
+        private bool tradeSendConfirm2Fa = true;
+
         public List<SteamAppId> AppIdList
         {
             get => this.appIdList;
@@ -257,6 +259,16 @@
             set
             {
                 this.workingChartMaxCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeSendConfirm2Fa
+        {
+            get => this.tradeSendConfirm2Fa;
+            set
+            {
+                this.tradeSendConfirm2Fa = value;
                 this.OnPropertyChanged();
             }
         }

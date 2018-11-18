@@ -153,21 +153,21 @@
         /// <param name="newTradeOfferId"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public bool CounterOffer(out string newTradeOfferId, string message = "")
-        {
-            newTradeOfferId = string.Empty;
-            if (!string.IsNullOrEmpty(this.TradeOfferId) && !this.IsOurOffer
-                                                         && this.OfferState == TradeOfferState.TradeOfferStateActive
-                                                         && this.Items.NewVersion)
-                return this.Session.CounterOffer(
-                    message,
-                    this.PartnerSteamId,
-                    this.Items,
-                    out newTradeOfferId,
-                    this.TradeOfferId);
-            Debug.WriteLine("Can't counter offer a trade that doesn't have an offerid, is ours or isn't active");
-            return false;
-        }
+        // public bool CounterOffer(out string newTradeOfferId, string message = "")
+        // {
+        // newTradeOfferId = string.Empty;
+        // if (!string.IsNullOrEmpty(this.TradeOfferId) && !this.IsOurOffer
+        // && this.OfferState == TradeOfferState.TradeOfferStateActive
+        // && this.Items.NewVersion)
+        // return this.Session.CounterOffer(
+        // message,
+        // this.PartnerSteamId,
+        // this.Items,
+        // out newTradeOfferId,
+        // this.TradeOfferId);
+        // Debug.WriteLine("Can't counter offer a trade that doesn't have an offerid, is ours or isn't active");
+        // return false;
+        // }
 
         /// <summary>
         ///     Decline the current offer
@@ -193,14 +193,14 @@
         /// <param name="offerId">The trade offer id if successully created</param>
         /// <param name="message">Optional message to included with the trade offer</param>
         /// <returns>true if successfully sent, otherwise false</returns>
-        public bool Send(out string offerId, string message = "")
-        {
-            offerId = string.Empty;
-            if (this.TradeOfferId == null)
-                return this.Session.SendTradeOffer(message, this.PartnerSteamId, this.Items, out offerId);
-            Debug.WriteLine("Can't send a trade offer that already exists.");
-            return false;
-        }
+        // public string Send(out string offerId, string message = "")
+        // {
+        // offerId = string.Empty;
+        // if (this.TradeOfferId == null)
+        // return this.Session.SendTradeOffer(message, this.PartnerSteamId, this.Items);
+        // Debug.WriteLine("Can't send a trade offer that already exists.");
+        // return false;
+        // }
 
         /// <summary>
         ///     Send a new trade offer using a token
@@ -209,18 +209,9 @@
         /// <param name="token">The token of the partner</param>
         /// <param name="message">Optional message to included with the trade offer</param>
         /// <returns></returns>
-        public bool SendWithToken(out string offerId, string token, string message = "")
+        public string SendWithToken(string token, string message = "")
         {
-            offerId = string.Empty;
-            if (this.TradeOfferId == null)
-                return this.Session.SendTradeOfferWithToken(
-                    message,
-                    this.PartnerSteamId,
-                    this.Items,
-                    token,
-                    out offerId);
-            Debug.WriteLine("Can't send a trade offer that already exists.");
-            return false;
+            return this.Session.SendTradeOfferWithToken(message, this.PartnerSteamId, this.Items, token);
         }
     }
 }

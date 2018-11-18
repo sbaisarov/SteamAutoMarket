@@ -11,6 +11,7 @@
 
     using Steam;
     using Steam.Market.Enums;
+    using Steam.Market.Exceptions;
     using Steam.Market.Models;
     using Steam.SteamAuth;
     using Steam.TradeOffer.Models;
@@ -22,6 +23,8 @@
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Extension;
     using SteamAutoMarket.Utils.Logger;
+
+    using SteamKit2;
 
     public class UiSteamManager : SteamManager
     {
@@ -482,9 +485,53 @@
                     });
         }
 
-        public void SendTrade(WorkingProcessForm form, FullRgItem[] itemsToTrade, bool acceptTwoFactor)
+        public void SendTrade(
+            WorkingProcessForm form,
+            string targetSteamId,
+            string tradeToken,
+            FullRgItem[] itemsToTrade,
+            bool acceptTwoFactor)
         {
-            // this.OfferSession.SendTradeOffer()
+            form.ProcessMethod(() =>
+                {
+                    try
+                    {
+                        var targetSteamIdObj = targetSteamId.StartsWith("76561198")
+                                                   ? new SteamID(ulong.Parse(targetSteamId))
+                                                   : new SteamID(uint.Parse(targetSteamId));
+
+                        form.AppendLog($"Sending trade offer to {targetSteamIdObj.ConvertToUInt64()} - {tradeToken}");
+
+                        var tradeId = this.SendTradeOffer(itemsToTrade, targetSteamIdObj, tradeToken);
+                        if (string.IsNullOrEmpty(tradeId))
+                        {
+                            throw new SteamException("Steam returned empty trade id");
+                        }
+
+                        form.AppendLog($"Sent trade offer id is - {tradeId}");
+
+                        if (acceptTwoFactor)
+                        {
+                            var numberTradeId = ulong.Parse(tradeId);
+                            try
+                            {
+                                this.ConfirmTradeTransactions(numberTradeId);
+                            }
+                            catch (SteamException ex)
+                            {
+                                form.AppendLog(ex.Message);
+                                form.AppendLog("Waiting 30 seconds before trying again");
+                                this.ConfirmTradeTransactions(numberTradeId);
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log.Debug("Error on trade offer send", ex);
+                        form.AppendLog($"Error on trade offer send - {ex.Message}");
+                    }
+                });
         }
 
         private void ProcessMarketSellInventoryPage(

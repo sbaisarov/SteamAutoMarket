@@ -6,6 +6,8 @@
     using System.Net;
     using System.Threading.Tasks;
 
+    using Steam.Market.Exceptions;
+
     public class SteamWeb
     {
         /// <summary>
@@ -115,7 +117,7 @@
             catch (WebException e)
             {
                 HandleFailedWebRequestResponse(e.Response as HttpWebResponse, url);
-                return null;
+                throw new SteamException(e.Message);
             }
         }
 

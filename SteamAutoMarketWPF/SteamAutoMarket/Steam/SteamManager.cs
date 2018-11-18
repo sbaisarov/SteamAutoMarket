@@ -106,21 +106,24 @@
             }
         }
 
-        public void ConfirmTradeTransactions(List<ulong> offerids)
+        public void ConfirmTradeTransactions(ulong offerId)
         {
             try
             {
                 var confirmations = this.Guard.FetchConfirmations();
-                var conf = confirmations.Where(
-                        item => item.ConfType == Confirmation.ConfirmationType.Trade && offerids.Contains(item.Creator))
-                    .ToArray()[0];
+                var conf = confirmations.FirstOrDefault(item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
+                if (conf == null)
+                {
+                    throw new SteamException($"Trade with {offerId} trade id not found");
+                }
+
                 this.Guard.AcceptConfirmation(conf);
             }
             catch (SteamGuardAccount.WGTokenExpiredException)
             {
                 Logger.Log.Warn("Steam web session expired");
                 this.UpdateSteamSession();
-                this.ConfirmTradeTransactions(offerids);
+                this.ConfirmTradeTransactions(offerId);
             }
         }
 
@@ -273,9 +276,9 @@
             }
         }
 
-        public string SendTradeOffer(List<FullRgItem> items, string partnerId, string tradeToken, out string offerId)
+        public string SendTradeOffer(FullRgItem[] items, SteamID partnerId, string tradeToken)
         {
-            var offer = new TradeOffer.TradeOffer(this.OfferSession, new SteamID(ulong.Parse(partnerId)));
+            var offer = new TradeOffer.TradeOffer(this.OfferSession, partnerId);
             foreach (var item in items)
             {
                 offer.Items.AddMyItem(
@@ -285,9 +288,7 @@
                     long.Parse(item.Asset.Amount));
             }
 
-            var success = offer.SendWithToken(out offerId, tradeToken);
-            if (!success) throw new SteamException();
-            return offer.TradeOfferId;
+            return offer.SendWithToken(tradeToken);
         }
 
         public void UpdateSteamSession()

@@ -222,9 +222,10 @@
 
             <Grid Grid.Row="2"
                   Margin="0, 5, 0, 0"
-                  MaxHeight="90">
+                  MaxHeight="120">
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
@@ -288,6 +289,13 @@
                          Height="22"
                          Grid.Row="2"
                          Margin="0, 4" />
+
+                <CheckBox Grid.Row="3"
+                          Grid.ColumnSpan="3"
+                          Grid.Column="0"
+                          Margin="0,0,0,10"
+                          Content="Confirm 2FA"
+                          IsChecked="{Binding TradeSendConfirm2Fa}" />
             </Grid>
 
 
