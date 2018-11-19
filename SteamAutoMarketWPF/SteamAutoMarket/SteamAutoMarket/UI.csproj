@@ -58,6 +58,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\AccountInfoModel.cs" />
+    <Compile Include="Models\Enums\EAccountInfoFlags.cs" />
     <Compile Include="Models\Enums\EPriceCacheType.cs" />
     <Compile Include="Models\MarketRelistModel.cs" />
     <Compile Include="Models\CheckedModel.cs" />

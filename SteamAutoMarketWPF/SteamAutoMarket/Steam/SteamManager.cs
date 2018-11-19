@@ -67,14 +67,14 @@
             this.MarketClient = new MarketClient(market);
 
             this.Currency = currency ?? this.FetchCurrency();
-            this.MarketClient.CurrentCurrency = this.Currency.Value;
+            this.MarketClient.CurrentCurrency = this.Currency;
         }
 
         public string ApiKey { get; set; }
 
         public CookieContainer Cookies { get; set; } = new CookieContainer();
 
-        public int? Currency { get; set; }
+        public int Currency { get; set; }
 
         public SteamGuardAccount Guard { get; set; }
 
