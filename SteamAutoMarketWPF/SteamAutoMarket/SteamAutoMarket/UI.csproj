@@ -86,6 +86,9 @@
     <Compile Include="Pages\Settings\MarketSettings.xaml.cs">
       <DependentUpon>MarketSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SteamAccountInfo.xaml.cs">
+      <DependentUpon>SteamAccountInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SteamAccountLogin.xaml.cs">
       <DependentUpon>SteamAccountLogin.xaml</DependentUpon>
     </Compile>
@@ -181,6 +184,10 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="Pages\SteamAccountInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\SteamAccountLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
