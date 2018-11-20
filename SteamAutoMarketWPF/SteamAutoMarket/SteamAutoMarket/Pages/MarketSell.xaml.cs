@@ -160,13 +160,9 @@
                 return;
             }
 
-            var form = WorkingProcessForm.NewWorkingProcessWindow(
-                $"{this.MarketSellSelectedAppid.Name} inventory loading");
-
             this.MarketSellItems.Clear();
 
             UiGlobalVariables.SteamManager.LoadItemsToSaleWorkingProcess(
-                form,
                 this.MarketSellSelectedAppid,
                 contextId,
                 this.MarketSellItems);
@@ -343,10 +339,7 @@
                             return;
                         }
 
-                        var form = WorkingProcessForm.NewWorkingProcessWindow("Market sell");
-
                         UiGlobalVariables.SteamManager.SellOnMarket(
-                            form,
                             this.priceLoadSubTasks.ToArray(),
                             itemsToSell,
                             this.MarketSellStrategy);

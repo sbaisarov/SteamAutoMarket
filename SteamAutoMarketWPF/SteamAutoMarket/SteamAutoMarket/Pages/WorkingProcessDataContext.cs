@@ -16,24 +16,26 @@
     using OxyPlot;
 
     using SteamAutoMarket.Annotations;
+    using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Extension;
     using SteamAutoMarket.Utils.Logger;
 
-    /// <summary>
-    /// Interaction logic for WorkingProcessForm.xaml
-    /// </summary>
-    public partial class WorkingProcessForm : INotifyPropertyChanged
+    public class WorkingProcessDataContext : INotifyPropertyChanged
     {
-        private static bool isAnyWorkingProcessRunning;
+        public bool isAnyWorkingProcessRunning;
+
+        public CancellationTokenSource cancellationTokenSource;
+
+        public Task workingAction;
+
+        public CancellationToken CancellationToken { get; set; }
 
         private readonly List<double> times = new List<double>();
 
         private double averageMinutesLeft;
 
         private double averageSpeed;
-
-        private CancellationTokenSource cancellationTokenSource;
 
         private double currentSpeed;
 
@@ -43,21 +45,9 @@
 
         private int progressBarValue;
 
-        private Stopwatch timer;
-
-        private Task workingAction;
+        private string title = "Working process";
 
         private string workingLogs;
-
-        private WorkingProcessForm()
-        {
-            this.InitializeComponent();
-
-            this.DataContext = this;
-
-            this.Closing += this.OnWindowClosing;
-            this.SizeChanged += this.PlotContainer_OnSizeChanged;
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -81,7 +71,7 @@
             }
         }
 
-        public CancellationToken CancellationToken { get; private set; }
+        public string ButtonTitle => $"Stop {this.Title}";
 
         public ObservableCollection<DataPoint> ChartModel { get; set; } =
             new ObservableCollection<DataPoint> { new DataPoint(0, 0) };
@@ -136,6 +126,20 @@
             }
         }
 
+        public Stopwatch Timer { get; set; }
+
+        public string Title
+        {
+            get => this.title;
+            set
+            {
+                if (value == this.title) return;
+                this.title = value;
+                this.OnPropertyChanged();
+                this.OnPropertyChanged(nameof(this.ButtonTitle));
+            }
+        }
+
         public string WorkingLogs
         {
             get => this.workingLogs;
@@ -143,18 +147,12 @@
             {
                 this.workingLogs = value;
                 this.OnPropertyChanged();
-                if (this.ScrollLogsToEnd)
+                if (this.ScrollLogsToEnd || UiGlobalVariables.WorkingProcess != null)
                 {
-                    Application.Current.Dispatcher.Invoke(() => this.WorkingProcessTextBox.ScrollToEnd());
+                    Application.Current.Dispatcher.Invoke(
+                        () => UiGlobalVariables.WorkingProcess.WorkingProcessTextBox.ScrollToEnd());
                 }
             }
-        }
-
-        public static WorkingProcessForm NewWorkingProcessWindow(string title)
-        {
-            var window = Application.Current.Dispatcher.Invoke(() => new WorkingProcessForm { Title = title });
-
-            return window;
         }
 
         public void AppendLog(string message)
@@ -170,9 +168,9 @@
                 this.ProgressBarValue++;
             }
 
-            this.timer.Stop();
+            this.Timer.Stop();
 
-            var elapsedSeconds = this.timer.ElapsedMilliseconds / 1000d;
+            var elapsedSeconds = this.Timer.ElapsedMilliseconds / 1000d;
             this.times.Add(elapsedSeconds);
 
             this.ChartModel.AddDispatch(new DataPoint(this.ProgressBarValue, elapsedSeconds));
@@ -190,56 +188,25 @@
 
             this.OptimizeChart();
 
-            this.timer = Stopwatch.StartNew();
+            this.Timer = Stopwatch.StartNew();
         }
 
-        public void ProcessMethod(Action action)
+        public void ResetWorkingProcessToDefault()
         {
-            if (isAnyWorkingProcessRunning)
-            {
-                ErrorNotify.InfoMessageBox(
-                    "Only one working process can be processed at the same time to avoid temporary Steam ban on requests. Wait for an other working process finish and try again.");
-
-                return;
-            }
-
-            this.timer = Stopwatch.StartNew();
-            Application.Current.Dispatcher.Invoke(this.Show);
-            isAnyWorkingProcessRunning = true;
-            try
-            {
-                this.cancellationTokenSource = new CancellationTokenSource();
-                this.CancellationToken = this.cancellationTokenSource.Token;
-
-                this.workingAction = Task.Run(action, this.CancellationToken);
-                this.workingAction.ContinueWith(
-                    tsk =>
-                        {
-                            this.AppendLog("Working process finished");
-                            isAnyWorkingProcessRunning = false;
-                        });
-            }
-            catch (Exception e)
-            {
-                Logger.Log.Error("Error on working process", e);
-            }
+            this.WorkingLogs = string.Empty;
+            this.ProgressBarValue = 0;
+            this.ProgressBarMaximum = 1;
+            this.AverageSpeed = 0;
+            this.CurrentSpeed = 0;
+            this.MinutesLeft = 0;
+            this.AverageMinutesLeft = 0;
+            this.ChartModel = new ObservableCollection<DataPoint>();
+            this.Title = "Working process";
         }
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void OnWindowClosing(object sender, CancelEventArgs e)
-        {
-            if (this.workingAction.IsCompleted == false)
-            {
-                this.AppendLog("Working process is forcing to stop");
-                this.cancellationTokenSource.Cancel();
-                isAnyWorkingProcessRunning = false;
-            }
-        }
 
         private void OptimizeChart()
         {
@@ -255,12 +222,6 @@
             }
 
             this.ChartModel.ReplaceDispatch(newChart);
-        }
-
-        private void PlotContainer_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.Plot.Width = this.RightColumn.ActualWidth;
-            this.Plot.InvalidateVisual();
         }
     }
 }

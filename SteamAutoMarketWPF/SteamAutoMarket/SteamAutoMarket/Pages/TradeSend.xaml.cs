@@ -124,15 +124,11 @@
                 return;
             }
 
-            var form = WorkingProcessForm.NewWorkingProcessWindow(
-                $"{this.TradeSendSelectedAppid.Name} inventory loading");
-
             var onlyUnmarketable = this.TradeSendLoadOnlyUnmarketable;
 
             this.TradeSendItemsList.Clear();
 
             UiGlobalVariables.SteamManager.LoadItemsToTradeWorkingProcess(
-                form,
                 this.TradeSendSelectedAppid,
                 contextId,
                 this.TradeSendItemsList,
@@ -175,18 +171,15 @@
 
             if (itemsToSell.Any() == false)
             {
-                ErrorNotify.CriticalMessageBox(
-                    "No items was marked to send! Mark items before starting trade send");
+                ErrorNotify.CriticalMessageBox("No items was marked to send! Mark items before starting trade send");
                 return;
             }
 
-            Task.Run(
-                () =>
-                    {
-                        var form = WorkingProcessForm.NewWorkingProcessWindow("Trade send");
-
-                        UiGlobalVariables.SteamManager.SendTrade(form, steamId, tradeToken, itemsToSell, this.TradeSendConfirm2Fa);
-                    });
+            UiGlobalVariables.SteamManager.SendTrade(
+                steamId,
+                tradeToken,
+                itemsToSell,
+                this.TradeSendConfirm2Fa);
         }
     }
 }

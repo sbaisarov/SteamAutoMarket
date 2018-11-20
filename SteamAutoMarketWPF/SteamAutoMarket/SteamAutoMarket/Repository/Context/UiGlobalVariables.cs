@@ -16,5 +16,10 @@
         public static SteamAccountLogin SteamAccountLogin { get; set; }
 
         public static UiSteamManager SteamManager { get; set; }
+
+        public static WorkingProcess WorkingProcess { get; set; } = new WorkingProcess();
+
+        public static WorkingProcessDataContext WorkingProcessDataContext { get; set; } =
+            new WorkingProcessDataContext();
     }
 }

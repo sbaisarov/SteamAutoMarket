@@ -378,7 +378,7 @@
                     Margin="1,4,1,5"
                     Background="Transparent"
                     ToolTip="Find selected item on steam market"
-                    Click="StopPriceLoadingButton_OnClick">
+                    Click="OpenItemPageButton_OnClick">
 
                     <Path Style="{StaticResource Geometry}"
                           Stretch="Fill"

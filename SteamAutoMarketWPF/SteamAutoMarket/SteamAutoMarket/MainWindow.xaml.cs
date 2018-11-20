@@ -33,7 +33,6 @@
             AppearanceManager.Current.AccentColor = ModernUiThemeUtils.GetColor(SettingsProvider.GetInstance().Color);
             UiGlobalVariables.MainWindow = this;
             this.DataContext = this;
-
             this.InitializeComponent();
         }
 

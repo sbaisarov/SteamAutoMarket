@@ -10,6 +10,7 @@
         <mui:LinkGroup DisplayName="Info">
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="News" Source="/Pages/Home.xaml" />
+                <mui:Link x:Name="WorkingProcess" DisplayName="Working process" Source="/Pages/WorkingProcess.xaml" />
                 <mui:Link DisplayName="Steam info" Source="/Pages/SteamAccountInfo.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>

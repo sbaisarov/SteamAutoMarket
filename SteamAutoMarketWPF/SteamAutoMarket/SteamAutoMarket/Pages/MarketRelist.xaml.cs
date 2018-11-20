@@ -117,11 +117,9 @@
                 return;
             }
 
-            var form = WorkingProcessForm.NewWorkingProcessWindow("Market listings loading");
-
             this.RelistItemsList.Clear();
 
-            UiGlobalVariables.SteamManager.LoadMarketListings(form, this.RelistItemsList);
+            UiGlobalVariables.SteamManager.LoadMarketListings(this.RelistItemsList);
         }
 
         private void MarkAllItemsButtonClick(object sender, RoutedEventArgs e)
@@ -369,10 +367,7 @@
                             return;
                         }
 
-                        var form = WorkingProcessForm.NewWorkingProcessWindow("Market relist");
-
                         UiGlobalVariables.SteamManager.RelistListings(
-                            form,
                             this.priceLoadSubTasks.ToArray(),
                             itemsToSell,
                             this.MarketSellStrategy);
@@ -409,6 +404,11 @@
             }
 
             this.priceLoadSubTasks.Clear();
+        }
+
+        private void OpenItemPageButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            WorkingProcess.OpenTab();
         }
     }
 }
