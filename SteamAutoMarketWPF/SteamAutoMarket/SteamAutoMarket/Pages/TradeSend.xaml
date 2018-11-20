@@ -14,6 +14,29 @@
     <UserControl.Resources>
         <converter:IfNullVisibleConverter x:Key="IfNullVisibleConverter" />
         <converter:IfNullInvisibleConverter x:Key="IfNullInvisibleConverter" />
+        <ControlTemplate x:Key="SimpleTemplate">
+            <StackPanel d:DataContext="{d:DesignInstance models:SettingsSteamAccount}">
+                <TextBlock Text="{Binding Path=Login}" />
+            </StackPanel>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ExtendedTemplate">
+            <StackPanel Orientation="Horizontal" d:DataContext="{d:DesignInstance models:SettingsSteamAccount}">
+                <Image Width="30"
+                       Height="30"
+                       Source="{Binding Path=Avatar}"
+                       Margin="2, 0, 8, 0" />
+
+                <TextBlock Text="{Binding Path=Login}" VerticalAlignment="Center" />
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="SteamAccountComboboxTemplate">
+            <Control x:Name="theControl" Focusable="False" Template="{StaticResource ExtendedTemplate}" />
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=IsSelected}" Value="{x:Null}">
+                    <Setter TargetName="theControl" Property="Template" Value="{StaticResource SimpleTemplate}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid Margin="5, 5, 5, 5">
@@ -260,20 +283,8 @@
                           Height="22"
                           Grid.Row="0"
                           Margin="0, 4"
-                          ItemsSource="{Binding Path=TradeSteamUserList, Mode=OneWay}">
-
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="models:SettingsSteamAccount">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="30"
-                                       Height="30"
-                                       Source="{Binding Path=Avatar}"
-                                       Margin="2, 0, 8, 0" />
-
-                                <TextBlock Text="{Binding Path=Login}" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
+                          ItemsSource="{Binding Path=TradeSteamUserList, Mode=OneWay}"
+                          ItemTemplate="{StaticResource SteamAccountComboboxTemplate}">
                 </ComboBox>
 
                 <TextBox Grid.Column="2"

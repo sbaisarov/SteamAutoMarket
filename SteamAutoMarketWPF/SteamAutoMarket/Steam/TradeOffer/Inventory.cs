@@ -140,6 +140,7 @@
         public List<FullRgItem> ProcessInventoryPage(InventoryRootModel inventoryRoot)
         {
             var result = new List<FullRgItem>();
+            if (inventoryRoot.Assets == null || inventoryRoot.Descriptions == null) return result;
             var descriptions = inventoryRoot.Descriptions.ToList();
             foreach (var item in inventoryRoot.Assets.ToList())
             {

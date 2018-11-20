@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
 
     using Core;
 
@@ -275,7 +276,7 @@
 
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            Logger.Log.Debug($"Updating '{propertyName}' setting");
+            Task.Run(() => Logger.Log.Debug($"Updating '{propertyName}' setting"));
             if (this.IsSettingsLoaded)
             {
                 SettingsUpdated.UpdateSettingsFile();
