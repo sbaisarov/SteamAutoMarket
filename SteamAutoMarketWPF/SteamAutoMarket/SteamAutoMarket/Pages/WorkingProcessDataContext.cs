@@ -23,8 +23,6 @@
 
     public class WorkingProcessDataContext : INotifyPropertyChanged
     {
-        public bool isAnyWorkingProcessRunning;
-
         public CancellationTokenSource cancellationTokenSource;
 
         public Task workingAction;
@@ -147,11 +145,6 @@
             {
                 this.workingLogs = value;
                 this.OnPropertyChanged();
-                if (this.ScrollLogsToEnd || UiGlobalVariables.WorkingProcess != null)
-                {
-                    Application.Current.Dispatcher.Invoke(
-                        () => UiGlobalVariables.WorkingProcess.WorkingProcessTextBox.ScrollToEnd());
-                }
             }
         }
 
@@ -183,7 +176,7 @@
             {
                 var averageSeconds = this.times.ToArray().Average();
                 this.AverageSpeed = Math.Round(averageSeconds, 2);
-                this.AverageMinutesLeft = Math.Round(iterationsLeft * averageSeconds / 60);
+                this.AverageMinutesLeft = Math.Round(iterationsLeft * averageSeconds / 60, 2);
             }
 
             this.OptimizeChart();
@@ -200,7 +193,8 @@
             this.CurrentSpeed = 0;
             this.MinutesLeft = 0;
             this.AverageMinutesLeft = 0;
-            this.ChartModel = new ObservableCollection<DataPoint>();
+            this.ChartModel.ClearDispatch();
+            this.ChartModel.AddDispatch(new DataPoint(0, 0));
             this.Title = "Working process";
         }
 

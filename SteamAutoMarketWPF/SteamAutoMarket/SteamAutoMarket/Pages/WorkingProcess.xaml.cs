@@ -5,6 +5,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Input;
 
     using Core;
@@ -21,60 +22,45 @@
     {
         public WorkingProcess()
         {
-            this.SizeChanged += this.PlotContainer_OnSizeChanged;
-
             this.DataContext = UiGlobalVariables.WorkingProcessDataContext;
             this.InitializeComponent();
         }
 
-
         public static void OpenTab()
         {
-            var target = NavigationHelper.FindFrame("_top", UiGlobalVariables.MainWindow);
-            NavigationCommands.GoToPage.Execute("/Pages/WorkingProcess.xaml", target);
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                    {
+                        var target = NavigationHelper.FindFrame("_top", UiGlobalVariables.MainWindow);
+                        NavigationCommands.GoToPage.Execute("/Pages/WorkingProcess.xaml", target);
+                    });
         }
 
         public static void ProcessMethod(Action action, string title)
         {
-            UiGlobalVariables.WorkingProcess.ProcessMethodPrivate(action, title);
-        }
-
-        private void PlotContainer_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.Plot.Width = this.RightColumn.ActualWidth;
-            this.Plot.InvalidateVisual();
-        }
-
-        private void ProcessMethodPrivate(Action action, string title)
-        {
             var wp = UiGlobalVariables.WorkingProcessDataContext;
-            if (wp.isAnyWorkingProcessRunning)
-            {
-                ErrorNotify.InfoMessageBox(
-                    "Only one working process can be processed at the same time to avoid temporary Steam ban on requests. Wait for an other working process finish and try again.");
 
-                return;
-            }
-
-            var context = wp;
-
-            context.ResetWorkingProcessToDefault();
-            context.Title = title;
-
-            context.Timer = Stopwatch.StartNew();
-            wp.isAnyWorkingProcessRunning = true;
             try
             {
+                if (wp.workingAction?.IsCompleted == false)
+                {
+                    ErrorNotify.InfoMessageBox(
+                        $"Only one working process can be processed at the same time to avoid temporary Steam ban on requests. Wait for '{wp.Title}' working process finish and try again.");
+                    return;
+                }
+
+                OpenTab();
+
+                wp.ResetWorkingProcessToDefault();
+                wp.Title = title;
+
+                wp.Timer = Stopwatch.StartNew();
+
                 wp.cancellationTokenSource = new CancellationTokenSource();
                 wp.CancellationToken = wp.cancellationTokenSource.Token;
 
                 wp.workingAction = Task.Run(action, wp.CancellationToken);
-                wp.workingAction.ContinueWith(
-                    tsk =>
-                        {
-                            context.AppendLog("Working process finished");
-                            wp.isAnyWorkingProcessRunning = false;
-                        });
+                wp.workingAction.ContinueWith(tsk => { wp.AppendLog("Working process finished"); });
             }
             catch (Exception e)
             {
@@ -90,7 +76,14 @@
             {
                 wp.AppendLog("Working process is forcing to stop");
                 wp.cancellationTokenSource.Cancel();
-                wp.isAnyWorkingProcessRunning = false;
+            }
+        }
+
+        private void WorkingProcessTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (UiGlobalVariables.WorkingProcessDataContext.ScrollLogsToEnd)
+            {
+                this.WorkingProcessTextBox.ScrollToEnd();
             }
         }
     }

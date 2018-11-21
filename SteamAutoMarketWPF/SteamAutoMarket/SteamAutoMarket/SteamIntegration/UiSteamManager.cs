@@ -529,6 +529,7 @@
                                 try
                                 {
                                     this.ConfirmTradeTransactions(numberTradeId);
+                                    wp.AppendLog("Trade two factor confirmation was successfully accepted");
                                 }
                                 catch (SteamException ex)
                                 {
