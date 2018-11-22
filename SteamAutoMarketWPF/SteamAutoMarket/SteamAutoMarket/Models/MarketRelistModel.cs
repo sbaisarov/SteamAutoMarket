@@ -5,12 +5,11 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
 
-    using Core;
-
+    using Steam;
     using Steam.Market.Models;
 
-    using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models.Enums;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Image;
     using SteamAutoMarket.SteamIntegration;
 

@@ -5,11 +5,10 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
 
-    using Core;
-
+    using Steam;
     using Steam.TradeOffer.Models.Full;
 
-    using SteamAutoMarket.Annotations;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Image;
 
     public class SteamItemsModel : INotifyPropertyChanged

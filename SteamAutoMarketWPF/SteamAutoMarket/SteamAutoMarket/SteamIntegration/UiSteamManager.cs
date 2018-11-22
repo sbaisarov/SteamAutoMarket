@@ -495,11 +495,7 @@
                 "Market sell");
         }
 
-        public void SendTrade(
-            string targetSteamId,
-            string tradeToken,
-            FullRgItem[] itemsToTrade,
-            bool acceptTwoFactor)
+        public void SendTrade(string targetSteamId, string tradeToken, FullRgItem[] itemsToTrade, bool acceptTwoFactor)
         {
             var wp = UiGlobalVariables.WorkingProcessDataContext;
 
@@ -510,10 +506,12 @@
                         {
                             var targetSteamIdObj = targetSteamId.StartsWith("76561198")
                                                        ? new SteamID(ulong.Parse(targetSteamId))
-                                                       : new SteamID(uint.Parse(targetSteamId), EUniverse.Public, EAccountType.Individual);
+                                                       : new SteamID(
+                                                           uint.Parse(targetSteamId),
+                                                           EUniverse.Public,
+                                                           EAccountType.Individual);
 
-                            wp.AppendLog(
-                                $"Sending trade offer to {targetSteamIdObj.ConvertToUInt64()} - {tradeToken}");
+                            wp.AppendLog($"Sending trade offer to {targetSteamIdObj.ConvertToUInt64()} - {tradeToken}");
 
                             var tradeId = this.SendTradeOffer(itemsToTrade, targetSteamIdObj, tradeToken);
                             if (string.IsNullOrEmpty(tradeId))

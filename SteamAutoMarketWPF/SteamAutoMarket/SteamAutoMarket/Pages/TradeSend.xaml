@@ -284,8 +284,7 @@
                           Grid.Row="0"
                           Margin="0, 4"
                           ItemsSource="{Binding Path=TradeSteamUserList, Mode=OneWay}"
-                          ItemTemplate="{StaticResource SteamAccountComboboxTemplate}">
-                </ComboBox>
+                          ItemTemplate="{StaticResource SteamAccountComboboxTemplate}" />
 
                 <TextBox Grid.Column="2"
                          Name="TradeSteamIdTextBox"

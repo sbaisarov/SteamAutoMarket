@@ -111,7 +111,8 @@
             try
             {
                 var confirmations = this.Guard.FetchConfirmations();
-                var conf = confirmations.FirstOrDefault(item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
+                var conf = confirmations.FirstOrDefault(
+                    item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
                 if (conf == null)
                 {
                     throw new SteamException($"Trade with {offerId} trade id not found");

@@ -43,6 +43,8 @@
 
         private string theme;
 
+        private bool tradeSendConfirm2Fa = true;
+
         private bool tradeSendLoadOnlyUnmarketable;
 
         private SteamAppId tradeSendSelectedAppid;
@@ -51,8 +53,6 @@
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36";
 
         private int workingChartMaxCount = 70;
-
-        private bool tradeSendConfirm2Fa = true;
 
         public List<SteamAppId> AppIdList
         {
@@ -222,6 +222,16 @@
             }
         }
 
+        public bool TradeSendConfirm2Fa
+        {
+            get => this.tradeSendConfirm2Fa;
+            set
+            {
+                this.tradeSendConfirm2Fa = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public bool TradeSendLoadOnlyUnmarketable
         {
             get => this.tradeSendLoadOnlyUnmarketable;
@@ -260,16 +270,6 @@
             set
             {
                 this.workingChartMaxCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeSendConfirm2Fa
-        {
-            get => this.tradeSendConfirm2Fa;
-            set
-            {
-                this.tradeSendConfirm2Fa = value;
                 this.OnPropertyChanged();
             }
         }

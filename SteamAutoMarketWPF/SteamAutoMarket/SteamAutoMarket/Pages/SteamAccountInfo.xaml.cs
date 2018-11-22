@@ -15,9 +15,9 @@
 
     using Steam.Market.Interface;
 
-    using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Models.Enums;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Utils.Extension;
     using SteamAutoMarket.Utils.Logger;
@@ -39,6 +39,9 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public ObservableCollection<AccountInfoModel> AccountParameters { get; } =
+            new ObservableCollection<AccountInfoModel>();
+
         public string Avatar
         {
             get => this.avatar;
@@ -49,9 +52,6 @@
                 this.OnPropertyChanged();
             }
         }
-
-        public ObservableCollection<AccountInfoModel> AccountParameters { get; } =
-            new ObservableCollection<AccountInfoModel>();
 
         public bool RefreshButtonIsEnabled
         {
@@ -67,6 +67,24 @@
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private void ExportToFileButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var filePath = AppDomain.CurrentDomain.BaseDirectory + "account_info.csv";
+
+                File.WriteAllText(
+                    filePath,
+                    string.Join(Environment.NewLine, this.AccountParameters.Select(x => $"{x.Name}\t{x.Value}")));
+
+                Process.Start(filePath);
+            }
+            catch (Exception ex)
+            {
+                ErrorNotify.CriticalMessageBox(ex);
+            }
+        }
 
         private IEnumerable<EAccountInfoFlags> GetCurrentFlags()
         {
@@ -214,24 +232,6 @@
 
                         this.RefreshButtonIsEnabled = true;
                     });
-        }
-
-        private void ExportToFileButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var filePath = AppDomain.CurrentDomain.BaseDirectory + "account_info.csv";
-
-                File.WriteAllText(
-                    filePath,
-                    string.Join(Environment.NewLine, this.AccountParameters.Select(x => $"{x.Name}\t{x.Value}")));
-
-                Process.Start(filePath);
-            }
-            catch (Exception ex)
-            {
-                ErrorNotify.CriticalMessageBox(ex);
-            }
         }
     }
 }

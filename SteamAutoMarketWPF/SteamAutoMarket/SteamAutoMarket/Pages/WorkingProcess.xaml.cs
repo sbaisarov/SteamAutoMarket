@@ -42,7 +42,7 @@
 
             try
             {
-                if (wp.workingAction?.IsCompleted == false)
+                if (wp.WorkingAction?.IsCompleted == false)
                 {
                     ErrorNotify.InfoMessageBox(
                         $"Only one working process can be processed at the same time to avoid temporary Steam ban on requests. Wait for '{wp.Title}' working process finish and try again.");
@@ -56,11 +56,11 @@
 
                 wp.Timer = Stopwatch.StartNew();
 
-                wp.cancellationTokenSource = new CancellationTokenSource();
-                wp.CancellationToken = wp.cancellationTokenSource.Token;
+                wp.CancellationTokenSource = new CancellationTokenSource();
+                wp.CancellationToken = wp.CancellationTokenSource.Token;
 
-                wp.workingAction = Task.Run(action, wp.CancellationToken);
-                wp.workingAction.ContinueWith(tsk => { wp.AppendLog("Working process finished"); });
+                wp.WorkingAction = Task.Run(action, wp.CancellationToken);
+                wp.WorkingAction.ContinueWith(tsk => { wp.AppendLog("Working process finished"); });
             }
             catch (Exception e)
             {
@@ -72,10 +72,10 @@
         {
             var wp = UiGlobalVariables.WorkingProcessDataContext;
 
-            if (wp.workingAction.IsCompleted == false)
+            if (wp.WorkingAction.IsCompleted == false)
             {
                 wp.AppendLog("Working process is forcing to stop");
-                wp.cancellationTokenSource.Cancel();
+                wp.CancellationTokenSource.Cancel();
             }
         }
 

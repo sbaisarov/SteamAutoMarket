@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Core;
-
     using Steam.TradeOffer.Enums;
 
     using SteamKit2;

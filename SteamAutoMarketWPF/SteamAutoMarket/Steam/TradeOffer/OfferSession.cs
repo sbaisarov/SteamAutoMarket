@@ -152,7 +152,6 @@ namespace Steam.TradeOffer
 
         //    return true;
         //}
-
         public bool Decline(string tradeOfferId)
         {
             var data = new NameValueCollection
@@ -224,11 +223,7 @@ namespace Steam.TradeOffer
         /// <param name="token">The token of the partner we are trading with</param>
         /// <param name="newTradeOfferId">The trade offer Id that will be created if successful</param>
         /// <returns>True if successfully returns a newTradeOfferId, else false</returns>
-        public string SendTradeOfferWithToken(
-            string message,
-            SteamID otherSteamId,
-            TradeStatus status,
-            string token)
+        public string SendTradeOfferWithToken(string message, SteamID otherSteamId, TradeStatus status, string token)
         {
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentNullException(nameof(token), @"Partner trade offer token is missing");
@@ -255,10 +250,7 @@ namespace Steam.TradeOffer
             return this.Request(SendUrl, data, referer);
         }
 
-        internal string Request(
-            string url,
-            NameValueCollection data,
-            string referer)
+        internal string Request(string url, NameValueCollection data, string referer)
         {
             var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer);
 

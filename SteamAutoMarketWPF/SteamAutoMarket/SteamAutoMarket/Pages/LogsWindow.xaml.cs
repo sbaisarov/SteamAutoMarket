@@ -8,7 +8,7 @@
 
     using Core;
 
-    using SteamAutoMarket.Annotations;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Logger;

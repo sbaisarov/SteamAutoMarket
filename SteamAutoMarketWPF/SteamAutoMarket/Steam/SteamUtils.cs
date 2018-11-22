@@ -1,4 +1,4 @@
-﻿namespace Core
+﻿namespace Steam
 {
     using System;
     using System.Linq;

@@ -13,9 +13,9 @@
     using Core;
     using Core.Waiter;
 
-    using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Models.Enums;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.SteamIntegration;
@@ -202,6 +202,11 @@
                         return;
                 }
             }
+        }
+
+        private void OpenItemPageButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            WorkingProcess.OpenTab();
         }
 
         private void ReformatAllSellPrices()
@@ -404,11 +409,6 @@
             }
 
             this.priceLoadSubTasks.Clear();
-        }
-
-        private void OpenItemPageButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            WorkingProcess.OpenTab();
         }
     }
 }

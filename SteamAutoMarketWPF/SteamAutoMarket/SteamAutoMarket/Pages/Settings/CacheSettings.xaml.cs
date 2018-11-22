@@ -12,7 +12,7 @@
 
     using Steam.Market;
 
-    using SteamAutoMarket.Annotations;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Image;
     using SteamAutoMarket.Repository.Settings;

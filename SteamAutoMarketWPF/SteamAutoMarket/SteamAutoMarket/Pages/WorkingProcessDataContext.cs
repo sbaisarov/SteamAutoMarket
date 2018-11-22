@@ -9,26 +9,18 @@
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Windows;
 
     using Core;
 
     using OxyPlot;
 
-    using SteamAutoMarket.Annotations;
-    using SteamAutoMarket.Repository.Context;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Extension;
     using SteamAutoMarket.Utils.Logger;
 
     public class WorkingProcessDataContext : INotifyPropertyChanged
     {
-        public CancellationTokenSource cancellationTokenSource;
-
-        public Task workingAction;
-
-        public CancellationToken CancellationToken { get; set; }
-
         private readonly List<double> times = new List<double>();
 
         private double averageMinutesLeft;
@@ -70,6 +62,10 @@
         }
 
         public string ButtonTitle => $"Stop {this.Title}";
+
+        public CancellationToken CancellationToken { get; set; }
+
+        public CancellationTokenSource CancellationTokenSource { get; set; }
 
         public ObservableCollection<DataPoint> ChartModel { get; set; } =
             new ObservableCollection<DataPoint> { new DataPoint(0, 0) };
@@ -137,6 +133,8 @@
                 this.OnPropertyChanged(nameof(this.ButtonTitle));
             }
         }
+
+        public Task WorkingAction { get; set; }
 
         public string WorkingLogs
         {

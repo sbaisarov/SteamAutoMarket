@@ -5,11 +5,10 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
     using System.Windows;
 
-    using SteamAutoMarket.Annotations;
     using SteamAutoMarket.Models;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
     using SteamAutoMarket.Utils.Logger;
@@ -35,6 +34,17 @@
         public event PropertyChangedEventHandler PropertyChanged;
 
         public List<SteamAppId> AppIdList => SettingsProvider.GetInstance().AppIdList;
+
+        public bool TradeSendConfirm2Fa
+        {
+            get => SettingsProvider.GetInstance().TradeSendConfirm2Fa;
+
+            set
+            {
+                SettingsProvider.GetInstance().TradeSendConfirm2Fa = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<SteamItemsModel> TradeSendItemsList { get; } =
             new ObservableCollection<SteamItemsModel>();
@@ -94,17 +104,6 @@
 
         public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
             new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
-
-        public bool TradeSendConfirm2Fa
-        {
-            get => SettingsProvider.GetInstance().TradeSendConfirm2Fa;
-
-            set
-            {
-                SettingsProvider.GetInstance().TradeSendConfirm2Fa = value;
-                this.OnPropertyChanged();
-            }
-        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
@@ -175,11 +174,7 @@
                 return;
             }
 
-            UiGlobalVariables.SteamManager.SendTrade(
-                steamId,
-                tradeToken,
-                itemsToSell,
-                this.TradeSendConfirm2Fa);
+            UiGlobalVariables.SteamManager.SendTrade(steamId, tradeToken, itemsToSell, this.TradeSendConfirm2Fa);
         }
     }
 }

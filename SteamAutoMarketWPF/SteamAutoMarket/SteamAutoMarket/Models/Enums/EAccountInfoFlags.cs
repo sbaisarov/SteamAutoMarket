@@ -2,7 +2,7 @@
 {
     public enum EAccountInfoFlags
     {
-        AccountInfo, 
+        AccountInfo,
 
         MafileInfo,
 

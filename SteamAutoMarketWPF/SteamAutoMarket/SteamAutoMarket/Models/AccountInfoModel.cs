@@ -3,7 +3,7 @@
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
-    using SteamAutoMarket.Annotations;
+    using SteamAutoMarket.Properties;
 
     public class AccountInfoModel : INotifyPropertyChanged
     {

@@ -11,7 +11,7 @@
     {
         public static void CriticalMessageBox(Exception e)
         {
-           Logger.Log.Error(string.Empty, e);
+            Logger.Log.Error(string.Empty, e);
             ShowMessageBox(e.Message, "Error", MessageBoxButton.OK);
         }
 
