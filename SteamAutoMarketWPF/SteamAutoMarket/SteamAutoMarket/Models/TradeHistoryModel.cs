@@ -23,17 +23,17 @@
             this.State += offer.Offer.TradeOfferState.ToString().Replace("TradeOfferState", string.Empty);
         }
 
+        public IEnumerable<SteamTradeItemsModel> MyItems { get; }
+
         public FullTradeOffer Offer { get; }
 
-        public string TradeId { get; }
+        public IEnumerable<SteamTradeItemsModel> PartnerItems { get; }
 
         public SteamAccountHyperlinkModel Sender { get; }
 
         public string State { get; }
 
-        public IEnumerable<SteamTradeItemsModel> MyItems { get; }
-
-        public IEnumerable<SteamTradeItemsModel> PartnerItems { get; }
+        public string TradeId { get; }
 
         public IEnumerable<NameValueModel> TradeParameters { get; }
 

@@ -6,8 +6,8 @@
     {
         public List<FullTradeItem> MyItems { get; set; }
 
-        public List<FullTradeItem> PartnerItems { get; set; }
-
         public Offer Offer { get; set; }
+
+        public List<FullTradeItem> PartnerItems { get; set; }
     }
 }

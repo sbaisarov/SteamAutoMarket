@@ -19,8 +19,8 @@
             this.AccountLink = $"https://steamcommunity.com/profiles/{steamId}/";
         }
 
-        public string AccountName { get; }
-
         public string AccountLink { get; }
+
+        public string AccountName { get; }
     }
 }

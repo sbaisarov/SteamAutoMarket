@@ -13,6 +13,12 @@
 
     public class SettingsModel
     {
+        private bool activeTradesActiveOnly = true;
+
+        private bool activeTradesReceivedOffers = true;
+
+        private bool activeTradesSentOffers = true;
+
         private List<SteamAppId> appIdList = new List<SteamAppId>(UiDefaultValues.AppIdList);
 
         private int averagePriceDays = 7;
@@ -54,11 +60,35 @@
 
         private int workingChartMaxCount = 70;
 
-        private bool activeTradesSentOffers = true;
+        public bool ActiveTradesActiveOnly
+        {
+            get => this.activeTradesActiveOnly;
+            set
+            {
+                this.activeTradesActiveOnly = value;
+                this.OnPropertyChanged();
+            }
+        }
 
-        private bool activeTradesReceivedOffers = true;
+        public bool ActiveTradesReceivedOffers
+        {
+            get => this.activeTradesReceivedOffers;
+            set
+            {
+                this.activeTradesReceivedOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
 
-        private bool activeTradesActiveOnly = true;
+        public bool ActiveTradesSentOffers
+        {
+            get => this.activeTradesSentOffers;
+            set
+            {
+                this.activeTradesSentOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public List<SteamAppId> AppIdList
         {
@@ -276,36 +306,6 @@
             set
             {
                 this.workingChartMaxCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool ActiveTradesSentOffers
-        {
-            get => this.activeTradesSentOffers;
-            set
-            {
-                this.activeTradesSentOffers = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool ActiveTradesReceivedOffers
-        {
-            get => this.activeTradesReceivedOffers;
-            set
-            {
-                this.activeTradesReceivedOffers = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool ActiveTradesActiveOnly
-        {
-            get => this.activeTradesActiveOnly;
-            set
-            {
-                this.activeTradesActiveOnly = value;
                 this.OnPropertyChanged();
             }
         }

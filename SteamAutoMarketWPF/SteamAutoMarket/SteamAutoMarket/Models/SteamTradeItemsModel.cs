@@ -68,7 +68,6 @@
 
         public string Type { get; }
 
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

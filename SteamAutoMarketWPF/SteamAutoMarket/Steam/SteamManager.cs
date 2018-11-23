@@ -263,8 +263,9 @@
                     trade => new FullTradeOffer
                                  {
                                      Offer = trade,
-                                     MyItems =
-                                         FullTradeItem.GetFullItemsList(trade.ItemsToGive, offersResponse.Descriptions),
+                                     MyItems = FullTradeItem.GetFullItemsList(
+                                         trade.ItemsToGive,
+                                         offersResponse.Descriptions),
                                      PartnerItems = FullTradeItem.GetFullItemsList(
                                          trade.ItemsToReceive,
                                          offersResponse.Descriptions)

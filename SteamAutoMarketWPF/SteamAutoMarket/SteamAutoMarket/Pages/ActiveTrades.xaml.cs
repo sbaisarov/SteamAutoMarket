@@ -35,8 +35,53 @@
             this.DataContext = this;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool ActiveOnlyCheckBox
+        {
+            get => SettingsProvider.GetInstance().ActiveTradesActiveOnly;
+            set
+            {
+                if (SettingsProvider.GetInstance().ActiveTradesActiveOnly == value) return;
+                SettingsProvider.GetInstance().ActiveTradesActiveOnly = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<TradeHistoryModel> ActiveTradesList { get; } =
             new ObservableCollection<TradeHistoryModel>();
+
+        public bool IsLoadButtonEnabled
+        {
+            get => this.isLoadButtonEnabled;
+            set
+            {
+                if (this.isLoadButtonEnabled == value) return;
+                this.isLoadButtonEnabled = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool ReceivedOffersCheckBox
+        {
+            get => SettingsProvider.GetInstance().ActiveTradesReceivedOffers;
+            set
+            {
+                if (SettingsProvider.GetInstance().ActiveTradesReceivedOffers == value) return;
+                SettingsProvider.GetInstance().ActiveTradesReceivedOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public SteamTradeItemsModel SelectedTradeItem
+        {
+            get => this.selectedTradeItem;
+            set
+            {
+                this.selectedTradeItem = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public TradeHistoryModel SelectedTradeOffer
         {
@@ -59,47 +104,12 @@
             }
         }
 
-        public bool ReceivedOffersCheckBox
-        {
-            get => SettingsProvider.GetInstance().ActiveTradesReceivedOffers;
-            set
-            {
-                if (SettingsProvider.GetInstance().ActiveTradesReceivedOffers == value) return;
-                SettingsProvider.GetInstance().ActiveTradesReceivedOffers = value;
-                this.OnPropertyChanged();
-            }
-        }
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public bool ActiveOnlyCheckBox
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            get => SettingsProvider.GetInstance().ActiveTradesActiveOnly;
-            set
-            {
-                if (SettingsProvider.GetInstance().ActiveTradesActiveOnly == value) return;
-                SettingsProvider.GetInstance().ActiveTradesActiveOnly = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool IsLoadButtonEnabled
-        {
-            get => this.isLoadButtonEnabled;
-            set
-            {
-                if (this.isLoadButtonEnabled == value) return;
-                this.isLoadButtonEnabled = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public SteamTradeItemsModel SelectedTradeItem
-        {
-            get => this.selectedTradeItem;
-            set
-            {
-                this.selectedTradeItem = value;
-                this.OnPropertyChanged();
-            }
         }
 
         private void LoadActiveTradesButtonClick(object sender, RoutedEventArgs e)
@@ -118,7 +128,9 @@
                         this.IsLoadButtonEnabled = false;
                         try
                         {
-                            var offers = UiGlobalVariables.SteamManager.ReceiveTradeOffers(this.SentOffersCheckBox, this.ReceivedOffersCheckBox);
+                            var offers = UiGlobalVariables.SteamManager.ReceiveTradeOffers(
+                                this.SentOffersCheckBox,
+                                this.ReceivedOffersCheckBox);
                             if (this.ActiveOnlyCheckBox)
                             {
                                 offers = offers.Where(
@@ -139,16 +151,6 @@
 
                         this.IsLoadButtonEnabled = true;
                     });
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
         }
     }
 }
