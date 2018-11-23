@@ -117,7 +117,7 @@
             catch (WebException e)
             {
                 HandleFailedWebRequestResponse(e.Response as HttpWebResponse, url);
-                throw new SteamException(e.Message);
+                return null;
             }
         }
 
