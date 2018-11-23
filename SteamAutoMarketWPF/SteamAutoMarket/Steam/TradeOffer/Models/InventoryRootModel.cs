@@ -31,17 +31,8 @@
 
         public static RgDescription GetDescription(RgInventory asset, List<RgDescription> descriptions)
         {
-            RgDescription description = null;
-            try
-            {
-                description = descriptions.First(
-                    item => asset.Instanceid == item.InstanceId && asset.Classid == item.Classid);
-            }
-            catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException)
-            {
-            }
-
-            return description;
+            return descriptions.FirstOrDefault(
+                item => asset.Instanceid == item.InstanceId && asset.Classid == item.Classid);
         }
     }
 }
