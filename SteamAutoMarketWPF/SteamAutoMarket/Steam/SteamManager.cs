@@ -240,17 +240,45 @@
             return price;
         }
 
-        public OffersResponse ReceiveTradeOffers()
+        public IEnumerable<FullTradeOffer> ReceiveTradeOffers(
+            bool getSentOffers,
+            bool getReceivedOffers,
+            string language = "en_us")
         {
-            return this.TradeOfferWeb.GetActiveTradeOffers(false, true, true);
+            var offersResponse = this.TradeOfferWeb.GetActiveTradeOffers(
+                getSentOffers,
+                getReceivedOffers,
+                true,
+                language);
+
+            var fullOffersList = new List<FullTradeOffer>();
+
+            if (offersResponse.AllOffers == null)
+            {
+                return fullOffersList;
+            }
+
+            fullOffersList.AddRange(
+                offersResponse.AllOffers.Select(
+                    trade => new FullTradeOffer
+                                 {
+                                     Offer = trade,
+                                     MyItems =
+                                         FullTradeItem.GetFullItemsList(trade.ItemsToGive, offersResponse.Descriptions),
+                                     PartnerItems = FullTradeItem.GetFullItemsList(
+                                         trade.ItemsToReceive,
+                                         offersResponse.Descriptions)
+                                 }));
+
+            return fullOffersList;
         }
 
-        public bool RemoveListing(long orderid)
+        public bool RemoveListing(long orderId)
         {
             var attempts = 0;
             while (attempts < 3)
             {
-                var status = this.MarketClient.CancelSellOrder(orderid);
+                var status = this.MarketClient.CancelSellOrder(orderId);
                 if (status == ECancelSellOrderStatus.Canceled) return true;
                 attempts++;
             }

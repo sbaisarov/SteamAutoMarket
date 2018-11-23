@@ -57,7 +57,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\AccountInfoModel.cs" />
+    <Compile Include="Models\NameValueModel.cs" />
     <Compile Include="Models\Enums\EAccountInfoFlags.cs" />
     <Compile Include="Models\Enums\EPriceCacheType.cs" />
     <Compile Include="Models\MarketRelistModel.cs" />
@@ -66,9 +66,12 @@
     <Compile Include="Models\MarketSellProcessModel.cs" />
     <Compile Include="Models\NumericUpDownModel.cs" />
     <Compile Include="Models\PriceModel.cs" />
+    <Compile Include="Models\SteamAccountHyperlinkModel.cs" />
     <Compile Include="Models\SteamAppId.cs" />
     <Compile Include="Models\SettingsSteamAccount.cs" />
     <Compile Include="Models\SteamItemsModel.cs" />
+    <Compile Include="Models\SteamTradeItemsModel.cs" />
+    <Compile Include="Models\TradeHistoryModel.cs" />
     <Compile Include="Pages\ActiveTrades.xaml.cs">
       <DependentUpon>ActiveTrades.xaml</DependentUpon>
     </Compile>
@@ -117,7 +120,6 @@
     <Compile Include="Models\Enums\EMarketSaleType.cs" />
     <Compile Include="SteamIntegration\MarketSellStrategy.cs" />
     <Compile Include="SteamIntegration\UiSteamManager.cs" />
-    <Compile Include="SteamIntegration\WorkingProcessType.cs" />
     <Compile Include="Utils\AppUtils.cs" />
     <Compile Include="Utils\Converter\SolidColorBrushToColorConverter.cs" />
     <Compile Include="Utils\Converter\IfNullInvisibleConverter.cs" />

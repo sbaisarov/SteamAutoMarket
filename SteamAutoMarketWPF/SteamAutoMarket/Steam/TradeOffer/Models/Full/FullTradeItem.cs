@@ -12,22 +12,16 @@
 
         public static AssetDescription GetDescription(CEconAsset asset, List<AssetDescription> descriptions)
         {
-            AssetDescription description = null;
-            try
-            {
-                description = descriptions.First(
-                    item => asset.InstanceId == item.InstanceId && asset.ClassId == item.ClassId);
-            }
-            catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException)
-            {
-                description = new AssetDescription
-                                  {
-                                      MarketHashName = "[Info is missing]",
-                                      AppId = int.Parse(asset.AppId),
-                                      Name = "[Info is missing]",
-                                      Type = "[Info is missing]"
-                                  };
-            }
+            var description =
+                descriptions.FirstOrDefault(
+                    item => asset.InstanceId == item.InstanceId && asset.ClassId == item.ClassId)
+                ?? new AssetDescription
+                       {
+                           MarketHashName = "[Info is missing]",
+                           AppId = int.Parse(asset.AppId),
+                           Name = "[Info is missing]",
+                           Type = "[Info is missing]"
+                       };
 
             return description;
         }

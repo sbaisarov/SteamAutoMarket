@@ -39,8 +39,8 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<AccountInfoModel> AccountParameters { get; } =
-            new ObservableCollection<AccountInfoModel>();
+        public ObservableCollection<NameValueModel> AccountParameters { get; } =
+            new ObservableCollection<NameValueModel>();
 
         public string Avatar
         {
@@ -147,19 +147,19 @@
                                     case EAccountInfoFlags.AccountInfo:
                                         {
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("Login", manager.Login));
+                                                new NameValueModel("Login", manager.Login));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("Password", manager.Password));
+                                                new NameValueModel("Password", manager.Password));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel(
+                                                new NameValueModel(
                                                     "SteamID",
                                                     manager.SteamId.ConvertToUInt64().ToString()));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("TradeToken", manager.TradeToken));
+                                                new NameValueModel("TradeToken", manager.TradeToken));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("APIKey", manager.ApiKey));
+                                                new NameValueModel("APIKey", manager.ApiKey));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel(
+                                                new NameValueModel(
                                                     "CurrencyValue",
                                                     MarketClient.Currencies[$"{manager.Currency}"]));
                                             break;
@@ -168,21 +168,21 @@
                                     case EAccountInfoFlags.MafileInfo:
                                         {
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("SharedSecret", manager.Guard.SharedSecret));
+                                                new NameValueModel("SharedSecret", manager.Guard.SharedSecret));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("IdentitySecret", manager.Guard.IdentitySecret));
+                                                new NameValueModel("IdentitySecret", manager.Guard.IdentitySecret));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("RevocationCode", manager.Guard.RevocationCode));
+                                                new NameValueModel("RevocationCode", manager.Guard.RevocationCode));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("DeviceID", manager.Guard.DeviceID));
+                                                new NameValueModel("DeviceID", manager.Guard.DeviceID));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("Secret1", manager.Guard.Secret1));
+                                                new NameValueModel("Secret1", manager.Guard.Secret1));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("SerialNumber", manager.Guard.SerialNumber));
+                                                new NameValueModel("SerialNumber", manager.Guard.SerialNumber));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("TokenGID", manager.Guard.TokenGID));
+                                                new NameValueModel("TokenGID", manager.Guard.TokenGID));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("URI", manager.Guard.URI));
+                                                new NameValueModel("URI", manager.Guard.URI));
                                             break;
                                         }
 
@@ -196,25 +196,25 @@
                                         {
                                             var info = manager.MarketClient.WalletInfo();
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("WalletCountry", info.WalletCountry));
+                                                new NameValueModel("WalletCountry", info.WalletCountry));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("Currency", info.Currency));
+                                                new NameValueModel("Currency", info.Currency));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("MaxBalance", info.MaxBalance));
+                                                new NameValueModel("MaxBalance", info.MaxBalance));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("WalletBalance", info.WalletBalance));
+                                                new NameValueModel("WalletBalance", info.WalletBalance));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("WalletFee", info.WalletFee));
+                                                new NameValueModel("WalletFee", info.WalletFee));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("WalletFeeMinimum", info.WalletFeeMinimum));
+                                                new NameValueModel("WalletFeeMinimum", info.WalletFeeMinimum));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel("WalletFeePercent", info.WalletFeePercent));
+                                                new NameValueModel("WalletFeePercent", info.WalletFeePercent));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel(
+                                                new NameValueModel(
                                                     "WalletPublisherFeePercent",
                                                     info.WalletPublisherFeePercent));
                                             this.AccountParameters.AddDispatch(
-                                                new AccountInfoModel(
+                                                new NameValueModel(
                                                     "WalletTradeMaxBalance",
                                                     info.WalletTradeMaxBalance));
                                             break;

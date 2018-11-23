@@ -54,6 +54,12 @@
 
         private int workingChartMaxCount = 70;
 
+        private bool activeTradesSentOffers = true;
+
+        private bool activeTradesReceivedOffers = true;
+
+        private bool activeTradesActiveOnly = true;
+
         public List<SteamAppId> AppIdList
         {
             get => this.appIdList;
@@ -270,6 +276,36 @@
             set
             {
                 this.workingChartMaxCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool ActiveTradesSentOffers
+        {
+            get => this.activeTradesSentOffers;
+            set
+            {
+                this.activeTradesSentOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool ActiveTradesReceivedOffers
+        {
+            get => this.activeTradesReceivedOffers;
+            set
+            {
+                this.activeTradesReceivedOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool ActiveTradesActiveOnly
+        {
+            get => this.activeTradesActiveOnly;
+            set
+            {
+                this.activeTradesActiveOnly = value;
                 this.OnPropertyChanged();
             }
         }

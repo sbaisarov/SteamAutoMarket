@@ -5,19 +5,19 @@
 
     using SteamAutoMarket.Properties;
 
-    public class AccountInfoModel : INotifyPropertyChanged
+    public class NameValueModel : INotifyPropertyChanged
     {
         private string name;
 
         private string value;
 
-        public AccountInfoModel(string name, string value)
+        public NameValueModel(string name, string value)
         {
             this.name = name;
             this.value = value;
         }
 
-        public AccountInfoModel(string name, object value)
+        public NameValueModel(string name, object value)
         {
             this.name = name;
             this.value = value?.ToString();

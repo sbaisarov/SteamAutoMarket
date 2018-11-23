@@ -37,6 +37,28 @@
             return descriptionText;
         }
 
+        public static string GetClearDescription(AssetDescription description)
+        {
+            if (description == null) return string.Empty;
+
+            var descriptionText = string.Empty;
+
+            descriptionText += $"Game: {description.AppId}{Environment.NewLine}";
+            descriptionText += $"Name: {description.MarketHashName}{Environment.NewLine}";
+            descriptionText += $"Type: {description.Type}{Environment.NewLine}";
+
+            var descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim()))
+                .ToList();
+
+            if (descriptions != null && descriptions.Any())
+            {
+                descriptionText +=
+                    $"Description: {string.Join(", ", descriptions.Select(d => d.Value.Trim()))}{Environment.NewLine}";
+            }
+
+            return descriptionText;
+        }
+
         public static string GetClearDescription(MyListingsSalesItem item)
         {
             if (item == null) return string.Empty;
