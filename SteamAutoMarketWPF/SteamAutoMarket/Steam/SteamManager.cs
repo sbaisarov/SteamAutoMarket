@@ -1,4 +1,7 @@
-﻿namespace Steam
+﻿using System.IO;
+using System.Management;
+
+namespace Steam
 {
     using System;
     using System.Collections.Generic;
@@ -37,11 +40,18 @@
             string userAgent = "",
             bool forceSessionRefresh = false)
         {
+            if (!File.Exists("license.txt"))
+            {
+                throw new UnauthorizedAccessException("Cant get requered info");
+            }
+
+            LicenseKey = File.ReadAllText("license.txt");
+            Hwid = GetHwid();
             this.Login = login;
             this.Password = password;
             this.Guard = mafile;
             this.SteamId = new SteamID(this.Guard.Session.SteamID);
-
+            
             this.SteamClient = new UserLogin(login, password) { TwoFactorCode = this.GenerateSteamGuardCode() };
 
             this.Guard.DeviceID = this.GetDeviceId();
@@ -70,6 +80,10 @@
             this.MarketClient.CurrentCurrency = this.Currency;
         }
 
+        public static string LicenseKey { get; set; }
+        
+        public static string Hwid { get; set; }
+        
         public string ApiKey { get; set; }
 
         public CookieContainer Cookies { get; set; } = new CookieContainer();
@@ -97,6 +111,27 @@
         public string TradeToken { get; set; }
 
         protected bool IsSessionUpdated { get; set; }
+        
+        private string GetHwid()
+        {
+            var mc = new ManagementClass("win32_processor");
+            var moc = mc.GetInstances();
+            var uid = moc.Cast<ManagementObject>().Select(x => x.Properties["processorID"]).FirstOrDefault()?.Value
+                .ToString();
+
+            try
+            {
+                var dsk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + "C" + @":""");
+                dsk.Get();
+                uid += dsk["VolumeSerialNumber"].ToString();
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Cant get requered info");
+            }
+
+            return uid;
+        }
 
         public void ConfirmTradeTransactions(ulong offerId)
         {
@@ -449,7 +484,7 @@
             {
                 var response = wb.UploadString(
                     "https://www.steambiz.store/api/gguardcode",
-                    this.Guard.SharedSecret + "," + TimeAligner.GetSteamTime());
+                    $"{this.Guard.SharedSecret},{TimeAligner.GetSteamTime()},{LicenseKey},{Hwid}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }
@@ -460,7 +495,7 @@
             {
                 var response = wb.UploadString(
                     "https://www.steambiz.store/api/gdevid",
-                    this.SteamClient.SteamID.ToString());
+                    $"{this.SteamClient.SteamID.ToString()},{LicenseKey},{Hwid}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }

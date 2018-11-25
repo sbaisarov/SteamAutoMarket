@@ -135,19 +135,27 @@ def check_license():
 
 @app.route('/api/gdevid', methods=['POST'])
 def generate_device_id():
-    steam_id = request.data.decode('utf-8')
+    steam_id, key, hwid = request.data.decode('utf-8')
+    ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+    success, error = validate_license(key, hwid, ip)
+    if not success:
+        return error, 402
     hexed_steam_id = hashlib.sha1(steam_id.encode('ascii')).hexdigest()
     return jsonify({'result_0x23432': 'android:' + '-'.join([hexed_steam_id[:8],
                                                      hexed_steam_id[8:12],
                                                      hexed_steam_id[12:16],
-                                                     hexed_steam_id[16:20],
+                                                      hexed_steam_id[16:20],
                                                      hexed_steam_id[20:32]])
             }), 200
 
 
 @app.route('/api/gguardcode', methods=['POST'])
 def generate_guard_code():
-    shared_secret, timestamp = request.data.decode('utf-8').split(',')
+    ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+    shared_secret, timestamp, key, hwid = request.data.decode('utf-8').split(',')
+    success, error = validate_license(key, hwid, ip)
+    if not success:
+        return error, 402
     timestamp = int(timestamp)
     time_buffer = struct.pack('>Q', timestamp // 30)  # pack as Big endian, uint64
     time_hmac = hmac.new(base64.b64decode(shared_secret), time_buffer, digestmod=hashlib.sha1).digest()
@@ -167,21 +175,9 @@ def generate_guard_code():
 def generate_confirmation_hash():
     identity_secret, tag, timestamp, key, hwid = request.data.decode('utf-8').split(',')
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-    try:
-        db = shelve.open("database/clients", writeback=True)
-        client = db[key]
-        if client["subscription_time"] == 0:
-            return "License expired", 402
-        active_devices = client["devices"]
-        if hwid not in active_devices:
-            city = get_city_from_ip(ip)
-            result = {
-                "connection_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "ip": (ip, city)
-            }
-            active_devices[hwid] = result
-    finally:
-        db.close()
+    success, error = validate_license(key, hwid, ip)
+    if not success:
+        return error, 402
     timestamp = int(timestamp)
     buffer = struct.pack('>Q', timestamp) + tag.encode('ascii')
     key = base64.b64encode(hmac.new(base64.b64decode(identity_secret), buffer, digestmod=hashlib.sha1).digest())
@@ -192,7 +188,7 @@ def generate_confirmation_hash():
 def get_city_from_ip(ip_address):
     try:
         resp = requests.get('http://ip-api.com/json/%s' % ip_address).json()
-    except requests.exceptions.ProxyError:
+    except (requests.exceptions.ProxyError, request.exceptions.ConnectionError):
         return 'Unknown'
     return resp['city']
 
@@ -200,6 +196,27 @@ def get_city_from_ip(ip_address):
 def update_database(data, db, key):
     db[key] = data
     logger.info('VALID KEY. Added to the database: %s\n', data)
+
+
+def validate_license(key, ip, hwid):
+    with shelve.open("database/clients", writeback=True):
+        db = shelve.open("database/clients", writeback=True)
+        try:
+            client = db[key]
+        except KeyError:
+            return (False, "key was not found")
+    if client["subscription_time"] == 0:
+        return (False, "license expired")
+    active_devices = client["devices"]
+    if hwid not in active_devices:
+        city = get_city_from_ip(ip)
+        result = {
+            "connection_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "ip": (ip, city)
+        }
+        active_devices[hwid] = result
+
+    return (True, None)
 
 
 @auth.verify_password
