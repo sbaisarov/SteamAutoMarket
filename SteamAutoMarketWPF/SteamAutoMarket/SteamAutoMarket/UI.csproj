@@ -57,6 +57,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\SteamTradeHistoryItemsModel.cs" />
+    <Compile Include="Models\TradeHistoryModel.cs" />
     <Compile Include="Models\NameValueModel.cs" />
     <Compile Include="Models\Enums\EAccountInfoFlags.cs" />
     <Compile Include="Models\Enums\EPriceCacheType.cs" />
@@ -71,7 +73,7 @@
     <Compile Include="Models\SettingsSteamAccount.cs" />
     <Compile Include="Models\SteamItemsModel.cs" />
     <Compile Include="Models\SteamTradeItemsModel.cs" />
-    <Compile Include="Models\TradeHistoryModel.cs" />
+    <Compile Include="Models\ActiveTradeModel.cs" />
     <Compile Include="Pages\ActiveTrades.xaml.cs">
       <DependentUpon>ActiveTrades.xaml</DependentUpon>
     </Compile>

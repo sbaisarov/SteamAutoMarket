@@ -12,13 +12,13 @@
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Image;
 
-    public class SteamTradeItemsModel : INotifyPropertyChanged
+    public class SteamTradeHistoryItemsModel : INotifyPropertyChanged
     {
         private string image;
 
-        public SteamTradeItemsModel(IEnumerable<FullTradeItem> itemsList)
+        public SteamTradeHistoryItemsModel(IEnumerable<FullHistoryTradeItem> itemsList)
         {
-            this.ItemsList = new ObservableCollection<FullTradeItem>(itemsList);
+            this.ItemsList = new ObservableCollection<FullHistoryTradeItem>(itemsList);
 
             this.ItemModel = itemsList.FirstOrDefault();
 
@@ -58,11 +58,11 @@
             }
         }
 
-        public FullTradeItem ItemModel { get; }
+        public FullHistoryTradeItem ItemModel { get; }
 
         public string ItemName { get; }
 
-        public ObservableCollection<FullTradeItem> ItemsList { get; }
+        public ObservableCollection<FullHistoryTradeItem> ItemsList { get; }
 
         public string Type { get; }
 

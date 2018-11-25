@@ -98,14 +98,6 @@
 
         protected bool IsSessionUpdated { get; set; }
 
-        public virtual void AcceptOffers(IEnumerable<Offer> offers)
-        {
-            foreach (var offer in offers)
-            {
-                this.OfferSession.Accept(offer.TradeOfferId);
-            }
-        }
-
         public void ConfirmTradeTransactions(ulong offerId)
         {
             try

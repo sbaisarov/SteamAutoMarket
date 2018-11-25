@@ -60,6 +60,18 @@
 
         private int workingChartMaxCount = 70;
 
+        private bool tradeHistoryNavigatingBack;
+
+        private bool tradeHistoryIncludeFailed;
+
+        private bool tradeHistoryReceivedOffers = true;
+
+        private bool tradeHistorySentOffers = true;
+
+        private int tradeHistoryMaxTradesCount = 10;
+
+        private bool tradeHistoryGetDescription = true;
+
         public bool ActiveTradesActiveOnly
         {
             get => this.activeTradesActiveOnly;
@@ -306,6 +318,66 @@
             set
             {
                 this.workingChartMaxCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeHistoryNavigatingBack
+        {
+            get => this.tradeHistoryNavigatingBack;
+            set
+            {
+                this.tradeHistoryNavigatingBack = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeHistoryIncludeFailed
+        {
+            get => this.tradeHistoryIncludeFailed;
+            set
+            {
+                this.tradeHistoryIncludeFailed = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeHistoryReceivedOffers
+        {
+            get => this.tradeHistoryReceivedOffers;
+            set
+            {
+                this.tradeHistoryReceivedOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeHistorySentOffers
+        {
+            get => this.tradeHistorySentOffers;
+            set
+            {
+                this.tradeHistorySentOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int TradeHistoryMaxTradesCount
+        {
+            get => this.tradeHistoryMaxTradesCount;
+            set
+            {
+                this.tradeHistoryMaxTradesCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeHistoryGetDescription
+        {
+            get => this.tradeHistoryGetDescription;
+            set
+            {
+                this.tradeHistoryGetDescription = value;
                 this.OnPropertyChanged();
             }
         }

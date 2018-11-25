@@ -76,13 +76,13 @@
         }
 
         public TradeHistoryResponse GetTradeHistory(
-            int? maxTrades,
-            long? startAfterTime,
-            string startAfterTradeId,
+            int? maxTrades = 100,
+            string startAfterTime = null,
+            string startAfterTradeId = null,
             bool navigatingBack = false,
             bool getDescriptions = false,
-            string lanugage = "en",
-            bool includeFailed = false)
+            bool includeFailed = false,
+            string lanugage = "en")
         {
             if (!string.IsNullOrEmpty(startAfterTradeId)) startAfterTime = null;
 

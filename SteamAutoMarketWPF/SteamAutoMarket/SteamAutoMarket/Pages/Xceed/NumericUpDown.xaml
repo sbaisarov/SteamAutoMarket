@@ -59,7 +59,7 @@
                 <ControlTemplate TargetType="RepeatButton">
                     <Grid>
                         <xctk:ButtonChrome x:Name="Chrome"
-                                           BorderBrush="{TemplateBinding BorderBrush}"
+                                           BorderBrush="{StaticResource ButtonBackground}"
                                            Background="{DynamicResource ButtonBackground}"
                                            CornerRadius="{DynamicResource {x:Static themes1:ResourceKeys.SpinButtonCornerRadiusKey}}"
                                            RenderEnabled="{TemplateBinding IsEnabled}"
@@ -79,9 +79,9 @@
 
     <Style x:Key="ButtonSpinnerStyle" TargetType="{x:Type xctk:ButtonSpinner}">
         <Setter Property="Background"
-                Value="{DynamicResource {x:Static themes1:ResourceKeys.ControlNormalBackgroundKey}}" />
+                Value="{DynamicResource DataGridForeground}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource {x:Static themes1:ResourceKeys.ControlNormalBorderKey}}" />
+                Value="{DynamicResource DataGridForeground}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -175,10 +175,10 @@
     </Style>
 
     <Style x:Key="UpDown" TargetType="{x:Type xctk:InputBase}">
-        <Setter Property="Background" Value="{DynamicResource DataGridBackground}" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource DataGridForeground}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource {x:Static themes1:ResourceKeys.ControlNormalBorderKey}}" />
+                Value="{DynamicResource ButtonBackground}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="IsTabStop" Value="False" />

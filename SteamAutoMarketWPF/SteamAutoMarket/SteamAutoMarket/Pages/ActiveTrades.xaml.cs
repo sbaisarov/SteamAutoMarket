@@ -3,6 +3,7 @@
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
@@ -27,7 +28,7 @@
 
         private SteamTradeItemsModel selectedTradeItem;
 
-        private TradeHistoryModel selectedTradeOffer;
+        private ActiveTradeModel selectedTradeOffer;
 
         public ActiveTrades()
         {
@@ -48,8 +49,8 @@
             }
         }
 
-        public ObservableCollection<TradeHistoryModel> ActiveTradesList { get; } =
-            new ObservableCollection<TradeHistoryModel>();
+        public ObservableCollection<ActiveTradeModel> ActiveTradesList { get; } =
+            new ObservableCollection<ActiveTradeModel>();
 
         public bool IsLoadButtonEnabled
         {
@@ -83,7 +84,7 @@
             }
         }
 
-        public TradeHistoryModel SelectedTradeOffer
+        public ActiveTradeModel SelectedTradeOffer
         {
             get => this.selectedTradeOffer;
             set
@@ -108,9 +109,7 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-        }
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e) => Process.Start(e.Uri.ToString());
 
         private void LoadActiveTradesButtonClick(object sender, RoutedEventArgs e)
         {
@@ -139,7 +138,7 @@
 
                             foreach (var offer in offers)
                             {
-                                this.ActiveTradesList.AddDispatch(new TradeHistoryModel(offer));
+                                this.ActiveTradesList.AddDispatch(new ActiveTradeModel(offer));
                             }
 
                             ErrorNotify.InfoMessageBox($"{offers.Count()} offers loaded");
@@ -147,6 +146,85 @@
                         catch (Exception ex)
                         {
                             ErrorNotify.CriticalMessageBox(ex);
+                        }
+
+                        this.IsLoadButtonEnabled = true;
+                    });
+        }
+
+        private void AcceptTradeOfferButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (this.SelectedTradeOffer == null)
+            {
+                ErrorNotify.CriticalMessageBox("No trade offer selected. You should select trade offer first");
+                return;
+            }
+
+            this.IsLoadButtonEnabled = false;
+            Task.Run(
+                () =>
+                    {
+                        try
+                        {
+                            var response =
+                                UiGlobalVariables.SteamManager.OfferSession.Accept(this.SelectedTradeOffer.TradeId);
+                            if (response.Accepted == false)
+                            {
+                                ErrorNotify.CriticalMessageBox($"Error on confirm trade offer - {response.TradeError}");
+                            }
+                            else
+                            {
+                                ErrorNotify.InfoMessageBox("Trade was successful accepted");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorNotify.CriticalMessageBox($"Error on confirm trade offer", ex);
+                        }
+
+                        this.IsLoadButtonEnabled = true;
+                    });
+        }
+
+        private void DeclineTradeOfferButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (this.SelectedTradeOffer == null)
+            {
+                ErrorNotify.CriticalMessageBox("No trade offer selected. You should select trade offer first");
+                return;
+            }
+
+            this.IsLoadButtonEnabled = false;
+            Task.Run(
+                () =>
+                    {
+                        try
+                        {
+                            bool response;
+
+                            if (this.SelectedTradeOffer.Offer.Offer.IsOurOffer)
+                            {
+                                response = UiGlobalVariables.SteamManager.OfferSession.Cancel(
+                                    this.SelectedTradeOffer.TradeId);
+                            }
+                            else
+                            {
+                                response = UiGlobalVariables.SteamManager.OfferSession.Decline(
+                                    this.SelectedTradeOffer.TradeId);
+                            }
+
+                            if (response == false)
+                            {
+                                ErrorNotify.CriticalMessageBox($"Error on confirm decline offer");
+                            }
+                            else
+                            {
+                                ErrorNotify.InfoMessageBox("Trade was successful declined");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorNotify.CriticalMessageBox($"Error on decline trade offer", ex);
                         }
 
                         this.IsLoadButtonEnabled = true;

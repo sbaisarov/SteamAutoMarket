@@ -7,6 +7,8 @@
     using System.Runtime.CompilerServices;
     using System.Windows;
 
+    using Steam.TradeOffer.Models.Full;
+
     using SteamAutoMarket.Models;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Context;
@@ -165,8 +167,12 @@
                 return;
             }
 
-            var itemsToSell = this.TradeSendItemsList.ToArray().Where(i => i.NumericUpDown.AmountToSell > 0)
-                .SelectMany(i => i.ItemsList).ToArray();
+            var itemsToSell = new List<FullRgItem>();
+
+            foreach (var steamItemsModel in this.TradeSendItemsList.ToArray().Where(i => i.NumericUpDown.AmountToSell > 0))
+            {
+                itemsToSell.AddRange(steamItemsModel.ItemsList.ToList().GetRange(0, steamItemsModel.NumericUpDown.AmountToSell));
+            }
 
             if (itemsToSell.Any() == false)
             {
@@ -174,7 +180,7 @@
                 return;
             }
 
-            UiGlobalVariables.SteamManager.SendTrade(steamId, tradeToken, itemsToSell, this.TradeSendConfirm2Fa);
+            UiGlobalVariables.SteamManager.SendTrade(steamId, tradeToken, itemsToSell.ToArray(), this.TradeSendConfirm2Fa);
         }
     }
 }

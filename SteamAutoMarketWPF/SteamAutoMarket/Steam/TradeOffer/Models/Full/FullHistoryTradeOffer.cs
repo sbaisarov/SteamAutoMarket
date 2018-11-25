@@ -12,6 +12,7 @@
     {
         public FullHistoryTradeOffer(TradeHistoryItem historyItem, List<AssetDescription> assetDescriptions)
         {
+            this.Offer = historyItem;
             this.TradeId = historyItem.TradeId;
             this.SteamIdOther = new SteamID(ulong.Parse(historyItem.SteamIdOther));
             this.TimeInit = SteamUtils.ParseSteamUnixDate(int.Parse(historyItem.TimeInit));
@@ -27,36 +28,36 @@
                 assetDescriptions);
         }
 
-        public List<FullHistoryTradeItem> HisItems { get; set; }
+        public TradeHistoryItem Offer { get; }
 
-        public List<FullHistoryTradeItem> MyItems { get; set; }
+        public List<FullHistoryTradeItem> HisItems { get; }
 
-        public TradeState Status { get; set; }
+        public List<FullHistoryTradeItem> MyItems { get; }
 
-        public SteamID SteamIdOther { get; set; }
+        public TradeState Status { get; }
 
-        public string TimeEscrowEnd { get; set; }
+        public SteamID SteamIdOther { get; }
 
-        public DateTime TimeInit { get; set; }
+        public string TimeEscrowEnd { get; }
 
-        public string TradeId { get; set; }
+        public DateTime TimeInit { get; }
+
+        public string TradeId { get; }
 
         private List<FullHistoryTradeItem> GetFullHistoryTradeItemsList(
-            List<TradedAsset> tradedAssets,
-            List<TradedCurrency> tradedCurrencies,
-            List<AssetDescription> assetDescriptions)
+            IReadOnlyCollection<TradedAsset> tradedAssets,
+            IReadOnlyCollection<TradedCurrency> tradedCurrencies,
+            IReadOnlyCollection<AssetDescription> assetDescriptions)
         {
             var fullItems = new List<FullHistoryTradeItem>();
             if (tradedAssets == null) return fullItems;
 
             foreach (var asset in tradedAssets)
             {
-                TradedCurrency currency = null;
-                if (tradedCurrencies != null)
-                    tradedCurrencies.FirstOrDefault(
-                        curr => curr.ClassId == asset.ClassId && curr.ContextId == asset.ContextId);
+                var currency = tradedCurrencies?.FirstOrDefault(
+                    curr => curr.ClassId == asset.ClassId && curr.ContextId == asset.ContextId);
 
-                var description = assetDescriptions.FirstOrDefault(
+                var description = assetDescriptions?.FirstOrDefault(
                     descr => asset.ClassId == descr.ClassId && asset.InstanceId == descr.InstanceId);
 
                 fullItems.Add(new FullHistoryTradeItem(asset, currency, description));
