@@ -109,49 +109,6 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e) => Process.Start(e.Uri.ToString());
-
-        private void LoadActiveTradesButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (UiGlobalVariables.SteamManager == null)
-            {
-                ErrorNotify.CriticalMessageBox("You should login first!");
-                return;
-            }
-
-            this.ActiveTradesList.Clear();
-
-            Task.Run(
-                () =>
-                    {
-                        this.IsLoadButtonEnabled = false;
-                        try
-                        {
-                            var offers = UiGlobalVariables.SteamManager.ReceiveTradeOffers(
-                                this.SentOffersCheckBox,
-                                this.ReceivedOffersCheckBox);
-                            if (this.ActiveOnlyCheckBox)
-                            {
-                                offers = offers.Where(
-                                    o => o.Offer.TradeOfferState == TradeOfferState.TradeOfferStateActive);
-                            }
-
-                            foreach (var offer in offers)
-                            {
-                                this.ActiveTradesList.AddDispatch(new ActiveTradeModel(offer));
-                            }
-
-                            ErrorNotify.InfoMessageBox($"{offers.Count()} offers loaded");
-                        }
-                        catch (Exception ex)
-                        {
-                            ErrorNotify.CriticalMessageBox(ex);
-                        }
-
-                        this.IsLoadButtonEnabled = true;
-                    });
-        }
-
         private void AcceptTradeOfferButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (this.SelectedTradeOffer == null)
@@ -225,6 +182,50 @@
                         catch (Exception ex)
                         {
                             ErrorNotify.CriticalMessageBox($"Error on decline trade offer", ex);
+                        }
+
+                        this.IsLoadButtonEnabled = true;
+                    });
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e) =>
+            Process.Start(e.Uri.ToString());
+
+        private void LoadActiveTradesButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
+
+            this.ActiveTradesList.Clear();
+
+            Task.Run(
+                () =>
+                    {
+                        this.IsLoadButtonEnabled = false;
+                        try
+                        {
+                            var offers = UiGlobalVariables.SteamManager.ReceiveTradeOffers(
+                                this.SentOffersCheckBox,
+                                this.ReceivedOffersCheckBox);
+                            if (this.ActiveOnlyCheckBox)
+                            {
+                                offers = offers.Where(
+                                    o => o.Offer.TradeOfferState == TradeOfferState.TradeOfferStateActive);
+                            }
+
+                            foreach (var offer in offers)
+                            {
+                                this.ActiveTradesList.AddDispatch(new ActiveTradeModel(offer));
+                            }
+
+                            ErrorNotify.InfoMessageBox($"{offers.Count()} offers loaded");
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorNotify.CriticalMessageBox(ex);
                         }
 
                         this.IsLoadButtonEnabled = true;

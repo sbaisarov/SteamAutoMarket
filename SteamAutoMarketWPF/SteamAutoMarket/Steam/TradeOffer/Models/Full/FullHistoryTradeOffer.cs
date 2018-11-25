@@ -28,11 +28,11 @@
                 assetDescriptions);
         }
 
-        public TradeHistoryItem Offer { get; }
-
         public List<FullHistoryTradeItem> HisItems { get; }
 
         public List<FullHistoryTradeItem> MyItems { get; }
+
+        public TradeHistoryItem Offer { get; }
 
         public TradeState Status { get; }
 

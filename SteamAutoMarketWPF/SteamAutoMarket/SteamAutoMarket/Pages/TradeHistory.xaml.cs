@@ -24,11 +24,11 @@
     /// </summary>
     public partial class TradeHistory : INotifyPropertyChanged
     {
-        private TradeHistoryModel selectedTradeOffer;
+        private bool isLoadButtonEnabled = true;
 
         private SteamTradeHistoryItemsModel selectedTradeItem;
 
-        private bool isLoadButtonEnabled = true;
+        private TradeHistoryModel selectedTradeOffer;
 
         private IEnumerable<string> startAfterTimeItems;
 
@@ -42,35 +42,12 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<TradeHistoryModel> TradesHistoryList { get; } =
-            new ObservableCollection<TradeHistoryModel>();
-
-        public TradeHistoryModel SelectedTradeOffer
+        public bool GetDescriptionCheckbox
         {
-            get => this.selectedTradeOffer;
+            get => SettingsProvider.GetInstance().TradeHistoryGetDescription;
             set
             {
-                this.selectedTradeOffer = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public SteamTradeHistoryItemsModel SelectedTradeItem
-        {
-            get => this.selectedTradeItem;
-            set
-            {
-                this.selectedTradeItem = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool NavigatingBackCheckbox
-        {
-            get => SettingsProvider.GetInstance().TradeHistoryNavigatingBack;
-            set
-            {
-                SettingsProvider.GetInstance().TradeHistoryNavigatingBack = value;
+                SettingsProvider.GetInstance().TradeHistoryGetDescription = value;
                 this.OnPropertyChanged();
             }
         }
@@ -85,12 +62,62 @@
             }
         }
 
+        public bool IsLoadButtonEnabled
+        {
+            get => this.isLoadButtonEnabled;
+            set
+            {
+                this.isLoadButtonEnabled = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int MaxTradesCount
+        {
+            get => SettingsProvider.GetInstance().TradeHistoryMaxTradesCount;
+            set
+            {
+                SettingsProvider.GetInstance().TradeHistoryMaxTradesCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool NavigatingBackCheckbox
+        {
+            get => SettingsProvider.GetInstance().TradeHistoryNavigatingBack;
+            set
+            {
+                SettingsProvider.GetInstance().TradeHistoryNavigatingBack = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public bool ReceivedOffersCheckbox
         {
             get => SettingsProvider.GetInstance().TradeHistoryReceivedOffers;
             set
             {
                 SettingsProvider.GetInstance().TradeHistoryReceivedOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public SteamTradeHistoryItemsModel SelectedTradeItem
+        {
+            get => this.selectedTradeItem;
+            set
+            {
+                this.selectedTradeItem = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public TradeHistoryModel SelectedTradeOffer
+        {
+            get => this.selectedTradeOffer;
+            set
+            {
+                this.selectedTradeOffer = value;
                 this.OnPropertyChanged();
             }
         }
@@ -129,40 +156,14 @@
 
         public string StartAfterTradeIdText { get; set; }
 
-        public int MaxTradesCount
-        {
-            get => SettingsProvider.GetInstance().TradeHistoryMaxTradesCount;
-            set
-            {
-                SettingsProvider.GetInstance().TradeHistoryMaxTradesCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool IsLoadButtonEnabled
-        {
-            get => this.isLoadButtonEnabled;
-            set
-            {
-                this.isLoadButtonEnabled = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool GetDescriptionCheckbox
-        {
-            get => SettingsProvider.GetInstance().TradeHistoryGetDescription;
-            set
-            {
-                SettingsProvider.GetInstance().TradeHistoryGetDescription = value;
-                this.OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<TradeHistoryModel> TradesHistoryList { get; } =
+            new ObservableCollection<TradeHistoryModel>();
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void HyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e) => Process.Start(e.Uri.ToString());
+        private void HyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e) =>
+            Process.Start(e.Uri.ToString());
 
         private void LoadTradeOfferHistoryButton_OnClick(object sender, RoutedEventArgs e)
         {

@@ -49,6 +49,18 @@
 
         private string theme;
 
+        private bool tradeHistoryGetDescription = true;
+
+        private bool tradeHistoryIncludeFailed;
+
+        private int tradeHistoryMaxTradesCount = 10;
+
+        private bool tradeHistoryNavigatingBack;
+
+        private bool tradeHistoryReceivedOffers = true;
+
+        private bool tradeHistorySentOffers = true;
+
         private bool tradeSendConfirm2Fa = true;
 
         private bool tradeSendLoadOnlyUnmarketable;
@@ -59,18 +71,6 @@
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36";
 
         private int workingChartMaxCount = 70;
-
-        private bool tradeHistoryNavigatingBack;
-
-        private bool tradeHistoryIncludeFailed;
-
-        private bool tradeHistoryReceivedOffers = true;
-
-        private bool tradeHistorySentOffers = true;
-
-        private int tradeHistoryMaxTradesCount = 10;
-
-        private bool tradeHistoryGetDescription = true;
 
         public bool ActiveTradesActiveOnly
         {
@@ -270,6 +270,66 @@
             }
         }
 
+        public bool TradeHistoryGetDescription
+        {
+            get => this.tradeHistoryGetDescription;
+            set
+            {
+                this.tradeHistoryGetDescription = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeHistoryIncludeFailed
+        {
+            get => this.tradeHistoryIncludeFailed;
+            set
+            {
+                this.tradeHistoryIncludeFailed = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int TradeHistoryMaxTradesCount
+        {
+            get => this.tradeHistoryMaxTradesCount;
+            set
+            {
+                this.tradeHistoryMaxTradesCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeHistoryNavigatingBack
+        {
+            get => this.tradeHistoryNavigatingBack;
+            set
+            {
+                this.tradeHistoryNavigatingBack = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeHistoryReceivedOffers
+        {
+            get => this.tradeHistoryReceivedOffers;
+            set
+            {
+                this.tradeHistoryReceivedOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeHistorySentOffers
+        {
+            get => this.tradeHistorySentOffers;
+            set
+            {
+                this.tradeHistorySentOffers = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public bool TradeSendConfirm2Fa
         {
             get => this.tradeSendConfirm2Fa;
@@ -318,66 +378,6 @@
             set
             {
                 this.workingChartMaxCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeHistoryNavigatingBack
-        {
-            get => this.tradeHistoryNavigatingBack;
-            set
-            {
-                this.tradeHistoryNavigatingBack = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeHistoryIncludeFailed
-        {
-            get => this.tradeHistoryIncludeFailed;
-            set
-            {
-                this.tradeHistoryIncludeFailed = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeHistoryReceivedOffers
-        {
-            get => this.tradeHistoryReceivedOffers;
-            set
-            {
-                this.tradeHistoryReceivedOffers = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeHistorySentOffers
-        {
-            get => this.tradeHistorySentOffers;
-            set
-            {
-                this.tradeHistorySentOffers = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int TradeHistoryMaxTradesCount
-        {
-            get => this.tradeHistoryMaxTradesCount;
-            set
-            {
-                this.tradeHistoryMaxTradesCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeHistoryGetDescription
-        {
-            get => this.tradeHistoryGetDescription;
-            set
-            {
-                this.tradeHistoryGetDescription = value;
                 this.OnPropertyChanged();
             }
         }
