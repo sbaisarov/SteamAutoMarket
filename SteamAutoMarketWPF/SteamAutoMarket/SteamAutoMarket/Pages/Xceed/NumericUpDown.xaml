@@ -59,7 +59,7 @@
                 <ControlTemplate TargetType="RepeatButton">
                     <Grid>
                         <xctk:ButtonChrome x:Name="Chrome"
-                                           BorderBrush="{StaticResource ButtonBackground}"
+                                           BorderBrush="{DynamicResource InputBorder}"
                                            Background="{DynamicResource ButtonBackground}"
                                            CornerRadius="{DynamicResource {x:Static themes1:ResourceKeys.SpinButtonCornerRadiusKey}}"
                                            RenderEnabled="{TemplateBinding IsEnabled}"
@@ -81,7 +81,7 @@
         <Setter Property="Background"
                 Value="{DynamicResource DataGridForeground}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource DataGridForeground}" />
+                Value="{DynamicResource InputBorder}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -178,7 +178,7 @@
         <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource DataGridForeground}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource ButtonBackground}" />
+                Value="{DynamicResource InputBorder}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="IsTabStop" Value="False" />

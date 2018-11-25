@@ -205,7 +205,7 @@
             if (this.ChartModel.Count <= SettingsProvider.GetInstance().WorkingChartMaxCount) return;
 
             var oldChart = this.ChartModel.ToArray();
-            var newChart = new List<DataPoint>();
+            var newChart = new List<DataPoint> { new DataPoint(0, 0) };
             for (var j = 2; j < oldChart.Length; j += 2)
             {
                 var averageX = (oldChart[j].X + oldChart[j - 1].X) / 2;

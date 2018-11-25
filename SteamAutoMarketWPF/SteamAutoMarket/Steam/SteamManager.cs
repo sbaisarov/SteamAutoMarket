@@ -309,7 +309,7 @@
                     long.Parse(item.Asset.Assetid),
                     long.Parse(item.Asset.Amount));
             }
-            
+
             return offer.SendWithToken(tradeToken);
         }
 

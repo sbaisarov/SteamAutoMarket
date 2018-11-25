@@ -103,13 +103,13 @@
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void UpdateAll(bool force = false)
         {
-            if (++this.fileUpdateCounter != 10 && !force)
+            if (++this.fileUpdateCounter > 10 && !force)
             {
                 return;
             }
 
-            File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.Get(), Formatting.Indented));
             this.fileUpdateCounter = 0;
+            File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.Get(), Formatting.Indented));
         }
     }
 }

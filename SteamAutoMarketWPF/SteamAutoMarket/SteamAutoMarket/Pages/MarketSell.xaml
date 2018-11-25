@@ -149,14 +149,15 @@
                              CellVerticalContentAlignment="Center">
                     <xcdg:Column.CellContentTemplate>
                         <ItemContainerTemplate>
-                            <xctk:IntegerUpDown
-                                Style="{StaticResource UpDown}"
-                                Width="55"
-                                Value="0"
-                                Increment="1"
-                                Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
-                                Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
-                                Minimum="0" />
+                                <xctk:IntegerUpDown
+                                    Style="{StaticResource UpDown}"
+                                    Background="{StaticResource DataGridBackground}"
+                                    Width="85"
+                                    Value="0"
+                                    Increment="1"
+                                    Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
+                                    Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                    Minimum="0" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>

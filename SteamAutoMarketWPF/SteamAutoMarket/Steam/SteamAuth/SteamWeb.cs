@@ -6,8 +6,6 @@
     using System.Net;
     using System.Threading.Tasks;
 
-    using Steam.Market.Exceptions;
-
     public class SteamWeb
     {
         /// <summary>

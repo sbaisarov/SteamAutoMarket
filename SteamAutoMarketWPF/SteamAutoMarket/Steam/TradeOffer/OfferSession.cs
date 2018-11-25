@@ -232,7 +232,7 @@ namespace Steam.TradeOffer
             var data = new NameValueCollection
                            {
                                { "sessionid", this._sessionId },
-                               {"captcha", ""},
+                               { "captcha", "" },
                                { "serverid", "1" },
                                { "partner", otherSteamId.ConvertToUInt64().ToString() },
                                { "tradeoffermessage", message },

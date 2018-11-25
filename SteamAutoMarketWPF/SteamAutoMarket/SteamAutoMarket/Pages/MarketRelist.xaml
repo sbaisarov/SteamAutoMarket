@@ -42,7 +42,8 @@
                              Width="35"
                              FieldName="Checked"
                              CellHorizontalContentAlignment="Center"
-                             CellVerticalContentAlignment="Center">
+                             CellVerticalContentAlignment="Center"
+                             AllowSort="False">
                     <xcdg:Column.CellContentTemplate>
                         <ItemContainerTemplate>
                             <CheckBox IsChecked="{Binding Path=(models:CheckedModel.CheckBoxChecked)}"

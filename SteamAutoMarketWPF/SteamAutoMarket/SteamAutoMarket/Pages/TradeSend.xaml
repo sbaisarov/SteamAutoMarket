@@ -121,7 +121,8 @@
                         <ItemContainerTemplate>
                             <xctk:IntegerUpDown
                                 Style="{StaticResource UpDown}"
-                                Width="55"
+                                Width="105"
+                                Background="{StaticResource DataGridBackground}"
                                 Value="0"
                                 Increment="1"
                                 Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"

@@ -1,17 +1,16 @@
-﻿using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Management;
-using System.Text;
-using AutoUpdaterDotNET;
-using Newtonsoft.Json;
-
-namespace SteamAutoMarket
+﻿namespace SteamAutoMarket
 {
     using System;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Linq;
+    using System.Management;
     using System.Net;
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
+    using System.Text;
+
+    using AutoUpdaterDotNET;
 
     using Core;
 
@@ -19,6 +18,8 @@ namespace SteamAutoMarket
     using FirstFloor.ModernUI.Windows.Controls;
 
     using log4net.Config;
+
+    using Newtonsoft.Json;
 
     using SteamAutoMarket.Repository.Context;
     using SteamAutoMarket.Repository.Settings;
@@ -42,7 +43,7 @@ namespace SteamAutoMarket
             UiGlobalVariables.MainWindow = this;
             this.DataContext = this;
             this.InitializeComponent();
-            
+
             if (!File.Exists("license.txt"))
             {
                 throw new UnauthorizedAccessException("Cant get requered info");
@@ -56,10 +57,11 @@ namespace SteamAutoMarket
 
             this.UpdateProgram();
         }
-        
+
         public bool Check(string main)
         {
-            var wb = (HttpWebRequest) WebRequest.Create("\u0068\u0074\u0074\u0070\u0073\u003a\u002f\u002f\u0077\u0077\u0077\u002e\u0073\u0074\u0065\u0061\u006d\u0062\u0069\u007a\u002e\u0073\u0074\u006f\u0072\u0065\u002f\u0061\u0070\u0069\u002f\u0063\u0068\u0065\u0063\u006b\u006c\u0069\u0063\u0065\u006e\u0073\u0065");
+            var wb = (HttpWebRequest)WebRequest.Create(
+                "\u0068\u0074\u0074\u0070\u0073\u003a\u002f\u002f\u0077\u0077\u0077\u002e\u0073\u0074\u0065\u0061\u006d\u0062\u0069\u007a\u002e\u0073\u0074\u006f\u0072\u0065\u002f\u0061\u0070\u0069\u002f\u0063\u0068\u0065\u0063\u006b\u006c\u0069\u0063\u0065\u006e\u0073\u0065");
             wb.Method = "POST";
             wb.ContentType = "application/x-www-form-urlencoded";
             var data = new NameValueCollection { ["key"] = main };
@@ -88,7 +90,7 @@ namespace SteamAutoMarket
             {
                 postDataString += key + "=" + data[key] + "&";
             }
-            
+
             postDataString = postDataString.Trim("&".ToCharArray());
             var postData = Encoding.UTF8.GetBytes(postDataString);
             var dataStream = wb.GetRequestStream();
@@ -107,14 +109,8 @@ namespace SteamAutoMarket
             dataStream.Close();
             reader.Close();
             resp.Close();
-            return responseJson["success_3248237582"];
-        }
 
-        private void UpdateProgram()
-        {
-            AutoUpdater.RunUpdateAsAdmin = true;
-            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-            AutoUpdater.Start("https://www.steambiz.store/release/release.xml");
+            return responseJson["success_3248237582"];
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -136,6 +132,13 @@ namespace SteamAutoMarket
             }
 
             return sslPolicyErrors.ToString() == "None";
+        }
+
+        private void UpdateProgram()
+        {
+            AutoUpdater.RunUpdateAsAdmin = true;
+            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+            AutoUpdater.Start("https://www.steambiz.store/release/release.xml");
         }
     }
 }
