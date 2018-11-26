@@ -72,7 +72,7 @@
         {
             var wp = UiGlobalVariables.WorkingProcessDataContext;
 
-            if (wp.WorkingAction.IsCompleted == false)
+            if (wp.WorkingAction?.IsCompleted == false)
             {
                 wp.AppendLog("Working process is forcing to stop");
                 wp.CancellationTokenSource.Cancel();

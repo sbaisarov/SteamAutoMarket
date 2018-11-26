@@ -91,6 +91,9 @@
     <Compile Include="Pages\Settings\CacheSettings.xaml.cs">
       <DependentUpon>CacheSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Settings\License.xaml.cs">
+      <DependentUpon>License.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Settings\MarketSettings.xaml.cs">
       <DependentUpon>MarketSettings.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Settings\CacheSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Settings\License.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

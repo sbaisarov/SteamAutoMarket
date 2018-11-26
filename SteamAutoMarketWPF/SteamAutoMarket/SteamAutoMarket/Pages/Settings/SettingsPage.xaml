@@ -10,6 +10,7 @@
         <mui:ModernTab Layout="List" SelectedSource="/Pages/Settings/Appearance.xaml">
             <mui:ModernTab.Links>
                 <mui:Link DisplayName="appearance" Source="/Pages/Settings/Appearance.xaml" />
+                <mui:Link DisplayName="license" Source="/Pages/Settings/License.xaml" />
                 <mui:Link DisplayName="market" Source="/Pages/Settings/MarketSettings.xaml" />
                 <mui:Link DisplayName="cache" Source="/Pages/Settings/CacheSettings.xaml" />
             </mui:ModernTab.Links>
