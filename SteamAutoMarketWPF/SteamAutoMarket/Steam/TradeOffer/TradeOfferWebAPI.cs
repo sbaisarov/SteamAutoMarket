@@ -6,7 +6,7 @@
 
     using Newtonsoft.Json;
 
-    using Steam.SteamAuth;
+    using Steam.Auth;
     using Steam.TradeOffer.Enums;
     using Steam.TradeOffer.Models;
 

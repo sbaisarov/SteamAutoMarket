@@ -1,4 +1,4 @@
-﻿namespace Steam.SteamAuth
+﻿namespace Steam.Auth
 {
     using System.Net;
 

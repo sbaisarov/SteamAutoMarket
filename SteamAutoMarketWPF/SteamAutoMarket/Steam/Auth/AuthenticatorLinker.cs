@@ -1,4 +1,4 @@
-﻿namespace Steam.SteamAuth
+﻿namespace Steam.Auth
 {
     using System;
     using System.Collections.Specialized;
@@ -135,69 +135,6 @@
             this.LinkedAccount.DeviceID = this.DeviceID;
 
             return LinkResult.AwaitingFinalization;
-        }
-
-        public FinalizeResult FinalizeAddAuthenticator(string smsCode)
-        {
-            // The act of checking the SMS code is necessary for Steam to finalize adding the phone number to the account.
-            // Of course, we only want to check it if we're adding a phone number in the first place...
-            if (!string.IsNullOrEmpty(this.PhoneNumber) && !this._checkSMSCode(smsCode))
-            {
-                return FinalizeResult.BadSMSCode;
-            }
-
-            var postData = new NameValueCollection();
-            postData.Add("steamid", this._session.SteamID.ToString());
-            postData.Add("access_token", this._session.OAuthToken);
-            postData.Add("activation_code", smsCode);
-            var tries = 0;
-            while (tries <= 30)
-            {
-                postData.Set("authenticator_code", this.LinkedAccount.GenerateSteamGuardCode());
-                postData.Set("authenticator_time", TimeAligner.GetSteamTime().ToString());
-
-                var response = SteamWeb.MobileLoginRequest(
-                    APIEndpoints.STEAMAPI_BASE + "/ITwoFactorService/FinalizeAddAuthenticator/v0001",
-                    "POST",
-                    postData);
-                if (response == null) return FinalizeResult.GeneralFailure;
-
-                var finalizeResponse = JsonConvert.DeserializeObject<FinalizeAuthenticatorResponse>(response);
-
-                if (finalizeResponse == null || finalizeResponse.Response == null)
-                {
-                    return FinalizeResult.GeneralFailure;
-                }
-
-                if (finalizeResponse.Response.Status == 89)
-                {
-                    return FinalizeResult.BadSMSCode;
-                }
-
-                if (finalizeResponse.Response.Status == 88)
-                {
-                    if (tries >= 30)
-                    {
-                        return FinalizeResult.UnableToGenerateCorrectCodes;
-                    }
-                }
-
-                if (!finalizeResponse.Response.Success)
-                {
-                    return FinalizeResult.GeneralFailure;
-                }
-
-                if (finalizeResponse.Response.WantMore)
-                {
-                    tries++;
-                    continue;
-                }
-
-                this.LinkedAccount.FullyEnrolled = true;
-                return FinalizeResult.Success;
-            }
-
-            return FinalizeResult.GeneralFailure;
         }
 
         private static string SplitOnRatios(string str, int[] ratios, string intermediate)

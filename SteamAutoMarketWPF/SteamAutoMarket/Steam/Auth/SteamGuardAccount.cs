@@ -1,4 +1,4 @@
-﻿namespace Steam.SteamAuth
+﻿namespace Steam.Auth
 {
     using System;
     using System.Collections.Generic;
@@ -241,54 +241,6 @@
             return endpoint + queryString;
         }
 
-        public string GenerateSteamGuardCode()
-        {
-            return this.GenerateSteamGuardCodeForTime(TimeAligner.GetSteamTime());
-        }
-
-        public string GenerateSteamGuardCodeForTime(long time)
-        {
-            if (this.SharedSecret == null || this.SharedSecret.Length == 0)
-            {
-                return string.Empty;
-            }
-
-            var sharedSecretUnescaped = Regex.Unescape(this.SharedSecret);
-            var sharedSecretArray = Convert.FromBase64String(sharedSecretUnescaped);
-            var timeArray = new byte[8];
-
-            time /= 30L;
-
-            for (var i = 8; i > 0; i--)
-            {
-                timeArray[i - 1] = (byte)time;
-                time >>= 8;
-            }
-
-            var hmacGenerator = new HMACSHA1 { Key = sharedSecretArray };
-            var hashedData = hmacGenerator.ComputeHash(timeArray);
-            var codeArray = new byte[5];
-            try
-            {
-                var b = (byte)(hashedData[19] & 0xF);
-                var codePoint = (hashedData[b] & 0x7F) << 24 | (hashedData[b + 1] & 0xFF) << 16
-                                                             | (hashedData[b + 2] & 0xFF) << 8
-                                                             | (hashedData[b + 3] & 0xFF);
-
-                for (var i = 0; i < 5; ++i)
-                {
-                    codeArray[i] = steamGuardCodeTranslations[codePoint % steamGuardCodeTranslations.Length];
-                    codePoint /= steamGuardCodeTranslations.Length;
-                }
-            }
-            catch (Exception)
-            {
-                return null; // Change later, catch-alls are bad!
-            }
-
-            return Encoding.UTF8.GetString(codeArray);
-        }
-
         /// <summary>
         /// Deprecated. Simply returns conf.Creator.
         /// </summary>
@@ -440,9 +392,10 @@
             {
                 var response = wb.UploadString(
                     "https://www.steambiz.store/api/gconfhash",
-                    $"{identitySecret},{tag},{time},{SteamManager.LicenseKey},{SteamManager.Hwid}");
+                    $"{identitySecret},{tag},{time},{SteamManager.LicenseKey},{SteamManager.HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
+
             var decode = Convert.FromBase64String(this.IdentitySecret);
             var n2 = 8;
             if (tag != null)

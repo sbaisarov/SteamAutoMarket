@@ -1,12 +1,11 @@
-﻿using System.IO;
-using System.Management;
-
-namespace Steam
+﻿namespace Steam
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.IO;
     using System.Linq;
+    using System.Management;
     using System.Net;
     using System.Text.RegularExpressions;
     using System.Threading;
@@ -15,13 +14,13 @@ namespace Steam
 
     using Newtonsoft.Json;
 
+    using Steam.Auth;
     using Steam.Market;
     using Steam.Market.Enums;
     using Steam.Market.Exceptions;
     using Steam.Market.Interface;
     using Steam.Market.Models;
     using Steam.Market.Models.Json;
-    using Steam.SteamAuth;
     using Steam.TradeOffer;
     using Steam.TradeOffer.Models;
     using Steam.TradeOffer.Models.Full;
@@ -42,16 +41,17 @@ namespace Steam
         {
             if (!File.Exists("license.txt"))
             {
-                throw new UnauthorizedAccessException("Cant get requered info");
+                throw new UnauthorizedAccessException("Cant get required info");
             }
 
-            LicenseKey = File.ReadAllText("license.txt");
-            Hwid = GetHwid();
+            LicenseKey = File.ReadAllText("license.txt").Trim('\n', '\r', ' ');
+            HwId = GetHwid();
+
             this.Login = login;
             this.Password = password;
             this.Guard = mafile;
             this.SteamId = new SteamID(this.Guard.Session.SteamID);
-            
+
             this.SteamClient = new UserLogin(login, password) { TwoFactorCode = this.GenerateSteamGuardCode() };
 
             this.Guard.DeviceID = this.GetDeviceId();
@@ -71,7 +71,7 @@ namespace Steam
             this.OfferSession = new OfferSession(this.TradeOfferWeb, this.Cookies, this.Guard.Session.SessionID);
 
             var market = new SteamMarketHandler(ELanguage.English, userAgent);
-            var auth = new Auth(market, this.Cookies) { IsAuthorized = true };
+            var auth = new Market.Auth(market, this.Cookies) { IsAuthorized = true };
             market.Auth = auth;
 
             this.MarketClient = new MarketClient(market);
@@ -80,10 +80,10 @@ namespace Steam
             this.MarketClient.CurrentCurrency = this.Currency;
         }
 
+        public static string HwId { get; set; }
+
         public static string LicenseKey { get; set; }
-        
-        public static string Hwid { get; set; }
-        
+
         public string ApiKey { get; set; }
 
         public CookieContainer Cookies { get; set; } = new CookieContainer();
@@ -111,27 +111,6 @@ namespace Steam
         public string TradeToken { get; set; }
 
         protected bool IsSessionUpdated { get; set; }
-        
-        private string GetHwid()
-        {
-            var mc = new ManagementClass("win32_processor");
-            var moc = mc.GetInstances();
-            var uid = moc.Cast<ManagementObject>().Select(x => x.Properties["processorID"]).FirstOrDefault()?.Value
-                .ToString();
-
-            try
-            {
-                var dsk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + "C" + @":""");
-                dsk.Get();
-                uid += dsk["VolumeSerialNumber"].ToString();
-            }
-            catch
-            {
-                throw new UnauthorizedAccessException("Cant get requered info");
-            }
-
-            return uid;
-        }
 
         public void ConfirmTradeTransactions(ulong offerId)
         {
@@ -391,6 +370,27 @@ namespace Steam
             return this.Inventory.LoadInventoryPage(steamId, appId, contextId, startAssetId);
         }
 
+        private static string GetHwid()
+        {
+            var mc = new ManagementClass("win32_processor");
+            var moc = mc.GetInstances();
+            var uid = moc.Cast<ManagementObject>().Select(x => x.Properties["processorID"]).FirstOrDefault()?.Value
+                .ToString();
+
+            try
+            {
+                var dsk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + "C" + @":""");
+                dsk.Get();
+                uid += dsk["VolumeSerialNumber"].ToString();
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Cant get required info");
+            }
+
+            return uid;
+        }
+
         private double? CountAveragePrice(List<PriceHistoryDay> history, int daysCount)
         {
             // days are sorted from oldest to newest, we need the contrary
@@ -484,7 +484,7 @@ namespace Steam
             {
                 var response = wb.UploadString(
                     "https://www.steambiz.store/api/gguardcode",
-                    $"{this.Guard.SharedSecret},{TimeAligner.GetSteamTime()},{LicenseKey},{Hwid}");
+                    $"{this.Guard.SharedSecret},{TimeAligner.GetSteamTime()},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }
@@ -495,7 +495,7 @@ namespace Steam
             {
                 var response = wb.UploadString(
                     "https://www.steambiz.store/api/gdevid",
-                    $"{this.SteamClient.SteamID.ToString()},{LicenseKey},{Hwid}");
+                    $"{this.SteamClient.SteamID.ToString()},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }

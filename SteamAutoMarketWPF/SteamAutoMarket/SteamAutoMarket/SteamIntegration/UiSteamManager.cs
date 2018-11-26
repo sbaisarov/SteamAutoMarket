@@ -10,10 +10,10 @@
     using Core.Waiter;
 
     using Steam;
+    using Steam.Auth;
     using Steam.Market.Enums;
     using Steam.Market.Exceptions;
     using Steam.Market.Models;
-    using Steam.SteamAuth;
     using Steam.TradeOffer.Models;
     using Steam.TradeOffer.Models.Full;
 

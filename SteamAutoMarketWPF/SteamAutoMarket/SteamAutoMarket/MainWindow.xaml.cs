@@ -81,7 +81,7 @@
             }
             catch
             {
-                throw new UnauthorizedAccessException("Cant get requered info");
+                throw new UnauthorizedAccessException("Cant get required info");
             }
 
             data["hwid"] = uid;

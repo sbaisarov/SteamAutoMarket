@@ -10,7 +10,7 @@
 
     using Newtonsoft.Json;
 
-    using Steam.SteamAuth;
+    using Steam.Auth;
 
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Repository.Image;

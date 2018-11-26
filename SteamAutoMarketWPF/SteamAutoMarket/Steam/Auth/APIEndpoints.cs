@@ -1,4 +1,4 @@
-﻿namespace Steam.SteamAuth
+﻿namespace Steam.Auth
 {
     public static class APIEndpoints
     {
