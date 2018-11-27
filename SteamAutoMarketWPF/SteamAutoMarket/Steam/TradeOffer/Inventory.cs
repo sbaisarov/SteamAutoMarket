@@ -7,7 +7,7 @@
 
     using Newtonsoft.Json;
 
-    using Steam.SteamAuth;
+    using Steam.Auth;
     using Steam.TradeOffer.Exceptions;
     using Steam.TradeOffer.Models;
     using Steam.TradeOffer.Models.Full;

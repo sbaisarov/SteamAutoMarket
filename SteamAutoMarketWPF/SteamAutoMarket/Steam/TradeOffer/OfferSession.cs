@@ -9,8 +9,8 @@ namespace Steam.TradeOffer
 
     using Newtonsoft.Json;
 
+    using Steam.Auth;
     using Steam.Market.Exceptions;
-    using Steam.SteamAuth;
     using Steam.TradeOffer.Enums;
     using Steam.TradeOffer.Models;
 

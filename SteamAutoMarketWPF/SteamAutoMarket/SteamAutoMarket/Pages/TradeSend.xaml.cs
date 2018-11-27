@@ -20,8 +20,6 @@
     /// </summary>
     public partial class TradeSend : INotifyPropertyChanged
     {
-        private SteamAppId tradeSendSelectedAppid;
-
         private SteamItemsModel tradeSendSelectedItem;
 
         public TradeSend()
@@ -105,7 +103,9 @@
         }
 
         public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
-            new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
+            new ObservableCollection<SettingsSteamAccount>(
+                SettingsProvider.GetInstance().SteamAccounts
+                    .Where(a => a.Login != UiGlobalVariables.SteamManager?.Login));
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>

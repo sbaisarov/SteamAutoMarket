@@ -7,9 +7,10 @@ def generate(subscription_time, amount=1):
 	keys = []
 	with shelve.open("database/clients", writeback=True) as db, \
 			open("database/keys/%s months.txt" % (subscription_time // 30), "a+") as f:
+		clients = db["clients"]
 		for _ in range(amount):
 			key = str(uuid.uuid4())
-			db.setdefault(key, {"subscription_time": subscription_time, "devices": {}})
+			clients.setdefault(key, {"subscription_time": subscription_time, "devices": {}, "payments": []})
 			f.write(key + "\n")
 			keys.append(key)
 

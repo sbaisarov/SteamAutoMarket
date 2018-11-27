@@ -206,7 +206,6 @@
 
         private void OpenItemPageButton_OnClick(object sender, RoutedEventArgs e)
         {
-            WorkingProcess.OpenTab();
         }
 
         private void ReformatAllSellPrices()

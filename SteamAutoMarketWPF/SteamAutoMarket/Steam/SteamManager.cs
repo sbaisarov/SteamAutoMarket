@@ -1,9 +1,11 @@
-﻿namespace Steam
+namespace Steam
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.IO;
     using System.Linq;
+    using System.Management;
     using System.Net;
     using System.Text.RegularExpressions;
     using System.Threading;
@@ -12,13 +14,13 @@
 
     using Newtonsoft.Json;
 
+    using Steam.Auth;
     using Steam.Market;
     using Steam.Market.Enums;
     using Steam.Market.Exceptions;
     using Steam.Market.Interface;
     using Steam.Market.Models;
     using Steam.Market.Models.Json;
-    using Steam.SteamAuth;
     using Steam.TradeOffer;
     using Steam.TradeOffer.Models;
     using Steam.TradeOffer.Models.Full;
@@ -37,6 +39,14 @@
             string userAgent = "",
             bool forceSessionRefresh = false)
         {
+            if (!File.Exists("license.txt"))
+            {
+                throw new UnauthorizedAccessException("Cant get required info");
+            }
+
+            LicenseKey = File.ReadAllText("license.txt").Trim('\n', '\r', ' ');
+            HwId = GetHwid();
+
             this.Login = login;
             this.Password = password;
             this.Guard = mafile;
@@ -61,7 +71,7 @@
             this.OfferSession = new OfferSession(this.TradeOfferWeb, this.Cookies, this.Guard.Session.SessionID);
 
             var market = new SteamMarketHandler(ELanguage.English, userAgent);
-            var auth = new Auth(market, this.Cookies) { IsAuthorized = true };
+            var auth = new Market.Auth(market, this.Cookies) { IsAuthorized = true };
             market.Auth = auth;
 
             this.MarketClient = new MarketClient(market);
@@ -69,6 +79,10 @@
             this.Currency = currency ?? this.FetchCurrency();
             this.MarketClient.CurrentCurrency = this.Currency;
         }
+
+        public static string HwId { get; set; }
+
+        public static string LicenseKey { get; set; }
 
         public string ApiKey { get; set; }
 
@@ -356,19 +370,46 @@
             return this.Inventory.LoadInventoryPage(steamId, appId, contextId, startAssetId);
         }
 
+        private static string GetHwid()
+        {
+            var mc = new ManagementClass("win32_processor");
+            var moc = mc.GetInstances();
+            var uid = moc.Cast<ManagementObject>().Select(x => x.Properties["processorID"]).FirstOrDefault()?.Value
+                .ToString();
+
+            try
+            {
+                var dsk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + "C" + @":""");
+                dsk.Get();
+                uid += dsk["VolumeSerialNumber"].ToString();
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Cant get required info");
+            }
+
+            return uid;
+        }
+
         private double? CountAveragePrice(List<PriceHistoryDay> history, int daysCount)
         {
             // days are sorted from oldest to newest, we need the contrary
             history.Reverse();
             var days = history.GetRange(0, (daysCount < history.Count) ? daysCount : history.Count);
-            var average = this.IterateHistory(days);
-            if (average is null)
+            var pricesTotal = this.IterateHistory(days, null, 2);
+            if (pricesTotal.Count == 0)
             {
                 throw new SteamException($"No prices recorded during {daysCount} days");
             }
-
-            average = this.IterateHistory(days, average);
-
+            var average = pricesTotal.Average();
+            var prices = new List<double>();
+            int rate = 2;
+            while (prices.Count < pricesTotal.Count * 0.3) // while less than 30% of amount of total prices
+            {                
+                prices = this.IterateHistory(days, average, rate);
+                if (prices.Count > 0) average = prices.Average();
+                rate += 1;
+            }
             return average;
         }
 
@@ -449,7 +490,7 @@
             {
                 var response = wb.UploadString(
                     "https://www.steambiz.store/api/gguardcode",
-                    this.Guard.SharedSecret + "," + TimeAligner.GetSteamTime());
+                    $"{this.Guard.SharedSecret},{TimeAligner.GetSteamTime()},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }
@@ -460,45 +501,52 @@
             {
                 var response = wb.UploadString(
                     "https://www.steambiz.store/api/gdevid",
-                    this.SteamClient.SteamID.ToString());
+                    $"{this.SteamClient.SteamID.ToString()},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }
 
-        private double? IterateHistory(IEnumerable<PriceHistoryDay> history, double? average = null)
+        private List<double> IterateHistory(IEnumerable<PriceHistoryDay> history, double? average, int rate)
         {
-            double sum = 0;
-            var count = 0;
+            var prices = new List<double>();
+
             foreach (var item in history)
             {
                 foreach (var data in item.History)
                 {
                     if (!(average is null))
                     {
-                        if (data.Price < average / 2 || data.Price > average * 2)
+                        if (data.Price  < (average / rate) || data.Price > (average * rate))
                         {
                             continue;
                         }
                     }
-
-                    sum += data.Price * data.Count;
-                    count += data.Count;
+                    prices.AddRange(Enumerable.Range(0, data.Count).Select(_ => data.Price));
                 }
             }
 
-            double? result = sum / count;
-            if (!double.IsNaN((double)result))
-            {
-                return result;
-            }
+            return prices;
+        }
 
-            result = null;
-            if (!(average is null))
-            {
-                result = average;
-            }
+        private static double StandardDeviation(List<double> numberSet, double divisor)
+        {
+            double mean = numberSet.Average();
+            return Math.Sqrt(numberSet.Sum(x => Math.Pow(x - mean, 2)) / divisor);
+        }
 
-            return result;
+        private static double AbsoluluteDeviation(List<double> numberSet)
+        {
+            Array.Sort(numberSet.ToArray());
+            double mean = numberSet.Average();
+            double[] d = numberSet
+                .Select(x => Math.Abs(x - mean))
+                .OrderBy(x => x)
+                .ToArray();
+
+            double MADe = 1.483 * (d.Length % 2 == 0
+                              ? (d[d.Length / 2 - 1] + d[d.Length / 2]) / 2.0
+                              : d[d.Length / 2]);
+            return MADe;
         }
 
         // public void CancelSellOrder(List<MyListingsSalesItem> itemsToCancel)

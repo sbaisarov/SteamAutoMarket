@@ -46,7 +46,7 @@
 
             if (!File.Exists("license.txt"))
             {
-                throw new UnauthorizedAccessException("Cant get requered info");
+                throw new UnauthorizedAccessException("Cant get required info");
             }
 
             var main = File.ReadAllText("license.txt");
@@ -66,8 +66,6 @@
             wb.ContentType = "application/x-www-form-urlencoded";
             var data = new NameValueCollection { ["key"] = main };
 
-            // read key from user database.
-            // read from the input field if key is not present in user database
             var mc = new ManagementClass("win32_processor");
             var moc = mc.GetInstances();
             var uid = moc.Cast<ManagementObject>().Select(x => x.Properties["processorID"]).FirstOrDefault()?.Value
@@ -81,7 +79,7 @@
             }
             catch
             {
-                throw new UnauthorizedAccessException("Cant get requered info");
+                throw new UnauthorizedAccessException("Cant get required info");
             }
 
             data["hwid"] = uid;
@@ -115,7 +113,6 @@
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            // todo add critical error send here
             ErrorNotify.CriticalMessageBox("Oops. Seems application is crushed", (Exception)e.ExceptionObject);
         }
 
