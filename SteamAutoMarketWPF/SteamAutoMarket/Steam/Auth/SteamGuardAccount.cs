@@ -395,6 +395,54 @@
                     $"{identitySecret},{tag},{time},{SteamManager.LicenseKey},{SteamManager.HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
+
+            var decode = Convert.FromBase64String(this.IdentitySecret);
+            var n2 = 8;
+            if (tag != null)
+            {
+                if (tag.Length > 32)
+                {
+                    n2 = 8 + 32;
+                }
+                else
+                {
+                    n2 = 8 + tag.Length;
+                }
+            }
+
+            var array = new byte[n2];
+            var n3 = 8;
+            while (true)
+            {
+                var n4 = n3 - 1;
+                if (n3 <= 0)
+                {
+                    break;
+                }
+
+                array[n4] = (byte)time;
+                time >>= 8;
+                n3 = n4;
+            }
+
+            if (tag != null)
+            {
+                Array.Copy(Encoding.UTF8.GetBytes(tag), 0, array, 8, n2 - 8);
+            }
+
+            try
+            {
+                var hmacGenerator = new HMACSHA1();
+                hmacGenerator.Key = decode;
+                var hashedData = hmacGenerator.ComputeHash(array);
+                var encodedData = Convert.ToBase64String(hashedData, Base64FormattingOptions.None);
+                var hash = WebUtility.UrlEncode(encodedData);
+                return hash;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private ConfirmationDetailsResponse _getConfirmationDetails(Confirmation conf)

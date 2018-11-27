@@ -68,7 +68,7 @@
         private void ExtendLicenseButton_OnClick(object sender, RoutedEventArgs e)
         {
             var currentExtendKey = this.ExtendKey;
-            
+
             // todo
         }
     }
