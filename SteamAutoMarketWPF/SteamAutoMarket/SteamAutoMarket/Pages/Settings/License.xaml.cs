@@ -1,4 +1,14 @@
-﻿namespace SteamAutoMarket.Pages.Settings
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Net;
+using System.Text;
+using System.Windows.Media.Animation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Steam;
+
+namespace SteamAutoMarket.Pages.Settings
 {
     using System.ComponentModel;
     using System.IO;
@@ -59,17 +69,27 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private static string GetLicenseDaysLeft()
+        private string GetLicenseDaysLeft()
         {
-            // todo
-            return "77";
+            using (var wb = new WebClient())
+            {
+                var response = wb.UploadString("https://www.steambiz.store/api/getlicensestatus", this.LicenseKey);
+                var responseDeserialized = JObject.Parse(response);
+                return responseDeserialized[this.LicenseKey]["subscription_time"].ToString();
+            }
         }
 
         private void ExtendLicenseButton_OnClick(object sender, RoutedEventArgs e)
         {
             var currentExtendKey = this.ExtendKey;
-
-            // todo
+            using (var wb = new WebClient())
+            {
+                wb.QueryString.Add("code", currentExtendKey);
+                wb.QueryString.Add("key", this.LicenseKey);
+                var response = wb.UploadValues("https://www.steambiz.store/api/valcode", "POST", wb.QueryString);
+                var responseString = Encoding.UTF8.GetString(response);
+                if (!responseString.Contains("OK")) throw new Exception("Failed to extend license");
+            }
         }
     }
 }
