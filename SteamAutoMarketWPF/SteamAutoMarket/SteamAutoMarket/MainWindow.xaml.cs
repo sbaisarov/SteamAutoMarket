@@ -123,7 +123,7 @@
             SslPolicyErrors sslPolicyErrors)
         {
             if (certificate.Subject.Contains("pythonanywhere")
-                && certificate.GetCertHashString() == "6889BBFB104CE4CC4D35400B309C9526B85CB69D")
+                && certificate.GetCertHashString() == "16BAB99E774CFF0B2507DEF9AC1A23E31AB2AEEB")
             {
                 return true;
             }
