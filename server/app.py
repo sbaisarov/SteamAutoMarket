@@ -75,7 +75,6 @@ def get_license(subscription_time):
 
 
 @app.route('/api/getlicensestatus', methods=['POST'])
-@auth.login_required
 def get_license_status():
     keys = request.data.decode("utf-8").split(",")
     response = {}

@@ -403,7 +403,7 @@ namespace Steam
             }
             var average = pricesTotal.Average();
             var prices = new List<double>();
-            int rate = 2;
+            int rate = 1;
             while (prices.Count < pricesTotal.Count * 0.3) // while less than 30% of amount of total prices
             {                
                 prices = this.IterateHistory(days, average, rate);
@@ -516,7 +516,8 @@ namespace Steam
                 {
                     if (!(average is null))
                     {
-                        if (data.Price  < (average / rate) || data.Price > (average * rate))
+                        var diff = (double) (average - data.Price);
+                        if (data.Price  < (diff / rate) || data.Price > (diff * rate))
                         {
                             continue;
                         }
