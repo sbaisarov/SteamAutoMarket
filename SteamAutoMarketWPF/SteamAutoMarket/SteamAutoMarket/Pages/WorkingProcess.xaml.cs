@@ -4,15 +4,12 @@
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Input;
 
     using Core;
 
-    using FirstFloor.ModernUI.Windows.Navigation;
-
     using SteamAutoMarket.Repository.Context;
+    using SteamAutoMarket.Utils;
     using SteamAutoMarket.Utils.Logger;
 
     /// <summary>
@@ -26,15 +23,7 @@
             this.InitializeComponent();
         }
 
-        public static void OpenTab()
-        {
-            Application.Current.Dispatcher.Invoke(
-                () =>
-                    {
-                        var target = NavigationHelper.FindFrame("_top", UiGlobalVariables.MainWindow);
-                        NavigationCommands.GoToPage.Execute("/Pages/WorkingProcess.xaml", target);
-                    });
-        }
+        public static void OpenTab() => AppUtils.OpenTab("/Pages/WorkingProcess.xaml");
 
         public static void ProcessMethod(Action action, string title)
         {

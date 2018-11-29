@@ -25,7 +25,7 @@
             <StackPanel MinWidth="200" HorizontalAlignment="Left">
                 <TextBlock Style="{StaticResource Heading1}" Text="Find answers" />
                 <WrapPanel Margin="0,20,0,0">
-                    <Button Style="{StaticResource FlatButton}">
+                    <Button Style="{StaticResource FlatButton}" Click="SteamLogin_OnClick">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -39,7 +39,7 @@
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Steam login" />
                         </Grid>
                     </Button>                    
-                    <Button Style="{StaticResource FlatButton}">
+                    <Button Style="{StaticResource FlatButton}" Click="LicenseStatus_OnClick">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -53,7 +53,21 @@
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="License status" />
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource FlatButton}">
+                    <Button Style="{StaticResource FlatButton}" Click="Update_OnClick">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Path Style="{StaticResource Geometry}"
+                                  Stretch="Uniform"
+                                  Data="{StaticResource SvgUpdate}" />
+
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Update" />
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource FlatButton}" Click="Telegram_OnClick">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -67,7 +81,7 @@
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Telegram" />
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource FlatButton}">
+                    <Button Style="{StaticResource FlatButton}" Click="Website_OnClick">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -81,7 +95,7 @@
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Website" />
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource FlatButton}">
+                    <Button Style="{StaticResource FlatButton}" Click="Documentation_OnClick">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -95,7 +109,7 @@
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Documentation" />
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource FlatButton}">
+                    <Button Style="{StaticResource FlatButton}" Click="TodoFeatures_OnClick">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
