@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading;
@@ -173,6 +174,23 @@
             for (var i = 0; i < this.MarketSellItems.Count; i++)
             {
                 this.MarketSellItems[i].NumericUpDown.SetToMaximum();
+            }
+        }
+
+        private void OpenOnSteamMarket_OnClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (this.MarketSellSelectedItem == null) return;
+
+                Process.Start(
+                    "https://"
+                    + $"steamcommunity.com/market/listings/{this.MarketSellSelectedItem.ItemModel.Asset.Appid}/"
+                    + this.MarketSellSelectedItem.ItemModel.Description.MarketHashName);
+            }
+            catch (Exception ex)
+            {
+                ErrorNotify.CriticalMessageBox(ex);
             }
         }
 

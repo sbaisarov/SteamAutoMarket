@@ -370,6 +370,16 @@ namespace Steam
             return this.Inventory.LoadInventoryPage(steamId, appId, contextId, startAssetId);
         }
 
+        private static double AbsoluluteDeviation(List<double> numberSet)
+        {
+            Array.Sort(numberSet.ToArray());
+            var mean = numberSet.Average();
+            var d = numberSet.Select(x => Math.Abs(x - mean)).OrderBy(x => x).ToArray();
+
+            var MADe = 1.483 * (d.Length % 2 == 0 ? (d[d.Length / 2 - 1] + d[d.Length / 2]) / 2.0 : d[d.Length / 2]);
+            return MADe;
+        }
+
         private static string GetHwid()
         {
             var mc = new ManagementClass("win32_processor");
@@ -391,6 +401,12 @@ namespace Steam
             return uid;
         }
 
+        private static double StandardDeviation(List<double> numberSet, double divisor)
+        {
+            var mean = numberSet.Average();
+            return Math.Sqrt(numberSet.Sum(x => Math.Pow(x - mean, 2)) / divisor);
+        }
+
         private double? CountAveragePrice(List<PriceHistoryDay> history, int daysCount)
         {
             // days are sorted from oldest to newest, we need the contrary
@@ -401,15 +417,17 @@ namespace Steam
             {
                 throw new SteamException($"No prices recorded during {daysCount} days");
             }
+
             var average = pricesTotal.Average();
             var prices = new List<double>();
-            int rate = 2;
+            var rate = 2;
             while (prices.Count < pricesTotal.Count * 0.3) // while less than 30% of amount of total prices
-            {                
+            {
                 prices = this.IterateHistory(days, average, rate);
                 if (prices.Count > 0) average = prices.Average();
                 rate *= 2;
             }
+
             return average;
         }
 
@@ -516,38 +534,18 @@ namespace Steam
                 {
                     if (!(average is null))
                     {
-                        var diff = (double) (average - data.Price);
-                        if (data.Price  < (diff / rate) || data.Price > (diff * rate))
+                        var diff = (double)(average - data.Price);
+                        if (data.Price < (diff / rate) || data.Price > (diff * rate))
                         {
                             continue;
                         }
                     }
+
                     prices.AddRange(Enumerable.Range(0, data.Count).Select(_ => data.Price));
                 }
             }
 
             return prices;
-        }
-
-        private static double StandardDeviation(List<double> numberSet, double divisor)
-        {
-            double mean = numberSet.Average();
-            return Math.Sqrt(numberSet.Sum(x => Math.Pow(x - mean, 2)) / divisor);
-        }
-
-        private static double AbsoluluteDeviation(List<double> numberSet)
-        {
-            Array.Sort(numberSet.ToArray());
-            double mean = numberSet.Average();
-            double[] d = numberSet
-                .Select(x => Math.Abs(x - mean))
-                .OrderBy(x => x)
-                .ToArray();
-
-            double MADe = 1.483 * (d.Length % 2 == 0
-                              ? (d[d.Length / 2 - 1] + d[d.Length / 2]) / 2.0
-                              : d[d.Length / 2]);
-            return MADe;
         }
 
         // public void CancelSellOrder(List<MyListingsSalesItem> itemsToCancel)

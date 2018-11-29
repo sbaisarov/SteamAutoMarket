@@ -1,6 +1,4 @@
-﻿using AutoUpdaterDotNET;
-
-namespace SteamAutoMarket
+﻿namespace SteamAutoMarket
 {
     using System;
     using System.Collections.Specialized;
@@ -51,11 +49,11 @@ namespace SteamAutoMarket
                 throw new UnauthorizedAccessException("Cant get required info");
             }
 
-//            var main = File.ReadAllText("license.txt");
-//            if (!this.Check(main))
-//            {
-//                throw new UnauthorizedAccessException("Access denied");
-//            }
+            var main = File.ReadAllText("license.txt");
+            if (!this.Check(main))
+            {
+                throw new UnauthorizedAccessException("Access denied");
+            }
 
             this.UpdateProgram();
         }

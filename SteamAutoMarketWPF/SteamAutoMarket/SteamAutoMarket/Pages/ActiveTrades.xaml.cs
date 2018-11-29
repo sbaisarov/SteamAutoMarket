@@ -136,7 +136,7 @@
                         }
                         catch (Exception ex)
                         {
-                            ErrorNotify.CriticalMessageBox($"Error on confirm trade offer", ex);
+                            ErrorNotify.CriticalMessageBox("Error on confirm trade offer", ex);
                         }
 
                         this.IsLoadButtonEnabled = true;
@@ -172,7 +172,7 @@
 
                             if (response == false)
                             {
-                                ErrorNotify.CriticalMessageBox($"Error on confirm decline offer");
+                                ErrorNotify.CriticalMessageBox("Error on confirm decline offer");
                             }
                             else
                             {
@@ -181,7 +181,7 @@
                         }
                         catch (Exception ex)
                         {
-                            ErrorNotify.CriticalMessageBox($"Error on decline trade offer", ex);
+                            ErrorNotify.CriticalMessageBox("Error on decline trade offer", ex);
                         }
 
                         this.IsLoadButtonEnabled = true;
