@@ -265,10 +265,10 @@
             return sellListingsPage;
         }
 
-        public ItemOrdersHistogram ItemOrdersHistogram(int nameId, string country, ELanguage lang, int currency)
+        public ItemOrdersHistogram ItemOrdersHistogram(int nameId)
         {
             var url = Urls.Market
-                      + $"/itemordershistogram?country={country}&language={lang}&currency={currency}&item_nameid={nameId}";
+                      + $"/itemordershistogram?country=US&language=english&currency={this.CurrentCurrency}&item_nameid={nameId}";
             var resp = this.steam.Request(url, Method.GET, Urls.Market, null, true);
             var respDes = JsonConvert.DeserializeObject<JItemOrdersHistogram>(resp.Data.Content);
 
@@ -298,12 +298,9 @@
         }
 
         public Task<ItemOrdersHistogram> ItemOrdersHistogramAsync(
-            int nameId,
-            string country,
-            ELanguage lang,
-            int currency)
+            int nameId)
         {
-            var result = new Task<ItemOrdersHistogram>(() => this.ItemOrdersHistogram(nameId, country, lang, currency));
+            var result = new Task<ItemOrdersHistogram>(() => this.ItemOrdersHistogram(nameId));
             result.Start();
             return result;
         }

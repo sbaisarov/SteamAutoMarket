@@ -225,11 +225,7 @@ namespace Steam
             {
                 try
                 {
-                    var histogram = this.MarketClient.ItemOrdersHistogramAsync(
-                        itemPageInfo.NameId,
-                        "RU",
-                        ELanguage.Russian,
-                        5).Result;
+                    var histogram = this.MarketClient.ItemOrdersHistogramAsync(itemPageInfo.NameId).Result;
 
                     price = histogram.MinSellPrice;
                     break;
@@ -421,8 +417,9 @@ namespace Steam
             var average = pricesTotal.Average();
             var prices = new List<double>();
             var rate = 2;
-            while (prices.Count < pricesTotal.Count * 0.3) // while less than 30% of amount of total prices
+            while (prices.Count < pricesTotal.Count * 0.3)
             {
+                // while less than 30% of amount of total prices
                 prices = this.IterateHistory(days, average, rate);
                 if (prices.Count > 0) average = prices.Average();
                 rate *= 2;
