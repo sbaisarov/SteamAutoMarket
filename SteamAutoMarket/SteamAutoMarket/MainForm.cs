@@ -112,6 +112,7 @@ namespace SteamAutoMarket
         {
             AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+            AutoUpdater.ReportErrors = true;
             AutoUpdater.Start("https://www.steambiz.store/release/release.xml");
         }
 

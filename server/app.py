@@ -6,6 +6,7 @@ import hashlib
 import struct
 import base64
 import hmac
+import uuid
 from logging import handlers
 from pprint import pformat
 
@@ -66,8 +67,8 @@ def show_db():
 @auth.login_required
 def get_license(subscription_time):
     try:
-        licenses = key.generate(subscription_time)
-        return ",".join(licenses), 200
+        license = key.generate(subscription_time)
+        return license, 200
     except Exception:
         error = traceback.print_exc()
         logger.error(error)
@@ -169,34 +170,56 @@ def generate_confirmation_hash():
     return jsonify({'result_0x23432': key}), 200
 
 
-@app.route('/api/valpayment', methods=['POST'])
-def validate_payment():
+@app.route('/api/paymentresult', methods=['POST'])
+def payment_result():
     data = {key: value for key, value in request.form.items()}
     password = "XgnLJjQ0X5cG"
     sum, inv_id, signature_value = data['OutSum'], data['InvId'], data['SignatureValue']
     hash = hashlib.md5(("%s:%s:%s" % (sum, inv_id, password)).encode('utf-8')).hexdigest().upper()
     if hash == signature_value:
-        with shelve.open("database/clients", writeback=True) as db:
-            db["active_codes"][inv_id] = int(sum)
         return "OK" + inv_id, 200
 
     return "FAIL", 401
 
 
+@app.route('/api/paymentsuccess', methods=['POST'])
+def payment_success():
+    subs = {1: 1, 777: 30, 1998: 90, 3330: 183, 5328: 365}
+    data = {key: value for key, value in request.form.items()}
+    password = "viga9982"
+    sum, inv_id, signature_value = data['OutSum'], data['InvId'], data['SignatureValue']
+    hash = hashlib.md5(("%s:%s:%s" % (sum, inv_id, password)).encode('utf-8')).hexdigest()
+    if hash == signature_value:
+        with shelve.open("database/clients", writeback=True) as db:
+            sum = int(sum.partition('.')[0])
+            db["active_codes"][inv_id] = subs[sum]
+        return render_template("successpayment.html", code=inv_id), 200
+
+    return "<html>Платеж не был обработан</html>", 401
+
+
 @app.route('/api/valcode', methods=['POST'])
 def validate_code():
-    subs = {777: 30, 1998: 90, 3330: 183, 5328: 365}
+    subs = {1: 1, 777: 30, 1998: 90, 3330: 183, 5328: 365}
     data = {key: value for key, value in request.form.items()}
     code, key = data["code"], data["key"]
     with shelve.open("database/clients", writeback=True) as db:
         active_codes = db["active_codes"]
         clients = db["clients"]
         if code in active_codes:
+            try:
+                client = clients[key]
+            except KeyError:
+                key = str(uuid.uuid4())
+                clients[key] = {"subscription_time": 0, "devices": {}, "payments": []}
+                client = clients[key]
             sub_time = subs[active_codes[code]]
-            clients[key]["subscription_time"] += sub_time
+            client["subscription_time"] += sub_time
             del active_codes[code]  # remove code from repetative usage
-            clients[key]["payments"].add(data)
-            return "OK", 200
+            client["payments"].append(data)
+            return ("<html><h2>Код активирован!</h2><p>Ваш ключ продукта: %s</p>"
+                    "<p>Скачать программу можно по ссылке: <a href=\"https://www.steambiz.store/release/Release.zip\">"
+                    "https://www.steambiz.store/release/Release.zip</a></p></html>" % key), 200
         else:
             return "code was not found", 404
 

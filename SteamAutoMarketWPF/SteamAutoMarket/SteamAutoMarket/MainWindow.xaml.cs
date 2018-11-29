@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket
+﻿using AutoUpdaterDotNET;
+
+namespace SteamAutoMarket
 {
     using System;
     using System.Collections.Specialized;
@@ -49,11 +51,11 @@
                 throw new UnauthorizedAccessException("Cant get required info");
             }
 
-            var main = File.ReadAllText("license.txt");
-            if (!this.Check(main))
-            {
-                throw new UnauthorizedAccessException("Access denied");
-            }
+//            var main = File.ReadAllText("license.txt");
+//            if (!this.Check(main))
+//            {
+//                throw new UnauthorizedAccessException("Access denied");
+//            }
 
             this.UpdateProgram();
         }
@@ -122,8 +124,7 @@
             X509Chain chain,
             SslPolicyErrors sslPolicyErrors)
         {
-            if (certificate.Subject.Contains("pythonanywhere")
-                && certificate.GetCertHashString() == "6889BBFB104CE4CC4D35400B309C9526B85CB69D")
+            if (certificate.Subject.Contains("pythonanywhere"))
             {
                 return true;
             }

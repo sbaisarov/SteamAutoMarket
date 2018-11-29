@@ -14,6 +14,9 @@ def generate(subscription_time, amount=1):
 			f.write(key + "\n")
 			keys.append(key)
 
+	if amount == 1:
+		return keys[0]
+
 	return keys
 
 
