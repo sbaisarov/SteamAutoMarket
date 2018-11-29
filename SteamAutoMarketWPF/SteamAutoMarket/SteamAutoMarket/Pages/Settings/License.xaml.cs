@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Net;
-using System.Text;
-using System.Windows.Media.Animation;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Steam;
-
-namespace SteamAutoMarket.Pages.Settings
+﻿namespace SteamAutoMarket.Pages.Settings
 {
     using System.ComponentModel;
     using System.IO;
+    using System.Net;
     using System.Runtime.CompilerServices;
+    using System.Text;
     using System.Windows;
+
+    using Newtonsoft.Json.Linq;
+
+    using SteamAutoMarket.Utils.Logger;
 
     /// <summary>
     /// Interaction logic for License.xaml
@@ -31,7 +27,7 @@ namespace SteamAutoMarket.Pages.Settings
             this.DataContext = this;
             this.InitializeComponent();
             this.LicenseKey = File.ReadAllText("license.txt").Trim('\r', '\n', ' ');
-            this.LicenseDaysLeft = GetLicenseDaysLeft();
+            this.LicenseDaysLeft = this.GetLicenseDaysLeft();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -81,14 +77,36 @@ namespace SteamAutoMarket.Pages.Settings
 
         private void ExtendLicenseButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var currentExtendKey = this.ExtendKey;
-            using (var wb = new WebClient())
+            try
             {
-                wb.QueryString.Add("code", currentExtendKey);
-                wb.QueryString.Add("key", this.LicenseKey);
-                var response = wb.UploadValues("https://www.steambiz.store/api/valcode", "POST", wb.QueryString);
-                var responseString = Encoding.UTF8.GetString(response);
-                if (!responseString.Contains("OK")) throw new Exception("Failed to extend license");
+                var currentExtendKey = this.ExtendKey;
+                using (var wb = new WebClient())
+                {
+                    wb.QueryString.Add("code", currentExtendKey);
+                    wb.QueryString.Add("key", this.LicenseKey);
+                    var response = wb.UploadValues("https://www.steambiz.store/api/valcode", "POST", wb.QueryString);
+                    var responseString = Encoding.UTF8.GetString(response);
+                    if (responseString.Contains("OK"))
+                    {
+                        var errorHappens = false;
+                        try
+                        {
+                            this.LicenseDaysLeft = this.GetLicenseDaysLeft();
+                        }
+                        catch
+                        {
+                            errorHappens = true;
+                            ErrorNotify.CriticalMessageBox(
+                                "License was successfully extended. But some error on getting current license status happens. Try to restart application in few minutes");
+                        }
+
+                        if (!errorHappens) ErrorNotify.InfoMessageBox("License was successfully extended");
+                    }
+                }
+            }
+            catch
+            {
+                ErrorNotify.CriticalMessageBox("Failed to extend license");
             }
         }
     }

@@ -3,13 +3,28 @@
     using System.Diagnostics;
     using System.Reflection;
     using System.Windows;
+    using System.Windows.Input;
 
-    public class AppUtils
+    using FirstFloor.ModernUI.Windows.Navigation;
+
+    using SteamAutoMarket.Repository.Context;
+
+    public static class AppUtils
     {
         public static void Restart()
         {
             Process.Start(Assembly.GetExecutingAssembly().Location); // to start new instance of application
             Application.Current.Shutdown();
+        }
+
+        public static void OpenTab(string tabPath)
+        {
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                    {
+                        var target = NavigationHelper.FindFrame("_top", UiGlobalVariables.MainWindow);
+                        NavigationCommands.GoToPage.Execute(tabPath, target);
+                    });
         }
     }
 }
