@@ -6,13 +6,13 @@
     using System.Linq;
     using System.Management;
     using System.Net;
+    using System.Net.Mime;
     using System.Net.Security;
+    using System.Reflection;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
-
-    using AutoUpdaterDotNET;
-
-    using Core;
+    using System.Windows.Forms;
+    using System.Xml;
 
     using FirstFloor.ModernUI.Presentation;
     using FirstFloor.ModernUI.Windows.Controls;
@@ -21,10 +21,14 @@
 
     using Newtonsoft.Json;
 
-    using SteamAutoMarket.Repository.Context;
-    using SteamAutoMarket.Repository.Settings;
-    using SteamAutoMarket.Utils.Logger;
-    using SteamAutoMarket.Utils.Resources;
+    using RestSharp;
+
+    using SteamAutoMarket.Core;
+    using SteamAutoMarket.Steam.Auth;
+    using SteamAutoMarket.UI.Repository.Context;
+    using SteamAutoMarket.UI.Repository.Settings;
+    using SteamAutoMarket.UI.Utils.Logger;
+    using SteamAutoMarket.UI.Utils.Resources;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -132,9 +136,37 @@
 
         private void UpdateProgram()
         {
-            AutoUpdater.RunUpdateAsAdmin = true;
-            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-            AutoUpdater.Start("https://www.steambiz.store/release/release.xml");
+            System.Diagnostics.Process.Start(
+                "rundll32.exe",
+                "InetCpl.cpl,ClearMyTracksByProcess 8"); // todo remove this!!!!
+
+            //AutoUpdater.ApplicationExitEvent += this.AutoUpdater_ApplicationExitEvent;
+            //AutoUpdater.RunUpdateAsAdmin = true;
+            //AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+            //AutoUpdater.AppCastURL = "https://www.steambiz.store/release/release.xml";
+            //AutoUpdater.Start();
+
+            //var client = new RestClient("https://www.steambiz.store/");
+            //var response = client.Execute(new RestRequest("/release/release.xml"));
+            //var xmlDocument = new XmlDocument();
+            //xmlDocument.LoadXml(response.Content);
+            //var root = xmlDocument.SelectSingleNode("item");
+            //var versionNode = root?.SelectSingleNode("version")?.InnerText;
+            //if (versionNode != null)
+            //{
+            //    var remoteVersion = new Version(versionNode);
+            //    var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            //    if (remoteVersion > currentVersion)
+            //    {
+            //        AutoUpdater.ShowUpdateForm();
+            //    }
+            //}
+
+        }
+
+        private void AutoUpdater_ApplicationExitEvent()
+        {
+            Application.Exit();
         }
     }
 }

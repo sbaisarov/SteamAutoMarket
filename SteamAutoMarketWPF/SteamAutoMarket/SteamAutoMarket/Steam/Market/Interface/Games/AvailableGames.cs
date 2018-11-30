@@ -1,0 +1,12 @@
+﻿namespace SteamAutoMarket.Steam.Market.Interface.Games
+{
+    public class AvailableGames
+    {
+        public readonly CounterStrikeGlobalOffensive CounterStrikeGlobalOffensive;
+
+        public AvailableGames(SteamMarketHandler steam)
+        {
+            this.CounterStrikeGlobalOffensive = new CounterStrikeGlobalOffensive(steam);
+        }
+    }
+}
