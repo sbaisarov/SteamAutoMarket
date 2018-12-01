@@ -387,9 +387,9 @@
     <None Include="AutoUpdater\packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="UI\Resources\NoAvatar.jpg" />
-    <Resource Include="UI\Resources\NoAvatarSmall.jpg" />
-    <Resource Include="UI\Resources\Serious_Sam_Logo.svg" />
+    <EmbeddedResource Include="Resources\NoAvatar.jpg" />
+    <EmbeddedResource Include="Resources\NoAvatarSmall.jpg" />
+    <EmbeddedResource Include="Resources\Serious_Sam_Logo.svg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit">
