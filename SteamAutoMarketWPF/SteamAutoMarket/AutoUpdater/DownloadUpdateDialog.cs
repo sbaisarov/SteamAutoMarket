@@ -25,7 +25,7 @@
 
         public DownloadUpdateDialog(string downloadURL)
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             this._downloadURL = downloadURL;
         }
@@ -163,14 +163,14 @@
                 if (totalSeconds > 0)
                 {
                     var bytesPerSecond = e.BytesReceived / totalSeconds;
-                    this.labelInformation.Text = string.Format(
+                    labelInformation.Text = string.Format(
                         Resources.DownloadSpeedMessage,
                         BytesToString(bytesPerSecond));
                 }
             }
 
-            this.labelSize.Text = $@"{BytesToString(e.BytesReceived)} / {BytesToString(e.TotalBytesToReceive)}";
-            this.progressBar.Value = e.ProgressPercentage;
+            labelSize.Text = $@"{BytesToString(e.BytesReceived)} / {BytesToString(e.TotalBytesToReceive)}";
+            progressBar.Value = e.ProgressPercentage;
         }
 
         private void WebClientOnDownloadFileCompleted(object sender, AsyncCompletedEventArgs asyncCompletedEventArgs)

@@ -1,5 +1,7 @@
 ﻿namespace AutoUpdater
 {
+    using global::AutoUpdater.Properties;
+
     partial class DownloadUpdateDialog
     {
         /// <summary>
@@ -13,9 +15,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (this.components != null))
+            if (disposing && (components != null))
             {
-                this.components.Dispose();
+                components.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -38,7 +40,7 @@
             // 
             // pictureBoxIcon
             // 
-            this.pictureBoxIcon.Image = global::AutoUpdater.Properties.Resources.download_32;
+            this.pictureBoxIcon.Image = Resources.download_32;
             resources.ApplyResources(this.pictureBoxIcon, "pictureBoxIcon");
             this.pictureBoxIcon.Name = "pictureBoxIcon";
             this.pictureBoxIcon.TabStop = false;

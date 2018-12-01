@@ -14,6 +14,8 @@
     using System.Windows.Forms;
     using System.Xml;
 
+    using AutoUpdater;
+
     using FirstFloor.ModernUI.Presentation;
     using FirstFloor.ModernUI.Windows.Controls;
 
@@ -140,11 +142,10 @@
                 "rundll32.exe",
                 "InetCpl.cpl,ClearMyTracksByProcess 8"); // todo remove this!!!!
 
-            //AutoUpdater.ApplicationExitEvent += this.AutoUpdater_ApplicationExitEvent;
-            //AutoUpdater.RunUpdateAsAdmin = true;
-            //AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-            //AutoUpdater.AppCastURL = "https://www.steambiz.store/release/release.xml";
-            //AutoUpdater.Start();
+            AutoUpdater.RunUpdateAsAdmin = true;
+            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+            AutoUpdater.AppCastURL = "https://www.steambiz.store/release/release.xml";
+            AutoUpdater.Start();
 
             //var client = new RestClient("https://www.steambiz.store/");
             //var response = client.Execute(new RestRequest("/release/release.xml"));

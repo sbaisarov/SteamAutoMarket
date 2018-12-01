@@ -1,5 +1,7 @@
 ﻿namespace AutoUpdater
 {
+    using global::AutoUpdater.Properties;
+
     partial class RemindLaterForm
     {
         /// <summary>
@@ -13,9 +15,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (this.components != null))
+            if (disposing && (components != null))
             {
-                this.components.Dispose();
+                components.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -50,7 +52,7 @@
             // pictureBoxIcon
             // 
             resources.ApplyResources(this.pictureBoxIcon, "pictureBoxIcon");
-            this.pictureBoxIcon.Image = global::AutoUpdater.Properties.Resources.clock_go_32;
+            this.pictureBoxIcon.Image = Resources.clock_go_32;
             this.pictureBoxIcon.Name = "pictureBoxIcon";
             this.tableLayoutPanel.SetRowSpan(this.pictureBoxIcon, 2);
             this.pictureBoxIcon.TabStop = false;
@@ -96,7 +98,7 @@
             // 
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             resources.ApplyResources(this.buttonOK, "buttonOK");
-            this.buttonOK.Image = global::AutoUpdater.Properties.Resources.clock_play;
+            this.buttonOK.Image = Resources.clock_play;
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.ButtonOkClick);

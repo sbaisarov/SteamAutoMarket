@@ -13,19 +13,19 @@
     {
         public UpdateForm()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.UseLatestIE();
-            this.buttonSkip.Visible = AutoUpdater.ShowSkipButton;
-            this.buttonRemindLater.Visible = AutoUpdater.ShowRemindLaterButton;
+            buttonSkip.Visible = AutoUpdater.ShowSkipButton;
+            buttonRemindLater.Visible = AutoUpdater.ShowRemindLaterButton;
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
             this.Text = string.Format(
                 resources.GetString("$this.Text", CultureInfo.CurrentCulture),
                 AutoUpdater.AppTitle,
                 AutoUpdater.CurrentVersion);
-            this.labelUpdate.Text = string.Format(
+            labelUpdate.Text = string.Format(
                 resources.GetString("labelUpdate.Text", CultureInfo.CurrentCulture),
                 AutoUpdater.AppTitle);
-            this.labelDescription.Text = string.Format(
+            labelDescription.Text = string.Format(
                 resources.GetString("labelDescription.Text", CultureInfo.CurrentCulture),
                 AutoUpdater.AppTitle,
                 AutoUpdater.CurrentVersion,
@@ -33,21 +33,17 @@
             if (string.IsNullOrEmpty(AutoUpdater.ChangelogURL))
             {
                 this.HideReleaseNotes = true;
-                var reduceHeight = this.labelReleaseNotes.Height + this.webBrowser.Height;
-                this.labelReleaseNotes.Hide();
-                this.webBrowser.Hide();
+                var reduceHeight = labelReleaseNotes.Height + webBrowser.Height;
+                labelReleaseNotes.Hide();
+                webBrowser.Hide();
 
                 this.Height -= reduceHeight;
 
-                this.buttonSkip.Location = new Point(
-                    this.buttonSkip.Location.X,
-                    this.buttonSkip.Location.Y - reduceHeight);
-                this.buttonRemindLater.Location = new Point(
-                    this.buttonRemindLater.Location.X,
-                    this.buttonRemindLater.Location.Y - reduceHeight);
-                this.buttonUpdate.Location = new Point(
-                    this.buttonUpdate.Location.X,
-                    this.buttonUpdate.Location.Y - reduceHeight);
+                buttonSkip.Location = new Point(buttonSkip.Location.X, buttonSkip.Location.Y - reduceHeight);
+                buttonRemindLater.Location = new Point(
+                    buttonRemindLater.Location.X,
+                    buttonRemindLater.Location.Y - reduceHeight);
+                buttonUpdate.Location = new Point(buttonUpdate.Location.X, buttonUpdate.Location.Y - reduceHeight);
             }
         }
 
@@ -159,14 +155,14 @@
         {
             if (!this.HideReleaseNotes)
             {
-                this.webBrowser.Navigate(AutoUpdater.ChangelogURL);
+                webBrowser.Navigate(AutoUpdater.ChangelogURL);
             }
         }
 
         private void UseLatestIE()
         {
             var ieValue = 0;
-            switch (this.webBrowser.Version.Major)
+            switch (webBrowser.Version.Major)
             {
                 case 11:
                     ieValue = 11001;

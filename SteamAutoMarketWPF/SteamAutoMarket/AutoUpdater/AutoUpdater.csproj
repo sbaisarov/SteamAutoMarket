@@ -4,15 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2FF01BF1-3D7A-4231-9582-AC0DCA74EEC3}</ProjectGuid>
+    <ProjectGuid>{6E4787B6-1890-48D0-AF2E-8DE2E87F65CE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AutoUpdater</RootNamespace>
     <AssemblyName>AutoUpdater</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,7 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -117,20 +114,6 @@
     <EmbeddedResource Include="DownloadUpdateDialog.zh-tw.resx">
       <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.ja-JP.resx" />
-    <EmbeddedResource Include="Properties\Resources.da.resx" />
-    <EmbeddedResource Include="Properties\Resources.de.resx" />
-    <EmbeddedResource Include="Properties\Resources.es.resx" />
-    <EmbeddedResource Include="Properties\Resources.fr.resx" />
-    <EmbeddedResource Include="Properties\Resources.it.resx" />
-    <EmbeddedResource Include="Properties\Resources.ko.resx" />
-    <EmbeddedResource Include="Properties\Resources.nl.resx" />
-    <EmbeddedResource Include="Properties\Resources.pl.resx" />
-    <EmbeddedResource Include="Properties\Resources.ru.resx" />
-	<EmbeddedResource Include="Properties\Resources.sk.resx" />
-    <EmbeddedResource Include="Properties\Resources.sv.resx" />
-    <EmbeddedResource Include="Properties\Resources.zh.resx" />
-    <EmbeddedResource Include="Properties\Resources.zh-tw.resx" />
     <EmbeddedResource Include="RemindLaterForm.da.resx">
       <DependentUpon>RemindLaterForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -241,47 +224,32 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AutoUpdater.NET.snk" />
     <None Include="build\Autoupdater.NET.Official.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Resources\download.png" />
+    <EmbeddedResource Include="Resources\download.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\clock_go.png" />
+    <EmbeddedResource Include="Resources\clock_go.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\hand_point.png" />
+    <EmbeddedResource Include="Resources\hand_point.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\update.png" />
+    <EmbeddedResource Include="Resources\update.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\clock_play.png" />
+    <EmbeddedResource Include="Resources\clock_play.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\clock_go_32.png" />
+    <EmbeddedResource Include="Resources\clock_go_32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\download_32.png" />
+    <EmbeddedResource Include="Resources\download_32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ZipExtractor.exe" />
+    <EmbeddedResource Include="Resources\ZipExtractor.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Resource.Embedder.1.2.5\build\Resource.Embedder.targets" Condition="Exists('..\packages\Resource.Embedder.1.2.5\build\Resource.Embedder.targets') And  '$(WPFSupported)' And '$(TargetFrameworkVersion)' != 'v3.5' " />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Resource.Embedder.1.2.5\build\Resource.Embedder.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Resource.Embedder.1.2.5\build\Resource.Embedder.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

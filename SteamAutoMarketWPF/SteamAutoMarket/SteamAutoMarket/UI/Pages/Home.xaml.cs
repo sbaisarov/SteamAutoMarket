@@ -4,6 +4,7 @@
     using System.Windows;
     using System.Windows.Controls;
 
+    using AutoUpdater;
 
     using SteamAutoMarket.UI.Utils;
 
@@ -32,7 +33,7 @@
         private void TodoFeatures_OnClick(object sender, RoutedEventArgs e) =>
             Process.Start("https://docs.google.com/document/d/17qZ8Y8wY60dLMxYyNM2kZE13JrU_iNRBHK8oOgVZgvM");
 
-        private void Update_OnClick(object sender, RoutedEventArgs e) {}//AutoUpdater.ShowUpdateForm();
+        private void Update_OnClick(object sender, RoutedEventArgs e) => AutoUpdater.ShowUpdateForm();
 
         private void Website_OnClick(object sender, RoutedEventArgs e) => Process.Start("https://www.steambiz.store/");
     }
