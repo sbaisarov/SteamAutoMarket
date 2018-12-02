@@ -1,15 +1,19 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using Newtonsoft.Json;
 
     using SteamAutoMarket.Core;
+    using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
 
+    [WpfBinding]
     public class SettingsModel
     {
         private bool activeTradesActiveOnly = true;
@@ -70,6 +74,15 @@
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36";
 
         private int workingChartMaxCount = 70;
+
+        static SettingsModel()
+        {
+            var customAttribute = ((WpfBinding[])typeof(SettingsModel).GetCustomAttributes(typeof(WpfBinding), true))
+                .FirstOrDefault();
+
+            customAttribute.GetType().GetMethod("InitializeComponent", BindingFlags.NonPublic | BindingFlags.Instance)
+                .Invoke(customAttribute, null);
+        }
 
         public bool ActiveTradesActiveOnly
         {
