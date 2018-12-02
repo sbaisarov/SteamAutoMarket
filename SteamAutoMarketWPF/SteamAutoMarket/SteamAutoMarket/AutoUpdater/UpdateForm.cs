@@ -149,7 +149,7 @@
         private void UpdateForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             AutoUpdater.Running = false;
-            if (AutoUpdater.ShowSkipButton == false)
+            if (AutoUpdater.ShowSkipButton == false && AutoUpdater.InstalledVersion < AutoUpdater.CurrentVersion)
             {
                 Application.Exit();
             }
