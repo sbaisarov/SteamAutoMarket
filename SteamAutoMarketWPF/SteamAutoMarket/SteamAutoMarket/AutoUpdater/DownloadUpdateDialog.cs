@@ -1,4 +1,4 @@
-﻿namespace AutoUpdater
+﻿namespace SteamAutoMarket.AutoUpdater
 {
     using System;
     using System.ComponentModel;
@@ -25,7 +25,7 @@
 
         public DownloadUpdateDialog(string downloadURL)
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this._downloadURL = downloadURL;
         }
@@ -163,14 +163,14 @@
                 if (totalSeconds > 0)
                 {
                     var bytesPerSecond = e.BytesReceived / totalSeconds;
-                    labelInformation.Text = string.Format(
+                    this.labelInformation.Text = string.Format(
                         Resources.DownloadSpeedMessage,
                         BytesToString(bytesPerSecond));
                 }
             }
 
-            labelSize.Text = $@"{BytesToString(e.BytesReceived)} / {BytesToString(e.TotalBytesToReceive)}";
-            progressBar.Value = e.ProgressPercentage;
+            this.labelSize.Text = $@"{BytesToString(e.BytesReceived)} / {BytesToString(e.TotalBytesToReceive)}";
+            this.progressBar.Value = e.ProgressPercentage;
         }
 
         private void WebClientOnDownloadFileCompleted(object sender, AsyncCompletedEventArgs asyncCompletedEventArgs)

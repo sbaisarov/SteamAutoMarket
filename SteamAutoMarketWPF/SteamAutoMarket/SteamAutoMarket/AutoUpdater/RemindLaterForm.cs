@@ -1,4 +1,4 @@
-﻿namespace AutoUpdater
+﻿namespace SteamAutoMarket.AutoUpdater
 {
     using System;
     using System.Windows.Forms;
@@ -7,7 +7,7 @@
     {
         public RemindLaterForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         public int RemindLaterAt { get; private set; }
@@ -16,9 +16,9 @@
 
         private void ButtonOkClick(object sender, EventArgs e)
         {
-            if (radioButtonYes.Checked)
+            if (this.radioButtonYes.Checked)
             {
-                switch (comboBoxRemindLater.SelectedIndex)
+                switch (this.comboBoxRemindLater.SelectedIndex)
                 {
                     case 0:
                         this.RemindLaterFormat = RemindLaterFormat.Minutes;
@@ -60,13 +60,13 @@
 
         private void RadioButtonYesCheckedChanged(object sender, EventArgs e)
         {
-            comboBoxRemindLater.Enabled = radioButtonYes.Checked;
+            this.comboBoxRemindLater.Enabled = this.radioButtonYes.Checked;
         }
 
         private void RemindLaterFormLoad(object sender, EventArgs e)
         {
-            comboBoxRemindLater.SelectedIndex = 0;
-            radioButtonYes.Checked = true;
+            this.comboBoxRemindLater.SelectedIndex = 0;
+            this.radioButtonYes.Checked = true;
         }
     }
 }

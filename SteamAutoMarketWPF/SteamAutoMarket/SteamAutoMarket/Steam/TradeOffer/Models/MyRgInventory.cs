@@ -7,9 +7,6 @@
         [JsonProperty("amount")]
         public string Amount { get; set; }
 
-        [JsonProperty("pos")]
-        public int Position { get; set; }
-
         [JsonProperty("id")]
         public string Assetid { get; set; }
 
@@ -18,5 +15,8 @@
 
         [JsonProperty("instanceid")]
         public string Instanceid { get; set; }
+
+        [JsonProperty("pos")]
+        public int Position { get; set; }
     }
 }

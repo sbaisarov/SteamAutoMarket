@@ -4,7 +4,7 @@
     using System.Linq;
 
     using Newtonsoft.Json;
-    
+
     public class MyInventoryRootModel
     {
         [JsonProperty("rgInventory")]
@@ -13,14 +13,14 @@
         [JsonProperty("rgDescriptions")]
         public IDictionary<string, RgDescription> Descriptions { get; set; }
 
-        [JsonProperty("success")]
-        public bool Success { get; set; }
-        
         [JsonProperty("more")]
         public bool More { get; set; }
-        
+
         [JsonProperty("more_start")]
         public bool MoreStart { get; set; }
+
+        [JsonProperty("success")]
+        public bool Success { get; set; }
 
         public static RgDescription GetDescription(RgInventory asset, List<RgDescription> descriptions)
         {

@@ -4,8 +4,7 @@
     using System.Windows;
     using System.Windows.Controls;
 
-    using AutoUpdater;
-
+    using SteamAutoMarket.AutoUpdater;
     using SteamAutoMarket.UI.Utils;
 
     /// <summary>

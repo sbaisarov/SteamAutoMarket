@@ -1,10 +1,10 @@
 namespace SteamAutoMarket.Steam.TradeOffer
 {
-    using System.Net;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Net;
 
     using Newtonsoft.Json;
 
@@ -137,7 +137,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             var inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
             return inventoryRoot;
         }
-        
+
         public MyInventoryRootModel LoadInventoryPage(
             SteamID steamid,
             int appid,

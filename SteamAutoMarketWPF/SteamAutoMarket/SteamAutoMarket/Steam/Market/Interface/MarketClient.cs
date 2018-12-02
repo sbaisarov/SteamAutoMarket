@@ -297,8 +297,7 @@
             return histogram;
         }
 
-        public Task<ItemOrdersHistogram> ItemOrdersHistogramAsync(
-            int nameId)
+        public Task<ItemOrdersHistogram> ItemOrdersHistogramAsync(int nameId)
         {
             var result = new Task<ItemOrdersHistogram>(() => this.ItemOrdersHistogram(nameId));
             result.Start();

@@ -1,4 +1,4 @@
-namespace AutoUpdater
+namespace SteamAutoMarket.AutoUpdater
 {
     using System;
     using System.ComponentModel;
@@ -11,7 +11,6 @@ namespace AutoUpdater
     using System.Threading;
     using System.Windows.Forms;
     using System.Xml;
-
 
     using Microsoft.Win32;
 

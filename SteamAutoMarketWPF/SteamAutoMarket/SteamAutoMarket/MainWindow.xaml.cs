@@ -6,15 +6,10 @@
     using System.Linq;
     using System.Management;
     using System.Net;
-    using System.Net.Mime;
     using System.Net.Security;
-    using System.Reflection;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Windows.Forms;
-    using System.Xml;
-
-    using AutoUpdater;
 
     using FirstFloor.ModernUI.Presentation;
     using FirstFloor.ModernUI.Windows.Controls;
@@ -23,10 +18,7 @@
 
     using Newtonsoft.Json;
 
-    using RestSharp;
-
     using SteamAutoMarket.Core;
-    using SteamAutoMarket.Steam.Auth;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.Utils.Logger;
@@ -136,16 +128,21 @@
             return sslPolicyErrors.ToString() == "None";
         }
 
+        private void AutoUpdater_ApplicationExitEvent()
+        {
+            Application.Exit();
+        }
+
         private void UpdateProgram()
         {
             System.Diagnostics.Process.Start(
                 "rundll32.exe",
                 "InetCpl.cpl,ClearMyTracksByProcess 8"); // todo remove this!!!!
 
-            AutoUpdater.RunUpdateAsAdmin = true;
-            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-            AutoUpdater.AppCastURL = "https://www.steambiz.store/release/release.xml";
-            AutoUpdater.Start();
+            AutoUpdater.AutoUpdater.RunUpdateAsAdmin = true;
+            AutoUpdater.AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+            AutoUpdater.AutoUpdater.AppCastURL = "https://www.steambiz.store/release/release.xml";
+            AutoUpdater.AutoUpdater.Start();
 
             //var client = new RestClient("https://www.steambiz.store/");
             //var response = client.Execute(new RestRequest("/release/release.xml"));
@@ -162,12 +159,6 @@
             //        AutoUpdater.ShowUpdateForm();
             //    }
             //}
-
-        }
-
-        private void AutoUpdater_ApplicationExitEvent()
-        {
-            Application.Exit();
         }
     }
 }
