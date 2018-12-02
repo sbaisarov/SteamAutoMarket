@@ -198,7 +198,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition MinHeight="49" MaxHeight="90" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
+                <RowDefinition Height="*" MinHeight="25" MaxHeight="55" />
                 <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
                 <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
             </Grid.RowDefinitions>
@@ -213,7 +213,8 @@
                 <Image Source="{Binding Path=RelistSelectedItem.Image}"
                        Stretch="Uniform"
                        Name="ItemImage"
-                       MaxHeight="200" />
+                       MaxHeight="200"
+                       Margin="0,0,0,5"/>
 
                 <Path Grid.Row="0"
                       Style="{StaticResource Geometry}"
@@ -387,12 +388,43 @@
                 </Button>
             </Grid>
 
-            <Button Grid.Row="5"
-                    Name="RelistMarkAllItemsButton"
-                    Content="Mark all items"
-                    Margin="0, 5, 0, 0"
-                    Padding="0"
-                    Click="MarkAllItemsButtonClick" />
+            <Grid Grid.Row="5"
+                  MinHeight="30">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Name="MarketSellMarkAllItems"
+                        Margin="0,0,4,0"
+                        Padding="0" Click="MarkAllItemsButtonClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Check<LineBreak />all
+                    </TextBlock>
+                </Button>
+                <Button Grid.Column="1"
+                        Name="MarketSellMarkSelectedItems"
+                        Margin="2,0,2,0"
+                        Padding="0" Click="MarkSelectedItemsButtonClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Check<LineBreak />selected
+                    </TextBlock>
+                </Button>
+                <Button Grid.Column="2"
+                        Name="MarketSellUnmarkAllItems"
+                        Margin="4,0,0,0"
+                        Padding="0" Click="UnmarkAllItemsButtonClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Uncheck<LineBreak />all
+                    </TextBlock>
+                </Button>
+            </Grid>
 
             <Button Grid.Row="6"
                     Name="MarkOverpricesButton"

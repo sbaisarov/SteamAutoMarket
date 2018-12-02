@@ -14,9 +14,9 @@
 
         public static void UpdateLoggerLevel(Level newLevel)
         {
-            ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root.Level = newLevel;
+            /*((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root.Level = newLevel;
             ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).RaiseConfigurationChanged(
-                EventArgs.Empty);
+                EventArgs.Empty);*/
         }
 
         public static void UpdateLoggerLevel(string newLevel)

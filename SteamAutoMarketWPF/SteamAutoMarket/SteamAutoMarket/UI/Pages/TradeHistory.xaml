@@ -307,7 +307,8 @@
                 <Image Source="{Binding Path=SelectedTradeItem.Image}"
                        Stretch="Uniform"
                        Name="ItemImage"
-                       MaxHeight="200" />
+                       MaxHeight="200"
+                       Margin="0,0,0,5"/>
 
                 <Path Grid.Row="0"
                       Style="{StaticResource Geometry}"

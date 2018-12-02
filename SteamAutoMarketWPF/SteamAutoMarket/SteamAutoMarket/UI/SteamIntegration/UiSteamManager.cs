@@ -468,7 +468,7 @@
 
                                         if (ex.Message.Contains("You have too many listings pending confirmation"))
                                         {
-                                            // todo
+                                            wp.AppendLog("Seems ");
                                         }
 
                                         Logger.Log.Error(ex);

@@ -149,15 +149,15 @@
                              CellVerticalContentAlignment="Center">
                     <xcdg:Column.CellContentTemplate>
                         <ItemContainerTemplate>
-                                <xctk:IntegerUpDown
-                                    Style="{StaticResource UpDown}"
-                                    Background="{StaticResource DataGridBackground}"
-                                    Width="85"
-                                    Value="0"
-                                    Increment="1"
-                                    Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
-                                    Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
-                                    Minimum="0" />
+                            <xctk:IntegerUpDown
+                                Style="{StaticResource UpDown}"
+                                Background="{StaticResource DataGridBackground}"
+                                Width="85"
+                                Value="0"
+                                Increment="1"
+                                Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
+                                Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                Minimum="0" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
@@ -189,7 +189,8 @@
                 <Image Source="{Binding Path=MarketSellSelectedItem.Image}"
                        Stretch="Uniform"
                        Name="ItemImage"
-                       MaxHeight="200" />
+                       MaxHeight="200"
+                       Margin="0,0,0,5" />
 
                 <Path Grid.Row="0"
                       Style="{StaticResource Geometry}"
@@ -415,11 +416,43 @@
                 </Button>
             </Grid>
 
-            <Button Grid.Row="5"
-                    Content="Mark all items"
-                    Name="MarketSellMarkAllItems"
-                    Margin="0, 0, 0, 5"
-                    Padding="0" Click="MarketSellMarkAllItemsClick" />
+            <Grid Grid.Row="5"
+                  Margin="0, 0, 0, 5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Name="MarketSellMarkAllItems"
+                        Margin="0,0,4,0"
+                        Padding="0" Click="MarketSellMarkAllItemsClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Check<LineBreak />all
+                    </TextBlock>
+                </Button>
+                <Button Grid.Column="1"
+                        Name="MarketSellMarkSelectedItems"
+                        Margin="2,0,2,0"
+                        Padding="0" Click="MarketSellMarkSelectedItemsClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Check<LineBreak />selected
+                    </TextBlock>
+                </Button>
+                <Button Grid.Column="2"
+                        Name="MarketSellUnmarkAllItems"
+                        Margin="4,0,0,0"
+                        Padding="0" Click="MarketSellUnmarkAllItemsClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Uncheck<LineBreak />all
+                    </TextBlock>
+                </Button>
+            </Grid>
 
             <Button Grid.Row="6"
                     Name="StartMarketSellButtonClick"

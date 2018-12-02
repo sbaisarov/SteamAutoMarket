@@ -124,11 +124,9 @@
 
         private void MarkAllItemsButtonClick(object sender, RoutedEventArgs e)
         {
-            var newState = !this.RelistItemsList.All(i => i.Checked.CheckBoxChecked);
-
             foreach (var item in this.RelistItemsList)
             {
-                item.Checked.CheckBoxChecked = newState;
+                item.Checked.CheckBoxChecked = true;
             }
         }
 
@@ -420,6 +418,22 @@
             }
 
             this.priceLoadSubTasks.Clear();
+        }
+
+        private void MarkSelectedItemsButtonClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in this.MarketItemsToSellGrid.SelectedItems)
+            {
+                ((MarketRelistModel)item).Checked.CheckBoxChecked = true;
+            }
+        }
+
+        private void UnmarkAllItemsButtonClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in this.RelistItemsList)
+            {
+                item.Checked.CheckBoxChecked = false;
+            }
         }
     }
 }

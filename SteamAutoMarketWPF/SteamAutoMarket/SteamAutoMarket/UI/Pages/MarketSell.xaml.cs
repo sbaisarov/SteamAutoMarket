@@ -9,7 +9,9 @@
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Web.UI.WebControls;
     using System.Windows;
+    using System.Windows.Input;
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Core.Waiter;
@@ -20,6 +22,8 @@
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;
     using SteamAutoMarket.UI.Utils.Logger;
+
+    using Xceed.Wpf.DataGrid;
 
     /// <summary>
     /// Interaction logic for Account.xaml
@@ -393,6 +397,22 @@
             }
 
             this.priceLoadSubTasks.Clear();
+        }
+
+        private void MarketSellUnmarkAllItemsClick(object sender, RoutedEventArgs e)
+        {
+            for (var i = 0; i < this.MarketSellItems.Count; i++)
+            {
+                this.MarketSellItems[i].NumericUpDown.AmountToSell = 0;
+            }
+        }
+
+        private void MarketSellMarkSelectedItemsClick(object sender, RoutedEventArgs e)
+        {
+            for (var i = 0; i < this.MarketItemsToSellGrid.SelectedItems.Count; i++)
+            {
+                ((MarketSellModel)this.MarketItemsToSellGrid.SelectedItems[i]).NumericUpDown.SetToMaximum();
+            }
         }
     }
 }
