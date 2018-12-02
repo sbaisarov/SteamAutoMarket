@@ -92,7 +92,7 @@ namespace SteamAutoMarket.Properties
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class WpfBinding : Attribute
     {
-        private void InitializeComponent()
+        private void Binding()
         {
             Task.Run(
                 () =>

@@ -77,11 +77,10 @@
 
         static SettingsModel()
         {
-            var customAttribute = ((WpfBinding[])typeof(SettingsModel).GetCustomAttributes(typeof(WpfBinding), true))
+            var settings = ((WpfBinding[])typeof(SettingsModel).GetCustomAttributes(typeof(WpfBinding), true))
                 .FirstOrDefault();
-
-            customAttribute.GetType().GetMethod("InitializeComponent", BindingFlags.NonPublic | BindingFlags.Instance)
-                .Invoke(customAttribute, null);
+            settings.GetType().GetMethod("Binding", BindingFlags.NonPublic | BindingFlags.Instance)
+                .Invoke(settings, null);
         }
 
         public bool ActiveTradesActiveOnly
