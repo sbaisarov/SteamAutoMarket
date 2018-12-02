@@ -232,7 +232,9 @@
 
                             wp.AppendLog($"{page.TotalCount} items found");
                             var totalCount = page.TotalCount;
+                            Logger.Log.Debug($"[LoadMarketListings] Total items count is - {totalCount}");
                             var totalPagesCount = (int)Math.Ceiling(totalCount / 100d);
+                            Logger.Log.Debug($"[LoadMarketListings] Total pages count is - {totalPagesCount}");
                             var currentPage = 1;
                             wp.ProgressBarMaximum = totalPagesCount;
 
@@ -242,6 +244,7 @@
 
                             for (var startItemIndex = 100; startItemIndex < totalCount; startItemIndex += 100)
                             {
+                                Logger.Log.Debug($"[LoadMarketListings] Processing listing page with start index - {startItemIndex}");
                                 if (wp.CancellationToken.IsCancellationRequested)
                                 {
                                     wp.AppendLog("Market listings loading was force stopped");
@@ -468,7 +471,7 @@
 
                                         if (ex.Message.Contains("You have too many listings pending confirmation"))
                                         {
-                                            wp.AppendLog("Seems ");
+                                            this.ProcessTooManyListingsPendingConfirmation();
                                         }
 
                                         Logger.Log.Error(ex);
@@ -502,6 +505,46 @@
                         }
                     },
                 "Market sell");
+        }
+
+        private void ProcessTooManyListingsPendingConfirmation()
+        {
+            var wp = UiGlobalVariables.WorkingProcessDataContext;
+            wp.AppendLog(
+                "Seems market listings stacked. Forsering two factor confirmation");
+
+            var marketConfirmations = this.Guard.FetchConfirmations()?.Where(
+                    c => c.ConfType == Confirmation.ConfirmationType
+                             .MarketSellTransaction)
+                .ToArray();
+
+            wp.AppendLog($"{marketConfirmations} items to confirm was fetched");
+
+            if (marketConfirmations?.Length == 250)
+            {
+                this.Guard.AcceptMultipleConfirmations(marketConfirmations);
+            }
+            else
+            {
+                wp.AppendLog("Seems items are not in two pending confirmation list. Removing market pending listings");
+                var myListings = this.MarketClient.MyListings(this.Currency.ToString()).ConfirmationSales.ToArray();
+                foreach (var listing in myListings)
+                {
+                    try
+                    {
+                        wp.AppendLog($"Removing {listing.Name}");
+                        var result = this.MarketClient.CancelSellOrder(listing.SaleId);
+                        if (result != ECancelSellOrderStatus.Canceled)
+                        {
+                            wp.AppendLog($"ERROR on removing {listing.Name}");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        wp.AppendLog($"ERROR on removing {listing.Name} - {e.Message}");
+                    }
+                }
+            }
         }
 
         public void SendTrade(string targetSteamId, string tradeToken, FullRgItem[] itemsToTrade, bool acceptTwoFactor)
@@ -590,15 +633,20 @@
             SellListingsPage sellListingsPage,
             ObservableCollection<MarketRelistModel> marketSellListings)
         {
-            var groupedItems = sellListingsPage.SellListings.ToArray().GroupBy(x => new { x.HashName, x.Price });
+            Logger.Log.Debug($"Processing listing page of {sellListingsPage?.TotalCount} items");
+
+            var groupedItems = sellListingsPage?.SellListings.ToArray().GroupBy(x => new { x.HashName, x.Price });
 
             foreach (var group in groupedItems)
             {
+                Logger.Log.Debug($"Processing {group.Key.HashName}-{group.Key.Price} group");
+
                 var existModel = marketSellListings.FirstOrDefault(
                     item => item.ItemModel.HashName == group.Key.HashName && item.ItemModel.Price == group.Key.Price);
 
                 if (existModel != null)
                 {
+                    Logger.Log.Debug("Group already exist in items collection, adding items.");
                     foreach (var groupItem in group.ToArray())
                     {
                         existModel.ItemsList.Add(groupItem);
@@ -608,6 +656,7 @@
                 }
                 else
                 {
+                    Logger.Log.Debug("Group not exist in items collection, creating new group");
                     marketSellListings.AddDispatch(new MarketRelistModel(group.ToArray()));
                 }
             }

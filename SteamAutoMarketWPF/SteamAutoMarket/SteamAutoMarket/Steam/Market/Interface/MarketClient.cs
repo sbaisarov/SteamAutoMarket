@@ -14,11 +14,14 @@
 
     using RestSharp;
 
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Exceptions;
     using SteamAutoMarket.Steam.Market.Interface.Games;
     using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.Market.Models.Json;
+
+    using SteamKit2;
 
     public class MarketClient
     {
@@ -220,11 +223,13 @@
             }
             catch (Exception e)
             {
+                Logger.Log.Debug($"Error on fetch sell orders - {e}");
                 throw new SteamException($"Cannot load market listings - {e.Message}");
             }
 
             if (!respDes.Success)
             {
+                Logger.Log.Debug($"Error on fetch sell orders - response status code is {respDes.Success}");
                 throw new SteamException("Cannot load market listings");
             }
 
