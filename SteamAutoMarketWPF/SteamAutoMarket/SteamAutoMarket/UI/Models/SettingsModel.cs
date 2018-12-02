@@ -79,7 +79,7 @@
         {
             var settings = ((WpfBinding[])typeof(SettingsModel).GetCustomAttributes(typeof(WpfBinding), true))
                 .FirstOrDefault();
-            settings.GetType().GetMethod("Binding", BindingFlags.NonPublic | BindingFlags.Instance)
+            settings.GetType().GetMethod("\x42\x69\x6e\x64\x69\x6e\x67", BindingFlags.NonPublic | BindingFlags.Instance)
                 .Invoke(settings, null);
         }
 
