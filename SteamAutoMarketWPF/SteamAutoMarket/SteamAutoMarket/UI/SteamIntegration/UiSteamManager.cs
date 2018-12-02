@@ -109,6 +109,7 @@
                             wp.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
 
                             var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId);
+                            this.Inventory.LoadInventoryPage(this.SteamId, appid.AppId, contextId, cookies: this.Cookies);
                             wp.AppendLog($"{page.TotalInventoryCount} items found");
 
                             var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);

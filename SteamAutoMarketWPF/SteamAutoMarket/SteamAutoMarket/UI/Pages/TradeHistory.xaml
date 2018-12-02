@@ -7,6 +7,7 @@
              xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
              xmlns:converter="clr-namespace:SteamAutoMarket.UI.Utils.Converter"
              xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
+             xmlns:models="clr-namespace:SteamAutoMarket.UI.Models"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:TradeHistory}">
 

@@ -218,8 +218,8 @@ def validate_code():
             del active_codes[code]  # remove code from repetative usage
             client["payments"].append(data)
             return ("<html><h2>Код активирован!</h2><p>Ваш ключ продукта: %s</p>"
-                    "<p>Скачать программу можно по ссылке: <a href=\"https://www.steambiz.store/release/Release.zip\">"
-                    "https://www.steambiz.store/release/Release.zip</a></p></html>" % key), 200
+                    "<p>Скачать программу можно по ссылке: <a href=\"https://www.steambiz.store/release/SAM.zip\">"
+                    "https://www.steambiz.store/release/SAM.zip</a></p></html>" % key), 200
         else:
             return "code was not found", 404
 

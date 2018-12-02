@@ -187,6 +187,8 @@
     <Compile Include="Steam\TradeOffer\Models\InventoryRootModel.cs" />
     <Compile Include="Steam\TradeOffer\Models\Item.cs" />
     <Compile Include="Steam\TradeOffer\Models\ItemAttribute.cs" />
+    <Compile Include="Steam\TradeOffer\Models\MyInventoryRootModel.cs" />
+    <Compile Include="Steam\TradeOffer\Models\MyRgInventory.cs" />
     <Compile Include="Steam\TradeOffer\Models\NewTradeOfferResponse.cs" />
     <Compile Include="Steam\TradeOffer\Models\Offer.cs" />
     <Compile Include="Steam\TradeOffer\Models\OfferAccessToken.cs" />
