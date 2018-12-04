@@ -1,3 +1,5 @@
+using SteamAutoMarket.UI.Repository.Context;
+
 namespace SteamAutoMarket.Steam
 {
     using System;
@@ -127,7 +129,7 @@ namespace SteamAutoMarket.Steam
             }
             catch (SteamGuardAccount.WGTokenExpiredException)
             {
-                Logger.Log.Warn("Steam web session expired");
+                UiGlobalVariables.FileLogger.Debug("Steam web session expired");
                 this.UpdateSteamSession();
                 this.ConfirmTradeTransactions(offerId);
             }
@@ -137,7 +139,7 @@ namespace SteamAutoMarket.Steam
         {
             this.IsSessionUpdated = true;
 
-            Logger.Log.Debug("Parsing trade token from - 'https://steamcommunity.com/my/tradeoffers/privacy'");
+            UiGlobalVariables.FileLogger.Debug("Parsing trade token from - 'https://steamcommunity.com/my/tradeoffers/privacy'");
 
             try
             {
@@ -149,7 +151,7 @@ namespace SteamAutoMarket.Steam
 
                 if (response == null)
                 {
-                    Logger.Log.Warn(
+                    UiGlobalVariables.FileLogger.Warn(
                         "Error on parsing trade token. Steam privacy page cant not be loaded. Try to scrap it manually from - 'https://steamcommunity.com/my/tradeoffers/privacy'");
 
                     return null;
@@ -161,18 +163,18 @@ namespace SteamAutoMarket.Steam
 
                 if (string.IsNullOrEmpty(token))
                 {
-                    Logger.Log.Warn(
+                    UiGlobalVariables.FileLogger.Warn(
                         "Error on parsing trade token. Steam privacy page cant not be loaded. Try to scrap it manually from - 'https://steamcommunity.com/my/tradeoffers/privacy'");
 
                     return null;
                 }
 
-                Logger.Log.Debug($"'{token}' trade token was successfully parsed");
+                UiGlobalVariables.FileLogger.Debug($"'{token}' trade token was successfully parsed");
                 return token;
             }
             catch (Exception e)
             {
-                Logger.Log.Warn(
+                UiGlobalVariables.FileLogger.Warn(
                     $"Error on parsing trade token. {e.Message}. Try to scrap it manually from - 'https://steamcommunity.com/my/tradeoffers/privacy'");
 
                 return null;
@@ -200,7 +202,7 @@ namespace SteamAutoMarket.Steam
                 {
                     if (++attempts == 3)
                     {
-                        Logger.Log.Warn($"Error on getting average price of {hashName}", ex);
+                        UiGlobalVariables.FileLogger.Warn($"Error on getting average price of {ex}");
                     }
                 }
             }
@@ -233,7 +235,7 @@ namespace SteamAutoMarket.Steam
                 {
                     if (++attempts == 3)
                     {
-                        Logger.Log.Warn($"Error on getting current price of {hashName}", ex);
+                        UiGlobalVariables.FileLogger.Warn($"Error on getting current price of {ex}");
                     }
                 }
             }
@@ -324,7 +326,7 @@ namespace SteamAutoMarket.Steam
 
         public void UpdateSteamSession()
         {
-            Logger.Log.Info($"Saved steam session for {this.Guard.AccountName} is expired. Refreshing session.");
+            UiGlobalVariables.FileLogger.Info($"Saved steam session for {this.Guard.AccountName} is expired. Refreshing session.");
             this.IsSessionUpdated = true;
 
             LoginResult loginResult;
@@ -337,7 +339,7 @@ namespace SteamAutoMarket.Steam
                     continue;
                 }
 
-                Logger.Log.Warn($"Login status is - {loginResult}");
+                UiGlobalVariables.FileLogger.Warn($"Login status is - {loginResult}");
 
                 if (++tryCount == 3)
                 {
@@ -449,7 +451,7 @@ namespace SteamAutoMarket.Steam
         {
             this.IsSessionUpdated = true;
 
-            Logger.Log.Debug("Parsing steam api key from - 'https://steamcommunity.com/dev/apikey'");
+            UiGlobalVariables.FileLogger.Debug("Parsing steam api key from - 'https://steamcommunity.com/dev/apikey'");
             while (true)
             {
                 var response = SteamWeb.Request(
@@ -460,11 +462,11 @@ namespace SteamAutoMarket.Steam
                 var keyParse = Regex.Match(response, @"Key: (.+)</p").Groups[1].Value.Trim();
                 if (keyParse.Length != 0)
                 {
-                    Logger.Log.Debug($"{keyParse} api key was successfully parsed");
+                    UiGlobalVariables.FileLogger.Debug($"{keyParse} api key was successfully parsed");
                     return keyParse;
                 }
 
-                Logger.Log.Debug("Seems like account do not have api key. Trying to regenerate it");
+                UiGlobalVariables.FileLogger.Debug("Seems like account do not have api key. Trying to regenerate it");
                 var sessionid = this.SteamClient.Session.SessionID;
                 var data = new NameValueCollection
                                {
@@ -484,12 +486,12 @@ namespace SteamAutoMarket.Steam
 
         private int FetchCurrency()
         {
-            Logger.Log.Debug("Parsing current currency");
+            UiGlobalVariables.FileLogger.Debug("Parsing current currency");
             try
             {
                 this.IsSessionUpdated = true;
                 var result = this.MarketClient.WalletInfo().Currency;
-                Logger.Log.Debug($"Current currency is '{result}'");
+                UiGlobalVariables.FileLogger.Debug($"Current currency is '{result}'");
                 return result;
             }
             catch (Exception e)

@@ -17,7 +17,7 @@
 
             if (File.Exists(SettingsUpdated.SettingsPath) == false)
             {
-                Logger.Log.Debug("Settings file do not exist. Creating new one");
+                UiGlobalVariables.FileLogger.Debug("Settings file do not exist. Creating new one");
                 instance = new SettingsModel();
 
                 File.WriteAllText(

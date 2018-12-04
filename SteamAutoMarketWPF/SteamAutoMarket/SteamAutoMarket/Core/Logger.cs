@@ -1,48 +1,55 @@
-﻿namespace SteamAutoMarket.Core
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Windows.Forms;
+
+namespace SteamAutoMarket.Core
 {
-    using System;
-    using System.Reflection;
-
-    using log4net;
-    using log4net.Core;
-
-    public class Logger
+    public abstract class Logger
     {
-        public static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected abstract void LogMessage(string message, string level);
 
-        public static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "logs.log";
-
-        public static void UpdateLoggerLevel(Level newLevel)
+        public void Info(string message)
         {
-            ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root.Level = newLevel;
-            ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).RaiseConfigurationChanged(
-                EventArgs.Empty);
+            LogMessage(message, "INFO");
+        }
+        
+        public void Warn(string message)
+        {
+            LogMessage(message, "WARN");
+        }
+        
+        public void Debug(string message)
+        {
+            LogMessage(message, "DEBUG");
+        }
+        
+        public void Error(string message)
+        {
+            LogMessage(message, "ERROR");
+        }
+        
+        public void Critical(string message)
+        {
+            LogMessage(message, "CRITICAL");
+        }
+    }
+
+    public class FileLogger : Logger
+    {
+        private static StreamWriter sw = null;
+        private static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "logs.log";
+
+        public FileLogger() : base()
+        {
+            sw = new StreamWriter(File.Create(LogFilePath), Encoding.GetEncoding("UTF-8"));
         }
 
-        public static void UpdateLoggerLevel(string newLevel)
+        protected override void LogMessage(string message, string level)
         {
-            switch (newLevel)
-            {
-                case "DEBUG":
-                    UpdateLoggerLevel(Level.Debug);
-                    return;
-
-                case "INFO":
-                    UpdateLoggerLevel(Level.Info);
-                    return;
-
-                case "ERROR":
-                    UpdateLoggerLevel(Level.Error);
-                    return;
-
-                case "NONE":
-                    UpdateLoggerLevel(Level.Fatal);
-                    return;
-
-                default:
-                    Log.Error($"{newLevel} logger value can not be handled.");
-                    return;
-            }
+            sw.WriteLine(DateTime.Now + "\t" + level + ": " + message);
+            sw.Flush();
         }
     }
 }

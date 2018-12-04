@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket.UI.Models
+﻿using SteamAutoMarket.UI.Repository.Context;
+
+namespace SteamAutoMarket.UI.Models
 {
     using System;
     using System.ComponentModel;
@@ -41,7 +43,7 @@
             }
             catch (Exception e)
             {
-                Logger.Log.Error("Error on mafile process", e);
+                UiGlobalVariables.FileLogger.Error("Error on mafile process " + e);
                 throw new ArgumentException($"Error on mafile process - {e.Message}");
             }
 

@@ -1,3 +1,5 @@
+using SteamAutoMarket.UI.Repository.Context;
+
 namespace SteamAutoMarket.Steam.TradeOffer
 {
     using System;
@@ -268,7 +270,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             }
             catch (JsonException ex)
             {
-                Logger.Log.Debug(resp);
+                UiGlobalVariables.FileLogger.Debug(resp);
                 throw new SteamException($"Unknown steam response - {ex.Message}");
             }
         }

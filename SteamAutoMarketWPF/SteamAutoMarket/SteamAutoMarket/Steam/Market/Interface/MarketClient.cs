@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket.Steam.Market.Interface
+﻿using SteamAutoMarket.UI.Repository.Context;
+
+namespace SteamAutoMarket.Steam.Market.Interface
 {
     using System;
     using System.Collections.Generic;
@@ -223,13 +225,13 @@
             }
             catch (Exception e)
             {
-                Logger.Log.Debug($"Error on fetch sell orders - {e}");
+                UiGlobalVariables.FileLogger.Debug($"Error on fetch sell orders - {e}");
                 throw new SteamException($"Cannot load market listings - {e.Message}");
             }
 
             if (!respDes.Success)
             {
-                Logger.Log.Debug($"Error on fetch sell orders - response status code is {respDes.Success}");
+                UiGlobalVariables.FileLogger.Debug($"Error on fetch sell orders - response status code is {respDes.Success}");
                 throw new SteamException("Cannot load market listings");
             }
 

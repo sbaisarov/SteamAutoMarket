@@ -395,7 +395,7 @@
 
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            Task.Run(() => Logger.Log.Debug($"Updating '{propertyName}' setting"));
+            Task.Run(() => UiGlobalVariables.FileLogger.Debug($"Updating '{propertyName}' setting"));
             if (this.IsSettingsLoaded)
             {
                 SettingsUpdated.UpdateSettingsFile();

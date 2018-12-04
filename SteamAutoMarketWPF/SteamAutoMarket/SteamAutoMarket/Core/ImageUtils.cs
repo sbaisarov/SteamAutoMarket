@@ -23,7 +23,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Log.Warn("Error on getting profile image", ex);
+                UiGlobalVariables.FileLogger.Warn("Error on getting profile image", ex);
                 return null;
             }
         }
@@ -44,7 +44,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Log.Warn("Error on getting profile image", ex);
+                UiGlobalVariables.FileLogger.Warn("Error on getting profile image", ex);
                 return null;
             }
         }

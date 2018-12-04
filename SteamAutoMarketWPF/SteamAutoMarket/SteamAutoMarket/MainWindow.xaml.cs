@@ -33,7 +33,7 @@
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             ServicePointManager.ServerCertificateValidationCallback += OnServerCertificateValidationCallback;
             XmlConfigurator.Configure();
-            Logger.UpdateLoggerLevel(SettingsProvider.GetInstance().LoggerLevel);
+            UiGlobalVariables.FileLogger = new FileLogger();
             AppearanceManager.Current.ThemeSource = ModernUiThemeUtils.GetTheme(SettingsProvider.GetInstance().Theme);
             AppearanceManager.Current.AccentColor = ModernUiThemeUtils.GetColor(SettingsProvider.GetInstance().Color);
             UiGlobalVariables.MainWindow = this;

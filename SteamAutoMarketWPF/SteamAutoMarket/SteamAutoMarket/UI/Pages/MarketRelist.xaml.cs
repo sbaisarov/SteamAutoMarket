@@ -246,7 +246,7 @@
                     {
                         try
                         {
-                            Logger.Log.Debug("Starting market sell price loading task");
+                            UiGlobalVariables.FileLogger.Debug("Starting market sell price loading task");
 
                             var items = this.RelistItemsList.ToList();
                             items.ForEach(i => i.CleanItemPrices());
@@ -261,7 +261,7 @@
                             foreach (var item in items)
                             {
                                 priceLoadingSemaphore.WaitOne();
-                                Logger.Log.Debug($"Processing price for {item.ItemName}");
+                                UiGlobalVariables.FileLogger.Debug($"Processing price for {item.ItemName}");
 
                                 var task = Task.Run(
                                     () =>
@@ -270,7 +270,7 @@
                                                 item.ItemModel.AppId,
                                                 item.ItemModel.HashName);
 
-                                            Logger.Log.Debug($"Current price for {item.ItemName} is - {price}");
+                                            UiGlobalVariables.FileLogger.Debug($"Current price for {item.ItemName} is - {price}");
                                             item.CurrentPrice = price;
                                             item.ProcessSellPrice(sellStrategy);
                                             priceLoadingSemaphore.Release();
@@ -287,7 +287,7 @@
                                                 item.ItemModel.HashName,
                                                 averagePriceDays);
 
-                                            Logger.Log.Debug(
+                                            UiGlobalVariables.FileLogger.Debug(
                                                 $"Average price for {averagePriceDays} days for {item.ItemName} is - {price}");
 
                                             item.AveragePrice = price;
@@ -300,13 +300,13 @@
                                 if (this.cancellationTokenSource.Token.IsCancellationRequested)
                                 {
                                     this.WaitForPriceLoadingSubTasksEnd();
-                                    Logger.Log.Debug("Market relist price loading was force stopped");
+                                    UiGlobalVariables.FileLogger.Debug("Market relist price loading was force stopped");
                                     return;
                                 }
                             }
 
                             this.WaitForPriceLoadingSubTasksEnd();
-                            Logger.Log.Debug("Market relist price loading task is finished");
+                            UiGlobalVariables.FileLogger.Debug("Market relist price loading task is finished");
                         }
                         catch (Exception ex)
                         {
@@ -333,7 +333,7 @@
                                 item.ItemModel.AppId,
                                 item.ItemModel.HashName);
 
-                            Logger.Log.Debug($"Current price for {item.ItemName} is - {price}");
+                            UiGlobalVariables.FileLogger.Debug($"Current price for {item.ItemName} is - {price}");
 
                             item.CurrentPrice = price;
 
@@ -342,7 +342,7 @@
                                 item.ItemModel.HashName,
                                 averagePriceDays);
 
-                            Logger.Log.Debug(
+                            UiGlobalVariables.FileLogger.Debug(
                                 $"Average price for {averagePriceDays} days for {item.ItemName} is - {price}");
 
                             item.AveragePrice = price;
@@ -398,11 +398,11 @@
             if (this.cancellationTokenSource == null || this.priceLoadingTask == null
                                                      || this.priceLoadingTask.IsCompleted)
             {
-                Logger.Log.Debug("No active market relist price loading task found. Nothing to stop");
+                UiGlobalVariables.FileLogger.Debug("No active market relist price loading task found. Nothing to stop");
                 return;
             }
 
-            Logger.Log.Debug("Active market relist price loading task found. Trying to force stop it");
+            UiGlobalVariables.FileLogger.Debug("Active market relist price loading task found. Trying to force stop it");
             this.cancellationTokenSource.Cancel();
             new Waiter().Until(() => this.priceLoadingTask.IsCompleted);
             this.cancellationTokenSource = new CancellationTokenSource();
@@ -412,7 +412,7 @@
         {
             if (this.priceLoadSubTasks.Any(t => t.IsCompleted == false))
             {
-                Logger.Log.Debug(
+                UiGlobalVariables.FileLogger.Debug(
                     $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
                 new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
             }

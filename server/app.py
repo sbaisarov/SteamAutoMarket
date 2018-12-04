@@ -34,7 +34,7 @@ logger.addHandler(file_handler)
 with shelve.open("database/clients") as db:
     if db.get("clients", None) is None:
         db["clients"] = {}
-    if db.get("active_devices", None) is None:
+    if db.get("active_codes", None) is None:
         db["active_codes"] = {}
 
 
