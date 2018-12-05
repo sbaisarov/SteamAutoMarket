@@ -15,6 +15,11 @@
 
         protected override void Append(LoggingEvent e)
         {
+            if (e.Level == Level.Debug)
+            {
+                return;
+            }
+
             LogsWindow.GlobalLogs += $"{GetCurrentDate()} ({e.Level}) - {e.RenderedMessage}{Environment.NewLine}";
         }
     }

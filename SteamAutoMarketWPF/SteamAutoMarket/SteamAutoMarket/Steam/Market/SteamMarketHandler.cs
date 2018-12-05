@@ -10,6 +10,7 @@
 
     using RestSharp;
 
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Exceptions;
     using SteamAutoMarket.Steam.Market.Interface;
@@ -92,6 +93,7 @@
             CookieContainer cookieContainer = null,
             IDictionary<string, string> headers = null)
         {
+            Logger.Log.Debug($"{method} steam request to {url}. Referer - {referer}, params - {StringUtils.DictionaryToString(@params)}, headers - {StringUtils.DictionaryToString(headers)}");
             this.RequestsPerSecondGuard();
 
             var client = new RestClient(url) { UserAgent = this.Settings.UserAgent, Timeout = 60 * 1000 };
@@ -133,6 +135,7 @@
             if (response.StatusCode == HttpStatusCode.BadRequest)
                 throw new RequestException($"Bad status code: {response.StatusCode}");
 
+            Logger.Log.Debug($"Steam response({response.StatusCode}) - {response.Content}");
             return new SteamResponse(response, client.CookieContainer);
         }
 

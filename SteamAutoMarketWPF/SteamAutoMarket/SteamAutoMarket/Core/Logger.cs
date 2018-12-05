@@ -4,7 +4,10 @@
     using System.Reflection;
 
     using log4net;
+    using log4net.Appender;
     using log4net.Core;
+    using log4net.Layout;
+    using log4net.Repository.Hierarchy;
 
     public class Logger
     {
@@ -14,9 +17,8 @@
 
         public static void UpdateLoggerLevel(Level newLevel)
         {
-            ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root.Level = newLevel;
-            ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).RaiseConfigurationChanged(
-                EventArgs.Empty);
+            ((Hierarchy)LogManager.GetRepository()).Root.Level = newLevel;
+            ((Hierarchy)LogManager.GetRepository()).RaiseConfigurationChanged(EventArgs.Empty);
         }
 
         public static void UpdateLoggerLevel(string newLevel)
@@ -43,6 +45,47 @@
                     Log.Error($"{newLevel} logger value can not be handled.");
                     return;
             }
+        }
+
+        public static void Setup(params IAppender[] appenders)
+        {
+            var hierarchy = (Hierarchy)LogManager.GetRepository();
+
+            foreach (var appender in appenders)
+            {
+                hierarchy.Root.AddAppender(appender);
+            }
+
+            var memory = new MemoryAppender();
+            memory.ActivateOptions();
+            hierarchy.Root.AddAppender(memory);
+
+            hierarchy.Root.Level = Level.Info;
+            hierarchy.Configured = true;
+        }
+
+        public static RollingFileAppender NewFileAppender()
+        {
+            var patternLayout = new PatternLayout
+                                    {
+                                        ConversionPattern = "%date [%thread] %-5level - %message%newline"
+                                    };
+            patternLayout.ActivateOptions();
+
+            var appender = new RollingFileAppender
+                               {
+                                   AppendToFile = true,
+                                   File = @"Logs\log.log",
+                                   Layout = patternLayout,
+                                   MaxSizeRollBackups = 100,
+                                   MaximumFileSize = "5MB",
+                                   RollingStyle = RollingFileAppender.RollingMode.Size,
+                                   StaticLogFileName = true,
+                               };
+
+            appender.ActivateOptions();
+
+            return appender;
         }
     }
 }

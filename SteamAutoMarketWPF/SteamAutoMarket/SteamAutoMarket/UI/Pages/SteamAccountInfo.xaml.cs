@@ -13,6 +13,7 @@
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
+    using SteamAutoMarket.Steam.Market;
     using SteamAutoMarket.Steam.Market.Interface;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Models.Enums;
@@ -159,7 +160,7 @@
                                             this.AccountParameters.AddDispatch(
                                                 new NameValueModel(
                                                     "CurrencyValue",
-                                                    MarketClient.Currencies[$"{manager.Currency}"]));
+                                                    SteamCurrencies.Currencies[$"{manager.Currency}"]));
                                             break;
                                         }
 
