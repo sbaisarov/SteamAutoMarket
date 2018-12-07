@@ -33,10 +33,6 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
         private const string RemoveListingUrl = "https://steamcommunity.com/market/removelisting/";
 
-        public static readonly Dictionary<string, string> Currencies =
-            JsonConvert.DeserializeObject<Dictionary<string, string>>(
-                "{\"1\": \"$\", \"2\": \"\u00a3\", \"3\": \"\u20ac\", \"4\": \"CHF\", \"5\": \"p\u0443\u0431\", \"6\": \"z\u0142\", \"7\": \"R$\", \"8\": \"\u00a5\", \"9\": \"kr\", \"10\": \"Rp\", \"11\": \"RM\", \"12\": \"P\", \"13\": \"S$\", \"14\": \"\u0e3f\", \"15\": \"\u20ab\", \"16\": \"\u20a9\", \"17\": \"TL\", \"18\": \"\u20b4\", \"19\": \"Mex$\", \"20\": \"CDN$\", \"22\": \"NZ$\", \"23\": \"\u00a5\", \"24\": \"\u20b9\", \"25\": \"CLP$\", \"26\": \"S\", \"27\": \"COL$\", \"28\": \"R\", \"29\": \"HK$\", \"30\": \"NT$\", \"31\": \"SR\", \"32\": \"AED\", \"34\": \"ARS$\", \"35\": \"\u20aa\", \"37\": \"\u20b8\", \"38\": \"KD\", \"39\": \"QR\", \"40\": \"\u20a1\", \"41\": \"$U\", \"\":\"\", null:\"\"}");
-
         public readonly AvailableGames Games;
 
         private readonly SteamMarketHandler steam;
@@ -213,6 +209,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
         public SellListingsPage FetchSellOrders(int start = 0, int count = 100)
         {
+            Logger.Log.Debug($"Fetching sell orders (start - {start}, count - {count})");
             var sellListingsPage = new SellListingsPage { SellListings = new List<MyListingsSalesItem>() };
 
             var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
@@ -234,8 +231,6 @@ namespace SteamAutoMarket.Steam.Market.Interface
                 UiGlobalVariables.FileLogger.Debug($"Error on fetch sell orders - response status code is {respDes.Success}");
                 throw new SteamException("Cannot load market listings");
             }
-
-            var totalCount = respDes.ActiveListingsCount;
 
             var html = respDes.ResultsHtml;
             var doc = new HtmlDocument();
@@ -926,7 +921,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
                 try
                 {
                     var priceParse = priceAndQuantitySplit[1].Replace(".", string.Empty);
-                    var currencySymbol = Currencies[currency];
+                    var currencySymbol = SteamCurrencies.Currencies[currency];
                     double.TryParse(priceParse.Replace(currencySymbol, string.Empty), out price);
                 }
                 catch (Exception)
@@ -996,7 +991,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
                 try
                 {
                     var priceParse = priceString.Split('(')[0].Replace(".", string.Empty);
-                    var currencySymbol = Currencies[currency];
+                    var currencySymbol = SteamCurrencies.Currencies[currency];
                     double.TryParse(priceParse.Replace(currencySymbol, string.Empty), out price);
                 }
                 catch (Exception)
@@ -1087,7 +1082,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
             try
             {
                 var priceParse = priceString.Split('(')[0].Replace(".", string.Empty);
-                var currencySymbol = Currencies[currency];
+                var currencySymbol = SteamCurrencies.Currencies[currency];
                 double.TryParse(
                     priceParse.Replace(currencySymbol, string.Empty).Replace(
                         ",",
@@ -1109,7 +1104,7 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
             if (!saleIdParse)
             {
-                throw new SteamException("Cannot parse sale listing ID");
+                throw new SteamException($"Cannot parse sale listing ID - {saleIdMatch.Value}");
             }
 
             var imageUrl = item.SelectSingleNode($"//img[contains(@id, 'mylisting_{saleId}_image')]").Attributes["src"]

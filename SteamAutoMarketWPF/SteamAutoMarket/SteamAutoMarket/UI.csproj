@@ -83,6 +83,7 @@
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\RandomUtils.cs" />
     <Compile Include="Core\ResourceUtils.cs" />
+    <Compile Include="Core\StringUtils.cs" />
     <Compile Include="Core\Waiter\Clock.cs" />
     <Compile Include="Core\Waiter\Waiter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -102,6 +103,7 @@
     <Compile Include="Steam\Auth\Util.cs" />
     <Compile Include="Steam\Market\AppIds.cs" />
     <Compile Include="Steam\Market\Auth.cs" />
+    <Compile Include="Steam\Market\Currencies.cs" />
     <Compile Include="Steam\Market\Enums\ECancelBuyOrderStatus.cs" />
     <Compile Include="Steam\Market\Enums\ECancelSellOrderStatus.cs" />
     <Compile Include="Steam\Market\Enums\ECreateBuyOrderStatus.cs" />
@@ -385,7 +387,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="AutoUpdater\packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -5,11 +5,10 @@
     using System.Net;
     using System.Net.Security;
     using System.Security.Cryptography.X509Certificates;
+    using System.Windows.Forms;
 
     using FirstFloor.ModernUI.Presentation;
     using FirstFloor.ModernUI.Windows.Controls;
-
-    using log4net.Config;
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Repository.Context;
@@ -26,16 +25,24 @@
         {
             if (!File.Exists("license.txt"))
             {
-                ErrorNotify.CriticalMessageBox("License file not found!");
-                throw new UnauthorizedAccessException("Cant get required info");
+                MessageBox.Show(
+                    @"license.txt file not found!",
+                    @"License check error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                System.Windows.Application.Current.Shutdown();
             }
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             ServicePointManager.ServerCertificateValidationCallback += OnServerCertificateValidationCallback;
-            XmlConfigurator.Configure();
-            UiGlobalVariables.FileLogger = new FileLogger();
+
+            Logger.Setup(Logger.NewFileAppender(), new UiLogAppender());
+            Logger.UpdateLoggerLevel(SettingsProvider.GetInstance().LoggerLevel);
+
             AppearanceManager.Current.ThemeSource = ModernUiThemeUtils.GetTheme(SettingsProvider.GetInstance().Theme);
             AppearanceManager.Current.AccentColor = ModernUiThemeUtils.GetColor(SettingsProvider.GetInstance().Color);
+
             UiGlobalVariables.MainWindow = this;
             this.DataContext = this;
             this.InitializeComponent();

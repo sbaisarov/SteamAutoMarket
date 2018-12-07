@@ -53,9 +53,15 @@ namespace SteamAutoMarket.Steam
             this.Guard = mafile;
             this.SteamId = new SteamID(this.Guard.Session.SteamID);
 
-            this.SteamClient = new UserLogin(login, password) { TwoFactorCode = this.GenerateSteamGuardCode() };
+            Logger.Log.Debug("Fetching two factor token..");
+            var twoFactorCode = this.GenerateSteamGuardCode();
+            Logger.Log.Debug($"Two factor token is - {twoFactorCode}");
+
+            this.SteamClient = new UserLogin(login, password) { TwoFactorCode = twoFactorCode };
 
             this.Guard.DeviceID = this.GetDeviceId();
+
+            Logger.Log.Debug("Checking session status..");
             var isSessionRefreshed = this.Guard.RefreshSession();
             if (isSessionRefreshed == false || forceSessionRefresh)
             {
@@ -68,17 +74,25 @@ namespace SteamAutoMarket.Steam
             this.TradeToken = tradeToken ?? this.FetchTradeToken();
 
             this.Inventory = new Inventory();
+
+            Logger.Log.Debug("Initializing TradeOfferWebApi..");
             this.TradeOfferWeb = new TradeOfferWebApi(this.ApiKey);
+
+            Logger.Log.Debug("Initializing OfferSession..");
             this.OfferSession = new OfferSession(this.TradeOfferWeb, this.Cookies, this.Guard.Session.SessionID);
 
+            Logger.Log.Debug("Initializing SteamMarketHandler..");
             var market = new SteamMarketHandler(ELanguage.English, userAgent);
             var auth = new Market.Auth(market, this.Cookies) { IsAuthorized = true };
             market.Auth = auth;
 
+            Logger.Log.Debug("Initializing SteamMarketHandler..");
             this.MarketClient = new MarketClient(market);
 
             this.Currency = currency ?? this.FetchCurrency();
             this.MarketClient.CurrentCurrency = this.Currency;
+
+            Logger.Log.Debug("SteamManager was successfully initialized");
         }
 
         public static string HwId { get; set; }

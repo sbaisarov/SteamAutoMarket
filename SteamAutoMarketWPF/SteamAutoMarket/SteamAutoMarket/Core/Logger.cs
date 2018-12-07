@@ -1,55 +1,91 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Windows.Forms;
-
-namespace SteamAutoMarket.Core
+﻿namespace SteamAutoMarket.Core
 {
-    public abstract class Logger
+    using System;
+    using System.Reflection;
+
+    using log4net;
+    using log4net.Appender;
+    using log4net.Core;
+    using log4net.Layout;
+    using log4net.Repository.Hierarchy;
+
+    public class Logger
     {
-        protected abstract void LogMessage(string message, string level);
+        public static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public void Info(string message)
-        {
-            LogMessage(message, "INFO");
-        }
-        
-        public void Warn(string message)
-        {
-            LogMessage(message, "WARN");
-        }
-        
-        public void Debug(string message)
-        {
-            LogMessage(message, "DEBUG");
-        }
-        
-        public void Error(string message)
-        {
-            LogMessage(message, "ERROR");
-        }
-        
-        public void Critical(string message)
-        {
-            LogMessage(message, "CRITICAL");
-        }
-    }
+        public static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "logs.log";
 
-    public class FileLogger : Logger
-    {
-        private static StreamWriter sw = null;
-        private static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "logs.log";
-
-        public FileLogger() : base()
+        public static void UpdateLoggerLevel(Level newLevel)
         {
-            sw = new StreamWriter(File.Create(LogFilePath), Encoding.GetEncoding("UTF-8"));
+            ((Hierarchy)LogManager.GetRepository()).Root.Level = newLevel;
+            ((Hierarchy)LogManager.GetRepository()).RaiseConfigurationChanged(EventArgs.Empty);
         }
 
-        protected override void LogMessage(string message, string level)
+        public static void UpdateLoggerLevel(string newLevel)
         {
-            sw.WriteLine(DateTime.Now + "\t" + level + ": " + message);
-            sw.Flush();
+            switch (newLevel)
+            {
+                case "DEBUG":
+                    UpdateLoggerLevel(Level.Debug);
+                    return;
+
+                case "INFO":
+                    UpdateLoggerLevel(Level.Info);
+                    return;
+
+                case "ERROR":
+                    UpdateLoggerLevel(Level.Error);
+                    return;
+
+                case "NONE":
+                    UpdateLoggerLevel(Level.Fatal);
+                    return;
+
+                default:
+                    Log.Error($"{newLevel} logger value can not be handled.");
+                    return;
+            }
+        }
+
+        public static void Setup(params IAppender[] appenders)
+        {
+            var hierarchy = (Hierarchy)LogManager.GetRepository();
+
+            foreach (var appender in appenders)
+            {
+                hierarchy.Root.AddAppender(appender);
+            }
+
+            var memory = new MemoryAppender();
+            memory.ActivateOptions();
+            hierarchy.Root.AddAppender(memory);
+
+            hierarchy.Root.Level = Level.Info;
+            hierarchy.Configured = true;
+        }
+
+        public static RollingFileAppender NewFileAppender()
+        {
+            var patternLayout = new PatternLayout
+                                    {
+                                        ConversionPattern = "%date [%thread] %-5level - %message%newline"
+                                    };
+            patternLayout.ActivateOptions();
+
+            var appender = new RollingFileAppender
+                               {
+                                   AppendToFile = true,
+                                   File = @"Logs\log.log",
+                                   Layout = patternLayout,
+                                   MaxSizeRollBackups = 100,
+                                   MaximumFileSize = "5MB",
+                                   RollingStyle = RollingFileAppender.RollingMode.Size,
+                                   StaticLogFileName = true,
+                               };
+
+            appender.ActivateOptions();
+
+            return appender;
         }
     }
 }
