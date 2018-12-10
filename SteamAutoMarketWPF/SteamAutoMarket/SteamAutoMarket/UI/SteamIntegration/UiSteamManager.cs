@@ -134,6 +134,11 @@
                                 }
 
                                 page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid);
+                                if (page == null)
+                                {
+                                    wp.AppendLog($"{appid.Name} No items found");
+                                    return;
+                                }
 
                                 this.ProcessMarketSellInventoryPage(marketSellItems, page);
 
@@ -232,9 +237,9 @@
 
                             wp.AppendLog($"{page.TotalCount} items found");
                             var totalCount = page.TotalCount;
-                            UiGlobalVariables.FileLogger.Debug($"[LoadMarketListings] Total items count is - {totalCount}");
+                            Logger.Log.Debug($"[LoadMarketListings] Total items count is - {totalCount}");
                             var totalPagesCount = (int)Math.Ceiling(totalCount / 100d);
-                            UiGlobalVariables.FileLogger.Debug($"[LoadMarketListings] Total pages count is - {totalPagesCount}");
+                            Logger.Log.Debug($"[LoadMarketListings] Total pages count is - {totalPagesCount}");
                             var currentPage = 1;
                             wp.ProgressBarMaximum = totalPagesCount;
 
@@ -244,7 +249,7 @@
 
                             for (var startItemIndex = 100; startItemIndex < totalCount; startItemIndex += 100)
                             {
-                                UiGlobalVariables.FileLogger.Debug($"[LoadMarketListings] Processing listing page with start index - {startItemIndex}");
+                                Logger.Log.Debug($"[LoadMarketListings] Processing listing page with start index - {startItemIndex}");
                                 if (wp.CancellationToken.IsCancellationRequested)
                                 {
                                     wp.AppendLog("Market listings loading was force stopped");
@@ -330,7 +335,7 @@
                                                     {
                                                         wp.AppendLog(
                                                             $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}");
-                                                        UiGlobalVariables.FileLogger.Error(ex);
+                                                        Logger.Log.Error(ex);
                                                     }
 
                                                     wp.IncrementProgress();
@@ -341,7 +346,7 @@
                                     {
                                         wp.AppendLog(
                                             $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}");
-                                        UiGlobalVariables.FileLogger.Error(ex);
+                                        Logger.Log.Error(ex);
                                     }
 
                                     currentItemIndex++;
@@ -474,7 +479,7 @@
                                             this.ProcessTooManyListingsPendingConfirmation();
                                         }
 
-                                        UiGlobalVariables.FileLogger.Error(ex);
+                                        Logger.Log.Error(ex);
                                         if (++errorsCount == SettingsProvider.GetInstance().ErrorsOnSellToSkip)
                                         {
                                             wp.AppendLog(
@@ -591,7 +596,7 @@
                         }
                         catch (Exception ex)
                         {
-                            UiGlobalVariables.FileLogger.Debug("Error on trade offer send", ex);
+                            Logger.Log.Debug("Error on trade offer send", ex);
                             wp.AppendLog($"Error on trade offer send - {ex.Message}");
                         }
                     },
@@ -633,20 +638,20 @@
             SellListingsPage sellListingsPage,
             ObservableCollection<MarketRelistModel> marketSellListings)
         {
-            UiGlobalVariables.FileLogger.Debug($"Processing listing page of {sellListingsPage?.TotalCount} items");
+            Logger.Log.Debug($"Processing listing page of {sellListingsPage?.TotalCount} items");
 
             var groupedItems = sellListingsPage?.SellListings.ToArray().GroupBy(x => new { x.HashName, x.Price });
 
             foreach (var group in groupedItems)
             {
-                UiGlobalVariables.FileLogger.Debug($"Processing {group.Key.HashName}-{group.Key.Price} group");
+                Logger.Log.Debug($"Processing {group.Key.HashName}-{group.Key.Price} group");
 
                 var existModel = marketSellListings.FirstOrDefault(
                     item => item.ItemModel.HashName == group.Key.HashName && item.ItemModel.Price == group.Key.Price);
 
                 if (existModel != null)
                 {
-                    UiGlobalVariables.FileLogger.Debug("Group already exist in items collection, adding items.");
+                    Logger.Log.Debug("Group already exist in items collection, adding items.");
                     foreach (var groupItem in group.ToArray())
                     {
                         existModel.ItemsList.Add(groupItem);
@@ -656,7 +661,7 @@
                 }
                 else
                 {
-                    UiGlobalVariables.FileLogger.Debug("Group not exist in items collection, creating new group");
+                    Logger.Log.Debug("Group not exist in items collection, creating new group");
                     marketSellListings.AddDispatch(new MarketRelistModel(group.ToArray()));
                 }
             }

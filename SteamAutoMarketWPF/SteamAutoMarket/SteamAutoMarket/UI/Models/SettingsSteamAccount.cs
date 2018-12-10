@@ -43,7 +43,7 @@ namespace SteamAutoMarket.UI.Models
             }
             catch (Exception e)
             {
-                UiGlobalVariables.FileLogger.Error("Error on mafile process " + e);
+                Logger.Log.Error("Error on mafile process " + e);
                 throw new ArgumentException($"Error on mafile process - {e.Message}");
             }
 

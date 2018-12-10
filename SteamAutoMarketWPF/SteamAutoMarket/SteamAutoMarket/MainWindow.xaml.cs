@@ -53,6 +53,10 @@
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             ErrorNotify.CriticalMessageBox("Oops. Seems application is crushed", (Exception)e.ExceptionObject);
+            using (WebClient wc = new WebClient())
+            {
+                wc.UploadString("www.steambiz.store/api/logerror", ((Exception) e.ExceptionObject).ToString());
+            }
         }
 
         private static bool OnServerCertificateValidationCallback(

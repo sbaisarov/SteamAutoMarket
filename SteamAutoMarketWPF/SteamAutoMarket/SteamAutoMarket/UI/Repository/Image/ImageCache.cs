@@ -67,7 +67,7 @@
             }
             catch (Exception e)
             {
-                UiGlobalVariables.FileLogger.Error("Error on getting cached image", e);
+                Logger.Log.Error("Error on getting cached image", e);
                 localImageUri = null;
                 return false;
             }

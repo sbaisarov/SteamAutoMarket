@@ -148,7 +148,7 @@
         public void AppendLog(string message)
         {
             this.WorkingLogs += $"{UiLogAppender.GetCurrentDate()} - {message}{Environment.NewLine}";
-            UiGlobalVariables.FileLogger.Info(message);
+            Logger.Log.Info(message);
         }
 
         public void IncrementProgress()

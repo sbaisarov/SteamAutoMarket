@@ -11,26 +11,26 @@
     {
         public static void CriticalMessageBox(Exception e)
         {
-            UiGlobalVariables.FileLogger.Error(string.Empty, e);
+            Logger.Log.Error(string.Empty, e);
             ShowMessageBox(e.Message, "Error", MessageBoxButton.OK);
         }
 
         public static void CriticalMessageBox(string message)
         {
-            UiGlobalVariables.FileLogger.Error(message);
+            Logger.Log.Error(message);
             ShowMessageBox(message, "Error", MessageBoxButton.OK);
         }
 
         public static void CriticalMessageBox(string message, Exception e)
         {
-            UiGlobalVariables.FileLogger.Error(message, e);
-            UiGlobalVariables.FileLogger.Error(e.ToString());
+            Logger.Log.Error(message, e);
+            Logger.Log.Error(e.ToString());
             ShowMessageBox($"{message} - {e.Message}", "Error", MessageBoxButton.OK);
         }
 
         public static void InfoMessageBox(string message)
         {
-            UiGlobalVariables.FileLogger.Info(message);
+            Logger.Log.Info(message);
             ShowMessageBox(message, "Info", MessageBoxButton.OK);
         }
 

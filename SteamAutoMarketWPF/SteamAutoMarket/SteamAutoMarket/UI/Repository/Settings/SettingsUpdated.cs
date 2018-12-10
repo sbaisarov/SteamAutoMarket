@@ -19,7 +19,7 @@
         {
             if (isUpdatePlanned)
             {
-                UiGlobalVariables.FileLogger.Debug("Settings file update is already planed");
+                Logger.Log.Debug("Settings file update is already planed");
                 return;
             }
 
@@ -28,12 +28,12 @@
 
         private static void PlanSettingsUpdate()
         {
-            UiGlobalVariables.FileLogger.Debug("Settings file is planed in 5 seconds");
+            Logger.Log.Debug("Settings file is planed in 5 seconds");
             isUpdatePlanned = true;
             Thread.Sleep(TimeSpan.FromSeconds(5));
             UpdateSettings();
             isUpdatePlanned = false;
-            UiGlobalVariables.FileLogger.Debug("Settings file was updated");
+            Logger.Log.Debug("Settings file was updated");
         }
 
         private static void UpdateSettings()
@@ -46,7 +46,7 @@
             }
             catch (Exception e)
             {
-                UiGlobalVariables.FileLogger.Error("Error on message file update", e);
+                Logger.Log.Error("Error on message file update", e);
                 PlanSettingsUpdate();
             }
         }

@@ -52,7 +52,7 @@
             }
             catch (Exception e)
             {
-                UiGlobalVariables.FileLogger.Error("Error on working process", e);
+                Logger.Log.Error("Error on working process", e);
             }
         }
 

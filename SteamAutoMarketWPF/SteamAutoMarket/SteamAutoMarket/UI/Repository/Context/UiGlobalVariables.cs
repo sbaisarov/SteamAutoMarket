@@ -9,8 +9,6 @@ namespace SteamAutoMarket.UI.Repository.Context
     {
         public static LogsWindow LogsWindow { get; set; }
         
-        public static FileLogger FileLogger { get; set; }
-
         public static MainWindow MainWindow { get; set; }
 
         public static MarketRelist MarketRelist { get; set; }

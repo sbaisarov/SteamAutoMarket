@@ -136,7 +136,7 @@
             }
             catch (Exception ex)
             {
-                UiGlobalVariables.FileLogger.Error("Error on new account add", ex);
+                Logger.Log.Error("Error on new account add", ex);
                 ErrorNotify.CriticalMessageBox(ex);
             }
         }
@@ -170,7 +170,7 @@
                         try
                         {
                             var login = this.SelectSteamAccount.Login;
-                            UiGlobalVariables.FileLogger.Info($"Authentication web session for {login}");
+                            Logger.Log.Info($"Authentication web session for {login}");
                             this.LoginButtonEnabled = false;
 
                             UiGlobalVariables.SteamManager = new UiSteamManager(
@@ -178,7 +178,7 @@
                                 this.ForceSessionRefresh);
 
                             UiGlobalVariables.MainWindow.Account.DisplayName = login;
-                            UiGlobalVariables.FileLogger.Info($"{login} authentication success");
+                            Logger.Log.Info($"{login} authentication success");
                         }
                         catch (Exception ex)
                         {

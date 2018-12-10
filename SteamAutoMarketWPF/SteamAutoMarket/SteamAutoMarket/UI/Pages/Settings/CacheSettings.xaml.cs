@@ -121,20 +121,20 @@
         {
             if (UiGlobalVariables.SteamManager == null)
             {
-                UiGlobalVariables.FileLogger.Debug(
+                Logger.Log.Debug(
                     "No logged in account found. Average price cache cant be loaded. Cached items count is 0");
                 return 0;
             }
 
             try
             {
-                UiGlobalVariables.FileLogger.Debug(
+                Logger.Log.Debug(
                     $"Getting count of cached images from {UiGlobalVariables.SteamManager.AveragePriceCache.FilePath}");
                 return UiGlobalVariables.SteamManager.AveragePriceCache.Get().Count;
             }
             catch (Exception e)
             {
-                UiGlobalVariables.FileLogger.Error(e);
+                Logger.Log.Error(e);
                 return 0;
             }
         }
@@ -143,18 +143,18 @@
         {
             if (Directory.Exists(ImageCache.ImagesPath) == false)
             {
-                UiGlobalVariables.FileLogger.Debug($"Directory - {ImageCache.ImagesPath} do not exist. Cached images count is 0");
+                Logger.Log.Debug($"Directory - {ImageCache.ImagesPath} do not exist. Cached images count is 0");
                 return 0;
             }
 
             try
             {
-                UiGlobalVariables.FileLogger.Debug($"Getting count of cached images from {ImageCache.ImagesPath}");
+                Logger.Log.Debug($"Getting count of cached images from {ImageCache.ImagesPath}");
                 return Directory.EnumerateFiles(ImageCache.ImagesPath).Count();
             }
             catch (Exception e)
             {
-                UiGlobalVariables.FileLogger.Error(e);
+                Logger.Log.Error(e);
                 return 0;
             }
         }
@@ -163,19 +163,19 @@
         {
             if (File.Exists(MarketInfoCache.CacheFilePath) == false)
             {
-                UiGlobalVariables.FileLogger.Debug(
+                Logger.Log.Debug(
                     $"Directory - {MarketInfoCache.CacheFilePath} do not exist. Cached items id count is 0");
                 return 0;
             }
 
             try
             {
-                UiGlobalVariables.FileLogger.Debug($"Getting count of cached images from {MarketInfoCache.CacheFilePath}");
+                Logger.Log.Debug($"Getting count of cached images from {MarketInfoCache.CacheFilePath}");
                 return MarketInfoCache.Get().Count;
             }
             catch (Exception e)
             {
-                UiGlobalVariables.FileLogger.Error(e);
+                Logger.Log.Error(e);
                 return 0;
             }
         }
@@ -184,20 +184,20 @@
         {
             if (UiGlobalVariables.SteamManager == null)
             {
-                UiGlobalVariables.FileLogger.Debug(
+                Logger.Log.Debug(
                     "No logged in account found. Current price cache cant be loaded. Cached items count is 0");
                 return 0;
             }
 
             try
             {
-                UiGlobalVariables.FileLogger.Debug(
+                Logger.Log.Debug(
                     $"Getting count of cached images from {UiGlobalVariables.SteamManager.CurrentPriceCache.FilePath}");
                 return UiGlobalVariables.SteamManager.CurrentPriceCache.Get().Count;
             }
             catch (Exception e)
             {
-                UiGlobalVariables.FileLogger.Error(e);
+                Logger.Log.Error(e);
                 return 0;
             }
         }

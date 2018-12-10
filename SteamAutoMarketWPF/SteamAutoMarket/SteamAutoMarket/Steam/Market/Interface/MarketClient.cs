@@ -222,13 +222,13 @@ namespace SteamAutoMarket.Steam.Market.Interface
             }
             catch (Exception e)
             {
-                UiGlobalVariables.FileLogger.Debug($"Error on fetch sell orders - {e}");
+                Logger.Log.Debug($"Error on fetch sell orders - {e}");
                 throw new SteamException($"Cannot load market listings - {e.Message}");
             }
 
             if (!respDes.Success)
             {
-                UiGlobalVariables.FileLogger.Debug($"Error on fetch sell orders - response status code is {respDes.Success}");
+                Logger.Log.Debug($"Error on fetch sell orders - response status code is {respDes.Success}");
                 throw new SteamException("Cannot load market listings");
             }
 

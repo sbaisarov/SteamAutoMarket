@@ -270,7 +270,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             }
             catch (JsonException ex)
             {
-                UiGlobalVariables.FileLogger.Debug(resp);
+                Logger.Log.Debug(resp);
                 throw new SteamException($"Unknown steam response - {ex.Message}");
             }
         }
