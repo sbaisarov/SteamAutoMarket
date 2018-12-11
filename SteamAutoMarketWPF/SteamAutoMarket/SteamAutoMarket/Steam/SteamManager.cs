@@ -1,5 +1,3 @@
-using SteamAutoMarket.UI.Repository.Context;
-
 namespace SteamAutoMarket.Steam
 {
     using System;
@@ -226,18 +224,18 @@ namespace SteamAutoMarket.Steam
 
         public virtual double? GetCurrentPrice(int appid, string hashName)
         {
-            var itemPageInfo = MarketInfoCache.Get(appid, hashName);
-
-            if (itemPageInfo == null)
-            {
-                itemPageInfo = this.MarketClient.ItemPage(appid, hashName);
-                MarketInfoCache.Cache(appid, hashName, itemPageInfo);
-            }
-
             var attempts = 0;
             double? price = null;
             while (attempts < 3)
             {
+                var itemPageInfo = MarketInfoCache.Get(appid, hashName);
+
+                if (itemPageInfo == null)
+                {
+                    itemPageInfo = this.MarketClient.ItemPage(appid, hashName);
+                    MarketInfoCache.Cache(appid, hashName, itemPageInfo);
+                }
+
                 try
                 {
                     var histogram = this.MarketClient.ItemOrdersHistogramAsync(itemPageInfo.NameId).Result;
@@ -247,10 +245,8 @@ namespace SteamAutoMarket.Steam
                 }
                 catch (Exception ex)
                 {
-                    if (++attempts == 3)
-                    {
-                        Logger.Log.Warn($"Error on getting current price of {hashName}", ex.InnerException ?? ex);
-                    }
+                    attempts++;
+                    Logger.Log.Warn($"Error on getting current price of {hashName}", ex.InnerException ?? ex);
                 }
             }
 
