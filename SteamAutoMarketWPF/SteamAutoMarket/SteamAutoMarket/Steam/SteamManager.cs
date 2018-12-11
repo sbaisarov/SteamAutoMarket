@@ -1,3 +1,5 @@
+using SteamAutoMarket.UI.Repository.Context;
+
 namespace SteamAutoMarket.Steam
 {
     using System;
@@ -141,7 +143,7 @@ namespace SteamAutoMarket.Steam
             }
             catch (SteamGuardAccount.WGTokenExpiredException)
             {
-                Logger.Log.Warn("Steam web session expired");
+                Logger.Log.Debug("Steam web session expired");
                 this.UpdateSteamSession();
                 this.ConfirmTradeTransactions(offerId);
             }
@@ -214,7 +216,7 @@ namespace SteamAutoMarket.Steam
                 {
                     if (++attempts == 3)
                     {
-                        Logger.Log.Warn($"Error on getting average price of {hashName}", ex);
+                        Logger.Log.Warn($"Error on getting average price of {ex}");
                     }
                 }
             }

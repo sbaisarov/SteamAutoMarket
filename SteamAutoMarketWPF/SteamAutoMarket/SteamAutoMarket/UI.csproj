@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Core\ImageUtils.cs" />
     <Compile Include="Core\Logger.cs" />
+    <Compile Include="Core\NumberUtils.cs" />
     <Compile Include="Core\RandomUtils.cs" />
     <Compile Include="Core\ResourceUtils.cs" />
     <Compile Include="Core\StringUtils.cs" />

@@ -134,6 +134,11 @@
                                 }
 
                                 page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid);
+                                if (page == null)
+                                {
+                                    wp.AppendLog($"{appid.Name} No items found");
+                                    return;
+                                }
 
                                 this.ProcessMarketSellInventoryPage(marketSellItems, page);
 

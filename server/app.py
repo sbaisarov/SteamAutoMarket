@@ -34,12 +34,11 @@ logger.addHandler(file_handler)
 with shelve.open("database/clients") as db:
     if db.get("clients", None) is None:
         db["clients"] = {}
-    if db.get("active_devices", None) is None:
+    if db.get("active_codes", None) is None:
         db["active_codes"] = {}
 
 
 @app.route('/api/logerror', methods=['POST'])
-@auth.login_required
 def log_error():
     with open('logs/errors.txt', 'a+', encoding='utf-8') as f:
         f.write(request.data.decode('utf-8') + '\n\n')
@@ -200,7 +199,6 @@ def payment_success():
 
 @app.route('/api/valcode', methods=['POST'])
 def validate_code():
-    subs = {1: 1, 777: 30, 1998: 90, 3330: 183, 5328: 365}
     data = {key: value for key, value in request.form.items()}
     code, key = data["code"], data["key"]
     with shelve.open("database/clients", writeback=True) as db:
@@ -213,13 +211,13 @@ def validate_code():
                 key = str(uuid.uuid4())
                 clients[key] = {"subscription_time": 0, "devices": {}, "payments": []}
                 client = clients[key]
-            sub_time = subs[active_codes[code]]
+            sub_time = active_codes[code]
             client["subscription_time"] += sub_time
             del active_codes[code]  # remove code from repetative usage
             client["payments"].append(data)
             return ("<html><h2>Код активирован!</h2><p>Ваш ключ продукта: %s</p>"
-                    "<p>Скачать программу можно по ссылке: <a href=\"https://www.steambiz.store/release/SAM.zip\">"
-                    "https://www.steambiz.store/release/SAM.zip</a></p></html>" % key), 200
+                    "<p>Скачать программу можно по ссылке: <a href=\"https://www.steambiz.store/release/sam.zip\">"
+                    "https://www.steambiz.store/release/sam.zip</a></p></html>" % key), 200
         else:
             return "code was not found", 404
 

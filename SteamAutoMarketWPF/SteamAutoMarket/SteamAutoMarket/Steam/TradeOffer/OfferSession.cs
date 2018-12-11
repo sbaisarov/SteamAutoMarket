@@ -1,3 +1,5 @@
+using SteamAutoMarket.UI.Repository.Context;
+
 namespace SteamAutoMarket.Steam.TradeOffer
 {
     using System;

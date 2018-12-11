@@ -149,7 +149,15 @@ namespace SteamAutoMarket.Steam.TradeOffer
             var url = "https://"
                       + $"steamcommunity.com/my/inventory/json/{appid}/{contextid}?l=english&count={count}&start_assetid={startAssetid}";
             var response = SteamWeb.Request(url, "GET", dataString: null, cookies: cookies);
-            var inventoryRoot = JsonConvert.DeserializeObject<MyInventoryRootModel>(response);
+            MyInventoryRootModel inventoryRoot;
+            try
+            {
+                inventoryRoot = JsonConvert.DeserializeObject<MyInventoryRootModel>(response);
+            }
+            catch (JsonException ex)
+            {
+                inventoryRoot = null;
+            }
             return inventoryRoot;
         }
 
