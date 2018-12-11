@@ -1,13 +1,10 @@
-﻿using SteamAutoMarket.UI.Repository.Context;
-
-namespace SteamAutoMarket.Steam.Market.Interface
+﻿namespace SteamAutoMarket.Steam.Market.Interface
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using HtmlAgilityPack;
@@ -22,8 +19,6 @@ namespace SteamAutoMarket.Steam.Market.Interface
     using SteamAutoMarket.Steam.Market.Interface.Games;
     using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.Market.Models.Json;
-
-    using SteamKit2;
 
     public class MarketClient
     {
@@ -1083,11 +1078,8 @@ namespace SteamAutoMarket.Steam.Market.Interface
             {
                 var priceParse = priceString.Split('(')[0].Replace(".", string.Empty);
                 var currencySymbol = SteamCurrencies.Currencies[currency];
-                double.TryParse(
-                    priceParse.Replace(currencySymbol, string.Empty).Replace(
-                        ",",
-                        Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator),
-                    out price);
+                priceParse = priceParse.Replace(currencySymbol, string.Empty);
+                NumberUtils.TryParseDouble(priceParse, out price);
             }
             catch (Exception)
             {
