@@ -247,7 +247,7 @@ namespace SteamAutoMarket.Steam
                 {
                     if (++attempts == 3)
                     {
-                        Logger.Log.Warn($"Error on getting current price of {hashName}", ex);
+                        Logger.Log.Warn($"Error on getting current price of {hashName}", ex.InnerException ?? ex);
                     }
                 }
             }
