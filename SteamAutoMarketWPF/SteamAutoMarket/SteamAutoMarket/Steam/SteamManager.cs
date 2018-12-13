@@ -1,3 +1,5 @@
+using SteamAutoMarket.UI.Repository.Context;
+
 namespace SteamAutoMarket.Steam
 {
     using System;
@@ -240,34 +242,46 @@ namespace SteamAutoMarket.Steam
             return price;
         }
 
-        public virtual double? GetCurrentPrice(int appid, string hashName)
+        private ItemOrdersHistogram GetPrice(int appid, string hashName)
         {
+            var itemPageInfo = MarketInfoCache.Get(appid, hashName);
+
+            if (itemPageInfo == null)
+            {
+                itemPageInfo = this.MarketClient.ItemPage(appid, hashName);
+                MarketInfoCache.Cache(appid, hashName, itemPageInfo);
+            }
+
             var attempts = 0;
-            double? price = null;
             while (attempts < 3)
             {
-                var itemPageInfo = MarketInfoCache.Get(appid, hashName);
-
-                if (itemPageInfo == null)
-                {
-                    itemPageInfo = this.MarketClient.ItemPage(appid, hashName);
-                    MarketInfoCache.Cache(appid, hashName, itemPageInfo);
-                }
-
                 try
                 {
-                    var histogram = this.MarketClient.ItemOrdersHistogramAsync(itemPageInfo.NameId).Result;
-
-                    price = histogram.MinSellPrice;
-                    break;
+                    ItemOrdersHistogram histogram = this.MarketClient.ItemOrdersHistogramAsync(itemPageInfo.NameId).Result;
+                    return histogram;
                 }
                 catch (Exception ex)
                 {
-                    attempts++;
-                    Logger.Log.Warn($"Error on getting current price of {hashName}", ex.InnerException ?? ex);
+                    if (++attempts == 3)
+                    {
+                        break;
+                    }
                 }
             }
 
+            return null;
+        }
+
+        public virtual double? GetCurrentPrice(int appid, string hashName)
+        {
+            var histogram = GetPrice(appid, hashName);
+            if (histogram == null)
+            {
+                Logger.Log.Warn($"Error on getting current price of {hashName}");
+                return null;
+            }
+
+            var price = histogram.MinSellPrice;
             return price;
         }
 
@@ -335,6 +349,13 @@ namespace SteamAutoMarket.Steam
             {
                 throw new SteamException(message);
             }
+        }
+
+        public void BuyOnMarket(int appid, string hashName)
+        {
+            var averagePrice = GetAveragePrice(appid, hashName, 7);
+            var histogram = GetPrice(appid, hashName);
+            
         }
 
         public string SendTradeOffer(FullRgItem[] items, SteamID partnerId, string tradeToken)
@@ -443,14 +464,14 @@ namespace SteamAutoMarket.Steam
                 throw new SteamException($"No prices recorded during {daysCount} days");
             }
 
-            var average = pricesTotal.Average();
+            var average = Math.Round(pricesTotal.Average(), 2);
             var prices = new List<double>();
             var rate = 2;
+            // while less than 30% of amount of total prices
             while (prices.Count < pricesTotal.Count * 0.3)
             {
-                // while less than 30% of amount of total prices
                 prices = this.IterateHistory(days, average, rate);
-                if (prices.Count > 0) average = prices.Average();
+                if (prices.Count > 0) average = Math.Round(prices.Average(), 2);;
                 rate *= 2;
             }
 
@@ -563,7 +584,7 @@ namespace SteamAutoMarket.Steam
                         var diff = (double)(average - data.Price);
                         if (data.Price < (diff / rate) || data.Price > (diff * rate))
                         {
-                            continue;
+                            if (diff > 0) continue;
                         }
                     }
 
