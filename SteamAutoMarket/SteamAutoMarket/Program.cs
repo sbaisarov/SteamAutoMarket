@@ -6,7 +6,7 @@
     using SteamAutoMarket.CustomElements.Forms;
     using SteamAutoMarket.Utils;
 
-    internal static class Program
+    internal class Program
     {
         public static MainForm MainForm { get; set; }
 
@@ -17,19 +17,18 @@
         [STAThread]
         private static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            MainForm = new MainForm();
-            LoadingForm = new LoadingForm();
-
             try
             {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                LoadingForm = new LoadingForm();
+                MainForm = new MainForm();
                 Application.Run(MainForm);
-            }
-            catch (Exception ex)
-            {
-                Logger.Critical("Critical program exception", ex);
-            }
+             }
+             catch (Exception ex)
+             {
+                 Logger.Critical("Critical program exception", ex);
+             }
         }
     }
 }

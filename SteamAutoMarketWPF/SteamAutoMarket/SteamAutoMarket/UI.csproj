@@ -1,0 +1,622 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9CCFAEEE-7150-45A7-B39E-1E034F5ADA4B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SteamAutoMarket</RootNamespace>
+    <AssemblyName>SteamAutoMarket</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AutoUpdater\AutoUpdater.cs" />
+    <Compile Include="AutoUpdater\DownloadUpdateDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AutoUpdater\DownloadUpdateDialog.Designer.cs">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AutoUpdater\RemindLaterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AutoUpdater\RemindLaterForm.Designer.cs">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AutoUpdater\UpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AutoUpdater\UpdateForm.Designer.cs">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\ImageUtils.cs" />
+    <Compile Include="Core\Logger.cs" />
+    <Compile Include="Core\NumberUtils.cs" />
+    <Compile Include="Core\RandomUtils.cs" />
+    <Compile Include="Core\ResourceUtils.cs" />
+    <Compile Include="Core\StringUtils.cs" />
+    <Compile Include="Core\Waiter\Clock.cs" />
+    <Compile Include="Core\Waiter\Waiter.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Steam\Auth\APIEndpoints.cs" />
+    <Compile Include="Steam\Auth\AuthenticatorLinker.cs" />
+    <Compile Include="Steam\Auth\Confirmation.cs" />
+    <Compile Include="Steam\Auth\LoginResult.cs" />
+    <Compile Include="Steam\Auth\SessionData.cs" />
+    <Compile Include="Steam\Auth\SteamGuardAccount.cs" />
+    <Compile Include="Steam\Auth\SteamWeb.cs" />
+    <Compile Include="Steam\Auth\TimeAligner.cs" />
+    <Compile Include="Steam\Auth\UserLogin.cs" />
+    <Compile Include="Steam\Auth\Util.cs" />
+    <Compile Include="Steam\Market\AppIds.cs" />
+    <Compile Include="Steam\Market\Auth.cs" />
+    <Compile Include="Steam\Market\Currencies.cs" />
+    <Compile Include="Steam\Market\Enums\ECancelBuyOrderStatus.cs" />
+    <Compile Include="Steam\Market\Enums\ECancelSellOrderStatus.cs" />
+    <Compile Include="Steam\Market\Enums\ECreateBuyOrderStatus.cs" />
+    <Compile Include="Steam\Market\Enums\ELanguage.cs" />
+    <Compile Include="Steam\Market\Enums\EMarketSearchSortColumns.cs" />
+    <Compile Include="Steam\Market\Enums\EMyHistoryActionType.cs" />
+    <Compile Include="Steam\Market\Enums\ESort.cs" />
+    <Compile Include="Steam\Market\Enums\ETransactionType.cs" />
+    <Compile Include="Steam\Market\Exceptions\AuthorizationRequiredException.cs" />
+    <Compile Include="Steam\Market\Exceptions\RequestException.cs" />
+    <Compile Include="Steam\Market\Exceptions\SteamException.cs" />
+    <Compile Include="Steam\Market\Interface\Games\AvailableGames.cs" />
+    <Compile Include="Steam\Market\Interface\Games\CounterStrikeGlobalOffensive.cs" />
+    <Compile Include="Steam\Market\Interface\MarketClient.cs" />
+    <Compile Include="Steam\Market\Invertory.cs" />
+    <Compile Include="Steam\Market\MarketInfoCache.cs" />
+    <Compile Include="Steam\Market\Models\AuthProcess.cs" />
+    <Compile Include="Steam\Market\Models\CreateBuyOrder.cs" />
+    <Compile Include="Steam\Market\Models\HistoryItem.cs" />
+    <Compile Include="Steam\Market\Models\HistoryItemHover.cs" />
+    <Compile Include="Steam\Market\Models\ItemOrdersHistogram.cs" />
+    <Compile Include="Steam\Market\Models\Json\JCreateBuyOrder.cs" />
+    <Compile Include="Steam\Market\Models\Json\JDescription.cs" />
+    <Compile Include="Steam\Market\Models\Json\JInvertory.cs" />
+    <Compile Include="Steam\Market\Models\Json\JInvertoryAsset.cs" />
+    <Compile Include="Steam\Market\Models\Json\JItemOrdersHistogram.cs" />
+    <Compile Include="Steam\Market\Models\Json\JLogin.cs" />
+    <Compile Include="Steam\Market\Models\Json\JMarketAppFilter.cs" />
+    <Compile Include="Steam\Market\Models\Json\JMarketAppFilterCsgoFacets.cs" />
+    <Compile Include="Steam\Market\Models\Json\JMarketAppFilterFacet.cs" />
+    <Compile Include="Steam\Market\Models\Json\JMarketAppFilterTag.cs" />
+    <Compile Include="Steam\Market\Models\Json\JMarketSearch.cs" />
+    <Compile Include="Steam\Market\Models\Json\JMyHistory.cs" />
+    <Compile Include="Steam\Market\Models\Json\JMyListings.cs" />
+    <Compile Include="Steam\Market\Models\Json\JPriceHistory.cs" />
+    <Compile Include="Steam\Market\Models\Json\JRsa.cs" />
+    <Compile Include="Steam\Market\Models\Json\JSellItem.cs" />
+    <Compile Include="Steam\Market\Models\Json\JSuccess.cs" />
+    <Compile Include="Steam\Market\Models\Json\JSuccessInt.cs" />
+    <Compile Include="Steam\Market\Models\Json\JWalletInfo.cs" />
+    <Compile Include="Steam\Market\Models\Json\SteamStatus\JBaseService.cs" />
+    <Compile Include="Steam\Market\Models\Json\SteamStatus\JServices.cs" />
+    <Compile Include="Steam\Market\Models\Json\SteamStatus\JSteamStatus.cs" />
+    <Compile Include="Steam\Market\Models\MarketItemInfo.cs" />
+    <Compile Include="Steam\Market\Models\MarketProfile.cs" />
+    <Compile Include="Steam\Market\Models\MarketSearch.cs" />
+    <Compile Include="Steam\Market\Models\MarketSearchItem.cs" />
+    <Compile Include="Steam\Market\Models\MyListings.cs" />
+    <Compile Include="Steam\Market\Models\MyListingsOrdersItem.cs" />
+    <Compile Include="Steam\Market\Models\MyListingsSalesItem.cs" />
+    <Compile Include="Steam\Market\Models\OrderGraph.cs" />
+    <Compile Include="Steam\Market\Models\OrderGraphItem.cs" />
+    <Compile Include="Steam\Market\Models\PriceHistoryDay.cs" />
+    <Compile Include="Steam\Market\Models\PriceHistoryItem.cs" />
+    <Compile Include="Steam\Market\Models\SellListingsPage.cs" />
+    <Compile Include="Steam\Market\Models\SteamResponse.cs" />
+    <Compile Include="Steam\Market\Models\WalletInfo.cs" />
+    <Compile Include="Steam\Market\Settings.cs" />
+    <Compile Include="Steam\Market\SteamMarketHandler.cs" />
+    <Compile Include="Steam\Market\Urls.cs" />
+    <Compile Include="Steam\Market\Utils.cs" />
+    <Compile Include="Steam\SteamManager.cs" />
+    <Compile Include="Steam\SteamUtils.cs" />
+    <Compile Include="Steam\TradeOffer\Enums\TradeOfferConfirmationMethod.cs" />
+    <Compile Include="Steam\TradeOffer\Enums\TradeOfferState.cs" />
+    <Compile Include="Steam\TradeOffer\Enums\TradeState.cs" />
+    <Compile Include="Steam\TradeOffer\Exceptions\InventoryFetchException.cs" />
+    <Compile Include="Steam\TradeOffer\Exceptions\TradeException.cs" />
+    <Compile Include="Steam\TradeOffer\Inventory.cs" />
+    <Compile Include="Steam\TradeOffer\Models\AccountInfo.cs" />
+    <Compile Include="Steam\TradeOffer\Models\ApiResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\AppData.cs" />
+    <Compile Include="Steam\TradeOffer\Models\AssetDescription.cs" />
+    <Compile Include="Steam\TradeOffer\Models\CEconAsset.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Description.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullHistoryTradeItem.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullHistoryTradeOffer.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullRgItem.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullTradeItem.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Full\FullTradeOffer.cs" />
+    <Compile Include="Steam\TradeOffer\Models\InventoryResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\InventoryResult.cs" />
+    <Compile Include="Steam\TradeOffer\Models\InventoryRootModel.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Item.cs" />
+    <Compile Include="Steam\TradeOffer\Models\ItemAttribute.cs" />
+    <Compile Include="Steam\TradeOffer\Models\MyInventoryRootModel.cs" />
+    <Compile Include="Steam\TradeOffer\Models\MyRgInventory.cs" />
+    <Compile Include="Steam\TradeOffer\Models\NewTradeOfferResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Offer.cs" />
+    <Compile Include="Steam\TradeOffer\Models\OfferAccessToken.cs" />
+    <Compile Include="Steam\TradeOffer\Models\OfferResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\OffersResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\OwnerAction.cs" />
+    <Compile Include="Steam\TradeOffer\Models\RgDescription.cs" />
+    <Compile Include="Steam\TradeOffer\Models\RgInventory.cs" />
+    <Compile Include="Steam\TradeOffer\Models\Tag.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeAsset.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradedAsset.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradedCurrency.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeHistoryItem.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeHistoryResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeOfferAcceptResponse.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeOffersSummary.cs" />
+    <Compile Include="Steam\TradeOffer\Models\TradeStatusUser.cs" />
+    <Compile Include="Steam\TradeOffer\OfferSession.cs" />
+    <Compile Include="Steam\TradeOffer\TradeAssetsConverter.cs" />
+    <Compile Include="Steam\TradeOffer\TradeOffer.cs" />
+    <Compile Include="Steam\TradeOffer\TradeOfferManager.cs" />
+    <Compile Include="Steam\TradeOffer\TradeOfferWebAPI.cs" />
+    <Compile Include="Steam\TradeOffer\TradeStatus.cs" />
+    <Compile Include="UI\Models\SteamTradeHistoryItemsModel.cs" />
+    <Compile Include="UI\Models\TradeHistoryModel.cs" />
+    <Compile Include="UI\Models\NameValueModel.cs" />
+    <Compile Include="UI\Models\Enums\EAccountInfoFlags.cs" />
+    <Compile Include="UI\Models\Enums\EPriceCacheType.cs" />
+    <Compile Include="UI\Models\MarketRelistModel.cs" />
+    <Compile Include="UI\Models\CheckedModel.cs" />
+    <Compile Include="UI\Models\MarketSellModel.cs" />
+    <Compile Include="UI\Models\MarketSellProcessModel.cs" />
+    <Compile Include="UI\Models\NumericUpDownModel.cs" />
+    <Compile Include="UI\Models\PriceModel.cs" />
+    <Compile Include="UI\Models\SteamAccountHyperlinkModel.cs" />
+    <Compile Include="UI\Models\SteamAppId.cs" />
+    <Compile Include="UI\Models\SettingsSteamAccount.cs" />
+    <Compile Include="UI\Models\SteamItemsModel.cs" />
+    <Compile Include="UI\Models\SteamTradeItemsModel.cs" />
+    <Compile Include="UI\Models\ActiveTradeModel.cs" />
+    <Compile Include="UI\Pages\ActiveTrades.xaml.cs">
+      <DependentUpon>ActiveTrades.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\LogsWindow.xaml.cs">
+      <DependentUpon>LogsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\MarketRelist.xaml.cs">
+      <DependentUpon>MarketRelist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\MarketSell.xaml.cs">
+      <DependentUpon>MarketSell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Settings\CacheSettings.xaml.cs">
+      <DependentUpon>CacheSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Settings\License.xaml.cs">
+      <DependentUpon>License.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Settings\MarketSettings.xaml.cs">
+      <DependentUpon>MarketSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\SteamAccountInfo.xaml.cs">
+      <DependentUpon>SteamAccountInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\SteamAccountLogin.xaml.cs">
+      <DependentUpon>SteamAccountLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\TradeHistory.xaml.cs">
+      <DependentUpon>TradeHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\TradeSend.xaml.cs">
+      <DependentUpon>TradeSend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\WorkingProcess.xaml.cs">
+      <DependentUpon>WorkingProcess.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\WorkingProcessDataContext.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="UI\Repository\Context\UiDefaultValues.cs" />
+    <Compile Include="UI\Repository\Image\ImageCache.cs" />
+    <Compile Include="UI\Repository\Image\ImageProvider.cs" />
+    <Compile Include="UI\Repository\PriceCache\PriceCache.cs" />
+    <Compile Include="UI\Models\CachedPriceModel.cs" />
+    <Compile Include="UI\Models\SettingsModel.cs" />
+    <Compile Include="UI\Repository\Context\UiGlobalVariables.cs" />
+    <Compile Include="UI\Repository\PriceCache\PriceCacheProvider.cs" />
+    <Compile Include="UI\Repository\Settings\SettingsProvider.cs" />
+    <Compile Include="UI\Repository\Settings\SettingsUpdated.cs" />
+    <Compile Include="UI\Models\Enums\EMarketSaleType.cs" />
+    <Compile Include="UI\SteamIntegration\MarketSellStrategy.cs" />
+    <Compile Include="UI\SteamIntegration\UiSteamManager.cs" />
+    <Compile Include="UI\Utils\AppUtils.cs" />
+    <Compile Include="UI\Utils\Converter\SolidColorBrushToColorConverter.cs" />
+    <Compile Include="UI\Utils\Converter\IfNullInvisibleConverter.cs" />
+    <Compile Include="UI\Utils\Converter\InvertBooleanConverter.cs" />
+    <Compile Include="UI\Utils\Converter\IfNullVisibleConverter.cs" />
+    <Compile Include="UI\Utils\Extension\CollectionDispatcher.cs" />
+    <Compile Include="UI\Utils\Logger\ErrorNotify.cs" />
+    <Compile Include="UI\Utils\Logger\UiLogAppender.cs" />
+    <Compile Include="UI\Utils\Resources\BindingProxy.cs" />
+    <Compile Include="UI\Utils\Resources\BindingTrigger.cs" />
+    <Compile Include="UI\Utils\Resources\DynamicResourceBinding.cs" />
+    <Compile Include="UI\Utils\Resources\InlineMultiConverter.cs" />
+    <Compile Include="UI\Utils\Resources\ModernUiThemeUtils.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="UI\Pages\ActiveTrades.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\LogsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\MarketRelist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\MarketSell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\Settings\Appearance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="UI\Pages\Settings\Appearance.xaml.cs">
+      <DependentUpon>Appearance.xaml</DependentUpon>
+    </Compile>
+    <Page Include="UI\Pages\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\Settings\CacheSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\Settings\License.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\Settings\MarketSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\Settings\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="UI\Pages\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Settings\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="UI\Pages\SteamAccountInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\SteamAccountLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\TradeHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\TradeSend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\WorkingProcess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\Xceed\NumericUpDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\Xceed\DataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Resources\Svg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="AutoUpdater\packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\NoAvatar.jpg" />
+    <EmbeddedResource Include="Resources\NoAvatarSmall.jpg" />
+    <EmbeddedResource Include="Resources\Serious_Sam_Logo.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit">
+      <Version>3.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="HtmlAgilityPack">
+      <Version>1.8.10</Version>
+    </PackageReference>
+    <PackageReference Include="log4net">
+      <Version>2.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="ModernUI.WPF">
+      <Version>1.0.9</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="OxyPlot.Wpf">
+      <Version>1.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="RestSharp">
+      <Version>106.5.4</Version>
+    </PackageReference>
+    <PackageReference Include="SteamKit2">
+      <Version>2.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.da.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.de.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.es.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.fr.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.it.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.ja-JP.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.ko.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.nl.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.pl.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.pt.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.ru.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.sk.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.sv.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.tr.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.zh-tw.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.zh.resx">
+      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.da.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.de.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.es.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.fr.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.it.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.ja-JP.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.ko.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.nl.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.pl.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.pt.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.ru.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.sk.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.sv.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.tr.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.zh-tw.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.zh.resx">
+      <DependentUpon>RemindLaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.da.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.de.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.es.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.fr.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.it.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.ja-JP.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.ko.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.nl.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.pl.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.pt.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.ru.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.sk.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.sv.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.tr.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.zh-tw.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AutoUpdater\UpdateForm.zh.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\clock_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\clock_go_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\clock_play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\download_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\hand_point.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\update.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ZipExtractor.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

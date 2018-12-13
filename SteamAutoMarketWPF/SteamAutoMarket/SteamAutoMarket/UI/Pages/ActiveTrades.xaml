@@ -1,0 +1,390 @@
+﻿<UserControl x:Class="SteamAutoMarket.UI.Pages.ActiveTrades"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+             xmlns:converter="clr-namespace:SteamAutoMarket.UI.Utils.Converter"
+             xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
+             xmlns:models="clr-namespace:SteamAutoMarket.UI.Models"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:ActiveTrades}">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="B2V" />
+        <converter:IfNullVisibleConverter x:Key="IfNullVisibleConverter" />
+        <converter:IfNullInvisibleConverter x:Key="IfNullInvisibleConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="5, 5, 5, 5">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="20*" MinWidth="200" MaxWidth="250" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Margin="0, 0, 30, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <xcdg:DataGridControl Grid.Column="0"
+                                  Grid.Row="0"
+                                  Margin="5"
+                                  AutoCreateColumns="False"
+                                  Style="{StaticResource GridStyle}"
+                                  ItemsSource="{Binding Path=ActiveTradesList, Mode=OneWay}"
+                                  SelectedItem="{Binding Path=SelectedTradeOffer}">
+
+                <xcdg:DataGridControl.View>
+                    <xcdg:TableView ShowRowSelectorPane="False" />
+                </xcdg:DataGridControl.View>
+
+                <xcdg:DataGridControl.Resources>
+                    <Style TargetType="xcdg:TableViewScrollViewer">
+                        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
+                    </Style>
+                </xcdg:DataGridControl.Resources>
+
+                <xcdg:DataGridControl.Columns>
+                    <xcdg:Column Title="Id"
+                                 Width="0.7*"
+                                 FieldName="TradeId">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Sender"
+                                 Width="1*"
+                                 FieldName="Sender"
+                                 CellHorizontalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate >
+                            <ItemContainerTemplate >
+                                <TextBlock
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}"
+                                    d:DataContext="{d:DesignInstance models:SteamAccountHyperlinkModel}">
+                                    <Hyperlink NavigateUri="{Binding Path=AccountLink, Mode=OneWay}" RequestNavigate="Hyperlink_RequestNavigate" Foreground="{StaticResource InputText}">
+                                        <TextBlock Text="{Binding Path=AccountName, Mode=OneWay}"/>
+                                    </Hyperlink>
+                                </TextBlock>
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="State"
+                                 Width="0.7*"
+                                 FieldName="State"
+                                 CellHorizontalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                </xcdg:DataGridControl.Columns>
+            </xcdg:DataGridControl>
+
+            <GroupBox Grid.Column="1"
+                      Grid.Row="0"
+                      Header="My items"
+                      Margin="5,5,0,5"
+                      Padding="0"
+                      Template="{StaticResource GroupBoxTemplate}">
+
+                <xcdg:DataGridControl AutoCreateColumns="False"
+                                      Style="{StaticResource GridStyle}"
+                                      Margin="-4"
+                                      ItemsSource="{Binding Path=SelectedTradeOffer.MyItems, Mode=OneWay}"
+                                      SelectedItem="{Binding Path=SelectedTradeItem}">
+
+                    <xcdg:DataGridControl.View>
+                        <xcdg:TableView ShowRowSelectorPane="False" />
+                    </xcdg:DataGridControl.View>
+
+                    <xcdg:DataGridControl.Resources>
+                        <Style TargetType="xcdg:TableViewScrollViewer">
+                            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
+                        </Style>
+                    </xcdg:DataGridControl.Resources>
+
+                    <xcdg:DataGridControl.Columns>
+                        <xcdg:Column Title="Item name"
+                                     Width="1*"
+                                     FieldName="ItemName">
+                            <xcdg:Column.CellContentTemplate>
+                                <ItemContainerTemplate>
+                                    <TextBlock
+                                        Text="{Binding}"
+                                        Foreground="{DynamicResource ItemText}"
+                                        Background="{DynamicResource DataGridBackground}" />
+                                </ItemContainerTemplate>
+                            </xcdg:Column.CellContentTemplate>
+                        </xcdg:Column>
+
+                        <xcdg:Column Title="Count"
+                                     Width="0.5*"
+                                     FieldName="Count">
+                            <xcdg:Column.CellContentTemplate>
+                                <ItemContainerTemplate>
+                                    <TextBlock
+                                        Text="{Binding}"
+                                        Foreground="{DynamicResource ItemText}"
+                                        Background="{DynamicResource DataGridBackground}" />
+                                </ItemContainerTemplate>
+                            </xcdg:Column.CellContentTemplate>
+                        </xcdg:Column>
+
+                        <xcdg:Column Title="Type"
+                                     Width="0.7*"
+                                     FieldName="Type">
+                            <xcdg:Column.CellContentTemplate>
+                                <ItemContainerTemplate>
+                                    <TextBlock
+                                        Text="{Binding}"
+                                        Foreground="{DynamicResource ItemText}"
+                                        Background="{DynamicResource DataGridBackground}" />
+                                </ItemContainerTemplate>
+                            </xcdg:Column.CellContentTemplate>
+                        </xcdg:Column>
+
+                    </xcdg:DataGridControl.Columns>
+                </xcdg:DataGridControl>
+            </GroupBox>
+
+            <xcdg:DataGridControl x:Name="A3"
+                                  Grid.Column="0"
+                                  Grid.Row="1"
+                                  Margin="5"
+                                  AutoCreateColumns="False"
+                                  Style="{StaticResource GridStyle}"
+                                  ItemsSource="{Binding Path=SelectedTradeOffer.TradeParameters, Mode=OneWay}">
+
+                <xcdg:DataGridControl.View>
+                    <xcdg:TableView ShowRowSelectorPane="False" />
+                </xcdg:DataGridControl.View>
+
+                <xcdg:DataGridControl.Resources>
+                    <Style TargetType="xcdg:TableViewScrollViewer">
+                        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
+                    </Style>
+                </xcdg:DataGridControl.Resources>
+
+                <xcdg:DataGridControl.Columns>
+                    <xcdg:Column Title="Parameter"
+                                 Width="0.7*"
+                                 FieldName="Name">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Value"
+                                 Width="1*"
+                                 FieldName="Value">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                </xcdg:DataGridControl.Columns>
+            </xcdg:DataGridControl>
+
+            <GroupBox Grid.Column="1"
+                      Grid.Row="1"
+                      Header="Partner items"
+                      Margin="5,5,0,5"
+                      Padding="0"
+                      Template="{StaticResource GroupBoxTemplate}">
+
+                <xcdg:DataGridControl x:Name="A4"
+                                      AutoCreateColumns="False"
+                                      Style="{StaticResource GridStyle}"
+                                      Margin="-4"
+                                      ItemsSource="{Binding Path=SelectedTradeOffer.PartnerItems, Mode=OneWay}"
+                                      SelectedItem="{Binding Path=SelectedTradeItem}">
+
+                    <xcdg:DataGridControl.View>
+                        <xcdg:TableView ShowRowSelectorPane="False" />
+                    </xcdg:DataGridControl.View>
+
+                    <xcdg:DataGridControl.Resources>
+                        <Style TargetType="xcdg:TableViewScrollViewer">
+                            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
+                        </Style>
+                    </xcdg:DataGridControl.Resources>
+
+                    <xcdg:DataGridControl.Columns>
+                        <xcdg:Column Title="Item name"
+                                     Width="1*"
+                                     FieldName="ItemName">
+                            <xcdg:Column.CellContentTemplate>
+                                <ItemContainerTemplate>
+                                    <TextBlock
+                                        Text="{Binding}"
+                                        Foreground="{DynamicResource ItemText}"
+                                        Background="{DynamicResource DataGridBackground}" />
+                                </ItemContainerTemplate>
+                            </xcdg:Column.CellContentTemplate>
+                        </xcdg:Column>
+
+                        <xcdg:Column Title="Count"
+                                     Width="0.5*"
+                                     FieldName="Count">
+                            <xcdg:Column.CellContentTemplate>
+                                <ItemContainerTemplate>
+                                    <TextBlock
+                                        Text="{Binding}"
+                                        Foreground="{DynamicResource ItemText}"
+                                        Background="{DynamicResource DataGridBackground}" />
+                                </ItemContainerTemplate>
+                            </xcdg:Column.CellContentTemplate>
+                        </xcdg:Column>
+
+                        <xcdg:Column Title="Type"
+                                     Width="0.7*"
+                                     FieldName="Type">
+                            <xcdg:Column.CellContentTemplate>
+                                <ItemContainerTemplate>
+                                    <TextBlock
+                                        Text="{Binding}"
+                                        Foreground="{DynamicResource ItemText}"
+                                        Background="{DynamicResource DataGridBackground}" />
+                                </ItemContainerTemplate>
+                            </xcdg:Column.CellContentTemplate>
+                        </xcdg:Column>
+
+                    </xcdg:DataGridControl.Columns>
+                </xcdg:DataGridControl>
+            </GroupBox>
+        </Grid>
+
+        <Grid Grid.Column="1"
+              Grid.Row="0"
+              MinWidth="200"
+              MaxWidth="200">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="100" MaxHeight="400" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" MinHeight="50" MaxHeight="70" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
+                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Image Source="{Binding Path=SelectedTradeItem.Image}"
+                       Stretch="Uniform"
+                       Name="ItemImage"
+                       MaxHeight="200"
+                       Margin="0,0,0,5"/>
+
+                <Path Grid.Row="0"
+                      Style="{StaticResource Geometry}"
+                      Margin="0,0,0,5"
+                      Visibility="{Binding Path=SelectedTradeItem.Image, Converter={StaticResource IfNullVisibleConverter}}"
+                      Data="{StaticResource SvgDefaultItemImage}" />
+
+                <TextBox Grid.Row="1"
+                         Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
+                         Name="ItemDescriptionTextBox"
+                         MaxHeight="90"
+                         Background="Transparent"
+                         Foreground="{DynamicResource ItemText}"
+                         IsReadOnly="True"
+                         VerticalScrollBarVisibility="Visible"
+                         Text="{Binding Path=SelectedTradeItem.Description, Mode=OneWay}"
+                         TextWrapping="Wrap" VerticalAlignment="Center" />
+            </Grid>
+
+            <StackPanel Grid.Column="0"
+                        Grid.Row="1"
+                        Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        Margin="0,5">
+
+                <CheckBox
+                    Height="20"
+                    Margin="1"
+                    Content="Sent offers"
+                    IsChecked="{Binding Path=SentOffersCheckBox}"/>
+
+                <CheckBox
+                    Height="20"
+                    Margin="1"
+                    Content="Received offers"
+                    IsChecked="{Binding Path=ReceivedOffersCheckBox}" />
+
+                <CheckBox
+                    Height="20"
+                    Margin="1"
+                    Content="Active only"
+                    IsChecked="{Binding Path=ActiveOnlyCheckBox}" />
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+
+            </StackPanel>
+
+            <Button Grid.Row="2"
+                    Content="Load active trades"
+                    Margin="0, 10, 0, 10"
+                    Padding="0"
+                    Click="LoadActiveTradesButtonClick"
+                    IsEnabled="{Binding Path=IsLoadButtonEnabled}"/>
+
+            <Button Grid.Row="4"
+                    Content="Accept selected trade"
+                    Margin="0, 0, 0, 5"
+                    Padding="0" 
+                    Click="AcceptTradeOfferButton_OnClick"
+                    IsEnabled="{Binding Path=IsLoadButtonEnabled}"/>
+
+            <Button Grid.Row="5"
+                    Content="Decline selected trade"
+                    Margin="0, 5, 0, 0"
+                    Padding="0" 
+                    Click="DeclineTradeOfferButton_OnClick"
+                    IsEnabled="{Binding Path=IsLoadButtonEnabled}"/>
+
+        </Grid>
+
+    </Grid>
+</UserControl>
