@@ -1,4 +1,7 @@
-﻿namespace SteamAutoMarket
+﻿using System.Reflection;
+using log4net;
+
+namespace SteamAutoMarket
 {
     using System;
     using System.IO;
