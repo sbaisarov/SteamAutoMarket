@@ -15,6 +15,44 @@
 
         public static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "logs.log";
 
+        public static RollingFileAppender NewFileAppender()
+        {
+            var patternLayout = new PatternLayout { ConversionPattern = "%date [%thread] %-5level - %message%newline" };
+            patternLayout.ActivateOptions();
+
+            var appender = new RollingFileAppender
+                               {
+                                   AppendToFile = true,
+                                   File = @"Logs\log.log",
+                                   Layout = patternLayout,
+                                   MaxSizeRollBackups = 100,
+                                   MaximumFileSize = "5MB",
+                                   RollingStyle = RollingFileAppender.RollingMode.Size,
+                                   StaticLogFileName = true,
+                               };
+
+            appender.ActivateOptions();
+
+            return appender;
+        }
+
+        public static void Setup(params IAppender[] appenders)
+        {
+            var hierarchy = (Hierarchy)LogManager.GetRepository();
+
+            foreach (var appender in appenders)
+            {
+                hierarchy.Root.AddAppender(appender);
+            }
+
+            var memory = new MemoryAppender();
+            memory.ActivateOptions();
+            hierarchy.Root.AddAppender(memory);
+
+            hierarchy.Root.Level = Level.Info;
+            hierarchy.Configured = true;
+        }
+
         public static void UpdateLoggerLevel(Level newLevel)
         {
             ((Hierarchy)LogManager.GetRepository()).Root.Level = newLevel;
@@ -45,47 +83,6 @@
                     Log.Error($"{newLevel} logger value can not be handled.");
                     return;
             }
-        }
-
-        public static void Setup(params IAppender[] appenders)
-        {
-            var hierarchy = (Hierarchy)LogManager.GetRepository();
-
-            foreach (var appender in appenders)
-            {
-                hierarchy.Root.AddAppender(appender);
-            }
-
-            var memory = new MemoryAppender();
-            memory.ActivateOptions();
-            hierarchy.Root.AddAppender(memory);
-
-            hierarchy.Root.Level = Level.Info;
-            hierarchy.Configured = true;
-        }
-
-        public static RollingFileAppender NewFileAppender()
-        {
-            var patternLayout = new PatternLayout
-                                    {
-                                        ConversionPattern = "%date [%thread] %-5level - %message%newline"
-                                    };
-            patternLayout.ActivateOptions();
-
-            var appender = new RollingFileAppender
-                               {
-                                   AppendToFile = true,
-                                   File = @"Logs\log.log",
-                                   Layout = patternLayout,
-                                   MaxSizeRollBackups = 100,
-                                   MaximumFileSize = "5MB",
-                                   RollingStyle = RollingFileAppender.RollingMode.Size,
-                                   StaticLogFileName = true,
-                               };
-
-            appender.ActivateOptions();
-
-            return appender;
         }
     }
 }

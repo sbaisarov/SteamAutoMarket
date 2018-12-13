@@ -1,6 +1,4 @@
-﻿using SteamAutoMarket.UI.Repository.Context;
-
-namespace SteamAutoMarket.UI.Models
+﻿namespace SteamAutoMarket.UI.Models
 {
     using System;
     using System.ComponentModel;
@@ -115,9 +113,10 @@ namespace SteamAutoMarket.UI.Models
             }
         }
 
-        public void DownloadAvatarAsync()
+        public void DownloadAvatarAsync(bool useCached = true)
         {
-            Task.Run(() => { this.Avatar = ImageProvider.GetSmallSteamProfileImage(this.SteamId.ToString()); });
+            Task.Run(
+                () => { this.Avatar = ImageProvider.GetSmallSteamProfileImage(this.SteamId.ToString(), useCached); });
         }
 
         [NotifyPropertyChangedInvocator]

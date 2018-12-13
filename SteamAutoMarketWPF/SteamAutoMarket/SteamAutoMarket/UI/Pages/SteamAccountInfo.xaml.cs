@@ -14,7 +14,6 @@
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam.Market;
-    using SteamAutoMarket.Steam.Market.Interface;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Models.Enums;
     using SteamAutoMarket.UI.Repository.Context;

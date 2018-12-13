@@ -106,6 +106,7 @@ namespace SteamAutoMarket.Steam
             {
                 this.Currency = currency ?? this.FetchCurrency();
             }
+
             this.MarketClient.CurrentCurrency = this.Currency;
 
             Logger.Log.Debug("SteamManager was successfully initialized");
@@ -230,10 +231,8 @@ namespace SteamAutoMarket.Steam
                 }
                 catch (Exception ex)
                 {
-                    if (++attempts == 3)
-                    {
-                        Logger.Log.Warn($"Error on getting average price of {ex}");
-                    }
+                    attempts++;
+                    Logger.Log.Warn($"Error on getting average price of {hashName}", ex.InnerException ?? ex);
                 }
             }
 
@@ -384,6 +383,7 @@ namespace SteamAutoMarket.Steam
             }
 
             this.Guard.Session = this.SteamClient.Session;
+            this.Guard.Session.AddCookies(this.Cookies);
         }
 
         protected InventoryRootModel LoadInventoryPage(
@@ -393,16 +393,6 @@ namespace SteamAutoMarket.Steam
             string startAssetId = null)
         {
             return this.Inventory.LoadInventoryPage(steamId, appId, contextId, startAssetId);
-        }
-
-        private static double AbsoluluteDeviation(List<double> numberSet)
-        {
-            Array.Sort(numberSet.ToArray());
-            var mean = numberSet.Average();
-            var d = numberSet.Select(x => Math.Abs(x - mean)).OrderBy(x => x).ToArray();
-
-            var MADe = 1.483 * (d.Length % 2 == 0 ? (d[d.Length / 2 - 1] + d[d.Length / 2]) / 2.0 : d[d.Length / 2]);
-            return MADe;
         }
 
         private static string GetHwid()
@@ -424,12 +414,6 @@ namespace SteamAutoMarket.Steam
             }
 
             return uid;
-        }
-
-        private static double StandardDeviation(List<double> numberSet, double divisor)
-        {
-            var mean = numberSet.Average();
-            return Math.Sqrt(numberSet.Sum(x => Math.Pow(x - mean, 2)) / divisor);
         }
 
         private double? CountAveragePrice(List<PriceHistoryDay> history, int daysCount)

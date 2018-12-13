@@ -8,6 +8,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
 
     using Newtonsoft.Json;
 
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.Steam.Auth;
     using SteamAutoMarket.Steam.TradeOffer.Exceptions;
     using SteamAutoMarket.Steam.TradeOffer.Models;
@@ -146,8 +147,10 @@ namespace SteamAutoMarket.Steam.TradeOffer
             string startAssetid = "",
             int count = 5000)
         {
+            Logger.Log.Debug($"Loading {steamid.ConvertToUInt64()} {appid}-{contextid} inventory page");
             var url = "https://"
                       + $"steamcommunity.com/my/inventory/json/{appid}/{contextid}?l=english&count={count}&start_assetid={startAssetid}";
+
             var response = SteamWeb.Request(url, "GET", dataString: null, cookies: cookies);
             MyInventoryRootModel inventoryRoot;
             try
@@ -156,8 +159,10 @@ namespace SteamAutoMarket.Steam.TradeOffer
             }
             catch (JsonException ex)
             {
+                Logger.Log.Error("Error on inventory loading", ex);
                 inventoryRoot = null;
             }
+
             return inventoryRoot;
         }
 

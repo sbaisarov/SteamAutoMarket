@@ -144,6 +144,23 @@
             }
         }
 
+        private void MarketSellMarkSelectedItemsClick(object sender, RoutedEventArgs e)
+        {
+            for (var i = 0; i < this.MarketItemsToTradeGrid.SelectedItems.Count; i++)
+            {
+                ((SteamItemsModel)this.MarketItemsToTradeGrid.SelectedItems[i]).NumericUpDown.SetToMaximum();
+            }
+        }
+
+        private void MarketSellUnmarkAllItemsClick(object sender, RoutedEventArgs e)
+        {
+            var items = this.TradeSendItemsList.ToArray();
+            foreach (var t in items)
+            {
+                t.NumericUpDown.AmountToSell = 0;
+            }
+        }
+
         private void SendTradeOfferButtonOnClick(object sender, RoutedEventArgs e)
         {
             if (UiGlobalVariables.SteamManager == null)
@@ -186,23 +203,6 @@
                 tradeToken,
                 itemsToSell.ToArray(),
                 this.TradeSendConfirm2Fa);
-        }
-
-        private void MarketSellUnmarkAllItemsClick(object sender, RoutedEventArgs e)
-        {
-            var items = this.TradeSendItemsList.ToArray();
-            foreach (var t in items)
-            {
-                t.NumericUpDown.AmountToSell = 0;
-            }
-        }
-
-        private void MarketSellMarkSelectedItemsClick(object sender, RoutedEventArgs e)
-        {
-            for (var i = 0; i < this.MarketItemsToTradeGrid.SelectedItems.Count; i++)
-            {
-                ((SteamItemsModel)this.MarketItemsToTradeGrid.SelectedItems[i]).NumericUpDown.SetToMaximum();
-            }
         }
     }
 }

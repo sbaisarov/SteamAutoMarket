@@ -1,6 +1,4 @@
-﻿using SteamAutoMarket.Core;
-
-namespace SteamAutoMarket.UI.Repository.Context
+﻿namespace SteamAutoMarket.UI.Repository.Context
 {
     using SteamAutoMarket.UI.Pages;
     using SteamAutoMarket.UI.SteamIntegration;
@@ -8,7 +6,7 @@ namespace SteamAutoMarket.UI.Repository.Context
     public class UiGlobalVariables
     {
         public static LogsWindow LogsWindow { get; set; }
-        
+
         public static MainWindow MainWindow { get; set; }
 
         public static MarketRelist MarketRelist { get; set; }

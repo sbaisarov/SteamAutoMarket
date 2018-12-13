@@ -6,6 +6,8 @@
     using System.Net;
     using System.Threading.Tasks;
 
+    using SteamAutoMarket.Core;
+
     public class SteamWeb
     {
         /// <summary>
@@ -67,6 +69,7 @@
             NameValueCollection headers = null,
             string referer = APIEndpoints.COMMUNITY_BASE)
         {
+            Logger.Log.Debug($"Steam {method} request to {url}. Data - {dataString}. Cookies - {StringUtils.CookieContainerToString(cookies)}. Headers {StringUtils.NameValueCollectionToString(headers)}. Referer {referer}");
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
             request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";

@@ -25,7 +25,6 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
@@ -58,28 +57,15 @@
                                         Minimum="10"
                                         Maximum="200"/>
 
+
+
                     <TextBlock Grid.Row="2"
-                               Grid.Column="0"
-                               Text="To skip on sell (count)"
-                               VerticalAlignment="Center"
-                               Margin="0,0,16,12" />
-
-                    <xctk:IntegerUpDown Grid.Row="2"
-                                        Style="{StaticResource UpDown}"
-                                        Grid.Column="1"
-                                        Value="{Binding ErrorsOnSellToSkip, Mode=TwoWay}"
-                                        VerticalAlignment="Center"
-                                        Margin="0,0,0,12"
-                                        Minimum="0"
-                                        Maximum="99999"/>
-
-                    <TextBlock Grid.Row="3"
                                Grid.Column="0"
                                Text="Price load threads"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12" />
 
-                    <xctk:IntegerUpDown Grid.Row="3"
+                    <xctk:IntegerUpDown Grid.Row="2"
                                         Style="{StaticResource UpDown}"
                                         Grid.Column="1"
                                         Value="{Binding PriceLoadingThreads, Mode=TwoWay}"
@@ -88,13 +74,13 @@
                                         Minimum="1"
                                         Maximum="100"/>
 
-                    <TextBlock Grid.Row="4"
+                    <TextBlock Grid.Row="3"
                                Grid.Column="0"
                                Text="Relist threads"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12" />
 
-                    <xctk:IntegerUpDown Grid.Row="4"
+                    <xctk:IntegerUpDown Grid.Row="3"
                                         Style="{StaticResource UpDown}"
                                         Grid.Column="1"
                                         Value="{Binding RelistThreads, Mode=TwoWay}"
@@ -103,13 +89,13 @@
                                         Minimum="1"
                                         Maximum="100"/>
 
-                    <TextBlock Grid.Row="5"
+                    <TextBlock Grid.Row="4"
                                Grid.Column="0"
                                Text="Obsolete avr price (hour)"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12" />
 
-                    <xctk:IntegerUpDown Grid.Row="5"
+                    <xctk:IntegerUpDown Grid.Row="4"
                                         Style="{StaticResource UpDown}"
                                         Grid.Column="1"
                                         Value="{Binding ObsoleteAveragePrice, Mode=TwoWay}"
@@ -118,13 +104,13 @@
                                         Minimum="0"
                                         Maximum="100"/>
 
-                    <TextBlock Grid.Row="6"
+                    <TextBlock Grid.Row="5"
                                Grid.Column="0"
                                Text="Obsolete cur price (hour)"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12" />
 
-                    <xctk:IntegerUpDown Grid.Row="6"
+                    <xctk:IntegerUpDown Grid.Row="5"
                                         Style="{StaticResource UpDown}"
                                         Grid.Column="1"
                                         Value="{Binding ObsoleteCurrentPrice, Mode=TwoWay}"

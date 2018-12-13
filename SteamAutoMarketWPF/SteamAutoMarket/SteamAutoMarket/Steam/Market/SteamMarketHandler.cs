@@ -93,7 +93,8 @@
             CookieContainer cookieContainer = null,
             IDictionary<string, string> headers = null)
         {
-            Logger.Log.Debug($"{method} steam request to {url}. Referer - {referer}, params - {StringUtils.DictionaryToString(@params)}, headers - {StringUtils.DictionaryToString(headers)}");
+            Logger.Log.Debug(
+                $"{method} steam request to {url}. Referer - {referer}, params - {StringUtils.DictionaryToString(@params)}, headers - {StringUtils.DictionaryToString(headers)}");
             this.RequestsPerSecondGuard();
 
             var client = new RestClient(url) { UserAgent = this.Settings.UserAgent, Timeout = 60 * 1000 };

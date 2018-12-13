@@ -35,11 +35,11 @@
             return null;
         }
 
-        public static string GetSmallSteamProfileImage(string steamId)
+        public static string GetSmallSteamProfileImage(string steamId, bool useCache)
         {
             var fileName = $"{steamId}-small";
 
-            if (ImageCache.TryGetImage(fileName, out var localImageUri))
+            if (useCache && ImageCache.TryGetImage(fileName, out var localImageUri))
             {
                 return localImageUri;
             }

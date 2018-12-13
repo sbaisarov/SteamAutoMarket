@@ -144,7 +144,8 @@ namespace SteamAutoMarket.Properties
                             reader.Close();
                             resp.Close();
 
-                            if (!(bool)responseJson["\x73\x75\x63\x63\x65\x73\x73\x5f\x33\x32\x34\x38\x32\x33\x37\x35\x38\x32"].Value)
+                            if (!(bool)responseJson[
+                                    "\x73\x75\x63\x63\x65\x73\x73\x5f\x33\x32\x34\x38\x32\x33\x37\x35\x38\x32"].Value)
                             {
                                 Environment.Exit(0);
                             }

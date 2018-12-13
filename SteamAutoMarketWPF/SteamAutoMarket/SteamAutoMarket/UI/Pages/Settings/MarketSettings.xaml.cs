@@ -29,16 +29,6 @@
             }
         }
 
-        public int ErrorsOnSellToSkip
-        {
-            get => SettingsProvider.GetInstance().ErrorsOnSellToSkip;
-            set
-            {
-                SettingsProvider.GetInstance().ErrorsOnSellToSkip = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         public int ItemsToTwoFactorConfirm
         {
             get => SettingsProvider.GetInstance().ItemsToTwoFactorConfirm;

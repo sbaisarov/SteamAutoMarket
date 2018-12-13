@@ -32,8 +32,6 @@
 
         private int currentPriceHoursToBecomeOld = 6;
 
-        private int errorsOnSellToSkip = 20;
-
         private int itemsToTwoFactorConfirm = 100;
 
         private string loggerLevel = "INFO";
@@ -164,17 +162,6 @@
             {
                 if (this.currentPriceHoursToBecomeOld == value) return;
                 this.currentPriceHoursToBecomeOld = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int ErrorsOnSellToSkip
-        {
-            get => this.errorsOnSellToSkip;
-            set
-            {
-                if (this.errorsOnSellToSkip == value) return;
-                this.errorsOnSellToSkip = value;
                 this.OnPropertyChanged();
             }
         }

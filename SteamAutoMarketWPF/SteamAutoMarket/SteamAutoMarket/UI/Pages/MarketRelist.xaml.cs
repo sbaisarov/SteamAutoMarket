@@ -202,6 +202,14 @@
             }
         }
 
+        private void MarkSelectedItemsButtonClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in this.MarketItemsToSellGrid.SelectedItems)
+            {
+                ((MarketRelistModel)item).Checked.CheckBoxChecked = true;
+            }
+        }
+
         private void OpenItemPageButton_OnClick(object sender, RoutedEventArgs e)
         {
             try
@@ -408,6 +416,14 @@
             this.cancellationTokenSource = new CancellationTokenSource();
         }
 
+        private void UnmarkAllItemsButtonClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in this.RelistItemsList)
+            {
+                item.Checked.CheckBoxChecked = false;
+            }
+        }
+
         private void WaitForPriceLoadingSubTasksEnd()
         {
             if (this.priceLoadSubTasks.Any(t => t.IsCompleted == false))
@@ -418,22 +434,6 @@
             }
 
             this.priceLoadSubTasks.Clear();
-        }
-
-        private void MarkSelectedItemsButtonClick(object sender, RoutedEventArgs e)
-        {
-            foreach (var item in this.MarketItemsToSellGrid.SelectedItems)
-            {
-                ((MarketRelistModel)item).Checked.CheckBoxChecked = true;
-            }
-        }
-
-        private void UnmarkAllItemsButtonClick(object sender, RoutedEventArgs e)
-        {
-            foreach (var item in this.RelistItemsList)
-            {
-                item.Checked.CheckBoxChecked = false;
-            }
         }
     }
 }

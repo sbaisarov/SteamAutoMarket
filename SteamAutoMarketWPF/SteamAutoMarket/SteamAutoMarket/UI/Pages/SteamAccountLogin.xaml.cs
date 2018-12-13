@@ -179,7 +179,7 @@
 
                             if (this.ForceSessionRefresh)
                             {
-                                this.selectSteamAccount.DownloadAvatarAsync();
+                                this.selectSteamAccount.DownloadAvatarAsync(false);
                             }
 
                             UiGlobalVariables.MainWindow.Account.DisplayName = login;

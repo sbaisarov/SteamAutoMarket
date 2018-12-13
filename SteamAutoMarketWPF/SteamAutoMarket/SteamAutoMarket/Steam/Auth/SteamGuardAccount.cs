@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Net;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
@@ -127,7 +125,7 @@
             {
                 if (response == null || !response.Contains("<div>Nothing to confirm</div>"))
                 {
-                    throw new WGTokenInvalidException();
+                    throw new SteamRateLimitedException();
                 }
 
                 return new Confirmation[0];
@@ -175,7 +173,7 @@
             {
                 if (response == null || !response.Contains("<div>Nothing to confirm</div>"))
                 {
-                    throw new WGTokenInvalidException();
+                    throw new SteamRateLimitedException();
                 }
 
                 return new Confirmation[0];
@@ -409,7 +407,7 @@
         {
         }
 
-        public class WGTokenInvalidException : Exception
+        public class SteamRateLimitedException : Exception
         {
         }
 

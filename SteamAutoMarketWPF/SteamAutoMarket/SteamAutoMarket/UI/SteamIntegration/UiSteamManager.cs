@@ -1,6 +1,7 @@
 ﻿namespace SteamAutoMarket.UI.SteamIntegration
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
@@ -54,23 +55,64 @@
 
         public PriceCache CurrentPriceCache { get; set; }
 
-        public void ConfirmMarketTransactionsWorkingProcess()
+        public void ConfirmMarketTransactionsWorkingProcess(WorkingProcessDataContext wp)
         {
-            var wp = UiGlobalVariables.WorkingProcessDataContext;
+            while (true)
+            {
+                try
+                {
+                    wp.AppendLog("Fetching 2FA confirmations..");
 
-            wp.AppendLog("Fetching confirmations");
-            try
-            {
-                var confirmations = this.Guard.FetchConfirmations();
-                var marketConfirmations = confirmations
-                    .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
-                wp.AppendLog($"{marketConfirmations.Length} confirmations found. Accepting confirmations");
-                this.Guard.AcceptMultipleConfirmations(marketConfirmations);
-                wp.AppendLog($"{marketConfirmations.Length} confirmations was successfully accepted");
-            }
-            catch (Exception e)
-            {
-                wp.AppendLog($"Error on 2FA confirm - {e.Message}");
+                    var confirmations = this.Guard.FetchConfirmations().Where(
+                        item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+                    wp.AppendLog($"{confirmations.Length} confirmations found. Accepting confirmations");
+
+                    var chunks = confirmations.Select((s, i) => new { Value = s, Index = i }).GroupBy(x => x.Index / 50)
+                        .Select(grp => grp.Select(x => x.Value).ToArray()).ToArray();
+
+                    var confirmationsSuccess = new List<bool>();
+                    wp.AppendLog($"Splitting confirmation list by 50. {chunks.Length} chunks was obtained");
+                    var chunkIndex = 1;
+                    foreach (var chunk in chunks)
+                    {
+                        wp.AppendLog($"Trying to confirm {chunkIndex} confirmations chunk");
+                        var status = this.Guard.AcceptMultipleConfirmations(chunk);
+                        confirmationsSuccess.Add(status);
+
+                        wp.AppendLog(
+                            status
+                                ? $"{chunkIndex} confirmations chunk is successful"
+                                : $"{chunkIndex} confirmations chunk was failed");
+                        chunkIndex++;
+
+                        Thread.Sleep(TimeSpan.FromSeconds(2));
+                    }
+
+                    if (confirmationsSuccess.All(c => c))
+                    {
+                        wp.AppendLog($"{confirmations.Length} confirmations was successfully accepted");
+                        wp.AppendLog("Fetching 2FA confirmations to verify they are empty");
+
+                        confirmations = this.Guard.FetchConfirmations().Where(
+                            item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+                        if (confirmations.Any())
+                        {
+                            wp.AppendLog($"{confirmations.Length} confirmations found");
+                        }
+                        else
+                        {
+                            wp.AppendLog("All confirmation was successfully confirmed!");
+                            break;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    wp.AppendLog($"Error on 2FA confirm - {e.Message}");
+                }
+
+                wp.AppendLog("Waiting for 10 seconds to restart confirmation process");
+                Thread.Sleep(TimeSpan.FromSeconds(10));
             }
         }
 
@@ -109,11 +151,7 @@
                             wp.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
 
                             var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId);
-                            this.Inventory.LoadInventoryPage(
-                                this.SteamId,
-                                appid.AppId,
-                                contextId,
-                                cookies: this.Cookies);
+                            this.Inventory.LoadInventoryPage(this.SteamId, appid.AppId, contextId, this.Cookies);
                             wp.AppendLog($"{page.TotalInventoryCount} items found");
 
                             var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
@@ -249,7 +287,8 @@
 
                             for (var startItemIndex = 100; startItemIndex < totalCount; startItemIndex += 100)
                             {
-                                Logger.Log.Debug($"[LoadMarketListings] Processing listing page with start index - {startItemIndex}");
+                                Logger.Log.Debug(
+                                    $"[LoadMarketListings] Processing listing page with start index - {startItemIndex}");
                                 if (wp.CancellationToken.IsCancellationRequested)
                                 {
                                     wp.AppendLog("Market listings loading was force stopped");
@@ -374,7 +413,7 @@
             SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
         }
 
-        public void SellOnMarket(
+        public void SellOnMarketWorkingProcess(
             Task[] priceLoadTasksList,
             MarketSellProcessModel[] marketSellModels,
             MarketSellStrategy sellStrategy)
@@ -443,7 +482,6 @@
                                 }
 
                                 var packageElementIndex = 1;
-                                var errorsCount = 0;
                                 foreach (var item in marketSellModel.ItemsList)
                                 {
                                     if (wp.CancellationToken.IsCancellationRequested)
@@ -476,23 +514,15 @@
 
                                         if (ex.Message.Contains("You have too many listings pending confirmation"))
                                         {
-                                            this.ProcessTooManyListingsPendingConfirmation();
+                                            this.ProcessTooManyListingsPendingConfirmation(wp);
                                         }
 
                                         Logger.Log.Error(ex);
-                                        if (++errorsCount == SettingsProvider.GetInstance().ErrorsOnSellToSkip)
-                                        {
-                                            wp.AppendLog(
-                                                $"{SettingsProvider.GetInstance().ErrorsOnSellToSkip} fails limit on sell {marketSellModel.ItemName} reached. Skipping item.");
-                                            totalItemsCount -= marketSellModel.Count - packageElementIndex;
-                                            wp.ProgressBarMaximum = totalItemsCount;
-                                            break;
-                                        }
                                     }
 
                                     if (currentItemIndex % SettingsProvider.GetInstance().ItemsToTwoFactorConfirm == 0)
                                     {
-                                        Task.Run(() => this.ConfirmMarketTransactionsWorkingProcess());
+                                        this.ConfirmMarketTransactionsWorkingProcess(wp);
                                     }
 
                                     currentItemIndex++;
@@ -500,7 +530,7 @@
                                 }
                             }
 
-                            this.ConfirmMarketTransactionsWorkingProcess();
+                            this.ConfirmMarketTransactionsWorkingProcess(wp);
                         }
                         catch (Exception ex)
                         {
@@ -510,46 +540,6 @@
                         }
                     },
                 "Market sell");
-        }
-
-        private void ProcessTooManyListingsPendingConfirmation()
-        {
-            var wp = UiGlobalVariables.WorkingProcessDataContext;
-            wp.AppendLog(
-                "Seems market listings stacked. Forsering two factor confirmation");
-
-            var marketConfirmations = this.Guard.FetchConfirmations()?.Where(
-                    c => c.ConfType == Confirmation.ConfirmationType
-                             .MarketSellTransaction)
-                .ToArray();
-
-            wp.AppendLog($"{marketConfirmations} items to confirm was fetched");
-
-            if (marketConfirmations?.Length == 250)
-            {
-                this.Guard.AcceptMultipleConfirmations(marketConfirmations);
-            }
-            else
-            {
-                wp.AppendLog("Seems items are not in two pending confirmation list. Removing market pending listings");
-                var myListings = this.MarketClient.MyListings(this.Currency.ToString()).ConfirmationSales.ToArray();
-                foreach (var listing in myListings)
-                {
-                    try
-                    {
-                        wp.AppendLog($"Removing {listing.Name}");
-                        var result = this.MarketClient.CancelSellOrder(listing.SaleId);
-                        if (result != ECancelSellOrderStatus.Canceled)
-                        {
-                            wp.AppendLog($"ERROR on removing {listing.Name}");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        wp.AppendLog($"ERROR on removing {listing.Name} - {e.Message}");
-                    }
-                }
-            }
         }
 
         public void SendTrade(string targetSteamId, string tradeToken, FullRgItem[] itemsToTrade, bool acceptTwoFactor)
@@ -663,6 +653,43 @@
                 {
                     Logger.Log.Debug("Group not exist in items collection, creating new group");
                     marketSellListings.AddDispatch(new MarketRelistModel(group.ToArray()));
+                }
+            }
+        }
+
+        private void ProcessTooManyListingsPendingConfirmation(WorkingProcessDataContext wp)
+        {
+            wp.AppendLog("Seems market listings stacked. Forsering two factor confirmation");
+
+            var marketConfirmations = this.Guard.FetchConfirmations()?.Where(
+                c => c.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+
+            wp.AppendLog($"{marketConfirmations} items to confirm was fetched");
+
+            if (marketConfirmations?.Length == 250)
+            {
+                this.ConfirmMarketTransactionsWorkingProcess(wp);
+            }
+            else
+            {
+                wp.AppendLog(
+                    $"Seems items are {marketConfirmations?.Length ?? 0} pending confirmation. Removing market pending listings");
+                var myListings = this.MarketClient.MyListings(this.Currency.ToString()).ConfirmationSales.ToArray();
+                foreach (var listing in myListings)
+                {
+                    try
+                    {
+                        wp.AppendLog($"Removing {listing.Name}");
+                        var result = this.MarketClient.CancelSellOrder(listing.SaleId);
+                        if (result != ECancelSellOrderStatus.Canceled)
+                        {
+                            wp.AppendLog($"ERROR on removing {listing.Name}");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        wp.AppendLog($"ERROR on removing {listing.Name} - {e.Message}");
+                    }
                 }
             }
         }
