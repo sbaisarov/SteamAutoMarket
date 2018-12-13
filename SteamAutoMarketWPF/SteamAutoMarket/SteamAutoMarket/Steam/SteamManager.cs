@@ -68,6 +68,17 @@ namespace SteamAutoMarket.Steam
 
             this.Guard.Session.AddCookies(this.Cookies);
 
+            if (forceSessionRefresh)
+            {
+                this.ApiKey = this.FetchApiKey();
+                this.TradeToken = this.FetchTradeToken();
+            }
+            else
+            {
+                this.ApiKey = apiKey ?? this.FetchApiKey();
+                this.TradeToken = tradeToken ?? this.FetchTradeToken();
+            }
+
             this.ApiKey = apiKey ?? this.FetchApiKey();
             this.TradeToken = tradeToken ?? this.FetchTradeToken();
 
@@ -87,7 +98,14 @@ namespace SteamAutoMarket.Steam
             Logger.Log.Debug("Initializing SteamMarketHandler..");
             this.MarketClient = new MarketClient(market);
 
-            this.Currency = currency ?? this.FetchCurrency();
+            if (forceSessionRefresh)
+            {
+                this.Currency = this.FetchCurrency();
+            }
+            else
+            {
+                this.Currency = currency ?? this.FetchCurrency();
+            }
             this.MarketClient.CurrentCurrency = this.Currency;
 
             Logger.Log.Debug("SteamManager was successfully initialized");

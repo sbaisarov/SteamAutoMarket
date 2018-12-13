@@ -153,8 +153,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" MinHeight="40" MaxHeight="70" />
                 <RowDefinition Height="*" MinHeight="40" MaxHeight="70" />
-                <RowDefinition Height="*" MinHeight="40" MaxHeight="70" />
-                <RowDefinition Height="*" MinHeight="250"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
             </Grid.RowDefinitions>
 
@@ -229,12 +229,7 @@
                     Margin="0, 0, 0, 15"
                     Padding="0" Click="RemoveSelectedAccountButtonClick" />
 
-            <Button Grid.Column="0" Grid.Row="5"
-                    Name="RefreshSelectedAccountButton"
-                    Grid.ColumnSpan="2"
-                    Content="Refresh selected account"
-                    Margin="0, 0, 0, 15"
-                    Padding="0" />
+            <CheckBox Grid.Row="6" Grid.ColumnSpan="2" Grid.Column="0" Content="Force session refresh" IsChecked="{Binding Path=ForceSessionRefresh}"/>
 
             <Button Name="LoginSteamAccountButton"
                     IsEnabled="{Binding LoginButtonEnabled}"
