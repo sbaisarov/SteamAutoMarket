@@ -177,6 +177,11 @@
                                 this.SelectSteamAccount,
                                 this.ForceSessionRefresh);
 
+                            if (this.ForceSessionRefresh)
+                            {
+                                this.selectSteamAccount.DownloadAvatarAsync();
+                            }
+
                             UiGlobalVariables.MainWindow.Account.DisplayName = login;
                             Logger.Log.Info($"{login} authentication success");
                         }
