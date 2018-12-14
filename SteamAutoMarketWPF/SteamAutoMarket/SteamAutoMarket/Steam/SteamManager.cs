@@ -1,5 +1,3 @@
-using SteamAutoMarket.UI.Repository.Context;
-
 namespace SteamAutoMarket.Steam
 {
     using System;
@@ -146,6 +144,12 @@ namespace SteamAutoMarket.Steam
 
         protected bool IsSessionUpdated { get; set; }
 
+        public void BuyOnMarket(int appid, string hashName)
+        {
+            var averagePrice = GetAveragePrice(appid, hashName, 7);
+            var histogram = GetPrice(appid, hashName);
+        }
+
         public void ConfirmTradeTransactions(ulong offerId)
         {
             try
@@ -241,36 +245,6 @@ namespace SteamAutoMarket.Steam
             return price;
         }
 
-        private ItemOrdersHistogram GetPrice(int appid, string hashName)
-        {
-            var itemPageInfo = MarketInfoCache.Get(appid, hashName);
-
-            if (itemPageInfo == null)
-            {
-                itemPageInfo = this.MarketClient.ItemPage(appid, hashName);
-                MarketInfoCache.Cache(appid, hashName, itemPageInfo);
-            }
-
-            var attempts = 0;
-            while (attempts < 3)
-            {
-                try
-                {
-                    ItemOrdersHistogram histogram = this.MarketClient.ItemOrdersHistogramAsync(itemPageInfo.NameId).Result;
-                    return histogram;
-                }
-                catch (Exception ex)
-                {
-                    if (++attempts == 3)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            return null;
-        }
-
         public virtual double? GetCurrentPrice(int appid, string hashName)
         {
             var histogram = GetPrice(appid, hashName);
@@ -348,13 +322,6 @@ namespace SteamAutoMarket.Steam
             {
                 throw new SteamException(message);
             }
-        }
-
-        public void BuyOnMarket(int appid, string hashName)
-        {
-            var averagePrice = GetAveragePrice(appid, hashName, 7);
-            var histogram = GetPrice(appid, hashName);
-            
         }
 
         public string SendTradeOffer(FullRgItem[] items, SteamID partnerId, string tradeToken)
@@ -451,11 +418,12 @@ namespace SteamAutoMarket.Steam
             var average = Math.Round(pricesTotal.Average(), 2);
             var prices = new List<double>();
             var rate = 2;
+
             // while less than 30% of amount of total prices
             while (prices.Count < pricesTotal.Count * 0.3)
             {
                 prices = this.IterateHistory(days, average, rate);
-                if (prices.Count > 0) average = Math.Round(prices.Average(), 2);;
+                if (prices.Count > 0) average = Math.Round(prices.Average(), 2);
                 rate *= 2;
             }
 
@@ -553,6 +521,36 @@ namespace SteamAutoMarket.Steam
                     $"{this.SteamClient.SteamID.ToString()},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
+        }
+
+        private ItemOrdersHistogram GetPrice(int appid, string hashName)
+        {
+            var itemPageInfo = MarketInfoCache.Get(appid, hashName);
+
+            if (itemPageInfo == null)
+            {
+                itemPageInfo = this.MarketClient.ItemPage(appid, hashName);
+                MarketInfoCache.Cache(appid, hashName, itemPageInfo);
+            }
+
+            var attempts = 0;
+            while (attempts < 3)
+            {
+                try
+                {
+                    var histogram = this.MarketClient.ItemOrdersHistogramAsync(itemPageInfo.NameId).Result;
+                    return histogram;
+                }
+                catch (Exception ex)
+                {
+                    if (++attempts == 3)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return null;
         }
 
         private List<double> IterateHistory(IEnumerable<PriceHistoryDay> history, double? average, int rate)

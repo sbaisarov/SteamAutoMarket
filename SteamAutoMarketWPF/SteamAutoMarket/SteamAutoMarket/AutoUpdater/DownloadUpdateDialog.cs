@@ -152,7 +152,7 @@
 
         private void OnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            if (this._startedAt == default(DateTime))
+            if (this._startedAt == default)
             {
                 this._startedAt = DateTime.Now;
             }

@@ -403,11 +403,11 @@
             return confResponse.Success;
         }
 
-        public class WGTokenExpiredException : Exception
+        public class SteamRateLimitedException : Exception
         {
         }
 
-        public class SteamRateLimitedException : Exception
+        public class WGTokenExpiredException : Exception
         {
         }
 

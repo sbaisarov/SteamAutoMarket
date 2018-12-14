@@ -51,7 +51,7 @@
             }
         }
 
-        public sealed override string Text
+        public override sealed string Text
         {
             get
             {
@@ -63,7 +63,7 @@
             }
         }
 
-        private bool HideReleaseNotes { get; set; }
+        private bool HideReleaseNotes { get; }
 
         private void ButtonRemindLaterClick(object sender, EventArgs e)
         {

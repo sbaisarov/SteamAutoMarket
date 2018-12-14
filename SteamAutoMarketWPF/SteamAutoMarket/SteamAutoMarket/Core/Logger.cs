@@ -28,7 +28,7 @@
                                    MaxSizeRollBackups = 100,
                                    MaximumFileSize = "5MB",
                                    RollingStyle = RollingFileAppender.RollingMode.Size,
-                                   StaticLogFileName = true,
+                                   StaticLogFileName = true
                                };
 
             appender.ActivateOptions();

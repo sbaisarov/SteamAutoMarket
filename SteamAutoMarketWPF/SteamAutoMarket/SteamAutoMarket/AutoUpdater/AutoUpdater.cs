@@ -518,16 +518,14 @@ namespace SteamAutoMarket.AutoUpdater
 
                                 return;
                             }
-                            else
+
+                            if (ReportErrors)
                             {
-                                if (ReportErrors)
-                                {
-                                    MessageBox.Show(
-                                        Resources.UpdateUnavailableMessage,
-                                        Resources.UpdateUnavailableCaption,
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Information);
-                                }
+                                MessageBox.Show(
+                                    Resources.UpdateUnavailableMessage,
+                                    Resources.UpdateUnavailableCaption,
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
                             }
                         }
                         else

@@ -69,7 +69,9 @@
             NameValueCollection headers = null,
             string referer = APIEndpoints.COMMUNITY_BASE)
         {
-            Logger.Log.Debug($"Steam {method} request to {url}. Data - {dataString}. Cookies - {StringUtils.CookieContainerToString(cookies)}. Headers {StringUtils.NameValueCollectionToString(headers)}. Referer {referer}");
+            Logger.Log.Debug(
+                $"Steam {method} request to {url}.\nData - {dataString}.\nCookies - {StringUtils.CookieContainerToString(cookies)}.\nHeaders {StringUtils.NameValueCollectionToString(headers)}.\nReferer {referer}");
+            
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
             request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";

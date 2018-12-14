@@ -13,18 +13,18 @@
             {
                 return double.TryParse(s, out result);
             }
-            else if (s.Contains(","))
+
+            if (s.Contains(","))
             {
                 return double.TryParse(s.Replace(",", DoubleDelimiter), out result);
             }
-            else if (s.Contains("."))
+
+            if (s.Contains("."))
             {
                 return double.TryParse(s.Replace(".", DoubleDelimiter), out result);
             }
-            else
-            {
-                return double.TryParse(s, out result);
-            }
+
+            return double.TryParse(s, out result);
         }
     }
 }

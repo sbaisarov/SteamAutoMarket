@@ -14,17 +14,6 @@
 
         private const string EmptyCollectionSymbol = "''";
 
-        public static string DictionaryToString<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
-            where TKey : class where TValue : class
-        {
-            if (dictionary == null || dictionary.Count == 0)
-            {
-                return EmptyCollectionSymbol;
-            }
-
-            return string.Join(CollectionJoinSymbol, dictionary.Select(item => $"'{item.Key}:{item.Value}'"));
-        }
-
         public static string CookieContainerToString(CookieContainer cookieContainer)
         {
             if (cookieContainer == null || cookieContainer.Count == 0)
@@ -76,6 +65,17 @@
             }
 
             return string.Join(CollectionJoinSymbol, cookiesList.Select(item => item.ToString()));
+        }
+
+        public static string DictionaryToString<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
+            where TKey : class where TValue : class
+        {
+            if (dictionary == null || dictionary.Count == 0)
+            {
+                return EmptyCollectionSymbol;
+            }
+
+            return string.Join(CollectionJoinSymbol, dictionary.Select(item => $"'{item.Key}:{item.Value}'"));
         }
 
         public static string NameValueCollectionToString(NameValueCollection col)
