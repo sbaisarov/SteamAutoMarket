@@ -14,7 +14,8 @@
 
                 <ListBox ItemsSource="{Binding AccentColors}"
                          SelectedItem="{Binding SelectedAccentColor, Mode=TwoWay}"
-                         Margin="0,0,0,16">
+                         Margin="0,0,0,16"
+                         ToolTip="Global theme secondary color style">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel MaxWidth="{Binding ActualWidth, ElementName=Panel}" />
@@ -41,7 +42,7 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Theme:" VerticalAlignment="Center" Margin="0,0,16,12" />
+                    <TextBlock Text="Theme:" VerticalAlignment="Center" Margin="0,0,16,12" ToolTip="Global visual theme style" />
                     <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Themes}"
                               SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" DisplayMemberPath="DisplayName"
                               VerticalAlignment="Center" Margin="0,0,0,12" />
@@ -50,7 +51,8 @@
                                Grid.Column="0"
                                Text="Working chart (max)"
                                VerticalAlignment="Center"
-                               Margin="0,0,16,12" />
+                               Margin="0,0,16,12"
+                               ToolTip="Dots count on working process chart to optimize dots in more compact format"/>
 
                     <xctk:IntegerUpDown Grid.Row="1"
                                         TextAlignment="Left"
@@ -60,7 +62,7 @@
                                         VerticalAlignment="Center"
                                         Margin="0,0,0,12"
                                         Minimum="1"
-                                        Maximum="9999999"/>
+                                        Maximum="9999999" />
                 </Grid>
             </StackPanel>
         </ScrollViewer>

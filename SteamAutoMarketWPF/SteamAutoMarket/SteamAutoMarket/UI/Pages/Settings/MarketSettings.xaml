@@ -30,7 +30,8 @@
                     <TextBlock Grid.Row="0"
                                Text="Average price (days)"
                                VerticalAlignment="Center"
-                               Margin="0,16,16,12" />
+                               Margin="0,16,16,12"
+                               ToolTip="Number of days in the span of which all average prices will be parsed"/>
 
                     <xctk:IntegerUpDown Grid.Row="0"
                                         Style="{StaticResource UpDown}"
@@ -46,7 +47,8 @@
                                Grid.Column="0"
                                Text="To confirm 2FA (count)"
                                VerticalAlignment="Center"
-                               Margin="0,0,16,12" />
+                               Margin="0,0,16,12"
+                               ToolTip="Number of items on which two factor confirmation process will be triggered"/>
 
                     <xctk:IntegerUpDown Grid.Row="1"
                                         Style="{StaticResource UpDown}"
@@ -63,7 +65,8 @@
                                Grid.Column="0"
                                Text="Price load threads"
                                VerticalAlignment="Center"
-                               Margin="0,0,16,12" />
+                               Margin="0,0,16,12"
+                               ToolTip="Number of threads on which all prices will be loaded in parallel"/>
 
                     <xctk:IntegerUpDown Grid.Row="2"
                                         Style="{StaticResource UpDown}"
@@ -78,7 +81,8 @@
                                Grid.Column="0"
                                Text="Relist threads"
                                VerticalAlignment="Center"
-                               Margin="0,0,16,12" />
+                               Margin="0,0,16,12"
+                               ToolTip="Number of threads on which market listings will be canceled in parallel"/>
 
                     <xctk:IntegerUpDown Grid.Row="3"
                                         Style="{StaticResource UpDown}"
@@ -93,7 +97,8 @@
                                Grid.Column="0"
                                Text="Obsolete avr price (hour)"
                                VerticalAlignment="Center"
-                               Margin="0,0,16,12" />
+                               Margin="0,0,16,12"
+                               ToolTip="Number of hours to consider cached average price - actual"/>
 
                     <xctk:IntegerUpDown Grid.Row="4"
                                         Style="{StaticResource UpDown}"
@@ -108,7 +113,8 @@
                                Grid.Column="0"
                                Text="Obsolete cur price (hour)"
                                VerticalAlignment="Center"
-                               Margin="0,0,16,12" />
+                               Margin="0,0,16,12"
+                               ToolTip="Number of hours to consider cached current price - actual"/>
 
                     <xctk:IntegerUpDown Grid.Row="5"
                                         Style="{StaticResource UpDown}"

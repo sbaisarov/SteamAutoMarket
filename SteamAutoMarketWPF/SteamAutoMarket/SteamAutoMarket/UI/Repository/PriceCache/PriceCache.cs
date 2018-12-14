@@ -8,6 +8,7 @@
 
     using Newtonsoft.Json;
 
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Models;
 
     public class PriceCache
@@ -103,13 +104,20 @@
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void UpdateAll(bool force = false)
         {
-            if (++this.fileUpdateCounter > 10 && !force)
+            try
             {
-                return;
-            }
+                if (++this.fileUpdateCounter > 10 && !force)
+                {
+                    return;
+                }
 
-            this.fileUpdateCounter = 0;
-            File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.Get(), Formatting.Indented));
+                this.fileUpdateCounter = 0;
+                File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.Get().ToList(), Formatting.Indented));
+            }
+            catch (Exception e)
+            {
+                Logger.Log.Error("Error on price cache file save", e);
+            }
         }
     }
 }
