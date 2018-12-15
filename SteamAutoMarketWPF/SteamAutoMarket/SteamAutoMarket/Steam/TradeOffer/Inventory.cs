@@ -130,16 +130,17 @@ namespace SteamAutoMarket.Steam.TradeOffer
             int appid,
             int contextid,
             string startAssetid = "",
-            int count = 5000)
+            int count = 5000,
+            CookieContainer cookies = null)
         {
             var url = "https://"
                       + $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{contextid}?l=english&count={count}&start_assetid={startAssetid}";
-            var response = SteamWeb.Request(url, "GET", dataString: null);
+            var response = SteamWeb.Request(url, "GET", dataString: null, cookies: cookies);
             var inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
             return inventoryRoot;
         }
 
-        public MyInventoryRootModel LoadInventoryPage(
+        public MyInventoryRootModel LoadMyInventoryPage(
             SteamID steamid,
             int appid,
             int contextid,

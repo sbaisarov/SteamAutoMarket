@@ -88,8 +88,8 @@
                         {
                             wp.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
 
-                            var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId);
-                            this.Inventory.LoadInventoryPage(this.SteamId, appid.AppId, contextId, this.Cookies);
+                            var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, cookies: this.Cookies);
+                            
                             wp.AppendLog($"{page.TotalInventoryCount} items found");
 
                             var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
@@ -109,7 +109,7 @@
                                     return;
                                 }
 
-                                page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid);
+                                page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid, cookies: this.Cookies);
                                 if (page == null)
                                 {
                                     wp.AppendLog($"{appid.Name} No items found");
@@ -154,7 +154,7 @@
                         {
                             wp.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
 
-                            var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId);
+                            var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, cookies: this.Cookies);
                             wp.AppendLog($"{page.TotalInventoryCount} items found");
 
                             var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
@@ -174,7 +174,7 @@
                                     return;
                                 }
 
-                                page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid);
+                                page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid, cookies: this.Cookies);
 
                                 this.ProcessTradeSendInventoryPage(itemsToTrade, page, onlyUnmarketable);
 

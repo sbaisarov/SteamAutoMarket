@@ -378,9 +378,10 @@ namespace SteamAutoMarket.Steam
             SteamID steamId,
             int appId,
             int contextId,
-            string startAssetId = null)
+            string startAssetId = null,
+            CookieContainer cookies = null)
         {
-            return this.Inventory.LoadInventoryPage(steamId, appId, contextId, startAssetId);
+            return this.Inventory.LoadInventoryPage(steamId, appId, contextId, startAssetId, cookies: cookies);
         }
 
         private static string GetHwid()
