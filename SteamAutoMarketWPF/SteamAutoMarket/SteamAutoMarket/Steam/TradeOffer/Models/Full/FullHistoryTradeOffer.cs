@@ -8,6 +8,7 @@
 
     using SteamKit2;
 
+    [Serializable]
     public class FullHistoryTradeOffer
     {
         public FullHistoryTradeOffer(TradeHistoryItem historyItem, List<AssetDescription> assetDescriptions)

@@ -159,7 +159,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             }
             catch (JsonException ex)
             {
-                Logger.Log.Error("Error on inventory loading", ex);
+                Logger.Log.Error($"Error on inventory loading - {ex.Message}", ex);
                 inventoryRoot = null;
             }
 

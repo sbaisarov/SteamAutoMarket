@@ -39,8 +39,9 @@
 
                 return localFileName;
             }
-            catch
+            catch (Exception e)
             {
+                Logger.Log.Error($"Error on image {remoteUri} download - {e.Message}", e);
                 return null;
             }
         }
@@ -67,7 +68,7 @@
             }
             catch (Exception e)
             {
-                Logger.Log.Error("Error on getting cached image", e);
+                Logger.Log.Error($"Error on getting cached image - {e.Message}", e);
                 localImageUri = null;
                 return false;
             }

@@ -1,5 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -10,6 +11,7 @@
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Repository.Image;
 
+    [Serializable]
     public class SteamItemsModel : INotifyPropertyChanged
     {
         private int count;

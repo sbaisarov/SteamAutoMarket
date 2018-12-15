@@ -3,10 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Runtime.CompilerServices;
 
     using Newtonsoft.Json;
 
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.Steam.Market.Models;
 
     public class MarketInfoCache
@@ -20,17 +22,7 @@
         public static void Cache(int appid, string hashName, MarketItemInfo info)
         {
             Get()[$"{appid}-{hashName}"] = info;
-            newValuesCounter++;
             UpdateAll();
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void Clear()
-        {
-            cache.Clear();
-            File.WriteAllText(
-                CacheFilePath,
-                JsonConvert.SerializeObject(new Dictionary<string, MarketItemInfo>(), Formatting.Indented));
         }
 
         public static Dictionary<string, MarketItemInfo> Get()
@@ -42,8 +34,20 @@
 
             if (File.Exists(CacheFilePath))
             {
-                cache = JsonConvert.DeserializeObject<Dictionary<string, MarketItemInfo>>(
-                    File.ReadAllText(CacheFilePath));
+                try
+                {
+                    var cacheList = JsonConvert.DeserializeObject<List<MarketInfoCacheModel>>(
+                        File.ReadAllText(CacheFilePath));
+
+                    cache = cacheList.ToDictionary(
+                        k => k.AppIdHashName,
+                        v => new MarketItemInfo { NameId = v.NameId, PublisherFeePercent = v.PublisherFeePercent });
+                }
+                catch (Exception e)
+                {
+                    Logger.Log.Error($"Error on {CacheFilePath} processing - {e.Message}", e);
+                    cache = new Dictionary<string, MarketItemInfo>();
+                }
             }
 
             if (cache != null)
@@ -66,9 +70,10 @@
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void UpdateAll()
         {
-            if (newValuesCounter == 10)
+            if (++newValuesCounter == 20)
             {
-                File.WriteAllText(CacheFilePath, JsonConvert.SerializeObject(Get(), Formatting.Indented));
+                var cacheList = Get().ToList().Select(e => new MarketInfoCacheModel(e.Key, e.Value));
+                File.WriteAllText(CacheFilePath, JsonConvert.SerializeObject(cacheList, Formatting.Indented));
                 newValuesCounter = 0;
             }
         }

@@ -6,6 +6,8 @@
     using System.Net;
     using System.Threading.Tasks;
 
+    using log4net.Core;
+
     using SteamAutoMarket.Core;
 
     public class SteamWeb
@@ -69,9 +71,12 @@
             NameValueCollection headers = null,
             string referer = APIEndpoints.COMMUNITY_BASE)
         {
-            Logger.Log.Debug(
-                $"Steam {method} request to {url}.\nData - {dataString}.\nCookies - {StringUtils.CookieContainerToString(cookies)}.\nHeaders {StringUtils.NameValueCollectionToString(headers)}.\nReferer {referer}");
-            
+            if (Logger.CurrentLogLevel == Level.Debug)
+            {
+                Logger.Log.Debug(
+                    $"Steam {method} request to {url}.\nData - {dataString}.\nCookies - {StringUtils.CookieContainerToString(cookies)}.\nHeaders {StringUtils.NameValueCollectionToString(headers)}.\nReferer {referer}");
+            }
+
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
             request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";

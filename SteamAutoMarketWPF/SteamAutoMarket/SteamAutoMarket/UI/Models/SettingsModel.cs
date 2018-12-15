@@ -1,5 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -13,6 +14,7 @@
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
 
+    [Serializable]
     [WpfBinding]
     public class SettingsModel
     {

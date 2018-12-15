@@ -1,5 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -12,6 +13,7 @@
     using SteamAutoMarket.UI.Repository.Image;
     using SteamAutoMarket.UI.SteamIntegration;
 
+    [Serializable]
     public class MarketRelistModel : INotifyPropertyChanged
     {
         private double? averagePrice;

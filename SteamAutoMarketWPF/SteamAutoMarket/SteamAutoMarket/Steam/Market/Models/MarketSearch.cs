@@ -1,7 +1,9 @@
 ﻿namespace SteamAutoMarket.Steam.Market.Models
 {
+    using System;
     using System.Collections.Generic;
 
+    [Serializable]
     public class MarketSearch
     {
         public MarketSearch()

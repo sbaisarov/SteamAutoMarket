@@ -1,10 +1,12 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
     using SteamAutoMarket.Properties;
 
+    [Serializable]
     public class CheckedModel : INotifyPropertyChanged
     {
         private bool checkBoxChecked;

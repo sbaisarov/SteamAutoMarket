@@ -4,13 +4,14 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
 
     using Newtonsoft.Json;
 
     using SteamAutoMarket.Core;
-    using SteamAutoMarket.UI.Models;
 
+    [Obfuscation(Exclude = true)]
     public class PriceCache
     {
         private readonly int hoursToBecomeOld;
@@ -61,10 +62,22 @@
 
             if (File.Exists(this.FilePath))
             {
-                this.cache = JsonConvert.DeserializeObject<Dictionary<string, CachedPriceModel>>(
-                    File.ReadAllText(this.FilePath));
+                try
+                {
+                    var cacheList = JsonConvert.DeserializeObject<List<PriceCacheModel>>(
+                        File.ReadAllText(this.FilePath));
 
-                this.UpdateAll();
+                    this.cache = cacheList.ToDictionary(
+                        k => k.MarketHashName,
+                        v => new CachedPriceModel(v.ParseTime, v.Price));
+
+                    this.UpdateAll();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log.Error($"Error on {this.FilePath} processing - {ex.Message}", ex);
+                    this.cache = new Dictionary<string, CachedPriceModel>();
+                }
             }
             else
             {
@@ -95,7 +108,6 @@
         public void Uncache(string hashName)
         {
             this.Get().Remove(hashName);
-            this.fileUpdateCounter += 1;
             this.UpdateAll();
         }
 
@@ -106,13 +118,19 @@
         {
             try
             {
-                if (++this.fileUpdateCounter > 10 && !force)
+                if (++this.fileUpdateCounter > 20 && !force)
                 {
                     return;
                 }
 
                 this.fileUpdateCounter = 0;
-                File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.Get().ToList(), Formatting.Indented));
+                var cacheList = this.cache.ToList().Select(
+                    e => new PriceCacheModel
+                             {
+                                 MarketHashName = e.Key, Price = e.Value.Price, ParseTime = e.Value.ParseTime
+                             });
+
+                File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(cacheList, Formatting.Indented));
             }
             catch (Exception e)
             {

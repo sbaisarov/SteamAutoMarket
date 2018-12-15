@@ -1,5 +1,8 @@
 ﻿namespace SteamAutoMarket.Steam.TradeOffer.Models.Full
 {
+    using System;
+
+    [Serializable]
     public class FullHistoryTradeItem
     {
         public FullHistoryTradeItem(

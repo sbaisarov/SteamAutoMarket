@@ -1,5 +1,8 @@
 ﻿namespace SteamAutoMarket.Steam.Market.Models
 {
+    using System;
+
+    [Serializable]
     public class OrderGraphItem
     {
         public int Count { get; set; }

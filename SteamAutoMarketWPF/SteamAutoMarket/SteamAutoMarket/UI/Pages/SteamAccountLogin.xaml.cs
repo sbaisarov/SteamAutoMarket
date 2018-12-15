@@ -136,7 +136,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Log.Error("Error on new account add", ex);
+                Logger.Log.Error($"Error on new account add - {ex.Message}", ex);
                 ErrorNotify.CriticalMessageBox(ex);
             }
         }

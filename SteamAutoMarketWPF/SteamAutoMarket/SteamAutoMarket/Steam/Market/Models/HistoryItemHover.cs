@@ -1,5 +1,8 @@
 ﻿namespace SteamAutoMarket.Steam.Market.Models
 {
+    using System;
+
+    [Serializable]
     public class HistoryItemHover
     {
         public int AppId { get; set; }

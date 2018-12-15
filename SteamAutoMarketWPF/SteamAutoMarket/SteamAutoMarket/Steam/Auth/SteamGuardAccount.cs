@@ -9,6 +9,7 @@
 
     using Newtonsoft.Json;
 
+    [Serializable]
     public class SteamGuardAccount
     {
         private static readonly byte[] steamGuardCodeTranslations =

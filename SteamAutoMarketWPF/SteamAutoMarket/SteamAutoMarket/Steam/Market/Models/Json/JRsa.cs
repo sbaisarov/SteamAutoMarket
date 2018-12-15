@@ -1,7 +1,10 @@
 ﻿namespace SteamAutoMarket.Steam.Market.Models.Json
 {
+    using System;
+
     using Newtonsoft.Json;
 
+    [Serializable]
     public class JRsa : JSuccess
     {
         [JsonProperty("publickey_exp")]

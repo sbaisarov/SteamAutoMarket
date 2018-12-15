@@ -146,8 +146,8 @@ namespace SteamAutoMarket.Steam
 
         public void BuyOnMarket(int appid, string hashName)
         {
-            var averagePrice = GetAveragePrice(appid, hashName, 7);
-            var histogram = GetPrice(appid, hashName);
+            var averagePrice = this.GetAveragePrice(appid, hashName, 7);
+            var histogram = this.GetPrice(appid, hashName);
         }
 
         public void ConfirmTradeTransactions(ulong offerId)
@@ -247,7 +247,7 @@ namespace SteamAutoMarket.Steam
 
         public virtual double? GetCurrentPrice(int appid, string hashName)
         {
-            var histogram = GetPrice(appid, hashName);
+            var histogram = this.GetPrice(appid, hashName);
             if (histogram == null)
             {
                 Logger.Log.Warn($"Error on getting current price of {hashName}");
@@ -430,24 +430,6 @@ namespace SteamAutoMarket.Steam
             return average;
         }
 
-        // public async Task ConfirmMarketTransactions()
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Fetching confirmations");
-        // try
-        // {
-        // var confirmations = this.Guard.FetchConfirmations();
-        // var marketConfirmations = confirmations
-        // .Where(item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Accepting confirmations");
-        // this.Guard.AcceptMultipleConfirmations(marketConfirmations);
-        // }
-        // catch (SteamGuardAccount.WGTokenExpiredException)
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo("Session expired. Updating...");
-        // this.Guard.RefreshSession();
-        // await this.ConfirmMarketTransactions();
-        // }
-        // }
         private string FetchApiKey()
         {
             this.IsSessionUpdated = true;
@@ -543,6 +525,7 @@ namespace SteamAutoMarket.Steam
                 }
                 catch (Exception ex)
                 {
+                    Logger.Log.Debug($"Error on getting price - {appid}-{hashName} - {ex.Message}", ex);
                     if (++attempts == 3)
                     {
                         break;
@@ -576,52 +559,5 @@ namespace SteamAutoMarket.Steam
 
             return prices;
         }
-
-        // public void CancelSellOrder(List<MyListingsSalesItem> itemsToCancel)
-        // {
-        // var index = 1;
-        // const int ThreadsCount = 2;
-        // var semaphore = new Semaphore(ThreadsCount, ThreadsCount);
-        // var timeTrackCount = SavedSettings.Get().Settings2FaItemsToConfirm;
-        // var timeTracker = new SellTimeTracker(timeTrackCount);
-
-        // PriceLoader.StopAll();
-        // PriceLoader.WaitForLoadFinish();
-
-        // foreach (var item in itemsToCancel)
-        // {
-        // try
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo(
-        // $"[{index++}/{itemsToCancel.Count}] Canceling - '{item.Name}'");
-
-        // var realIndex = index;
-        // semaphore.WaitOne();
-
-        // Task.Run(
-        // () =>
-        // {
-        // var response = this.MarketClient.CancelSellOrder(item.SaleId);
-
-        // if (response == ECancelSellOrderStatus.Fail)
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo(
-        // $"[{realIndex}/{itemsToCancel.Count}] Error on market cancel item");
-        // }
-
-        // if (realIndex % timeTrackCount == 0)
-        // {
-        // timeTracker.TrackTime(itemsToCancel.Count - realIndex);
-        // }
-
-        // semaphore.Release();
-        // });
-        // }
-        // catch (Exception e)
-        // {
-        // Program.WorkingProcessForm.AppendWorkingProcessInfo(
-        // $"[{index++}/{itemsToCancel.Count}] Error on cancel market item - {e.Message}");
-        // }
-        // }
     }
 }

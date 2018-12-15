@@ -1,11 +1,13 @@
 ﻿namespace SteamAutoMarket.Steam.TradeOffer.Models
 {
+    using System;
     using System.Collections.Generic;
 
     using Newtonsoft.Json;
 
     using SteamAutoMarket.Steam.TradeOffer.Enums;
 
+    [Serializable]
     public class TradeHistoryItem
     {
         [JsonProperty("assets_given")]

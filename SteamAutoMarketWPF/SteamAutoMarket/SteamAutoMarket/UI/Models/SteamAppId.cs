@@ -1,5 +1,8 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
+
+    [Serializable]
     public class SteamAppId
     {
         public SteamAppId()

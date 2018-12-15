@@ -1,5 +1,8 @@
 ﻿namespace SteamAutoMarket.Steam.Market.Models
 {
+    using System;
+
+    [Serializable]
     public class MarketProfile
     {
         public MarketProfile()

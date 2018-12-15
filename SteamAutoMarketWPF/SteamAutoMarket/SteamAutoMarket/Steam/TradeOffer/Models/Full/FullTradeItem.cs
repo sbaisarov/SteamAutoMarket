@@ -1,8 +1,10 @@
 ﻿namespace SteamAutoMarket.Steam.TradeOffer.Models.Full
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    [Serializable]
     public class FullTradeItem
     {
         public CEconAsset Asset { get; set; }

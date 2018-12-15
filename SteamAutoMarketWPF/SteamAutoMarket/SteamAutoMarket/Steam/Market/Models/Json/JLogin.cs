@@ -1,7 +1,10 @@
 ﻿namespace SteamAutoMarket.Steam.Market.Models.Json
 {
+    using System;
+
     using Newtonsoft.Json;
 
+    [Serializable]
     public class JLogin : JSuccess
     {
         [JsonProperty("bad_captcha")]

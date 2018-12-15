@@ -1,7 +1,9 @@
 ﻿namespace SteamAutoMarket.Steam.Auth
 {
+    using System;
     using System.Net;
 
+    [Serializable]
     public class SessionData
     {
         public string OAuthToken { get; set; }

@@ -6,6 +6,7 @@
 
     using SteamAutoMarket.Properties;
 
+    [Serializable]
     public class PriceModel : INotifyPropertyChanged, IComparable
     {
         private double? price;

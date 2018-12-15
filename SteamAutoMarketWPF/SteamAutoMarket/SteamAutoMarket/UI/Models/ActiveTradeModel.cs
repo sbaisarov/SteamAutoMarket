@@ -1,5 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -7,6 +8,7 @@
     using SteamAutoMarket.Steam;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
 
+    [Serializable]
     public class ActiveTradeModel
     {
         public ActiveTradeModel(FullTradeOffer offer)

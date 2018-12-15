@@ -1,7 +1,10 @@
 ﻿namespace SteamAutoMarket.Steam.Market.Models.Json.SteamStatus
 {
+    using System;
+
     using Newtonsoft.Json;
 
+    [Serializable]
     public class JServices
     {
         [JsonProperty("cms")]

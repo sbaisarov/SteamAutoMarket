@@ -24,7 +24,6 @@
         public static void CriticalMessageBox(string message, Exception e)
         {
             Logger.Log.Error(message, e);
-            Logger.Log.Error(e.ToString());
             ShowMessageBox($"{message} - {e.Message}", "Error", MessageBoxButton.OK);
         }
 

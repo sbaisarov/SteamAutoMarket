@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@
     using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.Market.Models.Json;
 
+    [Obfuscation(Exclude = true)]
     public class MarketClient
     {
         public const int PublisherFeePercentDefault = 10;

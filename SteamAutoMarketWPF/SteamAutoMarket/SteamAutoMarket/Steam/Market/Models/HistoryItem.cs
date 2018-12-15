@@ -5,6 +5,7 @@
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Models.Json;
 
+    [Serializable]
     public class HistoryItem
     {
         public EMyHistoryActionType ActionType { get; set; }

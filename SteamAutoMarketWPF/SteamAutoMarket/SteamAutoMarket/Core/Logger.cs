@@ -26,7 +26,7 @@
                                    File = @"Logs\log.log",
                                    Layout = patternLayout,
                                    MaxSizeRollBackups = 100,
-                                   MaximumFileSize = "5MB",
+                                   MaximumFileSize = "10MB",
                                    RollingStyle = RollingFileAppender.RollingMode.Size,
                                    StaticLogFileName = true
                                };
@@ -84,5 +84,7 @@
                     return;
             }
         }
+
+        public static Level CurrentLogLevel => ((Hierarchy)LogManager.GetRepository()).Root.Level;
     }
 }

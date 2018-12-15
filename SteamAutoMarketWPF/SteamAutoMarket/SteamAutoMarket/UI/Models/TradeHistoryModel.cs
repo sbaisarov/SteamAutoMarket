@@ -1,10 +1,12 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
 
+    [Serializable]
     public class TradeHistoryModel
     {
         public TradeHistoryModel(FullHistoryTradeOffer offer)

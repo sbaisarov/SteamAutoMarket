@@ -1,9 +1,12 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
+
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Models.Enums;
     using SteamAutoMarket.UI.SteamIntegration;
 
+    [Serializable]
     public class MarketSellModel : SteamItemsModel
     {
         private double? averagePrice;

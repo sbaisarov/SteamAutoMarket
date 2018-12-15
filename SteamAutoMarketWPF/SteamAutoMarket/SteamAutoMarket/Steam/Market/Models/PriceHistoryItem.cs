@@ -2,6 +2,7 @@
 {
     using System;
 
+    [Serializable]
     public class PriceHistoryItem
     {
         public int Count { get; set; }

@@ -148,6 +148,7 @@
     <Compile Include="Steam\Market\Models\Json\SteamStatus\JBaseService.cs" />
     <Compile Include="Steam\Market\Models\Json\SteamStatus\JServices.cs" />
     <Compile Include="Steam\Market\Models\Json\SteamStatus\JSteamStatus.cs" />
+    <Compile Include="Steam\Market\Models\MarketInfoCacheModel.cs" />
     <Compile Include="Steam\Market\Models\MarketItemInfo.cs" />
     <Compile Include="Steam\Market\Models\MarketProfile.cs" />
     <Compile Include="Steam\Market\Models\MarketSearch.cs" />
@@ -274,13 +275,15 @@
     <Compile Include="UI\Repository\Image\ImageCache.cs" />
     <Compile Include="UI\Repository\Image\ImageProvider.cs" />
     <Compile Include="UI\Repository\PriceCache\PriceCache.cs" />
-    <Compile Include="UI\Models\CachedPriceModel.cs" />
+    <Compile Include="UI\Repository\PriceCache\CachedPriceModel.cs" />
     <Compile Include="UI\Models\SettingsModel.cs" />
     <Compile Include="UI\Repository\Context\UiGlobalVariables.cs" />
+    <Compile Include="UI\Repository\PriceCache\PriceCacheModel.cs" />
     <Compile Include="UI\Repository\PriceCache\PriceCacheProvider.cs" />
     <Compile Include="UI\Repository\Settings\SettingsProvider.cs" />
     <Compile Include="UI\Repository\Settings\SettingsUpdated.cs" />
     <Compile Include="UI\Models\Enums\EMarketSaleType.cs" />
+    <Compile Include="UI\SteamIntegration\MarketSellUtils.cs" />
     <Compile Include="UI\SteamIntegration\MarketSellStrategy.cs" />
     <Compile Include="UI\SteamIntegration\UiSteamManager.cs" />
     <Compile Include="UI\Utils\AppUtils.cs" />

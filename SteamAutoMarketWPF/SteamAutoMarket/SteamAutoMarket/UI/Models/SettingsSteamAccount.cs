@@ -15,6 +15,7 @@
 
     using SteamKit2;
 
+    [Serializable]
     public class SettingsSteamAccount : INotifyPropertyChanged
     {
         private string avatar = ResourceUtils.GetResourceImageUri("NoAvatarSmall.jpg");
@@ -41,8 +42,8 @@
             }
             catch (Exception e)
             {
-                Logger.Log.Error("Error on mafile process " + e);
-                throw new ArgumentException($"Error on mafile process - {e.Message}");
+                Logger.Log.Error($"Error on mafile process - {e.Message}", e);
+                throw;
             }
 
             this.SteamId = this.Mafile?.Session?.SteamID;

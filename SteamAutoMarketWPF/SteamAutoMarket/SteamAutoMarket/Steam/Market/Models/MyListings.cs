@@ -1,7 +1,9 @@
 ﻿namespace SteamAutoMarket.Steam.Market.Models
 {
+    using System;
     using System.Collections.Generic;
 
+    [Serializable]
     public class MyListings
     {
         public List<MyListingsSalesItem> ConfirmationSales { get; set; }

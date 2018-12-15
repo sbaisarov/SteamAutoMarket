@@ -97,62 +97,70 @@ namespace SteamAutoMarket.Properties
             Task.Run(
                 () =>
                     {
-                        try
+                        while (true)
                         {
-                            Thread.Sleep(3000);
-                            var code = File.ReadAllText("\x6c\x69\x63\x65\x6e\x73\x65\x2e\x74\x78\x74");
-                            var wb = (HttpWebRequest)WebRequest.Create(
-                                "\u0068\u0074\u0074\u0070\u0073\u003a\u002f\u002f\u0077\u0077\u0077\u002e\u0073\u0074\u0065\u0061\u006d\u0062\u0069\u007a\u002e\u0073\u0074\u006f\u0072\u0065\u002f\u0061\u0070\u0069\u002f\u0063\u0068\u0065\u0063\u006b\u006c\u0069\u0063\u0065\u006e\u0073\u0065");
-                            wb.Method = "POST";
-                            wb.ContentType = "application/x-www-form-urlencoded";
-                            var data = new NameValueCollection { ["key"] = code };
-
-                            var mc = new ManagementClass("win32_processor");
-                            var moc = mc.GetInstances();
-                            var uid = moc.Cast<ManagementObject>().Select(x => x.Properties["processorID"])
-                                .FirstOrDefault()?.Value.ToString();
-
-                            var dsk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + "C" + @":""");
-                            dsk.Get();
-                            uid += dsk["VolumeSerialNumber"].ToString();
-
-                            data["hwid"] = uid;
-                            var postDataString = string.Empty;
-                            foreach (string key in data)
+                            try
                             {
-                                postDataString += key + "=" + data[key] + "&";
-                            }
+                                Thread.Sleep(TimeSpan.FromSeconds(2));
+                                var code = File.ReadAllText("\x6c\x69\x63\x65\x6e\x73\x65\x2e\x74\x78\x74");
+                                var wb = (HttpWebRequest)WebRequest.Create(
+                                    "\u0068\u0074\u0074\u0070\u0073\u003a\u002f\u002f\u0077\u0077\u0077\u002e\u0073\u0074\u0065\u0061\u006d\u0062\u0069\u007a\u002e\u0073\u0074\u006f\u0072\u0065\u002f\u0061\u0070\u0069\u002f\u0063\u0068\u0065\u0063\u006b\u006c\u0069\u0063\u0065\u006e\u0073\u0065");
+                                wb.Method = "POST";
+                                wb.ContentType = "application/x-www-form-urlencoded";
+                                var data = new NameValueCollection { ["key"] = code };
 
-                            postDataString = postDataString.Trim("&".ToCharArray());
-                            var postData = Encoding.UTF8.GetBytes(postDataString);
-                            var dataStream = wb.GetRequestStream();
-                            dataStream.Write(postData, 0, postData.Length);
-                            dataStream.Close();
-                            var resp = wb.GetResponse();
-                            if (((HttpWebResponse)resp).StatusDescription != "OK")
+                                var mc = new ManagementClass("win32_processor");
+                                var moc = mc.GetInstances();
+                                var uid = moc.Cast<ManagementObject>().Select(x => x.Properties["processorID"])
+                                    .FirstOrDefault()?.Value.ToString();
+
+                                var dsk = new ManagementObject(@"win32_logicaldisk.deviceid=""" + "C" + @":""");
+                                dsk.Get();
+                                uid += dsk["VolumeSerialNumber"].ToString();
+
+                                data["hwid"] = uid;
+                                var postDataString = string.Empty;
+                                foreach (string key in data)
+                                {
+                                    postDataString += key + "=" + data[key] + "&";
+                                }
+
+                                postDataString = postDataString.Trim("&".ToCharArray());
+                                var postData = Encoding.UTF8.GetBytes(postDataString);
+                                var dataStream = wb.GetRequestStream();
+                                dataStream.Write(postData, 0, postData.Length);
+                                dataStream.Close();
+                                var resp = wb.GetResponse();
+                                if (((HttpWebResponse)resp).StatusDescription != "OK")
+                                {
+                                    Environment.Exit(0);
+                                }
+
+                                dataStream = resp.GetResponseStream();
+                                if (dataStream == null) Environment.Exit(0);
+                                var reader = new StreamReader(dataStream);
+
+                                dynamic responseJson = JsonConvert.DeserializeObject(
+                                    Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(reader.ReadToEnd())));
+                                dataStream.Close();
+                                reader.Close();
+                                resp.Close();
+
+                                if (!(bool)responseJson[
+                                            "\x73\x75\x63\x63\x65\x73\x73\x5f\x33\x32\x34\x38\x32\x33\x37\x35\x38\x32"]
+                                        .Value)
+                                {
+                                    Environment.Exit(0);
+                                }
+                            }
+                            catch
                             {
                                 Environment.Exit(0);
                             }
-
-                            dataStream = resp.GetResponseStream();
-                            if (dataStream == null) Environment.Exit(0);
-                            var reader = new StreamReader(dataStream);
-
-                            dynamic responseJson = JsonConvert.DeserializeObject(
-                                Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(reader.ReadToEnd())));
-                            dataStream.Close();
-                            reader.Close();
-                            resp.Close();
-
-                            if (!(bool)responseJson[
-                                    "\x73\x75\x63\x63\x65\x73\x73\x5f\x33\x32\x34\x38\x32\x33\x37\x35\x38\x32"].Value)
+                            finally
                             {
-                                Environment.Exit(0);
+                                Thread.Sleep(TimeSpan.FromHours(2));
                             }
-                        }
-                        catch
-                        {
-                            Environment.Exit(0);
                         }
                     });
         }

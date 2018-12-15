@@ -46,7 +46,7 @@
             }
             catch (Exception e)
             {
-                Logger.Log.Error("Error on message file update", e);
+                Logger.Log.Error($"Error on settings file update - {e.Message}", e);
                 PlanSettingsUpdate();
             }
         }

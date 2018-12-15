@@ -1,11 +1,13 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
     using System.Linq;
 
     using SteamAutoMarket.UI.Repository.Settings;
 
     using SteamKit2;
 
+    [Serializable]
     public class SteamAccountHyperlinkModel
     {
         public SteamAccountHyperlinkModel(SteamID steamId)

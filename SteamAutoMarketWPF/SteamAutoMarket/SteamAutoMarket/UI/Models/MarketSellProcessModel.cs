@@ -1,5 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -7,6 +8,7 @@
     using SteamAutoMarket.UI.Models.Enums;
     using SteamAutoMarket.UI.SteamIntegration;
 
+    [Serializable]
     public class MarketSellProcessModel
     {
         public MarketSellProcessModel(MarketSellModel marketSellModel)

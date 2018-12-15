@@ -1,5 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
@@ -11,6 +12,7 @@
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Repository.Image;
 
+    [Serializable]
     public class SteamTradeHistoryItemsModel : INotifyPropertyChanged
     {
         private string image;

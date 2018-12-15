@@ -1,7 +1,10 @@
 ﻿namespace SteamAutoMarket.Steam.TradeOffer.Models
 {
+    using System;
+
     using Newtonsoft.Json;
 
+    [Serializable]
     public class NewTradeOfferResponse
     {
         public bool Status { get; set; }

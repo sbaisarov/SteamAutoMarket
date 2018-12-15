@@ -4,6 +4,7 @@
 
     using Newtonsoft.Json;
 
+    [Serializable]
     public class TradeAsset : IEquatable<TradeAsset>
     {
         [JsonProperty("amount")]
