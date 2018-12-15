@@ -15,6 +15,8 @@
 
         public static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "logs.log";
 
+        public static Level CurrentLogLevel => ((Hierarchy)LogManager.GetRepository()).Root.Level;
+
         public static RollingFileAppender NewFileAppender()
         {
             var patternLayout = new PatternLayout { ConversionPattern = "%date [%thread] %-5level - %message%newline" };
@@ -84,7 +86,5 @@
                     return;
             }
         }
-
-        public static Level CurrentLogLevel => ((Hierarchy)LogManager.GetRepository()).Root.Level;
     }
 }

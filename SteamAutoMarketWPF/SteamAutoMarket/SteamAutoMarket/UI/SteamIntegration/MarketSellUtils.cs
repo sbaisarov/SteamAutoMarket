@@ -19,47 +19,6 @@
 
     public static class MarketSellUtils
     {
-        public static void ProcessErrorOnMarketSell(
-            MarketSellProcessModel sellProcessModel,
-            FullRgItem item,
-            UiSteamManager uiSteamManager,
-            string exMessage)
-        {
-            // todo
-        }
-
-        public static void ProcessMarketSellInventoryPage(
-            ObservableCollection<MarketSellModel> marketSellItems,
-            InventoryRootModel inventoryPage,
-            Inventory inventory)
-        {
-            var items = inventory.ProcessInventoryPage(inventoryPage).ToArray();
-
-            items = inventory.FilterInventory(items, true, false);
-
-            var groupedItems = items.GroupBy(i => i.Description.MarketHashName).ToArray();
-
-            foreach (var group in groupedItems)
-            {
-                var existModel = marketSellItems.FirstOrDefault(
-                    item => item.ItemModel.Description.MarketHashName == group.Key);
-
-                if (existModel != null)
-                {
-                    foreach (var groupItem in group.ToArray())
-                    {
-                        existModel.ItemsList.Add(groupItem);
-                    }
-
-                    existModel.RefreshCount();
-                }
-                else
-                {
-                    marketSellItems.AddDispatch(new MarketSellModel(group.ToArray()));
-                }
-            }
-        }
-
         public static void ConfirmMarketTransactionsWorkingProcess(
             SteamGuardAccount guard,
             WorkingProcessDataContext wp)
@@ -123,6 +82,47 @@
             }
         }
 
+        public static void ProcessErrorOnMarketSell(
+            MarketSellProcessModel sellProcessModel,
+            FullRgItem item,
+            UiSteamManager uiSteamManager,
+            string exMessage)
+        {
+            // todo
+        }
+
+        public static void ProcessMarketSellInventoryPage(
+            ObservableCollection<MarketSellModel> marketSellItems,
+            InventoryRootModel inventoryPage,
+            Inventory inventory)
+        {
+            var items = inventory.ProcessInventoryPage(inventoryPage).ToArray();
+
+            items = inventory.FilterInventory(items, true, false);
+
+            var groupedItems = items.GroupBy(i => i.Description.MarketHashName).ToArray();
+
+            foreach (var group in groupedItems)
+            {
+                var existModel = marketSellItems.FirstOrDefault(
+                    item => item.ItemModel.Description.MarketHashName == group.Key);
+
+                if (existModel != null)
+                {
+                    foreach (var groupItem in group.ToArray())
+                    {
+                        existModel.ItemsList.Add(groupItem);
+                    }
+
+                    existModel.RefreshCount();
+                }
+                else
+                {
+                    marketSellItems.AddDispatch(new MarketSellModel(group.ToArray()));
+                }
+            }
+        }
+
         public static void ProcessTooManyListingsPendingConfirmation(
             SteamGuardAccount guard,
             MarketClient marketClient,
@@ -136,7 +136,8 @@
             var myListings = marketClient.MyListings(currency.ToString())?.ConfirmationSales?.ToArray();
             if (myListings == null || myListings.Length <= 0) return;
 
-            wp.AppendLog($"Seems there are {myListings.Length} market listings that do not have two factor confirmation request. Trying to cancel them");
+            wp.AppendLog(
+                $"Seems there are {myListings.Length} market listings that do not have two factor confirmation request. Trying to cancel them");
             foreach (var listing in myListings)
             {
                 if (cancellationToken.IsCancellationRequested)
