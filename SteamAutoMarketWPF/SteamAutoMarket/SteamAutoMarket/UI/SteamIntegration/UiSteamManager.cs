@@ -9,7 +9,6 @@
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Core.Waiter;
     using SteamAutoMarket.Steam;
-    using SteamAutoMarket.Steam.Auth;
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Exceptions;
     using SteamAutoMarket.Steam.Market.Models;
@@ -88,8 +87,12 @@
                         {
                             wp.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
 
-                            var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, cookies: this.Cookies);
-                            
+                            var page = this.LoadInventoryPage(
+                                this.SteamId,
+                                appid.AppId,
+                                contextId,
+                                cookies: this.Cookies);
+
                             wp.AppendLog($"{page.TotalInventoryCount} items found");
 
                             var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
@@ -109,7 +112,12 @@
                                     return;
                                 }
 
-                                page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid, cookies: this.Cookies);
+                                page = this.LoadInventoryPage(
+                                    this.SteamId,
+                                    appid.AppId,
+                                    contextId,
+                                    page.LastAssetid,
+                                    cookies: this.Cookies);
                                 if (page == null)
                                 {
                                     wp.AppendLog($"{appid.Name} No items found");
@@ -154,7 +162,11 @@
                         {
                             wp.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
 
-                            var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, cookies: this.Cookies);
+                            var page = this.LoadInventoryPage(
+                                this.SteamId,
+                                appid.AppId,
+                                contextId,
+                                cookies: this.Cookies);
                             wp.AppendLog($"{page.TotalInventoryCount} items found");
 
                             var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
@@ -174,7 +186,12 @@
                                     return;
                                 }
 
-                                page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, page.LastAssetid, cookies: this.Cookies);
+                                page = this.LoadInventoryPage(
+                                    this.SteamId,
+                                    appid.AppId,
+                                    contextId,
+                                    page.LastAssetid,
+                                    cookies: this.Cookies);
 
                                 this.ProcessTradeSendInventoryPage(itemsToTrade, page, onlyUnmarketable);
 
@@ -468,7 +485,11 @@
                                         }
                                         else
                                         {
-                                            MarketSellUtils.ProcessErrorOnMarketSell(marketSellModel, item, this, ex.Message);
+                                            MarketSellUtils.ProcessErrorOnMarketSell(
+                                                marketSellModel,
+                                                item,
+                                                this,
+                                                ex.Message);
                                         }
                                     }
 
@@ -486,10 +507,9 @@
                         }
                         catch (Exception ex)
                         {
-                            var message = $"Critical error on market sell - {ex.Message}";
-                            wp.AppendLog(message);
-                            ErrorNotify.CriticalMessageBox(message);
-                            Logger.Log.Error(message, ex);
+                            Logger.Log.Error($"Critical error on market sell - {ex.Message}", ex);
+                            wp.AppendLog($"Critical error on market sell - {ex.Message}");
+                            ErrorNotify.CriticalMessageBox($"Critical error on market sell - {ex.Message}");
                         }
                     },
                 "Market sell");

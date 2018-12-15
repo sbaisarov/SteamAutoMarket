@@ -118,6 +118,8 @@
                     using (var responseStream = new StreamReader(response.GetResponseStream()))
                     {
                         var responseData = responseStream.ReadToEnd();
+                        Logger.Log.Debug(responseData);
+
                         return responseData;
                     }
                 }

@@ -546,22 +546,13 @@
             {
                 foreach (var item in ordersNodes)
                 {
-                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency, true);
+                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency);
 
                     tempIndex++;
                 }
 
                 myListings.SumOrderPricesToBuy = Math.Round(myListings.Orders.Sum(s => s.Price), 2);
             }
-
-            this.ProcessMyListingsSellOrders(root, currency, myListings);
-
-            @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
-            resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
-            respDes = JsonConvert.DeserializeObject<JMyListings>(resp.Data.Content);
-            html = respDes.ResultsHtml;
-            doc.LoadHtml(html);
-            root = doc.DocumentNode;
 
             this.ProcessMyListingsSellOrders(root, currency, myListings);
 
@@ -896,8 +887,7 @@
             int tempIndex,
             MyListings myListings,
             ETransactionType type,
-            string currency,
-            bool processConfirmations)
+            string currency)
         {
             var node = item.SelectSingleNode(".//span[@class='market_listing_price']");
             if (node == null)
@@ -1046,7 +1036,7 @@
                 {
                     myListings.Sales.Add(result);
                 }
-                else if (processConfirmations)
+                else
                 {
                     myListings.ConfirmationSales.Add(result);
                 }
@@ -1061,7 +1051,7 @@
                 var tempIndex = 0;
                 foreach (var item in saleNodes)
                 {
-                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency, false);
+                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency);
 
                     tempIndex++;
                 }

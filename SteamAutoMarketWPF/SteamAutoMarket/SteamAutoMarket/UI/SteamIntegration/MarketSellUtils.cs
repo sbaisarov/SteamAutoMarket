@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading;
 
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.Steam.Auth;
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Interface;
@@ -130,41 +131,32 @@
             CancellationToken cancellationToken)
         {
             wp.AppendLog("Seems market listings stacked. Forsering two factor confirmation");
+            ConfirmMarketTransactionsWorkingProcess(guard, wp);
 
-            var marketConfirmations = guard.FetchConfirmations()?.Where(
-                c => c.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+            var myListings = marketClient.MyListings(currency.ToString())?.ConfirmationSales?.ToArray();
+            if (myListings == null || myListings.Length <= 0) return;
 
-            wp.AppendLog($"{marketConfirmations} items to confirm was fetched");
-
-            if (marketConfirmations?.Length == 250)
+            wp.AppendLog($"Seems there are {myListings.Length} market listings that do not have two factor confirmation request. Trying to cancel them");
+            foreach (var listing in myListings)
             {
-                ConfirmMarketTransactionsWorkingProcess(guard, wp);
-            }
-            else
-            {
-                wp.AppendLog(
-                    $"Seems items are {marketConfirmations?.Length ?? 0} pending confirmation. Removing market pending listings");
-                var myListings = marketClient.MyListings(currency.ToString()).ConfirmationSales.ToArray();
-                foreach (var listing in myListings)
+                if (cancellationToken.IsCancellationRequested)
                 {
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    try
+                try
+                {
+                    wp.AppendLog($"Removing {listing.Name}");
+                    var result = marketClient.CancelSellOrder(listing.SaleId);
+                    if (result != ECancelSellOrderStatus.Canceled)
                     {
-                        wp.AppendLog($"Removing {listing.Name}");
-                        var result = marketClient.CancelSellOrder(listing.SaleId);
-                        if (result != ECancelSellOrderStatus.Canceled)
-                        {
-                            wp.AppendLog($"ERROR on removing {listing.Name}");
-                        }
+                        wp.AppendLog($"ERROR on removing {listing.Name}");
                     }
-                    catch (Exception e)
-                    {
-                        wp.AppendLog($"ERROR on removing {listing.Name} - {e.Message}");
-                    }
+                }
+                catch (Exception e)
+                {
+                    wp.AppendLog($"ERROR on removing {listing.Name} - {e.Message}");
+                    Logger.Log.Error($"ERROR on removing {listing.Name} - {e.Message}", e);
                 }
             }
         }
