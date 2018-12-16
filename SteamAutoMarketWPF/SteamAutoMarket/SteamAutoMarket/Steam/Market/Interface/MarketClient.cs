@@ -889,6 +889,11 @@
             ETransactionType type,
             string currency)
         {
+            if (item == null)
+            {
+                return;
+            }
+
             var node = item.SelectSingleNode(".//span[@class='market_listing_price']");
             if (node == null)
             {
