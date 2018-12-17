@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Web" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
@@ -93,6 +94,7 @@
     <Compile Include="Market\Models\OrderGraphItem.cs" />
     <Compile Include="Market\Models\PriceHistoryDay.cs" />
     <Compile Include="Market\Models\PriceHistoryItem.cs" />
+    <Compile Include="Market\Models\SellListingsPage.cs" />
     <Compile Include="Market\Models\SteamResponse.cs" />
     <Compile Include="Market\Models\WalletInfo.cs" />
     <Compile Include="Market\Settings.cs" />
@@ -100,16 +102,18 @@
     <Compile Include="Market\Urls.cs" />
     <Compile Include="Market\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SteamAuth\APIEndpoints.cs" />
-    <Compile Include="SteamAuth\AuthenticatorLinker.cs" />
-    <Compile Include="SteamAuth\Confirmation.cs" />
-    <Compile Include="SteamAuth\LoginResult.cs" />
-    <Compile Include="SteamAuth\SessionData.cs" />
-    <Compile Include="SteamAuth\SteamGuardAccount.cs" />
-    <Compile Include="SteamAuth\SteamWeb.cs" />
-    <Compile Include="SteamAuth\TimeAligner.cs" />
-    <Compile Include="SteamAuth\UserLogin.cs" />
-    <Compile Include="SteamAuth\Util.cs" />
+    <Compile Include="Auth\APIEndpoints.cs" />
+    <Compile Include="Auth\AuthenticatorLinker.cs" />
+    <Compile Include="Auth\Confirmation.cs" />
+    <Compile Include="Auth\LoginResult.cs" />
+    <Compile Include="Auth\SessionData.cs" />
+    <Compile Include="Auth\SteamGuardAccount.cs" />
+    <Compile Include="Auth\SteamWeb.cs" />
+    <Compile Include="Auth\TimeAligner.cs" />
+    <Compile Include="Auth\UserLogin.cs" />
+    <Compile Include="Auth\Util.cs" />
+    <Compile Include="SteamManager.cs" />
+    <Compile Include="SteamUtils.cs" />
     <Compile Include="TradeOffer\Enums\TradeOfferConfirmationMethod.cs" />
     <Compile Include="TradeOffer\Enums\TradeOfferState.cs" />
     <Compile Include="TradeOffer\Enums\TradeState.cs" />
@@ -132,6 +136,8 @@
     <Compile Include="TradeOffer\Models\InventoryRootModel.cs" />
     <Compile Include="TradeOffer\Models\Item.cs" />
     <Compile Include="TradeOffer\Models\ItemAttribute.cs" />
+    <Compile Include="TradeOffer\Models\MyInventoryRootModel.cs" />
+    <Compile Include="TradeOffer\Models\MyRgInventory.cs" />
     <Compile Include="TradeOffer\Models\NewTradeOfferResponse.cs" />
     <Compile Include="TradeOffer\Models\Offer.cs" />
     <Compile Include="TradeOffer\Models\OfferAccessToken.cs" />

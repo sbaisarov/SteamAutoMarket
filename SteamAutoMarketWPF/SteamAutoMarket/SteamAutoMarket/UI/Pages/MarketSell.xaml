@@ -1,0 +1,466 @@
+﻿<UserControl x:Class="SteamAutoMarket.UI.Pages.MarketSell"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+             xmlns:converter="clr-namespace:SteamAutoMarket.UI.Utils.Converter"
+             xmlns:models="clr-namespace:SteamAutoMarket.UI.Models"
+             xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:MarketSell}">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="B2V" />
+        <converter:IfNullVisibleConverter x:Key="IfNullVisibleConverter" />
+        <converter:IfNullInvisibleConverter x:Key="IfNullInvisibleConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="5, 5, 5, 5">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="20*" MinWidth="200" MaxWidth="250" />
+        </Grid.ColumnDefinitions>
+
+        <xcdg:DataGridControl x:Name="MarketItemsToSellGrid"
+                              Grid.Column="0"
+                              Grid.Row="0"
+                              Margin="10, 10, 30, 10"
+                              AutoCreateColumns="False"
+                              Style="{StaticResource GridStyle}"
+                              ItemsSource="{Binding Path=MarketSellItems, Mode=OneWay}"
+                              SelectedItem="{Binding Path=MarketSellSelectedItem}">
+
+            <xcdg:DataGridControl.View>
+                <xcdg:TableView ShowRowSelectorPane="False" />
+            </xcdg:DataGridControl.View>
+
+            <xcdg:DataGridControl.Columns>
+                <xcdg:Column Title="Item name"
+                             Width="2*"
+                             FieldName="ItemName"
+                             ReadOnly="True"
+                             CellHorizontalContentAlignment="Left"
+                             CellVerticalContentAlignment="Center">
+                    <xcdg:Column.CellContentTemplate>
+                        <ItemContainerTemplate>
+                            <TextBlock
+                                Text="{Binding}"
+                                Foreground="{DynamicResource ItemText}"
+                                Background="{DynamicResource DataGridBackground}" />
+                        </ItemContainerTemplate>
+                    </xcdg:Column.CellContentTemplate>
+                </xcdg:Column>
+
+                <xcdg:Column Title="Type"
+                             Width="1*"
+                             FieldName="Type"
+                             ReadOnly="True"
+                             CellHorizontalContentAlignment="Center"
+                             CellVerticalContentAlignment="Center">
+                    <xcdg:Column.CellContentTemplate>
+                        <ItemContainerTemplate>
+                            <TextBlock
+                                Text="{Binding}"
+                                Foreground="{DynamicResource ItemText}"
+                                Background="{DynamicResource DataGridBackground}" />
+                        </ItemContainerTemplate>
+                    </xcdg:Column.CellContentTemplate>
+                </xcdg:Column>
+
+                <xcdg:Column Title="Count"
+                             Width="0.5*"
+                             FieldName="Count"
+                             ReadOnly="True"
+                             CellHorizontalContentAlignment="Center"
+                             CellVerticalContentAlignment="Center">
+                    <xcdg:Column.CellContentTemplate>
+                        <ItemContainerTemplate>
+                            <TextBlock
+                                Text="{Binding}"
+                                Foreground="{DynamicResource ItemText}"
+                                Background="{DynamicResource DataGridBackground}" />
+                        </ItemContainerTemplate>
+                    </xcdg:Column.CellContentTemplate>
+                </xcdg:Column>
+
+                <xcdg:Column Title="Current price"
+                             Width="1*"
+                             FieldName="CurrentPrice"
+                             ReadOnly="True"
+                             CellHorizontalContentAlignment="Center"
+                             CellVerticalContentAlignment="Center">
+                    <xcdg:Column.CellContentTemplate>
+                        <ItemContainerTemplate>
+                            <TextBlock
+                                Text="{Binding}"
+                                Foreground="{DynamicResource ItemText}"
+                                Background="{DynamicResource DataGridBackground}" />
+                        </ItemContainerTemplate>
+                    </xcdg:Column.CellContentTemplate>
+                </xcdg:Column>
+
+                <xcdg:Column Title="Average price"
+                             Width="1*"
+                             FieldName="AveragePrice"
+                             ReadOnly="True"
+                             CellHorizontalContentAlignment="Center"
+                             CellVerticalContentAlignment="Center">
+                    <xcdg:Column.CellContentTemplate>
+                        <ItemContainerTemplate>
+                            <TextBlock
+                                Text="{Binding}"
+                                Foreground="{DynamicResource ItemText}"
+                                Background="{DynamicResource DataGridBackground}" />
+                        </ItemContainerTemplate>
+                    </xcdg:Column.CellContentTemplate>
+                </xcdg:Column>
+
+                <xcdg:Column Title="Selling price"
+                             Width="1*"
+                             x:Name="SellingPriceColumn"
+                             FieldName="SellPrice"
+                             CellHorizontalContentAlignment="Stretch"
+                             CellVerticalContentAlignment="Center"
+                             ReadOnly="False">
+                    <xcdg:Column.CellContentTemplate>
+                        <ItemContainerTemplate>
+                            <TextBox
+                                TextAlignment="Center"
+                                BorderThickness="0"
+                                Text="{Binding Path=(models:PriceModel.Value), Mode=TwoWay}"
+                                Foreground="{DynamicResource ItemText}"
+                                Background="{DynamicResource DataGridBackground}"
+                                d:DataContext="{d:DesignData PriceModel}" />
+                        </ItemContainerTemplate>
+                    </xcdg:Column.CellContentTemplate>
+                </xcdg:Column>
+
+                <xcdg:Column Title="Amount to sell"
+                             MinWidth="90"
+                             MaxWidth="90"
+                             Width="*"
+                             FieldName="NumericUpDown"
+                             AllowSort="False"
+                             AllowGroup="False"
+                             CellHorizontalContentAlignment="Center"
+                             CellVerticalContentAlignment="Center">
+                    <xcdg:Column.CellContentTemplate>
+                        <ItemContainerTemplate>
+                            <xctk:IntegerUpDown
+                                Style="{StaticResource UpDown}"
+                                Background="{StaticResource DataGridBackground}"
+                                Width="85"
+                                Value="0"
+                                Increment="1"
+                                Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
+                                Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                Minimum="0" />
+                        </ItemContainerTemplate>
+                    </xcdg:Column.CellContentTemplate>
+                </xcdg:Column>
+            </xcdg:DataGridControl.Columns>
+        </xcdg:DataGridControl>
+
+        <Grid Grid.Column="1"
+              Grid.Row="0"
+              MinWidth="200"
+              MaxWidth="250">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="100" MaxHeight="400" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition MinHeight="49" MaxHeight="90" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
+                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Image Source="{Binding Path=MarketSellSelectedItem.Image}"
+                       Stretch="Uniform"
+                       Name="ItemImage"
+                       MaxHeight="200"
+                       Margin="0,0,0,5" />
+
+                <Path Grid.Row="0"
+                      Style="{StaticResource Geometry}"
+                      Margin="0,0,0,5"
+                      Visibility="{Binding Path=MarketSellSelectedItem.Image, Converter={StaticResource IfNullVisibleConverter}}"
+                      Data="{StaticResource SvgDefaultItemImage}" />
+
+                <TextBox Grid.Row="1"
+                         Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
+                         Name="ItemDescriptionTextBox"
+                         MaxHeight="90"
+                         Background="Transparent"
+                         Foreground="{DynamicResource ItemText}"
+                         IsReadOnly="True"
+                         VerticalScrollBarVisibility="Visible"
+                         Text="{Binding Path=MarketSellSelectedItem.Description, Mode=OneWay}"
+                         TextWrapping="Wrap" VerticalAlignment="Center" />
+            </Grid>
+
+            <Grid Grid.Row="1"
+                  Margin="0, 5, 0, 0"
+                  MaxHeight="70">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="0.8*" />
+                </Grid.ColumnDefinitions>
+
+
+                <TextBlock Grid.Column="0"
+                           Grid.Row="0"
+                           Text="App Id"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left" />
+
+                <TextBlock Text="Context Id"
+                           Grid.Column="0"
+                           Grid.Row="1"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="0,0,5,0" />
+
+                <ComboBox Grid.Column="1"
+                          IsSynchronizedWithCurrentItem="True"
+                          Name="MarketAppidCombobox"
+                          Text="{Binding MarketSellNewAppid, UpdateSourceTrigger=LostFocus}"
+                          ItemsSource="{Binding AppIdList}"
+                          SelectedItem="{Binding MarketSellSelectedAppid}"
+                          DisplayMemberPath="Name"
+                          IsEditable="True"
+                          Height="22"
+                          Grid.Row="0"
+                          Margin="0, 4" />
+
+                <TextBox
+                    Text="{Binding ElementName=MarketAppidCombobox, Path=SelectedItem.(models:SteamAppId.ContextId)}"
+                    Name="MarketContextIdTextBox"
+                    Grid.Column="1"
+                    Height="22"
+                    Grid.Row="1"
+                    Margin="0, 4" />
+
+                <Button Grid.Column="2"
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Click="LoadInventoryItems"
+                        MaxHeight="40"
+                        Margin="8, 0, 0, 0"
+                        Content="Load"
+                        Padding="0" />
+            </Grid>
+
+            <Grid Grid.Row="2"
+                  VerticalAlignment="Center" Margin="0,5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="55" MinWidth="55" MaxWidth="55" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="22" />
+                    <RowDefinition Height="22" />
+                    <RowDefinition Height="22" />
+                    <RowDefinition Height="22" />
+                </Grid.RowDefinitions>
+
+                <RadioButton
+                    Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                    Height="20"
+                    Name="RecommendedPriceRb"
+                    GroupName="MarketSellType"
+                    Margin="1"
+                    Content="Recommended price"
+                    IsChecked="True"
+                    Checked="ReformatSellStrategyOnControlStateChanged" />
+
+                <RadioButton
+                    Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    Height="20"
+                    Name="ManualPriceRb"
+                    GroupName="MarketSellType"
+                    Margin="1"
+                    Content="Manual price"
+                    Checked="ReformatSellStrategyOnControlStateChanged" />
+
+                <RadioButton
+                    Grid.Row="2" Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Name="AveragePriceRb"
+                    GroupName="MarketSellType"
+                    Margin="1,1,15,1"
+                    Content="Average price"
+                    Checked="ReformatSellStrategyOnControlStateChanged" />
+
+                <xctk:DoubleUpDown
+                    Grid.Row="2" Grid.Column="1"
+                    Style="{StaticResource UpDown}"
+                    Name="AveragePriceNumericUpDown"
+                    VerticalAlignment="Center"
+                    Value="-0.01"
+                    Increment="0.01"
+                    FormatString="F2" Margin="1,0,0,0"
+                    ValueChanged="ReformatSellStrategyOnControlStateChanged"
+                    Visibility="{Binding IsChecked,ElementName=AveragePriceRb,Converter={StaticResource B2V}}" />
+
+                <RadioButton
+                    Grid.Row="3" Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Name="CurrentPriceRb"
+                    GroupName="MarketSellType"
+                    Margin="1,1,15,1"
+                    Content="Current price"
+                    Checked="ReformatSellStrategyOnControlStateChanged" />
+
+                <xctk:DoubleUpDown
+                    Grid.Row="3" Grid.Column="1"
+                    Style="{StaticResource UpDown}"
+                    Name="CurrentPriceNumericUpDown"
+                    VerticalAlignment="Center"
+                    Width="55"
+                    Value="-0.01"
+                    Increment="0.01"
+                    FormatString="F2"
+                    HorizontalAlignment="Left"
+                    ValueChanged="ReformatSellStrategyOnControlStateChanged"
+                    Visibility="{Binding IsChecked,ElementName=CurrentPriceRb,Converter={StaticResource B2V}}" />
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Height="40"
+                    Width="40"
+                    Grid.Column="0"
+                    Padding="0"
+                    Margin="1,4,1,5"
+                    Background="Transparent"
+                    ToolTip="Reload all prices"
+                    Click="RefreshAllPricesPriceButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefresh}" />
+                </Button>
+
+                <Button Name="RefreshSinglePriceButton"
+                        Height="40"
+                        Width="40"
+                        Grid.Column="1"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Reload selected item price"
+                        Click="RefreshSinglePriceButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefreshSingle}" />
+
+                </Button>
+
+                <Button Name="StopPriceLoadingButton"
+                        Height="40"
+                        Width="40"
+                        Grid.Column="2"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Stop prices load"
+                        Click="StopPriceLoadingButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgStop}" />
+
+                </Button>
+
+                <Button
+                    Height="40"
+                    Width="40"
+                    Grid.Column="3"
+                    Padding="0"
+                    Margin="1,4,1,5"
+                    Background="Transparent"
+                    ToolTip="Find selected item on steam market"
+                    Click="OpenOnSteamMarket_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgSteam}" />
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="5"
+                  Margin="0, 0, 0, 5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Name="MarketSellMarkAllItems"
+                        Margin="0,0,4,0"
+                        Padding="0" Click="MarketSellMarkAllItemsClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Check<LineBreak />all
+                    </TextBlock>
+                </Button>
+                <Button Grid.Column="1"
+                        Name="MarketSellMarkSelectedItems"
+                        Margin="2,0,2,0"
+                        Padding="0" Click="MarketSellMarkSelectedItemsClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Check<LineBreak />selected
+                    </TextBlock>
+                </Button>
+                <Button Grid.Column="2"
+                        Name="MarketSellUnmarkAllItems"
+                        Margin="4,0,0,0"
+                        Padding="0" Click="MarketSellUnmarkAllItemsClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Uncheck<LineBreak />all
+                    </TextBlock>
+                </Button>
+            </Grid>
+
+            <Button Grid.Row="6"
+                    Name="StartMarketSellButtonClick"
+                    Content="Start market sell"
+                    Margin="0, 5, 0, 0"
+                    Padding="0" Click="StartMarketSellButtonClick_OnClick" />
+
+        </Grid>
+
+    </Grid>
+</UserControl>

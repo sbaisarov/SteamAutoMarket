@@ -3,9 +3,75 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
              StartupUri="MainWindow.xaml"
-             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit">
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:oxyPlot="clr-namespace:OxyPlot;assembly=OxyPlot"
+             xmlns:converter="clr-namespace:SteamAutoMarket.UI.Utils.Converter"
+             xmlns:resources="clr-namespace:SteamAutoMarket.UI.Utils.Resources"
+             mc:Ignorable="d">
     <Application.Resources>
         <ResourceDictionary>
+
+            <converter:SolidColorBrushToColorConverter x:Key="SolidColorBrushToColorConverter" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+            <Style x:Key="PlotStyle" TargetType="oxy:Plot">
+                <Setter Property="Background" Value="{DynamicResource DataGridBackground}" />
+                <Setter Property="TextColor"
+                        Value="{resources:DynamicResourceBinding ItemText, Converter={StaticResource SolidColorBrushToColorConverter}}" />
+                <Setter Property="PlotAreaBorderColor"
+                        Value="{resources:DynamicResourceBinding DataGridCellBackgroundSelected, Converter={StaticResource SolidColorBrushToColorConverter}}" />
+                <Setter Property="SelectionColor"
+                        Value="{resources:DynamicResourceBinding DataGridCellBackgroundSelected, Converter={StaticResource SolidColorBrushToColorConverter}}" />
+                <Setter Property="DefaultTrackerTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <oxy:TrackerControl Background="{DynamicResource DataGridBackground}"
+                                                LineExtents="{Binding PlotModel.PlotArea}"
+                                                LineStroke="{DynamicResource DataGridCellBackgroundSelected}"
+                                                Position="{Binding Position}"
+                                                d:DataContext="{d:DesignInstance oxyPlot:TrackerHitResult}">
+                                <Border
+                                    Margin="2" BorderBrush="Black">
+                                    <Grid Margin="6">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Grid.Row="0"
+                                            Margin="2"
+                                            Text="Iteration:" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Grid.Row="0"
+                                            Margin="2"
+                                            Text="{Binding DataPoint.X, StringFormat={}{0:0.##}}" />
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Grid.Row="1"
+                                            Margin="2"
+                                            Text="Seconds:" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Grid.Row="1"
+                                            Margin="2"
+                                            Text="{Binding DataPoint.Y, StringFormat={}{0:0.##}}" />
+                                    </Grid>
+                                </Border>
+                            </oxy:TrackerControl>
+
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
             <ControlTemplate x:Key="GroupBoxTemplate" TargetType="GroupBox">
                 <Grid>
@@ -43,37 +109,7 @@
                 <Setter Property="HorizontalAlignment" Value="Center" />
             </Style>
 
-            <Style x:Key="GridStyle" TargetType="xcdg:DataGridControl">
-                <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
-                <Setter Property="Foreground" Value="{StaticResource DataGridForeground}" />
-            </Style>
-
             <xcdg:IndexToOddConverter x:Key="RowIndexConverter" />
-
-            <Style TargetType="{x:Type xcdg:DataRow}">
-                <Style.Triggers>
-                    <DataTrigger
-                        Binding="{Binding RelativeSource={RelativeSource Self}, 
-                    Path=(xcdg:DataGridVirtualizingPanel.ItemIndex), 
-                    Converter={StaticResource RowIndexConverter}}"
-                        Value="True">
-                        <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
-                        <Setter Property="SelectionBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
-                        <Setter Property="InactiveSelectionBackground"
-                                Value="{StaticResource DataGridCellBackgroundSelected}" />
-                    </DataTrigger>
-                </Style.Triggers>
-                <Setter Property="Background" Value="{StaticResource DataGridBackground}" />
-                <Setter Property="SelectionBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
-                <Setter Property="InactiveSelectionBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
-            </Style>
-
-            <Style TargetType="toolkit:DoubleUpDown">
-                <Setter Property="Foreground" Value="{DynamicResource ItemText}" />
-                <Setter Property="Background" Value="{DynamicResource DataGridBackground}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource DataGridCellBackgroundSelected}" />
-            </Style>
-
             <Style x:Key="TextBoxStyle" BasedOn="{x:Null}" TargetType="{x:Type toolkit:RichTextBox}">
                 <Setter Property="Foreground" Value="{DynamicResource ItemText}" />
                 <Setter Property="Background" Value="{DynamicResource DataGridBackground}" />
@@ -109,38 +145,14 @@
                 </Setter>
             </Style>
 
-            <Style TargetType="{x:Type xcdg:HierarchicalGroupByControl}">
-                <Setter Property="Background" Value="{StaticResource DataGridCellBackgroundSelected}" />
-            </Style>
-
-            <Style TargetType="{x:Type xcdg:GroupHeaderControl}">
-                <Setter Property="Background" Value="{StaticResource DataGridCellBackgroundSelected}" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="BorderBrush" Value="Black" />
-            </Style>
-
-            <Style TargetType="{x:Type xcdg:ColumnManagerRow}">
-                <Setter Property="Background" Value="{StaticResource DataGridCellBackgroundSelected}" />
-                <Setter Property="BorderBrush" Value="Black" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Padding" Value="0" />
-            </Style>
-
-            <Style TargetType="{x:Type xcdg:ColumnManagerCell}">
-                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
-                <Setter Property="Background" Value="{StaticResource DataGridCellBackgroundSelected}" />
-            </Style>
-
-            <Style TargetType="{x:Type xcdg:DataCell}">
-                <Setter Property="CurrentBackground" Value="{StaticResource DataGridCellBackgroundSelected}" />
-            </Style>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
-                <ResourceDictionary />
+                <ResourceDictionary Source="UI/Pages/Xceed/NumericUpDown.xaml" />
+                <ResourceDictionary Source="UI/Pages/Xceed/DataGrid.xaml" />
+                <ResourceDictionary Source="UI/Resources/Svg.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
