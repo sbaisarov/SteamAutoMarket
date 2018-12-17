@@ -6,6 +6,7 @@ import hashlib
 import struct
 import base64
 import hmac
+import uuid
 from logging import handlers
 from pprint import pformat
 
@@ -30,9 +31,14 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
+with shelve.open("database/clients") as db:
+    if db.get("clients", None) is None:
+        db["clients"] = {}
+    if db.get("active_codes", None) is None:
+        db["active_codes"] = {}
+
 
 @app.route('/api/logerror', methods=['POST'])
-@auth.login_required
 def log_error():
     with open('logs/errors.txt', 'a+', encoding='utf-8') as f:
         f.write(request.data.decode('utf-8') + '\n\n')
@@ -51,7 +57,7 @@ def show_errors():
 def show_db():
     with shelve.open('database/clients') as db:
         try:
-            return render_template('clients.html', database=dict(db), pprint=pformat), 200
+            return render_template('clients.html', database=db["clients"], pprint=pformat), 200
         except:
             logger.error(traceback.print_exc()), 500
 
@@ -60,8 +66,8 @@ def show_db():
 @auth.login_required
 def get_license(subscription_time):
     try:
-        licenses = key.generate(subscription_time)
-        return ",".join(licenses), 200
+        license = key.generate(subscription_time)
+        return license, 200
     except Exception:
         error = traceback.print_exc()
         logger.error(error)
@@ -69,14 +75,14 @@ def get_license(subscription_time):
 
 
 @app.route('/api/getlicensestatus', methods=['POST'])
-@auth.login_required
 def get_license_status():
     keys = request.data.decode("utf-8").split(",")
     response = {}
     with shelve.open("database/clients") as db:
+        clients = db["clients"]
         for item in keys:
             try:
-                response[item] = db[item]
+                response[item] = clients[item]
             except KeyError:
                 response[item] = None
 
@@ -90,7 +96,8 @@ def extend_license():
     try:
         subscription_time = int(subscription_time)
         with shelve.open("database/clients", writeback=True) as db:
-            db[key]["subscription_time"] += subscription_time
+            clients = db["clients"]
+            clients[key]["subscription_time"] += subscription_time
         return "OK", 200
     except Exception:
         error = traceback.print_exc()
@@ -103,51 +110,36 @@ def check_license():
     success = False
     data = {key: value for key, value in request.form.items()}
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+    hwid = data['hwid']
     key = data['key']
-    db = shelve.open("database/clients", writeback=True)
-    try:
-        if key in db:
-            client = db[key]
-            if client["subscription_time"] == 0:
-                success = False
-            else:
-                hwid = data["hwid"]
-                active_devices = client["devices"]
-                if hwid not in active_devices:
-                    city = get_city_from_ip(ip)
-                    result = {
-                        "connection_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        "ip": (ip, city)
-                    }
-                    active_devices[hwid] = result
-                    if client.get("initial_device", None) is None:
-                        result["hwid"] = hwid
-                        client["initial_device"] = result
-                    logger.info("New device connected!: %s", active_devices[hwid])
-                success = True
-        else:
-            logger.info('WRONG KEY: %s, %s\n', data, ip)
-    finally:
-        db.close()
+    success, error = validate_license(key, ip, hwid)
 
     return jsonify({'success_3248237582': success}), 200
 
 
 @app.route('/api/gdevid', methods=['POST'])
 def generate_device_id():
-    steam_id = request.data.decode('utf-8')
+    steam_id, key, hwid = request.data.decode('utf-8').split(',')
+    ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+    success, error = validate_license(key, ip, hwid)
+    if not success:
+        return error, 402
     hexed_steam_id = hashlib.sha1(steam_id.encode('ascii')).hexdigest()
     return jsonify({'result_0x23432': 'android:' + '-'.join([hexed_steam_id[:8],
                                                      hexed_steam_id[8:12],
                                                      hexed_steam_id[12:16],
-                                                     hexed_steam_id[16:20],
+                                                      hexed_steam_id[16:20],
                                                      hexed_steam_id[20:32]])
             }), 200
 
 
 @app.route('/api/gguardcode', methods=['POST'])
 def generate_guard_code():
-    shared_secret, timestamp = request.data.decode('utf-8').split(',')
+    ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+    shared_secret, timestamp, key, hwid = request.data.decode('utf-8').split(',')
+    success, error = validate_license(key, ip, hwid)
+    if not success:
+        return error, 402
     timestamp = int(timestamp)
     time_buffer = struct.pack('>Q', timestamp // 30)  # pack as Big endian, uint64
     time_hmac = hmac.new(base64.b64decode(shared_secret), time_buffer, digestmod=hashlib.sha1).digest()
@@ -167,21 +159,9 @@ def generate_guard_code():
 def generate_confirmation_hash():
     identity_secret, tag, timestamp, key, hwid = request.data.decode('utf-8').split(',')
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-    try:
-        db = shelve.open("database/clients", writeback=True)
-        client = db[key]
-        if client["subscription_time"] == 0:
-            return "License expired", 402
-        active_devices = client["devices"]
-        if hwid not in active_devices:
-            city = get_city_from_ip(ip)
-            result = {
-                "connection_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "ip": (ip, city)
-            }
-            active_devices[hwid] = result
-    finally:
-        db.close()
+    success, error = validate_license(key, ip, hwid)
+    if not success:
+        return error, 402
     timestamp = int(timestamp)
     buffer = struct.pack('>Q', timestamp) + tag.encode('ascii')
     key = base64.b64encode(hmac.new(base64.b64decode(identity_secret), buffer, digestmod=hashlib.sha1).digest())
@@ -189,17 +169,90 @@ def generate_confirmation_hash():
     return jsonify({'result_0x23432': key}), 200
 
 
+@app.route('/api/paymentresult', methods=['POST'])
+def payment_result():
+    data = {key: value for key, value in request.form.items()}
+    password = "XgnLJjQ0X5cG"
+    sum, inv_id, signature_value = data['OutSum'], data['InvId'], data['SignatureValue']
+    hash = hashlib.md5(("%s:%s:%s" % (sum, inv_id, password)).encode('utf-8')).hexdigest().upper()
+    if hash == signature_value:
+        return "OK" + inv_id, 200
+
+    return "FAIL", 401
+
+
+@app.route('/api/paymentsuccess', methods=['POST'])
+def payment_success():
+    subs = {1: 1, 777: 30, 1998: 90, 3330: 183, 5328: 365}
+    data = {key: value for key, value in request.form.items()}
+    password = "viga9982"
+    sum, inv_id, signature_value = data['OutSum'], data['InvId'], data['SignatureValue']
+    hash = hashlib.md5(("%s:%s:%s" % (sum, inv_id, password)).encode('utf-8')).hexdigest()
+    if hash == signature_value:
+        with shelve.open("database/clients", writeback=True) as db:
+            sum = int(sum.partition('.')[0])
+            db["active_codes"][inv_id] = subs[sum]
+        return render_template("successpayment.html", code=inv_id), 200
+
+    return "<html>Платеж не был обработан</html>", 401
+
+
+@app.route('/api/valcode', methods=['POST'])
+def validate_code():
+    data = {key: value for key, value in request.form.items()}
+    code, key = data["code"], data["key"]
+    with shelve.open("database/clients", writeback=True) as db:
+        active_codes = db["active_codes"]
+        clients = db["clients"]
+        if code in active_codes:
+            try:
+                client = clients[key]
+            except KeyError:
+                key = str(uuid.uuid4())
+                clients[key] = {"subscription_time": 0, "devices": {}, "payments": []}
+                client = clients[key]
+            sub_time = active_codes[code]
+            client["subscription_time"] += sub_time
+            del active_codes[code]  # remove code from repetative usage
+            client["payments"].append(data)
+            return ("<html><h2>Код активирован!</h2><p>Ваш ключ продукта: %s</p>"
+                    "<p>Скачать программу можно по ссылке: <a href=\"https://www.steambiz.store/release/sam.zip\">"
+                    "https://www.steambiz.store/release/sam.zip</a></p></html>" % key), 200
+        else:
+            return "code was not found", 404
+
+
+def validate_license(key, ip, hwid):
+    key = key.strip()
+    with shelve.open("database/clients", writeback=True):
+        db = shelve.open("database/clients", writeback=True)
+        try:
+            client = db["clients"][key]
+        except KeyError:
+            logger.info('WRONG KEY: %s, %s\n', key, ip)
+            return (False, "key was not found")
+    if client["subscription_time"] == 0:
+        return (False, "license expired")
+    active_devices = client["devices"]
+    if hwid not in active_devices:
+        city = get_city_from_ip(ip)
+        result = {
+            "connection_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "ip": (ip, city)
+        }
+        active_devices[hwid] = result
+
+    return (True, None)
+
+
 def get_city_from_ip(ip_address):
     try:
         resp = requests.get('http://ip-api.com/json/%s' % ip_address).json()
-    except requests.exceptions.ProxyError:
+        city = resp['city']
+    except (requests.exceptions.ProxyError, requests.exceptions.ConnectionError,
+            KeyError):
         return 'Unknown'
-    return resp['city']
-
-
-def update_database(data, db, key):
-    db[key] = data
-    logger.info('VALID KEY. Added to the database: %s\n', data)
+    return city
 
 
 @auth.verify_password
