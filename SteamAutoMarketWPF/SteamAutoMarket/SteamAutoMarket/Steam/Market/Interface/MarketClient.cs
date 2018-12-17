@@ -827,8 +827,10 @@
             return marketSearch;
         }
 
-        public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithoutFee)
+        public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithFee)
         {
+            var priceWithoutFee = this.CalculateSteamFee(priceWithFee);
+
             var data = new Dictionary<string, string>
                            {
                                { "appid", appId.ToString() },
@@ -836,15 +838,17 @@
                                { "contextid", contextId.ToString() },
                                { "assetid", assetId.ToString() },
                                { "amount", amount.ToString() },
-                               {
-                                   "price",
-                                   (Math.Round(priceWithoutFee, 2) * 100).ToString(CultureInfo.InvariantCulture)
-                               }
+                               { "price", priceWithoutFee.ToString() }
                            };
 
             var resp = this.steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true).Data
                 .Content;
             return JsonConvert.DeserializeObject<JSellItem>(resp);
+        }
+
+        public int CalculateSteamFee(double priceWithFee)
+        {
+            return (int)Math.Truncate((priceWithFee / 1.15) - 0.01) * 100;
         }
 
         public WalletInfo WalletInfo()

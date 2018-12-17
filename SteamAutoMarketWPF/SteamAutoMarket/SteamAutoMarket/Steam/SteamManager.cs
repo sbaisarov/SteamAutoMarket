@@ -315,7 +315,7 @@ namespace SteamAutoMarket.Steam
                 int.Parse(asset.Contextid),
                 long.Parse(asset.Assetid),
                 int.Parse(item.Asset.Amount),
-                price / 1.15);
+                price);
 
             var message = resp.Message; // error message
             if (message != null)
