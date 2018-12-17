@@ -1066,7 +1066,7 @@
                     }
                     catch (Exception e)
                     {
-                        Logger.Log.Error($"Error on getting pending transaction data - {e.Message}. \nNode-{item.InnerHtml}");
+                        Logger.Log.Error($"Error on getting pending transaction data - {e.Message}. \nNode-{item?.InnerHtml}", e);
                     }
 
                     tempIndex++;
