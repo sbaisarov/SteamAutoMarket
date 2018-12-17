@@ -1060,7 +1060,14 @@
                 var tempIndex = 0;
                 foreach (var item in saleNodes)
                 {
-                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency);
+                    try
+                    {
+                        this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Sale, currency);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Log.Error($"Error on getting pending transaction data - {e.Message}. \nNode-{item.InnerHtml}");
+                    }
 
                     tempIndex++;
                 }
