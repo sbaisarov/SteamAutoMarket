@@ -986,7 +986,7 @@
                 double price;
                 try
                 {
-                    var priceParse = priceString.Split('(')[0].Replace(".", string.Empty);
+                    var priceParse = priceString.Split('(')[0];
                     var currencySymbol = SteamCurrencies.Currencies[currency];
                     double.TryParse(priceParse.Replace(currencySymbol, string.Empty), out price);
                 }

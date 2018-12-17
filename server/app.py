@@ -121,7 +121,7 @@ def check_license():
 def generate_device_id():
     steam_id, key, hwid = request.data.decode('utf-8').split(',')
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-    success, error = validate_license(key, hwid, ip)
+    success, error = validate_license(key, ip, hwid)
     if not success:
         return error, 402
     hexed_steam_id = hashlib.sha1(steam_id.encode('ascii')).hexdigest()
@@ -137,7 +137,7 @@ def generate_device_id():
 def generate_guard_code():
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
     shared_secret, timestamp, key, hwid = request.data.decode('utf-8').split(',')
-    success, error = validate_license(key, hwid, ip)
+    success, error = validate_license(key, ip, hwid)
     if not success:
         return error, 402
     timestamp = int(timestamp)
@@ -159,7 +159,7 @@ def generate_guard_code():
 def generate_confirmation_hash():
     identity_secret, tag, timestamp, key, hwid = request.data.decode('utf-8').split(',')
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-    success, error = validate_license(key, hwid, ip)
+    success, error = validate_license(key, ip, hwid)
     if not success:
         return error, 402
     timestamp = int(timestamp)
