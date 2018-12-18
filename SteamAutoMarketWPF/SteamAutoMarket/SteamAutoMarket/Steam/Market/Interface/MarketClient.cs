@@ -849,21 +849,27 @@
 
         public double CalculateSteamFee(double amount)
         {
-            var publisherFee = 0.1;
-            var marketFee = 0.05;
-            var nEstimatedAmountOfWalletFundsReceivedByOtherParty = amount / (marketFee + publisherFee + 1);
-            var fees = CalculateAmountToSendForDesiredReceivedAmount( nEstimatedAmountOfWalletFundsReceivedByOtherParty, publisherFee );
+            const double PublisherFee = 0.1;
+            const double MarketFee = 0.05;
+
+            var nEstimatedAmountOfWalletFundsReceivedByOtherParty = amount / (MarketFee + PublisherFee + 1);
+            var fees = this.CalculateAmountToSendForDesiredReceivedAmount(
+                nEstimatedAmountOfWalletFundsReceivedByOtherParty,
+                PublisherFee);
+
             var iterations = 0;
             var bEverUndershot = false;
-            while ( Math.Abs(fees["amount"] - amount) > 0.000000001 && iterations < 10 )
+            while (Math.Abs(fees["amount"] - amount) > 0.000000001 && iterations < 10)
             {
-                if ( fees["amount"] > amount )
+                if (fees["amount"] > amount)
                 {
-                    if ( bEverUndershot )
+                    if (bEverUndershot)
                     {
-                        fees = CalculateAmountToSendForDesiredReceivedAmount( nEstimatedAmountOfWalletFundsReceivedByOtherParty - 1, publisherFee );
-                        fees["steam_fee"] += ( amount - fees["amount"] );
-                        fees["fees"] += ( amount - fees["amount"] );
+                        fees = this.CalculateAmountToSendForDesiredReceivedAmount(
+                            nEstimatedAmountOfWalletFundsReceivedByOtherParty - 1,
+                            PublisherFee);
+                        fees["steam_fee"] += amount - fees["amount"];
+                        fees["fees"] += amount - fees["amount"];
                         fees["amount"] = amount;
                         break;
                     }
@@ -878,28 +884,31 @@
                     nEstimatedAmountOfWalletFundsReceivedByOtherParty++;
                 }
 
-                fees = CalculateAmountToSendForDesiredReceivedAmount( nEstimatedAmountOfWalletFundsReceivedByOtherParty, publisherFee );
+                fees = this.CalculateAmountToSendForDesiredReceivedAmount(
+                    nEstimatedAmountOfWalletFundsReceivedByOtherParty,
+                    PublisherFee);
                 iterations++;
             }
 
             // fees.amount should equal the passed in amount
-//            return (int)Math.Truncate((priceWithFee / 1.15) - 0.01) * 100;
+            // return (int)Math.Truncate((priceWithFee / 1.15) - 0.01) * 100;
             return Math.Floor(fees["fees"]);
-
         }
-        
-        private IDictionary<string, double> CalculateAmountToSendForDesiredReceivedAmount(double receivedAmount, double publisherFee)
+
+        private IDictionary<string, double> CalculateAmountToSendForDesiredReceivedAmount(
+            double receivedAmount,
+            double publisherFee)
         {
-            var SteamFee = Math.Floor(Math.Max(receivedAmount * 0.05, 1));
-            var nPublisherFee = Math.Floor(publisherFee > 0 ? Math.Max( receivedAmount * publisherFee, 1) : 0);
-            var nAmountToSend = receivedAmount + SteamFee + nPublisherFee;
+            var steamFee = Math.Floor(Math.Max(receivedAmount * 0.05, 1));
+            var nPublisherFee = Math.Floor(publisherFee > 0 ? Math.Max(receivedAmount * publisherFee, 1) : 0);
+            var nAmountToSend = receivedAmount + steamFee + nPublisherFee;
             return new Dictionary<string, double>()
-            {
-                {"steam_fee", SteamFee},
-                {"publisher_fee", nPublisherFee},
-                {"fees", SteamFee + nPublisherFee},
-                {"amount", nAmountToSend}
-            };
+                       {
+                           { "steam_fee", steamFee },
+                           { "publisher_fee", nPublisherFee },
+                           { "fees", steamFee + nPublisherFee },
+                           { "amount", nAmountToSend }
+                       };
         }
 
         public WalletInfo WalletInfo()
@@ -1117,7 +1126,9 @@
                     }
                     catch (Exception e)
                     {
-                        Logger.Log.Error($"Error on getting pending transaction data - {e.Message}. \nNode-{item?.InnerHtml}", e);
+                        Logger.Log.Error(
+                            $"Error on getting pending transaction data - {e.Message}. \nNode-{item?.InnerHtml}",
+                            e);
                     }
 
                     tempIndex++;
