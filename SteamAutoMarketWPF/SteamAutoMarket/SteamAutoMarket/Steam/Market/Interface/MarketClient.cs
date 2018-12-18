@@ -829,7 +829,8 @@
 
         public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithFee)
         {
-            var priceWithoutFee = this.CalculateSteamFee(priceWithFee);
+            priceWithFee *= 100;
+            var priceWithoutFee = priceWithFee - this.CalculateSteamFee(priceWithFee);
 
             var data = new Dictionary<string, string>
                            {
@@ -846,9 +847,59 @@
             return JsonConvert.DeserializeObject<JSellItem>(resp);
         }
 
-        public int CalculateSteamFee(double priceWithFee)
+        public double CalculateSteamFee(double amount)
         {
-            return (int)Math.Truncate((priceWithFee / 1.15) - 0.01) * 100;
+            var publisherFee = 0.1;
+            var marketFee = 0.05;
+            var nEstimatedAmountOfWalletFundsReceivedByOtherParty = amount / (marketFee + publisherFee + 1);
+            var fees = CalculateAmountToSendForDesiredReceivedAmount( nEstimatedAmountOfWalletFundsReceivedByOtherParty, publisherFee );
+            var iterations = 0;
+            var bEverUndershot = false;
+            while ( Math.Abs(fees["amount"] - amount) > 0.000000001 && iterations < 10 )
+            {
+                if ( fees["amount"] > amount )
+                {
+                    if ( bEverUndershot )
+                    {
+                        fees = CalculateAmountToSendForDesiredReceivedAmount( nEstimatedAmountOfWalletFundsReceivedByOtherParty - 1, publisherFee );
+                        fees["steam_fee"] += ( amount - fees["amount"] );
+                        fees["fees"] += ( amount - fees["amount"] );
+                        fees["amount"] = amount;
+                        break;
+                    }
+                    else
+                    {
+                        nEstimatedAmountOfWalletFundsReceivedByOtherParty--;
+                    }
+                }
+                else
+                {
+                    bEverUndershot = true;
+                    nEstimatedAmountOfWalletFundsReceivedByOtherParty++;
+                }
+
+                fees = CalculateAmountToSendForDesiredReceivedAmount( nEstimatedAmountOfWalletFundsReceivedByOtherParty, publisherFee );
+                iterations++;
+            }
+
+            // fees.amount should equal the passed in amount
+//            return (int)Math.Truncate((priceWithFee / 1.15) - 0.01) * 100;
+            return Math.Floor(fees["fees"]);
+
+        }
+        
+        private IDictionary<string, double> CalculateAmountToSendForDesiredReceivedAmount(double receivedAmount, double publisherFee)
+        {
+            var SteamFee = Math.Floor(Math.Max(receivedAmount * 0.05, 1));
+            var nPublisherFee = Math.Floor(publisherFee > 0 ? Math.Max( receivedAmount * publisherFee, 1) : 0);
+            var nAmountToSend = receivedAmount + SteamFee + nPublisherFee;
+            return new Dictionary<string, double>()
+            {
+                {"steam_fee", SteamFee},
+                {"publisher_fee", nPublisherFee},
+                {"fees", SteamFee + nPublisherFee},
+                {"amount", nAmountToSend}
+            };
         }
 
         public WalletInfo WalletInfo()
