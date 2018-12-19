@@ -829,9 +829,6 @@
 
         public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithFee)
         {
-            priceWithFee *= 100;
-            var priceWithoutFee = priceWithFee - this.CalculateSteamFee(priceWithFee);
-
             var data = new Dictionary<string, string>
                            {
                                { "appid", appId.ToString() },
@@ -839,7 +836,7 @@
                                { "contextid", contextId.ToString() },
                                { "assetid", assetId.ToString() },
                                { "amount", amount.ToString() },
-                               { "price", priceWithoutFee.ToString() }
+                               { "price", this.GetSteamPriceWithoutFee(priceWithFee) }
                            };
 
             var resp = this.steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true).Data
@@ -847,19 +844,22 @@
             return JsonConvert.DeserializeObject<JSellItem>(resp);
         }
 
-        public double CalculateSteamFee(double amount)
+        public string GetSteamPriceWithoutFee(double price)
         {
             const double PublisherFee = 0.1;
             const double MarketFee = 0.05;
 
-            var nEstimatedAmountOfWalletFundsReceivedByOtherParty = amount / (MarketFee + PublisherFee + 1);
+            var amount = price * 100;
+
+            var nEstimatedAmountOfWalletFundsReceivedByOtherParty = (int)(amount / (MarketFee + PublisherFee + 1));
+
             var fees = this.CalculateAmountToSendForDesiredReceivedAmount(
                 nEstimatedAmountOfWalletFundsReceivedByOtherParty,
-                PublisherFee);
+                PublisherFee, MarketFee);
 
             var iterations = 0;
             var bEverUndershot = false;
-            while (Math.Abs(fees["amount"] - amount) > 0.000000001 && iterations < 10)
+            while (fees["amount"] != amount && iterations < 10)
             {
                 if (fees["amount"] > amount)
                 {
@@ -867,7 +867,7 @@
                     {
                         fees = this.CalculateAmountToSendForDesiredReceivedAmount(
                             nEstimatedAmountOfWalletFundsReceivedByOtherParty - 1,
-                            PublisherFee);
+                            PublisherFee, MarketFee);
                         fees["steam_fee"] += amount - fees["amount"];
                         fees["fees"] += amount - fees["amount"];
                         fees["amount"] = amount;
@@ -886,20 +886,20 @@
 
                 fees = this.CalculateAmountToSendForDesiredReceivedAmount(
                     nEstimatedAmountOfWalletFundsReceivedByOtherParty,
-                    PublisherFee);
+                    PublisherFee, MarketFee);
                 iterations++;
             }
 
-            // fees.amount should equal the passed in amount
-            // return (int)Math.Truncate((priceWithFee / 1.15) - 0.01) * 100;
-            return Math.Floor(fees["fees"]);
+            var priceWithoutFee = (amount - fees["fees"]) / 100;
+            return priceWithoutFee.ToString("0.00");
         }
 
         private IDictionary<string, double> CalculateAmountToSendForDesiredReceivedAmount(
             double receivedAmount,
-            double publisherFee)
+            double publisherFee,
+            double marketFee)
         {
-            var steamFee = Math.Floor(Math.Max(receivedAmount * 0.05, 1));
+            var steamFee = Math.Floor(Math.Max(receivedAmount * marketFee, 1));
             var nPublisherFee = Math.Floor(publisherFee > 0 ? Math.Max(receivedAmount * publisherFee, 1) : 0);
             var nAmountToSend = receivedAmount + steamFee + nPublisherFee;
             return new Dictionary<string, double>()

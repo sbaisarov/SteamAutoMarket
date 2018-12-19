@@ -1,5 +1,7 @@
 ﻿namespace Tests.Steam.Market.Interface
 {
+    using FluentAssertions;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using SteamAutoMarket.Steam.Market.Interface;
@@ -13,28 +15,28 @@
         public void CalculateSteamFeeTest()
         {
             var price = 1000d;
-            var fee = this.marketClient.CalculateSteamFee(price);
-            Assert.AreEqual(870, price - fee);
+            var priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("869.58");
 
             price = 100;
-            fee = this.marketClient.CalculateSteamFee(price);
-            Assert.AreEqual(88, price - fee);
+            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("86.97");
 
             price = 10;
-            fee = this.marketClient.CalculateSteamFee(price);
-            Assert.AreEqual(8.70, price - fee);
+            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("8.70");
 
             price = 1;
-            fee = this.marketClient.CalculateSteamFee(price);
-            Assert.AreEqual(0.88, price - fee);
+            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("0.88");
 
             price = 0.5;
-            fee = this.marketClient.CalculateSteamFee(price);
-            Assert.AreEqual(0.44, price - fee);
+            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("0.44");
 
             price = 0.03;
-            fee = this.marketClient.CalculateSteamFee(price);
-            Assert.AreEqual(0.01, price - fee);
+            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("0.01");
         }
     }
 }
