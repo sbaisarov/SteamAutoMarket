@@ -829,6 +829,7 @@
 
         public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithFee)
         {
+            var priceWithoutFee = int.Parse(this.GetSteamPriceWithoutFee(priceWithFee));
             var data = new Dictionary<string, string>
                            {
                                { "appid", appId.ToString() },
@@ -836,11 +837,12 @@
                                { "contextid", contextId.ToString() },
                                { "assetid", assetId.ToString() },
                                { "amount", amount.ToString() },
-                               { "price", this.GetSteamPriceWithoutFee(priceWithFee) }
+                               { "price", (priceWithoutFee * 100).ToString() }
                            };
 
             var resp = this.steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true).Data
                 .Content;
+
             return JsonConvert.DeserializeObject<JSellItem>(resp);
         }
 
@@ -855,7 +857,8 @@
 
             var fees = this.CalculateAmountToSendForDesiredReceivedAmount(
                 nEstimatedAmountOfWalletFundsReceivedByOtherParty,
-                PublisherFee, MarketFee);
+                PublisherFee,
+                MarketFee);
 
             var iterations = 0;
             var bEverUndershot = false;
@@ -867,7 +870,8 @@
                     {
                         fees = this.CalculateAmountToSendForDesiredReceivedAmount(
                             nEstimatedAmountOfWalletFundsReceivedByOtherParty - 1,
-                            PublisherFee, MarketFee);
+                            PublisherFee,
+                            MarketFee);
                         fees["steam_fee"] += amount - fees["amount"];
                         fees["fees"] += amount - fees["amount"];
                         fees["amount"] = amount;
@@ -886,7 +890,8 @@
 
                 fees = this.CalculateAmountToSendForDesiredReceivedAmount(
                     nEstimatedAmountOfWalletFundsReceivedByOtherParty,
-                    PublisherFee, MarketFee);
+                    PublisherFee,
+                    MarketFee);
                 iterations++;
             }
 

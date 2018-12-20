@@ -9,6 +9,7 @@
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Core.Waiter;
     using SteamAutoMarket.Steam;
+    using SteamAutoMarket.Steam.Auth;
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Exceptions;
     using SteamAutoMarket.Steam.Market.Models;
@@ -516,6 +517,61 @@
                 "Market sell");
         }
 
+        public void ConfirmTradeTransactionsWorkingProcess(ulong offerId, WorkingProcessDataContext wp)
+        {
+            var notFoundRetry = 0;
+            while (true)
+            {
+                try
+                {
+                    var confirmations = this.Guard.FetchConfirmations();
+                    var conf = confirmations.FirstOrDefault(
+                        item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
+                    if (conf == null)
+                    {
+                        notFoundRetry++;
+                        if (notFoundRetry > 3)
+                        {
+                            wp.AppendLog("Trade not found more then 3 times. Seems send is failed. Aborting confirmation process");
+                            break;
+                        }
+
+                        wp.AppendLog($"{offerId} trade not found. Retrying in 10 seconds");
+                        Thread.Sleep(TimeSpan.FromSeconds(10));
+                    }
+                    else
+                    {
+                        var success = this.Guard.AcceptConfirmation(conf);
+                        if (success)
+                        {
+                            wp.AppendLog($"{offerId} trade was successfully confirmed.");
+                            wp.AppendLog("Waiting 5 seconds to fetch confirmations to verify they are empty");
+                            Thread.Sleep(TimeSpan.FromSeconds(5));
+                            confirmations = this.Guard.FetchConfirmations();
+                            conf = confirmations.FirstOrDefault(
+                                item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
+                            if (conf == null)
+                            {
+                                wp.AppendLog("Trade not found. Confirmation process finished");
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            wp.AppendLog($"{offerId} trade confirmation was failed. Retrying in 10 seconds");
+                            Thread.Sleep(TimeSpan.FromSeconds(10));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    wp.AppendLog($"Error on trade confirm - {e.Message}. Retrying in 10 seconds");
+                    Logger.Log.Error(($"Error on trade confirm.", e));
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
+                }
+            }
+        }
+
         public void SendTrade(string targetSteamId, string tradeToken, FullRgItem[] itemsToTrade, bool acceptTwoFactor)
         {
             var wp = UiGlobalVariables.WorkingProcessDataContext;
@@ -545,17 +601,7 @@
                             if (acceptTwoFactor)
                             {
                                 var numberTradeId = ulong.Parse(tradeId);
-                                try
-                                {
-                                    this.ConfirmTradeTransactions(numberTradeId);
-                                    wp.AppendLog("Trade two factor confirmation was successfully accepted");
-                                }
-                                catch (SteamException ex)
-                                {
-                                    wp.AppendLog(ex.Message);
-                                    wp.AppendLog("Waiting 30 seconds before trying again");
-                                    this.ConfirmTradeTransactions(numberTradeId);
-                                }
+                                this.ConfirmTradeTransactionsWorkingProcess(numberTradeId, wp);
                             }
                         }
                         catch (Exception ex)

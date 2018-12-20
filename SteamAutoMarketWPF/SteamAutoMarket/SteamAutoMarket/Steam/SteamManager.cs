@@ -150,28 +150,6 @@ namespace SteamAutoMarket.Steam
             var histogram = this.GetPrice(appid, hashName);
         }
 
-        public void ConfirmTradeTransactions(ulong offerId)
-        {
-            try
-            {
-                var confirmations = this.Guard.FetchConfirmations();
-                var conf = confirmations.FirstOrDefault(
-                    item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
-                if (conf == null)
-                {
-                    throw new SteamException($"Trade with {offerId} trade id not found");
-                }
-
-                this.Guard.AcceptConfirmation(conf);
-            }
-            catch (SteamGuardAccount.WGTokenExpiredException)
-            {
-                Logger.Log.Debug("Steam web session expired");
-                this.UpdateSteamSession();
-                this.ConfirmTradeTransactions(offerId);
-            }
-        }
-
         public string FetchTradeToken()
         {
             this.IsSessionUpdated = true;

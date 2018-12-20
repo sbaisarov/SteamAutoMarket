@@ -102,9 +102,7 @@
         }
 
         public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
-            new ObservableCollection<SettingsSteamAccount>(
-                SettingsProvider.GetInstance().SteamAccounts
-                    .Where(a => a.Login != UiGlobalVariables.SteamManager?.Login));
+            new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
