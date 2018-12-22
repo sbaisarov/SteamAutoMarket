@@ -84,12 +84,36 @@
         }
 
         public static void ProcessErrorOnMarketSell(
-            MarketSellProcessModel sellProcessModel,
+            MarketSellProcessModel marketSellModel,
             FullRgItem item,
             UiSteamManager uiSteamManager,
-            string exMessage)
+            string exMessage,
+            WorkingProcessDataContext wp)
         {
-            // todo
+            if (exMessage == "There was a problem listing your item. Refresh the page and try again.")
+            {
+                wp.AppendLog($"Retrying to sell {marketSellModel.ItemName} 2 more times.");
+                for (var index = 0; index < 2; index++)
+                {
+                    if (marketSellModel.SellPrice == null)
+                    {
+                        wp.AppendLog(
+                            $"Selling price for {marketSellModel.ItemName} not found. Aborting sell retrying process");
+                        break;
+                    }
+
+                    try
+                    {
+                        wp.AppendLog($"Selling - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice}");
+                        uiSteamManager.SellOnMarket(item, marketSellModel.SellPrice.Value);
+                        break;
+                    }
+                    catch (Exception e)
+                    {
+                        wp.AppendLog($"Retry {index} failed with error - {e.Message}");
+                    }
+                }
+            }
         }
 
         public static void ProcessMarketSellInventoryPage(

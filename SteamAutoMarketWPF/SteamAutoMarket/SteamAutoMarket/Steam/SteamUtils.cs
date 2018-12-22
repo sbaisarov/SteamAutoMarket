@@ -85,9 +85,17 @@
                 return "Sale Foil Trading Card";
             }
 
-            if (type.Contains("Sale Trading Card"))
+            if (type.Contains("Sale"))
             {
-                return "Sale Trading Card";
+                if (type.Contains("Foil"))
+                {
+                    return "Sale Foil Trading Card";
+                }
+
+                if (type.Contains("Trading Card"))
+                {
+                    return "Sale Trading Card";
+                }
             }
 
             if (type.Contains("Foil Trading Card"))
