@@ -42,9 +42,6 @@
             this.DataContext = this;
             UiGlobalVariables.MarketSellPage = this;
 
-            this.MarketSellSelectedAppid = this.AppIdList.FirstOrDefault(
-                appid => appid?.Name == SettingsProvider.GetInstance().MarketSellSelectedAppid?.Name);
-
             this.marketSellStrategy = this.GetMarketSellStrategy();
         }
 
@@ -77,12 +74,12 @@
 
         public SteamAppId MarketSellSelectedAppid
         {
-            get => SettingsProvider.GetInstance().MarketSellSelectedAppid;
+            get => SettingsProvider.GetInstance().SelectedAppid;
 
             set
             {
-                if (SettingsProvider.GetInstance().MarketSellSelectedAppid == value) return;
-                SettingsProvider.GetInstance().MarketSellSelectedAppid = value;
+                if (SettingsProvider.GetInstance().SelectedAppid == value) return;
+                SettingsProvider.GetInstance().SelectedAppid = value;
                 this.OnPropertyChanged();
             }
         }

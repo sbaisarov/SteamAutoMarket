@@ -25,9 +25,6 @@
         {
             this.InitializeComponent();
             this.DataContext = this;
-
-            this.TradeSendSelectedAppid = this.AppIdList.FirstOrDefault(
-                appid => appid?.Name == SettingsProvider.GetInstance().TradeSendSelectedAppid?.Name);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -80,11 +77,11 @@
 
         public SteamAppId TradeSendSelectedAppid
         {
-            get => SettingsProvider.GetInstance().TradeSendSelectedAppid;
+            get => SettingsProvider.GetInstance().SelectedAppid;
 
             set
             {
-                SettingsProvider.GetInstance().TradeSendSelectedAppid = value;
+                SettingsProvider.GetInstance().SelectedAppid = value;
                 this.OnPropertyChanged();
             }
         }

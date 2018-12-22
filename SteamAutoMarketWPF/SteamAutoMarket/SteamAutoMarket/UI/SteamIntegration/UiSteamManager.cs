@@ -491,7 +491,8 @@
                                                 marketSellModel,
                                                 item,
                                                 this,
-                                                ex.Message);
+                                                ex.Message, 
+                                                wp);
                                         }
                                     }
 

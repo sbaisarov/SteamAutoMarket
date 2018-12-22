@@ -40,7 +40,7 @@
 
         private string mafilesPath;
 
-        private SteamAppId marketSellSelectedAppid;
+        private SteamAppId selectedAppid;
 
         private int priceLoadingThreads = 3;
 
@@ -204,13 +204,13 @@
             }
         }
 
-        public SteamAppId MarketSellSelectedAppid
+        public SteamAppId SelectedAppid
         {
-            get => this.marketSellSelectedAppid;
+            get => this.selectedAppid;
             set
             {
-                if (this.marketSellSelectedAppid == value) return;
-                this.marketSellSelectedAppid = value;
+                if (this.selectedAppid == value) return;
+                this.selectedAppid = value;
                 this.OnPropertyChanged();
             }
         }
@@ -347,17 +347,6 @@
             {
                 if (this.tradeSendLoadOnlyUnmarketable == value) return;
                 this.tradeSendLoadOnlyUnmarketable = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public SteamAppId TradeSendSelectedAppid
-        {
-            get => this.marketSellSelectedAppid;
-            set
-            {
-                if (this.tradeSendSelectedAppid == value) return;
-                this.tradeSendSelectedAppid = value;
                 this.OnPropertyChanged();
             }
         }

@@ -210,7 +210,7 @@
 
                 <ComboBox Grid.Column="1"
                           IsSynchronizedWithCurrentItem="True"
-                          Name="MarketAppidCombobox"
+                          Name="AppidCombobox"
                           Text="{Binding TradeSendNewAppid, UpdateSourceTrigger=LostFocus}"
                           ItemsSource="{Binding AppIdList}"
                           SelectedItem="{Binding TradeSendSelectedAppid}"
@@ -221,7 +221,7 @@
                           Margin="0, 4" />
 
                 <TextBox
-                    Text="{Binding ElementName=MarketAppidCombobox, Path=SelectedItem.(models:SteamAppId.ContextId)}"
+                    Text="{Binding ElementName=AppidCombobox, Path=SelectedItem.(models:SteamAppId.ContextId)}"
                     Name="MarketContextIdTextBox"
                     Grid.Column="1"
                     Height="22"
