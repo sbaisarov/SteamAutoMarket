@@ -6,6 +6,8 @@
 
     using Newtonsoft.Json;
 
+    using SteamAutoMarket.Core;
+
     /// <summary>
     /// Class to help align system time with the Steam server time. Not super advanced; probably not taking some things into account that it should.
     /// Necessary to generate up-to-date codes. In general, this will have an error of less than a second, assuming Steam is operational.
@@ -18,18 +20,18 @@
 
         public static void AlignTime()
         {
-            var currentTime = Util.GetSystemUnixTime();
-            using (var client = new WebClient())
+            while (_aligned == false)
             {
                 try
                 {
-                    var response = client.UploadString(APIEndpoints.TWO_FACTOR_TIME_QUERY, "steamid=0");
+                    var response = SteamWeb.Request(APIEndpoints.TWO_FACTOR_TIME_QUERY, "POST", dataString: null);
                     var query = JsonConvert.DeserializeObject<TimeQuery>(response);
-                    _timeDifference = (int)(query.Response.ServerTime - currentTime);
+                    _timeDifference = (int)(query.Response.ServerTime - Util.GetSystemUnixTime());
                     _aligned = true;
                 }
-                catch (WebException)
+                catch (Exception ex)
                 {
+                    Logger.Log.Error($"Error on steam time align - {ex.Message}.", ex);
                 }
             }
         }

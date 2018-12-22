@@ -98,7 +98,7 @@
             if (method == "POST")
             {
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-                request.ContentLength = dataString.Length;
+                request.ContentLength = dataString?.Length ?? 0;
 
                 var requestStream = new StreamWriter(request.GetRequestStream());
                 requestStream.Write(dataString);

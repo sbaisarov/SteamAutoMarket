@@ -475,24 +475,12 @@
                                             $"Error on selling '{marketSellModel.ItemName}' - {ex.Message}",
                                             ex);
 
-                                        if (ex.Message.Contains("You have too many listings pending confirmation"))
-                                        {
-                                            MarketSellUtils.ProcessTooManyListingsPendingConfirmation(
-                                                this.Guard,
-                                                this.MarketClient,
-                                                this.Currency,
-                                                wp,
-                                                wp.CancellationToken);
-                                        }
-                                        else
-                                        {
-                                            MarketSellUtils.ProcessErrorOnMarketSell(
-                                                marketSellModel,
-                                                item,
-                                                this,
-                                                ex.Message, 
-                                                wp);
-                                        }
+                                        MarketSellUtils.ProcessErrorOnMarketSell(
+                                            marketSellModel,
+                                            item,
+                                            this,
+                                            ex.Message,
+                                            wp);
                                     }
 
                                     if (currentItemIndex % SettingsProvider.GetInstance().ItemsToTwoFactorConfirm == 0)
@@ -532,7 +520,8 @@
                         notFoundRetry++;
                         if (notFoundRetry > 3)
                         {
-                            wp.AppendLog("Trade not found more then 3 times. Seems send is failed. Aborting confirmation process");
+                            wp.AppendLog(
+                                "Trade not found more then 3 times. Seems send is failed. Aborting confirmation process");
                             break;
                         }
 
@@ -549,7 +538,8 @@
                             Thread.Sleep(TimeSpan.FromSeconds(5));
                             confirmations = this.Guard.FetchConfirmations();
                             conf = confirmations.FirstOrDefault(
-                                item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
+                                item => item.ConfType == Confirmation.ConfirmationType.Trade
+                                        && (item.Creator == offerId));
                             if (conf == null)
                             {
                                 wp.AppendLog("Trade not found. Confirmation process finished");

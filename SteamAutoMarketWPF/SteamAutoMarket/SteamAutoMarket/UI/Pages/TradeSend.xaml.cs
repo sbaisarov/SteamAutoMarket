@@ -165,7 +165,7 @@
             }
 
             var steamId = this.TradeSteamIdTextBox.Text;
-            if (string.IsNullOrEmpty(steamId) || (steamId.Length != 17 && steamId.Length != 9))
+            if (string.IsNullOrEmpty(steamId))
             {
                 ErrorNotify.CriticalMessageBox("Specified steam id is in incorrect format");
                 return;

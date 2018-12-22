@@ -13,7 +13,7 @@
     {
         public static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "logs.log";
+        public static readonly string LogFilePath = AppDomain.CurrentDomain.BaseDirectory + @"Logs\log.log";
 
         public static Level CurrentLogLevel => ((Hierarchy)LogManager.GetRepository()).Root.Level;
 
@@ -25,7 +25,7 @@
             var appender = new RollingFileAppender
                                {
                                    AppendToFile = true,
-                                   File = @"Logs\log.log",
+                                   File = LogFilePath,
                                    Layout = patternLayout,
                                    MaxSizeRollBackups = 100,
                                    MaximumFileSize = "10MB",
