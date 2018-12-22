@@ -15,28 +15,28 @@
         public void CalculateSteamFeeTest()
         {
             var price = 1000d;
-            var priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
-            priceWithoutFee.Should().Be("869.58");
+            var priceWithoutFee = this.marketClient.GetSellingSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("86958");
 
             price = 100;
-            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
-            priceWithoutFee.Should().Be("86.97");
+            priceWithoutFee = this.marketClient.GetSellingSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("8697");
 
             price = 10;
-            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
-            priceWithoutFee.Should().Be("8.70");
+            priceWithoutFee = this.marketClient.GetSellingSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("870");
 
             price = 1;
-            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
-            priceWithoutFee.Should().Be("0.88");
+            priceWithoutFee = this.marketClient.GetSellingSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("88");
 
             price = 0.5;
-            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
-            priceWithoutFee.Should().Be("0.44");
+            priceWithoutFee = this.marketClient.GetSellingSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("44");
 
             price = 0.03;
-            priceWithoutFee = this.marketClient.GetSteamPriceWithoutFee(price);
-            priceWithoutFee.Should().Be("0.01");
+            priceWithoutFee = this.marketClient.GetSellingSteamPriceWithoutFee(price);
+            priceWithoutFee.Should().Be("1");
         }
     }
 }

@@ -384,7 +384,6 @@
                     {
                         try
                         {
-                            var test = this.MarketClient.MyListings();
                             var notReadyTasksCount = priceLoadTasksList.Count(task => task.IsCompleted == false);
                             if (notReadyTasksCount > 0)
                             {

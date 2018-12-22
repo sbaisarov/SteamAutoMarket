@@ -376,7 +376,7 @@
             this.Session.AddCookies(cookies);
             var referer = this.GenerateConfirmationURL();
 
-            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null);
+            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null, referer);
             if (response == null) return false;
 
             var confResponse = JsonConvert.DeserializeObject<SendConfirmationResponse>(response);

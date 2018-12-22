@@ -106,15 +106,6 @@
             return priseWithFee / 100;
         }
 
-        public static double PriseWithoutFee(double price, WalletInfo walletInfo)
-        {
-            return PriseWithoutFee(
-                price,
-                walletInfo.WalletFeePercent,
-                walletInfo.WalletPublisherFeePercent,
-                walletInfo.WalletFeeMinimum);
-        }
-
         public static double PriseWithoutFee(
             double price,
             int walletFeePercent,

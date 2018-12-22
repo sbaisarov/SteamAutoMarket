@@ -6,7 +6,7 @@
     {
         public static long GetSystemUnixTime()
         {
-            return (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         }
 
         public static byte[] HexStringToByteArray(string hex)

@@ -61,6 +61,7 @@
 
                         confirmations = guard.FetchConfirmations().Where(
                             item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+
                         if (confirmations.Any())
                         {
                             wp.AppendLog($"{confirmations.Length} confirmations found");
@@ -77,8 +78,8 @@
                     wp.AppendLog($"Error on 2FA confirm - {e.Message}");
                 }
 
-                wp.AppendLog("Waiting for 10 seconds to restart confirmation process");
-                Thread.Sleep(TimeSpan.FromSeconds(10));
+                wp.AppendLog("Waiting for 15 seconds to restart confirmation process");
+                Thread.Sleep(TimeSpan.FromSeconds(15));
             }
         }
 

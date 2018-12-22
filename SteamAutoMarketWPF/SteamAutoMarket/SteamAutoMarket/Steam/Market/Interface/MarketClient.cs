@@ -829,7 +829,6 @@
 
         public dynamic SellItem(int appId, int contextId, long assetId, int amount, double priceWithFee)
         {
-            var priceWithoutFee = double.Parse(this.GetSteamPriceWithoutFee(priceWithFee));
             var data = new Dictionary<string, string>
                            {
                                { "appid", appId.ToString() },
@@ -837,7 +836,7 @@
                                { "contextid", contextId.ToString() },
                                { "assetid", assetId.ToString() },
                                { "amount", amount.ToString() },
-                               { "price", ((int)(priceWithoutFee * 100)).ToString() }
+                               { "price", this.GetSellingSteamPriceWithoutFee(priceWithFee) }
                            };
 
             var resp = this.steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true).Data
@@ -846,7 +845,7 @@
             return JsonConvert.DeserializeObject<JSellItem>(resp);
         }
 
-        public string GetSteamPriceWithoutFee(double price)
+        public string GetSellingSteamPriceWithoutFee(double price)
         {
             const double PublisherFee = 0.1;
             const double MarketFee = 0.05;
@@ -895,8 +894,8 @@
                 iterations++;
             }
 
-            var priceWithoutFee = (amount - fees["fees"]) / 100;
-            return priceWithoutFee.ToString("0.00");
+            var priceWithoutFee = amount - fees["fees"];
+            return priceWithoutFee.ToString("0");
         }
 
         private IDictionary<string, double> CalculateAmountToSendForDesiredReceivedAmount(
