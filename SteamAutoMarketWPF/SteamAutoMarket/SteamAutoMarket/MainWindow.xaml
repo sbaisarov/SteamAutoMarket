@@ -26,6 +26,11 @@
                 <mui:Link DisplayName="History" Source="/UI/Pages/TradeHistory.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
+        <mui:LinkGroup DisplayName="Extra">
+            <mui:LinkGroup.Links>
+                <mui:Link DisplayName="Market" Source="/UI/Pages/MarketExtra.xaml" />
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
         <mui:LinkGroup DisplayName="Action">
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Current process" Source="/UI/Pages/WorkingProcess.xaml" />

@@ -196,21 +196,24 @@
 
         private void RemoveSelectedAccountButtonClick(object sender, RoutedEventArgs e)
         {
-            if (this.selectSteamAccount == null)
+            var account = this.SelectSteamAccount;
+            if (account == null)
             {
                 ErrorNotify.CriticalMessageBox("No account selected!");
                 return;
             }
 
             var result = MessageBox.Show(
-                $"Are you sure you want to remove '{this.SelectSteamAccount.Login}' account?",
+                $"Are you sure you want to remove '{account.Login}' account?",
                 "Clarification",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                this.SteamAccountList.Remove(this.SelectSteamAccount);
+                this.SteamAccountList.Remove(account);
+                SettingsProvider.GetInstance().SteamAccounts.Remove(account);
+                SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
             }
         }
     }

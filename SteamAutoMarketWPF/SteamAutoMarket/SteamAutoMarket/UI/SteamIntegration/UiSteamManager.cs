@@ -54,6 +54,63 @@
 
         public PriceCache CurrentPriceCache { get; set; }
 
+        public void ConfirmTradeTransactionsWorkingProcess(ulong offerId, WorkingProcessDataContext wp)
+        {
+            var notFoundRetry = 0;
+            while (true)
+            {
+                try
+                {
+                    var confirmations = this.Guard.FetchConfirmations();
+                    var conf = confirmations.FirstOrDefault(
+                        item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
+                    if (conf == null)
+                    {
+                        notFoundRetry++;
+                        if (notFoundRetry > 3)
+                        {
+                            wp.AppendLog(
+                                "Trade not found more then 3 times. Seems send is failed. Aborting confirmation process");
+                            break;
+                        }
+
+                        wp.AppendLog($"{offerId} trade not found. Retrying in 10 seconds");
+                        Thread.Sleep(TimeSpan.FromSeconds(10));
+                    }
+                    else
+                    {
+                        var success = this.Guard.AcceptConfirmation(conf);
+                        if (success)
+                        {
+                            wp.AppendLog($"{offerId} trade was successfully confirmed.");
+                            wp.AppendLog("Waiting 5 seconds to fetch confirmations to verify they are empty");
+                            Thread.Sleep(TimeSpan.FromSeconds(5));
+                            confirmations = this.Guard.FetchConfirmations();
+                            conf = confirmations.FirstOrDefault(
+                                item => item.ConfType == Confirmation.ConfirmationType.Trade
+                                        && (item.Creator == offerId));
+                            if (conf == null)
+                            {
+                                wp.AppendLog("Trade not found. Confirmation process finished");
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            wp.AppendLog($"{offerId} trade confirmation was failed. Retrying in 10 seconds");
+                            Thread.Sleep(TimeSpan.FromSeconds(10));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    wp.AppendLog($"Error on trade confirm - {e.Message}. Retrying in 10 seconds");
+                    Logger.Log.Error(($"Error on trade confirm.", e));
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
+                }
+            }
+        }
+
         public override double? GetAveragePrice(int appid, string hashName, int days)
         {
             var price = base.GetAveragePrice(appid, hashName, days);
@@ -299,31 +356,47 @@
                                 var packageElementIndex = 1;
                                 foreach (var item in marketSellModel.ItemsList)
                                 {
-                                    if (wp.CancellationToken.IsCancellationRequested)
-                                    {
-                                        wp.AppendLog("Market relist process was force stopped");
-                                        return;
-                                    }
-
                                     try
                                     {
                                         semaphore.WaitOne();
 
-                                        wp.AppendLog(
-                                            $"[{currentItemIndex}/{totalItemsCount}] Removing - [{packageElementIndex++}/{marketSellModel.Count}] - '{marketSellModel.ItemName}'");
+                                        if (wp.CancellationToken.IsCancellationRequested)
+                                        {
+                                            wp.AppendLog("Market relist process was force stopped");
+                                            return;
+                                        }
 
                                         var itemCancelId = item.SaleId;
                                         var realIndex = currentItemIndex;
+                                        var realPackageIndex = packageElementIndex++;
                                         Task.Run(
                                             () =>
                                                 {
                                                     try
                                                     {
-                                                        var result = this.MarketClient.CancelSellOrder(itemCancelId);
-                                                        if (result != ECancelSellOrderStatus.Canceled)
+                                                        while (true)
                                                         {
+                                                            if (wp.CancellationToken.IsCancellationRequested)
+                                                            {
+                                                                wp.AppendLog(
+                                                                    $"Market {marketSellModel.ItemName} relist task was force stopped");
+                                                                return;
+                                                            }
+
                                                             wp.AppendLog(
-                                                                $"[{realIndex}/{totalItemsCount}] - Error on canceling sell order {marketSellModel.ItemName}");
+                                                                $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{marketSellModel.Count}] - '{marketSellModel.ItemName}'");
+
+                                                            var result =
+                                                                this.MarketClient.CancelSellOrder(itemCancelId);
+                                                            if (result != ECancelSellOrderStatus.Canceled)
+                                                            {
+                                                                wp.AppendLog(
+                                                                    $"[{realIndex}/{totalItemsCount}] - Error on canceling sell order {marketSellModel.ItemName}");
+                                                            }
+                                                            else
+                                                            {
+                                                                break;
+                                                            }
                                                         }
                                                     }
                                                     catch (Exception ex)
@@ -334,9 +407,11 @@
                                                             $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}",
                                                             ex);
                                                     }
-
-                                                    wp.IncrementProgress();
-                                                    semaphore.Release();
+                                                    finally
+                                                    {
+                                                        wp.IncrementProgress();
+                                                        semaphore.Release();
+                                                    }
                                                 });
                                     }
                                     catch (Exception ex)
@@ -379,6 +454,7 @@
             MarketSellStrategy sellStrategy)
         {
             var wp = UiGlobalVariables.WorkingProcessDataContext;
+            var itemsToConfirm = SettingsProvider.GetInstance().ItemsToTwoFactorConfirm;
             WorkingProcess.ProcessMethod(
                 () =>
                     {
@@ -483,7 +559,7 @@
                                             wp);
                                     }
 
-                                    if (currentItemIndex % SettingsProvider.GetInstance().ItemsToTwoFactorConfirm == 0)
+                                    if (currentItemIndex % itemsToConfirm == 0)
                                     {
                                         MarketSellUtils.ConfirmMarketTransactionsWorkingProcess(this.Guard, wp);
                                     }
@@ -503,63 +579,6 @@
                         }
                     },
                 "Market sell");
-        }
-
-        public void ConfirmTradeTransactionsWorkingProcess(ulong offerId, WorkingProcessDataContext wp)
-        {
-            var notFoundRetry = 0;
-            while (true)
-            {
-                try
-                {
-                    var confirmations = this.Guard.FetchConfirmations();
-                    var conf = confirmations.FirstOrDefault(
-                        item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
-                    if (conf == null)
-                    {
-                        notFoundRetry++;
-                        if (notFoundRetry > 3)
-                        {
-                            wp.AppendLog(
-                                "Trade not found more then 3 times. Seems send is failed. Aborting confirmation process");
-                            break;
-                        }
-
-                        wp.AppendLog($"{offerId} trade not found. Retrying in 10 seconds");
-                        Thread.Sleep(TimeSpan.FromSeconds(10));
-                    }
-                    else
-                    {
-                        var success = this.Guard.AcceptConfirmation(conf);
-                        if (success)
-                        {
-                            wp.AppendLog($"{offerId} trade was successfully confirmed.");
-                            wp.AppendLog("Waiting 5 seconds to fetch confirmations to verify they are empty");
-                            Thread.Sleep(TimeSpan.FromSeconds(5));
-                            confirmations = this.Guard.FetchConfirmations();
-                            conf = confirmations.FirstOrDefault(
-                                item => item.ConfType == Confirmation.ConfirmationType.Trade
-                                        && (item.Creator == offerId));
-                            if (conf == null)
-                            {
-                                wp.AppendLog("Trade not found. Confirmation process finished");
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            wp.AppendLog($"{offerId} trade confirmation was failed. Retrying in 10 seconds");
-                            Thread.Sleep(TimeSpan.FromSeconds(10));
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    wp.AppendLog($"Error on trade confirm - {e.Message}. Retrying in 10 seconds");
-                    Logger.Log.Error(($"Error on trade confirm.", e));
-                    Thread.Sleep(TimeSpan.FromSeconds(10));
-                }
-            }
         }
 
         public void SendTrade(string targetSteamId, string tradeToken, FullRgItem[] itemsToTrade, bool acceptTwoFactor)

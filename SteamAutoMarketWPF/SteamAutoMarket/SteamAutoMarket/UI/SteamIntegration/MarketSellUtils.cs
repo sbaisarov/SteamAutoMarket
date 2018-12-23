@@ -20,6 +20,87 @@
 
     public static class MarketSellUtils
     {
+        public static void CancelMarketPendingListings(UiSteamManager steamManager, WorkingProcessDataContext wp)
+        {
+            var myListings = steamManager.MarketClient.MyListings(steamManager.Currency.ToString())?.ConfirmationSales
+                ?.ToArray();
+
+            if (myListings == null || myListings.Length <= 0)
+            {
+                wp.AppendLog("No market listing found. Nothing to cancel");
+                return;
+            }
+
+            wp.AppendLog(
+                $"Seems there are {myListings.Length} market listings that do not have two factor confirmation request. Trying to cancel them");
+
+            var semaphore = new Semaphore(
+                SettingsProvider.GetInstance().RelistThreadsCount,
+                SettingsProvider.GetInstance().RelistThreadsCount);
+
+            var index = 1;
+            foreach (var listing in myListings)
+            {
+                if (wp.CancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                if (listing == null) continue;
+
+                try
+                {
+                    semaphore.WaitOne();
+                    var realListing = listing;
+                    var realIndex = index++;
+                    Task.Run(
+                        () =>
+                            {
+                                try
+                                {
+                                    var tryCount = 0;
+                                    while (true)
+                                    {
+                                        if (wp.CancellationToken.IsCancellationRequested)
+                                        {
+                                            wp.AppendLog(
+                                                $"Cancel market {realListing.Name} pending listings process was force stopped");
+                                            break;
+                                        }
+
+                                        wp.AppendLog($"[{realIndex}/{myListings.Length}] Removing {realListing.Name}");
+                                        var result = steamManager.MarketClient.CancelSellOrder(realListing.SaleId);
+                                        if (result != ECancelSellOrderStatus.Canceled)
+                                        {
+                                            wp.AppendLog($"ERROR on removing {realListing.Name}");
+                                            if (tryCount++ > 10) break;
+                                            Thread.Sleep(1000);
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    wp.AppendLog($"ERROR on removing {realListing.Name} - {e.Message}");
+                                    Logger.Log.Error($"ERROR on removing {realListing.Name} - {e.Message}", e);
+                                }
+                                finally
+                                {
+                                    semaphore.Release();
+                                }
+                            });
+                }
+                catch (Exception e)
+                {
+                    wp.AppendLog($"ERROR on removing {listing.Name} - {e.Message}");
+                    Logger.Log.Error($"ERROR on removing {listing.Name} - {e.Message}", e);
+                }
+            }
+        }
+
         public static void ConfirmMarketTransactionsWorkingProcess(
             SteamGuardAccount guard,
             WorkingProcessDataContext wp)
@@ -28,31 +109,60 @@
             {
                 try
                 {
+                    if (wp.CancellationToken.IsCancellationRequested)
+                    {
+                        wp.AppendLog("2FA confirmation process was force stopped.");
+                        return;
+                    }
+
                     wp.AppendLog("Fetching 2FA confirmations..");
 
                     var confirmations = guard.FetchConfirmations().Where(
                         item => item.ConfType == Confirmation.ConfirmationType.MarketSellTransaction).ToArray();
+
                     wp.AppendLog($"{confirmations.Length} confirmations found. Accepting confirmations");
 
-                    var chunks = confirmations.Select((s, i) => new { Value = s, Index = i }).GroupBy(x => x.Index / 50)
-                        .Select(grp => grp.Select(x => x.Value).ToArray()).ToArray();
+                    if (confirmations.Length == 0)
+                    {
+                        wp.AppendLog("No confirmations found. Nothing to confirm");
+                        return;
+                    }
 
                     var confirmationsSuccess = new List<bool>();
-                    wp.AppendLog($"Splitting confirmation list by 50. {chunks.Length} chunks was obtained");
-                    var chunkIndex = 1;
-                    foreach (var chunk in chunks)
+                    if (confirmations.Length > 50)
                     {
-                        wp.AppendLog($"Trying to confirm {chunkIndex} confirmations chunk");
-                        var status = guard.AcceptMultipleConfirmations(chunk);
+                        var chunks = confirmations.Select((s, i) => new { Value = s, Index = i })
+                            .GroupBy(x => x.Index / 50).Select(grp => grp.Select(x => x.Value).ToArray()).ToArray();
+                        wp.AppendLog($"Splitting confirmation list by 50. {chunks.Length} chunks was obtained");
+                        var chunkIndex = 1;
+                        foreach (var chunk in chunks)
+                        {
+                            if (wp.CancellationToken.IsCancellationRequested)
+                            {
+                                wp.AppendLog("2FA confirmation process was force stopped.");
+                                return;
+                            }
+
+                            wp.AppendLog($"Trying to confirm {chunkIndex} confirmations chunk");
+                            var status = guard.AcceptMultipleConfirmations(chunk);
+                            confirmationsSuccess.Add(status);
+
+                            wp.AppendLog(
+                                status
+                                    ? $"{chunkIndex} confirmations chunk confirm was successful"
+                                    : $"{chunkIndex} confirmations chunk confirm was failed");
+                            chunkIndex++;
+
+                            Thread.Sleep(TimeSpan.FromSeconds(2));
+                        }
+                    }
+                    else
+                    {
+                        var status = guard.AcceptMultipleConfirmations(confirmations);
                         confirmationsSuccess.Add(status);
 
                         wp.AppendLog(
-                            status
-                                ? $"{chunkIndex} confirmations chunk is successful"
-                                : $"{chunkIndex} confirmations chunk was failed");
-                        chunkIndex++;
-
-                        Thread.Sleep(TimeSpan.FromSeconds(2));
+                            status ? "Confirmations confirm was successful" : "Confirmations confirm was failed");
                     }
 
                     if (confirmationsSuccess.All(c => c))
@@ -77,6 +187,7 @@
                 catch (Exception e)
                 {
                     wp.AppendLog($"Error on 2FA confirm - {e.Message}");
+                    if (e.Message == "Invalid authenticator") continue;
                 }
 
                 wp.AppendLog("Waiting for 5 seconds to restart confirmation process");
@@ -91,54 +202,31 @@
             string exMessage,
             WorkingProcessDataContext wp)
         {
-            if (exMessage.Contains("You have too many listings pending confirmation"))
+            if (exMessage.Contains("There was a problem listing your item. Refresh the page and try again."))
             {
-                ProcessTooManyListingsPendingConfirmation(uiSteamManager, wp);
+                RetryMarketSell(3, 0, marketSellModel, item, uiSteamManager, wp);
             }
             else if (exMessage.Contains("We were unable to contact the game's item server."))
             {
                 RetryMarketSell(10, 2, marketSellModel, item, uiSteamManager, wp);
             }
-            else if (exMessage.Contains("The item specified is no longer in your inventory or is not allowed to be traded on the Community Market."))
+            else if (exMessage.Contains("You have too many listings pending confirmation"))
             {
-                RetryMarketSell(1, 0, marketSellModel, item, uiSteamManager, wp);
+                ProcessTooManyListingsPendingConfirmation(uiSteamManager, wp);
             }
-            else if (exMessage.Contains("There was a problem listing your item. Refresh the page and try again."))
+            else if (exMessage.Contains("The item specified is no longer in your inventory"))
             {
-                RetryMarketSell(3, 0, marketSellModel, item, uiSteamManager, wp);
             }
-        }
-
-        public static void RetryMarketSell(int retryCount, int delaySeconds, MarketSellProcessModel marketSellModel, FullRgItem item, UiSteamManager uiSteamManager, WorkingProcessDataContext wp)
-        {
-            wp.AppendLog($"Retrying to sell {marketSellModel.ItemName} 3 more times.");
-
-            for (var index = 1; index <= retryCount; index++)
+            else if (exMessage.Contains("You already have a listing for this item pending confirmation"))
             {
-                if (marketSellModel.SellPrice == null)
-                {
-                    wp.AppendLog(
-                        $"Selling price for {marketSellModel.ItemName} not found. Aborting sell retrying process");
-                    break;
-                }
-
-                if (wp.CancellationToken.IsCancellationRequested)
-                {
-                    wp.AppendLog("Retrying to sell was force stopped");
-                    break;
-                }
-
-                try
-                {
-                    wp.AppendLog($"Selling - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice}");
-                    uiSteamManager.SellOnMarket(item, marketSellModel.SellPrice.Value);
-                    break;
-                }
-                catch (Exception e)
-                {
-                    wp.AppendLog($"Retry {index} failed with error - {e.Message}");
-                    Thread.Sleep(TimeSpan.FromSeconds(delaySeconds));
-                }
+            }
+            else if (exMessage.Contains("You cannot sell any items until your previous action completes"))
+            {
+                RetryMarketSell(int.MaxValue, 5, marketSellModel, item, uiSteamManager, wp);
+            }
+            else
+            {
+                Logger.Log.Error($"Unknown error on market sell - {exMessage}");
             }
         }
 
@@ -181,55 +269,49 @@
             wp.AppendLog("Seems market listings stacked. Forsering two factor confirmation");
             ConfirmMarketTransactionsWorkingProcess(steamManager.Guard, wp);
 
-            var myListings = steamManager.MarketClient.MyListings(steamManager.Currency.ToString())?.ConfirmationSales
-                ?.ToArray();
-            if (myListings == null || myListings.Length <= 0) return;
+            CancelMarketPendingListings(steamManager, wp);
+        }
 
+        public static void RetryMarketSell(
+            int retryCount,
+            int delaySeconds,
+            MarketSellProcessModel marketSellModel,
+            FullRgItem item,
+            UiSteamManager uiSteamManager,
+            WorkingProcessDataContext wp)
+        {
             wp.AppendLog(
-                $"Seems there are {myListings.Length} market listings that do not have two factor confirmation request. Trying to cancel them");
+                retryCount < int.MaxValue
+                    ? $"Retrying to sell {marketSellModel.ItemName} {retryCount} more times."
+                    : $"Retrying to sell {marketSellModel.ItemName} until success.");
 
-            var semaphore = new Semaphore(
-                SettingsProvider.GetInstance().RelistThreadsCount,
-                SettingsProvider.GetInstance().RelistThreadsCount);
-
-            foreach (var listing in myListings)
+            for (var index = 1; index <= retryCount; index++)
             {
+                if (marketSellModel.SellPrice == null)
+                {
+                    wp.AppendLog(
+                        $"Selling price for {marketSellModel.ItemName} not found. Aborting sell retrying process");
+                    break;
+                }
+
                 if (wp.CancellationToken.IsCancellationRequested)
                 {
-                    return;
+                    wp.AppendLog("Retrying to sell was force stopped");
+                    break;
                 }
 
                 try
                 {
-                    semaphore.WaitOne();
-                    wp.AppendLog($"Removing {listing.Name}");
-                    var listingId = listing.SaleId;
-
-                    Task.Run(
-                        () =>
-                            {
-                                try
-                                {
-                                    var result = steamManager.MarketClient.CancelSellOrder(listingId);
-                                    if (result != ECancelSellOrderStatus.Canceled)
-                                    {
-                                        wp.AppendLog($"ERROR on removing {listing.Name}");
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                    wp.AppendLog($"ERROR on removing {listing.Name} - {e.Message}");
-                                    Logger.Log.Error($"ERROR on removing {listing.Name} - {e.Message}", e);
-                                }
-                            });
+                    wp.AppendLog($"Selling - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice}");
+                    uiSteamManager.SellOnMarket(item, marketSellModel.SellPrice.Value);
+                    break;
                 }
                 catch (Exception e)
                 {
-                    wp.AppendLog($"ERROR on removing {listing.Name} - {e.Message}");
-                    Logger.Log.Error($"ERROR on removing {listing.Name} - {e.Message}", e);
+                    wp.AppendLog($"Retry {index} failed with error - {e.Message}");
+                    if (e.Message.Contains("You already have a listing for this item pending confirmation")) return;
+                    Thread.Sleep(TimeSpan.FromSeconds(delaySeconds));
                 }
-
-                semaphore.Release();
             }
         }
     }

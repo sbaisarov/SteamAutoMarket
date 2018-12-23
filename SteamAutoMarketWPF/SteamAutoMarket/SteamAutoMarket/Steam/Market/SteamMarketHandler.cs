@@ -16,6 +16,7 @@
     using SteamAutoMarket.Steam.Market.Interface;
     using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.Market.Models.Json.SteamStatus;
+    using SteamAutoMarket.UI.Repository.Settings;
 
     public class SteamMarketHandler
     {
@@ -122,10 +123,13 @@
                     request.AddHeader(h.Key, h.Value);
 
             request.AddHeader("Referer", referer);
-            request.AddHeader("Accept", "text/javascript, text/html, application/xml, text/xml, application/json, */*");
+            request.AddHeader("User-Agent", SettingsProvider.GetInstance().UserAgent);
+            request.AddHeader("Origin", "https://steamcommunity.com");
+            request.AddHeader("Host", "steamcommunity.com");
+            request.AddHeader("Accept", "*/*");
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            request.AddHeader("Accept-Encoding", "gzip, deflate");
-            request.AddHeader("Accept-Language", "en-US,en;q=0.8,en-US;q=0.5,en;q=0.3");
+            request.AddHeader("Accept-Encoding", "gzip, deflate, br");
+            request.AddHeader("Accept-Language", "en-US;q=0.9,en;q=0.8,uk;q=0.7,es;q=0.6");
             request.AddHeader("Cache-Control", "no-cache");
 
             this.LastInvokeTime = DateTimeOffset.Now;

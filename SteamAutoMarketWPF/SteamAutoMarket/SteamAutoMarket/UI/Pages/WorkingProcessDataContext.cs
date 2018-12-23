@@ -149,6 +149,20 @@
         {
             this.WorkingLogs += $"{UiLogAppender.GetCurrentDate()} - {message}{Environment.NewLine}";
             Logger.Log.Info(message);
+
+            if (this.WorkingLogs.Length <= 100000) return;
+
+            try
+            {
+                var lines = this.WorkingLogs.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                var start = lines.Length / 2;
+                var end = lines.Length - start;
+                this.WorkingLogs = string.Join(Environment.NewLine, lines.ToList().GetRange(start, end));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log.Error($"Error on working process logs cutback - {ex.Message}", ex);
+            }
         }
 
         public void IncrementProgress()

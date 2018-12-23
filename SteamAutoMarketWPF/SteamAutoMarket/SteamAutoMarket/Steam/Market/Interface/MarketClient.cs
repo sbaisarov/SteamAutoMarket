@@ -257,11 +257,65 @@
                     var isConfirmation = item.InnerHtml.Contains("CancelMarketListingConfirmation");
                     if (isConfirmation) continue;
 
-                    sellListingsPage.SellListings.Add(this.ProcessSellListings(item, $"{this.CurrentCurrency}"));
+                    var listing = this.ProcessSellListings(item, $"{this.CurrentCurrency}");
+                    if (listing != null) sellListingsPage.SellListings.Add(listing);
                 }
             }
 
             return sellListingsPage;
+        }
+
+        public string GetSellingSteamPriceWithoutFee(double price)
+        {
+            const double PublisherFee = 0.1;
+            const double MarketFee = 0.05;
+
+            var amount = price * 100;
+
+            var nEstimatedAmountOfWalletFundsReceivedByOtherParty = (int)(amount / (MarketFee + PublisherFee + 1));
+
+            var fees = this.CalculateAmountToSendForDesiredReceivedAmount(
+                nEstimatedAmountOfWalletFundsReceivedByOtherParty,
+                PublisherFee,
+                MarketFee);
+
+            var iterations = 0;
+            var bEverUndershot = false;
+            while (fees["amount"] != amount && iterations < 10)
+            {
+                if (fees["amount"] > amount)
+                {
+                    if (bEverUndershot)
+                    {
+                        fees = this.CalculateAmountToSendForDesiredReceivedAmount(
+                            nEstimatedAmountOfWalletFundsReceivedByOtherParty - 1,
+                            PublisherFee,
+                            MarketFee);
+                        fees["steam_fee"] += amount - fees["amount"];
+                        fees["fees"] += amount - fees["amount"];
+                        fees["amount"] = amount;
+                        break;
+                    }
+                    else
+                    {
+                        nEstimatedAmountOfWalletFundsReceivedByOtherParty--;
+                    }
+                }
+                else
+                {
+                    bEverUndershot = true;
+                    nEstimatedAmountOfWalletFundsReceivedByOtherParty++;
+                }
+
+                fees = this.CalculateAmountToSendForDesiredReceivedAmount(
+                    nEstimatedAmountOfWalletFundsReceivedByOtherParty,
+                    PublisherFee,
+                    MarketFee);
+                iterations++;
+            }
+
+            var priceWithoutFee = amount - fees["fees"];
+            return priceWithoutFee.ToString("0");
         }
 
         public ItemOrdersHistogram ItemOrdersHistogram(int nameId)
@@ -845,76 +899,6 @@
             return JsonConvert.DeserializeObject<JSellItem>(resp);
         }
 
-        public string GetSellingSteamPriceWithoutFee(double price)
-        {
-            const double PublisherFee = 0.1;
-            const double MarketFee = 0.05;
-
-            var amount = price * 100;
-
-            var nEstimatedAmountOfWalletFundsReceivedByOtherParty = (int)(amount / (MarketFee + PublisherFee + 1));
-
-            var fees = this.CalculateAmountToSendForDesiredReceivedAmount(
-                nEstimatedAmountOfWalletFundsReceivedByOtherParty,
-                PublisherFee,
-                MarketFee);
-
-            var iterations = 0;
-            var bEverUndershot = false;
-            while (fees["amount"] != amount && iterations < 10)
-            {
-                if (fees["amount"] > amount)
-                {
-                    if (bEverUndershot)
-                    {
-                        fees = this.CalculateAmountToSendForDesiredReceivedAmount(
-                            nEstimatedAmountOfWalletFundsReceivedByOtherParty - 1,
-                            PublisherFee,
-                            MarketFee);
-                        fees["steam_fee"] += amount - fees["amount"];
-                        fees["fees"] += amount - fees["amount"];
-                        fees["amount"] = amount;
-                        break;
-                    }
-                    else
-                    {
-                        nEstimatedAmountOfWalletFundsReceivedByOtherParty--;
-                    }
-                }
-                else
-                {
-                    bEverUndershot = true;
-                    nEstimatedAmountOfWalletFundsReceivedByOtherParty++;
-                }
-
-                fees = this.CalculateAmountToSendForDesiredReceivedAmount(
-                    nEstimatedAmountOfWalletFundsReceivedByOtherParty,
-                    PublisherFee,
-                    MarketFee);
-                iterations++;
-            }
-
-            var priceWithoutFee = amount - fees["fees"];
-            return priceWithoutFee.ToString("0");
-        }
-
-        private IDictionary<string, double> CalculateAmountToSendForDesiredReceivedAmount(
-            double receivedAmount,
-            double publisherFee,
-            double marketFee)
-        {
-            var steamFee = Math.Floor(Math.Max(receivedAmount * marketFee, 1));
-            var nPublisherFee = Math.Floor(publisherFee > 0 ? Math.Max(receivedAmount * publisherFee, 1) : 0);
-            var nAmountToSend = receivedAmount + steamFee + nPublisherFee;
-            return new Dictionary<string, double>()
-                       {
-                           { "steam_fee", steamFee },
-                           { "publisher_fee", nPublisherFee },
-                           { "fees", steamFee + nPublisherFee },
-                           { "amount", nAmountToSend }
-                       };
-        }
-
         public WalletInfo WalletInfo()
         {
             var resp = this.steam.Request(Urls.Market, Method.GET, Urls.Market, useAuthCookie: true);
@@ -948,6 +932,23 @@
                                  };
 
             return walletInfo;
+        }
+
+        private IDictionary<string, double> CalculateAmountToSendForDesiredReceivedAmount(
+            double receivedAmount,
+            double publisherFee,
+            double marketFee)
+        {
+            var steamFee = Math.Floor(Math.Max(receivedAmount * marketFee, 1));
+            var nPublisherFee = Math.Floor(publisherFee > 0 ? Math.Max(receivedAmount * publisherFee, 1) : 0);
+            var nAmountToSend = receivedAmount + steamFee + nPublisherFee;
+            return new Dictionary<string, double>()
+                       {
+                           { "steam_fee", steamFee },
+                           { "publisher_fee", nPublisherFee },
+                           { "fees", steamFee + nPublisherFee },
+                           { "amount", nAmountToSend }
+                       };
         }
 
         private void GetPendingTransactionData(
@@ -1146,18 +1147,32 @@
             var date = Regex.Match(item.InnerText, @"Listed: (.+)?\s").Groups[1].Value.Trim();
             var priceString = node.InnerText.Replace("\r", string.Empty).Replace("\n", string.Empty)
                 .Replace("\t", string.Empty).Replace(" ", string.Empty);
+
+            if (priceString.Contains("Sold!"))
+            {
+                return null;
+            }
+
             var game = item.SelectSingleNode("//span[@class='market_listing_game_name']").InnerText;
             double price;
             try
             {
-                var priceParse = priceString.Split('(')[0].Replace(".", string.Empty);
+                var priceParse = priceString.Split('(')[0];
                 var currencySymbol = SteamCurrencies.Currencies[currency];
                 priceParse = priceParse.Replace(currencySymbol, string.Empty);
-                NumberUtils.TryParseDouble(priceParse, out price);
+                var parseDouble = NumberUtils.TryParseDouble(priceParse, out price);
+                if (parseDouble == false)
+                {
+                    throw new SteamException($"Cannot parse order listing price - {priceString}");
+                }
             }
-            catch (Exception)
+            catch (SteamException)
             {
-                throw new SteamException("Cannot parse order listing price");
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new SteamException($"Cannot parse order listing price - {priceString} - {e.Message}");
             }
 
             var saleIdMatch = Regex.Match(item.InnerHtml, "(?<=mylisting_)([0-9]*)(?=_name)");

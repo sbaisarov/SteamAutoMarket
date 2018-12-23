@@ -57,7 +57,7 @@ namespace SteamAutoMarket.Steam
 
             this.SteamClient = new UserLogin(login, password) { TwoFactorCode = twoFactorCode };
 
-            this.Guard.DeviceID = this.GetDeviceId();
+            // this.Guard.DeviceID = this.GetDeviceId();
 
             Logger.Log.Debug("Checking session status..");
             var isSessionRefreshed = this.Guard.RefreshSession();
@@ -296,6 +296,16 @@ namespace SteamAutoMarket.Steam
                 price);
 
             var message = resp.Message; // error message
+            if (resp.Success == false)
+            {
+                if (message != null)
+                {
+                    throw new SteamException(message);
+                }
+
+                throw new SteamException("Response success is false");
+            }
+
             if (message != null)
             {
                 throw new SteamException(message);

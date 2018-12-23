@@ -40,13 +40,13 @@
 
         private string mafilesPath;
 
-        private SteamAppId selectedAppid;
-
         private int priceLoadingThreads = 3;
 
         private int relistThreadsCount = 2;
 
         private bool scrollLogsToEnd;
+
+        private SteamAppId selectedAppid;
 
         private List<SettingsSteamAccount> steamAccounts = new List<SettingsSteamAccount>();
 
@@ -67,8 +67,6 @@
         private bool tradeSendConfirm2Fa = true;
 
         private bool tradeSendLoadOnlyUnmarketable;
-
-        private SteamAppId tradeSendSelectedAppid;
 
         private string userAgent =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36";
@@ -204,17 +202,6 @@
             }
         }
 
-        public SteamAppId SelectedAppid
-        {
-            get => this.selectedAppid;
-            set
-            {
-                if (this.selectedAppid == value) return;
-                this.selectedAppid = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         public int PriceLoadingThreads
         {
             get => this.priceLoadingThreads;
@@ -244,6 +231,17 @@
             {
                 if (this.scrollLogsToEnd == value) return;
                 this.scrollLogsToEnd = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public SteamAppId SelectedAppid
+        {
+            get => this.selectedAppid;
+            set
+            {
+                if (this.selectedAppid == value) return;
+                this.selectedAppid = value;
                 this.OnPropertyChanged();
             }
         }

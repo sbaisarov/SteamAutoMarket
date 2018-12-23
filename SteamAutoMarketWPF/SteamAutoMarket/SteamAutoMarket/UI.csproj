@@ -93,7 +93,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Steam\Auth\APIEndpoints.cs" />
-    <Compile Include="Steam\Auth\AuthenticatorLinker.cs" />
     <Compile Include="Steam\Auth\Confirmation.cs" />
     <Compile Include="Steam\Auth\LoginResult.cs" />
     <Compile Include="Steam\Auth\SessionData.cs" />
@@ -236,6 +235,9 @@
     <Compile Include="UI\Pages\ActiveTrades.xaml.cs">
       <DependentUpon>ActiveTrades.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\MarketExtra.xaml.cs">
+      <DependentUpon>MarketExtra.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\LogsWindow.xaml.cs">
       <DependentUpon>LogsWindow.xaml</DependentUpon>
     </Compile>
@@ -310,6 +312,10 @@
     <Page Include="UI\Pages\ActiveTrades.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\MarketExtra.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Pages\LogsWindow.xaml">
       <SubType>Designer</SubType>

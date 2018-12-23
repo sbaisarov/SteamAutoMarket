@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="SteamAutoMarket.UI.Pages.MarketExtra"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="FlatButton" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Height" Value="150" />
+            <Setter Property="Width" Value="250" />
+            <Setter Property="Margin" Value="0,0,20,20" />
+            <Setter Property="Padding" Value="0,10,0,5" />
+        </Style>
+
+        <Style x:Key="FlatText" TargetType="TextBlock" BasedOn="{StaticResource Heading2}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+            <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Style="{StaticResource ContentRoot}">
+        <ScrollViewer>
+            <StackPanel MinWidth="200" HorizontalAlignment="Left">
+                <WrapPanel Margin="0,20,0,0">
+                    <Button Style="{StaticResource FlatButton}" Click="CancelPendingListings_OnClick">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Path Style="{StaticResource Geometry}"
+                                  Stretch="Uniform"
+                                  Data="{StaticResource SvgBack}" />
+
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}"
+                                       Text="Cancel all listings awaiting confirmation" />
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource FlatButton}" Click="Confirm2Fa_OnClick">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Path Style="{StaticResource Geometry}"
+                                  Stretch="Uniform"
+                                  Data="{StaticResource SvgMobile}" />
+
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}"
+                                       Text="Confirm all market 2FA confirmation" />
+                        </Grid>
+                    </Button>
+                </WrapPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
