@@ -176,10 +176,10 @@
                             <TextBox
                                 TextAlignment="Center"
                                 BorderThickness="0"
-                                Text="{Binding Path=(models:PriceModel.Value), Mode=TwoWay}"
+                                Text="{Binding Path=(models:PriceModel.StringValue), Mode=TwoWay}"
                                 Foreground="{DynamicResource ItemText}"
                                 Background="{DynamicResource DataGridBackground}"
-                                d:DataContext="{d:DesignData PriceModel}" />
+                                d:DataContext="{d:DesignData PriceModel}"/>
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>

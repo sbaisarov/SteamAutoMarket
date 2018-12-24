@@ -10,6 +10,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Input;
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Core.Waiter;

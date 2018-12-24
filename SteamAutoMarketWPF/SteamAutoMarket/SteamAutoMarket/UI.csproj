@@ -39,6 +39,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
@@ -293,6 +294,7 @@
     <Compile Include="UI\Utils\Converter\IfNullInvisibleConverter.cs" />
     <Compile Include="UI\Utils\Converter\InvertBooleanConverter.cs" />
     <Compile Include="UI\Utils\Converter\IfNullVisibleConverter.cs" />
+    <Compile Include="UI\Utils\UiElementsUtils.cs" />
     <Compile Include="UI\Utils\Extension\CollectionDispatcher.cs" />
     <Compile Include="UI\Utils\Logger\ErrorNotify.cs" />
     <Compile Include="UI\Utils\Logger\UiLogAppender.cs" />

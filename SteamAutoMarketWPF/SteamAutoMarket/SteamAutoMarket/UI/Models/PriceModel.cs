@@ -2,8 +2,10 @@
 {
     using System;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Runtime.CompilerServices;
 
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
 
     [Serializable]
@@ -21,6 +23,22 @@
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public string StringValue
+        {
+            get => this.Value?.ToString(CultureInfo.InvariantCulture);
+            set
+            {
+                if (NumberUtils.TryParseDouble(value, out var result))
+                {
+                    this.Value = result;
+                }
+                else
+                {
+                    this.Value = null;
+                }
+            }
+        }
 
         public double? Value
         {

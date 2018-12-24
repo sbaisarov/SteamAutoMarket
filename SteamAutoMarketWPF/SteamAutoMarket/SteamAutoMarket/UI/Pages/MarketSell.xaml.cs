@@ -10,6 +10,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Core.Waiter;
@@ -19,7 +22,10 @@
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;
+    using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.Logger;
+
+    using DataRow = Xceed.Wpf.DataGrid.DataRow;
 
     /// <summary>
     /// Interaction logic for Account.xaml
@@ -406,6 +412,35 @@
             }
 
             this.priceLoadSubTasks.Clear();
+        }
+
+        private void PriceTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var currentIndex = this.MarketItemsToSellGrid.SelectedIndex;
+            int targetIndex;
+            
+            switch (e.Key)
+            {
+                case Key.Down:
+                    if (currentIndex == this.MarketItemsToSellGrid.Items.Count) return;
+                    targetIndex = currentIndex + 1;
+                    break;
+                case Key.Up:
+                    if(currentIndex == 0) return;
+                    targetIndex = currentIndex - 1;
+                    break;
+
+                default: return;
+            }
+            
+            var row = this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[targetIndex]) as DataRow;
+            var cell = row?.Cells[5];
+            if (cell != null)
+            {
+                var textBox = UiElementsUtils.FindVisualChild<TextBox>(cell);
+                textBox.SelectAll();
+                textBox.Focus();
+            }
         }
     }
 }
