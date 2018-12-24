@@ -226,6 +226,7 @@
             }
             else
             {
+                wp.AppendLog($"Unknown error on market sell - {exMessage}");
                 Logger.Log.Error($"Unknown error on market sell - {exMessage}");
             }
         }
@@ -309,7 +310,8 @@
                 catch (Exception e)
                 {
                     wp.AppendLog($"Retry {index} failed with error - {e.Message}");
-                    if (e.Message.Contains("You already have a listing for this item pending confirmation")) return;
+                    if (e.Message.Contains("You already have a listing for this item pending confirmation")
+                        || e.Message.Contains("The item specified is no longer in your inventory")) return;
                     Thread.Sleep(TimeSpan.FromSeconds(delaySeconds));
                 }
             }
