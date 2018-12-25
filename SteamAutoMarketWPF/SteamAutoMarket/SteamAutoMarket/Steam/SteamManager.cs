@@ -1,3 +1,6 @@
+using System.Globalization;
+using RestSharp.Deserializers;
+
 namespace SteamAutoMarket.Steam
 {
     using System;
@@ -144,10 +147,78 @@ namespace SteamAutoMarket.Steam
 
         protected bool IsSessionUpdated { get; set; }
 
-        public void BuyOnMarket(int appid, string hashName)
+        public bool BuyOnMarket(int appid, string hashName, double ratio, bool buyPackages, int currency)
+        {
+            // the ratio is a value client is ready to accept the difference between average and current price 
+            ratio += 1;
+            var order = this.FindBuyingOrder(appid, hashName, ratio);
+            var data = new NameValueCollection()
+            {
+                {"sessionid", this.SteamClient.Session.SessionID},
+                {"currency", currency.ToString()},
+                {"appid", appid.ToString()},
+                {"market_hash_name", hashName}
+            };
+            var quantity = 1;
+            if (buyPackages) quantity *= order.Count;
+            // "G", CultureInfo.InvariantCulture - use these as arguments to convert double into string with dots
+            data["price_total"] = (order.Price * 100 * quantity).ToString("G", CultureInfo.InvariantCulture);
+            data["quantity"] = quantity.ToString(); 
+            var response = SteamWeb.Request("https://steamcommunity.com/market/createbuyorder/", "POST", data,
+                this.Cookies);
+            var responseJson = (NameValueCollection) JsonConvert.DeserializeObject(response);
+            var success = responseJson["success"];
+            if (success == null)
+            {
+                Logger.Log.Error("Invalid response from createbuyorder request");
+                return false;
+            }
+            var buyOrderId = responseJson["buy_orderid"];
+            if (success != "1")
+            {
+                Logger.Log.Debug(responseJson["message"]);
+                if (responseJson["message"].Contains("You already have an active buy order"))
+                {
+                    CancelBuyOrder(buyOrderId);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void CancelBuyOrder(string orderid)
+        {
+            var data = new NameValueCollection()
+            {
+                {"sessionid", this.SteamClient.Session.SessionID},
+                {"buy_orderid", orderid}
+            };
+            while (true)
+            {
+                var response = SteamWeb.Request("http://steamcommunity.com/market/cancelbuyorder/", "GET", data,
+                    this.Cookies);
+                var success = ((NameValueCollection) JsonConvert.DeserializeObject(response))["success"];
+                if (success == "1") return;
+                Thread.Sleep(1000 * 3);
+            }
+        }
+
+        private OrderGraphItem FindBuyingOrder(int appid, string hashName, double ratio)
         {
             var averagePrice = this.GetAveragePrice(appid, hashName, 7);
-            var histogram = this.GetPrice(appid, hashName);
+            var orders = this.GetPrice(appid, hashName).BuyOrderGraph.Orders;
+            var index = 0;
+            while (true)
+            {
+                var order = orders[index];
+                if (order.Price > averagePrice * ratio)
+                {
+                    index++;
+                    continue;
+                }
+                return order;
+            }
         }
 
         public string FetchTradeToken()
@@ -294,7 +365,7 @@ namespace SteamAutoMarket.Steam
                 long.Parse(asset.Assetid),
                 int.Parse(item.Asset.Amount),
                 price);
-
+ 
             var message = resp.Message; // error message
             if (resp.Success == false)
             {
