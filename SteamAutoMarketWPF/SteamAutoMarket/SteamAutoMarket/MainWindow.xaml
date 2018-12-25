@@ -23,6 +23,7 @@
         <mui:LinkGroup DisplayName="Trade">
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Send" Source="/UI/Pages/TradeSend.xaml" />
+                <mui:Link DisplayName="Auto Accepter (NOT READY)" Source="/UI/Pages/TradeAutoAccept.xaml" />
                 <mui:Link DisplayName="Active" Source="/UI/Pages/ActiveTrades.xaml" />
                 <mui:Link DisplayName="History" Source="/UI/Pages/TradeHistory.xaml" />
             </mui:LinkGroup.Links>

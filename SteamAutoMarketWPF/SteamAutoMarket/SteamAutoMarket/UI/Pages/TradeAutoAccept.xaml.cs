@@ -2,6 +2,7 @@
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
+    using System.Windows;
 
     using SteamAutoMarket.Properties;
 
@@ -21,5 +22,10 @@
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private void AddNewSteamIdClick(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
