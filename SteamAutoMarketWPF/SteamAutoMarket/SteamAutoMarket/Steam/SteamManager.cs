@@ -147,7 +147,7 @@ namespace SteamAutoMarket.Steam
 
         protected bool IsSessionUpdated { get; set; }
 
-        public bool BuyOnMarket(double averagePrice, int appid, string hashName, double ratio, bool buyPackages, 
+        public bool BuyOnMarket(double averagePrice, int appid, string hashName, double? ratio, bool buyPackages, 
             int currency)
         {
             // the ratio is a value client is ready to accept the difference between average and current price 
@@ -205,13 +205,14 @@ namespace SteamAutoMarket.Steam
             }
         }
 
-        private OrderGraphItem FindBuyingOrder(double averagePrice, int appid, string hashName, double ratio)
+        private OrderGraphItem FindBuyingOrder(double averagePrice, int appid, string hashName, double? ratio)
         {
             var orders = this.GetPrice(appid, hashName).BuyOrderGraph.Orders;
             var index = 0;
             while (true)
             {
                 var order = orders[index];
+                if (ratio == null) return order;
                 if (order.Price > averagePrice * ratio)
                 {
                     index++;
