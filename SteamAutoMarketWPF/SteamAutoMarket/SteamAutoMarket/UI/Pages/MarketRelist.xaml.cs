@@ -10,6 +10,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Input;
 
     using SteamAutoMarket.Core;
@@ -20,7 +21,10 @@
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;
+    using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.Logger;
+
+    using Xceed.Wpf.DataGrid;
 
     /// <summary>
     /// Interaction logic for MarketRelist.xaml
@@ -435,6 +439,37 @@
             }
 
             this.priceLoadSubTasks.Clear();
+        }
+
+        private void PriceTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var currentIndex = this.MarketItemsToSellGrid.SelectedIndex;
+
+            switch (e.Key)
+            {
+                case Key.Down:
+                    if (currentIndex + 1 == this.MarketItemsToSellGrid.Items.Count) return;
+                    this.FocusTextBox(currentIndex + 1);
+                    return;
+
+                case Key.Up:
+                    if (currentIndex == 0) return;
+                    this.FocusTextBox(currentIndex - 1);
+                    return;
+            }
+        }
+
+        private void FocusTextBox(int rowIndex)
+        {
+            var cell =
+                (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)
+                ?.Cells[8];
+            if (cell != null)
+            {
+                var textBox = UiElementsUtils.FindVisualChild<TextBox>(cell);
+                textBox?.Focus();
+                textBox?.SelectAll();
+            }
         }
     }
 }

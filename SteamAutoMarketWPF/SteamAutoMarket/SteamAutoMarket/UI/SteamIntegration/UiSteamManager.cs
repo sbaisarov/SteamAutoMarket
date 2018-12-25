@@ -374,6 +374,7 @@
                                                 {
                                                     try
                                                     {
+                                                        var tryCount = 0;
                                                         while (true)
                                                         {
                                                             if (wp.CancellationToken.IsCancellationRequested)
@@ -383,11 +384,19 @@
                                                                 return;
                                                             }
 
+                                                            if (tryCount++ > 10)
+                                                            {
+                                                                wp.AppendLog(
+                                                                    $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{marketSellModel.Count}] - '{marketSellModel.ItemName}' failed more then 10 times. Skipping item.");
+                                                                break;
+                                                            }
+
                                                             wp.AppendLog(
                                                                 $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{marketSellModel.Count}] - '{marketSellModel.ItemName}'");
 
                                                             var result =
                                                                 this.MarketClient.CancelSellOrder(itemCancelId);
+
                                                             if (result != ECancelSellOrderStatus.Canceled)
                                                             {
                                                                 wp.AppendLog(

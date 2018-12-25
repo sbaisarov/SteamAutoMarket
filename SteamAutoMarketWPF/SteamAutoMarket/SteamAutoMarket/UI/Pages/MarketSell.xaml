@@ -158,7 +158,8 @@
                                 Increment="1"
                                 Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
                                 Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
-                                Minimum="0" />
+                                Minimum="0"
+                                MouseWheelActiveTrigger="Disabled"/>
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>

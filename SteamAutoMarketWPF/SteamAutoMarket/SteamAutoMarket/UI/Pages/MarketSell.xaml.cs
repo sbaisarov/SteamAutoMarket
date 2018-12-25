@@ -14,6 +14,9 @@
     using System.Windows.Input;
     using System.Windows.Media;
 
+    using global::Xceed.Wpf.DataGrid;
+    using global::Xceed.Wpf.Toolkit;
+
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Core.Waiter;
     using SteamAutoMarket.Properties;
@@ -25,7 +28,6 @@
     using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.Logger;
 
-    using DataRow = Xceed.Wpf.DataGrid.DataRow;
 
     /// <summary>
     /// Interaction logic for Account.xaml
@@ -417,29 +419,45 @@
         private void PriceTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             var currentIndex = this.MarketItemsToSellGrid.SelectedIndex;
-            int targetIndex;
             
             switch (e.Key)
             {
                 case Key.Down:
-                    if (currentIndex == this.MarketItemsToSellGrid.Items.Count) return;
-                    targetIndex = currentIndex + 1;
-                    break;
-                case Key.Up:
-                    if(currentIndex == 0) return;
-                    targetIndex = currentIndex - 1;
-                    break;
+                    if (currentIndex + 1 == this.MarketItemsToSellGrid.Items.Count) return;
+                    this.FocusTextBox(currentIndex + 1);
+                    return;
 
-                default: return;
+                case Key.Up:
+                    if (currentIndex == 0) return;
+                    this.FocusTextBox(currentIndex - 1);
+                    return;
+
+                case Key.Right:
+                    this.FocusNumericUpDown(currentIndex);
+                    return;
             }
-            
-            var row = this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[targetIndex]) as DataRow;
-            var cell = row?.Cells[5];
+        }
+
+        private void FocusTextBox(int rowIndex)
+        {
+            var cell = (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)?.Cells[5];
             if (cell != null)
             {
                 var textBox = UiElementsUtils.FindVisualChild<TextBox>(cell);
-                textBox.SelectAll();
-                textBox.Focus();
+                textBox?.Focus();
+                textBox?.SelectAll();
+            }
+        }
+
+        private void FocusNumericUpDown(int rowIndex)
+        {
+            var cell = (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)?.Cells[6];
+            if (cell != null)
+            {
+                var integerUpDown = UiElementsUtils.FindVisualChild<IntegerUpDown>(cell);
+                var textBoxView = UiElementsUtils.FindVisualChild<WatermarkTextBox>(integerUpDown);
+                textBoxView?.Focus();
+                textBoxView?.SelectAll();
             }
         }
     }

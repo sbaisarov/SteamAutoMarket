@@ -179,7 +179,8 @@
                                 Text="{Binding Path=(models:PriceModel.StringValue), Mode=TwoWay}"
                                 Foreground="{DynamicResource ItemText}"
                                 Background="{DynamicResource DataGridBackground}"
-                                d:DataContext="{d:DesignData PriceModel}"/>
+                                d:DataContext="{d:DesignData PriceModel}"
+                                PreviewKeyDown="PriceTextBox_OnPreviewKeyDown"/>
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>

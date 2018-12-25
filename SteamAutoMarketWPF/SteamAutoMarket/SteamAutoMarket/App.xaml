@@ -148,8 +148,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
-                <ResourceDictionary Source="UI/Pages/Xceed/NumericUpDown.xaml" />
-                <ResourceDictionary Source="UI/Pages/Xceed/DataGrid.xaml" />
+                <ResourceDictionary Source="UI/Pages/Styles/NumericUpDown.xaml" />
+                <ResourceDictionary Source="UI/Pages/Styles/DataGrid.xaml" />
                 <ResourceDictionary Source="UI/Resources/Svg.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 

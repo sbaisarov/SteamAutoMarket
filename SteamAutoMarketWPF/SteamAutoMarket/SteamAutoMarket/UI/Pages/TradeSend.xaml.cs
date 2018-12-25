@@ -6,13 +6,19 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
 
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
+    using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.Logger;
+
+    using Xceed.Wpf.DataGrid;
+    using Xceed.Wpf.Toolkit;
 
     /// <summary>
     /// Interaction logic for TradeSend.xaml
