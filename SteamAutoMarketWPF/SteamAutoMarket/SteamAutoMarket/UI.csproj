@@ -257,6 +257,9 @@
     <Compile Include="UI\Pages\Settings\MarketSettings.xaml.cs">
       <DependentUpon>MarketSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\TradeAutoAccept.xaml.cs">
+      <DependentUpon>TradeAutoAccept.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\SteamAccountInfo.xaml.cs">
       <DependentUpon>SteamAccountInfo.xaml</DependentUpon>
     </Compile>
@@ -365,6 +368,10 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="UI\Pages\TradeAutoAccept.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\Pages\SteamAccountInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -405,7 +412,6 @@
     <None Include="AutoUpdater\packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\NoAvatar.jpg" />
     <EmbeddedResource Include="Resources\NoAvatarSmall.jpg" />
     <EmbeddedResource Include="Resources\Serious_Sam_Logo.svg" />
   </ItemGroup>
@@ -591,7 +597,7 @@
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -621,6 +627,9 @@
     <EmbeddedResource Include="Resources\ZipExtractor.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NoAvatar.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

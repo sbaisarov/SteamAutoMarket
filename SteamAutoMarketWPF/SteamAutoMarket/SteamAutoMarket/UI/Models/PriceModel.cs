@@ -56,6 +56,7 @@
                 }
 
                 this.OnPropertyChanged();
+                this.OnPropertyChanged($"StringValue");
             }
         }
 

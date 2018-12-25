@@ -32,7 +32,9 @@
         <DataTemplate x:Key="SteamAccountComboboxTemplate">
             <Control x:Name="theControl" Focusable="False" Template="{StaticResource ExtendedTemplate}" />
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=IsSelected}" Value="{x:Null}">
+                <DataTrigger
+                    Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=IsSelected}"
+                    Value="{x:Null}">
                     <Setter TargetName="theControl" Property="Template" Value="{StaticResource SimpleTemplate}" />
                 </DataTrigger>
             </DataTemplate.Triggers>
@@ -46,95 +48,143 @@
             <ColumnDefinition Width="20*" MinWidth="200" MaxWidth="250" />
         </Grid.ColumnDefinitions>
 
-        <xcdg:DataGridControl x:Name="MarketItemsToTradeGrid"
-                              Grid.Column="0"
-                              Grid.Row="0"
-                              Margin="10, 10, 30, 10"
-                              AutoCreateColumns="False"
-                              Style="{StaticResource GridStyle}"
-                              ItemsSource="{Binding Path=TradeSendItemsList, Mode=OneWay}"
-                              SelectedItem="{Binding Path=TradeSendSelectedItem}">
+        <Grid Grid.Column="0"
+              Grid.Row="0"
+              Margin="10, 10, 30, 10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-            <xcdg:DataGridControl.View>
-                <xcdg:TableView ShowRowSelectorPane="False" />
-            </xcdg:DataGridControl.View>
+            <Grid Grid.Row="0" Margin="0,0,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
 
-            <xcdg:DataGridControl.Columns>
-                <xcdg:Column Title="Item name"
-                             Width="2*"
-                             FieldName="ItemName"
-                             ReadOnly="True"
-                             CellHorizontalContentAlignment="Left"
-                             CellVerticalContentAlignment="Center">
-                    <xcdg:Column.CellContentTemplate>
-                        <ItemContainerTemplate>
-                            <TextBlock
-                                Text="{Binding}"
-                                Foreground="{DynamicResource ItemText}"
-                                Background="{DynamicResource DataGridBackground}" />
-                        </ItemContainerTemplate>
-                    </xcdg:Column.CellContentTemplate>
-                </xcdg:Column>
+                <TextBlock Grid.Row="0" Grid.Column="0" FontSize="12" Text="Real game name" />
+                <ComboBox ItemsSource="{Binding Path=RealGameFilters}"
+                          SelectedItem="{Binding Path=RealGameSelectedFilter}" Grid.Row="1" Grid.Column="0"
+                          Margin="0,0,5,0" Name="RealGameComboBox" DropDownOpened="Filter_OnDropDownOpened" />
 
-                <xcdg:Column Title="Type"
-                             Width="1*"
-                             FieldName="Type"
-                             ReadOnly="True"
-                             CellHorizontalContentAlignment="Center"
-                             CellVerticalContentAlignment="Center">
-                    <xcdg:Column.CellContentTemplate>
-                        <ItemContainerTemplate>
-                            <TextBlock
-                                Text="{Binding}"
-                                Foreground="{DynamicResource ItemText}"
-                                Background="{DynamicResource DataGridBackground}" />
-                        </ItemContainerTemplate>
-                    </xcdg:Column.CellContentTemplate>
-                </xcdg:Column>
+                <TextBlock Grid.Row="0" Grid.Column="1" FontSize="12" Text="Type" />
+                <ComboBox ItemsSource="{Binding Path=TypeFilters}"
+                          SelectedItem="{Binding Path=TypeSelectedFilter}" Grid.Row="1" Grid.Column="1"
+                          Margin="0,0,5,0" Name="TypeComboBox" DropDownOpened="Filter_OnDropDownOpened" />
 
-                <xcdg:Column Title="Count"
-                             MinWidth="110"
-                             MaxWidth="110"
-                             FieldName="Count"
-                             ReadOnly="True"
-                             CellHorizontalContentAlignment="Center"
-                             CellVerticalContentAlignment="Center">
-                    <xcdg:Column.CellContentTemplate>
-                        <ItemContainerTemplate>
-                            <TextBlock
-                                Text="{Binding}"
-                                Foreground="{DynamicResource ItemText}"
-                                Background="{DynamicResource DataGridBackground}" />
-                        </ItemContainerTemplate>
-                    </xcdg:Column.CellContentTemplate>
-                </xcdg:Column>
 
-                <xcdg:Column Title="Amount to send"
-                             MinWidth="110"
-                             MaxWidth="110"
-                             FieldName="NumericUpDown"
-                             AllowSort="False"
-                             AllowGroup="False"
-                             CellHorizontalContentAlignment="Center"
-                             CellVerticalContentAlignment="Center">
-                    <xcdg:Column.CellContentTemplate>
-                        <ItemContainerTemplate>
-                            <xctk:IntegerUpDown
-                                Style="{StaticResource UpDown}"
-                                Width="105"
-                                Background="{StaticResource DataGridBackground}"
-                                Value="0"
-                                Increment="1"
-                                Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
-                                Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
-                                Minimum="0"
-                                MouseWheelActiveTrigger="Disabled"/>
-                        </ItemContainerTemplate>
-                    </xcdg:Column.CellContentTemplate>
-                </xcdg:Column>
-            </xcdg:DataGridControl.Columns>
-        </xcdg:DataGridControl>
+                <TextBlock Grid.Row="0" Grid.Column="2" FontSize="12" Text="Rarity" />
+                <ComboBox ItemsSource="{Binding Path=RarityFilters}" SelectedItem="{Binding Path=RaritySelectedFilter}"
+                          Grid.Row="1" Grid.Column="2" Margin="0,0,5,0" Name="RarityComboBox"
+                          DropDownOpened="Filter_OnDropDownOpened" />
 
+                <TextBlock Grid.Row="0" Grid.Column="3" FontSize="12" Text="Marketable" />
+                <ComboBox ItemsSource="{Binding Path=MarketableFilters}"
+                          SelectedItem="{Binding Path=MarketableSelectedFilter}" Grid.Row="1" Grid.Column="3"
+                          Margin="0,0,5,0" Name="MarketableComboBox" DropDownOpened="Filter_OnDropDownOpened" />
+
+                <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="5" Content="Apply filters" Padding="0"
+                        Margin="0,0,5,0" Click="ApplyFiltersButtonClick" />
+                <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="6" Content="Reset filters" Padding="0"
+                        Margin="5,0,0,0" Click="ResetFiltersClick" />
+            </Grid>
+
+            <xcdg:DataGridControl x:Name="MarketItemsToTradeGrid"
+                                  Grid.Row="1"
+                                  AutoCreateColumns="False"
+                                  Style="{StaticResource GridStyle}"
+                                  ItemsSource="{Binding Path=TradeSendItemsList, Mode=OneWay}"
+                                  SelectedItem="{Binding Path=TradeSendSelectedItem}">
+
+                <xcdg:DataGridControl.View>
+                    <xcdg:TableView ShowRowSelectorPane="False" />
+                </xcdg:DataGridControl.View>
+
+                <xcdg:DataGridControl.Columns>
+                    <xcdg:Column Title="Item name"
+                                 Width="2*"
+                                 FieldName="ItemName"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Left"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Type"
+                                 Width="1*"
+                                 FieldName="Type"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Count"
+                                 MinWidth="110"
+                                 MaxWidth="110"
+                                 FieldName="Count"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Amount to send"
+                                 MinWidth="110"
+                                 MaxWidth="110"
+                                 FieldName="NumericUpDown"
+                                 AllowSort="False"
+                                 AllowGroup="False"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <xctk:IntegerUpDown
+                                    Style="{StaticResource UpDown}"
+                                    Width="105"
+                                    Background="{StaticResource DataGridBackground}"
+                                    Value="0"
+                                    Increment="1"
+                                    Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
+                                    Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                    Minimum="0"
+                                    MouseWheelActiveTrigger="Disabled" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+                </xcdg:DataGridControl.Columns>
+            </xcdg:DataGridControl>
+        </Grid>
         <Grid Grid.Column="1"
               Grid.Row="0"
               MinWidth="200"
@@ -160,7 +210,7 @@
                        Stretch="Uniform"
                        Name="ItemImage"
                        MaxHeight="200"
-                       Margin="0,0,0,5"/>
+                       Margin="0,0,0,5" />
 
                 <Path Grid.Row="0"
                       Style="{StaticResource Geometry}"
@@ -185,7 +235,6 @@
                   MaxHeight="200">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
@@ -237,13 +286,6 @@
                         Margin="8, 0, 0, 0"
                         Content="Load"
                         Padding="0" />
-
-                <CheckBox Grid.Row="2"
-                          Grid.ColumnSpan="3"
-                          Grid.Column="0"
-                          Margin="0,0,0,10"
-                          Content="Load only unmarketable"
-                          IsChecked="{Binding TradeSendLoadOnlyUnmarketable}" />
             </Grid>
 
             <Grid Grid.Row="2"
@@ -315,9 +357,9 @@
                   Margin="0, 0, 0, 5">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
@@ -353,7 +395,7 @@
                     Content="Send trade offer"
                     Margin="0, 5, 0, 0"
                     Padding="0"
-                    Click="SendTradeOfferButtonOnClick"/>
+                    Click="SendTradeOfferButtonOnClick" />
 
         </Grid>
 

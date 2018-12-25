@@ -5,11 +5,13 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Media.Imaging;
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
@@ -25,7 +27,7 @@
     /// </summary>
     public partial class SteamAccountInfo : INotifyPropertyChanged
     {
-        private string avatar = ResourceUtils.GetResourceImageUri("NoAvatar.jpg");
+        private string avatar;
 
         private bool refreshButtonIsEnabled = true;
 
@@ -33,6 +35,7 @@
         {
             this.InitializeComponent();
             this.DataContext = this;
+            this.AvatarImage.Source = Properties.Resources.NoAvatar.ToBitmapImage();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

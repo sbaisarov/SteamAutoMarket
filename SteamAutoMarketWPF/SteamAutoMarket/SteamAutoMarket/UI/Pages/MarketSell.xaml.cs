@@ -12,7 +12,6 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Media;
 
     using global::Xceed.Wpf.DataGrid;
     using global::Xceed.Wpf.Toolkit;
@@ -28,7 +27,6 @@
     using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.Logger;
 
-
     /// <summary>
     /// Interaction logic for Account.xaml
     /// </summary>
@@ -43,6 +41,14 @@
         private MarketSellStrategy marketSellStrategy;
 
         private Task priceLoadingTask;
+
+        private List<string> realGameFilters;
+
+        private List<string> rarityFilters;
+
+        private List<string> tradabilityFilters;
+
+        private List<string> typeFilters;
 
         public MarketSell()
         {
@@ -115,9 +121,120 @@
             }
         }
 
+        public List<string> RealGameFilters
+        {
+            get => this.realGameFilters;
+            set
+            {
+                this.realGameFilters = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string RealGameSelectedFilter { get; set; }
+
+        public List<string> RarityFilters
+        {
+            get => this.rarityFilters;
+            set
+            {
+                this.rarityFilters = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string RaritySelectedFilter { get; set; }
+
+        public List<string> TradabilityFilters
+        {
+            get => this.tradabilityFilters;
+            set
+            {
+                this.tradabilityFilters = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string TradabilitySelectedFilter { get; set; }
+
+        public List<string> TypeFilters
+        {
+            get => this.typeFilters;
+            set
+            {
+                this.typeFilters = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string TypeSelectedFilter { get; set; }
+
         [NotifyPropertyChangedInvocator]
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private void Filter_OnDropDownOpened(object sender, EventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+            switch (comboBox?.Name)
+            {
+                case "RealGameComboBox":
+                    this.RealGameFilters = this.MarketSellItems.Select(model => model.Game).ToHashSet().OrderBy(q => q)
+                        .ToList();
+                    break;
+                case "TypeComboBox":
+                    this.TypeFilters = this.MarketSellItems.Select(model => model.Type).ToHashSet().OrderBy(q => q)
+                        .ToList();
+                    break;
+                case "RarityComboBox":
+                    this.RarityFilters = this.MarketSellItems.Select(
+                            model => model.ItemModel?.Description?.Tags
+                                ?.FirstOrDefault(tag => tag.LocalizedCategoryName == "Rarity")?.LocalizedTagName)
+                        .ToHashSet().OrderBy(q => q).ToList();
+                    break;
+                case "TradabilityComboBox":
+                    this.TradabilityFilters = this.MarketSellItems.Select(
+                            model => (model.ItemModel?.Description.IsTradable == true) ? "Tradable" : "Not tradable")
+                        .ToHashSet().ToList();
+                    break;
+            }
+        }
+
+        private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
+        {
+            var resultView = this.MarketSellItems.ToList();
+
+            if (this.RealGameSelectedFilter != null)
+            {
+                resultView = resultView.Where(g => g.Game == this.RealGameSelectedFilter).ToList();
+            }
+
+            if (this.TypeSelectedFilter != null)
+            {
+                resultView = resultView.Where(g => g.Type == this.TypeSelectedFilter).ToList();
+            }
+
+            if (this.RaritySelectedFilter != null)
+            {
+                resultView = resultView.Where(
+                    model => model.ItemModel?.Description?.Tags
+                                 ?.FirstOrDefault(tag => tag.LocalizedCategoryName == "Rarity")?.LocalizedTagName
+                             == this.RaritySelectedFilter).ToList();
+            }
+
+            if (this.TradabilitySelectedFilter != null)
+            {
+                bool? value = null;
+                if (this.TradabilitySelectedFilter == "Tradable") value = true;
+                else if (this.TradabilitySelectedFilter == "Not tradable") value = false;
+                if (value != null)
+                {
+                    resultView = resultView.Where(g => g.ItemModel.Description.IsTradable == value).ToList();
+                }
+            }
+
+            this.MarketItemsToSellGrid.ItemsSource = resultView;
+        }
 
         private MarketSellStrategy GetMarketSellStrategy()
         {
@@ -244,7 +361,7 @@
                         {
                             Logger.Log.Debug("Starting market sell price loading task");
 
-                            var items = this.MarketSellItems.ToList();
+                            var items = ((IEnumerable<MarketSellModel>)this.MarketItemsToSellGrid.ItemsSource).ToList();
                             items.ForEach(i => i.CleanItemPrices());
 
                             var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
@@ -419,7 +536,7 @@
         private void PriceTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             var currentIndex = this.MarketItemsToSellGrid.SelectedIndex;
-            
+
             switch (e.Key)
             {
                 case Key.Down:
@@ -440,7 +557,9 @@
 
         private void FocusTextBox(int rowIndex)
         {
-            var cell = (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)?.Cells[5];
+            var cell =
+                (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)
+                ?.Cells[5];
             if (cell != null)
             {
                 var textBox = UiElementsUtils.FindVisualChild<TextBox>(cell);
@@ -451,7 +570,9 @@
 
         private void FocusNumericUpDown(int rowIndex)
         {
-            var cell = (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)?.Cells[6];
+            var cell =
+                (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)
+                ?.Cells[6];
             if (cell != null)
             {
                 var integerUpDown = UiElementsUtils.FindVisualChild<IntegerUpDown>(cell);
@@ -459,6 +580,23 @@
                 textBoxView?.Focus();
                 textBoxView?.SelectAll();
             }
+        }
+
+        private void ResetFiltersClick(object sender, RoutedEventArgs e)
+        {
+            this.RealGameSelectedFilter = null;
+            this.RealGameComboBox.Text = null;
+
+            this.TypeSelectedFilter = null;
+            this.TypeComboBox.Text = null;
+
+            this.RaritySelectedFilter = null;
+            this.RarityComboBox.Text = null;
+
+            this.TradabilityFilters = null;
+            this.TradabilityComboBox.Text = null;
+
+            this.MarketItemsToSellGrid.ItemsSource = this.MarketSellItems;
         }
     }
 }

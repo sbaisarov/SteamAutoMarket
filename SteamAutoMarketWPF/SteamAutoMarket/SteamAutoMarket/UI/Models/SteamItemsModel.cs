@@ -28,7 +28,10 @@
 
             this.ItemName = this.ItemModel?.Description.MarketName;
 
-            this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description.Type);
+            this.Game = this.ItemModel?.Description?.Tags?.FirstOrDefault(tag => tag.Category == "Game")
+                ?.LocalizedTagName;
+
+            this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description?.Type);
 
             this.Description = SteamUtils.GetClearDescription(this.ItemModel?.Description);
 
@@ -74,6 +77,8 @@
         public FullRgItem ItemModel { get; }
 
         public string ItemName { get; }
+
+        public string Game { get; }
 
         public ObservableCollection<FullRgItem> ItemsList { get; }
 

@@ -1,12 +1,27 @@
 ﻿namespace SteamAutoMarket.Core
 {
     using System;
+    using System.Drawing;
+    using System.IO;
     using System.Text.RegularExpressions;
+    using System.Windows.Media.Imaging;
 
     using RestSharp;
 
-    public class ImageUtils
+    public static class ImageUtils
     {
+        public static BitmapImage ToBitmapImage(this Bitmap src)
+        {
+            MemoryStream ms = new MemoryStream();
+            ((System.Drawing.Bitmap)src).Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            ms.Seek(0, SeekOrigin.Begin);
+            image.StreamSource = ms;
+            image.EndInit();
+            return image;
+        }
+
         public static string GetSteamProfileFullImageUri(string steamId)
         {
             try

@@ -208,8 +208,7 @@
         public void LoadItemsToTradeWorkingProcess(
             SteamAppId appid,
             int contextId,
-            ObservableCollection<SteamItemsModel> itemsToTrade,
-            bool onlyUnmarketable)
+            ObservableCollection<SteamItemsModel> itemsToTrade)
         {
             var wp = UiGlobalVariables.WorkingProcessDataContext;
 
@@ -231,7 +230,7 @@
                             var currentPage = 1;
 
                             wp.ProgressBarMaximum = totalPagesCount;
-                            this.ProcessTradeSendInventoryPage(itemsToTrade, page, onlyUnmarketable);
+                            this.ProcessTradeSendInventoryPage(itemsToTrade, page);
 
                             wp.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
                             wp.IncrementProgress();
@@ -251,7 +250,7 @@
                                     page.LastAssetid,
                                     cookies: this.Cookies);
 
-                                this.ProcessTradeSendInventoryPage(itemsToTrade, page, onlyUnmarketable);
+                                this.ProcessTradeSendInventoryPage(itemsToTrade, page);
 
                                 wp.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
                                 wp.IncrementProgress();
@@ -666,24 +665,19 @@
 
         private void ProcessTradeSendInventoryPage(
             ObservableCollection<SteamItemsModel> marketSellItems,
-            InventoryRootModel inventoryPage,
-            bool onlyUnmarketable)
+            InventoryRootModel inventoryPage)
         {
             var items = this.Inventory.ProcessInventoryPage(inventoryPage).ToArray();
 
             items = this.Inventory.FilterInventory(items, false, true);
 
-            if (onlyUnmarketable)
-            {
-                items = items.Where(i => i.Description.IsMarketable == false).ToArray();
-            }
-
-            var groupedItems = items.GroupBy(i => i.Description.MarketHashName).ToArray();
+            var groupedItems = items.GroupBy(x => new { x.Description.MarketHashName, x.Description.IsTradable })
+                .ToArray();
 
             foreach (var group in groupedItems)
             {
                 var existModel = marketSellItems.FirstOrDefault(
-                    item => item.ItemModel.Description.MarketHashName == group.Key);
+                    item => item.ItemModel.Description.MarketHashName == group.Key.MarketHashName && item.ItemModel.Description.IsTradable == group.Key.IsTradable);
 
                 if (existModel != null)
                 {

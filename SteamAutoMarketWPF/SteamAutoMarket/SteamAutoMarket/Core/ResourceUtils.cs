@@ -30,7 +30,7 @@
 
         public static List<T> ToList<T>(params T[] values) => new List<T>(values);
 
-        private static Bitmap BitmapImage2Bitmap(BitmapSource bitmapImage)
+        public static Bitmap BitmapImage2Bitmap(BitmapSource bitmapImage)
         {
             using (var outStream = new MemoryStream())
             {
