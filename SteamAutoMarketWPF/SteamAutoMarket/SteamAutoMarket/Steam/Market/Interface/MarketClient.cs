@@ -600,8 +600,16 @@
             {
                 foreach (var item in ordersNodes)
                 {
-                    this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency);
-
+                    try
+                    {
+                        this.GetPendingTransactionData(item, tempIndex, myListings, ETransactionType.Order, currency);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Log.Error(
+                            $"Error on getting pending transaction data - {e.Message}. \nNode-{item?.InnerHtml}",
+                            e);
+                    }
                     tempIndex++;
                 }
 
@@ -971,7 +979,7 @@
             }
 
             var date = Regex.Match(item.InnerText, @"Listed: (.+)?\s").Groups[1].Value.Trim();
-            var game = item.SelectSingleNode("//span[@class='market_listing_game_name']").InnerText;
+            var game = item.SelectSingleNode("//span[@class='market_listing_game_name']")?.InnerText;
             if (type == ETransactionType.Order)
             {
                 var priceAndQuantityString = node.InnerText.Replace("\r", string.Empty).Replace("\n", string.Empty)
