@@ -13,6 +13,10 @@
 
         private string value;
 
+        public NameValueModel()
+        {
+        }
+
         public NameValueModel(string name, string value)
         {
             this.name = name;

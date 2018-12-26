@@ -7,21 +7,8 @@
              xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:SteamAccountInfo}">
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:TradeAutoAccept}">
     <UserControl.Resources>
-        <Style x:Key="FlatButton" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
-            <Setter Property="Margin" Value="20" />
-            <Setter Property="Padding" Value="0,10,0,5" />
-        </Style>
-
-        <Style x:Key="FlatText" TargetType="TextBlock" BasedOn="{StaticResource Heading2}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="TextAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="Margin" Value="0,2,0,0" />
-            <Setter Property="TextWrapping" Value="WrapWithOverflow" />
-        </Style>
 
         <Style TargetType="{x:Type xcdg:GroupByControl}">
             <Setter Property="Visibility" Value="Collapsed" />
@@ -31,8 +18,8 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400" />
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <GroupBox Grid.Column="0"
@@ -42,20 +29,37 @@
                   Padding="0"
                   Template="{StaticResource GroupBoxTemplate}">
 
-            <xcdg:DataGridControl x:Name="MarketItemsToSellGrid"
+            <xcdg:DataGridControl x:Name="WhiteListGrid"
                                   AutoCreateColumns="False"
                                   Margin="-4"
                                   Style="{StaticResource GridStyle}"
-                                  ItemsSource="{Binding Path=AccountParameters, Mode=OneWay}">
+                                  ItemsSource="{Binding Path=TradeAcceptWhitelist, Mode=OneWay}">
 
                 <xcdg:DataGridControl.View>
                     <xcdg:TableView ShowRowSelectorPane="False" />
                 </xcdg:DataGridControl.View>
 
+
                 <xcdg:DataGridControl.Columns>
-                    <xcdg:Column Title="SteamId"
-                                 Width="20*"
+                    <xcdg:Column Title="Account name"
+                                 Width="*"
                                  FieldName="Name"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Left"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="SteamID"
+                                 Width="*"
+                                 FieldName="Value"
                                  ReadOnly="True"
                                  CellHorizontalContentAlignment="Left"
                                  CellVerticalContentAlignment="Center">
@@ -74,63 +78,6 @@
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Button Style="{StaticResource FlatButton}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Path Style="{StaticResource Geometry}"
-                          Stretch="Uniform"
-                          Data="{StaticResource SvgNo}" />
-
-                    <TextBlock Grid.Row="1" Style="{StaticResource FlatText}"
-                               Text="Cancel all incoming trade offers" />
-                </Grid>
-            </Button>
-
-            <Button Grid.Row="1" Style="{StaticResource FlatButton}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Path Style="{StaticResource Geometry}"
-                          Stretch="Uniform"
-                          Data="{StaticResource SvgNo}" />
-
-                    <TextBlock Grid.Row="1" Style="{StaticResource FlatText}"
-                               Text="Cancel all outgoing trade offers" />
-                </Grid>
-            </Button>
-
-            <Button Grid.Row="2" Style="{StaticResource FlatButton}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Path Style="{StaticResource Geometry}"
-                          Stretch="Uniform"
-                          Data="{StaticResource SvgYes}" />
-
-                    <TextBlock Grid.Row="1" Style="{StaticResource FlatText}"
-                               Text="Accept all incoming trade offers" />
-                </Grid>
-            </Button>
-
-        </Grid>
-
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -140,6 +87,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -147,44 +96,93 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Whitelist SteamID" Margin="0,0,10,0" Grid.Row="0" VerticalAlignment="Center" />
+                <TextBlock Text="Account name" Margin="0,0,10,0" Grid.Row="0" VerticalAlignment="Center" />
 
                 <TextBox Grid.Row="0" Grid.Column="1"
                          Margin="4"
                          Height="22"
+                         Text="{Binding Path=NewWhiteListAccountName}" VerticalAlignment="Center" />
+
+                <TextBlock Text="Whitelist SteamID" Margin="0,0,10,0" Grid.Row="1" VerticalAlignment="Center" />
+
+                <TextBox Grid.Row="1" Grid.Column="1"
+                         Margin="4"
+                         Height="22"
                          Text="{Binding Path=NewWhiteListSteamId}" VerticalAlignment="Center" />
 
-                <Button Grid.Column="0" Grid.Row="1"
-                        Name="AddNewAccountButton"
+                <Button Grid.Column="0" Grid.Row="2"
                         Grid.ColumnSpan="2"
                         Height="40"
                         Content="Add new account"
-                        Margin="0, 15, 0, 15"
-                        Padding="0" Click="AddNewSteamIdClick" />
+                        Margin="0, 15, 0, 10"
+                        Padding="0" Click="AddNewSteamWhitelistAccountClick" /> 
+                
+                <Button Grid.Column="0" Grid.Row="3"
+                        Grid.ColumnSpan="2"
+                        Height="40"
+                        Content="Remove selected account"
+                        Margin="0, 0, 0, 50"
+                        Padding="0" Click="RemoveSelectedAccountButtonClick" />
             </Grid>
 
             <StackPanel Grid.Row="1" Orientation="Vertical">
-                <CheckBox Content="Accept empty from my side offers" Margin="0,10,0,0" />
-                <CheckBox Content="Accept any offers from whitelist users" Margin="0,10,0,0" />
-                <StackPanel Orientation="Horizontal" Grid.Row="2">
-                    <TextBlock
-                        Text="Delay (seconds)"
-                        VerticalAlignment="Center"
-                        Margin="0,10,16,12"
-                        ToolTip="Number of days in the span of which all average prices will be parsed" />
-
-                    <xctk:IntegerUpDown
-                        Style="{StaticResource UpDown}"
-                        Value="{Binding AveragePriceDays, Mode=TwoWay}"
-                        VerticalAlignment="Center"
-                        Margin="0,10,0,12"
-                        Foreground="{DynamicResource ItemText}"
-                        Minimum="3"
-                        Maximum="999"
-                        Width="100"/>
+                <CheckBox Content="Accept incoming EMPTY from my side offers"
+                          IsChecked="{Binding Path=AcceptIncomingEmpty}" Margin="0,10,0,0" />
+                <CheckBox Content="Accept ALL offers from whitelist users"
+                          IsChecked="{Binding Path=AcceptIncomingWhitelist}" Margin="0,10,0,0" />
+                <CheckBox Content="Decline ALL outgoing offers" IsChecked="{Binding Path=DeclineSent}" Margin="0,10,0,0" />
+                <CheckBox Content="Decline ALL incoming offers"
+                          IsChecked="{Binding Path=DeclineAllIncoming}" Margin="0,10,0,0" />
+                <CheckBox Content="Decline incoming NOT EMPTY from my side offers"
+                          IsChecked="{Binding Path=DeclineIncomingNotEmpty}" Margin="0,10,0,0" />                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Delay (seconds)"
+                               VerticalAlignment="Center"
+                               Margin="0,10,16,0"
+                               ToolTip="Number of days in the span of which all average prices will be parsed" />
+                    <xctk:IntegerUpDown Style="{StaticResource UpDown}"
+                                        Value="{Binding TradeAcceptDelaySeconds, Mode=TwoWay}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,10,0,0"
+                                        Foreground="{DynamicResource ItemText}"
+                                        Minimum="0"
+                                        Maximum="9999"
+                                        Width="100" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Threads count  "
+                               VerticalAlignment="Center"
+                               Margin="0,10,16,12"
+                               ToolTip="Number of days in the span of which all average prices will be parsed" />
+                    <xctk:IntegerUpDown Style="{StaticResource UpDown}"
+                                        Value="{Binding ThreadsCount, Mode=TwoWay}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,10,0,12"
+                                        Foreground="{DynamicResource ItemText}"
+                                        Minimum="1"
+                                        Maximum="9999"
+                                        Width="100" />
+                </StackPanel>
+                <Button Height="60"
+                        Content="Start trade accepter process"
+                        Margin="0, 15, 0, 15"
+                        Padding="0" Click="StartTradeAcceptProcess" />
             </StackPanel>
         </Grid>
 
+        <Grid Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Image Grid.Row="0" Stretch="Uniform" Margin="10,0,0,0"
+                   Source="/SteamAutoMarket;component/Resources/car.png" HorizontalAlignment="Right"
+                   ToolTip="How do you want STEAM to work" />
+
+            <Image Grid.Row="1" Stretch="Uniform" Margin="10,0,0,0"
+                   Source="/SteamAutoMarket;component/Resources/car2.png" HorizontalAlignment="Right"
+                   ToolTip="How does STEAM actually work" />
+        </Grid>
     </Grid>
 </UserControl>

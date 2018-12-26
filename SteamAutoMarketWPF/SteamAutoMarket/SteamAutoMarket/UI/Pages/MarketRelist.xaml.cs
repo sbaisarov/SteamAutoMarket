@@ -143,14 +143,7 @@
                 switch (strategy.SaleType)
                 {
                     case EMarketSaleType.Manual:
-                        if (item.RelistPrice.Value.HasValue)
-                        {
-                            item.Checked.CheckBoxChecked = true;
-                        }
-                        else
-                        {
-                            item.Checked.CheckBoxChecked = false;
-                        }
+                        item.Checked.CheckBoxChecked = item.RelistPrice.Value.HasValue;
 
                         break;
 
@@ -162,7 +155,7 @@
                                 item.Checked.CheckBoxChecked = true;
                             }
                             else if (item.CurrentPrice < item.AveragePrice
-                                     && item.AveragePrice - 0.1 != item.ListedPrice)
+                                     && item.AveragePrice != item.ListedPrice)
                             {
                                 item.Checked.CheckBoxChecked = true;
                             }

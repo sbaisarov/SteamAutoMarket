@@ -10,6 +10,7 @@
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Steam.Auth;
     using SteamAutoMarket.Steam.Market.Enums;
+    using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.TradeOffer;
     using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
@@ -22,8 +23,18 @@
     {
         public static void CancelMarketPendingListings(UiSteamManager steamManager, WorkingProcessDataContext wp)
         {
-            var myListings = steamManager.MarketClient.MyListings(steamManager.Currency.ToString())?.ConfirmationSales
-                ?.ToArray();
+            MyListingsSalesItem[] myListings;
+
+            try
+            {
+                myListings = steamManager.MarketClient.MyListings(steamManager.Currency.ToString())?.ConfirmationSales
+                    ?.ToArray();
+            }
+            catch (Exception e)
+            {
+                wp.AppendLog($"Error on fetching market listings - {e.Message}");
+                return;
+            }
 
             if (myListings == null || myListings.Length <= 0)
             {

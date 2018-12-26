@@ -40,6 +40,7 @@
                 OpenTab();
 
                 wp.ResetWorkingProcessToDefault();
+                wp.AppendLog($"{title} working process started");
                 wp.Title = title;
 
                 wp.Timer = Stopwatch.StartNew();

@@ -292,17 +292,17 @@
 
         private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
         {
-            for (var i = 0; i < this.MarketSellItems.Count; i++)
+            foreach (var t in this.MarketItemsToSellGrid.ItemsSource)
             {
-                this.MarketSellItems[i].NumericUpDown.SetToMaximum();
+                ((MarketSellModel)t).NumericUpDown.SetToMaximum();
             }
         }
 
         private void MarketSellMarkSelectedItemsClick(object sender, RoutedEventArgs e)
         {
-            for (var i = 0; i < this.MarketItemsToSellGrid.SelectedItems.Count; i++)
+            foreach (var t in this.MarketItemsToSellGrid.SelectedItems)
             {
-                ((MarketSellModel)this.MarketItemsToSellGrid.SelectedItems[i]).NumericUpDown.SetToMaximum();
+                ((MarketSellModel)t).NumericUpDown.SetToMaximum();
             }
         }
 

@@ -64,7 +64,7 @@
                         }
                         else
                         {
-                            this.SellPrice.Value = this.AveragePrice - 0.01;
+                            this.SellPrice.Value = this.AveragePrice;
                         }
 
                         break;

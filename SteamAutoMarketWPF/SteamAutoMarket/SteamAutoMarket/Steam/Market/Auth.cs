@@ -103,7 +103,7 @@
             {
                 auth.CaptchaNeeded = true;
                 auth.CaptchaGid = jresp.CaptchaGid;
-                auth.CaptchaImageUrl = Utils.GetCaptchaImageUrl(jresp.CaptchaGid);
+                auth.CaptchaImageUrl = MarketUtils.GetCaptchaImageUrl(jresp.CaptchaGid);
             }
 
             if (jresp.EmailAuthNeeded)
@@ -189,8 +189,8 @@
             var rsa = new RSACryptoServiceProvider();
             var rsaParams = new RSAParameters
                                 {
-                                    Modulus = Utils.StringToByteArray(modval),
-                                    Exponent = Utils.StringToByteArray(expval)
+                                    Modulus = MarketUtils.StringToByteArray(modval),
+                                    Exponent = MarketUtils.StringToByteArray(expval)
                                 };
 
             rsa.ImportParameters(rsaParams);

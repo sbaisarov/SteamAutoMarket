@@ -166,7 +166,7 @@
     <Compile Include="Steam\Market\Settings.cs" />
     <Compile Include="Steam\Market\SteamMarketHandler.cs" />
     <Compile Include="Steam\Market\Urls.cs" />
-    <Compile Include="Steam\Market\Utils.cs" />
+    <Compile Include="Steam\Market\MarketUtils.cs" />
     <Compile Include="Steam\SteamManager.cs" />
     <Compile Include="Steam\SteamUtils.cs" />
     <Compile Include="Steam\TradeOffer\Enums\TradeOfferConfirmationMethod.cs" />
@@ -216,6 +216,7 @@
     <Compile Include="Steam\TradeOffer\TradeOfferManager.cs" />
     <Compile Include="Steam\TradeOffer\TradeOfferWebAPI.cs" />
     <Compile Include="Steam\TradeOffer\TradeStatus.cs" />
+    <Compile Include="UI\Models\Enums\ETradeAccepter.cs" />
     <Compile Include="UI\Models\SteamTradeHistoryItemsModel.cs" />
     <Compile Include="UI\Models\TradeHistoryModel.cs" />
     <Compile Include="UI\Models\NameValueModel.cs" />
@@ -630,6 +631,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\NoAvatar.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\car.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\car2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -52,7 +52,7 @@
                         }
                         else
                         {
-                            this.SellPrice = this.AveragePrice - 0.01;
+                            this.SellPrice = this.AveragePrice;
                         }
 
                         break;

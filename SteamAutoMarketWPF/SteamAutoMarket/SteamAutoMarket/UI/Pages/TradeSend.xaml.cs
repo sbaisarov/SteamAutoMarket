@@ -27,6 +27,7 @@
     public partial class TradeSend : INotifyPropertyChanged
     {
         private SteamItemsModel tradeSendSelectedItem;
+
         private List<string> realGameFilters;
 
         private List<string> rarityFilters;
@@ -34,6 +35,7 @@
         private List<string> tradabilityFilters;
 
         private List<string> typeFilters;
+
         public TradeSend()
         {
             this.InitializeComponent();
@@ -100,6 +102,7 @@
                 this.OnPropertyChanged();
             }
         }
+
         public List<string> RealGameFilters
         {
             get => this.realGameFilters;
@@ -147,6 +150,7 @@
         }
 
         public string TypeSelectedFilter { get; set; }
+
         public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
             new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
 
@@ -160,8 +164,8 @@
             switch (comboBox?.Name)
             {
                 case "RealGameComboBox":
-                    this.RealGameFilters = this.TradeSendItemsList.Select(model => model.Game).ToHashSet().OrderBy(q => q)
-                        .ToList();
+                    this.RealGameFilters = this.TradeSendItemsList.Select(model => model.Game).ToHashSet()
+                        .OrderBy(q => q).ToList();
                     break;
                 case "TypeComboBox":
                     this.TypeFilters = this.TradeSendItemsList.Select(model => model.Type).ToHashSet().OrderBy(q => q)
@@ -175,7 +179,9 @@
                     break;
                 case "MarketableComboBox":
                     this.MarketableFilters = this.TradeSendItemsList.Select(
-                            model => (model.ItemModel?.Description.IsMarketable == true) ? "Marketable" : "Not marketable")
+                            model => (model.ItemModel?.Description.IsMarketable == true)
+                                         ? "Marketable"
+                                         : "Not marketable")
                         .ToHashSet().ToList();
                     break;
             }
@@ -258,18 +264,17 @@
 
         private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
         {
-            var items = this.TradeSendItemsList.ToArray();
-            foreach (var t in items)
+            foreach (var t in this.MarketItemsToTradeGrid.ItemsSource)
             {
-                t.NumericUpDown.SetToMaximum();
+                ((SteamItemsModel)t).NumericUpDown.SetToMaximum();
             }
         }
 
         private void MarketSellMarkSelectedItemsClick(object sender, RoutedEventArgs e)
         {
-            for (var i = 0; i < this.MarketItemsToTradeGrid.SelectedItems.Count; i++)
+            foreach (var t in this.MarketItemsToTradeGrid.SelectedItems)
             {
-                ((SteamItemsModel)this.MarketItemsToTradeGrid.SelectedItems[i]).NumericUpDown.SetToMaximum();
+                ((SteamItemsModel)t).NumericUpDown.SetToMaximum();
             }
         }
 

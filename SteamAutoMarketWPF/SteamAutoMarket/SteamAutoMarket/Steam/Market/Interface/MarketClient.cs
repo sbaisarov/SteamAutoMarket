@@ -522,12 +522,7 @@
         // }
         public MyListings MyListings(string currency = "5", int start = 0, int count = 100)
         {
-            var myListings = new MyListings
-                                 {
-                                     Orders = new List<MyListingsOrdersItem>(),
-                                     Sales = new List<MyListingsSalesItem>(),
-                                     ConfirmationSales = new List<MyListingsSalesItem>()
-                                 };
+            var myListings = new MyListings();
 
             var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
             var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
@@ -544,7 +539,7 @@
 
             if (!respDes.Success)
             {
-                throw new SteamException("Cannot load market listings");
+                throw new SteamException("Cannot load market listings. Steam request failed.");
             }
 
             var totalCount = respDes.ActiveListingsCount;
@@ -607,12 +602,17 @@
                     catch (Exception e)
                     {
                         Logger.Log.Error(
-                            $"Error on getting pending transaction data - {e.Message}. \nNode-{item?.InnerHtml}",
+                            $"Error on getting pending transaction data - {e.Message}.{Environment.NewLine}Node-{item?.InnerHtml}",
                             e);
                     }
+
                     tempIndex++;
                 }
 
+            }
+
+            if (myListings.Orders.Any())
+            {
                 myListings.SumOrderPricesToBuy = Math.Round(myListings.Orders.Sum(s => s.Price), 2);
             }
 
@@ -653,7 +653,7 @@
 
                         return new PriceHistoryItem
                                    {
-                                       DateTime = Utils.SteamTimeConvertor(g[0].ToString()),
+                                       DateTime = MarketUtils.SteamTimeConvertor(g[0].ToString()),
                                        Count = count,
                                        Price = Math.Round(price, 2)
                                    };
@@ -766,8 +766,8 @@
                                    { "count", count.ToString() },
                                    { "search_descriptions", (searchInDescriptions ? 1 : 0).ToString() },
                                    { "appid", appId.ToString() },
-                                   { "sort_column", Utils.FirstCharacterToLower(sortColumn.ToString()) },
-                                   { "sort_dir", Utils.FirstCharacterToLower(sort.ToString()) }
+                                   { "sort_column", MarketUtils.FirstCharacterToLower(sortColumn.ToString()) },
+                                   { "sort_dir", MarketUtils.FirstCharacterToLower(sort.ToString()) }
                                };
 
             if (custom != null && custom.Count > 0)
@@ -881,8 +881,8 @@
                             Game = game,
                             Url = url,
                             MinPrice = minPrice,
-                            HashName = Utils.HashNameFromUrl(url),
-                            AppId = Utils.AppIdFromUrl(url)
+                            HashName = MarketUtils.HashNameFromUrl(url),
+                            AppId = MarketUtils.AppIdFromUrl(url)
                         });
             }
 
@@ -1032,8 +1032,8 @@
 
                 var url = urlNode.Attributes["href"].Value;
 
-                var hashName = Utils.HashNameFromUrl(url);
-                var appId = Utils.AppIdFromUrl(url);
+                var hashName = MarketUtils.HashNameFromUrl(url);
+                var appId = MarketUtils.AppIdFromUrl(url);
 
                 var nameNode = urlNode.InnerText;
 
@@ -1094,8 +1094,8 @@
 
                 var url = urlNode.Attributes["href"].Value;
 
-                var hashName = Utils.HashNameFromUrl(url);
-                var appId = Utils.AppIdFromUrl(url);
+                var hashName = MarketUtils.HashNameFromUrl(url);
+                var appId = MarketUtils.AppIdFromUrl(url);
 
                 var nameNode = urlNode.InnerText;
 
@@ -1209,8 +1209,8 @@
 
             var url = urlNode.Attributes["href"].Value;
 
-            var hashName = Utils.HashNameFromUrl(url);
-            var appId = Utils.AppIdFromUrl(url);
+            var hashName = MarketUtils.HashNameFromUrl(url);
+            var appId = MarketUtils.AppIdFromUrl(url);
 
             var nameNode = urlNode.InnerText;
 

@@ -1,6 +1,7 @@
 ﻿namespace SteamAutoMarket.UI.SteamIntegration
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading;
@@ -54,7 +55,7 @@
 
         public PriceCache CurrentPriceCache { get; set; }
 
-        public void ConfirmTradeTransactionsWorkingProcess(ulong offerId, WorkingProcessDataContext wp)
+        public void ConfirmTradeTransactionsWorkingProcess(List<ulong> offerIdList, WorkingProcessDataContext wp)
         {
             var notFoundRetry = 0;
             while (true)
@@ -62,34 +63,35 @@
                 try
                 {
                     var confirmations = this.Guard.FetchConfirmations();
-                    var conf = confirmations.FirstOrDefault(
-                        item => item.ConfType == Confirmation.ConfirmationType.Trade && (item.Creator == offerId));
-                    if (conf == null)
+                    var conf = confirmations.Where(
+                        item => item.ConfType == Confirmation.ConfirmationType.Trade
+                                && offerIdList.Contains(item.Creator)).ToArray();
+
+                    if (conf.Any() == false)
                     {
-                        notFoundRetry++;
-                        if (notFoundRetry > 3)
+                        if (notFoundRetry++ > 3)
                         {
-                            wp.AppendLog(
-                                "Trade not found more then 3 times. Seems send is failed. Aborting confirmation process");
+                            wp.AppendLog("Trade not found more then 3 times. Aborting confirmation process");
                             break;
                         }
 
-                        wp.AppendLog($"{offerId} trade not found. Retrying in 10 seconds");
+                        wp.AppendLog($"{offerIdList} trade not found. Retrying in 10 seconds");
                         Thread.Sleep(TimeSpan.FromSeconds(10));
                     }
                     else
                     {
-                        var success = this.Guard.AcceptConfirmation(conf);
+                        var success = this.Guard.AcceptMultipleConfirmations(conf);
                         if (success)
                         {
-                            wp.AppendLog($"{offerId} trade was successfully confirmed.");
+                            wp.AppendLog($"{offerIdList} trade was successfully confirmed.");
                             wp.AppendLog("Waiting 5 seconds to fetch confirmations to verify they are empty");
                             Thread.Sleep(TimeSpan.FromSeconds(5));
                             confirmations = this.Guard.FetchConfirmations();
-                            conf = confirmations.FirstOrDefault(
+                            conf = confirmations.Where(
                                 item => item.ConfType == Confirmation.ConfirmationType.Trade
-                                        && (item.Creator == offerId));
-                            if (conf == null)
+                                        && offerIdList.Contains(item.Creator)).ToArray();
+
+                            if (conf.Any() == false)
                             {
                                 wp.AppendLog("Trade not found. Confirmation process finished");
                                 break;
@@ -97,7 +99,7 @@
                         }
                         else
                         {
-                            wp.AppendLog($"{offerId} trade confirmation was failed. Retrying in 10 seconds");
+                            wp.AppendLog($"{offerIdList.Count} trades confirmation was failed. Retrying in 10 seconds");
                             Thread.Sleep(TimeSpan.FromSeconds(10));
                         }
                     }
@@ -105,7 +107,7 @@
                 catch (Exception e)
                 {
                     wp.AppendLog($"Error on trade confirm - {e.Message}. Retrying in 10 seconds");
-                    Logger.Log.Error(($"Error on trade confirm.", e));
+                    Logger.Log.Error(($"Error on trade confirm - {e.Message}", e));
                     Thread.Sleep(TimeSpan.FromSeconds(10));
                 }
             }
@@ -617,8 +619,9 @@
 
                             if (acceptTwoFactor)
                             {
-                                var numberTradeId = ulong.Parse(tradeId);
-                                this.ConfirmTradeTransactionsWorkingProcess(numberTradeId, wp);
+                                this.ConfirmTradeTransactionsWorkingProcess(
+                                    new List<ulong> { ulong.Parse(tradeId) },
+                                    wp);
                             }
                         }
                         catch (Exception ex)
@@ -677,7 +680,8 @@
             foreach (var group in groupedItems)
             {
                 var existModel = marketSellItems.FirstOrDefault(
-                    item => item.ItemModel.Description.MarketHashName == group.Key.MarketHashName && item.ItemModel.Description.IsTradable == group.Key.IsTradable);
+                    item => item.ItemModel.Description.MarketHashName == group.Key.MarketHashName
+                            && item.ItemModel.Description.IsTradable == group.Key.IsTradable);
 
                 if (existModel != null)
                 {
@@ -692,6 +696,111 @@
                 {
                     marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
                 }
+            }
+        }
+
+        public void AcceptTradeOffersWorkingProcess(
+            IEnumerable<FullTradeOffer> offers,
+            TimeSpan delay,
+            int threadsCount,
+            WorkingProcessDataContext wp)
+        {
+            var semaphore = new Semaphore(threadsCount, threadsCount);
+
+            foreach (var offer in offers)
+            {
+                if (wp.CancellationToken.IsCancellationRequested)
+                {
+                    wp.AppendLog("Trade offer accept process was force stopped");
+                    return;
+                }
+
+                semaphore.WaitOne();
+                Task.Run(
+                    () =>
+                        {
+                            try
+                            {
+                                var response = this.OfferSession.Accept(offer.Offer.TradeOfferId);
+                                if (response.Accepted == false)
+                                {
+                                    if (string.IsNullOrEmpty(response.TradeError))
+                                        response.TradeError = "internal server";
+
+                                    wp.AppendLog(
+                                        $"Steam replied with {response.TradeError} error on {offer.Offer.TradeOfferId} trade offer accept.");
+                                }
+                                else
+                                {
+                                    wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer accept was successful");
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer accept - {e.Message}");
+                            }
+                            finally
+                            {
+                                Thread.Sleep(delay);
+                                semaphore.Release();
+                            }
+                        });
+            }
+
+            for (var i = 0; i < threadsCount; i++)
+            {
+                semaphore.WaitOne();
+            }
+        }
+
+        public void DeclineTradeOffersWorkingProcess(
+            IEnumerable<FullTradeOffer> offers,
+            TimeSpan delay,
+            int threadsCount,
+            WorkingProcessDataContext wp)
+        {
+            var semaphore = new Semaphore(threadsCount, threadsCount);
+
+            foreach (var offer in offers)
+            {
+                if (wp.CancellationToken.IsCancellationRequested)
+                {
+                    wp.AppendLog("Trade offer decline process was force stopped");
+                    return;
+                }
+
+                semaphore.WaitOne();
+                Task.Run(
+                    () =>
+                        {
+                            try
+                            {
+                                var response = this.OfferSession.Decline(offer.Offer.TradeOfferId);
+                                if (response == false)
+                                {
+                                    wp.AppendLog(
+                                        $"Steam replied with error on {offer.Offer.TradeOfferId} trade offer decline.");
+                                }
+                                else
+                                {
+                                    wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer decline was successful");
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer decline - {e.Message}");
+                            }
+                            finally
+                            {
+                                Thread.Sleep(delay);
+                                semaphore.Release();
+                            }
+                        });
+            }
+
+            for (var i = 0; i < threadsCount; i++)
+            {
+                semaphore.WaitOne();
             }
         }
     }

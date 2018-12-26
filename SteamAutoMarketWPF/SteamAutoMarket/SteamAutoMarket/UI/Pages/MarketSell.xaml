@@ -340,7 +340,6 @@
                     GroupName="MarketSellType"
                     Margin="1"
                     Content="Recommended price"
-                    IsChecked="True"
                     Checked="ReformatSellStrategyOnControlStateChanged" />
 
                 <RadioButton
@@ -350,6 +349,7 @@
                     GroupName="MarketSellType"
                     Margin="1"
                     Content="Manual price"
+                    IsChecked="True"
                     Checked="ReformatSellStrategyOnControlStateChanged" />
 
                 <RadioButton

@@ -8,7 +8,7 @@
 
     using SteamAutoMarket.Steam.Market.Models;
 
-    public static class Utils
+    public static class MarketUtils
     {
         public static int AppIdFromUrl(string url)
         {

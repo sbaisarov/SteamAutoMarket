@@ -429,7 +429,7 @@
 
             <Button Grid.Row="6"
                     Name="MarkOverpricesButton"
-                    Content="Mark overpriced items"
+                    Content="Check overpriced items"
                     Margin="0, 5, 0, 0"
                     Padding="0"
                     Click="MarkOverpricesButton_OnClick" />

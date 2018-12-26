@@ -144,7 +144,7 @@
                             }
                             else
                             {
-                                this.RelistPrice.Value = this.CurrentPrice - 0.01;
+                                this.RelistPrice.Value = this.CurrentPrice;
                             }
                         }
                         else
