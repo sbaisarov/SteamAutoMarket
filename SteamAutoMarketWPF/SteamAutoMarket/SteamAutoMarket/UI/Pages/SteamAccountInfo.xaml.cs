@@ -5,13 +5,11 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using System.Windows;
-    using System.Windows.Media.Imaging;
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;

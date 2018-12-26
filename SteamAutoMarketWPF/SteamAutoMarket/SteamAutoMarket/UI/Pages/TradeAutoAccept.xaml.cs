@@ -18,7 +18,6 @@
     using SteamAutoMarket.UI.Models.Enums;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
-    using SteamAutoMarket.UI.SteamIntegration;
     using SteamAutoMarket.UI.Utils.Logger;
 
     using SteamKit2;
@@ -43,12 +42,52 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<NameValueModel> TradeAcceptWhitelist
+        public bool AcceptIncomingEmpty
         {
-            get => this.tradeAcceptWhitelist;
+            get => SettingsProvider.GetInstance().TradeAcceptIncomingEmpty;
             set
             {
-                this.tradeAcceptWhitelist = value;
+                SettingsProvider.GetInstance().TradeAcceptIncomingEmpty = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool AcceptIncomingWhitelist
+        {
+            get => SettingsProvider.GetInstance().TradeAcceptIncomingWhitelist;
+            set
+            {
+                SettingsProvider.GetInstance().TradeAcceptIncomingWhitelist = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool DeclineAllIncoming
+        {
+            get => SettingsProvider.GetInstance().TradeDeclineAllIncoming;
+            set
+            {
+                SettingsProvider.GetInstance().TradeDeclineAllIncoming = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool DeclineIncomingNotEmpty
+        {
+            get => SettingsProvider.GetInstance().TradeDeclineIncomingNotEmpty;
+            set
+            {
+                SettingsProvider.GetInstance().TradeDeclineIncomingNotEmpty = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool DeclineSent
+        {
+            get => SettingsProvider.GetInstance().TradeDeclineSent;
+            set
+            {
+                SettingsProvider.GetInstance().TradeDeclineSent = value;
                 this.OnPropertyChanged();
             }
         }
@@ -73,42 +112,12 @@
             }
         }
 
-        public bool AcceptIncomingEmpty
+        public int ThreadsCount
         {
-            get => SettingsProvider.GetInstance().TradeAcceptIncomingEmpty;
+            get => SettingsProvider.GetInstance().TradeAcceptThreadsCount;
             set
             {
-                SettingsProvider.GetInstance().TradeAcceptIncomingEmpty = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool AcceptIncomingWhitelist
-        {
-            get => SettingsProvider.GetInstance().TradeAcceptIncomingWhitelist;
-            set
-            {
-                SettingsProvider.GetInstance().TradeAcceptIncomingWhitelist = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool DeclineSent
-        {
-            get => SettingsProvider.GetInstance().TradeDeclineSent;
-            set
-            {
-                SettingsProvider.GetInstance().TradeDeclineSent = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool DeclineIncomingNotEmpty
-        {
-            get => SettingsProvider.GetInstance().TradeDeclineIncomingNotEmpty;
-            set
-            {
-                SettingsProvider.GetInstance().TradeDeclineIncomingNotEmpty = value;
+                SettingsProvider.GetInstance().TradeAcceptThreadsCount = value;
                 this.OnPropertyChanged();
             }
         }
@@ -123,22 +132,12 @@
             }
         }
 
-        public bool DeclineAllIncoming
+        public ObservableCollection<NameValueModel> TradeAcceptWhitelist
         {
-            get => SettingsProvider.GetInstance().TradeDeclineAllIncoming;
+            get => this.tradeAcceptWhitelist;
             set
             {
-                SettingsProvider.GetInstance().TradeDeclineAllIncoming = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int ThreadsCount
-        {
-            get => SettingsProvider.GetInstance().TradeAcceptThreadsCount;
-            set
-            {
-                SettingsProvider.GetInstance().TradeAcceptThreadsCount = value;
+                this.tradeAcceptWhitelist = value;
                 this.OnPropertyChanged();
             }
         }
@@ -146,6 +145,16 @@
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private static void RemoveProcessedOffers(
+            ICollection<FullTradeOffer> allOffers,
+            IEnumerable<FullTradeOffer> sublist)
+        {
+            foreach (var offer in sublist.ToList())
+            {
+                allOffers.Remove(offer);
+            }
+        }
 
         private void AddNewSteamWhitelistAccountClick(object sender, RoutedEventArgs e)
         {
@@ -165,14 +174,13 @@
             SettingsProvider.GetInstance().TradeAcceptWhitelist = this.TradeAcceptWhitelist.ToList();
         }
 
-        private static void RemoveProcessedOffers(
-            ICollection<FullTradeOffer> allOffers,
-            IEnumerable<FullTradeOffer> sublist)
+        private void RemoveSelectedAccountButtonClick(object sender, RoutedEventArgs e)
         {
-            foreach (var offer in sublist.ToList())
-            {
-                allOffers.Remove(offer);
-            }
+            var selectedItem = (NameValueModel)this.WhiteListGrid.SelectedItem;
+            if (selectedItem == null) return;
+
+            this.TradeAcceptWhitelist.Remove(selectedItem);
+            SettingsProvider.GetInstance().TradeAcceptWhitelist = this.TradeAcceptWhitelist.ToList();
         }
 
         private void StartTradeAcceptProcess(object sender, RoutedEventArgs e)
@@ -391,15 +399,6 @@
                                 },
                             "Trade accepter");
                     });
-        }
-
-        private void RemoveSelectedAccountButtonClick(object sender, RoutedEventArgs e)
-        {
-            var selectedItem = (NameValueModel)this.WhiteListGrid.SelectedItem;
-            if (selectedItem == null) return;
-
-            this.TradeAcceptWhitelist.Remove(selectedItem);
-            SettingsProvider.GetInstance().TradeAcceptWhitelist = this.TradeAcceptWhitelist.ToList();
         }
     }
 }

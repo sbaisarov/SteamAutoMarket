@@ -9,6 +9,19 @@
 
     public static class ResourceUtils
     {
+        public static Bitmap BitmapImage2Bitmap(BitmapSource bitmapImage)
+        {
+            using (var outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                var bitmap = new Bitmap(outStream);
+
+                return new Bitmap(bitmap);
+            }
+        }
+
         public static string GetResourceImageUri(string name) =>
             @"pack://application:,,,/" + Assembly.GetCallingAssembly().GetName().Name + ";component/"
             + $"resources/{name}";
@@ -29,18 +42,5 @@
         public static T[] ToArray<T>(params T[] values) => values;
 
         public static List<T> ToList<T>(params T[] values) => new List<T>(values);
-
-        public static Bitmap BitmapImage2Bitmap(BitmapSource bitmapImage)
-        {
-            using (var outStream = new MemoryStream())
-            {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
-                enc.Save(outStream);
-                var bitmap = new Bitmap(outStream);
-
-                return new Bitmap(bitmap);
-            }
-        }
     }
 }

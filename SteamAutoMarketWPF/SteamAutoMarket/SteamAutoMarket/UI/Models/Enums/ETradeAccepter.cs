@@ -7,7 +7,7 @@
         AcceptIncomingWhitelist,
 
         DeclineIncomingNotEmpty,
-        
+
         DeclineAllIncoming,
 
         DeclineOutgoing

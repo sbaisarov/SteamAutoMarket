@@ -8,31 +8,26 @@
     using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Input;
 
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
-    using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.Logger;
-
-    using Xceed.Wpf.DataGrid;
-    using Xceed.Wpf.Toolkit;
 
     /// <summary>
     /// Interaction logic for TradeSend.xaml
     /// </summary>
     public partial class TradeSend : INotifyPropertyChanged
     {
-        private SteamItemsModel tradeSendSelectedItem;
+        private List<string> rarityFilters;
 
         private List<string> realGameFilters;
 
-        private List<string> rarityFilters;
-
         private List<string> tradabilityFilters;
+
+        private SteamItemsModel tradeSendSelectedItem;
 
         private List<string> typeFilters;
 
@@ -45,6 +40,42 @@
         public event PropertyChangedEventHandler PropertyChanged;
 
         public List<SteamAppId> AppIdList => SettingsProvider.GetInstance().AppIdList;
+
+        public List<string> MarketableFilters
+        {
+            get => this.tradabilityFilters;
+            set
+            {
+                this.tradabilityFilters = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string MarketableSelectedFilter { get; set; }
+
+        public List<string> RarityFilters
+        {
+            get => this.rarityFilters;
+            set
+            {
+                this.rarityFilters = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string RaritySelectedFilter { get; set; }
+
+        public List<string> RealGameFilters
+        {
+            get => this.realGameFilters;
+            set
+            {
+                this.realGameFilters = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string RealGameSelectedFilter { get; set; }
 
         public bool TradeSendConfirm2Fa
         {
@@ -103,41 +134,8 @@
             }
         }
 
-        public List<string> RealGameFilters
-        {
-            get => this.realGameFilters;
-            set
-            {
-                this.realGameFilters = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public string RealGameSelectedFilter { get; set; }
-
-        public List<string> RarityFilters
-        {
-            get => this.rarityFilters;
-            set
-            {
-                this.rarityFilters = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public string RaritySelectedFilter { get; set; }
-
-        public List<string> MarketableFilters
-        {
-            get => this.tradabilityFilters;
-            set
-            {
-                this.tradabilityFilters = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public string MarketableSelectedFilter { get; set; }
+        public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
+            new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
 
         public List<string> TypeFilters
         {
@@ -151,41 +149,9 @@
 
         public string TypeSelectedFilter { get; set; }
 
-        public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
-            new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        private void Filter_OnDropDownOpened(object sender, EventArgs e)
-        {
-            var comboBox = sender as ComboBox;
-            switch (comboBox?.Name)
-            {
-                case "RealGameComboBox":
-                    this.RealGameFilters = this.TradeSendItemsList.Select(model => model.Game).ToHashSet()
-                        .OrderBy(q => q).ToList();
-                    break;
-                case "TypeComboBox":
-                    this.TypeFilters = this.TradeSendItemsList.Select(model => model.Type).ToHashSet().OrderBy(q => q)
-                        .ToList();
-                    break;
-                case "RarityComboBox":
-                    this.RarityFilters = this.TradeSendItemsList.Select(
-                            model => model.ItemModel?.Description?.Tags
-                                ?.FirstOrDefault(tag => tag.LocalizedCategoryName == "Rarity")?.LocalizedTagName)
-                        .ToHashSet().OrderBy(q => q).ToList();
-                    break;
-                case "MarketableComboBox":
-                    this.MarketableFilters = this.TradeSendItemsList.Select(
-                            model => (model.ItemModel?.Description.IsMarketable == true)
-                                         ? "Marketable"
-                                         : "Not marketable")
-                        .ToHashSet().ToList();
-                    break;
-            }
-        }
 
         private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
         {
@@ -223,21 +189,33 @@
             this.MarketItemsToTradeGrid.ItemsSource = resultView;
         }
 
-        private void ResetFiltersClick(object sender, RoutedEventArgs e)
+        private void Filter_OnDropDownOpened(object sender, EventArgs e)
         {
-            this.RealGameSelectedFilter = null;
-            this.RealGameComboBox.Text = null;
-
-            this.TypeSelectedFilter = null;
-            this.TypeComboBox.Text = null;
-
-            this.RaritySelectedFilter = null;
-            this.RarityComboBox.Text = null;
-
-            this.MarketableFilters = null;
-            this.MarketableComboBox.Text = null;
-
-            this.MarketItemsToTradeGrid.ItemsSource = this.TradeSendItemsList;
+            var comboBox = sender as ComboBox;
+            switch (comboBox?.Name)
+            {
+                case "RealGameComboBox":
+                    this.RealGameFilters = this.TradeSendItemsList.Select(model => model.Game).ToHashSet()
+                        .OrderBy(q => q).ToList();
+                    break;
+                case "TypeComboBox":
+                    this.TypeFilters = this.TradeSendItemsList.Select(model => model.Type).ToHashSet().OrderBy(q => q)
+                        .ToList();
+                    break;
+                case "RarityComboBox":
+                    this.RarityFilters = this.TradeSendItemsList.Select(
+                            model => model.ItemModel?.Description?.Tags
+                                ?.FirstOrDefault(tag => tag.LocalizedCategoryName == "Rarity")?.LocalizedTagName)
+                        .ToHashSet().OrderBy(q => q).ToList();
+                    break;
+                case "MarketableComboBox":
+                    this.MarketableFilters = this.TradeSendItemsList.Select(
+                            model => (model.ItemModel?.Description.IsMarketable == true)
+                                         ? "Marketable"
+                                         : "Not marketable")
+                        .ToHashSet().ToList();
+                    break;
+            }
         }
 
         private void LoadItemsToTradeButtonClick(object sender, RoutedEventArgs e)
@@ -285,6 +263,23 @@
             {
                 t.NumericUpDown.AmountToSell = 0;
             }
+        }
+
+        private void ResetFiltersClick(object sender, RoutedEventArgs e)
+        {
+            this.RealGameSelectedFilter = null;
+            this.RealGameComboBox.Text = null;
+
+            this.TypeSelectedFilter = null;
+            this.TypeComboBox.Text = null;
+
+            this.RaritySelectedFilter = null;
+            this.RarityComboBox.Text = null;
+
+            this.MarketableFilters = null;
+            this.MarketableComboBox.Text = null;
+
+            this.MarketItemsToTradeGrid.ItemsSource = this.TradeSendItemsList;
         }
 
         private void SendTradeOfferButtonOnClick(object sender, RoutedEventArgs e)

@@ -55,6 +55,60 @@
 
         public PriceCache CurrentPriceCache { get; set; }
 
+        public void AcceptTradeOffersWorkingProcess(
+            IEnumerable<FullTradeOffer> offers,
+            TimeSpan delay,
+            int threadsCount,
+            WorkingProcessDataContext wp)
+        {
+            var semaphore = new Semaphore(threadsCount, threadsCount);
+
+            foreach (var offer in offers)
+            {
+                if (wp.CancellationToken.IsCancellationRequested)
+                {
+                    wp.AppendLog("Trade offer accept process was force stopped");
+                    return;
+                }
+
+                semaphore.WaitOne();
+                Task.Run(
+                    () =>
+                        {
+                            try
+                            {
+                                var response = this.OfferSession.Accept(offer.Offer.TradeOfferId);
+                                if (response.Accepted == false)
+                                {
+                                    if (string.IsNullOrEmpty(response.TradeError))
+                                        response.TradeError = "internal server";
+
+                                    wp.AppendLog(
+                                        $"Steam replied with {response.TradeError} error on {offer.Offer.TradeOfferId} trade offer accept.");
+                                }
+                                else
+                                {
+                                    wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer accept was successful");
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer accept - {e.Message}");
+                            }
+                            finally
+                            {
+                                Thread.Sleep(delay);
+                                semaphore.Release();
+                            }
+                        });
+            }
+
+            for (var i = 0; i < threadsCount; i++)
+            {
+                semaphore.WaitOne();
+            }
+        }
+
         public void ConfirmTradeTransactionsWorkingProcess(List<ulong> offerIdList, WorkingProcessDataContext wp)
         {
             var notFoundRetry = 0;
@@ -110,6 +164,57 @@
                     Logger.Log.Error(($"Error on trade confirm - {e.Message}", e));
                     Thread.Sleep(TimeSpan.FromSeconds(10));
                 }
+            }
+        }
+
+        public void DeclineTradeOffersWorkingProcess(
+            IEnumerable<FullTradeOffer> offers,
+            TimeSpan delay,
+            int threadsCount,
+            WorkingProcessDataContext wp)
+        {
+            var semaphore = new Semaphore(threadsCount, threadsCount);
+
+            foreach (var offer in offers)
+            {
+                if (wp.CancellationToken.IsCancellationRequested)
+                {
+                    wp.AppendLog("Trade offer decline process was force stopped");
+                    return;
+                }
+
+                semaphore.WaitOne();
+                Task.Run(
+                    () =>
+                        {
+                            try
+                            {
+                                var response = this.OfferSession.Decline(offer.Offer.TradeOfferId);
+                                if (response == false)
+                                {
+                                    wp.AppendLog(
+                                        $"Steam replied with error on {offer.Offer.TradeOfferId} trade offer decline.");
+                                }
+                                else
+                                {
+                                    wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer decline was successful");
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer decline - {e.Message}");
+                            }
+                            finally
+                            {
+                                Thread.Sleep(delay);
+                                semaphore.Release();
+                            }
+                        });
+            }
+
+            for (var i = 0; i < threadsCount; i++)
+            {
+                semaphore.WaitOne();
             }
         }
 
@@ -696,111 +801,6 @@
                 {
                     marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
                 }
-            }
-        }
-
-        public void AcceptTradeOffersWorkingProcess(
-            IEnumerable<FullTradeOffer> offers,
-            TimeSpan delay,
-            int threadsCount,
-            WorkingProcessDataContext wp)
-        {
-            var semaphore = new Semaphore(threadsCount, threadsCount);
-
-            foreach (var offer in offers)
-            {
-                if (wp.CancellationToken.IsCancellationRequested)
-                {
-                    wp.AppendLog("Trade offer accept process was force stopped");
-                    return;
-                }
-
-                semaphore.WaitOne();
-                Task.Run(
-                    () =>
-                        {
-                            try
-                            {
-                                var response = this.OfferSession.Accept(offer.Offer.TradeOfferId);
-                                if (response.Accepted == false)
-                                {
-                                    if (string.IsNullOrEmpty(response.TradeError))
-                                        response.TradeError = "internal server";
-
-                                    wp.AppendLog(
-                                        $"Steam replied with {response.TradeError} error on {offer.Offer.TradeOfferId} trade offer accept.");
-                                }
-                                else
-                                {
-                                    wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer accept was successful");
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer accept - {e.Message}");
-                            }
-                            finally
-                            {
-                                Thread.Sleep(delay);
-                                semaphore.Release();
-                            }
-                        });
-            }
-
-            for (var i = 0; i < threadsCount; i++)
-            {
-                semaphore.WaitOne();
-            }
-        }
-
-        public void DeclineTradeOffersWorkingProcess(
-            IEnumerable<FullTradeOffer> offers,
-            TimeSpan delay,
-            int threadsCount,
-            WorkingProcessDataContext wp)
-        {
-            var semaphore = new Semaphore(threadsCount, threadsCount);
-
-            foreach (var offer in offers)
-            {
-                if (wp.CancellationToken.IsCancellationRequested)
-                {
-                    wp.AppendLog("Trade offer decline process was force stopped");
-                    return;
-                }
-
-                semaphore.WaitOne();
-                Task.Run(
-                    () =>
-                        {
-                            try
-                            {
-                                var response = this.OfferSession.Decline(offer.Offer.TradeOfferId);
-                                if (response == false)
-                                {
-                                    wp.AppendLog(
-                                        $"Steam replied with error on {offer.Offer.TradeOfferId} trade offer decline.");
-                                }
-                                else
-                                {
-                                    wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer decline was successful");
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer decline - {e.Message}");
-                            }
-                            finally
-                            {
-                                Thread.Sleep(delay);
-                                semaphore.Release();
-                            }
-                        });
-            }
-
-            for (var i = 0; i < threadsCount; i++)
-            {
-                semaphore.WaitOne();
             }
         }
     }

@@ -296,10 +296,8 @@
                         fees["amount"] = amount;
                         break;
                     }
-                    else
-                    {
-                        nEstimatedAmountOfWalletFundsReceivedByOtherParty--;
-                    }
+
+                    nEstimatedAmountOfWalletFundsReceivedByOtherParty--;
                 }
                 else
                 {
@@ -608,7 +606,6 @@
 
                     tempIndex++;
                 }
-
             }
 
             if (myListings.Orders.Any())
@@ -950,7 +947,7 @@
             var steamFee = Math.Floor(Math.Max(receivedAmount * marketFee, 1));
             var nPublisherFee = Math.Floor(publisherFee > 0 ? Math.Max(receivedAmount * publisherFee, 1) : 0);
             var nAmountToSend = receivedAmount + steamFee + nPublisherFee;
-            return new Dictionary<string, double>()
+            return new Dictionary<string, double>
                        {
                            { "steam_fee", steamFee },
                            { "publisher_fee", nPublisherFee },

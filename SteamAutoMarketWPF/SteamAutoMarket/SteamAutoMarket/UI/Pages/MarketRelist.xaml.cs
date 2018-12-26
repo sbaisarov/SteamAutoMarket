@@ -82,6 +82,19 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private void FocusTextBox(int rowIndex)
+        {
+            var cell =
+                (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)
+                ?.Cells[8];
+            if (cell != null)
+            {
+                var textBox = UiElementsUtils.FindVisualChild<TextBox>(cell);
+                textBox?.Focus();
+                textBox?.SelectAll();
+            }
+        }
+
         private MarketSellStrategy GetMarketSellStrategy()
         {
             var sellStrategy = new MarketSellStrategy();
@@ -154,8 +167,7 @@
                             {
                                 item.Checked.CheckBoxChecked = true;
                             }
-                            else if (item.CurrentPrice < item.AveragePrice
-                                     && item.AveragePrice != item.ListedPrice)
+                            else if (item.CurrentPrice < item.AveragePrice && item.AveragePrice != item.ListedPrice)
                             {
                                 item.Checked.CheckBoxChecked = true;
                             }
@@ -221,6 +233,24 @@
             catch (Exception ex)
             {
                 ErrorNotify.CriticalMessageBox(ex);
+            }
+        }
+
+        private void PriceTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var currentIndex = this.MarketItemsToSellGrid.SelectedIndex;
+
+            switch (e.Key)
+            {
+                case Key.Down:
+                    if (currentIndex + 1 == this.MarketItemsToSellGrid.Items.Count) return;
+                    this.FocusTextBox(currentIndex + 1);
+                    return;
+
+                case Key.Up:
+                    if (currentIndex == 0) return;
+                    this.FocusTextBox(currentIndex - 1);
+                    return;
             }
         }
 
@@ -432,37 +462,6 @@
             }
 
             this.priceLoadSubTasks.Clear();
-        }
-
-        private void PriceTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            var currentIndex = this.MarketItemsToSellGrid.SelectedIndex;
-
-            switch (e.Key)
-            {
-                case Key.Down:
-                    if (currentIndex + 1 == this.MarketItemsToSellGrid.Items.Count) return;
-                    this.FocusTextBox(currentIndex + 1);
-                    return;
-
-                case Key.Up:
-                    if (currentIndex == 0) return;
-                    this.FocusTextBox(currentIndex - 1);
-                    return;
-            }
-        }
-
-        private void FocusTextBox(int rowIndex)
-        {
-            var cell =
-                (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)
-                ?.Cells[8];
-            if (cell != null)
-            {
-                var textBox = UiElementsUtils.FindVisualChild<TextBox>(cell);
-                textBox?.Focus();
-                textBox?.SelectAll();
-            }
         }
     }
 }

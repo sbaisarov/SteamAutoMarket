@@ -1,11 +1,9 @@
-using System.Globalization;
-using RestSharp.Deserializers;
-
 namespace SteamAutoMarket.Steam
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Management;
@@ -147,33 +145,42 @@ namespace SteamAutoMarket.Steam
 
         protected bool IsSessionUpdated { get; set; }
 
-        public bool BuyOnMarket(double averagePrice, int appid, string hashName, double? ratio, bool buyPackages, 
+        public bool BuyOnMarket(
+            double averagePrice,
+            int appid,
+            string hashName,
+            double? ratio,
+            bool buyPackages,
             int currency)
         {
             // the ratio is a value client is ready to accept the difference between average and current price 
             ratio += 1;
             var order = this.FindBuyingOrder(averagePrice, appid, hashName, ratio);
-            var data = new NameValueCollection()
-            {
-                {"sessionid", this.SteamClient.Session.SessionID},
-                {"currency", currency.ToString()},
-                {"appid", appid.ToString()},
-                {"market_hash_name", hashName}
-            };
+            var data = new NameValueCollection
+                           {
+                               { "sessionid", this.SteamClient.Session.SessionID },
+                               { "currency", currency.ToString() },
+                               { "appid", appid.ToString() },
+                               { "market_hash_name", hashName }
+                           };
             var quantity = 1;
             if (buyPackages) quantity *= order.Count;
             // "G", CultureInfo.InvariantCulture - use these as arguments to convert double into string with dots
             data["price_total"] = (order.Price * 100 * quantity).ToString("G", CultureInfo.InvariantCulture);
-            data["quantity"] = quantity.ToString(); 
-            var response = SteamWeb.Request("https://steamcommunity.com/market/createbuyorder/", "POST", data,
+            data["quantity"] = quantity.ToString();
+            var response = SteamWeb.Request(
+                "https://steamcommunity.com/market/createbuyorder/",
+                "POST",
+                data,
                 this.Cookies);
-            var responseJson = (NameValueCollection) JsonConvert.DeserializeObject(response);
+            var responseJson = (NameValueCollection)JsonConvert.DeserializeObject(response);
             var success = responseJson["success"];
             if (success == null)
             {
                 Logger.Log.Error("Invalid response from createbuyorder request");
                 return false;
             }
+
             var buyOrderId = responseJson["buy_orderid"];
             if (success != "1")
             {
@@ -186,40 +193,6 @@ namespace SteamAutoMarket.Steam
             }
 
             return true;
-        }
-
-        private void CancelBuyOrder(string orderid)
-        {
-            var data = new NameValueCollection()
-            {
-                {"sessionid", this.SteamClient.Session.SessionID},
-                {"buy_orderid", orderid}
-            };
-            while (true)
-            {
-                var response = SteamWeb.Request("http://steamcommunity.com/market/cancelbuyorder/", "GET", data,
-                    this.Cookies);
-                var success = ((NameValueCollection) JsonConvert.DeserializeObject(response))["success"];
-                if (success == "1") return;
-                Thread.Sleep(1000 * 3);
-            }
-        }
-
-        private OrderGraphItem FindBuyingOrder(double averagePrice, int appid, string hashName, double? ratio)
-        {
-            var orders = this.GetPrice(appid, hashName).BuyOrderGraph.Orders;
-            var index = 0;
-            while (true)
-            {
-                var order = orders[index];
-                if (ratio == null) return order;
-                if (order.Price > averagePrice * ratio)
-                {
-                    index++;
-                    continue;
-                }
-                return order;
-            }
         }
 
         public string FetchTradeToken()
@@ -366,7 +339,7 @@ namespace SteamAutoMarket.Steam
                 long.Parse(asset.Assetid),
                 int.Parse(item.Asset.Amount),
                 price);
- 
+
             var message = resp.Message; // error message
             if (resp.Success == false)
             {
@@ -465,6 +438,25 @@ namespace SteamAutoMarket.Steam
             return uid;
         }
 
+        private void CancelBuyOrder(string orderid)
+        {
+            var data = new NameValueCollection
+                           {
+                               { "sessionid", this.SteamClient.Session.SessionID }, { "buy_orderid", orderid }
+                           };
+            while (true)
+            {
+                var response = SteamWeb.Request(
+                    "http://steamcommunity.com/market/cancelbuyorder/",
+                    "GET",
+                    data,
+                    this.Cookies);
+                var success = ((NameValueCollection)JsonConvert.DeserializeObject(response))["success"];
+                if (success == "1") return;
+                Thread.Sleep(1000 * 3);
+            }
+        }
+
         private double? CountAveragePrice(List<PriceHistoryDay> history, int daysCount)
         {
             // days are sorted from oldest to newest, we need the contrary
@@ -541,6 +533,24 @@ namespace SteamAutoMarket.Steam
             catch (Exception e)
             {
                 throw new SteamException($"Error on parsing current currency - {e.Message}", e);
+            }
+        }
+
+        private OrderGraphItem FindBuyingOrder(double averagePrice, int appid, string hashName, double? ratio)
+        {
+            var orders = this.GetPrice(appid, hashName).BuyOrderGraph.Orders;
+            var index = 0;
+            while (true)
+            {
+                var order = orders[index];
+                if (ratio == null) return order;
+                if (order.Price > averagePrice * ratio)
+                {
+                    index++;
+                    continue;
+                }
+
+                return order;
             }
         }
 

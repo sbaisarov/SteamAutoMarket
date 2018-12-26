@@ -53,6 +53,8 @@
 
         public string Description { get; }
 
+        public string Game { get; }
+
         public string Image
         {
             get
@@ -77,8 +79,6 @@
         public FullRgItem ItemModel { get; }
 
         public string ItemName { get; }
-
-        public string Game { get; }
 
         public ObservableCollection<FullRgItem> ItemsList { get; }
 

@@ -5,11 +5,9 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
 
     using Newtonsoft.Json;
 
-    using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
@@ -52,6 +50,22 @@
 
         private string theme;
 
+        private int tradeAcceptDelaySeconds = 5;
+
+        private bool tradeAcceptIncomingEmpty;
+
+        private bool tradeAcceptIncomingWhitelist;
+
+        private int tradeAcceptThreadsCount = 1;
+
+        private List<NameValueModel> tradeAcceptWhitelist = new List<NameValueModel>();
+
+        private bool tradeDeclineAllIncoming;
+
+        private bool tradeDeclineIncomingNotEmpty;
+
+        private bool tradeDeclineSent;
+
         private bool tradeHistoryGetDescription = true;
 
         private bool tradeHistoryIncludeFailed;
@@ -70,22 +84,6 @@
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36";
 
         private int workingChartMaxCount = 70;
-
-        private List<NameValueModel> tradeAcceptWhitelist = new List<NameValueModel>();
-
-        private int tradeAcceptDelaySeconds = 5;
-
-        private int tradeAcceptThreadsCount = 1;
-
-        private bool tradeAcceptIncomingEmpty;
-
-        private bool tradeAcceptIncomingWhitelist;
-
-        private bool tradeDeclineSent;
-
-        private bool tradeDeclineIncomingNotEmpty;
-
-        private bool tradeDeclineAllIncoming;
 
         static SettingsModel()
         {
@@ -282,6 +280,86 @@
             }
         }
 
+        public int TradeAcceptDelaySeconds
+        {
+            get => this.tradeAcceptDelaySeconds;
+            set
+            {
+                this.tradeAcceptDelaySeconds = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeAcceptIncomingEmpty
+        {
+            get => this.tradeAcceptIncomingEmpty;
+            set
+            {
+                this.tradeAcceptIncomingEmpty = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeAcceptIncomingWhitelist
+        {
+            get => this.tradeAcceptIncomingWhitelist;
+            set
+            {
+                this.tradeAcceptIncomingWhitelist = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int TradeAcceptThreadsCount
+        {
+            get => this.tradeAcceptThreadsCount;
+            set
+            {
+                this.tradeAcceptThreadsCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public List<NameValueModel> TradeAcceptWhitelist
+        {
+            get => this.tradeAcceptWhitelist;
+            set
+            {
+                this.tradeAcceptWhitelist = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeDeclineAllIncoming
+        {
+            get => this.tradeDeclineAllIncoming;
+            set
+            {
+                this.tradeDeclineAllIncoming = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeDeclineIncomingNotEmpty
+        {
+            get => this.tradeDeclineIncomingNotEmpty;
+            set
+            {
+                this.tradeDeclineIncomingNotEmpty = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool TradeDeclineSent
+        {
+            get => this.tradeDeclineSent;
+            set
+            {
+                this.tradeDeclineSent = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public bool TradeHistoryGetDescription
         {
             get => this.tradeHistoryGetDescription;
@@ -368,86 +446,6 @@
             set
             {
                 this.workingChartMaxCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public List<NameValueModel> TradeAcceptWhitelist
-        {
-            get => this.tradeAcceptWhitelist;
-            set
-            {
-                this.tradeAcceptWhitelist = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int TradeAcceptDelaySeconds
-        {
-            get => this.tradeAcceptDelaySeconds;
-            set
-            {
-                this.tradeAcceptDelaySeconds = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int TradeAcceptThreadsCount
-        {
-            get => this.tradeAcceptThreadsCount;
-            set
-            {
-                this.tradeAcceptThreadsCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeAcceptIncomingEmpty
-        {
-            get => this.tradeAcceptIncomingEmpty;
-            set
-            {
-                this.tradeAcceptIncomingEmpty = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeAcceptIncomingWhitelist
-        {
-            get => this.tradeAcceptIncomingWhitelist;
-            set
-            {
-                this.tradeAcceptIncomingWhitelist = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeDeclineSent
-        {
-            get => this.tradeDeclineSent;
-            set
-            {
-                this.tradeDeclineSent = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeDeclineIncomingNotEmpty
-        {
-            get => this.tradeDeclineIncomingNotEmpty;
-            set
-            {
-                this.tradeDeclineIncomingNotEmpty = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool TradeDeclineAllIncoming
-        {
-            get => this.tradeDeclineAllIncoming;
-            set
-            {
-                this.tradeDeclineAllIncoming = value;
                 this.OnPropertyChanged();
             }
         }
