@@ -14,7 +14,9 @@
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
+    using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
+    using SteamAutoMarket.UI.SteamIntegration;
     using SteamAutoMarket.UI.Utils.Extension;
     using SteamAutoMarket.UI.Utils.Logger;
 
@@ -34,11 +36,17 @@
 
         private int progressBarValue;
 
-        private string title = "Working process";
-
         private string workingLogs;
 
+        public WorkingProcessDataContext(string title, UiSteamManager manager)
+        {
+            this.Title = title;
+            this.SteamManager = manager;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public static ObservableCollection<string> GlobalWorkingProcessesList { get; set; }
 
         public double AverageMinutesLeft
         {
@@ -119,19 +127,11 @@
             }
         }
 
+        public UiSteamManager SteamManager { get; set; }
+
         public Stopwatch Timer { get; set; }
 
-        public string Title
-        {
-            get => this.title;
-            set
-            {
-                if (value == this.title) return;
-                this.title = value;
-                this.OnPropertyChanged();
-                this.OnPropertyChanged(nameof(this.ButtonTitle));
-            }
-        }
+        public string Title { get; }
 
         public Task WorkingAction { get; set; }
 
@@ -141,6 +141,16 @@
             set
             {
                 this.workingLogs = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<string> WorkingProcessesList
+        {
+            get => GlobalWorkingProcessesList;
+            set
+            {
+                GlobalWorkingProcessesList = value;
                 this.OnPropertyChanged();
             }
         }
@@ -206,7 +216,44 @@
             this.AverageMinutesLeft = 0;
             this.ChartModel.ClearDispatch();
             this.ChartModel.AddDispatch(new DataPoint(0, 0));
-            this.Title = "Working process";
+        }
+
+        public void StartWorkingProcess(Action action)
+        {
+            if (this.WorkingAction?.Status == TaskStatus.Running)
+            {
+                return;
+            }
+
+            WorkingProcess.OpenTab();
+
+            UiGlobalVariables.LastInvokedWorkingProcessDataContext = this;
+            if (UiGlobalVariables.WorkingProcessTab != null)
+            {
+                UiGlobalVariables.WorkingProcessTab.ChangeDataContext(this);
+            }
+
+            Task.Run(
+                () =>
+                    {
+                        try
+                        {
+                            this.ResetWorkingProcessToDefault();
+                            this.AppendLog($"{this.Title} working process started");
+
+                            this.CancellationTokenSource = new CancellationTokenSource();
+                            this.CancellationToken = this.CancellationTokenSource.Token;
+
+                            this.Timer = Stopwatch.StartNew();
+
+                            this.WorkingAction = Task.Run(action, this.CancellationToken);
+                            this.WorkingAction.ContinueWith(tsk => { this.AppendLog("Working process finished"); });
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Log.Error($"Error on working process - {e.Message}", e);
+                        }
+                    });
         }
 
         [NotifyPropertyChangedInvocator]

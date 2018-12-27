@@ -1,5 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.Repository.Settings
 {
+    using System;
     using System.IO;
 
     using Newtonsoft.Json;
@@ -18,20 +19,34 @@
             if (File.Exists(SettingsUpdated.SettingsPath) == false)
             {
                 Logger.Log.Debug("Settings file do not exist. Creating new one");
-                instance = new SettingsModel();
-
-                File.WriteAllText(
-                    SettingsUpdated.SettingsPath,
-                    JsonConvert.SerializeObject(instance, Formatting.Indented));
+                instance = CreateNewSettingsInstance();
             }
             else
             {
-                instance = JsonConvert.DeserializeObject<SettingsModel>(
-                    File.ReadAllText(SettingsUpdated.SettingsPath),
-                    new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace });
+                try
+                {
+                    instance = JsonConvert.DeserializeObject<SettingsModel>(
+                        File.ReadAllText(SettingsUpdated.SettingsPath),
+                        new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace });
+                }
+                catch (Exception e)
+                {
+                    Logger.Log.Error(
+                        $"Error on {SettingsUpdated.SettingsPath} file load - {e.Message}. Applying default settings");
+                    instance = CreateNewSettingsInstance();
+                }
             }
 
             instance.IsSettingsLoaded = true;
+            return instance;
+        }
+
+        private static SettingsModel CreateNewSettingsInstance()
+        {
+            var instance = new SettingsModel();
+
+            File.WriteAllText(SettingsUpdated.SettingsPath, JsonConvert.SerializeObject(instance, Formatting.Indented));
+
             return instance;
         }
     }

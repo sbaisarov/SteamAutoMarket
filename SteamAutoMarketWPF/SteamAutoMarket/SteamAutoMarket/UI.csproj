@@ -279,6 +279,7 @@
     <Compile Include="UI\Pages\WorkingProcessDataContext.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UI\Repository\Context\UiDefaultValues.cs" />
+    <Compile Include="UI\Repository\Context\WorkingProcessProvider.cs" />
     <Compile Include="UI\Repository\Image\ImageCache.cs" />
     <Compile Include="UI\Repository\Image\ImageProvider.cs" />
     <Compile Include="UI\Repository\PriceCache\PriceCache.cs" />

@@ -10,7 +10,6 @@
 
     using Newtonsoft.Json;
 
-    using SteamAutoMarket.Core;
     using SteamAutoMarket.Steam.Market.Exceptions;
 
     [Serializable]

@@ -6,6 +6,8 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using log4net.Core;
+
     using Newtonsoft.Json;
 
     using RestSharp;
@@ -94,8 +96,12 @@
             CookieContainer cookieContainer = null,
             IDictionary<string, string> headers = null)
         {
-            Logger.Log.Debug(
-                $"{method} steam request to {url}. Referer - {referer}, params - {StringUtils.DictionaryToString(@params)}, headers - {StringUtils.DictionaryToString(headers)}");
+            if (Logger.CurrentLogLevel == Level.Debug)
+            {
+                Logger.Log.Debug(
+                    $"{method} steam request to {url}. Referer - {referer}, params - {StringUtils.DictionaryToString(@params)}, headers - {StringUtils.DictionaryToString(headers)}");
+            }
+
             this.RequestsPerSecondGuard();
 
             var client = new RestClient(url) { UserAgent = this.Settings.UserAgent, Timeout = 60 * 1000 };
@@ -135,12 +141,22 @@
             this.LastInvokeTime = DateTimeOffset.Now;
             var response = client.Execute(request);
 
-            if (response.ErrorException != null) throw new RequestException(response.ErrorException.Message);
+            if (response.ErrorException != null)
+            {
+                Logger.Log.Debug(
+                    $"Response failed with error - ({response.StatusDescription}) {response.ErrorException?.Message}");
+                throw new RequestException(response.ErrorException?.Message);
+            }
 
             if (response.StatusCode == HttpStatusCode.BadRequest)
                 throw new RequestException($"Bad status code: {response.StatusCode}");
 
-            Logger.Log.Debug($"Steam response({response.StatusCode}) - {response.Content}");
+            if (Logger.CurrentLogLevel == Level.Debug)
+            {
+                Logger.Log.Debug(
+                    $"Steam response({response.StatusCode}) - {StringUtils.ClearString(response.Content)}");
+            }
+
             return new SteamResponse(response, client.CookieContainer);
         }
 

@@ -225,7 +225,7 @@
 
             if (!respDes.Success)
             {
-                Logger.Log.Debug($"Error on fetch sell orders - response status code is {respDes.Success}");
+                Logger.Log.Debug($"Error on fetch sell orders - response status is {respDes.Success}");
                 throw new SteamException("Cannot load market listings");
             }
 

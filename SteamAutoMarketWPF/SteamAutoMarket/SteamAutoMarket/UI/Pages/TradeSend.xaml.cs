@@ -234,10 +234,16 @@
 
             this.TradeSendItemsList.Clear();
 
-            UiGlobalVariables.SteamManager.LoadItemsToTradeWorkingProcess(
-                this.TradeSendSelectedAppid,
-                contextId,
-                this.TradeSendItemsList);
+            var wp = WorkingProcessProvider.GetNewInstance($"{this.TradeSendSelectedAppid.Name} inventory loading");
+            wp?.StartWorkingProcess(
+                () =>
+                    {
+                        wp.SteamManager.LoadItemsToTradeWorkingProcess(
+                            this.TradeSendSelectedAppid,
+                            contextId,
+                            this.TradeSendItemsList,
+                            wp);
+                    });
         }
 
         private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
@@ -319,11 +325,14 @@
                 return;
             }
 
-            UiGlobalVariables.SteamManager.SendTrade(
-                steamId,
-                tradeToken,
-                itemsToSell.ToArray(),
-                this.TradeSendConfirm2Fa);
+            var wp = WorkingProcessProvider.GetNewInstance("Trade send");
+            wp?.StartWorkingProcess(
+                () => wp.SteamManager.SendTrade(
+                    steamId,
+                    tradeToken,
+                    itemsToSell.ToArray(),
+                    this.TradeSendConfirm2Fa,
+                    wp));
         }
     }
 }
