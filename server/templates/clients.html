@@ -1,5 +1,3 @@
-{% import 'devices.html' as devices %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,16 +19,14 @@
     <tr>
       <th>Number</th>
       <th>Key</th>
-      <th>Initial Device</th>
       <th>Devices</th>
       <th>Subscription Time (days)</th>
     </tr>
-    {% for key, value in database.items() %}
+    {% for key, value in database %}
       <tr>
         <td>{{ loop.index }}</td>
         <td>{{ key }}</td>
-        <td>{{ value['initial_device']|e }}
-        <td><ol type="1" style="margin: 0px; margin-left: -15px">{{ devices.render_devices(value['devices'])|e }}</ol></td>
+        <td>{{ value['devices']|e }}</td>
         <td>{{ value['subscription_time']|e }}</td>
       </tr>
     {% endfor %}

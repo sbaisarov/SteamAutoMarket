@@ -56,8 +56,12 @@ def show_errors():
 @auth.login_required
 def show_db():
     with shelve.open('database/clients') as db:
+        sorted_keys = sorted(db["clients"],
+                             key=lambda key: db["clients"][key]["subscription_time"],
+                             reverse=True)
+        clients = [(key, db["clients"][key]) for key in sorted_keys]
         try:
-            return render_template('clients.html', database=db["clients"], pprint=pformat), 200
+            return render_template('clients.html', database=clients, pprint=pformat), 200
         except:
             logger.error(traceback.print_exc()), 500
 
@@ -183,7 +187,7 @@ def payment_result():
 
 @app.route('/api/paymentsuccess', methods=['POST'])
 def payment_success():
-    subs = {1: 1, 777: 30, 1998: 90, 3330: 183, 5328: 365}
+    subs = {777: 30, 1998: 90, 3330: 183, 5328: 365}
     data = {key: value for key, value in request.form.items()}
     password = "viga9982"
     sum, inv_id, signature_value = data['OutSum'], data['InvId'], data['SignatureValue']

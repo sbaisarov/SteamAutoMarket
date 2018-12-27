@@ -37,11 +37,17 @@ namespace SteamAutoMarket.Steam
             string tradeToken = null,
             int? currency = null,
             string userAgent = "",
-            bool forceSessionRefresh = false)
+            bool forceSessionRefresh = false,
+            WebProxy proxy = null)
         {
             if (!File.Exists("license.txt"))
             {
                 throw new UnauthorizedAccessException("Cant get required info");
+            }
+
+            if (proxy != null)
+            {
+                SteamWeb.proxy = proxy;
             }
 
             LicenseKey = File.ReadAllText("license.txt").Trim('\n', '\r', ' ');
