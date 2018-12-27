@@ -4,7 +4,6 @@
     using System.Collections.Specialized;
     using System.IO;
     using System.Net;
-    using System.Threading.Tasks;
 
     using log4net.Core;
 
@@ -121,85 +120,11 @@
 
                         if (Logger.CurrentLogLevel == Level.Debug)
                         {
-                            Logger.Log.Debug(responseData.Replace("\n", string.Empty).Replace("\r", string.Empty));
+                            Logger.Log.Debug(StringUtils.ClearString(responseData));
                         }
 
                         return responseData;
                     }
-                }
-            }
-            catch (WebException e)
-            {
-                HandleFailedWebRequestResponse(e.Response as HttpWebResponse, url);
-                return null;
-            }
-        }
-
-        public static async Task<string> RequestAsync(
-            string url,
-            string method,
-            NameValueCollection data = null,
-            CookieContainer cookies = null,
-            NameValueCollection headers = null,
-            string referer = APIEndpoints.COMMUNITY_BASE)
-        {
-            var query = (data == null
-                             ? string.Empty
-                             : string.Join(
-                                 "&",
-                                 Array.ConvertAll(
-                                     data.AllKeys,
-                                     key => string.Format(
-                                         "{0}={1}",
-                                         WebUtility.UrlEncode(key),
-                                         WebUtility.UrlEncode(data[key])))));
-            if (method == "GET")
-            {
-                url += (url.Contains("?") ? "&" : "?") + query;
-            }
-
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = method;
-            request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";
-            request.UserAgent =
-                "Mozilla/5.0 (Linux; U; Android 4.1.1; en-us; Google Nexus 4 - 4.1.1 - API 16 - 768x1280 Build/JRO03S) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
-            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-            request.Referer = referer;
-
-            if (headers != null)
-            {
-                request.Headers.Add(headers);
-            }
-
-            if (cookies != null)
-            {
-                request.CookieContainer = cookies;
-            }
-
-            if (method == "POST")
-            {
-                request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-                request.ContentLength = query.Length;
-
-                var requestStream = new StreamWriter(request.GetRequestStream());
-                requestStream.Write(query);
-                requestStream.Close();
-            }
-
-            try
-            {
-                var response = (HttpWebResponse)await request.GetResponseAsync();
-
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    HandleFailedWebRequestResponse(response, url);
-                    return null;
-                }
-
-                using (var responseStream = new StreamReader(response.GetResponseStream()))
-                {
-                    var responseData = responseStream.ReadToEnd();
-                    return responseData;
                 }
             }
             catch (WebException e)
@@ -214,6 +139,11 @@
         /// </summary>
         private static void HandleFailedWebRequestResponse(HttpWebResponse response, string requestURL)
         {
+            if (Logger.CurrentLogLevel == Level.Debug)
+            {
+                Logger.Log.Debug($"Response failed with error - {response.StatusDescription}");
+            }
+
             if (response == null) return;
 
             // Redirecting -- likely to a steammobile:// URI

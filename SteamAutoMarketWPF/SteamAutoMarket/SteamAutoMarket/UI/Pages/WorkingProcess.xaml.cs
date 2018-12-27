@@ -1,12 +1,12 @@
 ﻿namespace SteamAutoMarket.UI.Pages
 {
     using System;
-    using System.Diagnostics;
-    using System.Threading;
-    using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows;
     using System.Windows.Controls;
 
-    using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.Logger;
@@ -18,59 +18,85 @@
     {
         public WorkingProcess()
         {
-            this.DataContext = UiGlobalVariables.WorkingProcessDataContext;
+            UiGlobalVariables.WorkingProcessTab = this;
             this.InitializeComponent();
+            this.DataContext = UiGlobalVariables.LastInvokedWorkingProcessDataContext;
+            RefreshWorkingProcessesList();
         }
 
         public static void OpenTab() => AppUtils.OpenTab("UI/Pages/WorkingProcess.xaml");
 
-        public static void ProcessMethod(Action action, string title)
+        public void ChangeDataContext(WorkingProcessDataContext wp)
         {
-            var wp = UiGlobalVariables.WorkingProcessDataContext;
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                    {
+                        this.RefreshWorkingProcessesList();
+                        this.CurrentProcessComboBox.SelectedValue = wp.Title;
+                    });
+        }
 
-            try
+        public void RefreshWorkingProcessesList()
+        {
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                    {
+                        var wp = this.GetContext();
+                        wp.WorkingProcessesList =
+                            new ObservableCollection<string>(WorkingProcessProvider.GetAllProcessesNames());
+
+                        if ((string)this.CurrentProcessComboBox.SelectedValue != wp.Title)
+                        {
+                            this.CurrentProcessComboBox.SelectedValue = wp.Title;
+                        }
+                    });
+        }
+
+        private WorkingProcessDataContext GetContext() => (WorkingProcessDataContext)this.DataContext;
+
+        private void RemoveCurrentOnClick(object sender, RoutedEventArgs e)
+        {
+            this.RefreshWorkingProcessesList();
+            if (((IEnumerable<string>)this.CurrentProcessComboBox.ItemsSource).Count() <= 1)
             {
-                if (wp.WorkingAction?.IsCompleted == false)
-                {
-                    ErrorNotify.InfoMessageBox(
-                        $"Only one working process can be processed at the same time to avoid temporary Steam ban on requests. Wait for '{wp.Title}' working process finish and try again.");
-                    return;
-                }
-
-                OpenTab();
-
-                wp.ResetWorkingProcessToDefault();
-                wp.AppendLog($"{title} working process started");
-                wp.Title = title;
-
-                wp.Timer = Stopwatch.StartNew();
-
-                wp.CancellationTokenSource = new CancellationTokenSource();
-                wp.CancellationToken = wp.CancellationTokenSource.Token;
-
-                wp.WorkingAction = Task.Run(action, wp.CancellationToken);
-                wp.WorkingAction.ContinueWith(tsk => { wp.AppendLog("Working process finished"); });
+                ErrorNotify.CriticalMessageBox(
+                    "You can remove processes from list only in case when the list will have at least 1 more process!");
+                return;
             }
-            catch (Exception e)
+
+            if (this.GetContext().WorkingAction.IsCompleted == false)
             {
-                Logger.Log.Error($"Error on working process - {e.Message}", e);
+                ErrorNotify.CriticalMessageBox("You can not remove this processes!");
+                return;
             }
+
+            WorkingProcessProvider.RemoveWorkingProcessFromList((string)this.CurrentProcessComboBox.SelectedValue);
+
+            var newValue = WorkingProcessProvider.GetAllProcessesNames().FirstOrDefault(i => i != null)
+                           ?? WorkingProcessProvider.EmptyWorkingProcess.Title;
+            this.CurrentProcessComboBox.SelectedValue = newValue;
+
+            this.RefreshWorkingProcessesList();
         }
 
         private void StopButton_OnClick(object sender, EventArgs e)
         {
-            var wp = UiGlobalVariables.WorkingProcessDataContext;
-
-            if (wp.WorkingAction?.IsCompleted == false)
+            var wp = (WorkingProcessDataContext)this.DataContext;
+            if (wp.WorkingAction?.IsCompleted == false && wp.CancellationToken.IsCancellationRequested == false)
             {
                 wp.AppendLog("Working process is forcing to stop");
                 wp.CancellationTokenSource.Cancel();
             }
         }
 
+        private void WorkingProcessOnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this.DataContext = WorkingProcessProvider.GetInstance((string)this.CurrentProcessComboBox.SelectedValue);
+        }
+
         private void WorkingProcessTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (UiGlobalVariables.WorkingProcessDataContext.ScrollLogsToEnd)
+            if (((WorkingProcessDataContext)this.DataContext).ScrollLogsToEnd)
             {
                 this.WorkingProcessTextBox.ScrollToEnd();
             }

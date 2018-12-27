@@ -1,6 +1,5 @@
 ﻿namespace SteamAutoMarket.UI.Pages
 {
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -27,18 +26,8 @@
                 return;
             }
 
-            Task.Run(
-                () =>
-                    {
-                        WorkingProcess.ProcessMethod(
-                            () =>
-                                {
-                                    MarketSellUtils.CancelMarketPendingListings(
-                                        UiGlobalVariables.SteamManager,
-                                        UiGlobalVariables.WorkingProcessDataContext);
-                                },
-                            "Cancel pending listings");
-                    });
+            var wp = WorkingProcessProvider.GetNewInstance("Cancel pending listings");
+            wp?.StartWorkingProcess(() => { MarketSellUtils.CancelMarketPendingListings(wp.SteamManager, wp); });
         }
 
         private void Confirm2Fa_OnClick(object sender, RoutedEventArgs e)
@@ -49,18 +38,9 @@
                 return;
             }
 
-            Task.Run(
-                () =>
-                    {
-                        WorkingProcess.ProcessMethod(
-                            () =>
-                                {
-                                    MarketSellUtils.ConfirmMarketTransactionsWorkingProcess(
-                                        UiGlobalVariables.SteamManager.Guard,
-                                        UiGlobalVariables.WorkingProcessDataContext);
-                                },
-                            "Confirm market 2FA");
-                    });
+            var wp = WorkingProcessProvider.GetNewInstance("Confirm market 2FA");
+            wp?.StartWorkingProcess(
+                () => { MarketSellUtils.ConfirmMarketTransactionsWorkingProcess(wp.SteamManager.Guard, wp); });
         }
     }
 }

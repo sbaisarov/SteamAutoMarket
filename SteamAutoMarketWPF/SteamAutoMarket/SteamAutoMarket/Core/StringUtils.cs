@@ -14,6 +14,16 @@
 
         private const string EmptyCollectionSymbol = "''";
 
+        public static string ClearString(string s)
+        {
+            while (s.Contains("  "))
+            {
+                s = s.Replace("  ", " ");
+            }
+
+            return s.Replace("\r", string.Empty).Replace("\n", string.Empty);
+        }
+
         public static string CookieContainerToString(CookieContainer cookieContainer)
         {
             if (cookieContainer == null || cookieContainer.Count == 0)

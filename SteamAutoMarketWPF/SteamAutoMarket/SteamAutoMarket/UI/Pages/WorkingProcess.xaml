@@ -28,10 +28,9 @@
                  Grid.Row="0"
                  Text="{Binding Path=WorkingLogs, Mode=OneWay}"
                  Foreground="{DynamicResource DataGridForeground}"
-                 MaxLength="10000"
                  TextWrapping="Wrap"
                  Focusable="False"
-                 TextChanged="WorkingProcessTextBox_OnTextChanged"/>
+                 TextChanged="WorkingProcessTextBox_OnTextChanged" />
 
         <Grid Name="RightColumn"
               Width="Auto"
@@ -44,89 +43,107 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
                 </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Row="0" Grid.Column="0">
+                    <ComboBox FontSize="20" Margin="0,0,0,10"
+                              Name="CurrentProcessComboBox"
+                              HorizontalAlignment="Stretch"
+                              ItemsSource="{Binding Path=WorkingProcessesList}"
+                              SelectionChanged="WorkingProcessOnSelectionChanged" />
+                </DockPanel>
 
-                <TextBlock Grid.ColumnSpan="4"
-                           Text="{Binding Title}" 
-                           Style="{StaticResource Heading2}" 
-                           Margin="0,0,0,8" />
+                <Button Grid.Row="1"
+                        Height="30"
+                        Grid.Column="0"
+                        Content="Remove current process from list"
+                        Padding="0"
+                        Click="RemoveCurrentOnClick" />
 
-                <TextBlock Grid.Row="1"
-                           Grid.Column="0"
-                           Text="Average speed"
-                           Margin="2, 5, 2, 5" />
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="1"
-                           Grid.Column="1"
-                           Text="{Binding Path=AverageSpeed}"
-                           Margin="2, 5, 2, 5" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="1"
-                           Grid.Column="2"
-                           Text="sec/item"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Text="Average speed"
+                               Margin="2, 5, 2, 5" />
 
-                <TextBlock Grid.Row="2"
-                           Grid.Column="0"
-                           Text="Current speed"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1"
+                               Text="{Binding Path=AverageSpeed}"
+                               Margin="2, 5, 2, 5" />
 
-                <TextBlock Grid.Row="2"
-                           Grid.Column="1"
-                           Text="{Binding Path=CurrentSpeed}"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="2"
+                               Text="sec/item"
+                               Margin="2, 5, 2, 5" />
 
-                <TextBlock Grid.Row="2"
-                           Grid.Column="2"
-                           Text="sec/item"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="Current speed"
+                               Margin="2, 5, 2, 5" />
 
-                <TextBlock Grid.Row="3"
-                           Grid.Column="0"
-                           Text="Time left"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{Binding Path=CurrentSpeed}"
+                               Margin="2, 5, 2, 5" />
 
-                <TextBlock Grid.Row="3"
-                           Grid.Column="1"
-                           Text="{Binding Path=MinutesLeft}"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="2"
+                               Text="sec/item"
+                               Margin="2, 5, 2, 5" />
 
-                <TextBlock Grid.Row="3"
-                           Grid.Column="2"
-                           Text="minutes"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0"
+                               Text="Time left"
+                               Margin="2, 5, 2, 5" />
 
-                <TextBlock Grid.Row="4"
-                           Grid.Column="0"
-                           Text="Avr time left"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                               Text="{Binding Path=MinutesLeft}"
+                               Margin="2, 5, 2, 5" />
 
-                <TextBlock Grid.Row="4"
-                           Grid.Column="1"
-                           Text="{Binding Path=AverageMinutesLeft}"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="2"
+                               Text="minutes"
+                               Margin="2, 5, 2, 5" />
 
-                <TextBlock Grid.Row="4"
-                           Grid.Column="2"
-                           Text="minutes"
-                           Margin="2, 5, 2, 5" />
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="0"
+                               Text="Avr time left"
+                               Margin="2, 5, 2, 5" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="1"
+                               Text="{Binding Path=AverageMinutesLeft}"
+                               Margin="2, 5, 2, 5" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="2"
+                               Text="minutes"
+                               Margin="2, 5, 2, 5" />
+
+                </Grid>
 
                 <oxy:Plot Name="Plot"
-                          Grid.Row="5"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="4"
+                          Grid.Row="3"
                           Margin="0,30,2,10"
                           Height="250"
                           PlotType="XY"
@@ -137,20 +154,17 @@
                     </oxy:Plot.Series>
                 </oxy:Plot>
 
-                <CheckBox Grid.Row="6"
+                <CheckBox Grid.Row="5"
                           Grid.Column="0"
-                          Grid.ColumnSpan="4"
                           Content="Auto scroll to end"
                           Margin="0,10,0,10"
                           IsChecked="{Binding ScrollLogsToEnd}" />
-
-                <Button Grid.Row="8"
+                
+                <Button Grid.Row="6"
                         Grid.Column="0"
-                        Grid.ColumnSpan="4"
                         Content="{Binding ButtonTitle}"
-                        Name="StopWorkingProcessButton"
                         Padding="0"
-                        Click="StopButton_OnClick"/>
+                        Click="StopButton_OnClick" />
             </Grid>
 
         </Grid>

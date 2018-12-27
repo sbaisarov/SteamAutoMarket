@@ -5,6 +5,9 @@
 
     public class UiGlobalVariables
     {
+        public static WorkingProcessDataContext LastInvokedWorkingProcessDataContext { get; set; } =
+            WorkingProcessProvider.EmptyWorkingProcess;
+
         public static LogsWindow LogsWindow { get; set; }
 
         public static MainWindow MainWindow { get; set; }
@@ -17,9 +20,6 @@
 
         public static UiSteamManager SteamManager { get; set; }
 
-        public static WorkingProcess WorkingProcess { get; set; } = new WorkingProcess();
-
-        public static WorkingProcessDataContext WorkingProcessDataContext { get; set; } =
-            new WorkingProcessDataContext();
+        public static WorkingProcess WorkingProcessTab { get; set; }
     }
 }

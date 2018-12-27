@@ -136,8 +136,8 @@
             }
 
             this.RelistItemsList.Clear();
-
-            UiGlobalVariables.SteamManager.LoadMarketListings(this.RelistItemsList);
+            var wp = WorkingProcessProvider.GetNewInstance("Market listings loading");
+            wp?.StartWorkingProcess(() => { wp.SteamManager.LoadMarketListings(this.RelistItemsList, wp); });
         }
 
         private void MarkAllItemsButtonClick(object sender, RoutedEventArgs e)
@@ -417,10 +417,16 @@
                             return;
                         }
 
-                        UiGlobalVariables.SteamManager.RelistListings(
-                            this.priceLoadSubTasks.ToArray(),
-                            itemsToSell,
-                            this.MarketSellStrategy);
+                        var wp = WorkingProcessProvider.GetNewInstance("Market relist");
+                        wp?.StartWorkingProcess(
+                            () =>
+                                {
+                                    wp.SteamManager.RelistListings(
+                                        this.priceLoadSubTasks.ToArray(),
+                                        itemsToSell,
+                                        this.MarketSellStrategy,
+                                        wp);
+                                });
                     });
         }
 

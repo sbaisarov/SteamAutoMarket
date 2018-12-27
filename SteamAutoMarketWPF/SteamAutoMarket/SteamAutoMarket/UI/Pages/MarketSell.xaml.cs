@@ -311,10 +311,16 @@
 
             this.MarketSellItems.Clear();
 
-            UiGlobalVariables.SteamManager.LoadItemsToSaleWorkingProcess(
-                this.MarketSellSelectedAppid,
-                contextId,
-                this.MarketSellItems);
+            var wp = WorkingProcessProvider.GetNewInstance($"{this.MarketSellSelectedAppid.Name} inventory loading");
+            wp?.StartWorkingProcess(
+                () =>
+                    {
+                        wp.SteamManager.LoadItemsToSaleWorkingProcess(
+                            this.MarketSellSelectedAppid,
+                            contextId,
+                            this.MarketSellItems,
+                            wp);
+                    });
         }
 
         private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
@@ -560,10 +566,16 @@
                             return;
                         }
 
-                        UiGlobalVariables.SteamManager.SellOnMarketWorkingProcess(
-                            this.priceLoadSubTasks.ToArray(),
-                            itemsToSell,
-                            this.MarketSellStrategy);
+                        var wp = WorkingProcessProvider.GetNewInstance("Market sell");
+                        wp?.StartWorkingProcess(
+                            () =>
+                                {
+                                    wp.SteamManager.SellOnMarketWorkingProcess(
+                                        this.priceLoadSubTasks.ToArray(),
+                                        itemsToSell,
+                                        this.MarketSellStrategy,
+                                        wp);
+                                });
                     });
         }
 
