@@ -118,7 +118,11 @@
                     using (var responseStream = new StreamReader(response.GetResponseStream()))
                     {
                         var responseData = responseStream.ReadToEnd();
-                        Logger.Log.Debug(responseData);
+
+                        if (Logger.CurrentLogLevel == Level.Debug)
+                        {
+                            Logger.Log.Debug(responseData.Replace("\n", string.Empty).Replace("\r", string.Empty));
+                        }
 
                         return responseData;
                     }
