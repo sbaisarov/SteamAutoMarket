@@ -22,11 +22,13 @@
 
         private int? currency;
 
+        private string proxy;
+
         private string steamApi;
 
         private string tradeToken;
 
-        public SettingsSteamAccount(string login, string password, string mafilePath)
+        public SettingsSteamAccount(string login, string password, string mafilePath, string proxy)
         {
             try
             {
@@ -37,6 +39,7 @@
 
                 this.Login = login;
                 this.Password = password;
+                this.Proxy = proxy;
 
                 this.Mafile = JsonConvert.DeserializeObject<SteamGuardAccount>(File.ReadAllText(mafilePath));
             }
@@ -91,6 +94,16 @@
         public SteamGuardAccount Mafile { get; set; }
 
         public string Password { get; set; }
+
+        public string Proxy
+        {
+            get => this.proxy;
+            set
+            {
+                this.proxy = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public string SteamApi
         {

@@ -1,6 +1,4 @@
-﻿using SteamAutoMarket.UI.Utils.Converter;
-
-namespace SteamAutoMarket.Steam.Auth
+﻿namespace SteamAutoMarket.Steam.Auth
 {
     using System;
     using System.Collections.Specialized;
@@ -14,6 +12,7 @@ namespace SteamAutoMarket.Steam.Auth
     public class SteamWeb
     {
         public static WebProxy proxy = null;
+
         /// <summary>
         /// Perform a mobile login request
         /// </summary>

@@ -88,6 +88,7 @@
     <Compile Include="Core\StringUtils.cs" />
     <Compile Include="Core\Waiter\Clock.cs" />
     <Compile Include="Core\Waiter\Waiter.cs" />
+    <Compile Include="Core\WebUtils.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>

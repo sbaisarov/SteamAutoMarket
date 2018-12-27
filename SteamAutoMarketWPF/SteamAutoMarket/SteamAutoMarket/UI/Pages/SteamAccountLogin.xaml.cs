@@ -30,6 +30,8 @@
 
         private string newAccountPassword;
 
+        private string newAccountProxy;
+
         private SettingsSteamAccount selectSteamAccount;
 
         private ObservableCollection<SettingsSteamAccount> steamAccountList =
@@ -86,6 +88,16 @@
             }
         }
 
+        public string NewAccountProxy
+        {
+            get => this.newAccountProxy;
+            set
+            {
+                this.newAccountProxy = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public SettingsSteamAccount SelectSteamAccount
         {
             get => this.selectSteamAccount;
@@ -125,7 +137,8 @@
                 var newAccount = new SettingsSteamAccount(
                     this.NewAccountLogin,
                     this.NewAccountPassword,
-                    $"{this.MafilesPath}\\{this.NewAccountLogin?.ToLower()}.maFile");
+                    $"{this.MafilesPath}\\{this.NewAccountLogin?.ToLower()}.maFile",
+                    this.NewAccountProxy);
 
                 this.SteamAccountList.Add(newAccount);
                 SettingsProvider.GetInstance().SteamAccounts = this.SteamAccountList.ToList();

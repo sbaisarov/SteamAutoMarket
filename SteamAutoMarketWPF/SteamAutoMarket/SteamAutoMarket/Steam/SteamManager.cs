@@ -38,16 +38,16 @@ namespace SteamAutoMarket.Steam
             int? currency = null,
             string userAgent = "",
             bool forceSessionRefresh = false,
-            WebProxy proxy = null)
+            string proxyString = null)
         {
             if (!File.Exists("license.txt"))
             {
                 throw new UnauthorizedAccessException("Cant get required info");
             }
 
-            if (proxy != null)
+            if (proxyString != null)
             {
-                SteamWeb.proxy = proxy;
+                SteamWeb.proxy = WebUtils.ParseProxy(proxyString);
             }
 
             LicenseKey = File.ReadAllText("license.txt").Trim('\n', '\r', ' ');
@@ -63,8 +63,6 @@ namespace SteamAutoMarket.Steam
             Logger.Log.Debug($"Two factor token is - {twoFactorCode}");
 
             this.SteamClient = new UserLogin(login, password) { TwoFactorCode = twoFactorCode };
-
-            // this.Guard.DeviceID = this.GetDeviceId();
 
             Logger.Log.Debug("Checking session status..");
             var isSessionRefreshed = this.Guard.RefreshSession();

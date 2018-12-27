@@ -135,6 +135,22 @@
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
 
+                <xcdg:Column Title="Proxy"
+                             Width="1*"
+                             FieldName="Proxy"
+                             CellHorizontalContentAlignment="Center"
+                             CellVerticalContentAlignment="Center"
+                             ReadOnly="True">
+                    <xcdg:Column.CellContentTemplate>
+                        <ItemContainerTemplate>
+                            <TextBlock
+                                Text="{Binding}"
+                                Foreground="{DynamicResource ItemText}"
+                                Background="{DynamicResource DataGridBackground}" />
+                        </ItemContainerTemplate>
+                    </xcdg:Column.CellContentTemplate>
+                </xcdg:Column>
+
             </xcdg:DataGridControl.Columns>
         </xcdg:DataGridControl>
 
@@ -151,6 +167,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" MinHeight="40" MaxHeight="70" />
                 <RowDefinition Height="*" MinHeight="40" MaxHeight="70" />
                 <RowDefinition Height="*" />
@@ -160,6 +177,7 @@
 
             <TextBlock Text="Login" Grid.Row="0" Style="{StaticResource TextBlockStyle}" />
             <TextBlock Text="Password" Grid.Row="1" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock ToolTip="Proxy format is - {IP}:{PORT} or {IP}:{PORT}:{LOGIN}:{PASSWORD}" Text="Proxy" Grid.Row="2" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
 
             <TextBox Grid.Row="0" Grid.Column="1"
                      Margin="4"
@@ -169,9 +187,15 @@
             <TextBox Grid.Row="1" Grid.Column="1"
                      Margin="4"
                      Height="22"
-                     Text="{Binding Path=NewAccountPassword}" />
+                     Text="{Binding Path=NewAccountPassword}" />            
+            
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     Margin="4"
+                     ToolTip="Proxy format is - {IP}:{PORT} or {IP}:{PORT}:{LOGIN}:{PASSWORD}"
+                     Height="22"
+                     Text="{Binding Path=NewAccountProxy}" />
 
-            <Grid Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0">
+            <Grid Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="25" />
@@ -215,27 +239,27 @@
             </Grid>
 
 
-            <Button Grid.Column="0" Grid.Row="3"
+            <Button Grid.Column="0" Grid.Row="4"
                     Name="AddNewAccountButton"
                     Grid.ColumnSpan="2"
                     Content="Add new account"
                     Margin="0, 0, 0, 15"
                     Padding="0" Click="AddNewAccountButtonClick" />
 
-            <Button Grid.Column="0" Grid.Row="4"
+            <Button Grid.Column="0" Grid.Row="5"
                     Name="RemoveSelectedAccountButton"
                     Grid.ColumnSpan="2"
                     Content="Remove selected account"
                     Margin="0, 0, 0, 15"
                     Padding="0" Click="RemoveSelectedAccountButtonClick" />
 
-            <CheckBox Grid.Row="6" Grid.ColumnSpan="2" Grid.Column="0" Content="Force session refresh" IsChecked="{Binding Path=ForceSessionRefresh}"/>
+            <CheckBox Grid.Row="7" Grid.ColumnSpan="2" Grid.Column="0" Content="Force session refresh" IsChecked="{Binding Path=ForceSessionRefresh}"/>
 
             <Button Name="LoginSteamAccountButton"
                     IsEnabled="{Binding LoginButtonEnabled}"
                     Click="LoginSteamAccountButton_OnClick"
                     Grid.Column="0"
-                    Grid.Row="7"
+                    Grid.Row="8"
                     Grid.ColumnSpan="2"
                     Content="Login selected account"
                     Margin="0, 5, 0, 0"
