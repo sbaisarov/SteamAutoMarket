@@ -94,7 +94,8 @@
             IDictionary<string, string> @params = null,
             bool useAuthCookie = false,
             CookieContainer cookieContainer = null,
-            IDictionary<string, string> headers = null)
+            IDictionary<string, string> headers = null,
+            WebProxy proxy = null)
         {
             if (Logger.CurrentLogLevel == Level.Debug)
             {
@@ -105,6 +106,11 @@
             this.RequestsPerSecondGuard();
 
             var client = new RestClient(url) { UserAgent = this.Settings.UserAgent, Timeout = 60 * 1000 };
+
+            if (proxy != null)
+            {
+                client.Proxy = proxy;
+            }
 
             if (useAuthCookie)
             {

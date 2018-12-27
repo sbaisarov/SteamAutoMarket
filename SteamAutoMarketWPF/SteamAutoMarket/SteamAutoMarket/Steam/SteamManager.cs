@@ -47,7 +47,7 @@ namespace SteamAutoMarket.Steam
 
             if (proxyString != null)
             {
-                SteamWeb.proxy = WebUtils.ParseProxy(proxyString);
+                this.Proxy = WebUtils.ParseProxy(proxyString);
             }
 
             LicenseKey = File.ReadAllText("license.txt").Trim('\n', '\r', ' ');
@@ -56,6 +56,7 @@ namespace SteamAutoMarket.Steam
             this.Login = login;
             this.Password = password;
             this.Guard = mafile;
+            this.Guard.proxy = this.Proxy;
             this.SteamId = new SteamID(this.Guard.Session.SteamID);
 
             Logger.Log.Debug("Fetching two factor token..");
@@ -87,13 +88,14 @@ namespace SteamAutoMarket.Steam
             this.ApiKey = apiKey ?? this.FetchApiKey();
             this.TradeToken = tradeToken ?? this.FetchTradeToken();
 
-            this.Inventory = new Inventory();
+            this.Inventory = new Inventory(this.Proxy);
 
             Logger.Log.Debug("Initializing TradeOfferWebApi..");
-            this.TradeOfferWeb = new TradeOfferWebApi(this.ApiKey);
+            this.TradeOfferWeb = new TradeOfferWebApi(this.ApiKey, this.Proxy);
 
             Logger.Log.Debug("Initializing OfferSession..");
-            this.OfferSession = new OfferSession(this.TradeOfferWeb, this.Cookies, this.Guard.Session.SessionID);
+            this.OfferSession = new OfferSession(this.TradeOfferWeb, this.Cookies, this.Guard.Session.SessionID, 
+                this.Proxy);
 
             Logger.Log.Debug("Initializing SteamMarketHandler..");
             var market = new SteamMarketHandler(ELanguage.English, userAgent);
@@ -101,7 +103,7 @@ namespace SteamAutoMarket.Steam
             market.Auth = auth;
 
             Logger.Log.Debug("Initializing SteamMarketHandler..");
-            this.MarketClient = new MarketClient(market);
+            this.MarketClient = new MarketClient(market, this.Proxy);
 
             if (forceSessionRefresh)
             {
@@ -149,6 +151,8 @@ namespace SteamAutoMarket.Steam
 
         protected bool IsSessionUpdated { get; set; }
 
+        private WebProxy Proxy { get; set; } = null;
+
         public bool BuyOnMarket(
             double averagePrice,
             int appid,
@@ -176,7 +180,8 @@ namespace SteamAutoMarket.Steam
                 "https://steamcommunity.com/market/createbuyorder/",
                 "POST",
                 data,
-                this.Cookies);
+                this.Cookies,
+                proxy: this.Proxy);
             var responseJson = (NameValueCollection)JsonConvert.DeserializeObject(response);
             var success = responseJson["success"];
             if (success == null)
@@ -211,7 +216,8 @@ namespace SteamAutoMarket.Steam
                     "https://steamcommunity.com/my/tradeoffers/privacy",
                     "GET",
                     string.Empty,
-                    this.Cookies);
+                    this.Cookies,
+                    proxy: this.Proxy);
 
                 if (response == null)
                 {
@@ -454,7 +460,8 @@ namespace SteamAutoMarket.Steam
                     "http://steamcommunity.com/market/cancelbuyorder/",
                     "GET",
                     data,
-                    this.Cookies);
+                    this.Cookies,
+                    proxy: this.Proxy);
                 var success = ((NameValueCollection)JsonConvert.DeserializeObject(response))["success"];
                 if (success == "1") return;
                 Thread.Sleep(1000 * 3);
@@ -498,7 +505,8 @@ namespace SteamAutoMarket.Steam
                     "https://steamcommunity.com/dev/apikey",
                     "GET",
                     data: null,
-                    cookies: this.Cookies);
+                    cookies: this.Cookies,
+                    proxy: this.Proxy);
                 var keyParse = Regex.Match(response, @"Key: (.+)</p").Groups[1].Value.Trim();
                 if (keyParse.Length != 0)
                 {
@@ -520,7 +528,8 @@ namespace SteamAutoMarket.Steam
                     "https://steamcommunity.com/dev/registerkey",
                     "GET",
                     data: data,
-                    cookies: this.Cookies);
+                    cookies: this.Cookies,
+                    proxy: this.Proxy);
             }
         }
 

@@ -11,8 +11,6 @@
 
     public class SteamWeb
     {
-        public static WebProxy proxy = null;
-
         /// <summary>
         /// Perform a mobile login request
         /// </summary>
@@ -26,7 +24,8 @@
             string method,
             NameValueCollection data = null,
             CookieContainer cookies = null,
-            NameValueCollection headers = null)
+            NameValueCollection headers = null,
+            WebProxy proxy = null)
         {
             return Request(
                 url,
@@ -35,7 +34,8 @@
                 cookies,
                 headers,
                 APIEndpoints.COMMUNITY_BASE
-                + "/mobilelogin?oauth_client_id=DE45CD61&oauth_scope=read_profile%20write_profile%20read_client%20write_client");
+                + "/mobilelogin?oauth_client_id=DE45CD61&oauth_scope=read_profile%20write_profile%20read_client%20write_client",
+                proxy);
         }
 
         public static string Request(
@@ -44,7 +44,8 @@
             NameValueCollection data = null,
             CookieContainer cookies = null,
             NameValueCollection headers = null,
-            string referer = APIEndpoints.COMMUNITY_BASE)
+            string referer = APIEndpoints.COMMUNITY_BASE,
+            WebProxy proxy = null)
         {
             var query = (data == null
                              ? string.Empty
@@ -61,7 +62,7 @@
                 url += (url.Contains("?") ? "&" : "?") + query;
             }
 
-            return Request(url, method, query, cookies, headers, referer);
+            return Request(url, method, query, cookies, headers, referer, proxy);
         }
 
         public static string Request(
@@ -70,7 +71,8 @@
             string dataString = null,
             CookieContainer cookies = null,
             NameValueCollection headers = null,
-            string referer = APIEndpoints.COMMUNITY_BASE)
+            string referer = APIEndpoints.COMMUNITY_BASE,
+            WebProxy proxy = null)
         {
             if (Logger.CurrentLogLevel == Level.Debug)
             {

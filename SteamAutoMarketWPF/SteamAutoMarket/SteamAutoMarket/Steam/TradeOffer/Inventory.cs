@@ -18,8 +18,9 @@ namespace SteamAutoMarket.Steam.TradeOffer
 
     public class Inventory
     {
-        public Inventory()
+        public Inventory(WebProxy proxy = null)
         {
+            Proxy = proxy;
         }
 
         protected Inventory(InventoryResult apiInventory)
@@ -38,6 +39,8 @@ namespace SteamAutoMarket.Steam.TradeOffer
 
         public uint NumSlots { get; set; }
 
+        public WebProxy Proxy { get; set; }
+
         /// <summary>
         ///     Fetches the inventory for the given Steam ID using the Steam API.
         /// </summary>
@@ -53,7 +56,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             {
                 var url =
                     $"http://api.steampowered.com/IEconItems_{appid}/GetPlayerItems/v0001/?key={apiKey}&steamid={steamId}";
-                var response = SteamWeb.Request(url, "GET", data: null, referer: "http://api.steampowered.com");
+                var response = SteamWeb.Request(url, "GET", data: null, referer: "http://api.steampowered.com", proxy: this.Proxy);
                 result = JsonConvert.DeserializeObject<InventoryResponse>(response);
                 attempts++;
             }
@@ -135,7 +138,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
         {
             var url = "https://"
                       + $"steamcommunity.com/inventory/{steamid.ConvertToUInt64()}/{appid}/{contextid}?l=english&count={count}&start_assetid={startAssetid}";
-            var response = SteamWeb.Request(url, "GET", dataString: null, cookies: cookies);
+            var response = SteamWeb.Request(url, "GET", dataString: null, cookies: cookies, proxy: this.Proxy);
             var inventoryRoot = JsonConvert.DeserializeObject<InventoryRootModel>(response);
             return inventoryRoot;
         }
@@ -152,7 +155,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             var url = "https://"
                       + $"steamcommunity.com/my/inventory/json/{appid}/{contextid}?l=english&count={count}&start_assetid={startAssetid}";
 
-            var response = SteamWeb.Request(url, "GET", dataString: null, cookies: cookies);
+            var response = SteamWeb.Request(url, "GET", dataString: null, cookies: cookies, proxy: this.Proxy);
             MyInventoryRootModel inventoryRoot;
             try
             {

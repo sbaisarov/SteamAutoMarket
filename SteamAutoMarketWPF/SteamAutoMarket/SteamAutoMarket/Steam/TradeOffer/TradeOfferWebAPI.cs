@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket.Steam.TradeOffer
+﻿using System.Net;
+
+namespace SteamAutoMarket.Steam.TradeOffer
 {
     using System;
     using System.Diagnostics;
@@ -16,9 +18,13 @@
 
         private readonly string _apiKey;
 
-        public TradeOfferWebApi(string apiKey)
+        private readonly WebProxy _proxy;
+
+        public TradeOfferWebApi(string apiKey, WebProxy proxy = null)
         {
             this._apiKey = apiKey;
+
+            this._proxy = proxy;
 
             if (apiKey == null) throw new ArgumentNullException("apiKey");
         }
@@ -28,7 +34,7 @@
             var options = $"?key={this._apiKey}&tradeofferid={tradeofferid}";
             var url = string.Format(BaseUrl, "CancelTradeOffer", "v1", options);
 
-            var response = SteamWeb.Request(url, "POST", data: null);
+            var response = SteamWeb.Request(url, "POST", data: null, proxy: this._proxy);
             dynamic json = JsonConvert.DeserializeObject(response);
 
             if (json == null || json.success != "1") return false;
@@ -40,7 +46,7 @@
             var options = $"?key={this._apiKey}&tradeofferid={tradeofferid}";
             var url = string.Format(BaseUrl, "DeclineTradeOffer", "v1", options);
 
-            var response = SteamWeb.Request(url, "POST", data: null);
+            var response = SteamWeb.Request(url, "POST", data: null, proxy: this._proxy);
             dynamic json = JsonConvert.DeserializeObject(response);
 
             if (json == null || json.success != "1") return false;
@@ -117,7 +123,7 @@
             var url = string.Format(BaseUrl, "GetTradeOffer", "v1", options);
             try
             {
-                var response = SteamWeb.Request(url, "GET", data: null);
+                var response = SteamWeb.Request(url, "GET", data: null, proxy: this._proxy);
                 var result = JsonConvert.DeserializeObject<ApiResponse<OfferResponse>>(response);
                 return result.Response;
             }
@@ -154,7 +160,7 @@
             if (timeHistoricalCutoff != "1389106496") options += $"&time_historical_cutoff={timeHistoricalCutoff}";
 
             var url = string.Format(BaseUrl, "GetTradeOffers", "v1", options);
-            var response = SteamWeb.Request(url, "GET", data: null);
+            var response = SteamWeb.Request(url, "GET", data: null, proxy: this._proxy);
             try
             {
                 var result = JsonConvert.DeserializeObject<ApiResponse<OffersResponse>>(response);
@@ -175,7 +181,7 @@
 
             try
             {
-                var response = SteamWeb.Request(url, "GET", data: null);
+                var response = SteamWeb.Request(url, "GET", data: null, proxy: this._proxy);
                 var resp = JsonConvert.DeserializeObject<ApiResponse<TradeOffersSummary>>(response);
 
                 return resp.Response;

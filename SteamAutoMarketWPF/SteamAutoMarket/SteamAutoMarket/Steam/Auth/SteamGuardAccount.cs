@@ -20,6 +20,8 @@
                 50, 51, 52, 53, 54, 55, 56, 57, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 86, 87, 88, 89
             };
 
+        public WebProxy proxy;
+
         [JsonProperty("account_name")]
         public string AccountName { get; set; }
 
@@ -88,7 +90,7 @@
             var cookies = new CookieContainer();
             this.Session.AddCookies(cookies);
 
-            var response = SteamWeb.Request(url, "GET", string.Empty, cookies);
+            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, proxy: proxy);
 
             var confRegex = new Regex(
                 "<div class=\"mobileconf_list_entry\" id=\"conf[0-9]+\" data-confid=\"(\\d+)\" data-key=\"(\\d+)\" data-type=\"(\\d+)\" data-creator=\"(\\d+)\"");
@@ -180,7 +182,7 @@
             string response = null;
             try
             {
-                response = SteamWeb.Request(APIEndpoints.MOBILEAUTH_GETWGTOKEN, "POST", postData);
+                response = SteamWeb.Request(APIEndpoints.MOBILEAUTH_GETWGTOKEN, "POST", postData, proxy: proxy);
             }
             catch (WebException)
             {
@@ -283,7 +285,7 @@
             this.Session.AddCookies(cookies);
             var referer = this.GenerateConfirmationURL();
 
-            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null);
+            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null, proxy: proxy);
             if (string.IsNullOrEmpty(response)) return null;
 
             var confResponse = JsonConvert.DeserializeObject<ConfirmationDetailsResponse>(response);
@@ -302,7 +304,7 @@
             this.Session.AddCookies(cookies);
             var referer = this.GenerateConfirmationURL();
 
-            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null, referer);
+            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null, referer, proxy: proxy);
             if (response == null) return false;
 
             var confResponse = JsonConvert.DeserializeObject<SendConfirmationResponse>(response);
@@ -323,7 +325,7 @@
             this.Session.AddCookies(cookies);
             var referer = this.GenerateConfirmationURL();
 
-            var response = SteamWeb.Request(Url, "POST", query, cookies, referer: referer);
+            var response = SteamWeb.Request(Url, "POST", query, cookies, referer: referer, proxy: proxy);
             if (response == null) return false;
 
             var confResponse = JsonConvert.DeserializeObject<SendConfirmationResponse>(response);

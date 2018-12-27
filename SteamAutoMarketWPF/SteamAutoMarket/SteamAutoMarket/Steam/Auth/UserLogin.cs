@@ -40,12 +40,15 @@
 
         public string Username;
 
+        private readonly WebProxy proxy;
+
         private readonly CookieContainer _cookies = new CookieContainer();
 
-        public UserLogin(string username, string password)
+        public UserLogin(string username, string password, WebProxy proxy = null)
         {
             this.Username = username;
             this.Password = password;
+            this.proxy = proxy;
         }
 
         public LoginResult DoLogin()
@@ -71,7 +74,8 @@
                     "GET",
                     null,
                     cookies,
-                    headers);
+                    headers,
+                    proxy);
             }
 
             postData.Add("donotcache", (TimeAligner.GetSteamTime() * 1000).ToString());
@@ -80,7 +84,8 @@
                 APIEndpoints.COMMUNITY_BASE + "/login/getrsakey",
                 "POST",
                 postData,
-                cookies);
+                cookies,
+                proxy: proxy);
             if (response == null || response.Contains("<BODY>\nAn error occurred while processing your request."))
                 return LoginResult.GeneralFailure;
 
@@ -131,7 +136,8 @@
                 APIEndpoints.COMMUNITY_BASE + "/login/dologin",
                 "POST",
                 postData,
-                cookies);
+                cookies,
+                proxy: proxy);
             if (response == null) return LoginResult.GeneralFailure;
 
             var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(response);

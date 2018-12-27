@@ -1,3 +1,5 @@
+using Xceed.Wpf.DataGrid.Views;
+
 namespace SteamAutoMarket.Steam.TradeOffer
 {
     using System;
@@ -25,12 +27,15 @@ namespace SteamAutoMarket.Steam.TradeOffer
 
         private readonly TradeOfferWebApi _webApi;
 
-        public OfferSession(TradeOfferWebApi webApi, CookieContainer cookies, string sessionId)
+        private readonly WebProxy _proxy;
+
+        public OfferSession(TradeOfferWebApi webApi, CookieContainer cookies, string sessionId, WebProxy proxy = null)
         {
             this._webApi = webApi;
             this._cookies = cookies;
             this._sessionId = sessionId;
-
+            this._proxy = proxy;
+            
             this.JsonSerializerSettings = new JsonSerializerSettings
                                               {
                                                   PreserveReferencesHandling = PreserveReferencesHandling.None,
@@ -52,7 +57,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             var url = $"https://steamcommunity.com/tradeoffer/{tradeOfferId}/accept";
             var referer = $"https://steamcommunity.com/tradeoffer/{tradeOfferId}/";
 
-            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer);
+            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer, proxy: this._proxy);
 
             if (!string.IsNullOrEmpty(resp))
                 try
@@ -87,7 +92,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             // should be http://steamcommunity.com/{0}/{1}/tradeoffers/sent/ - id/profile persona/id64 ideally
             var referer = string.Format("https://steamcommunity.com/tradeoffer/{0}/", tradeOfferId);
 
-            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer);
+            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer, proxy: this._proxy);
 
             if (!string.IsNullOrEmpty(resp))
             {
@@ -163,7 +168,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             // should be http://steamcommunity.com/{0}/{1}/tradeoffers - id/profile persona/id64 ideally
             var referer = string.Format("https://steamcommunity.com/tradeoffer/{0}/", tradeOfferId);
 
-            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer);
+            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer, proxy: this._proxy);
 
             if (!string.IsNullOrEmpty(resp))
             {
@@ -252,7 +257,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
 
         internal string Request(string url, NameValueCollection data, string referer)
         {
-            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer);
+            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer, proxy: this._proxy);
 
             if (string.IsNullOrEmpty(resp)) throw new SteamException("Steam response is empty. No extra info provided");
 

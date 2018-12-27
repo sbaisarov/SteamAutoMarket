@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket.Steam.Market.Interface
+﻿using System.Net;
+
+namespace SteamAutoMarket.Steam.Market.Interface
 {
     using System;
     using System.Collections.Generic;
@@ -34,10 +36,13 @@
 
         private readonly SteamMarketHandler steam;
 
-        public MarketClient(SteamMarketHandler steam)
+        private readonly WebProxy Proxy;
+
+        public MarketClient(SteamMarketHandler steam, WebProxy proxy = null)
         {
             this.steam = steam;
             this.Games = new AvailableGames(this.steam);
+            this.Proxy = proxy;
         }
 
         public int CurrentCurrency { get; set; }
@@ -48,7 +53,8 @@
                 Urls.Market + "/appfilters/" + appId,
                 Method.GET,
                 Urls.Market,
-                useAuthCookie: true);
+                useAuthCookie: true,
+                proxy: this.Proxy);
             var respDes = JsonConvert.DeserializeObject<JSuccess>(resp.Data.Content);
 
             if (!respDes.Success)
@@ -66,7 +72,8 @@
                                { "sessionid", this.steam.Auth.SessionId() }, { "buy_orderid", orderId.ToString() }
                            };
 
-            var resp = this.steam.Request(Urls.Market + "/cancelbuyorder/", Method.POST, Urls.Market, data, true);
+            var resp = this.steam.Request(Urls.Market + "/cancelbuyorder/", Method.POST, Urls.Market, data, true,
+                proxy: this.Proxy);
 
             var respDes = JsonConvert.DeserializeObject<JSuccessInt>(resp.Data.Content);
 
@@ -106,7 +113,8 @@
                 Urls.Market,
                 data,
                 true,
-                headers: headers);
+                headers: headers,
+                proxy: this.Proxy);
 
             return resp.Data.IsSuccessful == false ? ECancelSellOrderStatus.Fail : ECancelSellOrderStatus.Canceled;
         }
@@ -160,7 +168,8 @@
                                { "quantity", quantity.ToString() }
                            };
 
-            var resp = this.steam.Request(Urls.Market + "/createbuyorder/", Method.POST, Urls.Market, data, true);
+            var resp = this.steam.Request(Urls.Market + "/createbuyorder/", Method.POST, Urls.Market, data, true,
+                proxy: this.Proxy);
             var respDes = JsonConvert.DeserializeObject<JCreateBuyOrder>(resp.Data.Content);
 
             var order = new CreateBuyOrder();
@@ -210,7 +219,7 @@
             var sellListingsPage = new SellListingsPage { SellListings = new List<MyListingsSalesItem>() };
 
             var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
-            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
+            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true, proxy: this.Proxy);
 
             JMyListings respDes;
             try
@@ -320,7 +329,7 @@
         {
             var url = Urls.Market
                       + $"/itemordershistogram?country=US&language=english&currency={this.CurrentCurrency}&item_nameid={nameId}";
-            var resp = this.steam.Request(url, Method.GET, Urls.Market, null, true);
+            var resp = this.steam.Request(url, Method.GET, Urls.Market, null, true, proxy: this.Proxy);
             var respDes = JsonConvert.DeserializeObject<JItemOrdersHistogram>(resp.Data.Content);
 
             if (respDes.Success != 1)
@@ -367,7 +376,8 @@
                 Method.GET,
                 Urls.Market,
                 null,
-                true);
+                true,
+                proxy: this.Proxy);
             var content = resp.Data.Content;
 
             var nameIdParse = int.TryParse(
@@ -523,7 +533,7 @@
             var myListings = new MyListings();
 
             var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
-            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true);
+            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true, proxy: this.Proxy);
 
             JMyListings respDes;
             try
@@ -622,7 +632,7 @@
         {
             var url = Urls.Market + $"/pricehistory/?appid={appId}&market_hash_name={Uri.EscapeDataString(hashName)}";
 
-            var resp = this.steam.Request(url, Method.GET, Urls.Market, null, true);
+            var resp = this.steam.Request(url, Method.GET, Urls.Market, null, true, proxy: this.Proxy);
 
             var respDes = JsonConvert.DeserializeObject<JPriceHistory>(resp.Data.Content);
 
@@ -669,7 +679,7 @@
 
         public MarketProfile Profile()
         {
-            var resp = this.steam.Request(Urls.Market, Method.GET, Urls.Market, useAuthCookie: true);
+            var resp = this.steam.Request(Urls.Market, Method.GET, Urls.Market, useAuthCookie: true, proxy: this.Proxy);
             var content = resp.Data.Content;
 
             var doc = new HtmlDocument();
@@ -772,7 +782,7 @@
                 urlQuery = urlQuery.Concat(custom).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            var resp = this.steam.Request(Urls.Market + "/search/render/", Method.GET, Urls.Market, urlQuery, true);
+            var resp = this.steam.Request(Urls.Market + "/search/render/", Method.GET, Urls.Market, urlQuery, true, proxy: this.Proxy);
             var respDes = JsonConvert.DeserializeObject<JMarketSearch>(resp.Data.Content);
 
             if (!respDes.Success)
@@ -898,7 +908,7 @@
                                { "price", this.GetSellingSteamPriceWithoutFee(priceWithFee) }
                            };
 
-            var resp = this.steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true).Data
+            var resp = this.steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true, proxy: this.Proxy).Data
                 .Content;
 
             return JsonConvert.DeserializeObject<JSellItem>(resp);
@@ -906,7 +916,7 @@
 
         public WalletInfo WalletInfo()
         {
-            var resp = this.steam.Request(Urls.Market, Method.GET, Urls.Market, useAuthCookie: true);
+            var resp = this.steam.Request(Urls.Market, Method.GET, Urls.Market, useAuthCookie: true, proxy: this.Proxy);
 
             var walletInfoMatch = Regex.Match(resp.Data.Content, "(?<=g_rgWalletInfo = )(.*)(?=;)").Value;
 
