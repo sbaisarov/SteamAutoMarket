@@ -138,8 +138,8 @@
                         if (success)
                         {
                             wp.AppendLog($"{offerIdList} trade was successfully confirmed.");
-                            wp.AppendLog("Waiting 5 seconds to fetch confirmations to verify they are empty");
-                            Thread.Sleep(TimeSpan.FromSeconds(5));
+                            wp.AppendLog("Waiting 10 seconds to fetch confirmations to verify they are empty");
+                            Thread.Sleep(TimeSpan.FromSeconds(10));
                             confirmations = this.Guard.FetchConfirmations();
                             conf = confirmations.Where(
                                 item => item.ConfType == Confirmation.ConfirmationType.Trade

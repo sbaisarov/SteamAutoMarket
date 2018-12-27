@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.Utils.Extension;
 
+    [Obfuscation(Exclude = true)]
     public static class MarketSellUtils
     {
         public static void CancelMarketPendingListings(UiSteamManager steamManager, WorkingProcessDataContext wp)
@@ -144,6 +146,7 @@
                     {
                         var chunks = confirmations.Select((s, i) => new { Value = s, Index = i })
                             .GroupBy(x => x.Index / 50).Select(grp => grp.Select(x => x.Value).ToArray()).ToArray();
+
                         wp.AppendLog($"Splitting confirmation list by 50. {chunks.Length} chunks was obtained");
                         var chunkIndex = 1;
                         foreach (var chunk in chunks)
@@ -162,6 +165,7 @@
                                 status
                                     ? $"{chunkIndex} confirmations chunk confirm was successful"
                                     : $"{chunkIndex} confirmations chunk confirm was failed");
+
                             chunkIndex++;
 
                             Thread.Sleep(TimeSpan.FromSeconds(2));
@@ -198,11 +202,10 @@
                 catch (Exception e)
                 {
                     wp.AppendLog($"Error on 2FA confirm - {e.Message}");
-                    if (e.Message == "Invalid authenticator") continue;
                 }
 
-                wp.AppendLog("Waiting for 5 seconds to restart confirmation process");
-                Thread.Sleep(TimeSpan.FromSeconds(5));
+                wp.AppendLog("Waiting for 10 seconds to restart confirmation process");
+                Thread.Sleep(TimeSpan.FromSeconds(10));
             }
         }
 
@@ -280,7 +283,6 @@
         {
             wp.AppendLog("Seems market listings stacked. Forsering two factor confirmation");
             ConfirmMarketTransactionsWorkingProcess(steamManager.Guard, wp);
-
             CancelMarketPendingListings(steamManager, wp);
         }
 
