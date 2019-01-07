@@ -36,28 +36,28 @@
         [JsonProperty("version")]
         private int Version { get; set; }
 
-        public bool AddMyCurrencyItem(int appId, long contextId, long currencyId, long amount)
+        public bool AddMyCurrencyItem(int appId, string contextId, long currencyId, long amount)
         {
             var asset = new TradeAsset();
             asset.CreateCurrencyAsset(appId, contextId, currencyId, amount);
             return this.ShouldUpdate(this.MyOfferedItems.AddCurrencyItem(asset));
         }
 
-        public bool AddMyItem(int appId, long contextId, long assetId, long amount = 1)
+        public bool AddMyItem(int appId, string contextId, string assetId, long amount = 1)
         {
             var asset = new TradeAsset();
             asset.CreateItemAsset(appId, contextId, assetId, amount);
             return this.ShouldUpdate(this.MyOfferedItems.AddItem(asset));
         }
 
-        public bool AddTheirCurrencyItem(int appId, long contextId, long currencyId, long amount)
+        public bool AddTheirCurrencyItem(int appId, string contextId, long currencyId, long amount)
         {
             var asset = new TradeAsset();
             asset.CreateCurrencyAsset(appId, contextId, currencyId, amount);
             return this.ShouldUpdate(this.TheirOfferedItems.AddCurrencyItem(asset));
         }
 
-        public bool AddTheirItem(int appId, long contextId, long assetId, long amount = 1)
+        public bool AddTheirItem(int appId, string contextId, string assetId, long amount = 1)
         {
             var asset = new TradeAsset();
             asset.CreateItemAsset(appId, contextId, assetId, amount);
@@ -74,35 +74,35 @@
             return this.TheirOfferedItems.Assets;
         }
 
-        public bool RemoveMyCurrencyItem(int appId, long contextId, long currencyId, long amount)
+        public bool RemoveMyCurrencyItem(int appId, string contextId, long currencyId, long amount)
         {
             var asset = new TradeAsset();
             asset.CreateCurrencyAsset(appId, contextId, currencyId, amount);
             return this.ShouldUpdate(this.MyOfferedItems.RemoveCurrencyItem(asset));
         }
 
-        public bool RemoveMyItem(int appId, long contextId, long assetId, long amount = 1)
+        public bool RemoveMyItem(int appId, string contextId, string assetId, long amount = 1)
         {
             var asset = new TradeAsset();
             asset.CreateItemAsset(appId, contextId, assetId, amount);
             return this.ShouldUpdate(this.MyOfferedItems.RemoveItem(asset));
         }
 
-        public bool RemoveTheirCurrencyItem(int appId, long contextId, long currencyId, long amount)
+        public bool RemoveTheirCurrencyItem(int appId, string contextId, long currencyId, long amount)
         {
             var asset = new TradeAsset();
             asset.CreateCurrencyAsset(appId, contextId, currencyId, amount);
             return this.ShouldUpdate(this.TheirOfferedItems.RemoveCurrencyItem(asset));
         }
 
-        public bool RemoveTheirItem(int appId, long contextId, long assetId, long amount = 1)
+        public bool RemoveTheirItem(int appId, string contextId, string assetId, long amount = 1)
         {
             var asset = new TradeAsset();
             asset.CreateItemAsset(appId, contextId, assetId, amount);
             return this.ShouldUpdate(this.TheirOfferedItems.RemoveItem(asset));
         }
 
-        public bool TryGetMyCurrencyItem(int appId, long contextId, long currencyId, long amount, out TradeAsset asset)
+        public bool TryGetMyCurrencyItem(int appId, string contextId, long currencyId, long amount, out TradeAsset asset)
         {
             var tradeAsset = new TradeAsset
                                  {
@@ -119,7 +119,7 @@
             return false;
         }
 
-        public bool TryGetMyItem(int appId, long contextId, long assetId, long amount, out TradeAsset asset)
+        public bool TryGetMyItem(int appId, string contextId, string assetId, long amount, out TradeAsset asset)
         {
             var tradeAsset = new TradeAsset
                                  {
@@ -138,7 +138,7 @@
 
         public bool TryGetTheirCurrencyItem(
             int appId,
-            long contextId,
+            string contextId,
             long currencyId,
             long amount,
             out TradeAsset asset)
@@ -158,7 +158,7 @@
             return false;
         }
 
-        public bool TryGetTheirItem(int appId, long contextId, long assetId, long amount, out TradeAsset asset)
+        public bool TryGetTheirItem(int appId, string contextId, string assetId, long amount, out TradeAsset asset)
         {
             var tradeAsset = new TradeAsset
                                  {

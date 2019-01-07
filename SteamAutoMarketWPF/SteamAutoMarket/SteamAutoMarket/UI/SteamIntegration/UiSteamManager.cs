@@ -116,6 +116,12 @@
             var notFoundRetry = 0;
             while (true)
             {
+                if (wp.CancellationToken.IsCancellationRequested)
+                {
+                    wp.AppendLog("Trade offer confirm process was force stopped");
+                    return;
+                }
+
                 try
                 {
                     var confirmations = this.Guard.FetchConfirmations();

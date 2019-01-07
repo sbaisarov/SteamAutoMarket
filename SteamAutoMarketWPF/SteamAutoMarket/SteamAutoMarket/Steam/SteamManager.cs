@@ -377,8 +377,8 @@ namespace SteamAutoMarket.Steam
             {
                 offer.Items.AddMyItem(
                     item.Asset.Appid,
-                    long.Parse(item.Asset.Contextid),
-                    long.Parse(item.Asset.Assetid),
+                    item.Asset.Contextid,
+                    item.Asset.Assetid,
                     long.Parse(item.Asset.Amount));
             }
 

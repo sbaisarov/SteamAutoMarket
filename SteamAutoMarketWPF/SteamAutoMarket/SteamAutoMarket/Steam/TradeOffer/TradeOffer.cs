@@ -34,8 +34,8 @@
                     // todo: for currency items we need to check descriptions for currency bool and use the appropriate method
                     tradeAsset.CreateItemAsset(
                         Convert.ToInt64(asset.AppId),
-                        Convert.ToInt64(asset.ContextId),
-                        Convert.ToInt64(asset.AssetId),
+                        asset.ContextId,
+                        asset.AssetId,
                         Convert.ToInt64(asset.Amount));
 
                     // todo: for missing assets we should store them somewhere else? if offer state is active we shouldn't be here though
@@ -51,8 +51,8 @@
                     var tradeAsset = new TradeAsset();
                     tradeAsset.CreateItemAsset(
                         Convert.ToInt64(asset.AppId),
-                        Convert.ToInt64(asset.ContextId),
-                        Convert.ToInt64(asset.AssetId),
+                        asset.ContextId,
+                        asset.AssetId,
                         Convert.ToInt64(asset.Amount));
                     if (!asset.IsMissing)
                         theirAssets.Add(tradeAsset);

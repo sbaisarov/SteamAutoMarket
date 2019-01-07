@@ -15,25 +15,25 @@
 
         [JsonProperty("assetid")]
         [JsonConverter(typeof(ValueStringConverter))]
-        public long AssetId { get; set; }
+        public string AssetId { get; set; }
 
         [JsonProperty("contextid")]
-        public long ContextId { get; set; }
+        public string ContextId { get; set; }
 
         [JsonProperty("currencyid")]
         [JsonConverter(typeof(ValueStringConverter))]
         public long CurrencyId { get; set; }
 
-        public void CreateCurrencyAsset(long appId, long contextId, long currencyId, long amount)
+        public void CreateCurrencyAsset(long appId, string contextId, long currencyId, long amount)
         {
             this.AppId = appId;
             this.ContextId = contextId;
             this.CurrencyId = currencyId;
             this.Amount = amount;
-            this.AssetId = 0;
+            this.AssetId = "0";
         }
 
-        public void CreateItemAsset(long appId, long contextId, long assetId, long amount)
+        public void CreateItemAsset(long appId, string contextId, string assetId, long amount)
         {
             this.AppId = appId;
             this.ContextId = contextId;
@@ -50,7 +50,7 @@
 
         public bool ShouldSerializeAssetId()
         {
-            return this.AssetId != 0;
+            return this.AssetId != "0";
         }
 
         public bool ShouldSerializeCurrencyId()
