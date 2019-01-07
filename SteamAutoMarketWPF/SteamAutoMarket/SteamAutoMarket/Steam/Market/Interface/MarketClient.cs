@@ -1,11 +1,10 @@
-﻿using System.Net;
-
-namespace SteamAutoMarket.Steam.Market.Interface
+﻿namespace SteamAutoMarket.Steam.Market.Interface
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Net;
     using System.Reflection;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
@@ -34,9 +33,9 @@ namespace SteamAutoMarket.Steam.Market.Interface
 
         public readonly AvailableGames Games;
 
-        private readonly SteamMarketHandler steam;
-
         private readonly WebProxy Proxy;
+
+        private readonly SteamMarketHandler steam;
 
         public MarketClient(SteamMarketHandler steam, WebProxy proxy = null)
         {
@@ -72,7 +71,12 @@ namespace SteamAutoMarket.Steam.Market.Interface
                                { "sessionid", this.steam.Auth.SessionId() }, { "buy_orderid", orderId.ToString() }
                            };
 
-            var resp = this.steam.Request(Urls.Market + "/cancelbuyorder/", Method.POST, Urls.Market, data, true,
+            var resp = this.steam.Request(
+                Urls.Market + "/cancelbuyorder/",
+                Method.POST,
+                Urls.Market,
+                data,
+                true,
                 proxy: this.Proxy);
 
             var respDes = JsonConvert.DeserializeObject<JSuccessInt>(resp.Data.Content);
@@ -168,7 +172,12 @@ namespace SteamAutoMarket.Steam.Market.Interface
                                { "quantity", quantity.ToString() }
                            };
 
-            var resp = this.steam.Request(Urls.Market + "/createbuyorder/", Method.POST, Urls.Market, data, true,
+            var resp = this.steam.Request(
+                Urls.Market + "/createbuyorder/",
+                Method.POST,
+                Urls.Market,
+                data,
+                true,
                 proxy: this.Proxy);
             var respDes = JsonConvert.DeserializeObject<JCreateBuyOrder>(resp.Data.Content);
 
@@ -219,7 +228,13 @@ namespace SteamAutoMarket.Steam.Market.Interface
             var sellListingsPage = new SellListingsPage { SellListings = new List<MyListingsSalesItem>() };
 
             var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
-            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true, proxy: this.Proxy);
+            var resp = this.steam.Request(
+                Urls.Market + "/mylistings/",
+                Method.GET,
+                Urls.Market,
+                @params,
+                true,
+                proxy: this.Proxy);
 
             JMyListings respDes;
             try
@@ -533,7 +548,13 @@ namespace SteamAutoMarket.Steam.Market.Interface
             var myListings = new MyListings();
 
             var @params = new Dictionary<string, string> { { "start", $"{start}" }, { "count", $"{count}" } };
-            var resp = this.steam.Request(Urls.Market + "/mylistings/", Method.GET, Urls.Market, @params, true, proxy: this.Proxy);
+            var resp = this.steam.Request(
+                Urls.Market + "/mylistings/",
+                Method.GET,
+                Urls.Market,
+                @params,
+                true,
+                proxy: this.Proxy);
 
             JMyListings respDes;
             try
@@ -782,7 +803,13 @@ namespace SteamAutoMarket.Steam.Market.Interface
                 urlQuery = urlQuery.Concat(custom).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            var resp = this.steam.Request(Urls.Market + "/search/render/", Method.GET, Urls.Market, urlQuery, true, proxy: this.Proxy);
+            var resp = this.steam.Request(
+                Urls.Market + "/search/render/",
+                Method.GET,
+                Urls.Market,
+                urlQuery,
+                true,
+                proxy: this.Proxy);
             var respDes = JsonConvert.DeserializeObject<JMarketSearch>(resp.Data.Content);
 
             if (!respDes.Success)
@@ -908,8 +935,13 @@ namespace SteamAutoMarket.Steam.Market.Interface
                                { "price", this.GetSellingSteamPriceWithoutFee(priceWithFee) }
                            };
 
-            var resp = this.steam.Request(Urls.Market + "/sellitem/", Method.POST, Urls.Market, data, true, proxy: this.Proxy).Data
-                .Content;
+            var resp = this.steam.Request(
+                Urls.Market + "/sellitem/",
+                Method.POST,
+                Urls.Market,
+                data,
+                true,
+                proxy: this.Proxy).Data.Content;
 
             return JsonConvert.DeserializeObject<JSellItem>(resp);
         }

@@ -176,11 +176,11 @@
 
             var modes = new List<ETradeAccepter>();
 
-            if (AcceptIncomingEmpty) modes.Add(ETradeAccepter.AcceptIncomingEmpty);
-            if (AcceptIncomingWhitelist) modes.Add(ETradeAccepter.AcceptIncomingWhitelist);
-            if (DeclineSent) modes.Add(ETradeAccepter.DeclineOutgoing);
-            if (DeclineIncomingNotEmpty) modes.Add(ETradeAccepter.DeclineIncomingNotEmpty);
-            if (DeclineAllIncoming) modes.Add(ETradeAccepter.DeclineAllIncoming);
+            if (this.AcceptIncomingEmpty) modes.Add(ETradeAccepter.AcceptIncomingEmpty);
+            if (this.AcceptIncomingWhitelist) modes.Add(ETradeAccepter.AcceptIncomingWhitelist);
+            if (this.DeclineSent) modes.Add(ETradeAccepter.DeclineOutgoing);
+            if (this.DeclineIncomingNotEmpty) modes.Add(ETradeAccepter.DeclineIncomingNotEmpty);
+            if (this.DeclineAllIncoming) modes.Add(ETradeAccepter.DeclineAllIncoming);
 
             if (modes.Any() == false)
             {

@@ -21,7 +21,7 @@
             UiGlobalVariables.WorkingProcessTab = this;
             this.InitializeComponent();
             this.DataContext = UiGlobalVariables.LastInvokedWorkingProcessDataContext;
-            RefreshWorkingProcessesList();
+            this.RefreshWorkingProcessesList();
         }
 
         public static void OpenTab() => AppUtils.OpenTab("UI/Pages/WorkingProcess.xaml");

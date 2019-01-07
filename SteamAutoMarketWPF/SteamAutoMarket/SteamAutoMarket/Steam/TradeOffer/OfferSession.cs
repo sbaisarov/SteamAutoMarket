@@ -1,5 +1,3 @@
-using Xceed.Wpf.DataGrid.Views;
-
 namespace SteamAutoMarket.Steam.TradeOffer
 {
     using System;
@@ -23,11 +21,11 @@ namespace SteamAutoMarket.Steam.TradeOffer
 
         private readonly CookieContainer _cookies;
 
+        private readonly WebProxy _proxy;
+
         private readonly string _sessionId;
 
         private readonly TradeOfferWebApi _webApi;
-
-        private readonly WebProxy _proxy;
 
         public OfferSession(TradeOfferWebApi webApi, CookieContainer cookies, string sessionId, WebProxy proxy = null)
         {
@@ -35,7 +33,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             this._cookies = cookies;
             this._sessionId = sessionId;
             this._proxy = proxy;
-            
+
             this.JsonSerializerSettings = new JsonSerializerSettings
                                               {
                                                   PreserveReferencesHandling = PreserveReferencesHandling.None,

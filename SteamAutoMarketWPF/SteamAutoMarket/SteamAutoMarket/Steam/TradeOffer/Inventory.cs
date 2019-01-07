@@ -20,7 +20,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
     {
         public Inventory(WebProxy proxy = null)
         {
-            Proxy = proxy;
+            this.Proxy = proxy;
         }
 
         protected Inventory(InventoryResult apiInventory)
@@ -56,7 +56,12 @@ namespace SteamAutoMarket.Steam.TradeOffer
             {
                 var url =
                     $"http://api.steampowered.com/IEconItems_{appid}/GetPlayerItems/v0001/?key={apiKey}&steamid={steamId}";
-                var response = SteamWeb.Request(url, "GET", data: null, referer: "http://api.steampowered.com", proxy: this.Proxy);
+                var response = SteamWeb.Request(
+                    url,
+                    "GET",
+                    data: null,
+                    referer: "http://api.steampowered.com",
+                    proxy: this.Proxy);
                 result = JsonConvert.DeserializeObject<InventoryResponse>(response);
                 attempts++;
             }

@@ -40,9 +40,9 @@
 
         public string Username;
 
-        private readonly WebProxy proxy;
-
         private readonly CookieContainer _cookies = new CookieContainer();
+
+        private readonly WebProxy proxy;
 
         public UserLogin(string username, string password, WebProxy proxy = null)
         {
@@ -75,7 +75,7 @@
                     null,
                     cookies,
                     headers,
-                    proxy);
+                    this.proxy);
             }
 
             postData.Add("donotcache", (TimeAligner.GetSteamTime() * 1000).ToString());
@@ -85,7 +85,7 @@
                 "POST",
                 postData,
                 cookies,
-                proxy: proxy);
+                proxy: this.proxy);
             if (response == null || response.Contains("<BODY>\nAn error occurred while processing your request."))
                 return LoginResult.GeneralFailure;
 
@@ -137,7 +137,7 @@
                 "POST",
                 postData,
                 cookies,
-                proxy: proxy);
+                proxy: this.proxy);
             if (response == null) return LoginResult.GeneralFailure;
 
             var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(response);

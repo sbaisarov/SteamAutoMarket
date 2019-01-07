@@ -94,7 +94,10 @@ namespace SteamAutoMarket.Steam
             this.TradeOfferWeb = new TradeOfferWebApi(this.ApiKey, this.Proxy);
 
             Logger.Log.Debug("Initializing OfferSession..");
-            this.OfferSession = new OfferSession(this.TradeOfferWeb, this.Cookies, this.Guard.Session.SessionID, 
+            this.OfferSession = new OfferSession(
+                this.TradeOfferWeb,
+                this.Cookies,
+                this.Guard.Session.SessionID,
                 this.Proxy);
 
             Logger.Log.Debug("Initializing SteamMarketHandler..");
@@ -196,7 +199,7 @@ namespace SteamAutoMarket.Steam
                 Logger.Log.Debug(responseJson["message"]);
                 if (responseJson["message"].Contains("You already have an active buy order"))
                 {
-                    CancelBuyOrder(buyOrderId);
+                    this.CancelBuyOrder(buyOrderId);
                     return false;
                 }
             }

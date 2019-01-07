@@ -1,9 +1,8 @@
-﻿using System.Net;
-
-namespace SteamAutoMarket.Steam.TradeOffer
+﻿namespace SteamAutoMarket.Steam.TradeOffer
 {
     using System;
     using System.Diagnostics;
+    using System.Net;
     using System.Web;
 
     using Newtonsoft.Json;
