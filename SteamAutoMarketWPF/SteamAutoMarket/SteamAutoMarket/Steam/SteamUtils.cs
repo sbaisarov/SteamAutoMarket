@@ -85,7 +85,7 @@
                 return "Sale Foil Trading Card";
             }
 
-            if (type.Contains("Sale"))
+            if (type.Contains("The Steam Winter Sale") || type.Contains("The Steam Summer Sale"))
             {
                 if (type.Contains("Foil"))
                 {
@@ -95,6 +95,21 @@
                 if (type.Contains("Trading Card"))
                 {
                     return "Sale Trading Card";
+                }
+
+                if (type.Contains("Emoticon"))
+                {
+                    return "Sale Emoticon";
+                }
+
+                if (type.Contains("Consumable"))
+                {
+                    return "Sale Consumable";
+                }
+
+                if (type.Contains("Background"))
+                {
+                    return "Sale Background";
                 }
             }
 
