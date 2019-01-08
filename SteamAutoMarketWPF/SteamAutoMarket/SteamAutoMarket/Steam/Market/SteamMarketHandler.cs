@@ -100,7 +100,7 @@
             if (Logger.CurrentLogLevel == Level.Debug)
             {
                 Logger.Log.Debug(
-                    $"{method} steam request to {url}. Referer - {referer}, params - {StringUtils.DictionaryToString(@params)}, headers - {StringUtils.DictionaryToString(headers)}");
+                    $"{method} steam request to {url}. Referer - {referer}, params - {StringUtils.DictionaryToString(@params)}, headers - {StringUtils.DictionaryToString(headers)}.\nProxy {proxy?.Address}");
             }
 
             this.RequestsPerSecondGuard();

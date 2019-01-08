@@ -39,7 +39,8 @@
                 account.TradeToken,
                 account.Currency,
                 SettingsProvider.GetInstance().UserAgent,
-                forceSessionRefresh)
+                forceSessionRefresh,
+                account.Proxy)
         {
             this.SaveAccount(account);
 

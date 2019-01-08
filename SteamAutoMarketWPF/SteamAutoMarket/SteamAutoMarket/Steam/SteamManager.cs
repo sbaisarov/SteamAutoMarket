@@ -56,7 +56,7 @@ namespace SteamAutoMarket.Steam
             this.Login = login;
             this.Password = password;
             this.Guard = mafile;
-            this.Guard.proxy = this.Proxy;
+            this.Guard.Proxy = this.Proxy;
             this.SteamId = new SteamID(this.Guard.Session.SteamID);
 
             Logger.Log.Debug("Fetching two factor token..");

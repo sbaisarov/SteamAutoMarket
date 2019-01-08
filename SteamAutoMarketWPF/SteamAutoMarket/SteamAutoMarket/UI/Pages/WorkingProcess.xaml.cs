@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -14,6 +15,7 @@
     /// <summary>
     /// Interaction logic for WorkingProcessForm.xaml
     /// </summary>
+    [Obfuscation(Exclude = true)]
     public partial class WorkingProcess
     {
         public WorkingProcess()

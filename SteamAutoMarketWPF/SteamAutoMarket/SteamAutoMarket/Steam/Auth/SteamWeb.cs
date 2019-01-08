@@ -77,7 +77,7 @@
             if (Logger.CurrentLogLevel == Level.Debug)
             {
                 Logger.Log.Debug(
-                    $"Steam {method} request to {url}.\nData - {dataString}.\nCookies - {StringUtils.CookieContainerToString(cookies)}.\nHeaders {StringUtils.NameValueCollectionToString(headers)}.\nReferer {referer}");
+                    $"Steam {method} request to {url}.\nData - {dataString}.\nCookies - {StringUtils.CookieContainerToString(cookies)}.\nHeaders {StringUtils.NameValueCollectionToString(headers)}.\nReferer {referer}.\nProxy {proxy?.Address}");
             }
 
             var request = (HttpWebRequest)WebRequest.Create(url);
