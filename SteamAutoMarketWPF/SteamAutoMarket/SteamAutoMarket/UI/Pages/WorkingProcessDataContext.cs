@@ -6,6 +6,7 @@
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -20,6 +21,7 @@
     using SteamAutoMarket.UI.Utils.Extension;
     using SteamAutoMarket.UI.Utils.Logger;
 
+    [Obfuscation(Exclude = true)]
     public class WorkingProcessDataContext : INotifyPropertyChanged
     {
         private readonly List<double> times = new List<double>();
