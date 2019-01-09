@@ -266,14 +266,9 @@
         {
             if (this.ChartModel.Count <= SettingsProvider.GetInstance().WorkingChartMaxCount) return;
 
-            var oldChart = this.ChartModel.ToArray();
-            var newChart = new List<DataPoint> { new DataPoint(0, 0) };
-            for (var j = 2; j < oldChart.Length; j += 2)
-            {
-                var averageX = (oldChart[j].X + oldChart[j - 1].X) / 2;
-                var averageY = (oldChart[j].Y + oldChart[j - 1].Y) / 2;
-                newChart.Add(new DataPoint(averageX, averageY));
-            }
+            var oldChart = this.ChartModel.ToList();
+            var chartCenter = oldChart.Capacity / 2;
+            var newChart = oldChart.GetRange(chartCenter, oldChart.Count - chartCenter);
 
             this.ChartModel.ReplaceDispatch(newChart);
         }

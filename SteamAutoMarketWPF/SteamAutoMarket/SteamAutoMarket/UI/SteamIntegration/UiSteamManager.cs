@@ -11,6 +11,7 @@
     using SteamAutoMarket.Core.Waiter;
     using SteamAutoMarket.Steam;
     using SteamAutoMarket.Steam.Auth;
+    using SteamAutoMarket.Steam.Market;
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Exceptions;
     using SteamAutoMarket.Steam.Market.Models;
@@ -565,6 +566,9 @@
                 wp.ProgressBarMaximum = totalItemsCount;
                 var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
 
+                double totalSellPrice = 0;
+                var currencySymbol = SteamCurrencies.Currencies[this.Currency.ToString()];
+
                 foreach (var marketSellModel in marketSellModels)
                 {
                     if (!marketSellModel.SellPrice.HasValue)
@@ -584,7 +588,7 @@
                                 averagePriceDays);
 
                             wp.AppendLog(
-                                $"Average price for {averagePriceDays} days for '{marketSellModel.ItemName}' is - {price}");
+                                $"Average price for {averagePriceDays} days for '{marketSellModel.ItemName}' is - {price} {currencySymbol}");
 
                             marketSellModel.AveragePrice = price;
 
@@ -592,7 +596,7 @@
                                 marketSellModel.ItemModel.Asset.Appid,
                                 marketSellModel.ItemModel.Description.MarketHashName);
 
-                            wp.AppendLog($"Current price for '{marketSellModel.ItemName}' is - {price}");
+                            wp.AppendLog($"Current price for '{marketSellModel.ItemName}' is - {price} {currencySymbol}");
                             marketSellModel.CurrentPrice = price;
                             marketSellModel.ProcessSellPrice(sellStrategy);
                         }
@@ -619,11 +623,12 @@
                         try
                         {
                             wp.AppendLog(
-                                $"[{currentItemIndex}/{totalItemsCount}] Selling - [{packageElementIndex++}/{marketSellModel.Count}] - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice}");
+                                $"[{currentItemIndex}/{totalItemsCount}] Selling - [{packageElementIndex++}/{marketSellModel.Count}] - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice} {currencySymbol}");
 
                             if (marketSellModel.SellPrice.HasValue)
                             {
                                 this.SellOnMarket(item, marketSellModel.SellPrice.Value);
+                                totalSellPrice += marketSellModel.SellPrice.Value;
                             }
                             else
                             {
@@ -645,6 +650,7 @@
                         if (currentItemIndex % itemsToConfirm == 0)
                         {
                             MarketSellUtils.ConfirmMarketTransactionsWorkingProcess(this.Guard, wp);
+                            wp.AppendLog($"Total price of all successfully placed lots - {totalSellPrice} {currencySymbol}");
                         }
 
                         currentItemIndex++;
@@ -678,7 +684,7 @@
                                                EUniverse.Public,
                                                EAccountType.Individual);
 
-                wp.AppendLog($"Sending trade offer to {targetSteamIdObj.ConvertToUInt64()} - {tradeToken}");
+                wp.AppendLog($"Sending trade offer to {targetSteamIdObj.ConvertToUInt64()} - {tradeToken}. My items count - {itemsToTrade.Length}");
 
                 var tradeId = this.SendTradeOffer(itemsToTrade, targetSteamIdObj, tradeToken);
                 if (string.IsNullOrEmpty(tradeId))
@@ -719,7 +725,7 @@
                 {
                     wp.AppendLog("Fetching trade offers..");
 
-                    var allOffers = UiGlobalVariables.SteamManager.ReceiveTradeOffers(true, true).Where(
+                    var allOffers = UiGlobalVariables.SteamManager.ReceiveTradeOffers(true, true, getDescriptions: false).Where(
                         o => o.Offer.TradeOfferState == TradeOfferState.TradeOfferStateActive).ToList();
 
                     var receivedOffers = allOffers.Where(o => o.Offer.IsOurOffer == false).ToList();

@@ -21,10 +21,14 @@
         public static void ReplaceDispatch<T>(this ICollection<T> collection, ICollection<T> newCollection)
         {
             collection.ClearDispatch();
-            foreach (var item in newCollection)
-            {
-                collection.AddDispatch(item);
-            }
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                    {
+                        foreach (var item in newCollection)
+                        {
+                            collection.Add(item);
+                        }
+                    });
         }
     }
 }

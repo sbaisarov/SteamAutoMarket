@@ -209,6 +209,7 @@
                             var offers = UiGlobalVariables.SteamManager.ReceiveTradeOffers(
                                 this.SentOffersCheckBox,
                                 this.ReceivedOffersCheckBox);
+
                             if (this.ActiveOnlyCheckBox)
                             {
                                 offers = offers.Where(
@@ -226,8 +227,10 @@
                         {
                             ErrorNotify.CriticalMessageBox(ex);
                         }
-
-                        this.IsLoadButtonEnabled = true;
+                        finally
+                        {
+                            this.IsLoadButtonEnabled = true;
+                        }
                     });
         }
     }

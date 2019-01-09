@@ -8,6 +8,7 @@
     using System.Windows;
     using System.Windows.Controls;
 
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.Logger;
@@ -58,27 +59,39 @@
 
         private void RemoveCurrentOnClick(object sender, RoutedEventArgs e)
         {
-            this.RefreshWorkingProcessesList();
-            if (((IEnumerable<string>)this.CurrentProcessComboBox.ItemsSource).Count() <= 1)
+            try
             {
-                ErrorNotify.CriticalMessageBox(
-                    "You can remove processes from list only in case when the list will have at least 1 more process!");
-                return;
-            }
+                this.RefreshWorkingProcessesList();
 
-            if (this.GetContext().WorkingAction.IsCompleted == false)
+                if (((IEnumerable<string>)this.CurrentProcessComboBox.ItemsSource)?.Count() <= 1)
+                {
+                    ErrorNotify.CriticalMessageBox(
+                        "You can remove processes from list only in case when the list will have at least 1 more process!");
+
+                    return;
+                }
+
+                if (this.GetContext().WorkingAction?.IsCompleted == false)
+                {
+                    ErrorNotify.CriticalMessageBox("You can not remove this processes!");
+                    return;
+                }
+
+                WorkingProcessProvider.RemoveWorkingProcessFromList((string)this.CurrentProcessComboBox.SelectedValue);
+
+                var newValue = WorkingProcessProvider.GetAllProcessesNames().FirstOrDefault()
+                               ?? WorkingProcessProvider.EmptyWorkingProcess.Title;
+
+                this.CurrentProcessComboBox.SelectedValue = newValue;
+
+                this.RefreshWorkingProcessesList();
+            }
+            catch (Exception ex)
             {
-                ErrorNotify.CriticalMessageBox("You can not remove this processes!");
-                return;
+                ErrorNotify.CriticalMessageBox("Some error occured. Try to switch over working processes and retry removing");
+                Logger.Log.Error($"Error on working process remove", ex);
+                this.RefreshWorkingProcessesList();
             }
-
-            WorkingProcessProvider.RemoveWorkingProcessFromList((string)this.CurrentProcessComboBox.SelectedValue);
-
-            var newValue = WorkingProcessProvider.GetAllProcessesNames().FirstOrDefault(i => i != null)
-                           ?? WorkingProcessProvider.EmptyWorkingProcess.Title;
-            this.CurrentProcessComboBox.SelectedValue = newValue;
-
-            this.RefreshWorkingProcessesList();
         }
 
         private void StopButton_OnClick(object sender, EventArgs e)

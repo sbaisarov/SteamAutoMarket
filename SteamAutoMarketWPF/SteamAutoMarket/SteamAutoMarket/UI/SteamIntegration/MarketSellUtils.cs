@@ -10,6 +10,7 @@
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Steam.Auth;
+    using SteamAutoMarket.Steam.Market;
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.TradeOffer;
@@ -141,46 +142,14 @@
                         return;
                     }
 
-                    var confirmationsSuccess = new List<bool>();
-                    if (confirmations.Length > 50)
-                    {
-                        var chunks = confirmations.Select((s, i) => new { Value = s, Index = i })
-                            .GroupBy(x => x.Index / 50).Select(grp => grp.Select(x => x.Value).ToArray()).ToArray();
+                    var confirmationAcceptSuccess = guard.AcceptMultipleConfirmations(confirmations);
 
-                        wp.AppendLog($"Splitting confirmation list by 50. {chunks.Length} chunks was obtained");
-                        var chunkIndex = 1;
-                        foreach (var chunk in chunks)
-                        {
-                            if (wp.CancellationToken.IsCancellationRequested)
-                            {
-                                wp.AppendLog("2FA confirmation process was force stopped.");
-                                return;
-                            }
+                    wp.AppendLog(
+                        confirmationAcceptSuccess
+                            ? "Confirmations confirm was successful"
+                            : "Confirmations confirm was failed");
 
-                            wp.AppendLog($"Trying to confirm {chunkIndex} confirmations chunk");
-                            var status = guard.AcceptMultipleConfirmations(chunk);
-                            confirmationsSuccess.Add(status);
-
-                            wp.AppendLog(
-                                status
-                                    ? $"{chunkIndex} confirmations chunk confirm was successful"
-                                    : $"{chunkIndex} confirmations chunk confirm was failed");
-
-                            chunkIndex++;
-
-                            Thread.Sleep(TimeSpan.FromSeconds(2));
-                        }
-                    }
-                    else
-                    {
-                        var status = guard.AcceptMultipleConfirmations(confirmations);
-                        confirmationsSuccess.Add(status);
-
-                        wp.AppendLog(
-                            status ? "Confirmations confirm was successful" : "Confirmations confirm was failed");
-                    }
-
-                    if (confirmationsSuccess.All(c => c))
+                    if (confirmationAcceptSuccess)
                     {
                         wp.AppendLog($"{confirmations.Length} confirmations was successfully accepted");
                         wp.AppendLog("Fetching 2FA confirmations to verify they are empty");
@@ -294,6 +263,8 @@
             UiSteamManager uiSteamManager,
             WorkingProcessDataContext wp)
         {
+            var currencySymbol = SteamCurrencies.Currencies[uiSteamManager.Currency.ToString()];
+
             wp.AppendLog(
                 retryCount < int.MaxValue
                     ? $"Retrying to sell {marketSellModel.ItemName} {retryCount} more times."
@@ -316,7 +287,7 @@
 
                 try
                 {
-                    wp.AppendLog($"Selling - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice}");
+                    wp.AppendLog($"Selling - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice} {currencySymbol}");
                     uiSteamManager.SellOnMarket(item, marketSellModel.SellPrice.Value);
                     break;
                 }

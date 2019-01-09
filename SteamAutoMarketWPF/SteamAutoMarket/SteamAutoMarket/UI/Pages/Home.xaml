@@ -109,20 +109,6 @@
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Documentation" />
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource FlatButton}" Click="TodoFeatures_OnClick">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Path Style="{StaticResource Geometry}"
-                                  Stretch="Uniform"
-                                  Data="{StaticResource SvgTodoList}" />
-
-                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="TODO features" />
-                        </Grid>
-                    </Button>
                 </WrapPanel>
             </StackPanel>
         </ScrollViewer>

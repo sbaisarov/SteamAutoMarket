@@ -176,6 +176,7 @@ namespace SteamAutoMarket.Steam
                            };
             var quantity = 1;
             if (buyPackages) quantity *= order.Count;
+
             // "G", CultureInfo.InvariantCulture - use these as arguments to convert double into string with dots
             data["price_total"] = (order.Price * 100 * quantity).ToString("G", CultureInfo.InvariantCulture);
             data["quantity"] = quantity.ToString();
@@ -297,12 +298,13 @@ namespace SteamAutoMarket.Steam
         public IEnumerable<FullTradeOffer> ReceiveTradeOffers(
             bool getSentOffers,
             bool getReceivedOffers,
-            string language = "en_us")
+            string language = "en_us",
+            bool getDescriptions = true)
         {
             var offersResponse = this.TradeOfferWeb.GetActiveTradeOffers(
                 getSentOffers,
                 getReceivedOffers,
-                true,
+                getDescriptions,
                 language);
 
             var fullOffersList = new List<FullTradeOffer>();

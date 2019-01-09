@@ -29,9 +29,6 @@
 
         private void Telegram_OnClick(object sender, RoutedEventArgs e) => Process.Start("https://t.me/steamsolutions");
 
-        private void TodoFeatures_OnClick(object sender, RoutedEventArgs e) =>
-            Process.Start("https://docs.google.com/document/d/1ii2rlQ2edap3CbLy_ylwSU1JjVuc5VEqZepJYJwe1_w");
-
         private void Update_OnClick(object sender, RoutedEventArgs e) => AutoUpdater.ShowUpdateForm();
 
         private void Website_OnClick(object sender, RoutedEventArgs e) => Process.Start("https://www.steambiz.store/");

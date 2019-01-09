@@ -379,10 +379,6 @@
                     if (currentIndex == 0) return;
                     this.FocusTextBox(currentIndex - 1);
                     return;
-
-                case Key.Right:
-                    this.FocusNumericUpDown(currentIndex);
-                    return;
             }
         }
 
@@ -609,6 +605,14 @@
             }
 
             this.priceLoadSubTasks.Clear();
+        }
+
+        private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var t in this.MarketItemsToSellGrid.SelectedItems)
+            {
+                ((MarketSellModel)t).NumericUpDown.AmountToSell++;
+            }
         }
     }
 }

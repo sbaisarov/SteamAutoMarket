@@ -51,6 +51,9 @@
             return new[]
                        {
                            new NameValueModel("TradeOfferId", tradeOffer.Offer.TradeOfferId),
+                           new NameValueModel("My items count", tradeOffer.MyItems?.Count ?? 0),
+                           new NameValueModel("Partner items count", tradeOffer.PartnerItems?.Count ?? 0),
+                           new NameValueModel("TradeOfferId", tradeOffer.Offer.TradeOfferId),
                            new NameValueModel(
                                "TradeOfferState",
                                tradeOffer.Offer.TradeOfferState.ToString().Replace("TradeOfferState", string.Empty)),

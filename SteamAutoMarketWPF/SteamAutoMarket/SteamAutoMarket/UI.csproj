@@ -296,6 +296,7 @@
     <Compile Include="UI\SteamIntegration\MarketSellStrategy.cs" />
     <Compile Include="UI\SteamIntegration\UiSteamManager.cs" />
     <Compile Include="UI\Utils\AppUtils.cs" />
+    <Compile Include="UI\Utils\Converter\PasswordConverter.cs" />
     <Compile Include="UI\Utils\Converter\SolidColorBrushToColorConverter.cs" />
     <Compile Include="UI\Utils\Converter\IfNullInvisibleConverter.cs" />
     <Compile Include="UI\Utils\Converter\InvertBooleanConverter.cs" />
