@@ -65,7 +65,7 @@
             // buttonUpdate
             // 
             resources.ApplyResources(this.buttonUpdate, "buttonUpdate");
-            this.buttonUpdate.Image = Resources.download;
+            this.buttonUpdate.Image = global::SteamAutoMarket.Properties.Resources.download;
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.ButtonUpdateClick);
@@ -73,14 +73,14 @@
             // buttonRemindLater
             // 
             resources.ApplyResources(this.buttonRemindLater, "buttonRemindLater");
-            this.buttonRemindLater.Image = Resources.clock_go;
+            this.buttonRemindLater.Image = global::SteamAutoMarket.Properties.Resources.clock_go;
             this.buttonRemindLater.Name = "buttonRemindLater";
             this.buttonRemindLater.UseVisualStyleBackColor = true;
             this.buttonRemindLater.Click += new System.EventHandler(this.ButtonRemindLaterClick);
             // 
             // pictureBoxIcon
             // 
-            this.pictureBoxIcon.Image = Resources.update;
+            this.pictureBoxIcon.Image = global::SteamAutoMarket.Properties.Resources.update;
             resources.ApplyResources(this.pictureBoxIcon, "pictureBoxIcon");
             this.pictureBoxIcon.Name = "pictureBoxIcon";
             this.pictureBoxIcon.TabStop = false;
@@ -89,7 +89,7 @@
             // 
             this.buttonSkip.DialogResult = System.Windows.Forms.DialogResult.Abort;
             resources.ApplyResources(this.buttonSkip, "buttonSkip");
-            this.buttonSkip.Image = Resources.hand_point;
+            this.buttonSkip.Image = global::SteamAutoMarket.Properties.Resources.hand_point;
             this.buttonSkip.Name = "buttonSkip";
             this.buttonSkip.UseVisualStyleBackColor = true;
             this.buttonSkip.Click += new System.EventHandler(this.ButtonSkipClick);
