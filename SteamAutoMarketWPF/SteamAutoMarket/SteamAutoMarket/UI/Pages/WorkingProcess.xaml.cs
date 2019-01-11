@@ -88,7 +88,8 @@
             }
             catch (Exception ex)
             {
-                ErrorNotify.CriticalMessageBox("Some error occured. Try to switch over working processes and retry removing");
+                ErrorNotify.CriticalMessageBox(
+                    "Some error occured. Try to switch over working processes and retry removing");
                 Logger.Log.Error($"Error on working process remove", ex);
                 this.RefreshWorkingProcessesList();
             }
@@ -111,7 +112,8 @@
 
         private void WorkingProcessTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (((WorkingProcessDataContext)this.DataContext).ScrollLogsToEnd)
+            var currentContext = (WorkingProcessDataContext)this.DataContext;
+            if (currentContext != null && currentContext.ScrollLogsToEnd)
             {
                 this.WorkingProcessTextBox.ScrollToEnd();
             }

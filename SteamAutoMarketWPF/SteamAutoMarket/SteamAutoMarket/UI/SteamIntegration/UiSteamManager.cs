@@ -260,6 +260,12 @@
 
                 var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, cookies: this.Cookies);
 
+                if (page == null)
+                {
+                    wp.AppendLog($"{appid.Name} No items found");
+                    return;
+                }
+
                 wp.AppendLog($"{page.TotalInventoryCount} items found");
 
                 var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
@@ -285,6 +291,7 @@
                         contextId,
                         page.LastAssetid,
                         cookies: this.Cookies);
+
                     if (page == null)
                     {
                         wp.AppendLog($"{appid.Name} No items found");
@@ -596,7 +603,8 @@
                                 marketSellModel.ItemModel.Asset.Appid,
                                 marketSellModel.ItemModel.Description.MarketHashName);
 
-                            wp.AppendLog($"Current price for '{marketSellModel.ItemName}' is - {price} {currencySymbol}");
+                            wp.AppendLog(
+                                $"Current price for '{marketSellModel.ItemName}' is - {price} {currencySymbol}");
                             marketSellModel.CurrentPrice = price;
                             marketSellModel.ProcessSellPrice(sellStrategy);
                         }
@@ -650,7 +658,8 @@
                         if (currentItemIndex % itemsToConfirm == 0)
                         {
                             MarketSellUtils.ConfirmMarketTransactionsWorkingProcess(this.Guard, wp);
-                            wp.AppendLog($"Total price of all successfully placed lots - {totalSellPrice} {currencySymbol}");
+                            wp.AppendLog(
+                                $"Total price of all successfully placed lots - {totalSellPrice:F} {currencySymbol}");
                         }
 
                         currentItemIndex++;
@@ -684,7 +693,8 @@
                                                EUniverse.Public,
                                                EAccountType.Individual);
 
-                wp.AppendLog($"Sending trade offer to {targetSteamIdObj.ConvertToUInt64()} - {tradeToken}. My items count - {itemsToTrade.Length}");
+                wp.AppendLog(
+                    $"Sending trade offer to {targetSteamIdObj.ConvertToUInt64()} - {tradeToken}. My items count - {itemsToTrade.Length}");
 
                 var tradeId = this.SendTradeOffer(itemsToTrade, targetSteamIdObj, tradeToken);
                 if (string.IsNullOrEmpty(tradeId))
@@ -725,8 +735,9 @@
                 {
                     wp.AppendLog("Fetching trade offers..");
 
-                    var allOffers = UiGlobalVariables.SteamManager.ReceiveTradeOffers(true, true, getDescriptions: false).Where(
-                        o => o.Offer.TradeOfferState == TradeOfferState.TradeOfferStateActive).ToList();
+                    var allOffers = UiGlobalVariables.SteamManager
+                        .ReceiveTradeOffers(true, true, getDescriptions: false).Where(
+                            o => o.Offer.TradeOfferState == TradeOfferState.TradeOfferStateActive).ToList();
 
                     var receivedOffers = allOffers.Where(o => o.Offer.IsOurOffer == false).ToList();
                     var sentOffers = allOffers.Where(o => o.Offer.IsOurOffer).ToList();
@@ -890,6 +901,11 @@
 
             var groupedItems = sellListingsPage?.SellListings.ToArray().GroupBy(x => new { x.HashName, x.Price });
 
+            if (groupedItems == null)
+            {
+                return;
+            }
+
             foreach (var group in groupedItems)
             {
                 Logger.Log.Debug($"Processing {group.Key.HashName}-{group.Key.Price} group");
@@ -900,11 +916,7 @@
                 if (existModel != null)
                 {
                     Logger.Log.Debug("Group already exist in items collection, adding items.");
-                    foreach (var groupItem in group.ToArray())
-                    {
-                        existModel.ItemsList.Add(groupItem);
-                    }
-
+                    existModel.ItemsList.AddRangeDispatch(group);
                     existModel.RefreshCount();
                 }
                 else
@@ -934,11 +946,7 @@
 
                 if (existModel != null)
                 {
-                    foreach (var groupItem in group.ToArray())
-                    {
-                        existModel.ItemsList.Add(groupItem);
-                    }
-
+                    existModel.ItemsList.AddRangeDispatch(group);
                     existModel.RefreshCount();
                 }
                 else

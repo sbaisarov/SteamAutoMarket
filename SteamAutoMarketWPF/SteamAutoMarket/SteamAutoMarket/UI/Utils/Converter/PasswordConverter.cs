@@ -6,10 +6,12 @@
 
     public class PasswordConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => FormatEncodedString((string)value);
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+            FormatEncodedString((string)value);
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value;
 
-        private static string FormatEncodedString(string password) => password == null ? string.Empty : new string('*', password.Length);
+        private static string FormatEncodedString(string password) =>
+            password == null ? string.Empty : new string('*', password.Length);
     }
 }

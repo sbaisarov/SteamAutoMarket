@@ -218,6 +218,7 @@
             this.AverageMinutesLeft = 0;
             this.ChartModel.ClearDispatch();
             this.ChartModel.AddDispatch(new DataPoint(0, 0));
+            this.times?.Clear();
         }
 
         public void StartWorkingProcess(Action action)
@@ -248,8 +249,20 @@
 
                             this.Timer = Stopwatch.StartNew();
 
-                            this.WorkingAction = Task.Run(action, this.CancellationToken);
-                            this.WorkingAction.ContinueWith(tsk => { this.AppendLog("Working process finished"); });
+                            this.WorkingAction = Task.Run(
+                                () =>
+                                    {
+                                        try
+                                        {
+                                            action();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Logger.Log.Error($"Error on working process - {e.Message}", e);
+                                        }
+
+                                        this.AppendLog("Working process finished");
+                                    });
                         }
                         catch (Exception e)
                         {

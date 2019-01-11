@@ -1,6 +1,5 @@
 ﻿namespace SteamAutoMarket.UI.Utils.Extension
 {
-    using System;
     using System.Collections.Generic;
     using System.Windows;
 
@@ -8,22 +7,32 @@
     {
         public static void AddDispatch<T>(this ICollection<T> collection, T item)
         {
-            Action<T> addMethod = collection.Add;
-            Application.Current.Dispatcher.Invoke(addMethod, item);
+            Application.Current.Dispatcher.Invoke(() => { collection.Add(item); });
+        }
+
+        public static void AddRangeDispatch<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                    {
+                        foreach (var item in items)
+                        {
+                            collection.Add(item);
+                        }
+                    });
         }
 
         public static void ClearDispatch<T>(this ICollection<T> collection)
         {
-            Action method = collection.Clear;
-            Application.Current.Dispatcher.Invoke(method);
+            Application.Current.Dispatcher.Invoke(collection.Clear);
         }
 
         public static void ReplaceDispatch<T>(this ICollection<T> collection, ICollection<T> newCollection)
         {
-            collection.ClearDispatch();
             Application.Current.Dispatcher.Invoke(
                 () =>
                     {
+                        collection.Clear();
                         foreach (var item in newCollection)
                         {
                             collection.Add(item);

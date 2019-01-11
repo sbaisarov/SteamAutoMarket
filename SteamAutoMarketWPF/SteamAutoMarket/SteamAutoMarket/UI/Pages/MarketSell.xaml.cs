@@ -173,6 +173,14 @@
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var t in this.MarketItemsToSellGrid.SelectedItems)
+            {
+                ((MarketSellModel)t).NumericUpDown.AmountToSell++;
+            }
+        }
+
         private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
         {
             var resultView = this.MarketSellItems.ToList();
@@ -605,14 +613,6 @@
             }
 
             this.priceLoadSubTasks.Clear();
-        }
-
-        private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e)
-        {
-            foreach (var t in this.MarketItemsToSellGrid.SelectedItems)
-            {
-                ((MarketSellModel)t).NumericUpDown.AmountToSell++;
-            }
         }
     }
 }

@@ -102,7 +102,12 @@
             return this.ShouldUpdate(this.TheirOfferedItems.RemoveItem(asset));
         }
 
-        public bool TryGetMyCurrencyItem(int appId, string contextId, long currencyId, long amount, out TradeAsset asset)
+        public bool TryGetMyCurrencyItem(
+            int appId,
+            string contextId,
+            long currencyId,
+            long amount,
+            out TradeAsset asset)
         {
             var tradeAsset = new TradeAsset
                                  {

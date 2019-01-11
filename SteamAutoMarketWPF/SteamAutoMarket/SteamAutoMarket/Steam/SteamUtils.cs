@@ -2,10 +2,12 @@
 {
     using System;
     using System.Linq;
+    using System.Reflection;
 
     using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models;
 
+    [Obfuscation(Exclude = true)]
     public class SteamUtils
     {
         public static string GetClearDescription(RgDescription description)

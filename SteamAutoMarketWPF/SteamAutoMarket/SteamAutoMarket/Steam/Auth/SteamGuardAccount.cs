@@ -20,9 +20,6 @@
                 50, 51, 52, 53, 54, 55, 56, 57, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 86, 87, 88, 89
             };
 
-        [JsonIgnore]
-        public WebProxy Proxy { get; set; }
-
         [JsonProperty("account_name")]
         public string AccountName { get; set; }
 
@@ -37,6 +34,9 @@
 
         [JsonProperty("identity_secret")]
         public string IdentitySecret { get; set; }
+
+        [JsonIgnore]
+        public WebProxy Proxy { get; set; }
 
         [JsonProperty("revocation_code")]
         public string RevocationCode { get; set; }

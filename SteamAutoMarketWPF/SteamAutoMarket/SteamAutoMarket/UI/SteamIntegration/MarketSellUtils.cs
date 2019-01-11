@@ -1,7 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.SteamIntegration
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
@@ -287,7 +286,8 @@
 
                 try
                 {
-                    wp.AppendLog($"Selling - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice} {currencySymbol}");
+                    wp.AppendLog(
+                        $"Selling - '{marketSellModel.ItemName}' for {marketSellModel.SellPrice} {currencySymbol}");
                     uiSteamManager.SellOnMarket(item, marketSellModel.SellPrice.Value);
                     break;
                 }

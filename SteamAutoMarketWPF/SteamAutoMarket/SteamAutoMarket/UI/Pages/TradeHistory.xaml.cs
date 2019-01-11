@@ -193,11 +193,9 @@
                                 return;
                             }
 
-                            foreach (var trade in response.Trades)
-                            {
-                                this.TradesHistoryList.AddDispatch(
-                                    new TradeHistoryModel(new FullHistoryTradeOffer(trade, response.Descriptions)));
-                            }
+                            this.TradesHistoryList.AddRangeDispatch(
+                                response.Trades.Select(
+                                    t => new TradeHistoryModel(new FullHistoryTradeOffer(t, response.Descriptions))));
 
                             this.StartAfterTimeItems = this.TradesHistoryList?.Select(t => t.Offer.Offer.TimeInit);
                             this.StartAfterTradeIdItems = this.TradesHistoryList?.Select(t => t.Offer.TradeId);

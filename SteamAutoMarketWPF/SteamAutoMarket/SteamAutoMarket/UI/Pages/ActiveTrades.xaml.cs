@@ -216,10 +216,7 @@
                                     o => o.Offer.TradeOfferState == TradeOfferState.TradeOfferStateActive);
                             }
 
-                            foreach (var offer in offers)
-                            {
-                                this.ActiveTradesList.AddDispatch(new ActiveTradeModel(offer));
-                            }
+                            this.ActiveTradesList.AddRangeDispatch(offers.Select(o => new ActiveTradeModel(o)));
 
                             ErrorNotify.InfoMessageBox($"{offers.Count()} offers loaded");
                         }
