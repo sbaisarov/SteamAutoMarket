@@ -14,7 +14,11 @@
     [Serializable]
     public class SteamItemsModel : INotifyPropertyChanged
     {
+        private double? averagePrice;
+
         private int count;
+
+        private double? currentPrice;
 
         private string image;
 
@@ -40,6 +44,16 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public double? AveragePrice
+        {
+            get => this.averagePrice;
+            set
+            {
+                this.averagePrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public int Count
         {
             get => this.count;
@@ -47,6 +61,16 @@
             {
                 if (this.count == value) return;
                 this.count = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public double? CurrentPrice
+        {
+            get => this.currentPrice;
+            set
+            {
+                this.currentPrice = value;
                 this.OnPropertyChanged();
             }
         }
@@ -85,6 +109,12 @@
         public NumericUpDownModel NumericUpDown { get; }
 
         public string Type { get; }
+
+        public virtual void CleanItemPrices()
+        {
+            this.CurrentPrice = null;
+            this.AveragePrice = null;
+        }
 
         public void RefreshCount()
         {

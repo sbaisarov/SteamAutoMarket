@@ -159,6 +159,38 @@
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
 
+                    <xcdg:Column Title="Current price"
+                                 Width="1*"
+                                 FieldName="CurrentPrice"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Average price"
+                                 Width="1*"
+                                 FieldName="AveragePrice"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
                     <xcdg:Column Title="Amount to send"
                                  MinWidth="110"
                                  MaxWidth="110"
@@ -192,6 +224,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" MinHeight="100" MaxHeight="400" SharedSizeGroup="Image" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -353,7 +386,95 @@
                           IsChecked="{Binding TradeSendConfirm2Fa}" />
             </Grid>
 
-            <Grid Grid.Row="4"
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Height="38"
+                    Width="38"
+                    Grid.Column="0"
+                    Padding="0"
+                    Margin="1,4,1,5"
+                    Background="Transparent"
+                    ToolTip="Reload all prices"
+                    Click="RefreshAllPricesPriceButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefresh}" />
+                </Button>
+
+                <Button Name="RefreshSinglePriceButton"
+                        Height="38"
+                        Width="38"
+                        Grid.Column="1"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Reload selected item price"
+                        Click="RefreshSinglePriceButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefreshSingle}" />
+
+                </Button>
+
+                <Button Name="StopPriceLoadingButton"
+                        Height="38"
+                        Width="38"
+                        Grid.Column="2"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Stop prices load"
+                        Click="StopPriceLoadingButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgStop}" />
+
+                </Button>
+
+                <Button
+                    Height="38"
+                    Width="38"
+                    Grid.Column="3"
+                    Padding="0"
+                    Margin="1,4,1,5"
+                    Background="Transparent"
+                    ToolTip="Find selected item on steam market"
+                    Click="OpenOnSteamMarket_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgSteam}" />
+                </Button>
+
+                <RepeatButton Name="AddOneToAllSelectedItems"
+                        Height="38"
+                        Width="38"
+                        Grid.Column="4"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Add +1 amount to sell to all selected items"
+                        Click="AddOneToAllSelectedButtonClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgPlusOne}" />
+
+                </RepeatButton>
+            </Grid>
+
+            <Grid Grid.Row="5"
                   Margin="0, 0, 0, 5">
 
                 <Grid.ColumnDefinitions>
@@ -391,7 +512,7 @@
                 </Button>
             </Grid>
 
-            <Button Grid.Row="5"
+            <Button Grid.Row="6"
                     Content="Send trade offer"
                     Margin="0, 5, 0, 0"
                     Padding="0"
