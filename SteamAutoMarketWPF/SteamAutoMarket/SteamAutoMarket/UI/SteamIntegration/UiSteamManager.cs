@@ -315,7 +315,6 @@
 
                 wp.AppendLog(message);
                 ErrorNotify.CriticalMessageBox(message, e);
-                marketSellItems.ClearDispatch();
             }
         }
 
@@ -373,7 +372,6 @@
 
                 wp.AppendLog(message);
                 ErrorNotify.CriticalMessageBox(message, e);
-                itemsToTrade.ClearDispatch();
             }
         }
 
@@ -420,7 +418,6 @@
                 const string Message = "Error on market listings loading";
                 wp.AppendLog(Message);
                 ErrorNotify.CriticalMessageBox(Message, e);
-                relistItemsList.ClearDispatch();
             }
         }
 
