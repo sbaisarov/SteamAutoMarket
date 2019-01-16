@@ -899,7 +899,8 @@
         {
             Logger.Log.Debug($"Processing listing page of {sellListingsPage?.TotalCount} items");
 
-            var groupedItems = sellListingsPage?.SellListings.ToArray().GroupBy(x => new { x.HashName, x.Price });
+            var groupedItems = sellListingsPage?.SellListings.ToArray()
+                .GroupBy(x => new { x.HashName, x.Price, x.Date });
 
             if (groupedItems == null)
             {
@@ -908,10 +909,11 @@
 
             foreach (var group in groupedItems)
             {
-                Logger.Log.Debug($"Processing {group.Key.HashName}-{group.Key.Price} group");
+                Logger.Log.Debug($"Processing {group.Key.HashName}-{group.Key.Price}-{group.Key.Date} group");
 
                 var existModel = marketSellListings.FirstOrDefault(
-                    item => item.ItemModel.HashName == group.Key.HashName && item.ItemModel.Price == group.Key.Price);
+                    item => item.ItemModel.HashName == group.Key.HashName && item.ItemModel.Price == group.Key.Price
+                                                                          && item.ItemModel.Date == group.Key.Date);
 
                 if (existModel != null)
                 {
