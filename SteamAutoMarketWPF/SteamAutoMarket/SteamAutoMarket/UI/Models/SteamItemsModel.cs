@@ -120,6 +120,10 @@
         {
             this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
             this.NumericUpDown.MaxAllowedCount = this.Count;
+            if (this.NumericUpDown.AmountToSell > this.Count)
+            {
+                this.NumericUpDown.AmountToSell = this.Count;
+            }
         }
 
         [NotifyPropertyChangedInvocator]

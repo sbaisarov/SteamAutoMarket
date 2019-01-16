@@ -445,6 +445,7 @@
                                         this.priceLoadSubTasks.ToArray(),
                                         itemsToSell,
                                         this.MarketSellStrategy,
+                                        this.MarketSellItems,
                                         wp);
                                 });
                     });

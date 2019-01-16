@@ -30,7 +30,7 @@
                               Margin="10, 10, 30, 10"
                               AutoCreateColumns="False"
                               Style="{StaticResource GridStyle}"
-                              ItemsSource="{Binding Path=RelistItemsList, Mode=OneWay}"
+                              ItemsSource="{Binding Path=MarketListedItemsList, Mode=OneWay}"
                               SelectedItem="{Binding Path=RelistSelectedItem, Mode=TwoWay}">
 
             <xcdg:DataGridControl.View>
@@ -200,6 +200,7 @@
                 <RowDefinition MinHeight="49" MaxHeight="90" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" MinHeight="25" MaxHeight="55" />
+                <RowDefinition Height="*" MinHeight="40" MaxHeight="70" />
                 <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
                 <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
             </Grid.RowDefinitions>
@@ -242,7 +243,7 @@
                     Padding="0" Click="LoadMarketListingsButton_OnClick" />
 
             <Grid Grid.Row="2"
-                  VerticalAlignment="Center" Margin="0,5">
+                  VerticalAlignment="Center" Margin="0,5,0,0">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -327,11 +328,11 @@
                 </Grid.ColumnDefinitions>
 
                 <Button
-                    Height="40"
-                    Width="40"
+                    Height="38"
+                    Width="38"
                     Grid.Column="0"
                     Padding="0"
-                    Margin="1,4,1,5"
+                    Margin="1,2,1,2"
                     Background="Transparent"
                     ToolTip="Reload all prices"
                     Click="RefreshAllPricesPriceButton_OnClick">
@@ -342,11 +343,11 @@
                 </Button>
 
                 <Button Name="RefreshSinglePriceButton"
-                        Height="40"
-                        Width="40"
+                        Height="38"
+                        Width="38"
                         Grid.Column="1"
                         Padding="0"
-                        Margin="1,4,1,5"
+                        Margin="1,2,1,2"
                         Background="Transparent"
                         ToolTip="Reload selected item price"
                         Click="RefreshSinglePriceButton_OnClick">
@@ -358,11 +359,11 @@
                 </Button>
 
                 <Button Name="StopPriceLoadingButton"
-                        Height="40"
-                        Width="40"
+                        Height="38"
+                        Width="38"
                         Grid.Column="2"
                         Padding="0"
-                        Margin="1,4,1,5"
+                        Margin="1,2,1,2"
                         Background="Transparent"
                         ToolTip="Stop prices load"
                         Click="StopPriceLoadingButton_OnClick">
@@ -374,11 +375,11 @@
                 </Button>
 
                 <Button
-                    Height="40"
-                    Width="40"
+                    Height="38"
+                    Width="38"
                     Grid.Column="3"
                     Padding="0"
-                    Margin="1,4,1,5"
+                    Margin="1,2,1,2"
                     Background="Transparent"
                     ToolTip="Find selected item on steam market"
                     Click="OpenItemPageButton_OnClick">
@@ -430,16 +431,35 @@
             <Button Grid.Row="6"
                     Name="MarkOverpricesButton"
                     Content="Check overpriced items"
-                    Margin="0, 5, 0, 0"
+                    Margin="0, 5, 0, 10"
                     Padding="0"
                     Click="MarkOverpricesButton_OnClick" />
 
             <Button Grid.Row="7"
-                    Name="StartRelistButton"
-                    Click="StartRelistButton_OnClick"
+                    Name="StartRemoveButton"
+                    Click="StartRemoveButton_OnClick"
                     Content="Remove selected"
                     Margin="0, 5, 0, 0"
                     Padding="0" />
+
+            <Button Grid.Row="8"
+                    Name="StartRelistButton"
+                    Click="StartRelistButton_OnClick"
+                    Content="Relist selected (BETA)"
+                    Margin="0, 5, 0, 0"
+                    Padding="0">
+                <Button.ToolTip>
+                    <TextBlock>
+                        PAY ATTENTION!!! 
+                        <LineBreak /> 
+                        It is not possible to discover absolutely identical item after removing item from Steam Market.
+                        <LineBreak />
+                        Relist algorithm will take first item with corresponding to removed item market hash name. 
+                        <LineBreak />
+                        Use this mode only if you are 100% sure! 
+                    </TextBlock>
+                </Button.ToolTip>
+            </Button>
         </Grid>
 
     </Grid>

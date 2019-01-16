@@ -22,6 +22,15 @@
             this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
         }
 
+        public MarketSellProcessModel(FullRgItem fullRgItem, PriceModel sellPrice)
+        {
+            this.ItemName = fullRgItem.Description.Name;
+            this.ItemModel = fullRgItem;
+            this.ItemsList = new List<FullRgItem> { fullRgItem };
+            this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
+            this.SellPrice = sellPrice.Value;
+        }
+
         public double? AveragePrice { get; set; }
 
         public int Count { get; set; }
