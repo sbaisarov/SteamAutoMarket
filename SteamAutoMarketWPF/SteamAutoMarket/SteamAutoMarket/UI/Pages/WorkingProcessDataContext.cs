@@ -228,8 +228,6 @@
                 return;
             }
 
-            WorkingProcess.OpenTab();
-
             UiGlobalVariables.LastInvokedWorkingProcessDataContext = this;
             if (UiGlobalVariables.WorkingProcessTab != null)
             {
@@ -269,6 +267,8 @@
                             Logger.Log.Error($"Error on working process - {e.Message}", e);
                         }
                     });
+
+            WorkingProcess.OpenTab();
         }
 
         [NotifyPropertyChangedInvocator]
