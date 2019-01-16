@@ -9,42 +9,17 @@
     [Serializable]
     public class MarketSellModel : SteamItemsModel
     {
-        private double? averagePrice;
-
-        private double? currentPrice;
-
         public MarketSellModel(FullRgItem[] itemsList)
             : base(itemsList)
         {
             this.SellPrice = new PriceModel();
         }
 
-        public double? AveragePrice
-        {
-            get => this.averagePrice;
-            set
-            {
-                this.averagePrice = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public double? CurrentPrice
-        {
-            get => this.currentPrice;
-            set
-            {
-                this.currentPrice = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         public PriceModel SellPrice { get; }
 
-        public void CleanItemPrices()
+        public override void CleanItemPrices()
         {
-            this.CurrentPrice = null;
-            this.AveragePrice = null;
+            base.CleanItemPrices();
             this.SellPrice.Value = null;
         }
 

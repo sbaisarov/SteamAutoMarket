@@ -14,6 +14,7 @@
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
+    using SteamAutoMarket.UI.SteamIntegration;
     using SteamAutoMarket.UI.Utils.Logger;
 
     /// <summary>
@@ -153,6 +154,10 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e) =>
+            FunctionalButtonsActions.AddPlusOneAmountToAllItems(
+                (IEnumerable<SteamItemsModel>)this.MarketItemsToTradeGrid.SelectedItems);
+
         private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
         {
             var resultView = this.TradeSendItemsList.ToList();
@@ -233,6 +238,7 @@
             }
 
             this.TradeSendItemsList.Clear();
+            this.ResetFilters();
 
             var wp = WorkingProcessProvider.GetNewInstance($"{this.TradeSendSelectedAppid.Name} inventory loading");
             wp?.StartWorkingProcess(
@@ -271,7 +277,16 @@
             }
         }
 
-        private void ResetFiltersClick(object sender, RoutedEventArgs e)
+        private void OpenOnSteamMarket_OnClick(object sender, RoutedEventArgs e) =>
+            FunctionalButtonsActions.OpenOnSteamMarket(this.TradeSendSelectedItem);
+
+        private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e) =>
+            GridPriceLoader.StartPriceLoading((IEnumerable<SteamItemsModel>)this.MarketItemsToTradeGrid.ItemsSource);
+
+        private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e) =>
+            GridPriceLoader.RefreshSingleModelPrice(this.TradeSendSelectedItem);
+
+        private void ResetFilters()
         {
             this.RealGameSelectedFilter = null;
             this.RealGameComboBox.Text = null;
@@ -286,6 +301,11 @@
             this.MarketableComboBox.Text = null;
 
             this.MarketItemsToTradeGrid.ItemsSource = this.TradeSendItemsList;
+        }
+
+        private void ResetFiltersClick(object sender, RoutedEventArgs e)
+        {
+            this.ResetFilters();
         }
 
         private void SendTradeOfferButtonOnClick(object sender, RoutedEventArgs e)
@@ -334,5 +354,8 @@
                     this.TradeSendConfirm2Fa,
                     wp));
         }
+
+        private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>
+            GridPriceLoader.InvokePriceLoadingStop();
     }
 }
