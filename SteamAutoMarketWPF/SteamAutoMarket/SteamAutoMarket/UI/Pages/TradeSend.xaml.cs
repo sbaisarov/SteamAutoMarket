@@ -281,10 +281,10 @@
             FunctionalButtonsActions.OpenOnSteamMarket(this.TradeSendSelectedItem);
 
         private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e) =>
-            GridPriceLoader.StartPriceLoading((IEnumerable<SteamItemsModel>)this.MarketItemsToTradeGrid.ItemsSource);
+            GridPriceLoaderUtils.StartPriceLoading((IEnumerable<SteamItemsModel>)this.MarketItemsToTradeGrid.ItemsSource);
 
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e) =>
-            GridPriceLoader.RefreshSingleModelPrice(this.TradeSendSelectedItem);
+            GridPriceLoaderUtils.RefreshSingleModelPrice(this.TradeSendSelectedItem);
 
         private void ResetFilters()
         {
@@ -356,6 +356,6 @@
         }
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>
-            GridPriceLoader.InvokePriceLoadingStop();
+            GridPriceLoaderUtils.InvokePriceLoadingStop();
     }
 }

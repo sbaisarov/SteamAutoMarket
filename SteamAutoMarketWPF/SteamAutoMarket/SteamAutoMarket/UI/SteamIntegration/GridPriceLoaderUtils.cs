@@ -13,7 +13,7 @@
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.Utils.Logger;
 
-    public static class GridPriceLoader
+    public static class GridPriceLoaderUtils
     {
         private static readonly List<Task> PriceLoadSubTasks = new List<Task>();
 

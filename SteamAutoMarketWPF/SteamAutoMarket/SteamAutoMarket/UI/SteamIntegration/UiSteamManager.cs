@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Windows;
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Core.Waiter;
@@ -421,10 +422,99 @@
             }
         }
 
+        public void RelistListings(
+            Task[] priceLoadTasksList,
+            MarketRelistModel[] marketRelistModels,
+            MarketSellStrategy sellStrategy,
+            ObservableCollection<MarketRelistModel> allItemsList,
+            WorkingProcessDataContext wp)
+        {
+            wp.AppendLog($"Removing {marketRelistModels.Sum(m => m.Count)} market listings");
+            this.RemoveListings(priceLoadTasksList, marketRelistModels, sellStrategy, allItemsList, wp);
+            wp.AppendLog($"Removing of {marketRelistModels.Sum(m => m.Count)} market listings done");
+
+            wp.AppendLog("Processing items to discover what inventories should be loaded");
+            var appidList = marketRelistModels.GroupBy(m => m.ItemModel.AppId).Select(kv => kv.Key).ToArray();
+            wp.AppendLog($"{string.Join(", ", appidList)} inventories Appid discovered");
+            wp.AppendLog("Trying to discover context ids");
+
+            var toLoadInventoriesAppidList = new List<SteamAppId>();
+            foreach (var appid in appidList)
+            {
+                var appidObj = SettingsProvider.GetInstance().AppIdList.FirstOrDefault(a => a.AppId == appid);
+                if (appidObj?.ContextId != null)
+                {
+                    toLoadInventoriesAppidList.Add(appidObj);
+                    wp.AppendLog($"Context id for {appid} is {appidObj.ContextId} ({appidObj.Name} inventory)");
+                }
+                else
+                {
+                    wp.AppendLog(
+                        $"There is no corresponding context id for {appid} appid. All items from {appid} inventory will be skipped on sell process. To avoid this error in future - you can manually add required inventory to 'AppIdList' parameter on settings.ini file.");
+                }
+            }
+
+            if (toLoadInventoriesAppidList.Any() == false)
+            {
+                wp.AppendLog("No inventories to load found. Aborting relist process");
+                return;
+            }
+
+            var allItems = new List<MarketSellModel>();
+            foreach (var steamAppId in toLoadInventoriesAppidList)
+            {
+                if (steamAppId.ContextId == null) continue;
+                wp.ProgressBarValue = 0;
+                var items = new ObservableCollection<MarketSellModel>();
+                this.LoadItemsToSaleWorkingProcess(steamAppId, steamAppId.ContextId.Value, items, wp);
+                allItems.AddRange(items);
+            }
+
+            var foundItemsList = new List<Tuple<FullRgItem, PriceModel>>();
+
+            var groupedItemsToFind = marketRelistModels.Select(m => new { m.ItemsList, m.RelistPrice }).ToList();
+
+            foreach (var itemsToFind in groupedItemsToFind)
+            {
+                for (var i = itemsToFind.ItemsList.Count - 1; i > -1; i--)
+                {
+                    var currentItem = itemsToFind.ItemsList[i];
+
+                    var foundItemNode = allItems.FirstOrDefault(
+                        item => item.ItemModel.Description.MarketHashName == currentItem.HashName);
+
+                    if (foundItemNode != null)
+                    {
+                        var foundItem = foundItemNode.ItemsList.FirstOrDefault();
+                        foundItemsList.Add(new Tuple<FullRgItem, PriceModel>(foundItem, itemsToFind.RelistPrice));
+
+                        foundItemNode.ItemsList.Remove(foundItem);
+                    }
+                    else
+                    {
+                        wp.AppendLog($"{currentItem.Name} ({currentItem.AppId}) item not found");
+                    }
+                }
+            }
+
+            wp.AppendLog($"{foundItemsList.Count}/{groupedItemsToFind.Sum(g => g.ItemsList.Count)} items found");
+            wp.ProgressBarValue = 0;
+
+            var itemsToSell = foundItemsList.Select(i => new MarketSellProcessModel(i.Item1, i.Item2)).ToArray();
+
+            this.SellOnMarketWorkingProcess(
+                priceLoadTasksList,
+                itemsToSell,
+                sellStrategy,
+                new ObservableCollection<MarketSellModel>(),
+                wp);
+        }
+
         public void RemoveListings(
             Task[] priceLoadTasksList,
             MarketRelistModel[] marketRelistModels,
             MarketSellStrategy sellStrategy,
+            ObservableCollection<MarketRelistModel> allItemsList,
             WorkingProcessDataContext wp)
         {
             try
@@ -444,6 +534,8 @@
 
                 var threadsCount = SettingsProvider.GetInstance().RelistThreadsCount;
                 var semaphore = new Semaphore(threadsCount, threadsCount);
+                
+                var tasks = new List<Task>();
                 foreach (var marketSellModel in marketRelistModels)
                 {
                     var packageElementIndex = 1;
@@ -462,7 +554,7 @@
                             var itemCancelId = item.SaleId;
                             var realIndex = currentItemIndex;
                             var realPackageIndex = packageElementIndex++;
-                            Task.Run(
+                            tasks.Add(Task.Run(
                                 () =>
                                     {
                                         try
@@ -512,8 +604,28 @@
                                         {
                                             wp.IncrementProgress();
                                             semaphore.Release();
+
+                                            var existNode = allItemsList.FirstOrDefault(
+                                                m => m.ItemsList.Contains(marketSellModel.ItemModel));
+
+                                            if (existNode != null)
+                                            {
+                                                Application.Current.Dispatcher.Invoke(
+                                                    () =>
+                                                        {
+                                                            existNode.ItemsList.Remove(marketSellModel.ItemModel);
+                                                            if (existNode.ItemsList.Count == 0)
+                                                            {
+                                                                allItemsList.Remove(existNode);
+                                                            }
+                                                            else
+                                                            {
+                                                                existNode.RefreshCount();
+                                                            }
+                                                        });
+                                            }
                                         }
-                                    });
+                                    }));
                         }
                         catch (Exception ex)
                         {
@@ -526,6 +638,8 @@
                         currentItemIndex++;
                     }
                 }
+
+                new Waiter().Until(() => tasks.All(t => t.IsCompleted));
             }
             catch (Exception ex)
             {
@@ -615,24 +729,6 @@
                             wp.ProgressBarMaximum = totalItemsCount;
                             continue;
                         }
-                        finally
-                        {
-                            var existNode =
-                                allItemsList.FirstOrDefault(m => m.ItemsList.Contains(marketSellModel.ItemModel));
-
-                            if (existNode != null)
-                            {
-                                existNode.ItemsList.RemoveDispatch(marketSellModel.ItemModel);
-                                if (existNode.ItemsList.Count == 0)
-                                {
-                                    allItemsList.RemoveDispatch(existNode);
-                                }
-                                else
-                                {
-                                    existNode.RefreshCount();
-                                }
-                            }
-                        }
                     }
 
                     var packageElementIndex = 1;
@@ -670,16 +766,38 @@
 
                             MarketSellUtils.ProcessErrorOnMarketSell(marketSellModel, item, this, ex.Message, wp);
                         }
-
-                        if (currentItemIndex % itemsToConfirm == 0)
+                        finally
                         {
-                            MarketSellUtils.ConfirmMarketTransactionsWorkingProcess(this.Guard, wp);
-                            wp.AppendLog(
-                                $"Total price of all successfully placed lots - {totalSellPrice:F} {currencySymbol}");
-                        }
+                            var existNode =
+                                allItemsList.FirstOrDefault(m => m.ItemsList.Contains(marketSellModel.ItemModel));
 
-                        currentItemIndex++;
-                        wp.IncrementProgress();
+                            if (existNode != null)
+                            {
+                                Application.Current.Dispatcher.Invoke(
+                                    () =>
+                                        {
+                                            existNode.ItemsList.Remove(marketSellModel.ItemModel);
+                                            if (existNode.ItemsList.Count == 0)
+                                            {
+                                                allItemsList.Remove(existNode);
+                                            }
+                                            else
+                                            {
+                                                existNode.RefreshCount();
+                                            }
+                                        });
+                            }
+
+                            if (currentItemIndex % itemsToConfirm == 0)
+                            {
+                                MarketSellUtils.ConfirmMarketTransactionsWorkingProcess(this.Guard, wp);
+                                wp.AppendLog(
+                                    $"Total price of all successfully placed lots - {totalSellPrice:F} {currencySymbol}");
+                            }
+
+                            currentItemIndex++;
+                            wp.IncrementProgress();
+                        }
                     }
                 }
 
@@ -972,89 +1090,6 @@
                     marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
                 }
             }
-        }
-
-        public void RelistListings(
-            Task[] priceLoadTasksList,
-            MarketRelistModel[] marketRelistModels,
-            MarketSellStrategy sellStrategy,
-            WorkingProcessDataContext wp)
-        {
-            wp.AppendLog($"Removing {marketRelistModels.Sum(m => m.Count)} market listings");
-            this.RemoveListings(priceLoadTasksList, marketRelistModels, sellStrategy, wp);
-            wp.AppendLog($"Removing of {marketRelistModels.Sum(m => m.Count)} market listings done");
-
-            wp.AppendLog("Processing items to discover what inventories should be loaded");
-            var appidList = marketRelistModels.GroupBy(m => m.ItemModel.AppId).Select(kv => kv.Key).ToArray();
-            wp.AppendLog($"{string.Join(", ", appidList)} inventories Appid discovered");
-            wp.AppendLog("Trying to discover context ids");
-
-            var toLoadInventoriesAppidList = new List<SteamAppId>();
-            foreach (var appid in appidList)
-            {
-                var appidObj = SettingsProvider.GetInstance().AppIdList.FirstOrDefault(a => a.AppId == appid);
-                if (appidObj?.ContextId != null)
-                {
-                    toLoadInventoriesAppidList.Add(appidObj);
-                    wp.AppendLog($"Context id for {appid} is {appidObj.ContextId} ({appidObj.Name} inventory)");
-                }
-                else
-                {
-                    wp.AppendLog(
-                        $"There is no corresponding context id for {appid} appid. All items from {appid} inventory will be skipped on sell process. To avoid this error in future - you can manually add required inventory to 'AppIdList' parameter on settings.ini file.");
-                }
-            }
-
-            if (toLoadInventoriesAppidList.Any() == false)
-            {
-                wp.AppendLog("No inventories to load found. Aborting relist process");
-                return;
-            }
-
-            var allItems = new List<MarketSellModel>();
-            foreach (var steamAppId in toLoadInventoriesAppidList)
-            {
-                if (steamAppId.ContextId == null) continue;
-                wp.ProgressBarValue = 0;
-                var items = new ObservableCollection<MarketSellModel>();
-                this.LoadItemsToSaleWorkingProcess(steamAppId, steamAppId.ContextId.Value, items, wp);
-                allItems.AddRange(items);
-            }
-
-            var foundItemsList = new List<Tuple<FullRgItem, PriceModel>>();
-
-            var groupedItemsToFind = marketRelistModels.Select(m => new { m.ItemsList, m.RelistPrice}).ToList();
-
-            foreach (var itemsToFind in groupedItemsToFind)
-            {
-                for (var i = itemsToFind.ItemsList.Count - 1; i > -1; i--)
-                {
-                    var currentItem = itemsToFind.ItemsList[i];
-
-                    var foundItemNode = allItems.FirstOrDefault(
-                        item => item.ItemModel.Description.MarketHashName == currentItem.HashName);
-
-                    if (foundItemNode != null)
-                    {
-                        var foundItem = foundItemNode.ItemsList.FirstOrDefault();
-                        foundItemsList.Add(new Tuple<FullRgItem, PriceModel>(foundItem, itemsToFind.RelistPrice));
-
-                        foundItemNode.ItemsList.Remove(foundItem);
-                    }
-                    else
-                    {
-                        wp.AppendLog($"{currentItem.Name} ({currentItem.AppId}) item not found");
-                    }
-                }
-            }
-            
-
-            wp.AppendLog($"{foundItemsList.Count}/{groupedItemsToFind.Sum(g => g.ItemsList.Count)} items found");
-            wp.ProgressBarValue = 0;
-
-            var itemsToSell = foundItemsList.Select(i => new MarketSellProcessModel(i.Item1, i.Item2)).ToArray();
-
-            this.SellOnMarketWorkingProcess(priceLoadTasksList, itemsToSell, sellStrategy, new ObservableCollection<MarketSellModel>(), wp);
         }
     }
 }

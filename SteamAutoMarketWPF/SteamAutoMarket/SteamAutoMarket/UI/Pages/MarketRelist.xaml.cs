@@ -425,6 +425,7 @@
                                         this.priceLoadSubTasks.ToArray(),
                                         itemsToSell,
                                         this.MarketSellStrategy,
+                                        this.MarketListedItemsList,
                                         wp);
                                 });
                     });
@@ -501,6 +502,7 @@
                                         this.priceLoadSubTasks.ToArray(),
                                         itemsToSell,
                                         this.MarketSellStrategy,
+                                        this.MarketListedItemsList,
                                         wp);
                                 });
                     });

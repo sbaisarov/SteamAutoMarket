@@ -385,12 +385,12 @@
         }
 
         private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e) =>
-            GridPriceLoader.StartPriceLoading(
+            GridPriceLoaderUtils.StartPriceLoading(
                 (IEnumerable<MarketSellModel>)this.MarketItemsToSellGrid.ItemsSource,
                 this.MarketSellStrategy);
 
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e) =>
-            GridPriceLoader.RefreshSingleModelPrice(this.MarketSellSelectedItem, this.MarketSellStrategy);
+            GridPriceLoaderUtils.RefreshSingleModelPrice(this.MarketSellSelectedItem, this.MarketSellStrategy);
 
         private void ResetFilters()
         {
@@ -422,7 +422,7 @@
                 return;
             }
 
-            GridPriceLoader.InvokePriceLoadingStop();
+            GridPriceLoaderUtils.InvokePriceLoadingStop();
 
             Task.Run(
                 () =>
@@ -452,6 +452,6 @@
         }
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>
-            GridPriceLoader.InvokePriceLoadingStop();
+            GridPriceLoaderUtils.InvokePriceLoadingStop();
     }
 }
