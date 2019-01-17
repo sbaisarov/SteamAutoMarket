@@ -32,7 +32,7 @@
         /// Any exceptions not whitelisted will be allowed to propagate, terminating the wait.
         /// </summary>
         /// <param name="exceptionTypes">The types of exceptions to ignore.</param>
-        public void IgnoreExceptionTypes(params Type[] exceptionTypes)
+        public Waiter IgnoreExceptionTypes(params Type[] exceptionTypes)
         {
             if (exceptionTypes == null)
             {
@@ -47,6 +47,8 @@
             }
 
             this.ignoredExceptions.AddRange(exceptionTypes);
+
+            return this;
         }
 
         /// <summary>

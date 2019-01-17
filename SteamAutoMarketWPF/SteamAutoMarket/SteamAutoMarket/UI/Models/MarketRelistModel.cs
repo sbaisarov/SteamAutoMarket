@@ -1,6 +1,7 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -24,11 +25,11 @@
 
         private string image;
 
-        public MarketRelistModel(MyListingsSalesItem[] itemsToSaleList)
+        public MarketRelistModel(IReadOnlyCollection<MyListingsSalesItem> itemsToSaleList)
         {
             this.ItemsList = new ObservableCollection<MyListingsSalesItem>(itemsToSaleList);
 
-            this.Count = itemsToSaleList.Length;
+            this.Count = itemsToSaleList.Count;
 
             this.ItemModel = itemsToSaleList.FirstOrDefault();
 

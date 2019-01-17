@@ -216,9 +216,14 @@
             this.CurrentSpeed = 0;
             this.MinutesLeft = 0;
             this.AverageMinutesLeft = 0;
+            this.ClearChart();
+            this.times?.Clear();
+        }
+
+        public void ClearChart()
+        {
             this.ChartModel.ClearDispatch();
             this.ChartModel.AddDispatch(new DataPoint(0, 0));
-            this.times?.Clear();
         }
 
         public void StartWorkingProcess(Action action)

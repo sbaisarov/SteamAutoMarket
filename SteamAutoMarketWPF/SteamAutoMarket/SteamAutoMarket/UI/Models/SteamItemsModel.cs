@@ -122,7 +122,7 @@
             this.NumericUpDown.MaxAllowedCount = this.Count;
             if (this.NumericUpDown.AmountToSell > this.Count)
             {
-                this.NumericUpDown.AmountToSell = this.Count;
+                this.NumericUpDown.AmountToSell = 0;
             }
         }
 

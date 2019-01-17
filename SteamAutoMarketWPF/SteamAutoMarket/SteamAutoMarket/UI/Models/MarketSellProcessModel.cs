@@ -22,11 +22,11 @@
             this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
         }
 
-        public MarketSellProcessModel(FullRgItem fullRgItem, PriceModel sellPrice)
+        public MarketSellProcessModel(FullRgItem[] fullRgItems, PriceModel sellPrice)
         {
-            this.ItemName = fullRgItem.Description.Name;
-            this.ItemModel = fullRgItem;
-            this.ItemsList = new List<FullRgItem> { fullRgItem };
+            this.ItemName = fullRgItems[0].Description.Name;
+            this.ItemModel = fullRgItems[0];
+            this.ItemsList = fullRgItems;
             this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
             this.SellPrice = sellPrice.Value;
         }

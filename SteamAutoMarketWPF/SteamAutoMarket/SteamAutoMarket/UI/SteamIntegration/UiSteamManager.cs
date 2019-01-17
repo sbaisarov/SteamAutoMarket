@@ -430,11 +430,23 @@
             WorkingProcessDataContext wp)
         {
             wp.AppendLog($"Removing {marketRelistModels.Sum(m => m.Count)} market listings");
+
+            var removedItems = marketRelistModels.SelectMany(
+                model => model.ItemsList,
+                (model, item) => new { item.HashName, item.AppId, model.RelistPrice }).ToList();
+
             this.RemoveListings(priceLoadTasksList, marketRelistModels, sellStrategy, allItemsList, wp);
-            wp.AppendLog($"Removing of {marketRelistModels.Sum(m => m.Count)} market listings done");
+            if (wp.CancellationToken.IsCancellationRequested)
+            {
+                wp.AppendLog("Relist was force stopped");
+                return;
+            }
+
+            wp.AppendLog($"Removing of {removedItems.Count} market listings done");
 
             wp.AppendLog("Processing items to discover what inventories should be loaded");
-            var appidList = marketRelistModels.GroupBy(m => m.ItemModel.AppId).Select(kv => kv.Key).ToArray();
+
+            var appidList = removedItems.GroupBy(kv => kv.AppId).Select(kv => kv.Key).ToArray();
             wp.AppendLog($"{string.Join(", ", appidList)} inventories Appid discovered");
             wp.AppendLog("Trying to discover context ids");
 
@@ -450,7 +462,7 @@
                 else
                 {
                     wp.AppendLog(
-                        $"There is no corresponding context id for {appid} appid. All items from {appid} inventory will be skipped on sell process. To avoid this error in future - you can manually add required inventory to 'AppIdList' parameter on settings.ini file.");
+                        $"There is no corresponding context id for {appid} appid. All items from {appid} inventory will be skipped on sell process. To avoid this error in future - you can manually add required inventory to 'AppIdList' parameter on settings.ini file");
                 }
             }
 
@@ -463,44 +475,67 @@
             var allItems = new List<MarketSellModel>();
             foreach (var steamAppId in toLoadInventoriesAppidList)
             {
-                if (steamAppId.ContextId == null) continue;
+                if (steamAppId.ContextId == null)
+                {
+                    wp.AppendLog($"Context id for {steamAppId.AppId} not found. To avoid this error in future - you can manually add it on required parameter on settings.ini file");
+                    continue;
+                }
+
                 wp.ProgressBarValue = 0;
+                wp.ClearChart();
+
                 var items = new ObservableCollection<MarketSellModel>();
                 this.LoadItemsToSaleWorkingProcess(steamAppId, steamAppId.ContextId.Value, items, wp);
                 allItems.AddRange(items);
+
+                if (wp.CancellationToken.IsCancellationRequested)
+                {
+                    wp.AppendLog("Relist was force stopped");
+                    return;
+                }
             }
 
             var foundItemsList = new List<Tuple<FullRgItem, PriceModel>>();
 
-            var groupedItemsToFind = marketRelistModels.Select(m => new { m.ItemsList, m.RelistPrice }).ToList();
-
-            foreach (var itemsToFind in groupedItemsToFind)
+            for (var i = removedItems.Count - 1; i > -1; i--)
             {
-                for (var i = itemsToFind.ItemsList.Count - 1; i > -1; i--)
+                var currentItem = removedItems[i];
+
+                var foundItemNode = allItems.FirstOrDefault(
+                    item => item.ItemModel.Description.MarketHashName == currentItem.HashName);
+
+                if (foundItemNode != null)
                 {
-                    var currentItem = itemsToFind.ItemsList[i];
+                    var foundItem = foundItemNode.ItemsList.FirstOrDefault();
+                    foundItemsList.Add(new Tuple<FullRgItem, PriceModel>(foundItem, currentItem.RelistPrice));
 
-                    var foundItemNode = allItems.FirstOrDefault(
-                        item => item.ItemModel.Description.MarketHashName == currentItem.HashName);
-
-                    if (foundItemNode != null)
-                    {
-                        var foundItem = foundItemNode.ItemsList.FirstOrDefault();
-                        foundItemsList.Add(new Tuple<FullRgItem, PriceModel>(foundItem, itemsToFind.RelistPrice));
-
-                        foundItemNode.ItemsList.Remove(foundItem);
-                    }
-                    else
-                    {
-                        wp.AppendLog($"{currentItem.Name} ({currentItem.AppId}) item not found");
-                    }
+                    foundItemNode.ItemsList.Remove(foundItem);
+                }
+                else
+                {
+                    wp.AppendLog($"{currentItem.HashName} ({currentItem.AppId}) item not found");
                 }
             }
 
-            wp.AppendLog($"{foundItemsList.Count}/{groupedItemsToFind.Sum(g => g.ItemsList.Count)} items found");
+            wp.AppendLog($"{foundItemsList.Count}/{removedItems.Count} items found");
             wp.ProgressBarValue = 0;
+            wp.ClearChart();
 
-            var itemsToSell = foundItemsList.Select(i => new MarketSellProcessModel(i.Item1, i.Item2)).ToArray();
+            var groupedItems = foundItemsList.GroupBy(tuple => new { tuple.Item1.Description.MarketHashName });
+            var itemsToSell = groupedItems.Select(
+                group =>
+                    {
+                        var groupList = group.ToList();
+                        return new MarketSellProcessModel(
+                            groupList.Select(g => g.Item1).ToArray(),
+                            groupList.First().Item2);
+                    }).ToArray();
+
+            if (wp.CancellationToken.IsCancellationRequested)
+            {
+                wp.AppendLog("Relist was force stopped");
+                return;
+            }
 
             this.SellOnMarketWorkingProcess(
                 priceLoadTasksList,
@@ -534,12 +569,13 @@
 
                 var threadsCount = SettingsProvider.GetInstance().RelistThreadsCount;
                 var semaphore = new Semaphore(threadsCount, threadsCount);
-                
+                var removeExistSemaphore = new Semaphore(1, 1);
+
                 var tasks = new List<Task>();
                 foreach (var marketSellModel in marketRelistModels)
                 {
                     var packageElementIndex = 1;
-                    foreach (var item in marketSellModel.ItemsList)
+                    foreach (var item in marketSellModel.ItemsList.ToList())
                     {
                         try
                         {
@@ -554,7 +590,7 @@
                             var itemCancelId = item.SaleId;
                             var realIndex = currentItemIndex;
                             var realPackageIndex = packageElementIndex++;
-                            tasks.Add(Task.Run(
+                            var task = Task.Run(
                                 () =>
                                     {
                                         try
@@ -602,30 +638,29 @@
                                         }
                                         finally
                                         {
-                                            wp.IncrementProgress();
-                                            semaphore.Release();
-
+                                            removeExistSemaphore.WaitOne();
                                             var existNode = allItemsList.FirstOrDefault(
-                                                m => m.ItemsList.Contains(marketSellModel.ItemModel));
+                                                m => m.ItemsList.Contains(item));
 
                                             if (existNode != null)
                                             {
-                                                Application.Current.Dispatcher.Invoke(
-                                                    () =>
-                                                        {
-                                                            existNode.ItemsList.Remove(marketSellModel.ItemModel);
-                                                            if (existNode.ItemsList.Count == 0)
-                                                            {
-                                                                allItemsList.Remove(existNode);
-                                                            }
-                                                            else
-                                                            {
-                                                                existNode.RefreshCount();
-                                                            }
-                                                        });
+                                                existNode.ItemsList.RemoveDispatch(item);
+                                                if (existNode.ItemsList.Count == 0)
+                                                {
+                                                    allItemsList.RemoveDispatch(existNode);
+                                                }
+                                                else
+                                                {
+                                                    existNode.RefreshCount();
+                                                }
                                             }
+
+                                            wp.IncrementProgress();
+                                            semaphore.Release();
+                                            removeExistSemaphore.Release();
                                         }
-                                    }));
+                                    });
+                            tasks.Add(task);
                         }
                         catch (Exception ex)
                         {
@@ -639,11 +674,12 @@
                     }
                 }
 
-                new Waiter().Until(() => tasks.All(t => t.IsCompleted));
+                new Waiter().IgnoreExceptionTypes(typeof(Exception)).Until(() => tasks.All(t => t.IsCompleted));
             }
             catch (Exception ex)
             {
                 var message = $"Critical error on market relist - {ex.Message}";
+                Logger.Log.Error(message, ex);
                 wp.AppendLog(message);
                 ErrorNotify.CriticalMessageBox(message);
             }
@@ -768,24 +804,19 @@
                         }
                         finally
                         {
-                            var existNode =
-                                allItemsList.FirstOrDefault(m => m.ItemsList.Contains(marketSellModel.ItemModel));
+                            var existNode = allItemsList.FirstOrDefault(m => m.ItemsList.Contains(item));
 
                             if (existNode != null)
                             {
-                                Application.Current.Dispatcher.Invoke(
-                                    () =>
-                                        {
-                                            existNode.ItemsList.Remove(marketSellModel.ItemModel);
-                                            if (existNode.ItemsList.Count == 0)
-                                            {
-                                                allItemsList.Remove(existNode);
-                                            }
-                                            else
-                                            {
-                                                existNode.RefreshCount();
-                                            }
-                                        });
+                                existNode.ItemsList.RemoveDispatch(item);
+                                if (existNode.ItemsList.Count == 0)
+                                {
+                                    allItemsList.RemoveDispatch(existNode);
+                                }
+                                else
+                                {
+                                    existNode.RefreshCount();
+                                }
                             }
 
                             if (currentItemIndex % itemsToConfirm == 0)

@@ -21,7 +21,7 @@
                         NavigationCommands.GoToPage.Execute(tabPath, target);
                     });
 
-            Thread.Sleep(500);
+            Thread.Sleep(600);
         }
 
         public static void Restart()
