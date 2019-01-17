@@ -156,7 +156,7 @@
                             }
                             else
                             {
-                                this.RelistPrice.Value = this.AveragePrice - 0.01;
+                                this.RelistPrice.Value = this.AveragePrice;
                             }
                         }
 
@@ -190,7 +190,7 @@
                         {
                             this.RelistPrice.Value = null;
                         }
-                        else if (this.AveragePrice - 0.1 == this.ListedPrice)
+                        else if (this.AveragePrice == this.ListedPrice)
                         {
                             this.RelistPrice.Value = this.AveragePrice;
                         }

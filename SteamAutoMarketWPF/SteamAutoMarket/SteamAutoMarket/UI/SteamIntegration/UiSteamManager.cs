@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Windows;
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Core.Waiter;
@@ -477,7 +476,8 @@
             {
                 if (steamAppId.ContextId == null)
                 {
-                    wp.AppendLog($"Context id for {steamAppId.AppId} not found. To avoid this error in future - you can manually add it on required parameter on settings.ini file");
+                    wp.AppendLog(
+                        $"Context id for {steamAppId.AppId} not found. To avoid this error in future - you can manually add it on required parameter on settings.ini file");
                     continue;
                 }
 
@@ -495,41 +495,34 @@
                 }
             }
 
-            var foundItemsList = new List<Tuple<FullRgItem, PriceModel>>();
+            var itemsToSell = removedItems.Select(
+                    currentItem =>
+                        {
+                            var foundItemNode = allItems.FirstOrDefault(
+                                found => found.ItemModel.Description.MarketHashName == currentItem.HashName);
 
-            for (var i = removedItems.Count - 1; i > -1; i--)
-            {
-                var currentItem = removedItems[i];
+                            if (foundItemNode != null)
+                            {
+                                var foundItem = foundItemNode.ItemsList.FirstOrDefault();
+                                foundItemNode.ItemsList.Remove(foundItem);
+                                return new { foundItem, currentItem.RelistPrice };
+                            }
 
-                var foundItemNode = allItems.FirstOrDefault(
-                    item => item.ItemModel.Description.MarketHashName == currentItem.HashName);
+                            wp.AppendLog($"{currentItem.HashName} ({currentItem.AppId}) item not found");
+                            return null;
+                        }).Where(nullCheck => nullCheck != null)
+                .GroupBy(tuple => new { tuple.foundItem.Description.MarketHashName }).Select(
+                    group =>
+                        {
+                            var groupList = group.ToList();
+                            return new MarketSellProcessModel(
+                                groupList.Select(g => g.foundItem).ToArray(),
+                                groupList.First().RelistPrice);
+                        }).ToArray();
 
-                if (foundItemNode != null)
-                {
-                    var foundItem = foundItemNode.ItemsList.FirstOrDefault();
-                    foundItemsList.Add(new Tuple<FullRgItem, PriceModel>(foundItem, currentItem.RelistPrice));
-
-                    foundItemNode.ItemsList.Remove(foundItem);
-                }
-                else
-                {
-                    wp.AppendLog($"{currentItem.HashName} ({currentItem.AppId}) item not found");
-                }
-            }
-
-            wp.AppendLog($"{foundItemsList.Count}/{removedItems.Count} items found");
+            wp.AppendLog($"{itemsToSell.Sum(m => m.ItemsList.Count())}/{removedItems.Count} items found");
             wp.ProgressBarValue = 0;
             wp.ClearChart();
-
-            var groupedItems = foundItemsList.GroupBy(tuple => new { tuple.Item1.Description.MarketHashName });
-            var itemsToSell = groupedItems.Select(
-                group =>
-                    {
-                        var groupList = group.ToList();
-                        return new MarketSellProcessModel(
-                            groupList.Select(g => g.Item1).ToArray(),
-                            groupList.First().Item2);
-                    }).ToArray();
 
             if (wp.CancellationToken.IsCancellationRequested)
             {

@@ -35,7 +35,7 @@
                         }
                         else if (this.CurrentPrice > this.AveragePrice)
                         {
-                            this.SellPrice.Value = this.CurrentPrice - 0.01;
+                            this.SellPrice.Value = this.CurrentPrice;
                         }
                         else
                         {
