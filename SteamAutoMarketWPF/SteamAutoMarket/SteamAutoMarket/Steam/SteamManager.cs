@@ -512,20 +512,23 @@ namespace SteamAutoMarket.Steam
                     data: null,
                     cookies: this.Cookies,
                     proxy: this.Proxy);
-                var keyParse = Regex.Match(response, @"Key: (.+)</p").Groups[1].Value.Trim();
-                if (keyParse.Length != 0)
+
+                if (response != null)
                 {
-                    Logger.Log.Debug($"{keyParse} api key was successfully parsed");
-                    return keyParse;
+                    var keyParse = Regex.Match(response, @"Key: (.+)</p").Groups[1].Value.Trim();
+                    if (keyParse.Length != 0)
+                    {
+                        Logger.Log.Debug($"{keyParse} api key was successfully parsed");
+                        return keyParse;
+                    }
                 }
 
                 Logger.Log.Debug("Seems like account do not have api key. Trying to regenerate it");
-                var sessionid = this.SteamClient.Session.SessionID;
                 var data = new NameValueCollection
                                {
                                    { "domain", "domain.com" },
                                    { "agreeToTerms", "agreed" },
-                                   { "sessionid", sessionid },
+                                   { "sessionid", this.Guard.Session.SessionID },
                                    { "Submit", "Register" }
                                };
 

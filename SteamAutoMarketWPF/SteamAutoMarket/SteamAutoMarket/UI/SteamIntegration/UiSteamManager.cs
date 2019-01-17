@@ -139,8 +139,8 @@
                             break;
                         }
 
-                        wp.AppendLog($"{offerIdList} trade not found. Retrying in 10 seconds");
-                        Thread.Sleep(TimeSpan.FromSeconds(10));
+                        wp.AppendLog($"{offerIdList} trade not found. Retrying in 5 seconds");
+                        Thread.Sleep(TimeSpan.FromSeconds(5));
                     }
                     else
                     {

@@ -229,6 +229,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
         {
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentNullException(nameof(token), @"Partner trade offer token is missing");
+
             var offerToken = new OfferAccessToken { TradeOfferAccessToken = token };
 
             var data = new NameValueCollection
@@ -245,19 +246,29 @@ namespace SteamAutoMarket.Steam.TradeOffer
                                }
                            };
 
-            var referer = string.Format(
-                "https://steamcommunity.com/tradeoffer/new/?partner={0}&token={1}",
-                otherSteamId.AccountID,
-                token);
+            var referer = $"https://steamcommunity.com/tradeoffer/new/?partner={otherSteamId.AccountID}&token={token}";
 
             return this.Request(SendUrl, data, referer);
         }
 
         internal string Request(string url, NameValueCollection data, string referer)
         {
-            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer, proxy: this._proxy);
+            string resp;
 
-            if (string.IsNullOrEmpty(resp)) throw new SteamException("Steam response is empty. No extra info provided");
+            try
+            {
+                resp = SteamWeb.RequestWithException(
+                    url,
+                    "POST",
+                    data,
+                    this._cookies,
+                    referer: referer,
+                    proxy: this._proxy);
+            }
+            catch (Exception e)
+            {
+                throw new SteamException($"{e.Message} steam error", e);
+            }
 
             try
             {
