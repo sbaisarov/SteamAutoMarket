@@ -148,34 +148,6 @@
             }
         }
 
-        /// <summary>
-        /// Raise exceptions relevant to this HttpWebResponse -- EG, to signal that our oauth token has expired.
-        /// </summary>
-        private static void HandleFailedWebRequestResponse(HttpWebResponse response, string requestURL)
-        {
-            if (Logger.CurrentLogLevel == Level.Debug)
-            {
-                Logger.Log.Debug($"Response failed with error - {response.StatusDescription}");
-            }
-
-            if (response == null) return;
-
-            // Redirecting -- likely to a steammobile:// URI
-            if (response.StatusCode == HttpStatusCode.Found)
-            {
-                var location = response.Headers.Get("Location");
-                if (!string.IsNullOrEmpty(location))
-                {
-                    // Our OAuth token has expired. This is given both when we must refresh our session, or the entire OAuth Token cannot be refreshed anymore.
-                    // Thus, we should only throw this exception when we're attempting to refresh our session.
-                    if (location == "steammobile://lostauth" && requestURL == APIEndpoints.MOBILEAUTH_GETWGTOKEN)
-                    {
-                        throw new SteamGuardAccount.WGTokenExpiredException();
-                    }
-                }
-            }
-        }
-
         public static string RequestWithException(
             string url,
             string method,
@@ -262,6 +234,34 @@
                     }
 
                     return responseData;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Raise exceptions relevant to this HttpWebResponse -- EG, to signal that our oauth token has expired.
+        /// </summary>
+        private static void HandleFailedWebRequestResponse(HttpWebResponse response, string requestURL)
+        {
+            if (Logger.CurrentLogLevel == Level.Debug)
+            {
+                Logger.Log.Debug($"Response failed with error - {response.StatusDescription}");
+            }
+
+            if (response == null) return;
+
+            // Redirecting -- likely to a steammobile:// URI
+            if (response.StatusCode == HttpStatusCode.Found)
+            {
+                var location = response.Headers.Get("Location");
+                if (!string.IsNullOrEmpty(location))
+                {
+                    // Our OAuth token has expired. This is given both when we must refresh our session, or the entire OAuth Token cannot be refreshed anymore.
+                    // Thus, we should only throw this exception when we're attempting to refresh our session.
+                    if (location == "steammobile://lostauth" && requestURL == APIEndpoints.MOBILEAUTH_GETWGTOKEN)
+                    {
+                        throw new SteamGuardAccount.WGTokenExpiredException();
+                    }
                 }
             }
         }

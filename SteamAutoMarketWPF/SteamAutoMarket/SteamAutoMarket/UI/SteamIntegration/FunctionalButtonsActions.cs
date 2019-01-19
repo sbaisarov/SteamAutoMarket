@@ -9,6 +9,14 @@
 
     public static class FunctionalButtonsActions
     {
+        public static void AddPlusOneAmountToAllItems(IEnumerable<SteamItemsModel> items)
+        {
+            foreach (var t in items)
+            {
+                t.NumericUpDown.AmountToSell++;
+            }
+        }
+
         public static void OpenOnSteamMarket(SteamItemsModel item)
         {
             try
@@ -25,14 +33,6 @@
             catch (Exception ex)
             {
                 ErrorNotify.CriticalMessageBox(ex);
-            }
-        }
-
-        public static void AddPlusOneAmountToAllItems(IEnumerable<SteamItemsModel> items)
-        {
-            foreach (var t in items)
-            {
-                t.NumericUpDown.AmountToSell++;
             }
         }
     }

@@ -54,6 +54,9 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public ObservableCollection<MarketRelistModel> MarketListedItemsList { get; } =
+            new ObservableCollection<MarketRelistModel>();
+
         public MarketSellStrategy MarketSellStrategy
         {
             get => this.marketSellStrategy;
@@ -64,9 +67,6 @@
                 this.ReformatAllSellPrices();
             }
         }
-
-        public ObservableCollection<MarketRelistModel> MarketListedItemsList { get; } =
-            new ObservableCollection<MarketRelistModel>();
 
         public MarketRelistModel RelistSelectedItem
         {
@@ -394,6 +394,43 @@
             this.priceLoadSubTasks.Add(task);
         }
 
+        private void StartRelistButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
+
+            Task.Run(() => this.StopPriceLoadingTasks());
+
+            Task.Run(
+                () =>
+                    {
+                        var itemsToSell = this.MarketListedItemsList.ToArray().Where(i => i.Checked.CheckBoxChecked)
+                            .ToArray();
+
+                        if (itemsToSell.Sum(i => i.Count) == 0)
+                        {
+                            ErrorNotify.CriticalMessageBox(
+                                "No items was marked to relist! Mark items before starting relist process");
+                            return;
+                        }
+
+                        var wp = WorkingProcessProvider.GetNewInstance("Market relist");
+                        wp?.StartWorkingProcess(
+                            () =>
+                                {
+                                    wp.SteamManager.RelistListings(
+                                        this.priceLoadSubTasks.ToArray(),
+                                        itemsToSell,
+                                        this.MarketSellStrategy,
+                                        this.MarketListedItemsList,
+                                        wp);
+                                });
+                    });
+        }
+
         private void StartRemoveButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (UiGlobalVariables.SteamManager == null)
@@ -469,43 +506,6 @@
             }
 
             this.priceLoadSubTasks.Clear();
-        }
-
-        private void StartRelistButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (UiGlobalVariables.SteamManager == null)
-            {
-                ErrorNotify.CriticalMessageBox("You should login first!");
-                return;
-            }
-
-            Task.Run(() => this.StopPriceLoadingTasks());
-
-            Task.Run(
-                () =>
-                    {
-                        var itemsToSell = this.MarketListedItemsList.ToArray().Where(i => i.Checked.CheckBoxChecked)
-                            .ToArray();
-
-                        if (itemsToSell.Sum(i => i.Count) == 0)
-                        {
-                            ErrorNotify.CriticalMessageBox(
-                                "No items was marked to relist! Mark items before starting relist process");
-                            return;
-                        }
-
-                        var wp = WorkingProcessProvider.GetNewInstance("Market relist");
-                        wp?.StartWorkingProcess(
-                            () =>
-                                {
-                                    wp.SteamManager.RelistListings(
-                                        this.priceLoadSubTasks.ToArray(),
-                                        itemsToSell,
-                                        this.MarketSellStrategy,
-                                        this.MarketListedItemsList,
-                                        wp);
-                                });
-                    });
         }
     }
 }

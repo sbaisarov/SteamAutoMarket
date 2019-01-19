@@ -281,7 +281,8 @@
             FunctionalButtonsActions.OpenOnSteamMarket(this.TradeSendSelectedItem);
 
         private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e) =>
-            GridPriceLoaderUtils.StartPriceLoading((IEnumerable<SteamItemsModel>)this.MarketItemsToTradeGrid.ItemsSource);
+            GridPriceLoaderUtils.StartPriceLoading(
+                (IEnumerable<SteamItemsModel>)this.MarketItemsToTradeGrid.ItemsSource);
 
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e) =>
             GridPriceLoaderUtils.RefreshSingleModelPrice(this.TradeSendSelectedItem);

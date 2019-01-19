@@ -177,6 +177,12 @@
             }
         }
 
+        public void ClearChart()
+        {
+            this.ChartModel.ClearDispatch();
+            this.ChartModel.AddDispatch(new DataPoint(0, 0));
+        }
+
         public void IncrementProgress()
         {
             if (this.ProgressBarValue < this.ProgressBarMaximum)
@@ -218,12 +224,6 @@
             this.AverageMinutesLeft = 0;
             this.ClearChart();
             this.times?.Clear();
-        }
-
-        public void ClearChart()
-        {
-            this.ChartModel.ClearDispatch();
-            this.ChartModel.AddDispatch(new DataPoint(0, 0));
         }
 
         public void StartWorkingProcess(Action action)

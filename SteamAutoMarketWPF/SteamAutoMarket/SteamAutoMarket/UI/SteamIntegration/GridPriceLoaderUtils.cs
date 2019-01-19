@@ -21,6 +21,24 @@
 
         private static Task priceLoadingTask;
 
+        public static void InvokePriceLoadingStop()
+        {
+            Task.Run(
+                () =>
+                    {
+                        if (cancellationTokenSource == null || priceLoadingTask == null || priceLoadingTask.IsCompleted)
+                        {
+                            Logger.Log.Debug("No active market sell price loading task found. Nothing to stop");
+                            return;
+                        }
+
+                        Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
+                        cancellationTokenSource.Cancel();
+                        new Waiter().Until(() => priceLoadingTask.IsCompleted);
+                        cancellationTokenSource = new CancellationTokenSource();
+                    });
+        }
+
         public static void RefreshSingleModelPrice(SteamItemsModel items) => RefreshSingleModelPriceRealization(items);
 
         public static void RefreshSingleModelPrice(MarketSellModel items, MarketSellStrategy sellStrategy) =>
@@ -188,24 +206,6 @@
             }
 
             PriceLoadSubTasks.Clear();
-        }
-
-        public static void InvokePriceLoadingStop()
-        {
-            Task.Run(
-                () =>
-                    {
-                        if (cancellationTokenSource == null || priceLoadingTask == null || priceLoadingTask.IsCompleted)
-                        {
-                            Logger.Log.Debug("No active market sell price loading task found. Nothing to stop");
-                            return;
-                        }
-
-                        Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
-                        cancellationTokenSource.Cancel();
-                        new Waiter().Until(() => priceLoadingTask.IsCompleted);
-                        cancellationTokenSource = new CancellationTokenSource();
-                    });
         }
     }
 }
