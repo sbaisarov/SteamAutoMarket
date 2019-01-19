@@ -5,6 +5,7 @@
     using System.Threading;
     using System.Windows;
     using System.Windows.Input;
+    using System.Windows.Threading;
 
     using FirstFloor.ModernUI.Windows.Navigation;
 
@@ -19,9 +20,8 @@
                     {
                         var target = NavigationHelper.FindFrame("_top", UiGlobalVariables.MainWindow);
                         NavigationCommands.GoToPage.Execute(tabPath, target);
-                    });
-
-            Thread.Sleep(600);
+                    },
+                DispatcherPriority.Send);
         }
 
         public static void Restart()

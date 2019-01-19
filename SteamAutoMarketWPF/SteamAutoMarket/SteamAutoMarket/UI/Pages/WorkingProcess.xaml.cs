@@ -5,9 +5,9 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
-    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Threading;
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Repository.Context;
@@ -28,7 +28,10 @@
             this.RefreshWorkingProcessesList();
         }
 
-        public static void OpenTab() => AppUtils.OpenTab("UI/Pages/WorkingProcess.xaml");
+        public static void OpenTab()
+        {
+            AppUtils.OpenTab("UI/Pages/WorkingProcess.xaml");
+        }
 
         public void ChangeDataContext(WorkingProcessDataContext wp)
         {
@@ -37,7 +40,9 @@
                     {
                         this.RefreshWorkingProcessesList();
                         this.CurrentProcessComboBox.SelectedValue = wp.Title;
-                    });
+                        this.DataContext = wp;
+                    },
+                DispatcherPriority.Send);
         }
 
         public void RefreshWorkingProcessesList()
@@ -53,7 +58,8 @@
                         {
                             this.CurrentProcessComboBox.SelectedValue = wp.Title;
                         }
-                    });
+                    },
+                DispatcherPriority.Send);
         }
 
         private WorkingProcessDataContext GetContext() => (WorkingProcessDataContext)this.DataContext;
