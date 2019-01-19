@@ -48,7 +48,7 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>30.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -658,14 +658,14 @@
     <Resource Include="Resources\car2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="30.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
