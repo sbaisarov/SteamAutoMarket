@@ -156,7 +156,7 @@
 
         private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e) =>
             FunctionalButtonsActions.AddPlusOneAmountToAllItems(
-                (IEnumerable<SteamItemsModel>)this.MarketItemsToTradeGrid.SelectedItems);
+                this.MarketItemsToTradeGrid.SelectedItems.OfType<SteamItemsModel>());
 
         private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
         {

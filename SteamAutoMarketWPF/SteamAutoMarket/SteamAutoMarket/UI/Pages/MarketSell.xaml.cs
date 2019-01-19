@@ -172,7 +172,7 @@
 
         private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e) =>
             FunctionalButtonsActions.AddPlusOneAmountToAllItems(
-                (IEnumerable<MarketSellModel>)this.MarketItemsToSellGrid.SelectedItems);
+                this.MarketItemsToSellGrid.SelectedItems.OfType<MarketSellModel>());
 
         private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
         {
