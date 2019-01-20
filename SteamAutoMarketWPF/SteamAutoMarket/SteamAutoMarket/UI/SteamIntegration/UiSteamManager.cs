@@ -568,6 +568,7 @@
                 foreach (var marketSellModel in marketRelistModels)
                 {
                     var packageElementIndex = 1;
+                    var packageTotal = marketSellModel.Count;
                     foreach (var item in marketSellModel.ItemsList.ToList())
                     {
                         try
@@ -601,12 +602,12 @@
                                                 if (tryCount++ > 10)
                                                 {
                                                     wp.AppendLog(
-                                                        $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{marketSellModel.Count}] - '{marketSellModel.ItemName}' failed more then 10 times. Skipping item.");
+                                                        $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{packageTotal}] - '{marketSellModel.ItemName}' failed more then 10 times. Skipping item.");
                                                     break;
                                                 }
 
                                                 wp.AppendLog(
-                                                    $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{marketSellModel.Count}] - '{marketSellModel.ItemName}'");
+                                                    $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{packageTotal}] - '{marketSellModel.ItemName}'");
 
                                                 var result = this.MarketClient.CancelSellOrder(itemCancelId);
 
