@@ -30,6 +30,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="45" />
                 <RowDefinition />
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="0,0,0,5">
@@ -182,7 +183,8 @@
                                     Foreground="{DynamicResource ItemText}"
                                     Background="{DynamicResource DataGridBackground}"
                                     d:DataContext="{d:DesignData PriceModel}"
-                                    PreviewKeyDown="PriceTextBox_OnPreviewKeyDown" />
+                                    PreviewKeyDown="PriceTextBox_OnPreviewKeyDown" 
+                                    TextChanged="SellingPriceTextBoxBase_OnTextChanged"/>
                             </ItemContainerTemplate>
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
@@ -202,17 +204,22 @@
                                     Style="{StaticResource UpDown}"
                                     Background="{StaticResource DataGridBackground}"
                                     Width="85"
-                                    Value="0"
                                     Increment="1"
                                     Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
-                                    Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                    Value="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
                                     Minimum="0"
-                                    MouseWheelActiveTrigger="Disabled" />
+                                    MouseWheelActiveTrigger="Disabled"
+                                    ValueChanged="SelectedItemsUpDownBase_OnValueChanged" />
                             </ItemContainerTemplate>
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
                 </xcdg:DataGridControl.Columns>
             </xcdg:DataGridControl>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="Selected items total price - "/>
+                <TextBlock Text="{Binding TotalListedItemsPrice}"></TextBlock>
+            </StackPanel>
         </Grid>
         <Grid Grid.Column="1"
               Grid.Row="0"

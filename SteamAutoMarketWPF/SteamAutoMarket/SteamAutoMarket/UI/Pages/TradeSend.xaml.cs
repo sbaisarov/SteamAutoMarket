@@ -258,6 +258,7 @@
             {
                 ((SteamItemsModel)t).NumericUpDown.SetToMaximum();
             }
+
         }
 
         private void MarketSellMarkSelectedItemsClick(object sender, RoutedEventArgs e)

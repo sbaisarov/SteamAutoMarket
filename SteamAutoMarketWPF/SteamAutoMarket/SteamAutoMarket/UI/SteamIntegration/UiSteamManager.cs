@@ -827,6 +827,7 @@
                 }
 
                 MarketSellUtils.ConfirmMarketTransactionsWorkingProcess(this.Guard, wp);
+                wp.AppendLog($"Total price of all successfully placed lots - {totalSellPrice:F} {currencySymbol}");
             }
             catch (Exception ex)
             {
@@ -1035,8 +1036,8 @@
                 catch (Exception ex)
                 {
                     wp.AppendLog(
-                        $"Error on TradeAutoAccepter - {ex.Message}. Restarting TradeAutoAccepter working process.");
-                    Logger.Log.Error($"Error on TradeAutoAccepter - {ex.Message}.", ex);
+                        $"Error on Trade auto accepter - {ex.Message}. Restarting Trade auto accepter working process.");
+                    Logger.Log.Error($"Error on Trade auto accepter - {ex.Message}.", ex);
                     Thread.Sleep(timeSpanDelay);
                 }
             }

@@ -184,7 +184,8 @@
             string exMessage,
             WorkingProcessDataContext wp)
         {
-            if (exMessage.Contains("There was a problem listing your item. Refresh the page and try again."))
+            if (exMessage.Contains("There was a problem listing your item. Refresh the page and try again.")
+                || exMessage.Contains("A connection that was expected to be kept alive was closed by the server"))
             {
                 RetryMarketSell(3, 0, marketSellModel, item, uiSteamManager, wp);
             }

@@ -267,7 +267,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             }
             catch (Exception e)
             {
-                throw new SteamException($"{e.Message} steam error", e);
+                throw new SteamException($"Steam error: {e.Message}", e);
             }
 
             try

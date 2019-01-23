@@ -47,6 +47,10 @@
 
         private List<string> typeFilters;
 
+        private string totalListedItemsPrice = 0.ToString("F");
+
+        private bool isTotalPriceRefreshPlanned;
+
         public MarketSell()
         {
             this.InitializeComponent();
@@ -165,6 +169,16 @@
         }
 
         public string TypeSelectedFilter { get; set; }
+
+        public string TotalListedItemsPrice
+        {
+            get => this.totalListedItemsPrice;
+            set
+            {
+                this.totalListedItemsPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         [NotifyPropertyChangedInvocator]
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
@@ -453,5 +467,37 @@
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>
             GridPriceLoaderUtils.InvokePriceLoadingStop();
+
+        private void RefreshSelectedItemsTotalPrice()
+        {
+            if (this.isTotalPriceRefreshPlanned) return;
+
+            Task.Run(
+                () =>
+                    {
+                        this.isTotalPriceRefreshPlanned = true;
+                        Thread.Sleep(300);
+                        this.TotalListedItemsPrice = this.MarketSellItems?.Sum(
+                                                         m =>
+                                                             {
+                                                                 if (m.NumericUpDown.AmountToSell == 0
+                                                                     || m.SellPrice.Value.HasValue == false) return 0;
+                                                                 return m.NumericUpDown.AmountToSell
+                                                                        * m.SellPrice.Value;
+                                                             })?.ToString("F") ?? "0";
+
+                        this.isTotalPriceRefreshPlanned = false;
+                    });
+        }
+
+        private void SelectedItemsUpDownBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            this.RefreshSelectedItemsTotalPrice();
+        }
+
+        private void SellingPriceTextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.RefreshSelectedItemsTotalPrice();
+        }
     }
 }

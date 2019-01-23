@@ -157,10 +157,8 @@ namespace SteamAutoMarket.Properties
                             {
                                 Environment.Exit(0);
                             }
-                            finally
-                            {
-                                Thread.Sleep(TimeSpan.FromHours(2));
-                            }
+
+                            Thread.Sleep(TimeSpan.FromHours(6));
                         }
                     });
         }

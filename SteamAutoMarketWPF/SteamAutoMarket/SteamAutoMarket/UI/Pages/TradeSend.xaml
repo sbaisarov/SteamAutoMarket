@@ -205,10 +205,9 @@
                                     Style="{StaticResource UpDown}"
                                     Width="105"
                                     Background="{StaticResource DataGridBackground}"
-                                    Value="0"
                                     Increment="1"
                                     Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
-                                    Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                    Value="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
                                     Minimum="0"
                                     MouseWheelActiveTrigger="Disabled" />
                             </ItemContainerTemplate>
