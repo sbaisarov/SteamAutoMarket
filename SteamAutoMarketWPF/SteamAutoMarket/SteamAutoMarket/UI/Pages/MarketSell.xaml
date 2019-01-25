@@ -217,8 +217,10 @@
             </xcdg:DataGridControl>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="Selected items count - "/>
+                <TextBlock Text="{Binding TotalSelectedItemsCount}" Margin="0,0,20,0"/>
                 <TextBlock Text="Selected items total price - "/>
-                <TextBlock Text="{Binding TotalListedItemsPrice}"></TextBlock>
+                <TextBlock Text="{Binding TotalListedItemsPrice}"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Column="1"

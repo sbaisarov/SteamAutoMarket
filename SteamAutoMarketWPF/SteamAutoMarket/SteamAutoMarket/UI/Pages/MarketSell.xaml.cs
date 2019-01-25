@@ -15,6 +15,7 @@
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Models.Enums;
+    using SteamAutoMarket.UI.Repository;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;
@@ -47,9 +48,11 @@
 
         private List<string> typeFilters;
 
-        private string totalListedItemsPrice = 0.ToString("F");
+        private string totalListedItemsPrice = UiConstants.DoubleZero;
 
         private bool isTotalPriceRefreshPlanned;
+
+        private int totalSelectedItemsCount;
 
         public MarketSell()
         {
@@ -176,6 +179,16 @@
             set
             {
                 this.totalListedItemsPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int TotalSelectedItemsCount
+        {
+            get => this.totalSelectedItemsCount;
+            set
+            {
+                this.totalSelectedItemsCount = value;
                 this.OnPropertyChanged();
             }
         }
@@ -477,6 +490,8 @@
                     {
                         this.isTotalPriceRefreshPlanned = true;
                         Thread.Sleep(300);
+                        this.TotalSelectedItemsCount = this.MarketSellItems?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
+
                         this.TotalListedItemsPrice = this.MarketSellItems?.Sum(
                                                          m =>
                                                              {

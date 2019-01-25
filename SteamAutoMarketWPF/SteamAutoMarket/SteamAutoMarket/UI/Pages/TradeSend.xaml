@@ -54,6 +54,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="45" />
                 <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="0,0,0,5">
@@ -170,7 +171,8 @@
                                 <TextBlock
                                     Text="{Binding}"
                                     Foreground="{DynamicResource ItemText}"
-                                    Background="{DynamicResource DataGridBackground}" />
+                                    Background="{DynamicResource DataGridBackground}" 
+                                    DataContextChanged="PriceTextBox_OnDataContextChanged"/>
                             </ItemContainerTemplate>
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
@@ -186,7 +188,8 @@
                                 <TextBlock
                                     Text="{Binding}"
                                     Foreground="{DynamicResource ItemText}"
-                                    Background="{DynamicResource DataGridBackground}" />
+                                    Background="{DynamicResource DataGridBackground}"
+                                    DataContextChanged="PriceTextBox_OnDataContextChanged"/>
                             </ItemContainerTemplate>
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
@@ -209,12 +212,22 @@
                                     Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
                                     Value="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
                                     Minimum="0"
-                                    MouseWheelActiveTrigger="Disabled" />
+                                    MouseWheelActiveTrigger="Disabled"
+                                    ValueChanged="AmountToSend_OnValueChanged" />
                             </ItemContainerTemplate>
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
                 </xcdg:DataGridControl.Columns>
             </xcdg:DataGridControl>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="Selected items count - " />
+                <TextBlock Text="{Binding TotalSelectedItemsCount}" Margin="0,0,20,0" />
+                <TextBlock Text="Selected items total current price - " />
+                <TextBlock Text="{Binding TotalListedItemsCurrentPrice}" Margin="0,0,20,0" />
+                <TextBlock Text="Selected items total average price - " />
+                <TextBlock Text="{Binding TotalListedItemsAveragePrice}" Margin="0,0,20,0" />
+            </StackPanel>
         </Grid>
         <Grid Grid.Column="1"
               Grid.Row="0"
@@ -457,14 +470,14 @@
                 </Button>
 
                 <RepeatButton Name="AddOneToAllSelectedItems"
-                        Height="38"
-                        Width="38"
-                        Grid.Column="4"
-                        Padding="0"
-                        Margin="1,4,1,5"
-                        Background="Transparent"
-                        ToolTip="Add +1 amount to sell to all selected items"
-                        Click="AddOneToAllSelectedButtonClick">
+                              Height="38"
+                              Width="38"
+                              Grid.Column="4"
+                              Padding="0"
+                              Margin="1,4,1,5"
+                              Background="Transparent"
+                              ToolTip="Add +1 amount to sell to all selected items"
+                              Click="AddOneToAllSelectedButtonClick">
 
                     <Path Style="{StaticResource Geometry}"
                           Stretch="Fill"

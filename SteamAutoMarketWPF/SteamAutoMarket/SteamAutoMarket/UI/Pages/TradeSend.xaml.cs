@@ -6,12 +6,15 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
 
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Models;
+    using SteamAutoMarket.UI.Repository;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;
@@ -31,6 +34,14 @@
         private SteamItemsModel tradeSendSelectedItem;
 
         private List<string> typeFilters;
+
+        private int totalSelectedItemsCount;
+
+        private string totalListedItemsCurrentPrice = UiConstants.DoubleZero;
+
+        private bool isTotalPriceRefreshPlanned;
+
+        private string totalListedItemsAveragePrice = UiConstants.DoubleZero;
 
         public TradeSend()
         {
@@ -150,6 +161,36 @@
 
         public string TypeSelectedFilter { get; set; }
 
+        public int TotalSelectedItemsCount
+        {
+            get => this.totalSelectedItemsCount;
+            set
+            {
+                this.totalSelectedItemsCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string TotalListedItemsCurrentPrice
+        {
+            get => this.totalListedItemsCurrentPrice;
+            set
+            {
+                this.totalListedItemsCurrentPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string TotalListedItemsAveragePrice
+        {
+            get => this.totalListedItemsAveragePrice;
+            set
+            {
+                this.totalListedItemsAveragePrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -192,6 +233,36 @@
             }
 
             this.MarketItemsToTradeGrid.ItemsSource = resultView;
+        }
+
+        private void RefreshSelectedItemsTotalPrice()
+        {
+            if (this.isTotalPriceRefreshPlanned) return;
+
+            Task.Run(
+                () =>
+                    {
+                        this.isTotalPriceRefreshPlanned = true;
+                        Thread.Sleep(300);
+                        this.TotalSelectedItemsCount =
+                            this.TradeSendItemsList?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
+
+                        this.TotalListedItemsCurrentPrice = this.TradeSendItemsList?.Sum(
+                            m =>
+                                {
+                                    if (m.NumericUpDown.AmountToSell == 0 || m.CurrentPrice.HasValue == false) return 0;
+                                    return m.NumericUpDown.AmountToSell * m.CurrentPrice.Value;
+                                }).ToString("F");
+
+                        this.TotalListedItemsAveragePrice = this.TradeSendItemsList?.Sum(
+                            m =>
+                                {
+                                    if (m.NumericUpDown.AmountToSell == 0 || m.AveragePrice.HasValue == false) return 0;
+                                    return m.NumericUpDown.AmountToSell * m.AveragePrice.Value;
+                                }).ToString("F");
+
+                        this.isTotalPriceRefreshPlanned = false;
+                    });
         }
 
         private void Filter_OnDropDownOpened(object sender, EventArgs e)
@@ -258,7 +329,6 @@
             {
                 ((SteamItemsModel)t).NumericUpDown.SetToMaximum();
             }
-
         }
 
         private void MarketSellMarkSelectedItemsClick(object sender, RoutedEventArgs e)
@@ -359,5 +429,15 @@
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>
             GridPriceLoaderUtils.InvokePriceLoadingStop();
+
+        private void AmountToSend_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            this.RefreshSelectedItemsTotalPrice();
+        }
+
+        private void PriceTextBox_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            this.RefreshSelectedItemsTotalPrice();
+        }
     }
 }
