@@ -48,7 +48,7 @@
 
         private List<string> typeFilters;
 
-        private string totalListedItemsPrice = UiConstants.DoubleZero;
+        private string totalListedItemsPrice = UiConstants.FractionalZeroString;
 
         private bool isTotalPriceRefreshPlanned;
 
@@ -481,7 +481,7 @@
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>
             GridPriceLoaderUtils.InvokePriceLoadingStop();
 
-        private void RefreshSelectedItemsTotalPrice()
+        private void RefreshSelectedItemsInfo()
         {
             if (this.isTotalPriceRefreshPlanned) return;
 
@@ -507,12 +507,12 @@
 
         private void SelectedItemsUpDownBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            this.RefreshSelectedItemsTotalPrice();
+            this.RefreshSelectedItemsInfo();
         }
 
         private void SellingPriceTextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            this.RefreshSelectedItemsTotalPrice();
+            this.RefreshSelectedItemsInfo();
         }
     }
 }

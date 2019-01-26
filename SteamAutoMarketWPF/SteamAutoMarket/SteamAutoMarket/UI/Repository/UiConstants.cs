@@ -2,6 +2,6 @@
 {
     public class UiConstants
     {
-        public static readonly string DoubleZero = 0.ToString("F");
+        public static readonly string FractionalZeroString = 0.ToString("F");
     }
 }

@@ -37,11 +37,11 @@
 
         private int totalSelectedItemsCount;
 
-        private string totalListedItemsCurrentPrice = UiConstants.DoubleZero;
+        private string totalListedItemsCurrentPrice = UiConstants.FractionalZeroString;
 
         private bool isTotalPriceRefreshPlanned;
 
-        private string totalListedItemsAveragePrice = UiConstants.DoubleZero;
+        private string totalListedItemsAveragePrice = UiConstants.FractionalZeroString;
 
         public TradeSend()
         {
@@ -235,7 +235,7 @@
             this.MarketItemsToTradeGrid.ItemsSource = resultView;
         }
 
-        private void RefreshSelectedItemsTotalPrice()
+        private void RefreshSelectedItemsInfo()
         {
             if (this.isTotalPriceRefreshPlanned) return;
 
@@ -432,12 +432,12 @@
 
         private void AmountToSend_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            this.RefreshSelectedItemsTotalPrice();
+            this.RefreshSelectedItemsInfo();
         }
 
         private void PriceTextBox_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            this.RefreshSelectedItemsTotalPrice();
+            this.RefreshSelectedItemsInfo();
         }
     }
 }

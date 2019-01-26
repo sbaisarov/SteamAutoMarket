@@ -17,7 +17,11 @@
         <converter:IfNullInvisibleConverter x:Key="IfNullInvisibleConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="5, 5, 5, 5">
+    <Grid Margin="15, 5, 5, 5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100*" />
@@ -27,7 +31,7 @@
         <xcdg:DataGridControl x:Name="MarketItemsToSellGrid"
                               Grid.Column="0"
                               Grid.Row="0"
-                              Margin="10, 10, 30, 10"
+                              Margin="0, 10, 30, 10"
                               AutoCreateColumns="False"
                               Style="{StaticResource GridStyle}"
                               ItemsSource="{Binding Path=MarketListedItemsList, Mode=OneWay}"
@@ -47,7 +51,8 @@
                     <xcdg:Column.CellContentTemplate>
                         <ItemContainerTemplate>
                             <CheckBox IsChecked="{Binding Path=(models:CheckedModel.CheckBoxChecked)}"
-                                      d:DataContext="{d:DesignData CheckedModel}" />
+                                      d:DataContext="{d:DesignData CheckedModel}"
+                                       Click="CheckBox_OnClick"/>
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
@@ -180,7 +185,9 @@
                                 Foreground="{DynamicResource ItemText}"
                                 Background="{DynamicResource DataGridBackground}"
                                 d:DataContext="{d:DesignData PriceModel}"
-                                PreviewKeyDown="PriceTextBox_OnPreviewKeyDown"/>
+                                PreviewKeyDown="PriceTextBox_OnPreviewKeyDown"
+                                TextChanged="RelistTextBox_OnTextChanged"
+                                LostFocus="RelistTextBox_OnLostFocus"/>
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
@@ -188,7 +195,16 @@
             </xcdg:DataGridControl.Columns>
         </xcdg:DataGridControl>
 
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <TextBlock Text="Selected items count - " />
+            <TextBlock Text="{Binding TotalSelectedItemsCount}" Margin="0,0,20,0" />
+            <TextBlock Text="Selected total listed price - " />
+            <TextBlock Text="{Binding TotalListedItemsListedPrice}" Margin="0,0,20,0" />
+            <TextBlock Text="Selected items relist price - " />
+            <TextBlock Text="{Binding TotalListedItemsRelistPrice}" Margin="0,0,20,0" />
+        </StackPanel>
         <Grid Grid.Column="1"
+              Grid.RowSpan="2"
               Grid.Row="0"
               MinWidth="200"
               MaxWidth="250">

@@ -18,6 +18,7 @@
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Models.Enums;
+    using SteamAutoMarket.UI.Repository;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;
@@ -42,6 +43,14 @@
         private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
 
         private MarketRelistModel relistSelectedItem;
+
+        private int totalSelectedItemsCount;
+
+        private string totalListedItemsListedPrice = UiConstants.FractionalZeroString;
+
+        private object totalListedItemsRelistPrice = UiConstants.FractionalZeroString;
+
+        private bool isTotalPriceRefreshPlanned;
 
         public MarketRelist()
         {
@@ -76,6 +85,65 @@
                 this.relistSelectedItem = value;
                 this.OnPropertyChanged();
             }
+        }
+
+        public int TotalSelectedItemsCount
+        {
+            get => this.totalSelectedItemsCount;
+            set
+            {
+                this.totalSelectedItemsCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string TotalListedItemsListedPrice
+        {
+            get => this.totalListedItemsListedPrice;
+            set
+            {
+                this.totalListedItemsListedPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public object TotalListedItemsRelistPrice
+        {
+            get => this.totalListedItemsRelistPrice;
+            set
+            {
+                this.totalListedItemsRelistPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        private void RefreshSelectedItemsInfo()
+        {
+            if (this.isTotalPriceRefreshPlanned) return;
+
+            Task.Run(
+                () =>
+                    {
+                        this.isTotalPriceRefreshPlanned = true;
+                        Thread.Sleep(300);
+                        this.TotalSelectedItemsCount = this.MarketListedItemsList?.Where(m => m.Checked.CheckBoxChecked).Sum(m => m.Count) ?? 0;
+
+                        this.TotalListedItemsListedPrice = this.MarketListedItemsList?.Where(m => m.Checked.CheckBoxChecked).Sum(
+                            m =>
+                                {
+                                    if (m.ListedPrice.HasValue == false) return 0;
+                                    return m.Count * m.ListedPrice.Value;
+                                }).ToString("F");
+
+                        this.TotalListedItemsRelistPrice = this.MarketListedItemsList?.Where(m => m.Checked.CheckBoxChecked).Sum(
+                            m =>
+                                {
+                                    if (m.RelistPrice.Value.HasValue == false) return 0;
+                                    return m.Count * m.RelistPrice.Value.Value;
+                                }).ToString("F");
+
+                        this.isTotalPriceRefreshPlanned = false;
+                    });
         }
 
         [NotifyPropertyChangedInvocator]
@@ -506,6 +574,21 @@
             }
 
             this.priceLoadSubTasks.Clear();
+        }
+
+        private void CheckBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
+        private void RelistTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
+        private void RelistTextBox_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
         }
     }
 }
