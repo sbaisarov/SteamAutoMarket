@@ -637,7 +637,7 @@ namespace SteamAutoMarket.Properties
         {
         }
 
-        public PathReferenceAttribute([NotNull, PathReference] string basePath)
+        public PathReferenceAttribute([NotNull] [PathReference] string basePath)
         {
             this.BasePath = basePath;
         }

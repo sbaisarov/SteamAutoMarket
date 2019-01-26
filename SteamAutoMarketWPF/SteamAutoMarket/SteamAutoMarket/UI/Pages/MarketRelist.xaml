@@ -19,8 +19,8 @@
 
     <Grid Margin="15, 5, 5, 5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -52,7 +52,7 @@
                         <ItemContainerTemplate>
                             <CheckBox IsChecked="{Binding Path=(models:CheckedModel.CheckBoxChecked)}"
                                       d:DataContext="{d:DesignData CheckedModel}"
-                                       Click="CheckBox_OnClick"/>
+                                      Click="CheckBox_OnClick" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
@@ -187,7 +187,7 @@
                                 d:DataContext="{d:DesignData PriceModel}"
                                 PreviewKeyDown="PriceTextBox_OnPreviewKeyDown"
                                 TextChanged="RelistTextBox_OnTextChanged"
-                                LostFocus="RelistTextBox_OnLostFocus"/>
+                                LostFocus="RelistTextBox_OnLostFocus" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
@@ -232,7 +232,7 @@
                        Stretch="Uniform"
                        Name="ItemImage"
                        MaxHeight="200"
-                       Margin="0,0,0,5"/>
+                       Margin="0,0,0,5" />
 
                 <Path Grid.Row="0"
                       Style="{StaticResource Geometry}"
@@ -410,9 +410,9 @@
                   MinHeight="30">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
@@ -466,13 +466,13 @@
                     Padding="0">
                 <Button.ToolTip>
                     <TextBlock>
-                        PAY ATTENTION!!! 
-                        <LineBreak /> 
+                        PAY ATTENTION!!!
+                        <LineBreak />
                         It is not possible to discover absolutely identical item after removing item from Steam Market.
                         <LineBreak />
-                        Relist algorithm will take first item with corresponding to removed item market hash name. 
+                        Relist algorithm will take first item with corresponding to removed item market hash name.
                         <LineBreak />
-                        Use this mode only if you are 100% sure! 
+                        Use this mode only if you are 100% sure!
                     </TextBlock>
                 </Button.ToolTip>
             </Button>

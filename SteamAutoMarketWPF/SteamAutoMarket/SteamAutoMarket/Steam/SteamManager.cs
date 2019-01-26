@@ -154,7 +154,7 @@ namespace SteamAutoMarket.Steam
 
         protected bool IsSessionUpdated { get; set; }
 
-        private WebProxy Proxy { get; set; } = null;
+        private WebProxy Proxy { get; set; }
 
         public bool BuyOnMarket(
             double averagePrice,

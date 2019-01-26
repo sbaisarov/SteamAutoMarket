@@ -57,6 +57,7 @@
             {
                 return base.Text;
             }
+
             set
             {
                 base.Text = value;

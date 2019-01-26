@@ -30,7 +30,7 @@
             this._downloadURL = downloadURL;
         }
 
-        private static String BytesToString(long byteCount)
+        private static string BytesToString(long byteCount)
         {
             string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
             if (byteCount == 0)
@@ -50,7 +50,7 @@
                     if (hashAlgorithm != null)
                     {
                         var hash = hashAlgorithm.ComputeHash(stream);
-                        var fileChecksum = BitConverter.ToString(hash).Replace("-", String.Empty).ToLowerInvariant();
+                        var fileChecksum = BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
 
                         if (fileChecksum == checksum.ToLower()) return true;
 
@@ -79,7 +79,7 @@
 
         private static string TryToFindFileName(string contentDisposition, string lookForFileName)
         {
-            var fileName = String.Empty;
+            var fileName = string.Empty;
             if (!string.IsNullOrEmpty(contentDisposition))
             {
                 var index = contentDisposition.IndexOf(lookForFileName, StringComparison.CurrentCultureIgnoreCase);

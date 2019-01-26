@@ -171,8 +171,8 @@
                                 <TextBlock
                                     Text="{Binding}"
                                     Foreground="{DynamicResource ItemText}"
-                                    Background="{DynamicResource DataGridBackground}" 
-                                    DataContextChanged="PriceTextBox_OnDataContextChanged"/>
+                                    Background="{DynamicResource DataGridBackground}"
+                                    DataContextChanged="PriceTextBox_OnDataContextChanged" />
                             </ItemContainerTemplate>
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
@@ -189,7 +189,7 @@
                                     Text="{Binding}"
                                     Foreground="{DynamicResource ItemText}"
                                     Background="{DynamicResource DataGridBackground}"
-                                    DataContextChanged="PriceTextBox_OnDataContextChanged"/>
+                                    DataContextChanged="PriceTextBox_OnDataContextChanged" />
                             </ItemContainerTemplate>
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>

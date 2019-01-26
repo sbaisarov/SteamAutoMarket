@@ -97,7 +97,7 @@
             {
                 ErrorNotify.CriticalMessageBox(
                     "Some error occured. Try to switch over working processes and retry removing");
-                Logger.Log.Error($"Error on working process remove", ex);
+                Logger.Log.Error("Error on working process remove", ex);
                 this.RefreshWorkingProcessesList();
             }
         }

@@ -122,38 +122,39 @@ namespace SteamAutoMarket.Steam.TradeOffer
         /// <param name="newTradeOfferId">The trade offer Id that will be created if successful</param>
         /// <param name="tradeOfferId">The trade offer Id of the offer being countered</param>
         /// <returns></returns>
-        //public bool CounterOffer(
-        //    string message,
-        //    SteamID otherSteamId,
-        //    TradeStatus status,
-        //    out string newTradeOfferId,
-        //    string tradeOfferId)
-        //{
-        //    if (string.IsNullOrEmpty(tradeOfferId))
-        //        throw new ArgumentNullException("tradeOfferId", @"Trade Offer Id must be set for counter offers.");
 
-        //    var data = new NameValueCollection
-        //                   {
-        //                       { "sessionid", this._sessionId },
-        //                       { "serverid", "1" },
-        //                       { "partner", otherSteamId.ConvertToUInt64().ToString() },
-        //                       { "tradeoffermessage", message },
-        //                       { "json_tradeoffer", JsonConvert.SerializeObject(status, this.JsonSerializerSettings) },
-        //                       { "tradeofferid_countered", tradeOfferId },
-        //                       { "trade_offer_create_params", "{}" }
-        //                   };
+        // public bool CounterOffer(
+        // string message,
+        // SteamID otherSteamId,
+        // TradeStatus status,
+        // out string newTradeOfferId,
+        // string tradeOfferId)
+        // {
+        // if (string.IsNullOrEmpty(tradeOfferId))
+        // throw new ArgumentNullException("tradeOfferId", @"Trade Offer Id must be set for counter offers.");
 
-        //    var referer = string.Format("https://steamcommunity.com/tradeoffer/{0}/", tradeOfferId);
+        // var data = new NameValueCollection
+        // {
+        // { "sessionid", this._sessionId },
+        // { "serverid", "1" },
+        // { "partner", otherSteamId.ConvertToUInt64().ToString() },
+        // { "tradeoffermessage", message },
+        // { "json_tradeoffer", JsonConvert.SerializeObject(status, this.JsonSerializerSettings) },
+        // { "tradeofferid_countered", tradeOfferId },
+        // { "trade_offer_create_params", "{}" }
+        // };
 
-        //    if (!this.Request(SendUrl, data, referer))
-        //    {
-        //        var state = this._webApi.GetOfferState(tradeOfferId);
-        //        if (state == TradeOfferState.TradeOfferStateCountered) return true;
-        //        return false;
-        //    }
+        // var referer = string.Format("https://steamcommunity.com/tradeoffer/{0}/", tradeOfferId);
 
-        //    return true;
-        //}
+        // if (!this.Request(SendUrl, data, referer))
+        // {
+        // var state = this._webApi.GetOfferState(tradeOfferId);
+        // if (state == TradeOfferState.TradeOfferStateCountered) return true;
+        // return false;
+        // }
+
+        // return true;
+        // }
         public bool Decline(string tradeOfferId)
         {
             var data = new NameValueCollection
@@ -235,7 +236,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
             var data = new NameValueCollection
                            {
                                { "sessionid", this._sessionId },
-                               { "captcha", "" },
+                               { "captcha", string.Empty },
                                { "serverid", "1" },
                                { "partner", otherSteamId.ConvertToUInt64().ToString() },
                                { "tradeoffermessage", message },

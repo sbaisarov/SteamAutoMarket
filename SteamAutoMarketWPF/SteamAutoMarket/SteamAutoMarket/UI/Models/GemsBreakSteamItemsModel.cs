@@ -6,6 +6,11 @@
     {
         private int gemsCount;
 
+        public GemsBreakSteamItemsModel(FullRgItem[] itemsList)
+            : base(itemsList)
+        {
+        }
+
         public int GemsCount
         {
             get => this.gemsCount;
@@ -14,11 +19,6 @@
                 this.gemsCount = value;
                 this.OnPropertyChanged();
             }
-        }
-
-        public GemsBreakSteamItemsModel(FullRgItem[] itemsList)
-            : base(itemsList)
-        {
         }
     }
 }

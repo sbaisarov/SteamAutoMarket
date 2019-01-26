@@ -16,6 +16,8 @@ namespace SteamAutoMarket.AutoUpdater
 
     using SteamAutoMarket.Properties;
 
+    using Timer = System.Timers.Timer;
+
     /// <summary>
     ///     Enum representing the remind later time span.
     /// </summary>
@@ -45,23 +47,23 @@ namespace SteamAutoMarket.AutoUpdater
         /// <summary>
         ///     URL of the xml file that contains information about latest version of the application.
         /// </summary>
-        public static String AppCastURL;
+        public static string AppCastURL;
 
         /// <summary>
         ///     Set the Application Title shown in Update dialog. Although AutoUpdater.NET will get it automatically, you can set this property if you like to give custom Title.
         /// </summary>
-        public static String AppTitle;
+        public static string AppTitle;
 
         /// <summary>
         ///     Set it to folder path where you want to download the update file. If not provided then it defaults to Temp folder.
         /// </summary>
-        public static String DownloadPath;
+        public static string DownloadPath;
 
         /// <summary>
         ///     If this is true users see dialog where they can set remind later interval otherwise it will take the interval from
         ///     RemindLaterAt and RemindLaterTimeSpan fields.
         /// </summary>
-        public static Boolean LetUserSelectRemindLater = true;
+        public static bool LetUserSelectRemindLater = true;
 
         ///<summary>
         ///     Set this to true if you want to ignore previously assigned Remind Later and Skip settings. It will also hide Remind Later and Skip buttons.
@@ -101,34 +103,34 @@ namespace SteamAutoMarket.AutoUpdater
         /// <summary>
         ///     If this is true users can see the Remind Later button.
         /// </summary>
-        public static Boolean ShowRemindLaterButton = true;
+        public static bool ShowRemindLaterButton = true;
 
         /// <summary>
         ///     If this is true users can see the skip button.
         /// </summary>
-        public static Boolean ShowSkipButton = true;
+        public static bool ShowSkipButton = true;
 
-        internal static String ChangelogURL;
+        internal static string ChangelogURL;
 
-        internal static String Checksum;
+        internal static string Checksum;
 
         internal static Version CurrentVersion;
 
-        internal static String DownloadURL;
+        internal static string DownloadURL;
 
-        internal static String HashingAlgorithm;
+        internal static string HashingAlgorithm;
 
         internal static Version InstalledVersion;
 
-        internal static String InstallerArgs;
+        internal static string InstallerArgs;
 
         internal static bool IsWinFormsApplication;
 
-        internal static String RegistryLocation;
+        internal static string RegistryLocation;
 
         internal static bool Running;
 
-        private static System.Timers.Timer _remindLaterTimer;
+        private static Timer _remindLaterTimer;
 
         /// <summary>
         ///     A delegate type to handle how to exit the application after update is downloaded.
@@ -203,7 +205,7 @@ namespace SteamAutoMarket.AutoUpdater
         /// </summary>
         /// <param name="appCast">URL of the xml file that contains information about latest version of the application.</param>
         /// <param name="myAssembly">Assembly to use for version checking.</param>
-        public static void Start(String appCast, Assembly myAssembly = null)
+        public static void Start(string appCast, Assembly myAssembly = null)
         {
             if (Mandatory && _remindLaterTimer != null)
             {
@@ -278,7 +280,7 @@ namespace SteamAutoMarket.AutoUpdater
                 AppTitle = titleAttribute != null ? titleAttribute.Title : mainAssembly.GetName().Name;
             }
 
-            var appCompany = companyAttribute != null ? companyAttribute.Company : "";
+            var appCompany = companyAttribute != null ? companyAttribute.Company : string.Empty;
 
             RegistryLocation = !string.IsNullOrEmpty(appCompany)
                                    ? $@"Software\{appCompany}\{AppTitle}\AutoUpdater"
@@ -361,7 +363,7 @@ namespace SteamAutoMarket.AutoUpdater
                                     {
                                         var mandatory = item.SelectSingleNode("mandatory");
 
-                                        Boolean.TryParse(mandatory?.InnerText, out Mandatory);
+                                        bool.TryParse(mandatory?.InnerText, out Mandatory);
                                     }
 
                                     args.Mandatory = Mandatory;
@@ -409,9 +411,9 @@ namespace SteamAutoMarket.AutoUpdater
             ChangelogURL = args.ChangelogURL = GetURL(webResponse.ResponseUri, args.ChangelogURL);
             DownloadURL = args.DownloadURL = GetURL(webResponse.ResponseUri, args.DownloadURL);
             Mandatory = args.Mandatory;
-            InstallerArgs = args.InstallerArgs ?? String.Empty;
+            InstallerArgs = args.InstallerArgs ?? string.Empty;
             HashingAlgorithm = args.HashingAlgorithm ?? "MD5";
-            Checksum = args.Checksum ?? String.Empty;
+            Checksum = args.Checksum ?? string.Empty;
 
             webResponse.Close();
 
@@ -573,17 +575,18 @@ namespace SteamAutoMarket.AutoUpdater
                     }
 
                     if (process.Id != currentProcess.Id && currentProcess.MainModule.FileName == processPath
-                    ) //get all instances of assembly except current
+                    )
                     {
+                        // get all instances of assembly except current
                         if (process.CloseMainWindow())
                         {
                             process.WaitForExit(
-                                (int)TimeSpan.FromSeconds(10).TotalMilliseconds); //give some time to process message
+                                (int)TimeSpan.FromSeconds(10).TotalMilliseconds); // give some time to process message
                         }
 
                         if (!process.HasExited)
                         {
-                            process.Kill(); //TODO show UI message asking user to close program himself instead of silently killing it
+                            process.Kill(); // TODO show UI message asking user to close program himself instead of silently killing it
                         }
                     }
                 }
@@ -593,6 +596,7 @@ namespace SteamAutoMarket.AutoUpdater
                     MethodInvoker methodInvoker = Application.Exit;
                     methodInvoker.Invoke();
                 }
+
 #if NETWPF
                 else if (System.Windows.Application.Current != null)
                 {
@@ -618,7 +622,7 @@ namespace SteamAutoMarket.AutoUpdater
             return (Attribute)attributes[0];
         }
 
-        private static string GetURL(Uri baseUri, String url)
+        private static string GetURL(Uri baseUri, string url)
         {
             if (!string.IsNullOrEmpty(url) && Uri.IsWellFormedUriString(url, UriKind.Relative))
             {

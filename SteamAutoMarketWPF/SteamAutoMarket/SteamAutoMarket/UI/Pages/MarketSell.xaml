@@ -30,7 +30,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="45" />
                 <RowDefinition />
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="0,0,0,5">
@@ -183,8 +183,8 @@
                                     Foreground="{DynamicResource ItemText}"
                                     Background="{DynamicResource DataGridBackground}"
                                     d:DataContext="{d:DesignData PriceModel}"
-                                    PreviewKeyDown="PriceTextBox_OnPreviewKeyDown" 
-                                    TextChanged="SellingPriceTextBoxBase_OnTextChanged"/>
+                                    PreviewKeyDown="PriceTextBox_OnPreviewKeyDown"
+                                    TextChanged="SellingPriceTextBoxBase_OnTextChanged" />
                             </ItemContainerTemplate>
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
@@ -217,10 +217,10 @@
             </xcdg:DataGridControl>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <TextBlock Text="Selected items count - "/>
-                <TextBlock Text="{Binding TotalSelectedItemsCount}" Margin="0,0,20,0"/>
-                <TextBlock Text="Selected items total price - "/>
-                <TextBlock Text="{Binding TotalListedItemsPrice}"/>
+                <TextBlock Text="Selected items count - " />
+                <TextBlock Text="{Binding TotalSelectedItemsCount}" Margin="0,0,20,0" />
+                <TextBlock Text="Selected items total price - " />
+                <TextBlock Text="{Binding TotalListedItemsPrice}" />
             </StackPanel>
         </Grid>
         <Grid Grid.Column="1"
@@ -442,8 +442,8 @@
                           Stretch="Fill"
                           Data="{StaticResource SvgRefreshSingle}" />
 
-                </Button>                
-                
+                </Button>
+
                 <Button Name="StopPriceLoadingButton"
                         Height="38"
                         Width="38"
@@ -476,14 +476,14 @@
                 </Button>
 
                 <RepeatButton Name="AddOneToAllSelectedItems"
-                        Height="38"
-                        Width="38"
-                        Grid.Column="4"
-                        Padding="0"
-                        Margin="1,4,1,5"
-                        Background="Transparent"
-                        ToolTip="Add +1 amount to sell to all selected items"
-                        Click="AddOneToAllSelectedButtonClick">
+                              Height="38"
+                              Width="38"
+                              Grid.Column="4"
+                              Padding="0"
+                              Margin="1,4,1,5"
+                              Background="Transparent"
+                              ToolTip="Add +1 amount to sell to all selected items"
+                              Click="AddOneToAllSelectedButtonClick">
 
                     <Path Style="{StaticResource Geometry}"
                           Stretch="Fill"

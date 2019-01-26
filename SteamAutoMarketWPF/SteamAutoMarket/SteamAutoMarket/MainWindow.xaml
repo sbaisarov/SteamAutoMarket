@@ -17,7 +17,7 @@
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Sell" Source="/UI/Pages/MarketSell.xaml" />
                 <mui:Link DisplayName="Relist" Source="/UI/Pages/MarketRelist.xaml" />
-                
+
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
         <mui:LinkGroup DisplayName="Trade">

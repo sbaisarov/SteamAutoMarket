@@ -213,21 +213,20 @@
 
         private string GenerateConfirmationHashForTime(long time, string tag, string identitySecret)
         {
-            //using (var wb = new WebClient())
-            //{
-            //    try
-            //    {
-            //        var response = wb.UploadString(
-            //            "https://www.steambiz.store/api/gconfhash",
-            //            $"{identitySecret},{tag},{time},{SteamManager.LicenseKey},{SteamManager.HwId}");
-            //        return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-            //    }
-            //    catch (Exception)
-            //    {
-            //        return null;
-            //    }
-            //}
-
+            // using (var wb = new WebClient())
+            // {
+            // try
+            // {
+            // var response = wb.UploadString(
+            // "https://www.steambiz.store/api/gconfhash",
+            // $"{identitySecret},{tag},{time},{SteamManager.LicenseKey},{SteamManager.HwId}");
+            // return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
+            // }
+            // catch (Exception)
+            // {
+            // return null;
+            // }
+            // }
             var decode = Convert.FromBase64String(identitySecret);
             var n2 = 8;
             if (tag != null)

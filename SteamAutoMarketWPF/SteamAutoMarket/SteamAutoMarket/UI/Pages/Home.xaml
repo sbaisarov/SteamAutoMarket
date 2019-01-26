@@ -38,7 +38,7 @@
 
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Steam login" />
                         </Grid>
-                    </Button>                    
+                    </Button>
                     <Button Style="{StaticResource FlatButton}" Click="LicenseStatus_OnClick">
                         <Grid>
                             <Grid.RowDefinitions>
