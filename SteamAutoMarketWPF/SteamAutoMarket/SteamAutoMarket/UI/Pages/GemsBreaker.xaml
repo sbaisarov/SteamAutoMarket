@@ -1,0 +1,377 @@
+﻿<UserControl x:Class="SteamAutoMarket.UI.Pages.GemsBreaker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+             xmlns:converter="clr-namespace:SteamAutoMarket.UI.Utils.Converter"
+             xmlns:models="clr-namespace:SteamAutoMarket.UI.Models"
+             xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:GemsBreaker}">
+
+    <UserControl.Resources>
+        <converter:IfNullVisibleConverter x:Key="IfNullVisibleConverter" />
+        <converter:IfNullInvisibleConverter x:Key="IfNullInvisibleConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="5, 5, 5, 5">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="20*" MinWidth="200" MaxWidth="250" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0"
+              Grid.Row="0"
+              Margin="10, 10, 30, 10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" FontSize="12" Text="Real game name" />
+                <ComboBox ItemsSource="{Binding Path=RealGameFilters}"
+                          SelectedItem="{Binding Path=RealGameSelectedFilter}" Grid.Row="1" Grid.Column="0"
+                          Margin="0,0,5,0" Name="RealGameComboBox" DropDownOpened="Filter_OnDropDownOpened" />
+
+                <TextBlock Grid.Row="0" Grid.Column="1" FontSize="12" Text="Type" />
+                <ComboBox ItemsSource="{Binding Path=TypeFilters}"
+                          SelectedItem="{Binding Path=TypeSelectedFilter}" Grid.Row="1" Grid.Column="1"
+                          Margin="0,0,5,0" Name="TypeComboBox" DropDownOpened="Filter_OnDropDownOpened" />
+
+
+                <TextBlock Grid.Row="0" Grid.Column="2" FontSize="12" Text="Rarity" />
+                <ComboBox ItemsSource="{Binding Path=RarityFilters}" SelectedItem="{Binding Path=RaritySelectedFilter}"
+                          Grid.Row="1" Grid.Column="2" Margin="0,0,5,0" Name="RarityComboBox"
+                          DropDownOpened="Filter_OnDropDownOpened" />
+
+                <TextBlock Grid.Row="0" Grid.Column="3" FontSize="12" Text="Tradability" />
+                <ComboBox ItemsSource="{Binding Path=TradabilityFilters}"
+                          SelectedItem="{Binding Path=TradabilitySelectedFilter}" Grid.Row="1" Grid.Column="3"
+                          Margin="0,0,5,0" Name="TradabilityComboBox" DropDownOpened="Filter_OnDropDownOpened" />
+
+                <TextBlock Grid.Row="0" Grid.Column="4" FontSize="12" Text="Marketable" />
+                <ComboBox ItemsSource="{Binding Path=MarketableFilters}"
+                          SelectedItem="{Binding Path=MarketableSelectedFilter}" Grid.Row="1" Grid.Column="4"
+                          Margin="0,0,5,0" Name="MarketableComboBox" DropDownOpened="Filter_OnDropDownOpened" />
+
+                <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="6" Content="Apply filters" Padding="0"
+                        Margin="0,0,5,0" Click="ApplyFiltersButtonClick" />
+                <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="7" Content="Reset filters" Padding="0"
+                        Margin="5,0,0,0" Click="ResetFiltersClick" />
+            </Grid>
+
+            <xcdg:DataGridControl x:Name="MarketItemsToSellGrid"
+                                  Grid.Row="1"
+                                  AutoCreateColumns="False"
+                                  Style="{StaticResource GridStyle}"
+                                  ItemsSource="{Binding Path=GemsBreakerItems, Mode=OneWay}"
+                                  SelectedItem="{Binding Path=GemsBreakerSelectedItem}">
+
+                <xcdg:DataGridControl.View>
+                    <xcdg:TableView ShowRowSelectorPane="False" />
+                </xcdg:DataGridControl.View>
+
+                <xcdg:DataGridControl.Columns>
+                    <xcdg:Column Title="Item name"
+                                 Width="2*"
+                                 FieldName="ItemName"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Left"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Type"
+                                 Width="1*"
+                                 FieldName="Type"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Count"
+                                 Width="0.5*"
+                                 FieldName="Count"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Gems count"
+                                 Width="1*"
+                                 FieldName="CurrentPrice"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Amount to break"
+                                 MinWidth="110"
+                                 MaxWidth="110"
+                                 Width="*"
+                                 FieldName="NumericUpDown"
+                                 AllowSort="False"
+                                 AllowGroup="False"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <xctk:IntegerUpDown
+                                    Style="{StaticResource UpDown}"
+                                    Background="{StaticResource DataGridBackground}"
+                                    Width="85"
+                                    Increment="1"
+                                    Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
+                                    Value="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                    Minimum="0"
+                                    MouseWheelActiveTrigger="Disabled"
+                                    ValueChanged="SelectedItemsUpDownBase_OnValueChanged" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+                </xcdg:DataGridControl.Columns>
+            </xcdg:DataGridControl>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="Selected items count - " />
+                <TextBlock Text="{Binding TotalSelectedItemsCount}" Margin="0,0,20,0" />
+                <TextBlock Text="Selected items total gems count - " />
+                <TextBlock Text="{Binding TotalListedItemsPrice}" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1"
+              Grid.Row="0"
+              MinWidth="200"
+              MaxWidth="250">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="100" MaxHeight="400" />
+                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
+                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Image Source="{Binding Path=GemsBreakerSelectedItem.Image}"
+                       Stretch="Uniform"
+                       Name="ItemImage"
+                       MaxHeight="200"
+                       Margin="0,0,0,5" />
+
+                <Path Grid.Row="0"
+                      Style="{StaticResource Geometry}"
+                      Margin="0,0,0,5"
+                      Visibility="{Binding Path=GemsBreakerSelectedItem.Image, Converter={StaticResource IfNullVisibleConverter}}"
+                      Data="{StaticResource SvgDefaultItemImage}" />
+
+                <TextBox Grid.Row="1"
+                         Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
+                         Name="ItemDescriptionTextBox"
+                         MaxHeight="90"
+                         Background="Transparent"
+                         Foreground="{DynamicResource ItemText}"
+                         IsReadOnly="True"
+                         VerticalScrollBarVisibility="Visible"
+                         Text="{Binding Path=GemsBreakerSelectedItem.Description, Mode=OneWay}"
+                         TextWrapping="Wrap" VerticalAlignment="Center" />
+            </Grid>
+
+            <Button Grid.Row="1"
+                    Content="Load Steam inventory"
+                    Margin="0, 5, 0, 0"
+                    Padding="0" Click="StartGemsBreakButtonClick_OnClick" />
+
+            <Grid Grid.Row="2" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Height="38"
+                    Width="38"
+                    Grid.Column="0"
+                    Padding="0"
+                    Margin="1,4,1,5"
+                    Background="Transparent"
+                    ToolTip="Reload all gems count"
+                    Click="RefreshAllGemsCountPriceButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefresh}" />
+                </Button>
+
+                <Button Name="RefreshSinglePriceButton"
+                        Height="38"
+                        Width="38"
+                        Grid.Column="1"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Reload selected gems count"
+                        Click="RefreshSingleGemsCountButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefreshSingle}" />
+
+                </Button>
+
+                <Button Name="StopPriceLoadingButton"
+                        Height="38"
+                        Width="38"
+                        Grid.Column="2"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Stop gems count load"
+                        Click="StopGemsCountLoadingButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgStop}" />
+
+                </Button>
+
+                <Button
+                    Height="38"
+                    Width="38"
+                    Grid.Column="3"
+                    Padding="0"
+                    Margin="1,4,1,5"
+                    Background="Transparent"
+                    ToolTip="Find selected item on steam market"
+                    Click="OpenOnSteamMarket_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgSteam}" />
+                </Button>
+
+                <RepeatButton Name="AddOneToAllSelectedItems"
+                              Height="38"
+                              Width="38"
+                              Grid.Column="4"
+                              Padding="0"
+                              Margin="1,4,1,5"
+                              Background="Transparent"
+                              ToolTip="Add +1 amount to break to all selected items"
+                              Click="AddOneToAllSelectedButtonClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgPlusOne}" />
+
+                </RepeatButton>
+            </Grid>
+
+            <Grid Grid.Row="4"
+                  Margin="0, 0, 0, 5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Name="MarketSellMarkAllItems"
+                        Margin="0,0,4,0"
+                        Padding="0" Click="MarkAllItemsClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Check<LineBreak />all
+                    </TextBlock>
+                </Button>
+                <Button Grid.Column="1"
+                        Name="MarketSellMarkSelectedItems"
+                        Margin="2,0,2,0"
+                        Padding="0" Click="MarkSelectedItemsClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Check<LineBreak />selected
+                    </TextBlock>
+                </Button>
+                <Button Grid.Column="2"
+                        Name="MarketSellUnmarkAllItems"
+                        Margin="4,0,0,0"
+                        Padding="0" Click="UnmarkAllItemsClick">
+                    <TextBlock TextAlignment="Center"
+                               VerticalAlignment="Center">
+                        Uncheck<LineBreak />all
+                    </TextBlock>
+                </Button>
+            </Grid>
+
+            <Button Grid.Row="5"
+                    Content="Start break on gems"
+                    Margin="0, 5, 0, 0"
+                    Padding="0" Click="StartGemsBreakButtonClick_OnClick" />
+
+        </Grid>
+
+    </Grid>
+</UserControl>

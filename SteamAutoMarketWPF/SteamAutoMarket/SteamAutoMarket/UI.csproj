@@ -235,6 +235,7 @@
     <Compile Include="Steam\TradeOffer\TradeOfferWebAPI.cs" />
     <Compile Include="Steam\TradeOffer\TradeStatus.cs" />
     <Compile Include="UI\Models\Enums\ETradeAccepter.cs" />
+    <Compile Include="UI\Models\GemsBreakSteamItemsModel.cs" />
     <Compile Include="UI\Models\SteamTradeHistoryItemsModel.cs" />
     <Compile Include="UI\Models\TradeHistoryModel.cs" />
     <Compile Include="UI\Models\NameValueModel.cs" />
@@ -254,6 +255,9 @@
     <Compile Include="UI\Models\ActiveTradeModel.cs" />
     <Compile Include="UI\Pages\ActiveTrades.xaml.cs">
       <DependentUpon>ActiveTrades.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\GemsBreaker.xaml.cs">
+      <DependentUpon>GemsBreaker.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\MarketExtra.xaml.cs">
       <DependentUpon>MarketExtra.xaml</DependentUpon>
@@ -339,6 +343,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UI\Pages\ActiveTrades.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Pages\GemsBreaker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

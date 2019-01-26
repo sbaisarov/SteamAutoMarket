@@ -17,14 +17,14 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="0"
+        <GroupBox Grid.Column="1"
                   Grid.Row="0"
-                  Margin="10, 10, 10, 10"
+                  Margin="10"
                   Header="SteamID Whitelist"
                   Padding="0"
                   Template="{StaticResource GroupBoxTemplate}">
@@ -76,7 +76,7 @@
             </xcdg:DataGridControl>
         </GroupBox>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="0" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -170,7 +170,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Column="2">
+        <Grid Column="2" HorizontalAlignment="Left">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />

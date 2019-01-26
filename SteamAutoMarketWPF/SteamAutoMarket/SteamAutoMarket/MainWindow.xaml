@@ -17,7 +17,7 @@
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Sell" Source="/UI/Pages/MarketSell.xaml" />
                 <mui:Link DisplayName="Relist" Source="/UI/Pages/MarketRelist.xaml" />
-                <mui:Link DisplayName="Utility" Source="/UI/Pages/MarketExtra.xaml" />
+                
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
         <mui:LinkGroup DisplayName="Trade">
@@ -26,6 +26,12 @@
                 <mui:Link DisplayName="Auto Accepter" Source="/UI/Pages/TradeAutoAccept.xaml" />
                 <mui:Link DisplayName="Active" Source="/UI/Pages/ActiveTrades.xaml" />
                 <mui:Link DisplayName="History" Source="/UI/Pages/TradeHistory.xaml" />
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
+        <mui:LinkGroup DisplayName="Utility">
+            <mui:LinkGroup.Links>
+                <mui:Link DisplayName="Market" Source="/UI/Pages/MarketExtra.xaml" />
+                <mui:Link DisplayName="Gems" Source="/UI/Pages/GemsBreaker.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
         <mui:LinkGroup DisplayName="Action">
