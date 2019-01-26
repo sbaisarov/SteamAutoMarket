@@ -34,6 +34,8 @@
 
         private CancellationTokenSource cancellationTokenSource;
 
+        private bool isTotalPriceRefreshPlanned;
+
         private MarketSellModel marketSellSelectedItem;
 
         private MarketSellStrategy marketSellStrategy;
@@ -44,15 +46,13 @@
 
         private List<string> realGameFilters;
 
+        private string totalListedItemsPrice = UiConstants.FractionalZeroString;
+
+        private int totalSelectedItemsCount;
+
         private List<string> tradabilityFilters;
 
         private List<string> typeFilters;
-
-        private string totalListedItemsPrice = UiConstants.FractionalZeroString;
-
-        private bool isTotalPriceRefreshPlanned;
-
-        private int totalSelectedItemsCount;
 
         public MarketSell()
         {
@@ -149,6 +149,26 @@
 
         public string RealGameSelectedFilter { get; set; }
 
+        public string TotalListedItemsPrice
+        {
+            get => this.totalListedItemsPrice;
+            set
+            {
+                this.totalListedItemsPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int TotalSelectedItemsCount
+        {
+            get => this.totalSelectedItemsCount;
+            set
+            {
+                this.totalSelectedItemsCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public List<string> TradabilityFilters
         {
             get => this.tradabilityFilters;
@@ -172,26 +192,6 @@
         }
 
         public string TypeSelectedFilter { get; set; }
-
-        public string TotalListedItemsPrice
-        {
-            get => this.totalListedItemsPrice;
-            set
-            {
-                this.totalListedItemsPrice = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        public int TotalSelectedItemsCount
-        {
-            get => this.totalSelectedItemsCount;
-            set
-            {
-                this.totalSelectedItemsCount = value;
-                this.OnPropertyChanged();
-            }
-        }
 
         [NotifyPropertyChangedInvocator]
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
@@ -416,6 +416,31 @@
                 (IEnumerable<MarketSellModel>)this.MarketItemsToSellGrid.ItemsSource,
                 this.MarketSellStrategy);
 
+        private void RefreshSelectedItemsInfo()
+        {
+            if (this.isTotalPriceRefreshPlanned) return;
+
+            Task.Run(
+                () =>
+                    {
+                        this.isTotalPriceRefreshPlanned = true;
+                        Thread.Sleep(300);
+                        this.TotalSelectedItemsCount =
+                            this.MarketSellItems?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
+
+                        this.TotalListedItemsPrice = this.MarketSellItems?.Sum(
+                                                         m =>
+                                                             {
+                                                                 if (m.NumericUpDown.AmountToSell == 0
+                                                                     || m.SellPrice.Value.HasValue == false) return 0;
+                                                                 return m.NumericUpDown.AmountToSell
+                                                                        * m.SellPrice.Value;
+                                                             })?.ToString("F") ?? "0";
+
+                        this.isTotalPriceRefreshPlanned = false;
+                    });
+        }
+
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e) =>
             GridPriceLoaderUtils.RefreshSingleModelPrice(this.MarketSellSelectedItem, this.MarketSellStrategy);
 
@@ -439,6 +464,16 @@
         private void ResetFiltersClick(object sender, RoutedEventArgs e)
         {
             this.ResetFilters();
+        }
+
+        private void SelectedItemsUpDownBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
+        private void SellingPriceTextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
         }
 
         private void StartMarketSellButtonClick_OnClick(object sender, RoutedEventArgs e)
@@ -480,39 +515,5 @@
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>
             GridPriceLoaderUtils.InvokePriceLoadingStop();
-
-        private void RefreshSelectedItemsInfo()
-        {
-            if (this.isTotalPriceRefreshPlanned) return;
-
-            Task.Run(
-                () =>
-                    {
-                        this.isTotalPriceRefreshPlanned = true;
-                        Thread.Sleep(300);
-                        this.TotalSelectedItemsCount = this.MarketSellItems?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
-
-                        this.TotalListedItemsPrice = this.MarketSellItems?.Sum(
-                                                         m =>
-                                                             {
-                                                                 if (m.NumericUpDown.AmountToSell == 0
-                                                                     || m.SellPrice.Value.HasValue == false) return 0;
-                                                                 return m.NumericUpDown.AmountToSell
-                                                                        * m.SellPrice.Value;
-                                                             })?.ToString("F") ?? "0";
-
-                        this.isTotalPriceRefreshPlanned = false;
-                    });
-        }
-
-        private void SelectedItemsUpDownBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            this.RefreshSelectedItemsInfo();
-        }
-
-        private void SellingPriceTextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            this.RefreshSelectedItemsInfo();
-        }
     }
 }

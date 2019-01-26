@@ -36,6 +36,8 @@
 
         private CancellationTokenSource cancellationTokenSource;
 
+        private bool isTotalPriceRefreshPlanned;
+
         private MarketSellStrategy marketSellStrategy;
 
         private Task priceLoadingTask;
@@ -44,13 +46,11 @@
 
         private MarketRelistModel relistSelectedItem;
 
-        private int totalSelectedItemsCount;
-
         private string totalListedItemsListedPrice = UiConstants.FractionalZeroString;
 
         private object totalListedItemsRelistPrice = UiConstants.FractionalZeroString;
 
-        private bool isTotalPriceRefreshPlanned;
+        private int totalSelectedItemsCount;
 
         public MarketRelist()
         {
@@ -87,16 +87,6 @@
             }
         }
 
-        public int TotalSelectedItemsCount
-        {
-            get => this.totalSelectedItemsCount;
-            set
-            {
-                this.totalSelectedItemsCount = value;
-                this.OnPropertyChanged();
-            }
-        }
-
         public string TotalListedItemsListedPrice
         {
             get => this.totalListedItemsListedPrice;
@@ -117,38 +107,24 @@
             }
         }
 
-        private void RefreshSelectedItemsInfo()
+        public int TotalSelectedItemsCount
         {
-            if (this.isTotalPriceRefreshPlanned) return;
-
-            Task.Run(
-                () =>
-                    {
-                        this.isTotalPriceRefreshPlanned = true;
-                        Thread.Sleep(300);
-                        this.TotalSelectedItemsCount = this.MarketListedItemsList?.Where(m => m.Checked.CheckBoxChecked).Sum(m => m.Count) ?? 0;
-
-                        this.TotalListedItemsListedPrice = this.MarketListedItemsList?.Where(m => m.Checked.CheckBoxChecked).Sum(
-                            m =>
-                                {
-                                    if (m.ListedPrice.HasValue == false) return 0;
-                                    return m.Count * m.ListedPrice.Value;
-                                }).ToString("F");
-
-                        this.TotalListedItemsRelistPrice = this.MarketListedItemsList?.Where(m => m.Checked.CheckBoxChecked).Sum(
-                            m =>
-                                {
-                                    if (m.RelistPrice.Value.HasValue == false) return 0;
-                                    return m.Count * m.RelistPrice.Value.Value;
-                                }).ToString("F");
-
-                        this.isTotalPriceRefreshPlanned = false;
-                    });
+            get => this.totalSelectedItemsCount;
+            set
+            {
+                this.totalSelectedItemsCount = value;
+                this.OnPropertyChanged();
+            }
         }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private void CheckBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
 
         private void FocusTextBox(int rowIndex)
         {
@@ -420,6 +396,38 @@
                 this.cancellationTokenSource.Token);
         }
 
+        private void RefreshSelectedItemsInfo()
+        {
+            if (this.isTotalPriceRefreshPlanned) return;
+
+            Task.Run(
+                () =>
+                    {
+                        this.isTotalPriceRefreshPlanned = true;
+                        Thread.Sleep(300);
+                        this.TotalSelectedItemsCount =
+                            this.MarketListedItemsList?.Where(m => m.Checked.CheckBoxChecked).Sum(m => m.Count) ?? 0;
+
+                        this.TotalListedItemsListedPrice = this.MarketListedItemsList
+                            ?.Where(m => m.Checked.CheckBoxChecked).Sum(
+                                m =>
+                                    {
+                                        if (m.ListedPrice.HasValue == false) return 0;
+                                        return m.Count * m.ListedPrice.Value;
+                                    }).ToString("F");
+
+                        this.TotalListedItemsRelistPrice = this.MarketListedItemsList
+                            ?.Where(m => m.Checked.CheckBoxChecked).Sum(
+                                m =>
+                                    {
+                                        if (m.RelistPrice.Value.HasValue == false) return 0;
+                                        return m.Count * m.RelistPrice.Value.Value;
+                                    }).ToString("F");
+
+                        this.isTotalPriceRefreshPlanned = false;
+                    });
+        }
+
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
         {
             var task = Task.Run(
@@ -460,6 +468,16 @@
                     });
 
             this.priceLoadSubTasks.Add(task);
+        }
+
+        private void RelistTextBox_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
+        private void RelistTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
         }
 
         private void StartRelistButton_OnClick(object sender, RoutedEventArgs e)
@@ -574,21 +592,6 @@
             }
 
             this.priceLoadSubTasks.Clear();
-        }
-
-        private void CheckBox_OnClick(object sender, RoutedEventArgs e)
-        {
-            this.RefreshSelectedItemsInfo();
-        }
-
-        private void RelistTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            this.RefreshSelectedItemsInfo();
-        }
-
-        private void RelistTextBox_OnLostFocus(object sender, RoutedEventArgs e)
-        {
-            this.RefreshSelectedItemsInfo();
         }
     }
 }
