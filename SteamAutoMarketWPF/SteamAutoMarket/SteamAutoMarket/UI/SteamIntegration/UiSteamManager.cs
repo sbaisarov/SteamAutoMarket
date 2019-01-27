@@ -24,6 +24,7 @@
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.PriceCache;
     using SteamAutoMarket.UI.Repository.Settings;
+    using SteamAutoMarket.UI.SteamIntegration.InventoryLoad;
     using SteamAutoMarket.UI.Utils.Extension;
     using SteamAutoMarket.UI.Utils.Logger;
 
@@ -248,11 +249,13 @@
         public double? GetCurrentPriceWithCache(int appid, string hashName) =>
             this.CurrentPriceCache.Get(hashName)?.Price ?? this.GetCurrentPrice(appid, hashName);
 
-        public void LoadItemsToSaleWorkingProcess(
+        public void LoadInventoryWorkingProcess<T>(
             SteamAppId appid,
             int contextId,
-            ObservableCollection<MarketSellModel> marketSellItems,
+            ObservableCollection<T> marketSellItems,
+            IInventoryLoadStrategy<T> processStrategy,
             WorkingProcessDataContext wp)
+        where T : SteamItemsModel
         {
             try
             {
@@ -272,7 +275,7 @@
                 var currentPage = 1;
 
                 wp.ProgressBarMaximum = totalPagesCount;
-                MarketSellUtils.ProcessMarketSellInventoryPage(marketSellItems, page, this.Inventory);
+                processStrategy.ProcessInventoryPage(marketSellItems, page, this.Inventory);
 
                 wp.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
                 wp.IncrementProgress();
@@ -290,7 +293,7 @@
                         appid.AppId,
                         contextId,
                         page.LastAssetid,
-                        cookies: this.Cookies);
+                        this.Cookies);
 
                     if (page == null)
                     {
@@ -298,7 +301,7 @@
                         return;
                     }
 
-                    MarketSellUtils.ProcessMarketSellInventoryPage(marketSellItems, page, this.Inventory);
+                    processStrategy.ProcessInventoryPage(marketSellItems, page, this.Inventory);
 
                     wp.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
                     wp.IncrementProgress();
@@ -306,64 +309,7 @@
 
                 wp.AppendLog(
                     marketSellItems.Any()
-                        ? $"{marketSellItems.ToArray().Sum(i => i.Count)} marketable items was loaded"
-                        : $"Seems like no items found on {appid.Name} inventory");
-            }
-            catch (Exception e)
-            {
-                var message = $"Error on {appid.Name} inventory loading";
-
-                wp.AppendLog(message);
-                ErrorNotify.CriticalMessageBox(message, e);
-            }
-        }
-
-        public void LoadItemsToTradeWorkingProcess(
-            SteamAppId appid,
-            int contextId,
-            ObservableCollection<SteamItemsModel> itemsToTrade,
-            WorkingProcessDataContext wp)
-        {
-            try
-            {
-                wp.AppendLog($"{appid.AppId}-{contextId} inventory loading started");
-
-                var page = this.LoadInventoryPage(this.SteamId, appid.AppId, contextId, cookies: this.Cookies);
-                wp.AppendLog($"{page.TotalInventoryCount} items found");
-
-                var totalPagesCount = (int)Math.Ceiling(page.TotalInventoryCount / 5000d);
-                var currentPage = 1;
-
-                wp.ProgressBarMaximum = totalPagesCount;
-                this.ProcessTradeSendInventoryPage(itemsToTrade, page);
-
-                wp.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
-                wp.IncrementProgress();
-
-                while (page.MoreItems == 1)
-                {
-                    if (wp.CancellationToken.IsCancellationRequested)
-                    {
-                        wp.AppendLog($"{appid.Name} inventory loading was force stopped");
-                        return;
-                    }
-
-                    page = this.LoadInventoryPage(
-                        this.SteamId,
-                        appid.AppId,
-                        contextId,
-                        page.LastAssetid,
-                        cookies: this.Cookies);
-
-                    this.ProcessTradeSendInventoryPage(itemsToTrade, page);
-
-                    wp.AppendLog($"Page {currentPage++}/{totalPagesCount} loaded");
-                    wp.IncrementProgress();
-                }
-
-                wp.AppendLog(
-                    itemsToTrade.Any()
-                        ? $"{itemsToTrade.ToArray().Sum(i => i.Count)} tradable items was loaded"
+                        ? $"{marketSellItems.ToArray().Sum(i => i.Count)} items was loaded"
                         : $"Seems like no items found on {appid.Name} inventory");
             }
             catch (Exception e)
@@ -485,7 +431,7 @@
                 wp.ClearChart();
 
                 var items = new ObservableCollection<MarketSellModel>();
-                this.LoadItemsToSaleWorkingProcess(steamAppId, steamAppId.ContextId.Value, items, wp);
+                this.LoadInventoryWorkingProcess(steamAppId, steamAppId.ContextId.Value, items, MarketSellInventoryProcessStrategy.MarketSellStrategy, wp);
                 allItems.AddRange(items);
 
                 if (wp.CancellationToken.IsCancellationRequested)
@@ -1089,33 +1035,5 @@
             }
         }
 
-        private void ProcessTradeSendInventoryPage(
-            ObservableCollection<SteamItemsModel> marketSellItems,
-            InventoryRootModel inventoryPage)
-        {
-            var items = this.Inventory.ProcessInventoryPage(inventoryPage).ToArray();
-
-            items = this.Inventory.FilterInventory(items, false, true);
-
-            var groupedItems = items.GroupBy(x => new { x.Description.MarketHashName, x.Description.IsTradable })
-                .ToArray();
-
-            foreach (var group in groupedItems)
-            {
-                var existModel = marketSellItems.FirstOrDefault(
-                    item => item.ItemModel.Description.MarketHashName == group.Key.MarketHashName
-                            && item.ItemModel.Description.IsTradable == group.Key.IsTradable);
-
-                if (existModel != null)
-                {
-                    existModel.ItemsList.AddRangeDispatch(group);
-                    existModel.RefreshCount();
-                }
-                else
-                {
-                    marketSellItems.AddDispatch(new SteamItemsModel(group.ToArray()));
-                }
-            }
-        }
     }
 }

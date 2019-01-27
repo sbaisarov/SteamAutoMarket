@@ -235,7 +235,7 @@
     <Compile Include="Steam\TradeOffer\TradeOfferWebAPI.cs" />
     <Compile Include="Steam\TradeOffer\TradeStatus.cs" />
     <Compile Include="UI\Models\Enums\ETradeAccepter.cs" />
-    <Compile Include="UI\Models\GemsBreakSteamItemsModel.cs" />
+    <Compile Include="UI\Models\GemsBreakerSteamItems.cs" />
     <Compile Include="UI\Models\SteamTradeHistoryItemsModel.cs" />
     <Compile Include="UI\Models\TradeHistoryModel.cs" />
     <Compile Include="UI\Models\NameValueModel.cs" />
@@ -300,7 +300,7 @@
     </Compile>
     <Compile Include="UI\Pages\WorkingProcessDataContext.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="UI\Repository\UiConstants.cs" />
+    <Compile Include="UI\Utils\UiConstants.cs" />
     <Compile Include="UI\Repository\Context\UiDefaultValues.cs" />
     <Compile Include="UI\Repository\Context\WorkingProcessProvider.cs" />
     <Compile Include="UI\Repository\Image\ImageCache.cs" />
@@ -315,6 +315,10 @@
     <Compile Include="UI\Repository\Settings\SettingsUpdated.cs" />
     <Compile Include="UI\Models\Enums\EMarketSaleType.cs" />
     <Compile Include="UI\SteamIntegration\FunctionalButtonsActions.cs" />
+    <Compile Include="UI\SteamIntegration\InventoryLoad\GemsBreakerInventoryProcessStrategy.cs" />
+    <Compile Include="UI\SteamIntegration\InventoryLoad\IInventoryLoadStrategy.cs" />
+    <Compile Include="UI\SteamIntegration\InventoryLoad\MarketSellInventoryProcessStrategy.cs" />
+    <Compile Include="UI\SteamIntegration\InventoryLoad\TradeSendInventoryProcessStrategy.cs" />
     <Compile Include="UI\SteamIntegration\MarketSellUtils.cs" />
     <Compile Include="UI\SteamIntegration\MarketSellStrategy.cs" />
     <Compile Include="UI\SteamIntegration\GridPriceLoaderUtils.cs" />
@@ -325,6 +329,15 @@
     <Compile Include="UI\Utils\Converter\IfNullInvisibleConverter.cs" />
     <Compile Include="UI\Utils\Converter\InvertBooleanConverter.cs" />
     <Compile Include="UI\Utils\Converter\IfNullVisibleConverter.cs" />
+    <Compile Include="UI\Utils\ItemFilters\FilterConstants.cs" />
+    <Compile Include="UI\Utils\ItemFilters\FiltersFormatter.cs" />
+    <Compile Include="UI\Utils\ItemFilters\SteamItemsFilters.cs" />
+    <Compile Include="UI\Utils\ItemFilters\Strategies\ISteamItemsFilter.cs" />
+    <Compile Include="UI\Utils\ItemFilters\Strategies\MarketableFilter.cs" />
+    <Compile Include="UI\Utils\ItemFilters\Strategies\RarityFilter.cs" />
+    <Compile Include="UI\Utils\ItemFilters\Strategies\RealGameFilter.cs" />
+    <Compile Include="UI\Utils\ItemFilters\Strategies\TradabilityFilter.cs" />
+    <Compile Include="UI\Utils\ItemFilters\Strategies\TypeFilter.cs" />
     <Compile Include="UI\Utils\UiElementsUtils.cs" />
     <Compile Include="UI\Utils\Extension\CollectionDispatcher.cs" />
     <Compile Include="UI\Utils\Logger\ErrorNotify.cs" />

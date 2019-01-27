@@ -2,11 +2,11 @@
 {
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
 
-    public class GemsBreakSteamItemsModel : SteamItemsModel
+    public class GemsBreakerSteamItems : SteamItemsModel
     {
         private int gemsCount;
 
-        public GemsBreakSteamItemsModel(FullRgItem[] itemsList)
+        public GemsBreakerSteamItems(FullRgItem[] itemsList)
             : base(itemsList)
         {
         }

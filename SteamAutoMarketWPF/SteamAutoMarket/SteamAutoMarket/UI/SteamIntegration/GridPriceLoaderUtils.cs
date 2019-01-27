@@ -15,7 +15,7 @@
 
     public static class GridPriceLoaderUtils
     {
-        private static readonly List<Task> PriceLoadSubTasks = new List<Task>();
+        public static readonly List<Task> PriceLoadSubTasks = new List<Task>();
 
         private static CancellationTokenSource cancellationTokenSource;
 

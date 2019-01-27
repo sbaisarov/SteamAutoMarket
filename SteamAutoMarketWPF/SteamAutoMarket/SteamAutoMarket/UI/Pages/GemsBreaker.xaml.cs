@@ -4,35 +4,43 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Controls;
 
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Repository;
+    using SteamAutoMarket.UI.Repository.Context;
+    using SteamAutoMarket.UI.SteamIntegration.InventoryLoad;
+    using SteamAutoMarket.UI.Utils;
+    using SteamAutoMarket.UI.Utils.ItemFilters;
+    using SteamAutoMarket.UI.Utils.Logger;
 
     /// <summary>
     /// Interaction logic for GemsBreaker.xaml
     /// </summary>
-    public partial class GemsBreaker : UserControl, INotifyPropertyChanged
+    public partial class GemsBreaker : INotifyPropertyChanged
     {
-        private ObservableCollection<GemsBreakSteamItemsModel> gemsBreakerItems;
+        private ObservableCollection<GemsBreakerSteamItems> gemsBreakerItems =
+            new ObservableCollection<GemsBreakerSteamItems>();
 
-        private GemsBreakSteamItemsModel gemsBreakerSelectedItem;
+        private GemsBreakerSteamItems gemsBreakerSelectedItem;
 
-        private List<string> marketableFilters;
+        private IEnumerable<string> marketableFilters;
 
-        private List<string> rarityFilters;
+        private IEnumerable<string> rarityFilters;
 
-        private List<string> realGameFilters;
+        private IEnumerable<string> realGameFilters;
 
         private string totalListedItemsPrice = UiConstants.FractionalZeroString;
 
         private int totalSelectedItemsCount;
 
-        private List<string> tradabilityFilters;
+        private IEnumerable<string> tradabilityFilters;
 
-        private List<string> typeFilters;
+        private IEnumerable<string> typeFilters;
 
         public GemsBreaker()
         {
@@ -42,7 +50,7 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<GemsBreakSteamItemsModel> GemsBreakerItems
+        public ObservableCollection<GemsBreakerSteamItems> GemsBreakerItems
         {
             get => this.gemsBreakerItems;
             set
@@ -52,7 +60,7 @@
             }
         }
 
-        public GemsBreakSteamItemsModel GemsBreakerSelectedItem
+        public GemsBreakerSteamItems GemsBreakerSelectedItem
         {
             get => this.gemsBreakerSelectedItem;
             set
@@ -62,7 +70,7 @@
             }
         }
 
-        public List<string> MarketableFilters
+        public IEnumerable<string> MarketableFilters
         {
             get => this.marketableFilters;
             set
@@ -74,7 +82,7 @@
 
         public string MarketableSelectedFilter { get; set; }
 
-        public List<string> RarityFilters
+        public IEnumerable<string> RarityFilters
         {
             get => this.rarityFilters;
             set
@@ -86,7 +94,7 @@
 
         public string RaritySelectedFilter { get; set; }
 
-        public List<string> RealGameFilters
+        public IEnumerable<string> RealGameFilters
         {
             get => this.realGameFilters;
             set
@@ -118,7 +126,7 @@
             }
         }
 
-        public List<string> TradabilityFilters
+        public IEnumerable<string> TradabilityFilters
         {
             get => this.tradabilityFilters;
             set
@@ -130,7 +138,7 @@
 
         public string TradabilitySelectedFilter { get; set; }
 
-        public List<string> TypeFilters
+        public IEnumerable<string> TypeFilters
         {
             get => this.typeFilters;
             set
@@ -152,12 +160,49 @@
 
         private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var resultView = this.GemsBreakerItems.ToList();
+
+            SteamItemsFilters<GemsBreakerSteamItems>.RealGameFilter.Process(this.RealGameSelectedFilter, resultView);
+            SteamItemsFilters<GemsBreakerSteamItems>.TypeFilter.Process(this.TypeSelectedFilter, resultView);
+            SteamItemsFilters<GemsBreakerSteamItems>.RarityFilter.Process(this.RaritySelectedFilter, resultView);
+            SteamItemsFilters<GemsBreakerSteamItems>.TradabilityFilter.Process(this.TradabilitySelectedFilter, resultView);
+            SteamItemsFilters<GemsBreakerSteamItems>.MarketableFilter.Process(this.MarketableSelectedFilter, resultView);
+
+            this.GemsBreakerGrid.ItemsSource = resultView;
         }
 
         private void Filter_OnDropDownOpened(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            var comboBox = sender as ComboBox;
+            switch (comboBox?.Name)
+            {
+                case "RealGameComboBox":
+                    this.RealGameFilters =
+                        FiltersFormatter<GemsBreakerSteamItems>.GetRealGameFilters(this.GemsBreakerItems);
+                    break;
+
+                case "TypeComboBox":
+                    this.TypeFilters =
+                        FiltersFormatter<GemsBreakerSteamItems>.GetTypeFilters(this.GemsBreakerItems);
+                    break;
+
+                case "RarityComboBox":
+                    this.RarityFilters =
+                        FiltersFormatter<GemsBreakerSteamItems>.GetRarityFilters(this.GemsBreakerItems);
+                    break;
+
+                case "TradabilityComboBox":
+                    this.TradabilityFilters = FiltersFormatter<GemsBreakerSteamItems>.GetTradabilityFilters(this.GemsBreakerItems);
+                    break;
+
+                case "MarketableComboBox":
+                    this.MarketableFilters = FiltersFormatter<GemsBreakerSteamItems>.GetMarketableFilters(this.GemsBreakerItems);
+                    break;
+
+                default:
+                    Logger.Log.Error($"{comboBox?.Name} is unknown filter type");
+                    return;
+            }
         }
 
         private void MarkAllItemsClick(object sender, RoutedEventArgs e)
@@ -208,6 +253,50 @@
         private void UnmarkAllItemsClick(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void LoadSteamInventory_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
+
+            this.GemsBreakerItems.Clear();
+            this.ResetFilters();
+
+            var wp = WorkingProcessProvider.GetNewInstance("STEAM inventory loading");
+            wp?.StartWorkingProcess(
+                () =>
+                    {
+                        wp.SteamManager.LoadInventoryWorkingProcess(
+                            UiConstants.SteamAppId,
+                            6,
+                            this.GemsBreakerItems,
+                            GemsBreakerInventoryProcessStrategy.GemsBreakerStrategy,
+                            wp);
+                    });
+        }
+
+        private void ResetFilters()
+        {
+            this.RealGameSelectedFilter = null;
+            this.RealGameComboBox.Text = null;
+
+            this.TypeSelectedFilter = null;
+            this.TypeComboBox.Text = null;
+
+            this.RaritySelectedFilter = null;
+            this.RarityComboBox.Text = null;
+
+            this.TradabilityFilters = null;
+            this.TradabilityComboBox.Text = null;
+
+            this.MarketableFilters = null;
+            this.MarketableComboBox.Text = null;
+
+            this.GemsBreakerGrid.ItemsSource = this.GemsBreakerItems;
         }
     }
 }

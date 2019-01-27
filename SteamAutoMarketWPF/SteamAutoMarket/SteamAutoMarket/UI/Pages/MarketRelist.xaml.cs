@@ -414,7 +414,7 @@
                                     {
                                         if (m.ListedPrice.HasValue == false) return 0;
                                         return m.Count * m.ListedPrice.Value;
-                                    }).ToString("F");
+                                    }).ToString(UiConstants.DoubleToStringFormat);
 
                         this.TotalListedItemsRelistPrice = this.MarketListedItemsList
                             ?.Where(m => m.Checked.CheckBoxChecked).Sum(
@@ -422,7 +422,7 @@
                                     {
                                         if (m.RelistPrice.Value.HasValue == false) return 0;
                                         return m.Count * m.RelistPrice.Value.Value;
-                                    }).ToString("F");
+                                    }).ToString(UiConstants.DoubleToStringFormat);
 
                         this.isTotalPriceRefreshPlanned = false;
                     });

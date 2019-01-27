@@ -214,38 +214,6 @@
             }
         }
 
-        public static void ProcessMarketSellInventoryPage(
-            ObservableCollection<MarketSellModel> marketSellItems,
-            InventoryRootModel inventoryPage,
-            Inventory inventory)
-        {
-            var items = inventory.ProcessInventoryPage(inventoryPage).ToArray();
-
-            items = inventory.FilterInventory(items, true, false);
-
-            var groupedItems = items.GroupBy(i => i.Description.MarketHashName).ToArray();
-
-            foreach (var group in groupedItems)
-            {
-                var existModel = marketSellItems.FirstOrDefault(
-                    item => item.ItemModel.Description.MarketHashName == group.Key);
-
-                if (existModel != null)
-                {
-                    foreach (var groupItem in group.ToArray())
-                    {
-                        existModel.ItemsList.Add(groupItem);
-                    }
-
-                    existModel.RefreshCount();
-                }
-                else
-                {
-                    marketSellItems.AddDispatch(new MarketSellModel(group.ToArray()));
-                }
-            }
-        }
-
         public static void ProcessTooManyListingsPendingConfirmation(
             UiSteamManager steamManager,
             WorkingProcessDataContext wp)
