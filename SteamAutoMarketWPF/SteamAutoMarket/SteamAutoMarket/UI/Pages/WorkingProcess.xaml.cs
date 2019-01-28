@@ -41,6 +41,7 @@
                         this.RefreshWorkingProcessesList();
                         this.CurrentProcessComboBox.SelectedValue = wp.Title;
                         this.DataContext = wp;
+                        this.Refresh();
                     },
                 DispatcherPriority.Send);
         }
