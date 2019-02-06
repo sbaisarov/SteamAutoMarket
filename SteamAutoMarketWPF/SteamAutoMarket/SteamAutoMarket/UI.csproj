@@ -106,6 +106,10 @@
     <Compile Include="Core\Waiter\Clock.cs" />
     <Compile Include="Core\Waiter\Waiter.cs" />
     <Compile Include="Core\WebUtils.cs" />
+    <Compile Include="Localization\Languages\EnglishStrings.cs" />
+    <Compile Include="Localization\Languages\IStrings.cs" />
+    <Compile Include="Localization\Languages\RussianStrings.cs" />
+    <Compile Include="Localization\StringsProvider.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -300,6 +304,7 @@
     </Compile>
     <Compile Include="UI\Pages\WorkingProcessDataContext.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="UI\Utils\Converter\TextFieldDashConverter.cs" />
     <Compile Include="UI\Utils\UiConstants.cs" />
     <Compile Include="UI\Repository\Context\UiDefaultValues.cs" />
     <Compile Include="UI\Repository\Context\WorkingProcessProvider.cs" />

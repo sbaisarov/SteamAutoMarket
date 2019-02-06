@@ -5,17 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:settings="clr-namespace:SteamAutoMarket.UI.Pages.Settings"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance settings:Appearance}">
     <Grid>
         <ScrollViewer>
             <StackPanel x:Name="Panel" MinWidth="150">
-                <TextBlock Text="APPEARANCE" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+                <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).MenuLink_Appearance}"
+                           Style="{StaticResource Heading2}" Margin="0,0,0,8" />
 
                 <ListBox ItemsSource="{Binding AccentColors}"
                          SelectedItem="{Binding SelectedAccentColor, Mode=TwoWay}"
                          Margin="0,0,0,16"
-                         ToolTip="Global theme secondary color style">
+                         ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_GlobalThemeColor}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel MaxWidth="{Binding ActualWidth, ElementName=Panel}" />
@@ -42,18 +44,19 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Theme:" VerticalAlignment="Center" Margin="0,0,16,12"
-                               ToolTip="Global visual theme style" />
+                    <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_Theme, Converter={StaticResource TextFieldDashConverter}}" VerticalAlignment="Center" Margin="0,0,16,12"
+                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_GlobalTheme}" />
                     <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Themes}"
                               SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" DisplayMemberPath="DisplayName"
-                              VerticalAlignment="Center" Margin="0,0,0,12" />
+                              VerticalAlignment="Center" Margin="0,0,0,12"
+                              ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_GlobalTheme}" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="0"
-                               Text="Working chart (max)"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_WorkingChartMaximum, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12"
-                               ToolTip="Dots count on working process chart to optimize dots in more compact format" />
+                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_WorkingChartMaximum}" />
 
                     <xctk:IntegerUpDown Grid.Row="1"
                                         TextAlignment="Left"
@@ -63,7 +66,8 @@
                                         VerticalAlignment="Center"
                                         Margin="0,0,0,12"
                                         Minimum="100"
-                                        Maximum="9999999" />
+                                        Maximum="9999999"
+                                        ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_WorkingChartMaximum}" />
                 </Grid>
             </StackPanel>
         </ScrollViewer>

@@ -5,12 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:settings="clr-namespace:SteamAutoMarket.UI.Pages.Settings"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance settings:MarketSettings}">
     <Grid>
         <ScrollViewer>
             <StackPanel x:Name="Panel" MinWidth="150">
-                <TextBlock Text="MARKET" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+                <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).MenuLink_MarketSettings}" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
 
                 <Grid HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>
@@ -28,7 +29,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
-                               Text="Average price (days)"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_AveragePriceDays, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
                                Margin="0,16,16,12"
                                ToolTip="Number of days in the span of which all average prices will be parsed" />
@@ -45,7 +46,7 @@
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="0"
-                               Text="To confirm 2FA (count)"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_TwoFactorConfirmCount, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12"
                                ToolTip="Number of items on which two factor confirmation process will be triggered" />
@@ -62,7 +63,7 @@
 
                     <TextBlock Grid.Row="2"
                                Grid.Column="0"
-                               Text="Price load threads"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_PriceLoadThreads, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12"
                                ToolTip="Number of threads on which all prices will be loaded in parallel" />
@@ -78,7 +79,7 @@
 
                     <TextBlock Grid.Row="3"
                                Grid.Column="0"
-                               Text="Relist threads"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_RelistThreads, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12"
                                ToolTip="Number of threads on which market listings will be canceled in parallel" />
@@ -94,7 +95,7 @@
 
                     <TextBlock Grid.Row="4"
                                Grid.Column="0"
-                               Text="Obsolete avr price (hour)"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_ObsoleteAveragePriceHours, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12"
                                ToolTip="Number of hours to consider cached average price - actual" />
@@ -110,7 +111,7 @@
 
                     <TextBlock Grid.Row="5"
                                Grid.Column="0"
-                               Text="Obsolete cur price (hour)"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_ObsoleteCurrentPriceHours, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12"
                                ToolTip="Number of hours to consider cached current price - actual" />

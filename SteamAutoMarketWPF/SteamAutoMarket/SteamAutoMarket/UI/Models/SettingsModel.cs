@@ -85,6 +85,8 @@
 
         private int workingChartMaxCount = 70;
 
+        private string local = "EN";
+
         static SettingsModel()
         {
             var settings = ((WpfBinding[])typeof(SettingsModel).GetCustomAttributes(typeof(WpfBinding), true))
@@ -446,6 +448,16 @@
             set
             {
                 this.workingChartMaxCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string Local
+        {
+            get => this.local;
+            set
+            {
+                this.local = value;
                 this.OnPropertyChanged();
             }
         }
