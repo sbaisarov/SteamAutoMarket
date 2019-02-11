@@ -3,12 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
+             xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:MarketExtra}"
+             >
     <UserControl.Resources>
         <Style x:Key="FlatButton" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
             <Setter Property="Height" Value="150" />
-            <Setter Property="Width" Value="250" />
+            <Setter Property="Width" Value="300" />
             <Setter Property="Margin" Value="0,0,20,20" />
             <Setter Property="Padding" Value="0,10,0,5" />
         </Style>
@@ -38,7 +41,7 @@
                                   Data="{StaticResource SvgBack}" />
 
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}"
-                                       Text="Cancel all listings awaiting confirmation" />
+                                       Text="{Binding Path=(localization:StringsProvider.Strings).Button_CancelAllListingsAwaitingConfirmation}" />
                         </Grid>
                     </Button>
                     <Button Style="{StaticResource FlatButton}" Click="Confirm2Fa_OnClick">
@@ -53,7 +56,7 @@
                                   Data="{StaticResource SvgMobile}" />
 
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}"
-                                       Text="Confirm all market 2FA confirmation" />
+                                       Text="{Binding Path=(localization:StringsProvider.Strings).Button_ConfirmAllMarket2FaConfirmation}" />
                         </Grid>
                     </Button>
                 </WrapPanel>

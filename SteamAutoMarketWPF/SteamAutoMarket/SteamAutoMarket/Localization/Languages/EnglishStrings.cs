@@ -18,6 +18,8 @@
 
         public string MenuLink_AutoAccepter { get; } = "Auto Accepter";
 
+        public string MenuLink_CurrentProcess { get; } = "Current process";
+
         public string MenuLink_Cache { get; } = "CAHCE";
 
         public string MenuLink_ExtendLicense { get; } = "EXTEND LICENSE";
@@ -90,5 +92,67 @@
 
         public string Tooltip_WorkingChartMaximum { get; } =
             "Dots count on working process chart to optimize dots in more compact format";
+
+        public string TextBox_Language { get; } = "Language";
+
+        public string Tooltip_Language { get; } = "Global translation language. It is recommended to restart the application after changing this setting";
+
+        public string TextBox_Id { get; } = "ID";
+
+        public string TextBox_Sender { get; } = "Sender";
+
+        public string TextBox_State { get; } = "State";
+
+        public string TextBox_MyItems { get; } = "My items";
+
+        public string TextBox_ItemName { get; } = "Item name";
+
+        public string TextBox_Count { get; } = "Count";
+
+        public string TextBox_Type { get; } = "Type";
+
+        public string TextBox_Parameter { get; } = "Parameter";
+
+        public string TextBox_Value { get; } = "Value";
+
+        public string TextBox_PartnerItems { get; } = "Partner items";
+
+        public string TextBox_SentOffers { get; } = "Sent offers";
+
+        public string TextBox_ReceivedOffers { get; } = "Received offers";
+
+        public string TextBox_ActiveOnly { get; } = "Active only";
+
+        public string Button_LoadTrades { get; } = "Load trade offers";
+
+        public string Button_AcceptSelectedTrades { get; } = "Accept selected trades";
+
+        public string Button_DeclineSelectedTrades { get; } = "Decline selected trades";
+
+        public string TextBox_DragColumnHeader { get; } = "Drag a column header here to group by that column";
+
+        public string TextBox_UsefulLinks { get; } = "Useful links";
+
+        public string Button_SteamLogin { get; } = "Steam login";
+
+        public string Button_LicenseStatus { get; } = "License status";
+
+        public string Button_Update { get; } = "Update";
+
+        public string Button_Telegram { get; } = "Telegram";
+
+        public string Button_Website { get; } = "Website";
+
+        public string Button_Manual { get; } = "Manual";
+
+        public string TextBox_LoggingDetails { get; } = "Logging details";
+
+        public string TextBox_AutoScrollToEnd { get; } = "Auto scroll to end";
+
+        public string Button_OpenLogFile { get; } = "Open log file";
+
+        public string Button_CancelAllListingsAwaitingConfirmation { get; } = "Cancel all listings awaiting confirmation";
+
+        public string Button_ConfirmAllMarket2FaConfirmation { get; } = "Confirm all market 2FA (SDA) confirmation";
     }
 }

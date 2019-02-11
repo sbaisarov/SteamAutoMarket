@@ -18,6 +18,8 @@
 
         string MenuLink_AutoAccepter { get; }
 
+        string MenuLink_CurrentProcess { get; }
+
         string MenuLink_Cache { get; }
 
         string MenuLink_ExtendLicense { get; }
@@ -89,5 +91,67 @@
         string Tooltip_GlobalThemeColor { get; }
 
         string Tooltip_WorkingChartMaximum { get; }
+
+        string TextBox_Language { get; }
+
+        string Tooltip_Language { get; }
+
+        string TextBox_Id { get; }
+
+        string TextBox_Sender { get; }
+
+        string TextBox_State { get; }
+
+        string TextBox_MyItems { get; }
+
+        string TextBox_ItemName { get; }
+
+        string TextBox_Count { get; }
+
+        string TextBox_Type { get; }
+
+        string TextBox_Parameter { get; }
+
+        string TextBox_Value { get; }
+
+        string TextBox_PartnerItems { get; }
+
+        string TextBox_SentOffers { get; }
+
+        string TextBox_ReceivedOffers { get; }
+
+        string TextBox_ActiveOnly { get; }
+
+        string Button_LoadTrades { get; }
+
+        string Button_AcceptSelectedTrades { get; }
+
+        string Button_DeclineSelectedTrades { get; }
+
+        string TextBox_DragColumnHeader { get; }
+
+        string TextBox_UsefulLinks { get; }
+
+        string Button_SteamLogin { get; }
+
+        string Button_LicenseStatus { get; }
+
+        string Button_Update { get; }
+
+        string Button_Telegram { get; }
+
+        string Button_Website { get; }
+
+        string Button_Manual { get; }
+
+        string TextBox_LoggingDetails { get; }
+
+        string TextBox_AutoScrollToEnd { get; }
+
+        string Button_OpenLogFile { get; }
+
+        string Button_CancelAllListingsAwaitingConfirmation { get; }
+
+        string Button_ConfirmAllMarket2FaConfirmation { get; }
     }
 }

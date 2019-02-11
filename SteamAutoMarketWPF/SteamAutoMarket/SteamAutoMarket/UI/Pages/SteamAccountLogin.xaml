@@ -36,7 +36,7 @@
                               SelectedItem="{Binding SelectSteamAccount}">
 
             <xcdg:DataGridControl.View>
-                <xcdg:TableView ShowRowSelectorPane="False" />
+                <xcdg:TableView ShowRowSelectorPane="False"/>
             </xcdg:DataGridControl.View>
 
             <xcdg:DataGridControl.Columns>

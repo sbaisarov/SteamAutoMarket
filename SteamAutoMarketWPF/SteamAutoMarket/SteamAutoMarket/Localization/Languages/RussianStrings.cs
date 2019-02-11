@@ -18,6 +18,8 @@
 
         public string MenuLink_AutoAccepter { get; } = "Авто подтверждение";
 
+        public string MenuLink_CurrentProcess { get; } = "Текущий процесс";
+
         public string MenuLink_Cache { get; } = "КЭШ";
 
         public string MenuLink_ExtendLicense { get; } = "ПРОДЛИТЬ ЛИЦЕНЗИЮ";
@@ -90,5 +92,67 @@
 
         public string Tooltip_WorkingChartMaximum { get; } =
             "Количество точек на графике рабочего процесса для оптимизации в более компактный вид";
+
+        public string TextBox_Language { get; } = "Язык";
+
+        public string Tooltip_Language { get; } = "Глобальный язык перевода. Рекомендуется перезапустить приложение после изменения данной настройки";
+
+        public string TextBox_Id { get; } = "ID";
+
+        public string TextBox_Sender { get; } = "Отправитель";
+
+        public string TextBox_State { get; } = "Состояние";
+
+        public string TextBox_MyItems { get; } = "Мои предметы";
+
+        public string TextBox_ItemName { get; } = "Название предмета";
+
+        public string TextBox_Count { get; } = "Количество";
+
+        public string TextBox_Type { get; } = "Тип";
+
+        public string TextBox_Parameter { get; } = "Параметр";
+
+        public string TextBox_Value { get; } = "Значенеи";
+
+        public string TextBox_PartnerItems { get; } = "Предметы партнера";
+
+        public string TextBox_SentOffers { get; } = "Отправленные трейды";
+
+        public string TextBox_ReceivedOffers { get; } = "Полученные трейды";
+
+        public string TextBox_ActiveOnly { get; } = "Только активные";
+
+        public string Button_LoadTrades { get; } = "Загрузить трейды";
+
+        public string Button_AcceptSelectedTrades { get; } = "Принять выбранные трейды";
+
+        public string Button_DeclineSelectedTrades { get; } = "Отклонить выбранные трейды";
+
+        public string TextBox_DragColumnHeader { get; } = "Перетащите заголовок столбца сюда, чтобы сгруппировать по этому столбцу";
+
+        public string TextBox_UsefulLinks { get; } = "Полезные ссылки";
+
+        public string Button_SteamLogin { get; } = "Логин в Стим";
+
+        public string Button_LicenseStatus { get; } = "Статус лицензии";
+
+        public string Button_Update { get; } = "Обновление";
+
+        public string Button_Telegram { get; } = "Телеграм канал";
+
+        public string Button_Website { get; } = "Вебсайт";
+
+        public string Button_Manual { get; } = "Руководство";
+
+        public string TextBox_LoggingDetails { get; } = "Детализация логов";
+
+        public string TextBox_AutoScrollToEnd { get; } = "Автопрокрутка до конца";
+
+        public string Button_OpenLogFile { get; } = "Открыть файл с логами";
+
+        public string Button_CancelAllListingsAwaitingConfirmation { get; } = "Отменить лоты на ТП ожидающие подтверждения";
+
+        public string Button_ConfirmAllMarket2FaConfirmation { get; } = "Принять все подтверждения ТП в 2FA (SDA)";
     }
 }

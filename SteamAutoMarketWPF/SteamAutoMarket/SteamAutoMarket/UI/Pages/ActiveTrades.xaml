@@ -7,11 +7,11 @@
              xmlns:converter="clr-namespace:SteamAutoMarket.UI.Utils.Converter"
              xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
              xmlns:models="clr-namespace:SteamAutoMarket.UI.Models"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:ActiveTrades}">
 
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="B2V" />
         <converter:IfNullVisibleConverter x:Key="IfNullVisibleConverter" />
         <converter:IfNullInvisibleConverter x:Key="IfNullInvisibleConverter" />
     </UserControl.Resources>
@@ -52,7 +52,7 @@
                 </xcdg:DataGridControl.Resources>
 
                 <xcdg:DataGridControl.Columns>
-                    <xcdg:Column Title="Id"
+                    <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Id}"
                                  Width="0.7*"
                                  FieldName="TradeId">
                         <xcdg:Column.CellContentTemplate>
@@ -65,7 +65,7 @@
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
 
-                    <xcdg:Column Title="Sender"
+                    <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Sender}"
                                  Width="1*"
                                  FieldName="Sender"
                                  CellHorizontalContentAlignment="Center">
@@ -85,7 +85,7 @@
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
 
-                    <xcdg:Column Title="State"
+                    <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_State}"
                                  Width="0.7*"
                                  FieldName="State"
                                  CellHorizontalContentAlignment="Center">
@@ -104,7 +104,7 @@
 
             <GroupBox Grid.Column="1"
                       Grid.Row="0"
-                      Header="My items"
+                      Header="{Binding Path=(localization:StringsProvider.Strings).TextBox_MyItems}"
                       Margin="5,5,0,5"
                       Padding="0"
                       Template="{StaticResource GroupBoxTemplate}">
@@ -126,7 +126,7 @@
                     </xcdg:DataGridControl.Resources>
 
                     <xcdg:DataGridControl.Columns>
-                        <xcdg:Column Title="Item name"
+                        <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_ItemName}"
                                      Width="1*"
                                      FieldName="ItemName">
                             <xcdg:Column.CellContentTemplate>
@@ -139,7 +139,7 @@
                             </xcdg:Column.CellContentTemplate>
                         </xcdg:Column>
 
-                        <xcdg:Column Title="Count"
+                        <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Count}"
                                      Width="0.5*"
                                      FieldName="Count">
                             <xcdg:Column.CellContentTemplate>
@@ -152,7 +152,7 @@
                             </xcdg:Column.CellContentTemplate>
                         </xcdg:Column>
 
-                        <xcdg:Column Title="Type"
+                        <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Type}"
                                      Width="0.7*"
                                      FieldName="Type">
                             <xcdg:Column.CellContentTemplate>
@@ -188,7 +188,7 @@
                 </xcdg:DataGridControl.Resources>
 
                 <xcdg:DataGridControl.Columns>
-                    <xcdg:Column Title="Parameter"
+                    <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Parameter}"
                                  Width="0.7*"
                                  FieldName="Name">
                         <xcdg:Column.CellContentTemplate>
@@ -201,7 +201,7 @@
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
 
-                    <xcdg:Column Title="Value"
+                    <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Value}"
                                  Width="1*"
                                  FieldName="Value">
                         <xcdg:Column.CellContentTemplate>
@@ -219,7 +219,7 @@
 
             <GroupBox Grid.Column="1"
                       Grid.Row="1"
-                      Header="Partner items"
+                      Header="{Binding Path=(localization:StringsProvider.Strings).TextBox_PartnerItems}"
                       Margin="5,5,0,5"
                       Padding="0"
                       Template="{StaticResource GroupBoxTemplate}">
@@ -242,7 +242,7 @@
                     </xcdg:DataGridControl.Resources>
 
                     <xcdg:DataGridControl.Columns>
-                        <xcdg:Column Title="Item name"
+                        <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_ItemName}"
                                      Width="1*"
                                      FieldName="ItemName">
                             <xcdg:Column.CellContentTemplate>
@@ -255,7 +255,7 @@
                             </xcdg:Column.CellContentTemplate>
                         </xcdg:Column>
 
-                        <xcdg:Column Title="Count"
+                        <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Count}"
                                      Width="0.5*"
                                      FieldName="Count">
                             <xcdg:Column.CellContentTemplate>
@@ -268,7 +268,7 @@
                             </xcdg:Column.CellContentTemplate>
                         </xcdg:Column>
 
-                        <xcdg:Column Title="Type"
+                        <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Sender}"
                                      Width="0.7*"
                                      FieldName="Type">
                             <xcdg:Column.CellContentTemplate>
@@ -340,19 +340,19 @@
                 <CheckBox
                     Height="20"
                     Margin="1"
-                    Content="Sent offers"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).TextBox_SentOffers}"
                     IsChecked="{Binding Path=SentOffersCheckBox}" />
 
                 <CheckBox
                     Height="20"
                     Margin="1"
-                    Content="Received offers"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).TextBox_ReceivedOffers}"
                     IsChecked="{Binding Path=ReceivedOffersCheckBox}" />
 
                 <CheckBox
                     Height="20"
                     Margin="1"
-                    Content="Active only"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).TextBox_ActiveOnly}"
                     IsChecked="{Binding Path=ActiveOnlyCheckBox}" />
 
                 <Grid>
@@ -366,21 +366,21 @@
             </StackPanel>
 
             <Button Grid.Row="2"
-                    Content="Load active trades"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).Button_LoadTrades}"
                     Margin="0, 10, 0, 10"
                     Padding="0"
                     Click="LoadActiveTradesButtonClick"
                     IsEnabled="{Binding Path=IsLoadButtonEnabled}" />
 
             <Button Grid.Row="4"
-                    Content="Accept selected trade"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).Button_AcceptSelectedTrades}"
                     Margin="0, 0, 0, 5"
                     Padding="0"
                     Click="AcceptTradeOfferButton_OnClick"
                     IsEnabled="{Binding Path=IsLoadButtonEnabled}" />
 
             <Button Grid.Row="5"
-                    Content="Decline selected trade"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).Button_DeclineSelectedTrades}"
                     Margin="0, 5, 0, 0"
                     Padding="0"
                     Click="DeclineTradeOfferButton_OnClick"

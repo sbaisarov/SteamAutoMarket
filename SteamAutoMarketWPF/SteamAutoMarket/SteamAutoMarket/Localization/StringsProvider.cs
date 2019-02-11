@@ -7,7 +7,20 @@
 
     public class StringsProvider
     {
-        public static IStrings Strings { get; } = GetStringObj();
+        public const string En = "EN";
+
+        public const string Ru = "RU";
+
+        public static readonly IStrings EnglishStrings = new EnglishStrings();
+
+        public static readonly IStrings RussianStrings = new RussianStrings();
+
+        public static IStrings Strings { get; private set; } = GetStringObj();
+
+        public static void UpdateLocal()
+        {
+            Strings = GetStringObj();
+        }
 
         private static IStrings GetStringObj()
         {
@@ -15,8 +28,8 @@
 
             switch (local)
             {
-                case "EN": return new EnglishStrings();
-                case "RU": return new RussianStrings();
+                case Ru: return RussianStrings;
+                case En: return EnglishStrings;
                 default: throw new ArgumentException($"{local} is not supported");
             }
         }

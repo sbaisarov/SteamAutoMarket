@@ -3,6 +3,7 @@
     using System.Windows.Controls;
 
     using SteamAutoMarket.Localization;
+    using SteamAutoMarket.UI.Repository.Context;
 
     /// <summary>
     /// Interaction logic for SettingsPage.xaml
@@ -14,6 +15,7 @@
             this.InitializeComponent();
             this.LocalizeMenuLinks();
             this.DataContext = this;
+            UiGlobalVariables.SettingsPage = this;
         }
 
         public void LocalizeMenuLinks()

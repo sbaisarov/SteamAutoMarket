@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:LogsWindow}">
 
@@ -48,7 +49,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Logging details"
+                <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_LoggingDetails}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Left" Margin="0, 0, 10, 0" />
 
@@ -66,7 +67,7 @@
             </Grid>
 
             <CheckBox Grid.Row="1"
-                      Content="Auto scroll to end"
+                      Content="{Binding Path=(localization:StringsProvider.Strings).TextBox_AutoScrollToEnd}"
                       Margin="0,10,0,10"
                       IsChecked="{Binding ScrollLogsToEnd}" />
 
@@ -75,7 +76,7 @@
                     Grid.Row="2"
                     Margin="0,10"
                     Height="50"
-                    Content="Open log file" />
+                    Content="{Binding Path=(localization:StringsProvider.Strings).Button_OpenLogFile}" />
         </Grid>
 
     </Grid>

@@ -12,6 +12,7 @@
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Localization;
+    using SteamAutoMarket.Localization.Languages;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.Utils.Logger;
@@ -53,7 +54,7 @@
             this.UpdateProgram();
         }
 
-        private void LocalizeMenuLinks()
+        public void LocalizeMenuLinks()
         {
             this.InfoLink.DisplayName = StringsProvider.Strings.MenuLink_Info;
             this.NewsLink.DisplayName = StringsProvider.Strings.MenuLink_News;
@@ -70,9 +71,15 @@
             this.ActiveLink.DisplayName = StringsProvider.Strings.MenuLink_Active;
             this.HistoryLink.DisplayName = StringsProvider.Strings.MenuLink_History;
             this.ActionLink.DisplayName = StringsProvider.Strings.MenuLink_Action;
-            this.Account.DisplayName = StringsProvider.Strings.MenuLink_NotLoggedIn;
+            this.CurrentProcessLink.DisplayName = StringsProvider.Strings.MenuLink_CurrentProcess;
             this.SettingsLink.DisplayName = StringsProvider.Strings.MenuLink_Settings;
             this.LogsLink.DisplayName = StringsProvider.Strings.MenuLink_Logs;
+
+            if (this.Account.DisplayName == StringsProvider.RussianStrings.MenuLink_NotLoggedIn
+                || this.Account.DisplayName == StringsProvider.EnglishStrings.MenuLink_NotLoggedIn)
+            {
+                this.Account.DisplayName = StringsProvider.Strings.MenuLink_NotLoggedIn;
+            }
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -9,6 +9,7 @@
 
     using Newtonsoft.Json.Linq;
 
+    using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Utils.Logger;
 
     /// <summary>
@@ -26,6 +27,8 @@
         {
             this.DataContext = this;
             this.InitializeComponent();
+            UiGlobalVariables.License = this;
+
             this.LicenseKey = File.ReadAllText("license.txt").Trim('\r', '\n', ' ');
             this.LicenseDaysLeft = this.GetLicenseDaysLeft();
         }

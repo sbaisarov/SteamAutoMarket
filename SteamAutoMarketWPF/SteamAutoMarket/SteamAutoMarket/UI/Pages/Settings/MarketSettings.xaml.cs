@@ -4,6 +4,7 @@
     using System.Runtime.CompilerServices;
 
     using SteamAutoMarket.Properties;
+    using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
 
     /// <summary>
@@ -15,6 +16,7 @@
         {
             this.InitializeComponent();
             this.DataContext = this;
+            UiGlobalVariables.MarketSettings = this;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

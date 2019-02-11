@@ -6,6 +6,7 @@
     using FirstFloor.ModernUI.Presentation;
 
     using SteamAutoMarket.Core;
+    using SteamAutoMarket.Localization;
     using SteamAutoMarket.UI.Models;
 
     public class UiDefaultValues
@@ -69,5 +70,7 @@
                                                                        Source = AppearanceManager.LightThemeSource
                                                                    }
                                                            };
+
+        public static readonly IEnumerable<string> Languages = new[] { StringsProvider.En, StringsProvider.Ru };
     }
 }

@@ -42,23 +42,37 @@
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_Theme, Converter={StaticResource TextFieldDashConverter}}" VerticalAlignment="Center" Margin="0,0,16,12"
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_Theme, Converter={StaticResource TextFieldDashConverter}}"
+                               VerticalAlignment="Center" Margin="0,0,16,12"
                                ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_GlobalTheme}" />
-                    <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Themes}"
+                    <ComboBox Grid.Row="0" Grid.Column="1"
+                              ItemsSource="{Binding Themes}"
                               SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" DisplayMemberPath="DisplayName"
                               VerticalAlignment="Center" Margin="0,0,0,12"
                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_GlobalTheme}" />
 
-                    <TextBlock Grid.Row="1"
+                    <TextBlock Grid.Row="1" Grid.Column="0"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_Language, Converter={StaticResource TextFieldDashConverter}}"
+                               VerticalAlignment="Center" Margin="0,0,16,12"
+                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_Language}" />
+                    <ComboBox Grid.Row="1" Grid.Column="1"
+                              ItemsSource="{Binding Languages}"
+                              SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                              VerticalAlignment="Center" Margin="0,0,0,12"
+                              ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_Language}" />
+
+                    <TextBlock Grid.Row="2"
                                Grid.Column="0"
                                Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_WorkingChartMaximum, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12"
                                ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_WorkingChartMaximum}" />
 
-                    <xctk:IntegerUpDown Grid.Row="1"
+                    <xctk:IntegerUpDown Grid.Row="2"
                                         TextAlignment="Left"
                                         Style="{StaticResource UpDown}"
                                         Grid.Column="1"

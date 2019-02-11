@@ -26,6 +26,11 @@
             Task.Run(() => PlanSettingsUpdate());
         }
 
+        public static void ForceSettingsUpdate()
+        {
+            UpdateSettings();
+        }
+
         private static void PlanSettingsUpdate()
         {
             Logger.Log.Debug("Settings file is planed in 5 seconds");
