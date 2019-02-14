@@ -95,7 +95,8 @@
 
         public string TextBox_Language { get; } = "Язык";
 
-        public string Tooltip_Language { get; } = "Глобальный язык перевода. Рекомендуется перезапустить приложение после изменения данной настройки";
+        public string Tooltip_Language { get; } =
+            "Глобальный язык перевода. Рекомендуется перезапустить приложение после изменения данной настройки";
 
         public string TextBox_Id { get; } = "ID";
 
@@ -129,7 +130,8 @@
 
         public string Button_DeclineSelectedTrades { get; } = "Отклонить выбранные трейды";
 
-        public string TextBox_DragColumnHeader { get; } = "Перетащите заголовок столбца сюда, чтобы сгруппировать по этому столбцу";
+        public string TextBox_DragColumnHeader { get; } =
+            "Перетащите заголовок столбца сюда, чтобы сгруппировать по этому столбцу";
 
         public string TextBox_UsefulLinks { get; } = "Полезные ссылки";
 
@@ -151,8 +153,35 @@
 
         public string Button_OpenLogFile { get; } = "Открыть файл с логами";
 
-        public string Button_CancelAllListingsAwaitingConfirmation { get; } = "Отменить лоты на ТП ожидающие подтверждения";
+        public string Button_CancelAllListingsAwaitingConfirmation { get; } =
+            "Отменить лоты на ТП ожидающие подтверждения";
 
         public string Button_ConfirmAllMarket2FaConfirmation { get; } = "Принять все подтверждения ТП в 2FA (SDA)";
+        public string TextBox_ListedDate { get; } = "Дата выставления";
+        public string TextBox_ListedPrice { get; } = "Выставленная цена";
+        public string TextBox_MinPrice { get; } = "Мин. цена";
+        public string TextBox_AvrPrice { get; } = "Сред. цена";
+        public string Button_RelistPrice { get; } = "Цена перевыставления";
+        public string Button_LoadMarketListings { get; } = "Загрузить лоты ТП";
+        public string TextBox_RecommendedPrice { get; } = "Рекоммендуемая цена";
+        public string TextBox_ManualPrice { get; } = "Ручная цена";
+        public string TextBox_AveragePrice { get; } = "Средняя цена";
+        public string TextBox_CurrentPrice { get; } = "Текущая цена";
+        public string ToolTip_ReloadAllPrices { get; } = "Перезагрузить все цены";
+        public string ToolTip_RefreshSelectedItemPrice { get; } = "Перезагрузить цену выбранного предмета";
+        public string ToolTip_StopPriceLoad { get; } = "Остановить загрузку цен";
+        public string ToolTip_FindSelectedItemOnSteamMarket { get; } = "Найти выбранный предмет на ТП";
+        public string Button_CheckAll { get; } = "Отметить\r\nвсе";
+        public string Button_CheckSelected { get; } = "Отметить\r\nвыбранные";
+        public string Button_UncheckAll { get; } = "Отменить\r\nвсе";
+        public string Button_CheckOverpricedItems { get; } = "Отметить с завышенной ценой";
+        public string Button_RemoveSelected { get; } = "Снять отмеченные лоты";
+        public string Button_RelistSelected { get; } = "Перевыставить отмеченные лоты";
+        public string TextBox_SelectedItemsCount { get; } = "Кол-во выбранных";
+        public string TextBox_SelectedTotalListedPrice { get; } = "Цена выбранных предметов";
+        public string TextBox_SelectedItemsRelistPrice { get; } = "Цена перевыставления выбранных предметов";
+
+        public string Tooltip_RelistTooltip { get; } =
+            "ОБРАТИТЕ ВНИМАНИЕ!!!\r\nНевозможно обнаружить абсолютно идентичный предмет после удаления предмета из Steam Market.\r\nАлгоритм перевыставления возьмет первый предмет с соответствующим хэш именем.\r\nИспользуйте этот режим, только если на 100% уверенны в том что вам подходит такой алгоритм!";
     }
 }

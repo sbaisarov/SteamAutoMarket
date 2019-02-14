@@ -153,5 +153,29 @@
         string Button_CancelAllListingsAwaitingConfirmation { get; }
 
         string Button_ConfirmAllMarket2FaConfirmation { get; }
+        string TextBox_ListedDate { get; }
+        string TextBox_ListedPrice { get; }
+        string TextBox_MinPrice { get; }
+        string TextBox_AvrPrice { get; }
+        string Button_RelistPrice { get; }
+        string Button_LoadMarketListings { get; }
+        string TextBox_RecommendedPrice { get; }
+        string TextBox_ManualPrice { get; }
+        string TextBox_AveragePrice { get; }
+        string TextBox_CurrentPrice { get; }
+        string ToolTip_ReloadAllPrices { get; }
+        string ToolTip_RefreshSelectedItemPrice { get; }
+        string ToolTip_StopPriceLoad { get; }
+        string ToolTip_FindSelectedItemOnSteamMarket { get; }
+        string Button_CheckAll { get; }
+        string Button_CheckSelected { get; }
+        string Button_UncheckAll { get; }
+        string Button_CheckOverpricedItems { get; }
+        string Button_RemoveSelected { get; }
+        string Button_RelistSelected { get; }
+        string TextBox_SelectedItemsCount { get; }
+        string TextBox_SelectedTotalListedPrice { get; }
+        string TextBox_SelectedItemsRelistPrice { get; }
+        string Tooltip_RelistTooltip { get; }
     }
 }

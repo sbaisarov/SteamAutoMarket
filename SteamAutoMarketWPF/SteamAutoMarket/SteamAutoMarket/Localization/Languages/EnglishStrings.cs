@@ -95,7 +95,8 @@
 
         public string TextBox_Language { get; } = "Language";
 
-        public string Tooltip_Language { get; } = "Global translation language. It is recommended to restart the application after changing this setting";
+        public string Tooltip_Language { get; } =
+            "Global translation language. It is recommended to restart the application after changing this setting";
 
         public string TextBox_Id { get; } = "ID";
 
@@ -151,8 +152,35 @@
 
         public string Button_OpenLogFile { get; } = "Open log file";
 
-        public string Button_CancelAllListingsAwaitingConfirmation { get; } = "Cancel all listings awaiting confirmation";
+        public string Button_CancelAllListingsAwaitingConfirmation { get; } =
+            "Cancel all listings awaiting confirmation";
 
         public string Button_ConfirmAllMarket2FaConfirmation { get; } = "Confirm all market 2FA (SDA) confirmation";
+        public string TextBox_ListedDate { get; } = "Listing date";
+        public string TextBox_ListedPrice { get; } = "Listed price";
+        public string TextBox_MinPrice { get; } = "Min price";
+        public string TextBox_AvrPrice { get; } = "Avr price";
+        public string Button_RelistPrice { get; } = "Relist price";
+        public string Button_LoadMarketListings { get; } = "Load market listings";
+        public string TextBox_RecommendedPrice { get; } = "Recommended price";
+        public string TextBox_ManualPrice { get; } = "Manual price";
+        public string TextBox_AveragePrice { get; } = "Average price";
+        public string TextBox_CurrentPrice { get; } = "Current price";
+        public string ToolTip_ReloadAllPrices { get; } = "Reload all prices";
+        public string ToolTip_RefreshSelectedItemPrice { get; } = "Refresh selected items";
+        public string ToolTip_StopPriceLoad { get; } = "Stop price load";
+        public string ToolTip_FindSelectedItemOnSteamMarket { get; } = "Find selected item on steam market";
+        public string Button_CheckAll { get; } = "Check\r\nall";
+        public string Button_CheckSelected { get; } = "Check\r\nselected";
+        public string Button_UncheckAll { get; } = "Uncheck\r\nall";
+        public string Button_CheckOverpricedItems { get; } = "Check overpriced items";
+        public string Button_RemoveSelected { get; } = "Remove selected";
+        public string Button_RelistSelected { get; } = "Relist selected";
+        public string TextBox_SelectedItemsCount { get; } = "Selected items count";
+        public string TextBox_SelectedTotalListedPrice { get; } = "Selected items total price";
+        public string TextBox_SelectedItemsRelistPrice { get; } = "Selected items relist price";
+
+        public string Tooltip_RelistTooltip { get; } =
+            "PAY ATTENTION!!!\r\nIt is not possible to discover absolutely identical item after removing item from Steam Market.\r\nRelist algorithm will take first item with corresponding to removed item market hash name.\r\nUse this mode only if you are 100% sure!";
     }
 }

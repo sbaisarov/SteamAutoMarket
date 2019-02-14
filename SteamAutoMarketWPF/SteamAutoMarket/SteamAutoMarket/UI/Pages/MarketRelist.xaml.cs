@@ -48,7 +48,7 @@
 
         private string totalListedItemsListedPrice = UiConstants.FractionalZeroString;
 
-        private object totalListedItemsRelistPrice = UiConstants.FractionalZeroString;
+        private string totalListedItemsRelistPrice = UiConstants.FractionalZeroString;
 
         private int totalSelectedItemsCount;
 
@@ -97,7 +97,7 @@
             }
         }
 
-        public object TotalListedItemsRelistPrice
+        public string TotalListedItemsRelistPrice
         {
             get => this.totalListedItemsRelistPrice;
             set
