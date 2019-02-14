@@ -182,5 +182,7 @@
 
         public string Tooltip_RelistTooltip { get; } =
             "PAY ATTENTION!!!\r\nIt is not possible to discover absolutely identical item after removing item from Steam Market.\r\nRelist algorithm will take first item with corresponding to removed item market hash name.\r\nUse this mode only if you are 100% sure!";
+
+        public string MessageBox_RestartToApplyChanges { get; } = "Restart application to apply changes!";
     }
 }

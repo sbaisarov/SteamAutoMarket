@@ -1,4 +1,6 @@
-﻿namespace SteamAutoMarket.UI.Pages.Settings
+﻿using SteamAutoMarket.UI.Utils.Logger;
+
+namespace SteamAutoMarket.UI.Pages.Settings
 {
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -88,10 +90,12 @@
             get => SettingsProvider.GetInstance().Local;
             set
             {
+                if(SettingsProvider.GetInstance().Local == value) return;
                 SettingsProvider.GetInstance().Local = value;
                 this.OnPropertyChanged();
                 SettingsUpdated.ForceSettingsUpdate();
                 this.LocalizeApplication();
+                ErrorNotify.InfoMessageBox(StringsProvider.Strings.MessageBox_RestartToApplyChanges);
             }
         }
 
