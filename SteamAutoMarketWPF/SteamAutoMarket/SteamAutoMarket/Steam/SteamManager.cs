@@ -85,9 +85,6 @@ namespace SteamAutoMarket.Steam
                 this.TradeToken = tradeToken ?? this.FetchTradeToken();
             }
 
-            this.ApiKey = apiKey ?? this.FetchApiKey();
-            this.TradeToken = tradeToken ?? this.FetchTradeToken();
-
             this.Inventory = new Inventory(this.Proxy);
 
             Logger.Log.Debug("Initializing TradeOfferWebApi..");

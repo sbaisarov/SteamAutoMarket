@@ -44,7 +44,7 @@
                 forceSessionRefresh,
                 account.Proxy)
         {
-            this.SaveAccount(account);
+            this.SaveAccount(account, forceSessionRefresh);
 
             this.CurrentPriceCache = PriceCacheProvider.GetCurrentPriceCache(
                 $"{this.MarketClient.CurrentCurrency}",
@@ -625,9 +625,9 @@
             }
         }
 
-        public void SaveAccount(SettingsSteamAccount account)
+        public void SaveAccount(SettingsSteamAccount account, bool forceRefresh)
         {
-            if (this.IsSessionUpdated == false) return;
+            if (this.IsSessionUpdated == false && forceRefresh == false) return;
             this.IsSessionUpdated = false;
 
             account.SteamApi = this.ApiKey;
