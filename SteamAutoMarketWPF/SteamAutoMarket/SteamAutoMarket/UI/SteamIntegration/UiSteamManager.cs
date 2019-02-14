@@ -445,7 +445,7 @@
                     currentItem =>
                         {
                             var foundItemNode = allItems.FirstOrDefault(
-                                found => found.ItemModel.Description.MarketHashName == currentItem.HashName);
+                                found => found.ItemModel?.Description.MarketHashName == currentItem.HashName);
 
                             if (foundItemNode != null)
                             {
