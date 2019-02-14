@@ -10,26 +10,31 @@
 
     public class TradeSendInventoryProcessStrategy : IInventoryLoadStrategy<SteamItemsModel>
     {
-        public static readonly IInventoryLoadStrategy<SteamItemsModel> TradeSendStrategy = new TradeSendInventoryProcessStrategy();
+        public static readonly IInventoryLoadStrategy<SteamItemsModel> TradeSendStrategy =
+            new TradeSendInventoryProcessStrategy();
 
         private TradeSendInventoryProcessStrategy()
         {
         }
 
-        public void ProcessInventoryPage(ICollection<SteamItemsModel> processedItems, InventoryRootModel inventoryPage, Inventory inventory)
+        public void ProcessInventoryPage(
+            ICollection<SteamItemsModel> processedItems,
+            InventoryRootModel inventoryPage,
+            Inventory inventory)
         {
             var items = inventory.ProcessInventoryPage(inventoryPage).ToArray();
 
             items = inventory.FilterInventory(items, false, true);
 
-            var groupedItems = items.GroupBy(x => new { x.Description.MarketHashName, x.Description.IsTradable })
-                .ToArray();
+            var groupedItems = items
+                .GroupBy(x => new { x.Description.MarketHashName, x.Description.IsTradable, x.Asset.Amount }).ToArray();
 
             foreach (var group in groupedItems)
             {
                 var existModel = processedItems.FirstOrDefault(
                     item => item.ItemModel.Description.MarketHashName == group.Key.MarketHashName
-                            && item.ItemModel.Description.IsTradable == group.Key.IsTradable);
+                            && item.ItemModel.Description.IsTradable == group.Key.IsTradable
+                            && item.ItemModel.Asset.Amount == group.Key.Amount);
 
                 if (existModel != null)
                 {

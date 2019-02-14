@@ -6,16 +6,18 @@
 
     using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models;
+    using SteamAutoMarket.Steam.TradeOffer.Models.Full;
 
     [Obfuscation(Exclude = true)]
     public class SteamUtils
     {
-        public static string GetClearDescription(RgDescription description)
+        public static string GetClearDescription(FullRgItem item)
         {
-            if (description == null) return string.Empty;
+            var description = item?.Description;
+            if (item == null || description == null) return string.Empty;
 
             var descriptionText = string.Empty;
-
+            descriptionText += $"Amount: {item.Asset.Amount}{Environment.NewLine}";
             descriptionText += $"Game: {description.Appid}{Environment.NewLine}";
             descriptionText += $"Name: {description.MarketHashName}{Environment.NewLine}";
             descriptionText += $"Type: {description.Type}{Environment.NewLine}";
@@ -39,9 +41,10 @@
             return descriptionText;
         }
 
-        public static string GetClearDescription(AssetDescription description)
+        public static string GetClearDescription(FullTradeItem item)
         {
-            if (description == null) return string.Empty;
+            var description = item?.Description;
+            if (item == null || description == null) return string.Empty;
 
             var descriptionText = string.Empty;
 
@@ -148,6 +151,29 @@
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dateTime = dateTime.AddSeconds(date).ToLocalTime();
             return dateTime;
+        }
+
+        public static string GetClearDescription(FullHistoryTradeItem item)
+        {
+            var description = item?.Description;
+            if (item == null || description == null) return string.Empty;
+
+            var descriptionText = string.Empty;
+            descriptionText += $"Amount: {item.Asset.Amount}{Environment.NewLine}";
+            descriptionText += $"Game: {description.AppId}{Environment.NewLine}";
+            descriptionText += $"Name: {description.MarketHashName}{Environment.NewLine}";
+            descriptionText += $"Type: {description.Type}{Environment.NewLine}";
+
+            var descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim()))
+                .ToList();
+
+            if (descriptions != null && descriptions.Any())
+            {
+                descriptionText +=
+                    $"Description: {string.Join(", ", descriptions.Select(d => d.Value.Trim()))}{Environment.NewLine}";
+            }
+
+            return descriptionText;
         }
     }
 }

@@ -10,24 +10,29 @@
 
     public class MarketSellInventoryProcessStrategy : IInventoryLoadStrategy<MarketSellModel>
     {
-        public static readonly IInventoryLoadStrategy<MarketSellModel> MarketSellStrategy = new MarketSellInventoryProcessStrategy();
+        public static readonly IInventoryLoadStrategy<MarketSellModel> MarketSellStrategy =
+            new MarketSellInventoryProcessStrategy();
 
         private MarketSellInventoryProcessStrategy()
         {
         }
 
-        public void ProcessInventoryPage(ICollection<MarketSellModel> processedItems, InventoryRootModel inventoryPage, Inventory inventory)
+        public void ProcessInventoryPage(
+            ICollection<MarketSellModel> processedItems,
+            InventoryRootModel inventoryPage,
+            Inventory inventory)
         {
             var items = inventory.ProcessInventoryPage(inventoryPage).ToArray();
 
             items = inventory.FilterInventory(items, true, false);
 
-            var groupedItems = items.GroupBy(i => i.Description.MarketHashName).ToArray();
+            var groupedItems = items.GroupBy(i => new { i.Description.MarketHashName, i.Asset.Amount }).ToArray();
 
             foreach (var group in groupedItems)
             {
                 var existModel = processedItems.FirstOrDefault(
-                    item => item.ItemModel.Description.MarketHashName == group.Key);
+                    item => item.ItemModel.Description.MarketHashName == group.Key.MarketHashName
+                            && item.ItemModel.Asset.Amount == group.Key.Amount);
 
                 if (existModel != null)
                 {

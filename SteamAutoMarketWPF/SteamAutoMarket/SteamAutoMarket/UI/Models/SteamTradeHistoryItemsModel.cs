@@ -29,7 +29,7 @@
 
             this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description.Type);
 
-            this.Description = SteamUtils.GetClearDescription(this.ItemModel?.Description);
+            this.Description = SteamUtils.GetClearDescription(this.ItemModel);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

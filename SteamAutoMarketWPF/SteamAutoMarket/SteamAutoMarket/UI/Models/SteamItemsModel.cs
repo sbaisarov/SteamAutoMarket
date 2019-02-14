@@ -28,7 +28,7 @@
 
             this.ItemModel = itemsList.FirstOrDefault();
 
-            this.Count = itemsList.Sum(i => int.Parse(i.Asset.Amount));
+            this.Count = itemsList.Length;
 
             this.ItemName = this.ItemModel?.Description.MarketName;
 
@@ -37,7 +37,7 @@
 
             this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description?.Type);
 
-            this.Description = SteamUtils.GetClearDescription(this.ItemModel?.Description);
+            this.Description = SteamUtils.GetClearDescription(this.ItemModel);
 
             this.NumericUpDown = new NumericUpDownModel(this.Count);
         }
@@ -118,7 +118,7 @@
 
         public void RefreshCount()
         {
-            this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
+            this.Count = this.ItemsList.Count;
             this.NumericUpDown.MaxAllowedCount = this.Count;
             if (this.NumericUpDown.AmountToSell > this.Count)
             {
