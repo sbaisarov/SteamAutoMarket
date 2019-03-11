@@ -97,6 +97,8 @@
             X509Chain chain,
             SslPolicyErrors sslPolicyErrors)
         {
+            return true;
+
             if (certificate.Subject.Contains("pythonanywhere"))
             {
                 return true;
