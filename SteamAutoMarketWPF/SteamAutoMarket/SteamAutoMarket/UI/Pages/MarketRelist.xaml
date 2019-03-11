@@ -366,7 +366,7 @@
                         Padding="0"
                         Margin="1,2,1,2"
                         Background="Transparent"
-                        ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_RefreshSelectedItemPrice}"
+                        ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_ReloadSelectedItemPrice}"
                         Click="RefreshSinglePriceButton_OnClick">
 
                     <Path Style="{StaticResource Geometry}"
@@ -462,7 +462,7 @@
                     Content="{Binding Path=(localization:StringsProvider.Strings).Button_RelistSelected}"
                     Margin="0, 5, 0, 0"
                     Padding="0"
-                    ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_RelistTooltip}">
+                    ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_RelistTooltip}">
                 
             </Button>
         </Grid>

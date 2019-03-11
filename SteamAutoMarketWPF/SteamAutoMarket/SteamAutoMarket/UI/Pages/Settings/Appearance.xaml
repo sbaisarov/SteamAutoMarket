@@ -17,7 +17,7 @@
                 <ListBox ItemsSource="{Binding AccentColors}"
                          SelectedItem="{Binding SelectedAccentColor, Mode=TwoWay}"
                          Margin="0,0,0,16"
-                         ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_GlobalThemeColor}">
+                         ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_GlobalThemeColor}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel MaxWidth="{Binding ActualWidth, ElementName=Panel}" />
@@ -48,29 +48,29 @@
                     <TextBlock Grid.Row="0" Grid.Column="0"
                                Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_Theme, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center" Margin="0,0,16,12"
-                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_GlobalTheme}" />
+                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_GlobalTheme}" />
                     <ComboBox Grid.Row="0" Grid.Column="1"
                               ItemsSource="{Binding Themes}"
                               SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" DisplayMemberPath="DisplayName"
                               VerticalAlignment="Center" Margin="0,0,0,12"
-                              ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_GlobalTheme}" />
+                              ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_GlobalTheme}" />
 
                     <TextBlock Grid.Row="1" Grid.Column="0"
                                Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_Language, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center" Margin="0,0,16,12"
-                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_Language}" />
+                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_Language}" />
                     <ComboBox Grid.Row="1" Grid.Column="1"
                               ItemsSource="{Binding Languages}"
                               SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
                               VerticalAlignment="Center" Margin="0,0,0,12"
-                              ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_Language}" />
+                              ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_Language}" />
 
                     <TextBlock Grid.Row="2"
                                Grid.Column="0"
                                Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_WorkingChartMaximum, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
                                Margin="0,0,16,12"
-                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_WorkingChartMaximum}" />
+                               ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_WorkingChartMaximum}" />
 
                     <xctk:IntegerUpDown Grid.Row="2"
                                         TextAlignment="Left"
@@ -81,7 +81,7 @@
                                         Margin="0,0,0,12"
                                         Minimum="100"
                                         Maximum="9999999"
-                                        ToolTip="{Binding Path=(localization:StringsProvider.Strings).Tooltip_WorkingChartMaximum}" />
+                                        ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_WorkingChartMaximum}" />
                 </Grid>
             </StackPanel>
         </ScrollViewer>

@@ -76,29 +76,39 @@
 
         public string TextBox_PriceLoadThreads { get; } = "Price load threads";
 
+        public string TextBox_Rarity { get; } = "Rarity";
+
+        public string TextBox_RealGameName { get; } = "Real game name";
+
         public string TextBox_RelistThreads { get; } = "Relist threads";
 
         public string TextBox_Settings { get; } = "Settings";
 
         public string TextBox_Theme { get; } = "Theme";
 
+        public string TextBox_Tradability { get; } = "Tradability";
+
         public string TextBox_TwoFactorConfirmCount { get; } = "To confirm 2FA (count)";
 
         public string TextBox_WorkingChartMaximum { get; } = "Working chart (max)";
 
-        public string Tooltip_GlobalTheme { get; } = "Global visual theme style";
+        public string ToolTip_AddOneToAllSelected { get; } = "Add +1 amount to sell to all selected items\r\n(Button allows you to repeatedly fire click event starting from pressed until it is released)";
 
-        public string Tooltip_GlobalThemeColor { get; } = "Global theme secondary color style";
+        public string ToolTip_GlobalTheme { get; } = "Global visual theme style";
 
-        public string Tooltip_WorkingChartMaximum { get; } =
+        public string ToolTip_GlobalThemeColor { get; } = "Global theme secondary color style";
+
+        public string ToolTip_WorkingChartMaximum { get; } =
             "Dots count on working process chart to optimize dots in more compact format";
 
         public string TextBox_Language { get; } = "Language";
 
-        public string Tooltip_Language { get; } =
+        public string ToolTip_Language { get; } =
             "Global translation language. It is recommended to restart the application after changing this setting";
 
         public string TextBox_Id { get; } = "ID";
+
+        public string TextBox_SellingPrice { get; } = "Selling price";
 
         public string TextBox_Sender { get; } = "Sender";
 
@@ -107,6 +117,8 @@
         public string TextBox_MyItems { get; } = "My items";
 
         public string TextBox_ItemName { get; } = "Item name";
+
+        public string TextBox_ContextId { get; } = "Context Id";
 
         public string TextBox_Count { get; } = "Count";
 
@@ -124,9 +136,15 @@
 
         public string TextBox_ActiveOnly { get; } = "Active only";
 
+        public string TextBox_AmountToSell { get; } = "Amount to sell";
+
+        public string TextBox_AppId { get; } = "App Id";
+
         public string Button_LoadTrades { get; } = "Load trade offers";
 
         public string Button_AcceptSelectedTrades { get; } = "Accept selected trades";
+
+        public string Button_ApplyFilters { get; } = "Apply filters";
 
         public string Button_DeclineSelectedTrades { get; } = "Decline selected trades";
 
@@ -134,9 +152,13 @@
 
         public string TextBox_UsefulLinks { get; } = "Useful links";
 
+        public string Button_StartMarketSell { get; } = "Start Market Sell";
+
         public string Button_SteamLogin { get; } = "Steam login";
 
         public string Button_LicenseStatus { get; } = "License status";
+
+        public string Button_Load { get; } = "Load";
 
         public string Button_Update { get; } = "Update";
 
@@ -156,31 +178,58 @@
             "Cancel all listings awaiting confirmation";
 
         public string Button_ConfirmAllMarket2FaConfirmation { get; } = "Confirm all market 2FA (SDA) confirmation";
+
         public string TextBox_ListedDate { get; } = "Listing date";
+
         public string TextBox_ListedPrice { get; } = "Listed price";
+
         public string TextBox_MinPrice { get; } = "Min price";
+
         public string TextBox_AvrPrice { get; } = "Avr price";
+
         public string Button_RelistPrice { get; } = "Relist price";
+
         public string Button_LoadMarketListings { get; } = "Load market listings";
+
         public string TextBox_RecommendedPrice { get; } = "Recommended price";
+
         public string TextBox_ManualPrice { get; } = "Manual price";
+
         public string TextBox_AveragePrice { get; } = "Average price";
+
         public string TextBox_CurrentPrice { get; } = "Current price";
+
         public string ToolTip_ReloadAllPrices { get; } = "Reload all prices";
-        public string ToolTip_RefreshSelectedItemPrice { get; } = "Refresh selected items";
+
+        public string ToolTip_ReloadSelectedItemPrice { get; } = "Refresh selected items price";
+
         public string ToolTip_StopPriceLoad { get; } = "Stop price load";
+
         public string ToolTip_FindSelectedItemOnSteamMarket { get; } = "Find selected item on steam market";
+
         public string Button_CheckAll { get; } = "Check\r\nall";
+
         public string Button_CheckSelected { get; } = "Check\r\nselected";
+
         public string Button_UncheckAll { get; } = "Uncheck\r\nall";
+
         public string Button_CheckOverpricedItems { get; } = "Check overpriced items";
+
         public string Button_RemoveSelected { get; } = "Remove selected";
+
+        public string Button_ResetFilters { get; } = "Reset filters";
+
         public string Button_RelistSelected { get; } = "Relist selected";
+
         public string TextBox_SelectedItemsCount { get; } = "Selected items count";
+
+        public string TextBox_SelectedItemsTotalPrice { get; } = "Selected items total price";
+
         public string TextBox_SelectedTotalListedPrice { get; } = "Selected items total price";
+
         public string TextBox_SelectedItemsRelistPrice { get; } = "Selected items relist price";
 
-        public string Tooltip_RelistTooltip { get; } =
+        public string ToolTip_RelistTooltip { get; } =
             "PAY ATTENTION!!!\r\nIt is not possible to discover absolutely identical item after removing item from Steam Market.\r\nRelist algorithm will take first item with corresponding to removed item market hash name.\r\nUse this mode only if you are 100% sure!";
 
         public string MessageBox_RestartToApplyChanges { get; } = "Restart application to apply changes!";
