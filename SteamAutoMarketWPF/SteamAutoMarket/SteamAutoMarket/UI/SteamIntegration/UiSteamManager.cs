@@ -657,7 +657,7 @@
                 }
 
                 var currentItemIndex = 1;
-                var totalItemsCount = marketSellModels.Sum(x => x.Count);
+                var totalItemsCount = marketSellModels.Select(sm => sm.ItemsList.Count()).Sum();
                 wp.ProgressBarMaximum = totalItemsCount;
                 var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
 

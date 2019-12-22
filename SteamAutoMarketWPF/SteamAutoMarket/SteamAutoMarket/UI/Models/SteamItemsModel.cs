@@ -28,7 +28,7 @@
 
             this.ItemModel = itemsList.FirstOrDefault();
 
-            this.Count = itemsList.Length;
+            this.Count = itemsList.Select(i => int.Parse(i.Asset.Amount)).Sum();
 
             this.ItemName = this.ItemModel?.Description.MarketName;
 

@@ -18,7 +18,19 @@
             this.CurrentPrice = marketSellModel.CurrentPrice;
             this.AveragePrice = marketSellModel.AveragePrice;
             this.SellPrice = marketSellModel.SellPrice.Value;
-            this.ItemsList = marketSellModel.ItemsList.ToList().GetRange(0, marketSellModel.NumericUpDown.AmountToSell);
+
+            if (marketSellModel.ItemsList.ToList().Any(i => int.Parse(i.Asset.Amount) > 1))
+            {
+                this.ItemsList = marketSellModel.ItemsList.ToList();
+                foreach (var item in this.ItemsList)
+                {
+                    item.Asset.Amount = marketSellModel.NumericUpDown.AmountToSell.ToString();
+                }
+            }
+            else
+            {
+                this.ItemsList = marketSellModel.ItemsList.ToList().GetRange(0, marketSellModel.NumericUpDown.AmountToSell);
+            }
             this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
         }
 

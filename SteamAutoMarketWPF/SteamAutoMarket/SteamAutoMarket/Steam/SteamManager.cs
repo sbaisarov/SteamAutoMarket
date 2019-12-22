@@ -531,7 +531,7 @@ namespace SteamAutoMarket.Steam
 
                 response = SteamWeb.Request(
                     "https://steamcommunity.com/dev/registerkey",
-                    "GET",
+                    "POST",
                     data: data,
                     cookies: this.Cookies,
                     proxy: this.Proxy);

@@ -2,6 +2,7 @@
 {
     using System.Diagnostics;
     using System.Reflection;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Threading;
@@ -19,6 +20,7 @@
                     {
                         var target = NavigationHelper.FindFrame("_top", UiGlobalVariables.MainWindow);
                         NavigationCommands.GoToPage.Execute(tabPath, target);
+                        Thread.Sleep(500);
                     },
                 DispatcherPriority.Send);
         }
