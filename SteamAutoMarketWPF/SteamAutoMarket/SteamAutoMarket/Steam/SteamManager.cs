@@ -577,7 +577,7 @@ namespace SteamAutoMarket.Steam
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gguardcode",
+                    "http://shamanovski.pythonanywhere.com/api/gguardcode",
                     $"{this.Guard.SharedSecret},{TimeAligner.GetSteamTime()},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
@@ -588,7 +588,7 @@ namespace SteamAutoMarket.Steam
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gdevid",
+                    "http://shamanovski.pythonanywhere.com/api/gdevid",
                     $"{this.SteamClient.SteamID.ToString()},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
