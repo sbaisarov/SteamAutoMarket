@@ -51,7 +51,7 @@
             this.InitializeComponent();
             this.LocalizeMenuLinks();
 
-            this.UpdateProgram();
+            //this.UpdateProgram();
         }
 
         public void LocalizeMenuLinks()
@@ -99,12 +99,12 @@
         {
             return true;
 
-            if (certificate.Subject.Contains("pythonanywhere"))
-            {
-                return true;
-            }
+            //if (certificate.Subject.Contains("pythonanywhere"))
+            //{
+            //    return true;
+            //}
 
-            return sslPolicyErrors.ToString() == "None";
+            //return sslPolicyErrors.ToString() == "None";
         }
 
         private void UpdateProgram()
