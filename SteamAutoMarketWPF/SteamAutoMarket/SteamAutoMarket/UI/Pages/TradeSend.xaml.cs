@@ -10,7 +10,6 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
-
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
@@ -175,6 +174,7 @@
             set
             {
                 if (this.tradeSendSelectedItem == value) return;
+
                 this.tradeSendSelectedItem = value;
                 this.OnPropertyChanged();
             }
@@ -267,14 +267,14 @@
             var wp = WorkingProcessProvider.GetNewInstance($"{this.TradeSendSelectedAppid.Name} inventory loading");
             wp?.StartWorkingProcess(
                 () =>
-                    {
-                        wp.SteamManager.LoadInventoryWorkingProcess(
-                            this.TradeSendSelectedAppid,
-                            contextId,
-                            this.TradeSendItemsList,
-                            TradeSendInventoryProcessStrategy.TradeSendStrategy, 
-                            wp);
-                    });
+                {
+                    wp.SteamManager.LoadInventoryWorkingProcess(
+                        this.TradeSendSelectedAppid,
+                        contextId,
+                        this.TradeSendItemsList,
+                        TradeSendInventoryProcessStrategy.TradeSendStrategy,
+                        wp);
+                });
         }
 
         private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
@@ -320,28 +320,30 @@
 
             Task.Run(
                 () =>
-                    {
-                        this.isTotalPriceRefreshPlanned = true;
-                        Thread.Sleep(300);
-                        this.TotalSelectedItemsCount =
-                            this.TradeSendItemsList?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
+                {
+                    this.isTotalPriceRefreshPlanned = true;
+                    Thread.Sleep(300);
+                    this.TotalSelectedItemsCount =
+                        this.TradeSendItemsList?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
 
-                        this.TotalListedItemsCurrentPrice = this.TradeSendItemsList?.Sum(
-                            m =>
-                                {
-                                    if (m.NumericUpDown.AmountToSell == 0 || m.CurrentPrice.HasValue == false) return 0;
-                                    return m.NumericUpDown.AmountToSell * m.CurrentPrice.Value;
-                                }).ToString(UiConstants.DoubleToStringFormat);
+                    this.TotalListedItemsCurrentPrice = this.TradeSendItemsList?.Sum(
+                        m =>
+                        {
+                            if (m.NumericUpDown.AmountToSell == 0 || m.CurrentPrice.HasValue == false) return 0;
 
-                        this.TotalListedItemsAveragePrice = this.TradeSendItemsList?.Sum(
-                            m =>
-                                {
-                                    if (m.NumericUpDown.AmountToSell == 0 || m.AveragePrice.HasValue == false) return 0;
-                                    return m.NumericUpDown.AmountToSell * m.AveragePrice.Value;
-                                }).ToString(UiConstants.DoubleToStringFormat);
+                            return m.NumericUpDown.AmountToSell * m.CurrentPrice.Value;
+                        }).ToString(UiConstants.DoubleToStringFormat);
 
-                        this.isTotalPriceRefreshPlanned = false;
-                    });
+                    this.TotalListedItemsAveragePrice = this.TradeSendItemsList?.Sum(
+                        m =>
+                        {
+                            if (m.NumericUpDown.AmountToSell == 0 || m.AveragePrice.HasValue == false) return 0;
+
+                            return m.NumericUpDown.AmountToSell * m.AveragePrice.Value;
+                        }).ToString(UiConstants.DoubleToStringFormat);
+
+                    this.isTotalPriceRefreshPlanned = false;
+                });
         }
 
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e) =>
@@ -396,8 +398,17 @@
             foreach (var steamItemsModel in this.TradeSendItemsList.ToArray()
                 .Where(i => i.NumericUpDown.AmountToSell > 0))
             {
-                itemsToSell.AddRange(
-                    steamItemsModel.ItemsList.ToList().GetRange(0, steamItemsModel.NumericUpDown.AmountToSell));
+                if (int.TryParse(steamItemsModel.ItemsList.FirstOrDefault()?.Asset.Amount, out var amount) && amount > 1)
+                {
+                    var itemToAdd = steamItemsModel.ItemsList.First().CloneAsset();
+                    itemToAdd.Asset.Amount = steamItemsModel.NumericUpDown.AmountToSell.ToString();
+                    itemsToSell.Add(itemToAdd);
+                }
+                else
+                {
+                    itemsToSell.AddRange(
+                        steamItemsModel.ItemsList.ToList().GetRange(0, steamItemsModel.NumericUpDown.AmountToSell));
+                }
             }
 
             if (itemsToSell.Any() == false)
