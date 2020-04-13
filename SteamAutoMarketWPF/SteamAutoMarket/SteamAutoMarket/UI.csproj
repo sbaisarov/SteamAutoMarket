@@ -189,6 +189,7 @@
     <Compile Include="Steam\Market\SteamMarketHandler.cs" />
     <Compile Include="Steam\Market\Urls.cs" />
     <Compile Include="Steam\Market\MarketUtils.cs" />
+    <Compile Include="Steam\SetsHelper.cs" />
     <Compile Include="Steam\SteamManager.cs" />
     <Compile Include="Steam\SteamUtils.cs" />
     <Compile Include="Steam\TradeOffer\Enums\TradeOfferConfirmationMethod.cs" />

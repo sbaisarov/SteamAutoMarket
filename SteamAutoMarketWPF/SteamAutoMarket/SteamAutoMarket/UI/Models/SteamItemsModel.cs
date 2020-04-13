@@ -37,7 +37,7 @@
 
             this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description?.Type);
 
-            this.Description = SteamUtils.GetClearDescription(this.ItemModel);
+            this.Description = new Lazy<string>(() => SteamUtils.GetClearDescription(this.ItemModel));
 
             this.NumericUpDown = new NumericUpDownModel(this.Count);
         }
@@ -75,7 +75,7 @@
             }
         }
 
-        public string Description { get; }
+        public Lazy<string> Description { get; }
 
         public string Game { get; }
 

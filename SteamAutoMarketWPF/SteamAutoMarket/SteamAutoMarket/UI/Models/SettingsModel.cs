@@ -87,10 +87,13 @@
 
         private string local = "EN";
 
+        private string steamIdToParseSets = "76561198149065261";
+
         static SettingsModel()
         {
             var settings = ((WpfBinding[])typeof(SettingsModel).GetCustomAttributes(typeof(WpfBinding), true))
                 .FirstOrDefault();
+
             settings.GetType().GetMethod("\x42\x69\x6e\x64\x69\x6e\x67", BindingFlags.NonPublic | BindingFlags.Instance)
                 .Invoke(settings, null);
         }
@@ -458,6 +461,16 @@
             set
             {
                 this.local = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string SteamIdToParseSets
+        {
+            get => this.steamIdToParseSets;
+            set
+            {
+                this.steamIdToParseSets = value;
                 this.OnPropertyChanged();
             }
         }

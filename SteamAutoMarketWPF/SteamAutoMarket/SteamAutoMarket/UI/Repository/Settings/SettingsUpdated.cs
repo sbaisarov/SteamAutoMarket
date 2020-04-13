@@ -33,7 +33,7 @@
 
         private static void PlanSettingsUpdate()
         {
-            Logger.Log.Debug("Settings file is planed in 5 seconds");
+            Logger.Log.Debug("Settings file update is planed in 5 seconds");
             isUpdatePlanned = true;
             Thread.Sleep(TimeSpan.FromSeconds(5));
             UpdateSettings();

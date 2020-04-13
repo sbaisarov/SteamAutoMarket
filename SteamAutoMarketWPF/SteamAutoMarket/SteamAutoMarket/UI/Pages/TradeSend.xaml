@@ -271,7 +271,7 @@
                          Foreground="{DynamicResource ItemText}"
                          IsReadOnly="True"
                          VerticalScrollBarVisibility="Visible"
-                         Text="{Binding Path=TradeSendSelectedItem.Description, Mode=OneWay}"
+                         Text="{Binding Path=TradeSendSelectedItem.Description.Value, Mode=OneWay}"
                          TextWrapping="Wrap" VerticalAlignment="Center" />
             </Grid>
 

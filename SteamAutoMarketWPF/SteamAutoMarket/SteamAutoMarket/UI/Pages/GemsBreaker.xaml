@@ -231,7 +231,7 @@
                          Foreground="{DynamicResource ItemText}"
                          IsReadOnly="True"
                          VerticalScrollBarVisibility="Visible"
-                         Text="{Binding Path=GemsBreakerSelectedItem.Description, Mode=OneWay}"
+                         Text="{Binding Path=GemsBreakerSelectedItem.Description.Value, Mode=OneWay}"
                          TextWrapping="Wrap" VerticalAlignment="Center" />
             </Grid>
 

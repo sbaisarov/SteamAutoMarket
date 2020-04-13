@@ -3,9 +3,8 @@
     using System;
     using System.Linq;
     using System.Reflection;
-
+    using System.Text.RegularExpressions;
     using SteamAutoMarket.Steam.Market.Models;
-    using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
 
     [Obfuscation(Exclude = true)]
@@ -19,6 +18,13 @@
             var descriptionText = string.Empty;
             descriptionText += $"Amount: {item.Asset.Amount}{Environment.NewLine}";
             descriptionText += $"Game: {description.Appid}{Environment.NewLine}";
+
+            if (description.Type.EndsWith("Trading Card"))
+            {
+                var appid = GetClearCardAppid(description.MarketHashName);
+                descriptionText += $"Set: {SetsHelper.GetSetsCount(appid)}{Environment.NewLine}";
+            }
+
             descriptionText += $"Name: {description.MarketHashName}{Environment.NewLine}";
             descriptionText += $"Type: {description.Type}{Environment.NewLine}";
 
@@ -174,6 +180,18 @@
             }
 
             return descriptionText;
+        }
+
+        private static string GetClearCardAppid(string marketHashName)
+        {
+            try
+            {
+                return Regex.Match(marketHashName, "(\\d+)-").Groups[1].Value;
+            }
+            catch
+            {
+                return "0";
+            }
         }
     }
 }
