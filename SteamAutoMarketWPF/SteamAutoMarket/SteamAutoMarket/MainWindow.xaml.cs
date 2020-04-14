@@ -51,7 +51,7 @@
             this.InitializeComponent();
             this.LocalizeMenuLinks();
 
-            //this.UpdateProgram();
+            this.UpdateProgram();
         }
 
         public void LocalizeMenuLinks()
@@ -85,10 +85,6 @@
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             ErrorNotify.CriticalMessageBox("Oops. Seems application is crushed", (Exception)e.ExceptionObject);
-            using (var wc = new WebClient())
-            {
-                wc.UploadString("www.steambiz.store/api/logerror", ((Exception)e.ExceptionObject).ToString());
-            }
         }
 
         private static bool OnServerCertificateValidationCallback(
@@ -111,7 +107,7 @@
         {
             AutoUpdater.AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-            AutoUpdater.AutoUpdater.AppCastURL = "https://www.steambiz.store/release/release.xml";
+            AutoUpdater.AutoUpdater.AppCastURL = "http://shamanovski.pythonanywhere.com/release.xml";
             AutoUpdater.AutoUpdater.Start();
         }
     }

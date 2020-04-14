@@ -95,7 +95,7 @@
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gconfhash",
+                    "https://shamanovski.pythonanywhere.com/api/gconfhash",
                     $"{identitySecret},{tag},{time},db3c06cb-2f70-4432-9914-f8dd7f3daf68,BFEBFBFF000906EA042E04E2");
 
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
@@ -158,7 +158,7 @@
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gguardcode",
+                    "https://shamanovski.pythonanywhere.com/api/gguardcode",
                     $"{sharedSecret},{time},db3c06cb-2f70-4432-9914-f8dd7f3daf68,BFEBFBFF000906EA042E04E2");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }

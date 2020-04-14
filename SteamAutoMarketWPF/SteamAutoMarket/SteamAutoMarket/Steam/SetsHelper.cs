@@ -40,7 +40,7 @@
             }
         }
 
-        public static int GetSetsCount(string gameAppid)
+        public static int GetSetsCount(string gameAppid, WebProxy proxy)
         {
             try
             {
@@ -49,7 +49,7 @@
                     return count;
                 }
 
-                count = ParseSetsCount(gameAppid, SettingsProvider.GetInstance().SteamIdToParseSets);
+                count = ParseSetsCount(gameAppid, SettingsProvider.GetInstance().SteamIdToParseSets, proxy);
                 Sets.Add(gameAppid, count);
 
                 if (++_updateFileCounter == 3)
@@ -76,7 +76,7 @@
             UpdateFileSemaphore.Release();
         }
 
-        private static int ParseSetsCount(string gameAppid, string steamId)
+        private static int ParseSetsCount(string gameAppid, string steamId, WebProxy proxy)
         {
             var client = new RestClient($"https://steamcommunity.com/profiles/{steamId}/gamecards/{gameAppid}/");
             var request = new RestRequest(Method.GET);

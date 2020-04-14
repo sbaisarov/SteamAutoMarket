@@ -152,7 +152,7 @@ namespace SteamAutoMarket.Properties
                                     Environment.Exit(0);
                                 }
                             }
-                            catch(Exception e)
+                            catch
                             {
                                 Environment.Exit(0);
                             }

@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
-
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Core.Waiter;
     using SteamAutoMarket.Steam;
@@ -27,7 +27,6 @@
     using SteamAutoMarket.UI.SteamIntegration.InventoryLoad;
     using SteamAutoMarket.UI.Utils.Extension;
     using SteamAutoMarket.UI.Utils.Logger;
-
     using SteamKit2;
 
     public class UiSteamManager : SteamManager
@@ -79,33 +78,33 @@
                 semaphore.WaitOne();
                 Task.Run(
                     () =>
+                    {
+                        try
                         {
-                            try
+                            var response = this.OfferSession.Accept(offer.Offer.TradeOfferId);
+                            if (response.Accepted == false)
                             {
-                                var response = this.OfferSession.Accept(offer.Offer.TradeOfferId);
-                                if (response.Accepted == false)
-                                {
-                                    if (string.IsNullOrEmpty(response.TradeError))
-                                        response.TradeError = "internal server";
+                                if (string.IsNullOrEmpty(response.TradeError))
+                                    response.TradeError = "internal server";
 
-                                    wp.AppendLog(
-                                        $"Steam replied with {response.TradeError} error on {offer.Offer.TradeOfferId} trade offer accept.");
-                                }
-                                else
-                                {
-                                    wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer accept was successful");
-                                }
+                                wp.AppendLog(
+                                    $"Steam replied with {response.TradeError} error on {offer.Offer.TradeOfferId} trade offer accept.");
                             }
-                            catch (Exception e)
+                            else
                             {
-                                wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer accept - {e.Message}");
+                                wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer accept was successful");
                             }
-                            finally
-                            {
-                                Thread.Sleep(delay);
-                                semaphore.Release();
-                            }
-                        });
+                        }
+                        catch (Exception e)
+                        {
+                            wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer accept - {e.Message}");
+                        }
+                        finally
+                        {
+                            Thread.Sleep(delay);
+                            semaphore.Release();
+                        }
+                    });
             }
 
             for (var i = 0; i < threadsCount; i++)
@@ -197,30 +196,30 @@
                 semaphore.WaitOne();
                 Task.Run(
                     () =>
+                    {
+                        try
                         {
-                            try
+                            var response = this.OfferSession.Decline(offer.Offer.TradeOfferId);
+                            if (response == false)
                             {
-                                var response = this.OfferSession.Decline(offer.Offer.TradeOfferId);
-                                if (response == false)
-                                {
-                                    wp.AppendLog(
-                                        $"Steam replied with error on {offer.Offer.TradeOfferId} trade offer decline.");
-                                }
-                                else
-                                {
-                                    wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer decline was successful");
-                                }
+                                wp.AppendLog(
+                                    $"Steam replied with error on {offer.Offer.TradeOfferId} trade offer decline.");
                             }
-                            catch (Exception e)
+                            else
                             {
-                                wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer decline - {e.Message}");
+                                wp.AppendLog($"{offer.Offer.TradeOfferId} trade offer decline was successful");
                             }
-                            finally
-                            {
-                                Thread.Sleep(delay);
-                                semaphore.Release();
-                            }
-                        });
+                        }
+                        catch (Exception e)
+                        {
+                            wp.AppendLog($"Error on {offer.Offer.TradeOfferId} offer decline - {e.Message}");
+                        }
+                        finally
+                        {
+                            Thread.Sleep(delay);
+                            semaphore.Release();
+                        }
+                    });
             }
 
             for (var i = 0; i < threadsCount; i++)
@@ -255,7 +254,7 @@
             ObservableCollection<T> marketSellItems,
             IInventoryLoadStrategy<T> processStrategy,
             WorkingProcessDataContext wp)
-        where T : SteamItemsModel
+            where T : SteamItemsModel
         {
             try
             {
@@ -443,28 +442,28 @@
 
             var itemsToSell = removedItems.Select(
                     currentItem =>
+                    {
+                        var foundItemNode = allItems.FirstOrDefault(
+                            found => found.ItemModel?.Description.MarketHashName == currentItem.HashName);
+
+                        if (foundItemNode != null)
                         {
-                            var foundItemNode = allItems.FirstOrDefault(
-                                found => found.ItemModel?.Description.MarketHashName == currentItem.HashName);
+                            var foundItem = foundItemNode.ItemsList.FirstOrDefault();
+                            foundItemNode.ItemsList.Remove(foundItem);
+                            return new { foundItem, currentItem.RelistPrice };
+                        }
 
-                            if (foundItemNode != null)
-                            {
-                                var foundItem = foundItemNode.ItemsList.FirstOrDefault();
-                                foundItemNode.ItemsList.Remove(foundItem);
-                                return new { foundItem, currentItem.RelistPrice };
-                            }
-
-                            wp.AppendLog($"{currentItem.HashName} ({currentItem.AppId}) item not found");
-                            return null;
-                        }).Where(nullCheck => nullCheck != null)
+                        wp.AppendLog($"{currentItem.HashName} ({currentItem.AppId}) item not found");
+                        return null;
+                    }).Where(nullCheck => nullCheck != null)
                 .GroupBy(tuple => new { tuple.foundItem.Description.MarketHashName }).Select(
                     group =>
-                        {
-                            var groupList = group.ToList();
-                            return new MarketSellProcessModel(
-                                groupList.Select(g => g.foundItem).ToArray(),
-                                groupList.First().RelistPrice);
-                        }).ToArray();
+                    {
+                        var groupList = group.ToList();
+                        return new MarketSellProcessModel(
+                            groupList.Select(g => g.foundItem).ToArray(),
+                            groupList.First().RelistPrice);
+                    }).ToArray();
 
             wp.AppendLog($"{itemsToSell.Sum(m => m.ItemsList.Count())}/{removedItems.Count} items found");
             wp.ProgressBarValue = 0;
@@ -532,74 +531,74 @@
                             var realPackageIndex = packageElementIndex++;
                             var task = Task.Run(
                                 () =>
+                                {
+                                    try
                                     {
-                                        try
+                                        var tryCount = 0;
+                                        while (true)
                                         {
-                                            var tryCount = 0;
-                                            while (true)
+                                            if (wp.CancellationToken.IsCancellationRequested)
                                             {
-                                                if (wp.CancellationToken.IsCancellationRequested)
-                                                {
-                                                    wp.AppendLog(
-                                                        $"Market {marketSellModel.ItemName} relist task was force stopped");
-                                                    return;
-                                                }
-
-                                                if (tryCount++ > 10)
-                                                {
-                                                    wp.AppendLog(
-                                                        $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{packageTotal}] - '{marketSellModel.ItemName}' failed more then 10 times. Skipping item.");
-                                                    break;
-                                                }
-
                                                 wp.AppendLog(
-                                                    $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{packageTotal}] - '{marketSellModel.ItemName}'");
-
-                                                var result = this.MarketClient.CancelSellOrder(itemCancelId);
-
-                                                if (result != ECancelSellOrderStatus.Canceled)
-                                                {
-                                                    wp.AppendLog(
-                                                        $"[{realIndex}/{totalItemsCount}] - Error on canceling sell order {marketSellModel.ItemName}");
-                                                }
-                                                else
-                                                {
-                                                    break;
-                                                }
+                                                    $"Market {marketSellModel.ItemName} relist task was force stopped");
+                                                return;
                                             }
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            wp.AppendLog(
-                                                $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}");
-                                            Logger.Log.Error(
-                                                $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}",
-                                                ex);
-                                        }
-                                        finally
-                                        {
-                                            removeExistSemaphore.WaitOne();
-                                            var existNode = allItemsList.FirstOrDefault(
-                                                m => m.ItemsList.Contains(item));
 
-                                            if (existNode != null)
+                                            if (tryCount++ > 10)
                                             {
-                                                existNode.ItemsList.RemoveDispatch(item);
-                                                if (existNode.ItemsList.Count == 0)
-                                                {
-                                                    allItemsList.RemoveDispatch(existNode);
-                                                }
-                                                else
-                                                {
-                                                    existNode.RefreshCount();
-                                                }
+                                                wp.AppendLog(
+                                                    $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{packageTotal}] - '{marketSellModel.ItemName}' failed more then 10 times. Skipping item.");
+                                                break;
                                             }
 
-                                            wp.IncrementProgress();
-                                            semaphore.Release();
-                                            removeExistSemaphore.Release();
+                                            wp.AppendLog(
+                                                $"[{realIndex}/{totalItemsCount}] Removing - [{realPackageIndex}/{packageTotal}] - '{marketSellModel.ItemName}'");
+
+                                            var result = this.MarketClient.CancelSellOrder(itemCancelId);
+
+                                            if (result != ECancelSellOrderStatus.Canceled)
+                                            {
+                                                wp.AppendLog(
+                                                    $"[{realIndex}/{totalItemsCount}] - Error on canceling sell order {marketSellModel.ItemName}");
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
                                         }
-                                    });
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        wp.AppendLog(
+                                            $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}");
+                                        Logger.Log.Error(
+                                            $"Error on canceling sell order {marketSellModel.ItemName} - {ex.Message}",
+                                            ex);
+                                    }
+                                    finally
+                                    {
+                                        removeExistSemaphore.WaitOne();
+                                        var existNode = allItemsList.FirstOrDefault(
+                                            m => m.ItemsList.Contains(item));
+
+                                        if (existNode != null)
+                                        {
+                                            existNode.ItemsList.RemoveDispatch(item);
+                                            if (existNode.ItemsList.Count == 0)
+                                            {
+                                                allItemsList.RemoveDispatch(existNode);
+                                            }
+                                            else
+                                            {
+                                                existNode.RefreshCount();
+                                            }
+                                        }
+
+                                        wp.IncrementProgress();
+                                        semaphore.Release();
+                                        removeExistSemaphore.Release();
+                                    }
+                                });
                             tasks.Add(task);
                         }
                         catch (Exception ex)
@@ -628,6 +627,7 @@
         public void SaveAccount(SettingsSteamAccount account, bool forceRefresh)
         {
             if (this.IsSessionUpdated == false && forceRefresh == false) return;
+
             this.IsSessionUpdated = false;
 
             account.SteamApi = this.ApiKey;
@@ -793,11 +793,11 @@
             try
             {
                 var targetSteamIdObj = targetSteamId.StartsWith("76561198")
-                                           ? new SteamID(ulong.Parse(targetSteamId))
-                                           : new SteamID(
-                                               uint.Parse(targetSteamId),
-                                               EUniverse.Public,
-                                               EAccountType.Individual);
+                    ? new SteamID(ulong.Parse(targetSteamId))
+                    : new SteamID(
+                        uint.Parse(targetSteamId),
+                        EUniverse.Public,
+                        EAccountType.Individual);
 
                 wp.AppendLog(
                     $"Sending trade offer to {targetSteamIdObj.ConvertToUInt64()} - {tradeToken}. My items count - {itemsToTrade.Length}");
@@ -1035,5 +1035,146 @@
             }
         }
 
+        public void LoadGemsCountWorkingProcess(IEnumerable<GemsBreakerSteamItems> gemsBreakerItems, WorkingProcessDataContext wp)
+        {
+            try
+            {
+                List<GemsBreakerSteamItems> itemsList = gemsBreakerItems.Where(i => !i.GemsCount.HasValue).ToList();
+                wp.ProgressBarMaximum = itemsList.Count;
+                foreach (var item in itemsList)
+                {
+                    try
+                    {
+                        if (wp.CancellationToken.IsCancellationRequested)
+                        {
+                            wp.AppendLog("Gems count loading process was force stopped");
+                            return;
+                        }
+
+                        if (item.GemsCount.HasValue)
+                        {
+                            wp.AppendLog($"Gems count for {item.ItemName} is {item.GemsCount}");
+                            continue;
+                        }
+
+                        item.GemsCount = GemsBreakHelper.GetGemsCount(item.ItemModel, Cookies, Proxy);
+                        wp.AppendLog($"Gems count for {item.ItemName} is {item.GemsCount}");
+
+                        wp.IncrementProgress();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Log.Error($"Error on {item.ItemName} gems count load", e);
+                    }
+                }
+
+                GemsBreakHelper.UpdateFile();
+            }
+            catch (Exception e)
+            {
+                const string message = "Error on gems count loading";
+                wp.AppendLog(message);
+                ErrorNotify.CriticalMessageBox(message, e);
+            }
+        }
+
+        public void BreakOnGemsWorkingProcess(IEnumerable<GemsBreakerSteamItems> gemsBreakerItems, WorkingProcessDataContext wp)
+        {
+            try
+            {
+                GemsBreakModel[] itemsList = gemsBreakerItems
+                    .Where(i => i.NumericUpDown.AmountToSell > 0 && (!i.GemsCount.HasValue || i.GemsCount > 0))
+                    .Select(i => new
+                        GemsBreakModel{
+                        ItemName = i.ItemName,
+                        GemsCount = i.GemsCount,
+                        ItemModel = i.ItemModel,
+                        Count = i.NumericUpDown.AmountToSell,
+                        ItemsList = i.ItemsList.Take(i.NumericUpDown.AmountToSell).ToArray()
+                    })
+                    .ToArray();
+
+                wp.ProgressBarMaximum = itemsList.Sum(i => i.Count);
+                var totalIndexer = wp.ProgressBarMaximum + 1;
+                var currentIndexer = 0;
+
+                foreach (var itemsGroup in itemsList)
+                {
+
+                    if (wp.CancellationToken.IsCancellationRequested)
+                    {
+                        wp.AppendLog("Gems break process was force stopped");
+                        return;
+                    }
+
+                    if (!itemsGroup.GemsCount.HasValue)
+                    {
+                        wp.AppendLog($"Gems count for {itemsGroup.ItemName} is not loaded");
+                        itemsGroup.GemsCount = GemsBreakHelper.GetGemsCount(itemsGroup.ItemModel, Cookies, Proxy);
+                        wp.AppendLog($"Gems count for {itemsGroup.ItemName} is {itemsGroup.GemsCount}");
+
+                        if (itemsGroup.GemsCount == 0)
+                        {
+                            wp.AppendLog($"{itemsGroup.ItemName} can not be booked on gems");
+                            wp.ProgressBarMaximum -= itemsGroup.Count;
+                            continue;
+                        }
+                    }
+
+                    var ownerTag = itemsGroup.ItemsList.First().Description.OwnerActions
+                        .FirstOrDefault(t => t.Name.Equals("Turn into Gems...", StringComparison.InvariantCultureIgnoreCase));
+
+                    if (ownerTag == null)
+                    {
+                        wp.AppendLog($"{itemsGroup.ItemName} can not be booked on gems");
+                        wp.ProgressBarMaximum -= itemsGroup.Count;
+                        continue;
+                    }
+
+                    //javascript:GetGooValue( '%contextid%', '%assetid%', 603770, 3, 1 )
+                    var regex = Regex.Match(ownerTag.Link, "javascript:GetGooValue\\( '%contextid%', '%assetid%', (\\d+), (\\d+), (\\d+) \\)");
+
+                    var appId = regex.Groups[1].Value;
+
+                    int itemIndex = 0;
+                    foreach (var steamItem in itemsGroup.ItemsList.ToList())
+                    {
+                        try
+                        {
+                            if (wp.CancellationToken.IsCancellationRequested)
+                            {
+                                wp.AppendLog("Gems break process was force stopped");
+                                return;
+                            }
+                            wp.AppendLog($"{++currentIndexer}/{totalIndexer} - Breaking {itemsGroup.ItemName} ({++itemIndex}/{itemsGroup.Count}) for {itemsGroup.GemsCount} gems");
+
+                            GemsBreakHelper.BreakOnGems(
+                                Guard.Session.SessionID,
+                                appId,
+                                steamItem.Asset.Assetid,
+                                steamItem.Asset.Contextid,
+                                itemsGroup.GemsCount.Value,
+                                SteamId.ConvertToUInt64(),
+                                Cookies,
+                                Proxy);
+                        }
+                        catch (Exception e)
+                        {
+                            wp.AppendLog($"Error on {itemsGroup.ItemName} break - {e.Message}");
+                        }
+
+                        wp.IncrementProgress();
+                    }
+                }
+
+                GemsBreakHelper.UpdateFile();
+            }
+            catch (Exception e)
+            {
+                const string message = "Error on gems break";
+                wp.AppendLog(message);
+                ErrorNotify.CriticalMessageBox(message, e);
+            }
+        }
     }
 }

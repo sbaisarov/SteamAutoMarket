@@ -124,6 +124,7 @@
     <Compile Include="Steam\Auth\TimeAligner.cs" />
     <Compile Include="Steam\Auth\UserLogin.cs" />
     <Compile Include="Steam\Auth\Util.cs" />
+    <Compile Include="Steam\GemsBreakHelper.cs" />
     <Compile Include="Steam\Market\AppIds.cs" />
     <Compile Include="Steam\Market\Auth.cs" />
     <Compile Include="Steam\Market\Currencies.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Steam\TradeOffer\Models\ApiResponse.cs" />
     <Compile Include="Steam\TradeOffer\Models\AppData.cs" />
     <Compile Include="Steam\TradeOffer\Models\AssetDescription.cs" />
+    <Compile Include="Steam\TradeOffer\Models\BreakGemsResponse.cs" />
     <Compile Include="Steam\TradeOffer\Models\CEconAsset.cs" />
     <Compile Include="Steam\TradeOffer\Models\Description.cs" />
     <Compile Include="Steam\TradeOffer\Models\Full\FullHistoryTradeItem.cs" />
@@ -209,6 +211,8 @@
     <Compile Include="Steam\TradeOffer\Models\Full\FullRgItem.cs" />
     <Compile Include="Steam\TradeOffer\Models\Full\FullTradeItem.cs" />
     <Compile Include="Steam\TradeOffer\Models\Full\FullTradeOffer.cs" />
+    <Compile Include="Steam\TradeOffer\Models\GemsBreakModel.cs" />
+    <Compile Include="Steam\TradeOffer\Models\GooResponse.cs" />
     <Compile Include="Steam\TradeOffer\Models\InventoryResponse.cs" />
     <Compile Include="Steam\TradeOffer\Models\InventoryResult.cs" />
     <Compile Include="Steam\TradeOffer\Models\InventoryRootModel.cs" />

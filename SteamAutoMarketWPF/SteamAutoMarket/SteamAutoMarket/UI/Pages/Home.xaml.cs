@@ -31,6 +31,6 @@
 
         private void Update_OnClick(object sender, RoutedEventArgs e) => AutoUpdater.ShowUpdateForm();
 
-        private void Website_OnClick(object sender, RoutedEventArgs e) => Process.Start("https://www.steambiz.store/");
+        private void Website_OnClick(object sender, RoutedEventArgs e) => Process.Start("http://shamanovski.pythonanywhere.com/");
     }
 }

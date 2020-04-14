@@ -6,13 +6,15 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
-
     using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Repository;
     using SteamAutoMarket.UI.Repository.Context;
+    using SteamAutoMarket.UI.SteamIntegration;
     using SteamAutoMarket.UI.SteamIntegration.InventoryLoad;
     using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.ItemFilters;
@@ -41,6 +43,8 @@
         private IEnumerable<string> tradabilityFilters;
 
         private IEnumerable<string> typeFilters;
+
+        private bool isTotalGemsCountRefreshPlanned = false;
 
         public GemsBreaker()
         {
@@ -155,7 +159,8 @@
 
         private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            FunctionalButtonsActions.AddPlusOneAmountToAllItems(
+                this.GemsBreakerGrid.SelectedItems.OfType<GemsBreakerSteamItems>());
         }
 
         private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
@@ -207,52 +212,80 @@
 
         private void MarkAllItemsClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            foreach (var t in this.GemsBreakerGrid.ItemsSource)
+            {
+                ((GemsBreakerSteamItems)t).NumericUpDown.SetToMaximum();
+            }
         }
 
         private void MarkSelectedItemsClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            foreach (var t in this.GemsBreakerGrid.SelectedItems)
+            {
+                ((GemsBreakerSteamItems)t).NumericUpDown.SetToMaximum();
+            }
         }
 
         private void OpenOnSteamMarket_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
-        }
-
-        private void RefreshAllGemsCountPriceButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void RefreshSingleGemsCountButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
+            FunctionalButtonsActions.OpenOnSteamMarket(this.GemsBreakerSelectedItem);
         }
 
         private void ResetFiltersClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            this.ResetFilters();
         }
 
         private void SelectedItemsUpDownBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            throw new NotImplementedException();
+            if (this.isTotalGemsCountRefreshPlanned) return;
+
+            Task.Run(
+                () =>
+                {
+                    this.isTotalGemsCountRefreshPlanned = true;
+                    Thread.Sleep(300);
+                    this.TotalSelectedItemsCount =
+                        this.GemsBreakerItems?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
+
+                    this.TotalListedItemsPrice = this.GemsBreakerItems?.Sum(
+                        m =>
+                        {
+                            if (m.NumericUpDown.AmountToSell == 0
+                                || m.GemsCount.HasValue == false) return 0;
+
+                            return m.NumericUpDown.AmountToSell
+                                   * m.GemsCount.Value;
+                        }).ToString(UiConstants.DoubleToStringFormat) ?? UiConstants.FractionalZeroString;
+
+                    this.isTotalGemsCountRefreshPlanned = false;
+                });
         }
 
         private void StartGemsBreakButtonClick_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
-        }
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
 
-        private void StopGemsCountLoadingButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
+            var wp = WorkingProcessProvider.GetNewInstance("Break on gems");
+            wp?.StartWorkingProcess(
+                () =>
+                {
+                    wp.SteamManager.BreakOnGemsWorkingProcess(
+                        this.GemsBreakerItems,
+                        wp);
+                });
         }
 
         private void UnmarkAllItemsClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            foreach (var item in this.GemsBreakerItems)
+            {
+                item.NumericUpDown.AmountToSell = 0;
+            }
         }
 
         private void LoadSteamInventory_OnClick(object sender, RoutedEventArgs e)
@@ -269,14 +302,14 @@
             var wp = WorkingProcessProvider.GetNewInstance("STEAM inventory loading");
             wp?.StartWorkingProcess(
                 () =>
-                    {
-                        wp.SteamManager.LoadInventoryWorkingProcess(
-                            UiConstants.SteamAppId,
-                            6,
-                            this.GemsBreakerItems,
-                            GemsBreakerInventoryProcessStrategy.GemsBreakerStrategy,
-                            wp);
-                    });
+                {
+                    wp.SteamManager.LoadInventoryWorkingProcess(
+                        UiConstants.SteamAppId,
+                        6,
+                        this.GemsBreakerItems,
+                        GemsBreakerInventoryProcessStrategy.GemsBreakerStrategy,
+                        wp);
+                });
         }
 
         private void ResetFilters()
@@ -297,6 +330,24 @@
             this.MarketableComboBox.Text = null;
 
             this.GemsBreakerGrid.ItemsSource = this.GemsBreakerItems;
+        }
+
+        private void LoadAllGemsCountButtonClick_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
+
+            var wp = WorkingProcessProvider.GetNewInstance("Load all gems count");
+            wp?.StartWorkingProcess(
+                () =>
+                {
+                    wp.SteamManager.LoadGemsCountWorkingProcess(
+                        this.GemsBreakerItems,
+                        wp);
+                });
         }
     }
 }

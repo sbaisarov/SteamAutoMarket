@@ -11,20 +11,19 @@
 
         public FullRgItem CloneAsset()
         {
-            var item = new FullRgItem
-                           {
-                               Asset = new RgInventory
-                                           {
-                                               Amount = this.Asset.Amount,
-                                               Appid = this.Asset.Appid,
-                                               Assetid = this.Asset.Assetid,
-                                               Classid = this.Asset.Classid,
-                                               Contextid = this.Asset.Contextid,
-                                               Instanceid = this.Asset.Instanceid
-                                           },
-                               Description = this.Description
-                           };
-            return item;
+            return new FullRgItem
+            {
+                Asset = new RgInventory
+                {
+                    Amount = this.Asset.Amount,
+                    Appid = this.Asset.Appid,
+                    Assetid = this.Asset.Assetid,
+                    Classid = this.Asset.Classid,
+                    Contextid = this.Asset.Contextid,
+                    Instanceid = this.Asset.Instanceid
+                },
+                Description = this.Description
+            };
         }
     }
 }

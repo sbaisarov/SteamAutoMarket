@@ -27,7 +27,7 @@
         public static RgDescription GetDescription(RgInventory asset, List<RgDescription> descriptions)
         {
             return descriptions.FirstOrDefault(
-                item => asset.Instanceid == item.InstanceId && asset.Classid == item.Classid);
+                item => asset.Instanceid == item.InstanceId && asset.Classid == item.ClassId);
         }
     }
 }

@@ -70,6 +70,20 @@
                             <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="{Binding Path=(localization:StringsProvider.Strings).Button_LicenseStatus}" />
                         </Grid>
                     </Button>
+                    <Button Style="{StaticResource FlatButton}" Click="Update_OnClick">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Path Style="{StaticResource Geometry}"
+                                  Stretch="Uniform"
+                                  Data="{StaticResource SvgUpdate}" />
+
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="{Binding Path=(localization:StringsProvider.Strings).Button_Update}" />
+                        </Grid>
+                    </Button>
                     <Button Style="{StaticResource FlatButton}" Click="Telegram_OnClick">
                         <Grid>
                             <Grid.RowDefinitions>

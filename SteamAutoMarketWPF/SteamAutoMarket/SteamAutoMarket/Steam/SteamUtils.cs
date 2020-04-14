@@ -6,6 +6,7 @@
     using System.Text.RegularExpressions;
     using SteamAutoMarket.Steam.Market.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
+    using SteamAutoMarket.UI.Repository.Context;
 
     [Obfuscation(Exclude = true)]
     public class SteamUtils
@@ -22,7 +23,7 @@
             if (description.Type.EndsWith("Trading Card"))
             {
                 var appid = GetClearCardAppid(description.MarketHashName);
-                descriptionText += $"Set: {SetsHelper.GetSetsCount(appid)}{Environment.NewLine}";
+                descriptionText += $"Set: {SetsHelper.GetSetsCount(appid,UiGlobalVariables.SteamManager.Proxy )}{Environment.NewLine}";
             }
 
             descriptionText += $"Name: {description.MarketHashName}{Environment.NewLine}";
