@@ -307,7 +307,7 @@
     <Compile Include="UI\Pages\WorkingProcess.xaml.cs">
       <DependentUpon>WorkingProcess.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\WorkingProcessDataContext.cs" />
+    <Compile Include="UI\Repository\Context\WorkingProcessDataContext.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UI\Utils\Converter\TextFieldDashConverter.cs" />
     <Compile Include="UI\Utils\UiConstants.cs" />

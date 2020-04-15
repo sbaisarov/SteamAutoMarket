@@ -289,6 +289,14 @@
                 return;
             }
 
+            var selectedValue = ((SteamAppId)this.MarketAppidCombobox.SelectedValue);
+
+            if (selectedValue == null)
+            {
+                ErrorNotify.CriticalMessageBox($"Inventory type is not selected");
+                return;
+            }
+
             if (int.TryParse(this.MarketContextIdTextBox.Text, out var contextId) == false)
             {
                 ErrorNotify.CriticalMessageBox($"Incorrect context id provided - {contextId}");
@@ -298,12 +306,13 @@
             this.MarketSellItems.Clear();
             this.ResetFilters();
 
-            var wp = WorkingProcessProvider.GetNewInstance($"{this.MarketSellSelectedAppid.Name} inventory loading");
+
+            var wp = WorkingProcessProvider.GetNewInstance($"{selectedValue.Name} inventory loading");
             wp?.StartWorkingProcess(
                 () =>
                     {
                         wp.SteamManager.LoadInventoryWorkingProcess(
-                            this.MarketSellSelectedAppid,
+                            selectedValue,
                             contextId,
                             this.MarketSellItems,
                             MarketSellInventoryProcessStrategy.MarketSellStrategy, 

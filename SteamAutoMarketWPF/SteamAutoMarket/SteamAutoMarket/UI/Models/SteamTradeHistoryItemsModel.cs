@@ -29,14 +29,14 @@
 
             this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description.Type);
 
-            this.Description = SteamUtils.GetClearDescription(this.ItemModel);
+            this.Description = new Lazy<string>(() => SteamUtils.GetClearDescription(this.ItemModel));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int Count { get; }
 
-        public string Description { get; }
+        public Lazy<string> Description { get; }
 
         public string Image
         {

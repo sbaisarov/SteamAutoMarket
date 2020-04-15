@@ -227,7 +227,7 @@
                 <TextBox Grid.Row="1"
                          Visibility="{Binding ElementName=ItemDescriptionTextBox, Path=Text, Converter={StaticResource IfNullInvisibleConverter}}"
                          Name="ItemDescriptionTextBox"
-                         MaxHeight="90"
+                         MaxHeight="110"
                          Background="Transparent"
                          Foreground="{DynamicResource ItemText}"
                          IsReadOnly="True"

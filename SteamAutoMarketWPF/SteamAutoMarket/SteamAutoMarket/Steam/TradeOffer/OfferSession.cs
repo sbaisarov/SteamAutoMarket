@@ -17,7 +17,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
 
     public class OfferSession
     {
-        internal const string SendUrl = "https://steamcommunity.com/tradeoffer/new/send";
+        private const string SendUrl = "https://steamcommunity.com/tradeoffer/new/send";
 
         private readonly CookieContainer _cookies;
 

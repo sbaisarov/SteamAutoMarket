@@ -1,4 +1,4 @@
-﻿namespace SteamAutoMarket.UI.Pages
+﻿namespace SteamAutoMarket.UI.Repository.Context
 {
     using System;
     using System.Collections.Generic;
@@ -10,12 +10,10 @@
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
-
     using OxyPlot;
-
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
-    using SteamAutoMarket.UI.Repository.Context;
+    using SteamAutoMarket.UI.Pages;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;
     using SteamAutoMarket.UI.Utils.Extension;

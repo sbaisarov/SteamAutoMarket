@@ -1,7 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.Pages
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
@@ -70,14 +69,6 @@
             try
             {
                 this.RefreshWorkingProcessesList();
-
-                if (((IEnumerable<string>)this.CurrentProcessComboBox.ItemsSource)?.Count() <= 1)
-                {
-                    ErrorNotify.CriticalMessageBox(
-                        "You can remove processes from list only in case when the list will have at least 1 more process!");
-
-                    return;
-                }
 
                 if (this.GetContext().WorkingAction?.IsCompleted == false)
                 {

@@ -1064,6 +1064,7 @@
                     }
                     catch (Exception e)
                     {
+                        wp.AppendLog($"Error on {item.ItemName} gems count load - {e.Message}");
                         Logger.Log.Error($"Error on {item.ItemName} gems count load", e);
                     }
                 }

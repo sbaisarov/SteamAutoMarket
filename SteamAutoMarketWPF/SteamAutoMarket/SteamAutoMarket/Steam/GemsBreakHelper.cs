@@ -59,7 +59,7 @@
 
         public static int GetGemsCount(FullRgItem item, CookieContainer steamCookies, WebProxy proxy = null)
         {
-            var ownerTag = item.Description.OwnerActions.FirstOrDefault(t => t.Name.Equals("Turn into Gems...", StringComparison.InvariantCultureIgnoreCase));
+            var ownerTag = item.Description.OwnerActions?.FirstOrDefault(t => t.Name.Equals("Turn into Gems...", StringComparison.InvariantCultureIgnoreCase));
 
             int gemsCount = 0;
 

@@ -41,7 +41,7 @@
 
             this.ListedDate = this.ItemModel?.Date;
 
-            this.Description = SteamUtils.GetClearDescription(this.ItemModel);
+            this.Description = new Lazy<string>(() => SteamUtils.GetClearDescription(this.ItemModel));
 
             this.Checked = new CheckedModel();
 
@@ -83,7 +83,7 @@
             }
         }
 
-        public string Description { get; }
+        public Lazy<string> Description { get; }
 
         public string Game { get; }
 
