@@ -440,30 +440,38 @@
                 }
             }
 
-            var itemsToSell = removedItems.Select(
-                    currentItem =>
+            var itemsToSell = removedItems
+                .Select(
+                    marketItem =>
                     {
                         var foundItemNode = allItems.FirstOrDefault(
-                            found => found.ItemModel?.Description.MarketHashName == currentItem.HashName);
+                            found => found.ItemModel?.Description?.MarketHashName == marketItem.HashName);
 
-                        if (foundItemNode != null)
+                        if (foundItemNode == null)
                         {
-                            var foundItem = foundItemNode.ItemsList.FirstOrDefault();
-                            foundItemNode.ItemsList.Remove(foundItem);
-                            return new { foundItem, currentItem.RelistPrice };
+                            wp.AppendLog($"{marketItem.HashName} ({marketItem.AppId}) item not found");
+                            return null;
                         }
 
-                        wp.AppendLog($"{currentItem.HashName} ({currentItem.AppId}) item not found");
-                        return null;
-                    }).Where(nullCheck => nullCheck != null)
-                .GroupBy(tuple => new { tuple.foundItem.Description.MarketHashName }).Select(
+                        var foundItem = foundItemNode.ItemsList.FirstOrDefault();
+                        if (foundItem == null)
+                        {
+                            wp.AppendLog($"{marketItem.HashName} ({marketItem.AppId}) item not found");
+                            return null;
+                        }
+
+                        foundItemNode.ItemsList.Remove(foundItem);
+                        return new { ItemToSell = foundItem, marketItem.RelistPrice };
+                    })
+                .Where(itemToRelist => itemToRelist != null)
+                .GroupBy(itemToRelist => new { itemToRelist.ItemToSell?.Description?.MarketHashName })
+                .Select(
                     group =>
                     {
                         var groupList = group.ToList();
-                        return new MarketSellProcessModel(
-                            groupList.Select(g => g.foundItem).ToArray(),
-                            groupList.First().RelistPrice);
-                    }).ToArray();
+                        return new MarketSellProcessModel(groupList.Select(g => g.ItemToSell).ToArray(), groupList.FirstOrDefault()?.RelistPrice);
+                    })
+                .ToArray();
 
             wp.AppendLog($"{itemsToSell.Sum(m => m.ItemsList.Count())}/{removedItems.Count} items found");
             wp.ProgressBarValue = 0;
@@ -724,7 +732,7 @@
                             if (marketSellModel.SellPrice.HasValue)
                             {
                                 this.SellOnMarket(item, marketSellModel.SellPrice.Value);
-                                totalSellPrice += marketSellModel.SellPrice.Value;
+                                totalSellPrice += marketSellModel.SellPrice.Value * int.Parse(item.Asset.Amount);
                             }
                             else
                             {
@@ -1085,14 +1093,16 @@
             {
                 GemsBreakModel[] itemsList = gemsBreakerItems
                     .Where(i => i.NumericUpDown.AmountToSell > 0 && (!i.GemsCount.HasValue || i.GemsCount > 0))
-                    .Select(i => new
-                        GemsBreakModel{
-                        ItemName = i.ItemName,
-                        GemsCount = i.GemsCount,
-                        ItemModel = i.ItemModel,
-                        Count = i.NumericUpDown.AmountToSell,
-                        ItemsList = i.ItemsList.Take(i.NumericUpDown.AmountToSell).ToArray()
-                    })
+                    .Select(
+                        i => new
+                            GemsBreakModel
+                            {
+                                ItemName = i.ItemName,
+                                GemsCount = i.GemsCount,
+                                ItemModel = i.ItemModel,
+                                Count = i.NumericUpDown.AmountToSell,
+                                ItemsList = i.ItemsList.Take(i.NumericUpDown.AmountToSell).ToArray()
+                            })
                     .ToArray();
 
                 wp.ProgressBarMaximum = itemsList.Sum(i => i.Count);
@@ -1101,7 +1111,6 @@
 
                 foreach (var itemsGroup in itemsList)
                 {
-
                     if (wp.CancellationToken.IsCancellationRequested)
                     {
                         wp.AppendLog("Gems break process was force stopped");
@@ -1147,6 +1156,7 @@
                                 wp.AppendLog("Gems break process was force stopped");
                                 return;
                             }
+
                             wp.AppendLog($"{++currentIndexer}/{totalIndexer} - Breaking {itemsGroup.ItemName} ({++itemIndex}/{itemsGroup.Count}) for {itemsGroup.GemsCount} gems");
 
                             GemsBreakHelper.BreakOnGems(
