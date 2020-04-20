@@ -91,7 +91,12 @@
 
             set
             {
-                if (SettingsProvider.GetInstance().SelectedAppid == value) return;
+                var appid = SettingsProvider.GetInstance().SelectedAppid;
+                if (appid != null && appid.Equals(value))
+                {
+                    return;
+                }
+
                 SettingsProvider.GetInstance().SelectedAppid = value;
                 this.OnPropertyChanged();
             }

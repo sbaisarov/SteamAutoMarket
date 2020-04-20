@@ -378,7 +378,7 @@
 
                 <TextBox Grid.Column="2"
                          Name="TradeSteamIdTextBox"
-                         Text="{Binding ElementName=TradeSteamAccountComboBox, Path=SelectedItem.AccountId, Mode=OneWay}"
+                         Text="{Binding ElementName=TradeSteamAccountComboBox, Path=SelectedItem.(models:SettingsSteamAccount.AccountId), Mode=OneWay}"
                          Height="22"
                          Grid.Row="1"
                          Margin="0, 4" />

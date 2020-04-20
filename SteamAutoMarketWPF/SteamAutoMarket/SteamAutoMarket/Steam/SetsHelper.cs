@@ -16,7 +16,7 @@
         private static readonly Semaphore UpdateFileSemaphore = new Semaphore(1, 1);
         private static readonly string SetsDbFileName;
         private static readonly Dictionary<string, int> Sets;
-        private static int _updateFileCounter = 0;
+        private static int _updateFileCounter;
 
         static SetsHelper()
         {
@@ -78,7 +78,8 @@
 
         private static int ParseSetsCount(string gameAppid, string steamId, WebProxy proxy)
         {
-            var client = new RestClient($"https://steamcommunity.com/profiles/{steamId}/gamecards/{gameAppid}/");
+            var client = new RestClient($"https://steamcommunity.com/profiles/{steamId}/gamecards/{gameAppid}/") { Proxy = proxy };
+
             var request = new RestRequest(Method.GET);
             var response = client.Execute(request);
 

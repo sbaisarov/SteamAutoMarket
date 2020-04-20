@@ -103,7 +103,8 @@
                          Height="22"
                          Text="{Binding Path=NewWhiteListAccountName}" VerticalAlignment="Center" />
 
-                <TextBlock Text="Whitelist SteamID" Margin="0,0,10,0" Grid.Row="1" VerticalAlignment="Center" />
+                <TextBlock Text="Whitelist SteamID" Margin="0,0,10,0" Grid.Row="1" Grid.Column="0"
+                           VerticalAlignment="Center" />
 
                 <TextBox Grid.Row="1" Grid.Column="1"
                          Margin="4"

@@ -12,8 +12,8 @@ using System.Windows.Media;
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("9ccfaeee-7150-45a7-b39e-1e034f5ada4b")]
-[assembly: AssemblyVersion("1.7.1.3")]
-[assembly: AssemblyFileVersion("1.7.1.3")]
+[assembly: AssemblyVersion("1.7.1.4")]
+[assembly: AssemblyFileVersion("1.7.1.4")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en-US")]
 // required to support per-monitor DPI awareness in Windows 8.1+

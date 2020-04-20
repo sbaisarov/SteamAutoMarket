@@ -1,12 +1,11 @@
 ﻿namespace SteamAutoMarket.Steam.TradeOffer
 {
     using System;
-    using System.Diagnostics;
     using System.Net;
     using System.Web;
 
     using Newtonsoft.Json;
-
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.Steam.Auth;
     using SteamAutoMarket.Steam.TradeOffer.Enums;
     using SteamAutoMarket.Steam.TradeOffer.Models;
@@ -103,6 +102,7 @@
 
             var url = string.Format(BaseUrl, "GetTradeHistory", "v1", options);
             var response = SteamWeb.Request(url, "GET", data: null);
+
             try
             {
                 var result = JsonConvert.DeserializeObject<ApiResponse<TradeHistoryResponse>>(response);
@@ -110,7 +110,7 @@
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error on get trade history", ex);
+                Logger.Log.Error("Error on get trade history", ex);
             }
 
             return new TradeHistoryResponse();
@@ -128,7 +128,7 @@
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error on getting trade offers", ex);
+                Logger.Log.Error("Error on getting trade offers", ex);
             }
 
             return new OfferResponse();
@@ -167,7 +167,7 @@
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error on get rdade offers", ex);
+                Logger.Log.Error("Error on get trade offers", ex);
             }
 
             return new OffersResponse();
@@ -187,7 +187,7 @@
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error on getting trade offer summary", ex);
+                Logger.Log.Error("Error on getting trade offer summary", ex);
             }
 
             return new TradeOffersSummary();

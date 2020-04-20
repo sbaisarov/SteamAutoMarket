@@ -160,6 +160,7 @@ namespace SteamAutoMarket.Properties
 
                             Thread.Sleep(TimeSpan.FromHours(6));
                         }
+                        // ReSharper disable once FunctionNeverReturns
                     });
         }
     }

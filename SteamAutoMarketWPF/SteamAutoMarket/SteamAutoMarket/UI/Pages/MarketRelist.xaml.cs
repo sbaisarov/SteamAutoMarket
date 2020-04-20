@@ -41,8 +41,6 @@
 
         private Task priceLoadingTask;
 
-        private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
-
         private MarketRelistModel relistSelectedItem;
 
         private string totalListedItemsListedPrice = UiConstants.FractionalZeroString;

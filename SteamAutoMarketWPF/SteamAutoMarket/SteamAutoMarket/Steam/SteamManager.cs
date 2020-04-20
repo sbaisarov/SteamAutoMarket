@@ -529,7 +529,7 @@ namespace SteamAutoMarket.Steam
                                    { "Submit", "Register" }
                                };
 
-                response = SteamWeb.Request(
+                SteamWeb.Request(
                     "https://steamcommunity.com/dev/registerkey",
                     "POST",
                     data: data,
@@ -583,13 +583,14 @@ namespace SteamAutoMarket.Steam
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         private string GetDeviceId()
         {
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
                     "http://shamanovski.pythonanywhere.com/api/gdevid",
-                    $"{this.SteamClient.SteamID.ToString()},{LicenseKey},{HwId}");
+                    $"{this.SteamClient.SteamID},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }

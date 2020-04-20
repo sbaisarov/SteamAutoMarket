@@ -2,15 +2,13 @@
 {
     using System.Diagnostics;
     using System.Windows;
-    using System.Windows.Controls;
-
     using SteamAutoMarket.AutoUpdater;
     using SteamAutoMarket.UI.Utils;
 
     /// <summary>
     /// Interaction logic for Home.xaml
     /// </summary>
-    public partial class Home : UserControl
+    public partial class Home
     {
         public Home()
         {

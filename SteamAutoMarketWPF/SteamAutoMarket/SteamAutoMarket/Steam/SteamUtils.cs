@@ -6,7 +6,6 @@
     using System.Text;
     using System.Text.RegularExpressions;
     using SteamAutoMarket.Steam.Market.Models;
-    using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Repository.Context;
 
@@ -31,7 +30,7 @@
             descriptionTextBuilder.Append($"Name: {description.MarketHashName}{Environment.NewLine}");
             descriptionTextBuilder.Append($"Type: {description.Type}{Environment.NewLine}");
 
-            Description[] descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim())).ToArray();
+            var descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim())).ToArray();
 
             if (descriptions != null && descriptions.Any())
             {
@@ -39,7 +38,7 @@
                 descriptionTextBuilder.Append($"Description: {descriptionText}{Environment.NewLine}");
             }
 
-            Tag[] tags = description.Tags?.Where(t => !string.IsNullOrWhiteSpace(t.LocalizedTagName.Trim())).ToArray();
+            var tags = description.Tags?.Where(t => !string.IsNullOrWhiteSpace(t.LocalizedTagName.Trim())).ToArray();
             if (tags != null && tags.Any())
             {
                 var tagsText = string.Join(", ", tags.Select(t => t.LocalizedTagName.Trim()));
@@ -63,7 +62,7 @@
             descriptionBuilder.Append($"Name: {description.MarketHashName}{Environment.NewLine}");
             descriptionBuilder.Append($"Type: {description.Type}{Environment.NewLine}");
 
-            Description[] descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim()))
+            var descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim()))
                 .ToArray();
 
             if (descriptions != null && descriptions.Any())
@@ -173,7 +172,7 @@
             descriptionTextBuilder.Append($"Name: {description.MarketHashName}{Environment.NewLine}");
             descriptionTextBuilder.Append($"Type: {description.Type}{Environment.NewLine}");
 
-            Description[] descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim()))
+            var descriptions = description.Descriptions?.Where(d => !string.IsNullOrWhiteSpace(d.Value.Trim()))
                 .ToArray();
 
             if (descriptions != null && descriptions.Any())

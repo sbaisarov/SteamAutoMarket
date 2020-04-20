@@ -226,6 +226,7 @@
             {
                 this.SteamAccountList.Remove(account);
                 SettingsProvider.GetInstance().SteamAccounts.Remove(account);
+                // ReSharper disable once ExplicitCallerInfoArgument
                 SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
             }
         }

@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:settings="clr-namespace:SteamAutoMarket.UI.Pages.Settings"
              xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
-             xmlns:converter="clr-namespace:SteamAutoMarket.UI.Utils.Converter"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="500" d:DataContext="{d:DesignInstance settings:CacheSettings}">
     <Grid>

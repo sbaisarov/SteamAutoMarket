@@ -640,6 +640,7 @@
             account.SteamApi = this.ApiKey;
             account.TradeToken = this.TradeToken;
             account.Currency = this.Currency;
+            // ReSharper disable once ExplicitCallerInfoArgument
             SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
         }
 
@@ -1046,7 +1047,7 @@
         {
             try
             {
-                List<GemsBreakerSteamItems> itemsList = gemsBreakerItems.Where(i => !i.GemsCount.HasValue).ToList();
+                var itemsList = gemsBreakerItems.Where(i => !i.GemsCount.HasValue).ToList();
                 wp.ProgressBarMaximum = itemsList.Count;
                 foreach (var item in itemsList)
                 {
@@ -1090,7 +1091,7 @@
         {
             try
             {
-                GemsBreakModel[] itemsList = gemsBreakerItems
+                var itemsList = gemsBreakerItems
                     .Where(i => i.NumericUpDown.AmountToSell > 0 && (!i.GemsCount.HasValue || i.GemsCount > 0))
                     .Select(
                         i => new
@@ -1105,7 +1106,7 @@
                     .ToArray();
 
                 wp.ProgressBarMaximum = itemsList.Sum(i => i.Count);
-                var totalIndexer = wp.ProgressBarMaximum + 1;
+                var totalIndexer = wp.ProgressBarMaximum;
                 var currentIndexer = 0;
 
                 foreach (var itemsGroup in itemsList)

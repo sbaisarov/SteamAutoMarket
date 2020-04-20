@@ -43,7 +43,7 @@
 
         private IEnumerable<string> typeFilters;
 
-        private bool isTotalGemsCountRefreshPlanned = false;
+        private bool isTotalGemsCountRefreshPlanned;
 
         public GemsBreaker()
         {

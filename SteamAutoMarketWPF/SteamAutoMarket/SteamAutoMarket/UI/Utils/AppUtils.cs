@@ -10,7 +10,8 @@
     {
         public static void OpenTab(string tabPath)
         {
-            UiGlobalVariables.MainWindow.ContentSource = new Uri(tabPath, UriKind.Relative);
+            UiGlobalVariables.MainWindow?.Dispatcher
+                .Invoke(() => { UiGlobalVariables.MainWindow.ContentSource = new Uri(tabPath, UriKind.Relative); });
         }
 
         public static void Restart()

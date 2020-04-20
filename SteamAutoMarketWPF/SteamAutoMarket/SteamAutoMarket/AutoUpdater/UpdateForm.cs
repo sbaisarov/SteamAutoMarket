@@ -6,7 +6,6 @@
     using System.Globalization;
     using System.IO;
     using System.Windows.Forms;
-
     using Microsoft.Win32;
 
     internal partial class UpdateForm : Form
@@ -19,17 +18,18 @@
             this.buttonRemindLater.Visible = AutoUpdater.ShowRemindLaterButton;
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
             this.Text = string.Format(
-                resources.GetString("$this.Text", CultureInfo.CurrentCulture),
+                resources.GetString("$this.Text", CultureInfo.CurrentCulture) ?? string.Empty,
                 AutoUpdater.AppTitle,
                 AutoUpdater.CurrentVersion);
             this.labelUpdate.Text = string.Format(
-                resources.GetString("labelUpdate.Text", CultureInfo.CurrentCulture),
+                resources.GetString("labelUpdate.Text", CultureInfo.CurrentCulture) ?? string.Empty,
                 AutoUpdater.AppTitle);
             this.labelDescription.Text = string.Format(
-                resources.GetString("labelDescription.Text", CultureInfo.CurrentCulture),
+                resources.GetString("labelDescription.Text", CultureInfo.CurrentCulture) ?? string.Empty,
                 AutoUpdater.AppTitle,
                 AutoUpdater.CurrentVersion,
                 AutoUpdater.InstalledVersion);
+
             if (string.IsNullOrEmpty(AutoUpdater.ChangelogURL))
             {
                 this.HideReleaseNotes = true;
@@ -53,15 +53,9 @@
 
         public override sealed string Text
         {
-            get
-            {
-                return base.Text;
-            }
+            get { return base.Text; }
 
-            set
-            {
-                base.Text = value;
-            }
+            set { base.Text = value; }
         }
 
         private bool HideReleaseNotes { get; }
@@ -197,7 +191,7 @@
                     true))
                 {
                     registryKey?.SetValue(
-                        Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName),
+                        Path.GetFileName(Process.GetCurrentProcess().MainModule?.FileName),
                         ieValue,
                         RegistryValueKind.DWord);
                 }

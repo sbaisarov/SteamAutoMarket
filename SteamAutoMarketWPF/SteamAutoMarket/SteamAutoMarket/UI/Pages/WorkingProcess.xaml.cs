@@ -71,7 +71,7 @@
 
                 if (this.GetContext().WorkingAction?.IsCompleted == false)
                 {
-                    ErrorNotify.CriticalMessageBox("You can not remove this processes!");
+                    ErrorNotify.CriticalMessageBox("You can not remove active processes!");
                     return;
                 }
 

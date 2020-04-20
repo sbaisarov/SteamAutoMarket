@@ -1,8 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.Pages
 {
     using System.Windows;
-    using System.Windows.Controls;
-
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.SteamIntegration;
     using SteamAutoMarket.UI.Utils.Logger;
@@ -10,7 +8,7 @@
     /// <summary>
     /// Interaction logic for Home.xaml
     /// </summary>
-    public partial class MarketExtra : UserControl
+    public partial class MarketExtra
     {
         public MarketExtra()
         {

@@ -56,6 +56,7 @@
                 }
 
                 this.OnPropertyChanged();
+                // ReSharper disable once ExplicitCallerInfoArgument
                 this.OnPropertyChanged("StringValue");
             }
         }
