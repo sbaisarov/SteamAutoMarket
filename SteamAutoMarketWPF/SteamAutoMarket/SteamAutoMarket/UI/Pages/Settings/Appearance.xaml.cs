@@ -14,7 +14,6 @@ namespace SteamAutoMarket.UI.Pages.Settings
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
-    using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.Resources;
 
     /// <summary>

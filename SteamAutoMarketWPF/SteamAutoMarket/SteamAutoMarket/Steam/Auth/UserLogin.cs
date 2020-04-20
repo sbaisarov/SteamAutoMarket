@@ -55,7 +55,6 @@
         {
             var postData = new NameValueCollection();
             var cookies = this._cookies;
-            string response = null;
 
             if (cookies.Count == 0)
             {
@@ -80,8 +79,8 @@
 
             postData.Add("donotcache", (TimeAligner.GetSteamTime() * 1000).ToString());
             postData.Add("username", this.Username);
-            response = SteamWeb.MobileLoginRequest(
-                APIEndpoints.COMMUNITY_BASE + "/login/getrsakey",
+            string response = SteamWeb.MobileLoginRequest(
+                ApiEndpoints.CommunityBase + "/login/getrsakey",
                 "POST",
                 postData,
                 cookies,
@@ -98,7 +97,6 @@
 
             Thread.Sleep(350); // Sleep for a bit to give Steam a chance to catch up??
 
-            var secureRandom = new RNGCryptoServiceProvider();
             byte[] encryptedPasswordBytes;
             using (var rsaEncryptor = new RSACryptoServiceProvider())
             {
@@ -133,7 +131,7 @@
             postData.Add("oauth_scope", "read_profile write_profile read_client write_client");
 
             response = SteamWeb.MobileLoginRequest(
-                APIEndpoints.COMMUNITY_BASE + "/login/dologin",
+                ApiEndpoints.CommunityBase + "/login/dologin",
                 "POST",
                 postData,
                 cookies,
@@ -190,7 +188,7 @@
             session.SteamLogin = session.SteamID + "%7C%7C" + oAuthData.SteamLogin;
             session.SteamLoginSecure = session.SteamID + "%7C%7C" + oAuthData.SteamLoginSecure;
             session.WebCookie = oAuthData.Webcookie;
-            session.SessionID = readableCookies["sessionid"].Value;
+            session.SessionID = readableCookies["sessionid"]?.Value;
             this.Session = session;
             this.LoggedIn = true;
             return LoginResult.LoginOkay;

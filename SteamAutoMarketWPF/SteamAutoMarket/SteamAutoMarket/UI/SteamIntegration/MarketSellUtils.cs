@@ -1,7 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.SteamIntegration
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
@@ -12,14 +11,10 @@
     using SteamAutoMarket.Steam.Market;
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Models;
-    using SteamAutoMarket.Steam.TradeOffer;
-    using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Models;
-    using SteamAutoMarket.UI.Pages;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
-    using SteamAutoMarket.UI.Utils.Extension;
 
     [Obfuscation(Exclude = true)]
     public static class MarketSellUtils

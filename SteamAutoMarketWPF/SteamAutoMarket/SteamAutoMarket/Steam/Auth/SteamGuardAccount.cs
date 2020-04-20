@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Net;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Text.RegularExpressions;
 
     using Newtonsoft.Json;
@@ -15,11 +13,6 @@
     [Serializable]
     public class SteamGuardAccount
     {
-        private static readonly byte[] steamGuardCodeTranslations =
-            {
-                50, 51, 52, 53, 54, 55, 56, 57, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 86, 87, 88, 89
-            };
-
         [JsonProperty("account_name")]
         public string AccountName { get; set; }
 
@@ -167,7 +160,7 @@
 
         public string GenerateConfirmationURL(string tag = "conf")
         {
-            var endpoint = APIEndpoints.COMMUNITY_BASE + "/mobileconf/conf?";
+            var endpoint = ApiEndpoints.CommunityBase + "/mobileconf/conf?";
             var queryString = this.GenerateConfirmationQueryParams(tag);
             return endpoint + queryString;
         }
@@ -180,10 +173,10 @@
         {
             var postData = new NameValueCollection { { "access_token", this.Session.OAuthToken } };
 
-            string response = null;
+            string response;
             try
             {
-                response = SteamWeb.Request(APIEndpoints.MOBILEAUTH_GETWGTOKEN, "POST", postData, proxy: this.Proxy);
+                response = SteamWeb.Request(ApiEndpoints.MobileAuthGetWgToken, "POST", postData, proxy: this.Proxy);
             }
             catch (WebException)
             {
@@ -231,7 +224,7 @@
 
         private ConfirmationDetailsResponse GetConfirmationDetails(Confirmation conf)
         {
-            var url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/details/" + conf.ID + "?";
+            var url = ApiEndpoints.CommunityBase + "/mobileconf/details/" + conf.ID + "?";
             var queryString = this.GenerateConfirmationQueryParams("details");
             url += queryString;
 
@@ -239,7 +232,7 @@
             this.Session.AddCookies(cookies);
             var referer = this.GenerateConfirmationURL();
 
-            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null, proxy: this.Proxy);
+            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null, proxy: this.Proxy, referer: referer);
             if (string.IsNullOrEmpty(response)) return null;
 
             var confResponse = JsonConvert.DeserializeObject<ConfirmationDetailsResponse>(response);
@@ -248,7 +241,7 @@
 
         private bool SendConfirmationAjax(Confirmation conf, string op)
         {
-            var url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/ajaxop";
+            var url = ApiEndpoints.CommunityBase + "/mobileconf/ajaxop";
             var queryString = "?op=" + op + "&";
             queryString += this.GenerateConfirmationQueryParams(op);
             queryString += "&cid=" + conf.ID + "&ck=" + conf.Key;
@@ -267,7 +260,7 @@
 
         private bool SendMultiConfirmationAjax(Confirmation[] confs, string op)
         {
-            const string Url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/multiajaxop";
+            const string Url = ApiEndpoints.CommunityBase + "/mobileconf/multiajaxop";
 
             var query = "op=" + op + "&" + this.GenerateConfirmationQueryParams(op);
             foreach (var conf in confs)

@@ -7,7 +7,6 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Threading;
-
     using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Utils;
@@ -29,19 +28,19 @@
 
         public static void OpenTab()
         {
-            AppUtils.OpenTab("UI/Pages/WorkingProcess.xaml");
+            AppUtils.OpenTab("/UI/Pages/WorkingProcess.xaml");
         }
 
         public void ChangeDataContext(WorkingProcessDataContext wp)
         {
             Application.Current.Dispatcher.Invoke(
                 () =>
-                    {
-                        this.RefreshWorkingProcessesList();
-                        this.CurrentProcessComboBox.SelectedValue = wp.Title;
-                        this.DataContext = wp;
-                        this.Refresh();
-                    },
+                {
+                    this.RefreshWorkingProcessesList();
+                    this.CurrentProcessComboBox.SelectedValue = wp.Title;
+                    this.DataContext = wp;
+                    this.Refresh();
+                },
                 DispatcherPriority.Send);
         }
 
@@ -49,16 +48,16 @@
         {
             Application.Current.Dispatcher.Invoke(
                 () =>
-                    {
-                        var wp = this.GetContext();
-                        wp.WorkingProcessesList =
-                            new ObservableCollection<string>(WorkingProcessProvider.GetAllProcessesNames());
+                {
+                    var wp = this.GetContext();
+                    wp.WorkingProcessesList =
+                        new ObservableCollection<string>(WorkingProcessProvider.GetAllProcessesNames());
 
-                        if ((string)this.CurrentProcessComboBox.SelectedValue != wp.Title)
-                        {
-                            this.CurrentProcessComboBox.SelectedValue = wp.Title;
-                        }
-                    },
+                    if ((string)this.CurrentProcessComboBox.SelectedValue != wp.Title)
+                    {
+                        this.CurrentProcessComboBox.SelectedValue = wp.Title;
+                    }
+                },
                 DispatcherPriority.Send);
         }
 

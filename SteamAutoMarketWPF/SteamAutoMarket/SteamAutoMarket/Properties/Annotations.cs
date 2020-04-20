@@ -92,6 +92,7 @@ namespace SteamAutoMarket.Properties
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class WpfBinding : Attribute
     {
+        // ReSharper disable once UnusedMember.Local
         private void Binding()
         {
             Task.Run(

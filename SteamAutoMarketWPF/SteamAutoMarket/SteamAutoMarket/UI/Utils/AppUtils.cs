@@ -1,28 +1,16 @@
 ﻿namespace SteamAutoMarket.UI.Utils
 {
+    using System;
     using System.Diagnostics;
     using System.Reflection;
-    using System.Threading;
     using System.Windows;
-    using System.Windows.Input;
-    using System.Windows.Threading;
-
-    using FirstFloor.ModernUI.Windows.Navigation;
-
     using SteamAutoMarket.UI.Repository.Context;
 
     public static class AppUtils
     {
         public static void OpenTab(string tabPath)
         {
-            Application.Current.Dispatcher.Invoke(
-                () =>
-                    {
-                        var target = NavigationHelper.FindFrame("_top", UiGlobalVariables.MainWindow);
-                        NavigationCommands.GoToPage.Execute(tabPath, target);
-                        Thread.Sleep(500);
-                    },
-                DispatcherPriority.Send);
+            UiGlobalVariables.MainWindow.ContentSource = new Uri(tabPath, UriKind.Relative);
         }
 
         public static void Restart()

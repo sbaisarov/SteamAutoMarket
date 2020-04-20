@@ -14,7 +14,6 @@
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Models;
-    using SteamAutoMarket.UI.Repository;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;

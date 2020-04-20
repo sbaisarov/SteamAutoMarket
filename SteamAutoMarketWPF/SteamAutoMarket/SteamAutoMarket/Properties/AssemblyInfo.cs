@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
 
@@ -9,12 +10,12 @@ using System.Windows.Media;
 [assembly: AssemblyProduct("SteamAutoMarket")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("9ccfaeee-7150-45a7-b39e-1e034f5ada4b")]
-[assembly: AssemblyVersion("1.7.1.2")]
-[assembly: AssemblyFileVersion("1.7.1.2")]
-
+[assembly: AssemblyVersion("1.7.1.3")]
+[assembly: AssemblyFileVersion("1.7.1.3")]
+[assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("en-US")]
 // required to support per-monitor DPI awareness in Windows 8.1+
 // see also https://mui.codeplex.com/wikipage?title=Per-monitor%20DPI%20awareness
 [assembly: DisableDpiAwareness]

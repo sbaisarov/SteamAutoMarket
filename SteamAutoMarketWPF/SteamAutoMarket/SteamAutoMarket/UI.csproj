@@ -28,6 +28,9 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
+  <PropertyGroup>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -56,7 +59,6 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
@@ -498,159 +500,15 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.da.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.de.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.es.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.fr.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.it.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.ja-JP.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.ko.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.nl.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.pl.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.pt.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.resx">
       <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.ru.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.sk.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.sv.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.tr.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.zh-tw.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\DownloadUpdateDialog.zh.resx">
-      <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.da.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.de.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.es.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.fr.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.it.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.ja-JP.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.ko.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.nl.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.pl.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.pt.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AutoUpdater\RemindLaterForm.resx">
       <DependentUpon>RemindLaterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.ru.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.sk.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.sv.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.tr.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.zh-tw.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\RemindLaterForm.zh.resx">
-      <DependentUpon>RemindLaterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.da.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.de.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.es.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.fr.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.it.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.ja-JP.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.ko.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.nl.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.pl.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.pt.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AutoUpdater\UpdateForm.resx">
       <DependentUpon>UpdateForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.ru.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.sk.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.sv.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.tr.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.zh-tw.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoUpdater\UpdateForm.zh.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -257,7 +257,7 @@
             get => this.selectedAppid;
             set
             {
-                if (this.selectedAppid == value) return;
+                if (this.selectedAppid != null && this.selectedAppid.Equals(value)) return;
                 this.selectedAppid = value;
                 this.OnPropertyChanged();
             }

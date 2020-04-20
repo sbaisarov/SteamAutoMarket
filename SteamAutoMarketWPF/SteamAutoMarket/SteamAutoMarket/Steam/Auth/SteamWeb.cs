@@ -18,6 +18,8 @@
         /// <param name="method">GET or POST</param>
         /// <param name="data">Name-data pairs</param>
         /// <param name="cookies">current cookie container</param>
+        /// <param name="headers">Headers</param>
+        /// <param name="proxy">Proxy</param>
         /// <returns>response body</returns>
         public static string MobileLoginRequest(
             string url,
@@ -33,7 +35,7 @@
                 data,
                 cookies,
                 headers,
-                APIEndpoints.COMMUNITY_BASE
+                ApiEndpoints.CommunityBase
                 + "/mobilelogin?oauth_client_id=DE45CD61&oauth_scope=read_profile%20write_profile%20read_client%20write_client",
                 proxy);
         }
@@ -44,7 +46,7 @@
             NameValueCollection data = null,
             CookieContainer cookies = null,
             NameValueCollection headers = null,
-            string referer = APIEndpoints.COMMUNITY_BASE,
+            string referer = ApiEndpoints.CommunityBase,
             WebProxy proxy = null)
         {
             string query;
@@ -76,7 +78,7 @@
             string dataString = null,
             CookieContainer cookies = null,
             NameValueCollection headers = null,
-            string referer = APIEndpoints.COMMUNITY_BASE,
+            string referer = ApiEndpoints.CommunityBase,
             WebProxy proxy = null)
         {
             if (Logger.CurrentLogLevel == Level.Debug)
@@ -128,9 +130,16 @@
                         return null;
                     }
 
-                    using (var responseStream = new StreamReader(response.GetResponseStream()))
+                    var responseStream = response.GetResponseStream();
+                    if (responseStream == null)
                     {
-                        var responseData = responseStream.ReadToEnd();
+                        HandleFailedWebRequestResponse(response, url);
+                        return null;
+                    }
+
+                    using (var responseStreamReader = new StreamReader(responseStream))
+                    {
+                        var responseData = responseStreamReader.ReadToEnd();
 
                         if (Logger.CurrentLogLevel == Level.Debug)
                         {
@@ -154,7 +163,7 @@
             NameValueCollection data = null,
             CookieContainer cookies = null,
             NameValueCollection headers = null,
-            string referer = APIEndpoints.COMMUNITY_BASE,
+            string referer = ApiEndpoints.CommunityBase,
             WebProxy proxy = null)
         {
             string dataString;
@@ -209,7 +218,7 @@
             if (method == "POST")
             {
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-                request.ContentLength = dataString?.Length ?? 0;
+                request.ContentLength = (long)dataString?.Length;
 
                 var requestStream = new StreamWriter(request.GetRequestStream());
                 requestStream.Write(dataString);
@@ -223,10 +232,16 @@
                     HandleFailedWebRequestResponse(response, url);
                     return null;
                 }
-
-                using (var responseStream = new StreamReader(response.GetResponseStream()))
+                var responseStream = response.GetResponseStream();
+                if (responseStream == null)
                 {
-                    var responseData = responseStream.ReadToEnd();
+                    HandleFailedWebRequestResponse(response, url);
+                    return null;
+                }
+
+                using (var responseStreamReader = new StreamReader(responseStream))
+                {
+                    var responseData = responseStreamReader.ReadToEnd();
 
                     if (Logger.CurrentLogLevel == Level.Debug)
                     {
@@ -258,7 +273,7 @@
                 {
                     // Our OAuth token has expired. This is given both when we must refresh our session, or the entire OAuth Token cannot be refreshed anymore.
                     // Thus, we should only throw this exception when we're attempting to refresh our session.
-                    if (location == "steammobile://lostauth" && requestURL == APIEndpoints.MOBILEAUTH_GETWGTOKEN)
+                    if (location == "steammobile://lostauth" && requestURL == ApiEndpoints.MobileAuthGetWgToken)
                     {
                         throw new SteamGuardAccount.WGTokenExpiredException();
                     }

@@ -22,10 +22,10 @@
             Process.Start("https://docs.google.com/document/d/17qZ8Y8wY60dLMxYyNM2kZE13JrU_iNRBHK8oOgVZgvM");
 
         private void LicenseStatus_OnClick(object sender, RoutedEventArgs e) =>
-            AppUtils.OpenTab("UI/Pages/Settings/License.xaml");
+            AppUtils.OpenTab("/UI/Pages/Settings/License.xaml");
 
         private void SteamLogin_OnClick(object sender, RoutedEventArgs e) =>
-            AppUtils.OpenTab("UI/Pages/SteamAccountLogin.xaml");
+            AppUtils.OpenTab("/UI/Pages/SteamAccountLogin.xaml");
 
         private void Telegram_OnClick(object sender, RoutedEventArgs e) => Process.Start("https://t.me/steamsolutions");
 

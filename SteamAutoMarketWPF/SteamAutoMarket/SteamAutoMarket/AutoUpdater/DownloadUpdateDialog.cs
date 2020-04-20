@@ -244,16 +244,17 @@
                                            UseShellExecute = true,
                                            Arguments = AutoUpdater.InstallerArgs.Replace(
                                                "%path%",
-                                               Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName))
+                                               Path.GetDirectoryName(Process.GetCurrentProcess().MainModule?.FileName))
                                        };
 
             var extension = Path.GetExtension(tempPath);
             if (extension.Equals(".zip", StringComparison.OrdinalIgnoreCase))
             {
+                // ReSharper disable once AssignNullToNotNullAttribute
                 var installerPath = Path.Combine(Path.GetDirectoryName(tempPath), "ZipExtractor.exe");
                 File.WriteAllBytes(installerPath, Resources.ZipExtractor);
                 var arguments = new StringBuilder(
-                    $"\"{tempPath}\" \"{Process.GetCurrentProcess().MainModule.FileName}\"");
+                    $"\"{tempPath}\" \"{Process.GetCurrentProcess().MainModule?.FileName}\"");
                 var args = Environment.GetCommandLineArgs();
                 for (var i = 1; i < args.Length; i++)
                 {

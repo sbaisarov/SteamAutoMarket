@@ -11,11 +11,8 @@ namespace SteamAutoMarket.AutoUpdater
     using System.Threading;
     using System.Windows.Forms;
     using System.Xml;
-
     using Microsoft.Win32;
-
     using SteamAutoMarket.Properties;
-
     using Timer = System.Timers.Timer;
 
     /// <summary>
@@ -238,30 +235,27 @@ namespace SteamAutoMarket.AutoUpdater
 
             var context = SynchronizationContext.Current;
 
-            _remindLaterTimer = new System.Timers.Timer
-                                    {
-                                        Interval = (int)timeSpan.TotalMilliseconds, AutoReset = false
-                                    };
+            _remindLaterTimer = new Timer { Interval = (int)timeSpan.TotalMilliseconds, AutoReset = false };
 
             _remindLaterTimer.Elapsed += delegate
+            {
+                _remindLaterTimer = null;
+                if (context != null)
                 {
-                    _remindLaterTimer = null;
-                    if (context != null)
+                    try
                     {
-                        try
-                        {
-                            context.Send(state => Start(), null);
-                        }
-                        catch (InvalidAsynchronousStateException)
-                        {
-                            Start();
-                        }
+                        context.Send(state => Start(), null);
                     }
-                    else
+                    catch (InvalidAsynchronousStateException)
                     {
                         Start();
                     }
-                };
+                }
+                else
+                {
+                    Start();
+                }
+            };
 
             _remindLaterTimer.Start();
         }
@@ -277,16 +271,16 @@ namespace SteamAutoMarket.AutoUpdater
             if (string.IsNullOrEmpty(AppTitle))
             {
                 var titleAttribute = (AssemblyTitleAttribute)GetAttribute(mainAssembly, typeof(AssemblyTitleAttribute));
-                AppTitle = titleAttribute != null ? titleAttribute.Title : mainAssembly.GetName().Name;
+                AppTitle = titleAttribute != null ? titleAttribute.Title : mainAssembly?.GetName().Name;
             }
 
             var appCompany = companyAttribute != null ? companyAttribute.Company : string.Empty;
 
             RegistryLocation = !string.IsNullOrEmpty(appCompany)
-                                   ? $@"Software\{appCompany}\{AppTitle}\AutoUpdater"
-                                   : $@"Software\{AppTitle}\AutoUpdater";
+                ? $@"Software\{appCompany}\{AppTitle}\AutoUpdater"
+                : $@"Software\{AppTitle}\AutoUpdater";
 
-            InstalledVersion = mainAssembly.GetName().Version;
+            InstalledVersion = mainAssembly?.GetName().Version;
 
             var webRequest = WebRequest.Create(AppCastURL);
             webRequest.CachePolicy = new HttpRequestCachePolicy(HttpRequestCacheLevel.NoCacheNoStore);
@@ -436,6 +430,7 @@ namespace SteamAutoMarket.AutoUpdater
                             var skipVersion = new Version(applicationVersion.ToString());
                             if (skipValue.Equals("1") && CurrentVersion <= skipVersion)
                                 return;
+
                             if (CurrentVersion > skipVersion)
                             {
                                 using (var updateKeyWrite = Registry.CurrentUser.CreateSubKey(RegistryLocation))
@@ -565,7 +560,7 @@ namespace SteamAutoMarket.AutoUpdater
                     string processPath;
                     try
                     {
-                        processPath = process.MainModule.FileName;
+                        processPath = process.MainModule?.FileName;
                     }
                     catch (Win32Exception)
                     {
@@ -574,7 +569,7 @@ namespace SteamAutoMarket.AutoUpdater
                         continue;
                     }
 
-                    if (process.Id != currentProcess.Id && currentProcess.MainModule.FileName == processPath
+                    if (process.Id != currentProcess.Id && currentProcess.MainModule?.FileName == processPath
                     )
                     {
                         // get all instances of assembly except current
@@ -596,7 +591,6 @@ namespace SteamAutoMarket.AutoUpdater
                     MethodInvoker methodInvoker = Application.Exit;
                     methodInvoker.Invoke();
                 }
-
 #if NETWPF
                 else if (System.Windows.Application.Current != null)
                 {

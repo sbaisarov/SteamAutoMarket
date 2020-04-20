@@ -1,18 +1,17 @@
 ﻿namespace SteamAutoMarket
 {
     using System;
+    using System.ComponentModel;
     using System.IO;
     using System.Net;
     using System.Net.Security;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Security.Cryptography.X509Certificates;
     using System.Windows.Forms;
-
     using FirstFloor.ModernUI.Presentation;
-    using FirstFloor.ModernUI.Windows.Controls;
-
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Localization;
-    using SteamAutoMarket.Localization.Languages;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.Utils.Logger;
@@ -21,10 +20,14 @@
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : INotifyPropertyChanged
     {
+        private string windowTitle;
+
         public MainWindow()
         {
+            WindowTitle = $"SteamAutoMarket {Assembly.GetExecutingAssembly().GetName().Version}";
+
             if (!File.Exists("license.txt"))
             {
                 MessageBox.Show(
@@ -52,6 +55,16 @@
             this.LocalizeMenuLinks();
 
             this.UpdateProgram();
+        }
+
+        public string WindowTitle
+        {
+            get => windowTitle;
+            set
+            {
+                windowTitle = value;
+                OnPropertyChanged();
+            }
         }
 
         public void LocalizeMenuLinks()
@@ -109,6 +122,13 @@
             AutoUpdater.AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.AutoUpdater.AppCastURL = "http://shamanovski.pythonanywhere.com/release.xml";
             AutoUpdater.AutoUpdater.Start();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -12,7 +12,6 @@
     using System.Windows.Controls;
     using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Models;
-    using SteamAutoMarket.UI.Repository;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.SteamIntegration;
     using SteamAutoMarket.UI.SteamIntegration.InventoryLoad;
