@@ -1,6 +1,7 @@
 ﻿namespace SteamAutoMarket.UI.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -24,11 +25,11 @@
 
         private string image;
 
-        public MarketRelistModel(MyListingsSalesItem[] itemsToSaleList)
+        public MarketRelistModel(IReadOnlyCollection<MyListingsSalesItem> itemsToSaleList)
         {
             this.ItemsList = new ObservableCollection<MyListingsSalesItem>(itemsToSaleList);
 
-            this.Count = itemsToSaleList.Length;
+            this.Count = itemsToSaleList.Count;
 
             this.ItemModel = itemsToSaleList.FirstOrDefault();
 
@@ -40,7 +41,7 @@
 
             this.ListedDate = this.ItemModel?.Date;
 
-            this.Description = SteamUtils.GetClearDescription(this.ItemModel);
+            this.Description = new Lazy<string>(() => SteamUtils.GetClearDescription(this.ItemModel));
 
             this.Checked = new CheckedModel();
 
@@ -82,7 +83,7 @@
             }
         }
 
-        public string Description { get; }
+        public Lazy<string> Description { get; }
 
         public string Game { get; }
 
@@ -155,7 +156,7 @@
                             }
                             else
                             {
-                                this.RelistPrice.Value = this.AveragePrice - 0.01;
+                                this.RelistPrice.Value = this.AveragePrice;
                             }
                         }
 
@@ -189,7 +190,7 @@
                         {
                             this.RelistPrice.Value = null;
                         }
-                        else if (this.AveragePrice - 0.1 == this.ListedPrice)
+                        else if (this.AveragePrice == this.ListedPrice)
                         {
                             this.RelistPrice.Value = this.AveragePrice;
                         }

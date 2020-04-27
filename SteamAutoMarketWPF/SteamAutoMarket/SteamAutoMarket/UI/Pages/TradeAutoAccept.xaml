@@ -17,14 +17,14 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="0"
+        <GroupBox Grid.Column="1"
                   Grid.Row="0"
-                  Margin="10, 10, 10, 10"
+                  Margin="10"
                   Header="SteamID Whitelist"
                   Padding="0"
                   Template="{StaticResource GroupBoxTemplate}">
@@ -76,7 +76,7 @@
             </xcdg:DataGridControl>
         </GroupBox>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="0" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -103,7 +103,8 @@
                          Height="22"
                          Text="{Binding Path=NewWhiteListAccountName}" VerticalAlignment="Center" />
 
-                <TextBlock Text="Whitelist SteamID" Margin="0,0,10,0" Grid.Row="1" VerticalAlignment="Center" />
+                <TextBlock Text="Whitelist SteamID" Margin="0,0,10,0" Grid.Row="1" Grid.Column="0"
+                           VerticalAlignment="Center" />
 
                 <TextBox Grid.Row="1" Grid.Column="1"
                          Margin="4"
@@ -115,8 +116,8 @@
                         Height="40"
                         Content="Add new account"
                         Margin="0, 15, 0, 10"
-                        Padding="0" Click="AddNewSteamWhitelistAccountClick" /> 
-                
+                        Padding="0" Click="AddNewSteamWhitelistAccountClick" />
+
                 <Button Grid.Column="0" Grid.Row="3"
                         Grid.ColumnSpan="2"
                         Height="40"
@@ -130,11 +131,12 @@
                           IsChecked="{Binding Path=AcceptIncomingEmpty}" Margin="0,10,0,0" />
                 <CheckBox Content="Accept ALL offers from whitelist users"
                           IsChecked="{Binding Path=AcceptIncomingWhitelist}" Margin="0,10,0,0" />
-                <CheckBox Content="Decline ALL outgoing offers" IsChecked="{Binding Path=DeclineSent}" Margin="0,10,0,0" />
+                <CheckBox Content="Decline ALL outgoing offers" IsChecked="{Binding Path=DeclineSent}"
+                          Margin="0,10,0,0" />
                 <CheckBox Content="Decline ALL incoming offers"
                           IsChecked="{Binding Path=DeclineAllIncoming}" Margin="0,10,0,0" />
                 <CheckBox Content="Decline incoming NOT EMPTY from my side offers"
-                          IsChecked="{Binding Path=DeclineIncomingNotEmpty}" Margin="0,10,0,0" />                
+                          IsChecked="{Binding Path=DeclineIncomingNotEmpty}" Margin="0,10,0,0" />
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Delay (seconds)"
                                VerticalAlignment="Center"
@@ -170,7 +172,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Column="2">
+        <Grid Column="2" HorizontalAlignment="Left">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />

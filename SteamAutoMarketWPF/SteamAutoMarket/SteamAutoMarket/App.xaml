@@ -9,6 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxyPlot="clr-namespace:OxyPlot;assembly=OxyPlot"
              xmlns:converter="clr-namespace:SteamAutoMarket.UI.Utils.Converter"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
              xmlns:resources="clr-namespace:SteamAutoMarket.UI.Utils.Resources"
              mc:Ignorable="d">
     <Application.Resources>
@@ -16,7 +17,9 @@
 
             <converter:SolidColorBrushToColorConverter x:Key="SolidColorBrushToColorConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
+            <localization:StringsProvider x:Key="Localization" />
+            <Binding x:Key="Locals" Source="{StaticResource Localization}" Path="Strings" Mode="OneWay" />
+            <converter:TextFieldDashConverter x:Key="TextFieldDashConverter" />
             <Style x:Key="PlotStyle" TargetType="oxy:Plot">
                 <Setter Property="Background" Value="{DynamicResource DataGridBackground}" />
                 <Setter Property="TextColor"
@@ -150,7 +153,7 @@
                 <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
                 <ResourceDictionary Source="UI/Pages/Styles/NumericUpDown.xaml" />
                 <ResourceDictionary Source="UI/Pages/Styles/DataGrid.xaml" />
-                <ResourceDictionary Source="UI/Resources/Svg.xaml"/>
+                <ResourceDictionary Source="UI/Resources/Svg.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

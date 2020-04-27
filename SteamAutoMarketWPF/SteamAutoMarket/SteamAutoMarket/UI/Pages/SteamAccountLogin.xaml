@@ -36,7 +36,7 @@
                               SelectedItem="{Binding SelectSteamAccount}">
 
             <xcdg:DataGridControl.View>
-                <xcdg:TableView ShowRowSelectorPane="False" />
+                <xcdg:TableView ShowRowSelectorPane="False"/>
             </xcdg:DataGridControl.View>
 
             <xcdg:DataGridControl.Columns>
@@ -85,7 +85,7 @@
                                 Text="{Binding Converter={StaticResource PasswordConverter}}"
                                 Foreground="{DynamicResource ItemText}"
                                 Background="{DynamicResource DataGridBackground}"
-                                ToolTip="{Binding}"/>
+                                ToolTip="{Binding}" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
@@ -181,7 +181,8 @@
 
             <TextBlock Text="Login" Grid.Row="0" Style="{StaticResource TextBlockStyle}" />
             <TextBlock Text="Password" Grid.Row="1" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
-            <TextBlock ToolTip="Proxy format is - {IP}:{PORT} or {IP}:{PORT}:{LOGIN}:{PASSWORD}" Text="Proxy" Grid.Row="2" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
+            <TextBlock ToolTip="Proxy format is - {IP}:{PORT} or {IP}:{PORT}:{LOGIN}:{PASSWORD}" Text="Proxy"
+                       Grid.Row="2" Grid.Column="0" Style="{StaticResource TextBlockStyle}" />
 
             <TextBox Grid.Row="0" Grid.Column="1"
                      Margin="4"
@@ -191,8 +192,8 @@
             <TextBox Grid.Row="1" Grid.Column="1"
                      Margin="4"
                      Height="22"
-                     Text="{Binding Path=NewAccountPassword}" />            
-            
+                     Text="{Binding Path=NewAccountPassword}" />
+
             <TextBox Grid.Row="2" Grid.Column="1"
                      Margin="4"
                      ToolTip="Proxy format is - {IP}:{PORT} or {IP}:{PORT}:{LOGIN}:{PASSWORD}"
@@ -257,7 +258,8 @@
                     Margin="0, 0, 0, 15"
                     Padding="0" Click="RemoveSelectedAccountButtonClick" />
 
-            <CheckBox Grid.Row="7" Grid.ColumnSpan="2" Grid.Column="0" Content="Force session refresh" IsChecked="{Binding Path=ForceSessionRefresh}"/>
+            <CheckBox Grid.Row="7" Grid.ColumnSpan="2" Grid.Column="0" Content="Force session refresh"
+                      IsChecked="{Binding Path=ForceSessionRefresh}" />
 
             <Button Name="LoginSteamAccountButton"
                     IsEnabled="{Binding LoginButtonEnabled}"

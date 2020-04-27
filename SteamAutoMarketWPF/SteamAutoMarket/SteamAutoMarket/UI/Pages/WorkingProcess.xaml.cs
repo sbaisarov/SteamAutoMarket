@@ -1,13 +1,12 @@
 ﻿namespace SteamAutoMarket.UI.Pages
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
-
+    using System.Windows.Threading;
     using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Utils;
@@ -27,32 +26,39 @@
             this.RefreshWorkingProcessesList();
         }
 
-        public static void OpenTab() => AppUtils.OpenTab("UI/Pages/WorkingProcess.xaml");
+        public static void OpenTab()
+        {
+            AppUtils.OpenTab("/UI/Pages/WorkingProcess.xaml");
+        }
 
         public void ChangeDataContext(WorkingProcessDataContext wp)
         {
             Application.Current.Dispatcher.Invoke(
                 () =>
-                    {
-                        this.RefreshWorkingProcessesList();
-                        this.CurrentProcessComboBox.SelectedValue = wp.Title;
-                    });
+                {
+                    this.RefreshWorkingProcessesList();
+                    this.CurrentProcessComboBox.SelectedValue = wp.Title;
+                    this.DataContext = wp;
+                    this.Refresh();
+                },
+                DispatcherPriority.Send);
         }
 
         public void RefreshWorkingProcessesList()
         {
             Application.Current.Dispatcher.Invoke(
                 () =>
-                    {
-                        var wp = this.GetContext();
-                        wp.WorkingProcessesList =
-                            new ObservableCollection<string>(WorkingProcessProvider.GetAllProcessesNames());
+                {
+                    var wp = this.GetContext();
+                    wp.WorkingProcessesList =
+                        new ObservableCollection<string>(WorkingProcessProvider.GetAllProcessesNames());
 
-                        if ((string)this.CurrentProcessComboBox.SelectedValue != wp.Title)
-                        {
-                            this.CurrentProcessComboBox.SelectedValue = wp.Title;
-                        }
-                    });
+                    if ((string)this.CurrentProcessComboBox.SelectedValue != wp.Title)
+                    {
+                        this.CurrentProcessComboBox.SelectedValue = wp.Title;
+                    }
+                },
+                DispatcherPriority.Send);
         }
 
         private WorkingProcessDataContext GetContext() => (WorkingProcessDataContext)this.DataContext;
@@ -63,17 +69,9 @@
             {
                 this.RefreshWorkingProcessesList();
 
-                if (((IEnumerable<string>)this.CurrentProcessComboBox.ItemsSource)?.Count() <= 1)
-                {
-                    ErrorNotify.CriticalMessageBox(
-                        "You can remove processes from list only in case when the list will have at least 1 more process!");
-
-                    return;
-                }
-
                 if (this.GetContext().WorkingAction?.IsCompleted == false)
                 {
-                    ErrorNotify.CriticalMessageBox("You can not remove this processes!");
+                    ErrorNotify.CriticalMessageBox("You can not remove active processes!");
                     return;
                 }
 
@@ -90,7 +88,7 @@
             {
                 ErrorNotify.CriticalMessageBox(
                     "Some error occured. Try to switch over working processes and retry removing");
-                Logger.Log.Error($"Error on working process remove", ex);
+                Logger.Log.Error("Error on working process remove", ex);
                 this.RefreshWorkingProcessesList();
             }
         }

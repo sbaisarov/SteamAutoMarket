@@ -1,17 +1,17 @@
 ﻿namespace SteamAutoMarket.Steam.Auth
 {
-    public static class APIEndpoints
+    public static class ApiEndpoints
     {
-        public const string COMMUNITY_BASE = "https://steamcommunity.com";
+        public const string CommunityBase = "https://steamcommunity.com";
 
-        public const string MOBILEAUTH_BASE = STEAMAPI_BASE + "/IMobileAuthService/%s/v0001";
+        public const string MobileAuthBase = SteamApiBase + "/IMobileAuthService/%s/v0001";
 
-        public const string STEAMAPI_BASE = "https://api.steampowered.com";
+        public const string SteamApiBase = "https://api.steampowered.com";
 
-        public const string TWO_FACTOR_BASE = STEAMAPI_BASE + "/ITwoFactorService/%s/v0001";
+        public const string TwoFactorBase = SteamApiBase + "/ITwoFactorService/%s/v0001";
 
-        public static string MOBILEAUTH_GETWGTOKEN = MOBILEAUTH_BASE.Replace("%s", "GetWGToken");
+        public static readonly string MobileAuthGetWgToken = MobileAuthBase.Replace("%s", "GetWGToken");
 
-        public static string TWO_FACTOR_TIME_QUERY = TWO_FACTOR_BASE.Replace("%s", "QueryTime");
+        public static readonly string TwoFactorTimeQuery = TwoFactorBase.Replace("%s", "QueryTime");
     }
 }

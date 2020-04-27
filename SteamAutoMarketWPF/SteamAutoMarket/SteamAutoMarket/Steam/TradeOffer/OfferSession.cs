@@ -17,7 +17,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
 
     public class OfferSession
     {
-        internal const string SendUrl = "https://steamcommunity.com/tradeoffer/new/send";
+        private const string SendUrl = "https://steamcommunity.com/tradeoffer/new/send";
 
         private readonly CookieContainer _cookies;
 
@@ -41,6 +41,7 @@ namespace SteamAutoMarket.Steam.TradeOffer
                                               };
         }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public string Error { get; private set; }
 
         internal JsonSerializerSettings JsonSerializerSettings { get; set; }
@@ -113,47 +114,6 @@ namespace SteamAutoMarket.Steam.TradeOffer
             return false;
         }
 
-        /// <summary>
-        ///     Creates a new counter offer
-        /// </summary>
-        /// <param name="message">A message to include with the trade offer</param>
-        /// <param name="otherSteamId">The SteamID of the partner we are trading with</param>
-        /// <param name="status">The list of items we and they are going to trade</param>
-        /// <param name="newTradeOfferId">The trade offer Id that will be created if successful</param>
-        /// <param name="tradeOfferId">The trade offer Id of the offer being countered</param>
-        /// <returns></returns>
-        //public bool CounterOffer(
-        //    string message,
-        //    SteamID otherSteamId,
-        //    TradeStatus status,
-        //    out string newTradeOfferId,
-        //    string tradeOfferId)
-        //{
-        //    if (string.IsNullOrEmpty(tradeOfferId))
-        //        throw new ArgumentNullException("tradeOfferId", @"Trade Offer Id must be set for counter offers.");
-
-        //    var data = new NameValueCollection
-        //                   {
-        //                       { "sessionid", this._sessionId },
-        //                       { "serverid", "1" },
-        //                       { "partner", otherSteamId.ConvertToUInt64().ToString() },
-        //                       { "tradeoffermessage", message },
-        //                       { "json_tradeoffer", JsonConvert.SerializeObject(status, this.JsonSerializerSettings) },
-        //                       { "tradeofferid_countered", tradeOfferId },
-        //                       { "trade_offer_create_params", "{}" }
-        //                   };
-
-        //    var referer = string.Format("https://steamcommunity.com/tradeoffer/{0}/", tradeOfferId);
-
-        //    if (!this.Request(SendUrl, data, referer))
-        //    {
-        //        var state = this._webApi.GetOfferState(tradeOfferId);
-        //        if (state == TradeOfferState.TradeOfferStateCountered) return true;
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
         public bool Decline(string tradeOfferId)
         {
             var data = new NameValueCollection
@@ -195,7 +155,6 @@ namespace SteamAutoMarket.Steam.TradeOffer
         /// <param name="message">A message to include with the trade offer</param>
         /// <param name="otherSteamId">The SteamID of the partner we are trading with</param>
         /// <param name="status">The list of items we and they are going to trade</param>
-        /// <param name="newTradeOfferId">The trade offer Id that will be created if successful</param>
         /// <returns>True if successfully returns a newTradeOfferId, else false</returns>
         public string SendTradeOffer(string message, SteamID otherSteamId, TradeStatus status)
         {
@@ -223,18 +182,18 @@ namespace SteamAutoMarket.Steam.TradeOffer
         /// <param name="otherSteamId">The SteamID of the partner we are trading with</param>
         /// <param name="status">The list of items we and they are going to trade</param>
         /// <param name="token">The token of the partner we are trading with</param>
-        /// <param name="newTradeOfferId">The trade offer Id that will be created if successful</param>
         /// <returns>True if successfully returns a newTradeOfferId, else false</returns>
         public string SendTradeOfferWithToken(string message, SteamID otherSteamId, TradeStatus status, string token)
         {
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentNullException(nameof(token), @"Partner trade offer token is missing");
+
             var offerToken = new OfferAccessToken { TradeOfferAccessToken = token };
 
             var data = new NameValueCollection
                            {
                                { "sessionid", this._sessionId },
-                               { "captcha", "" },
+                               { "captcha", string.Empty },
                                { "serverid", "1" },
                                { "partner", otherSteamId.ConvertToUInt64().ToString() },
                                { "tradeoffermessage", message },
@@ -245,19 +204,29 @@ namespace SteamAutoMarket.Steam.TradeOffer
                                }
                            };
 
-            var referer = string.Format(
-                "https://steamcommunity.com/tradeoffer/new/?partner={0}&token={1}",
-                otherSteamId.AccountID,
-                token);
+            var referer = $"https://steamcommunity.com/tradeoffer/new/?partner={otherSteamId.AccountID}&token={token}";
 
             return this.Request(SendUrl, data, referer);
         }
 
         internal string Request(string url, NameValueCollection data, string referer)
         {
-            var resp = SteamWeb.Request(url, "POST", data, this._cookies, referer: referer, proxy: this._proxy);
+            string resp;
 
-            if (string.IsNullOrEmpty(resp)) throw new SteamException("Steam response is empty. No extra info provided");
+            try
+            {
+                resp = SteamWeb.RequestWithException(
+                    url,
+                    "POST",
+                    data,
+                    this._cookies,
+                    referer: referer,
+                    proxy: this._proxy);
+            }
+            catch (Exception e)
+            {
+                throw new SteamException($"Steam error: {e.Message}", e);
+            }
 
             try
             {

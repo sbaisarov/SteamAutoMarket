@@ -35,13 +35,19 @@
 
         private CancellationTokenSource cancellationTokenSource;
 
+        private bool isTotalPriceRefreshPlanned;
+
         private MarketSellStrategy marketSellStrategy;
 
         private Task priceLoadingTask;
 
-        private ObservableCollection<MarketRelistModel> relistItemsList = new ObservableCollection<MarketRelistModel>();
-
         private MarketRelistModel relistSelectedItem;
+
+        private string totalListedItemsListedPrice = UiConstants.FractionalZeroString;
+
+        private string totalListedItemsRelistPrice = UiConstants.FractionalZeroString;
+
+        private int totalSelectedItemsCount;
 
         public MarketRelist()
         {
@@ -54,6 +60,9 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public ObservableCollection<MarketRelistModel> MarketListedItemsList { get; } =
+            new ObservableCollection<MarketRelistModel>();
+
         public MarketSellStrategy MarketSellStrategy
         {
             get => this.marketSellStrategy;
@@ -65,9 +74,6 @@
             }
         }
 
-        public ObservableCollection<MarketRelistModel> RelistItemsList { get; } =
-            new ObservableCollection<MarketRelistModel>();
-
         public MarketRelistModel RelistSelectedItem
         {
             get => this.relistSelectedItem;
@@ -78,9 +84,44 @@
             }
         }
 
+        public string TotalListedItemsListedPrice
+        {
+            get => this.totalListedItemsListedPrice;
+            set
+            {
+                this.totalListedItemsListedPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string TotalListedItemsRelistPrice
+        {
+            get => this.totalListedItemsRelistPrice;
+            set
+            {
+                this.totalListedItemsRelistPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int TotalSelectedItemsCount
+        {
+            get => this.totalSelectedItemsCount;
+            set
+            {
+                this.totalSelectedItemsCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private void CheckBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
 
         private void FocusTextBox(int rowIndex)
         {
@@ -135,14 +176,14 @@
                 return;
             }
 
-            this.RelistItemsList.Clear();
+            this.MarketListedItemsList.Clear();
             var wp = WorkingProcessProvider.GetNewInstance("Market listings loading");
-            wp?.StartWorkingProcess(() => { wp.SteamManager.LoadMarketListings(this.RelistItemsList, wp); });
+            wp?.StartWorkingProcess(() => { wp.SteamManager.LoadMarketListings(this.MarketListedItemsList, wp); });
         }
 
         private void MarkAllItemsButtonClick(object sender, RoutedEventArgs e)
         {
-            foreach (var item in this.RelistItemsList)
+            foreach (var item in this.MarketListedItemsList)
             {
                 item.Checked.CheckBoxChecked = true;
             }
@@ -151,7 +192,7 @@
         private void MarkOverpricesButton_OnClick(object sender, RoutedEventArgs e)
         {
             var strategy = this.MarketSellStrategy;
-            foreach (var item in this.RelistItemsList)
+            foreach (var item in this.MarketListedItemsList)
             {
                 switch (strategy.SaleType)
                 {
@@ -256,7 +297,7 @@
 
         private void ReformatAllSellPrices()
         {
-            var items = this.RelistItemsList.ToArray();
+            var items = this.MarketListedItemsList.ToArray();
             foreach (var item in items)
             {
                 item.ProcessSellPrice(this.MarketSellStrategy);
@@ -284,7 +325,7 @@
                         {
                             Logger.Log.Debug("Starting market sell price loading task");
 
-                            var items = this.RelistItemsList.ToList();
+                            var items = this.MarketListedItemsList.ToList();
                             items.ForEach(i => i.CleanItemPrices());
 
                             var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
@@ -352,6 +393,38 @@
                 this.cancellationTokenSource.Token);
         }
 
+        private void RefreshSelectedItemsInfo()
+        {
+            if (this.isTotalPriceRefreshPlanned) return;
+
+            Task.Run(
+                () =>
+                    {
+                        this.isTotalPriceRefreshPlanned = true;
+                        Thread.Sleep(300);
+                        this.TotalSelectedItemsCount =
+                            this.MarketListedItemsList?.Where(m => m.Checked.CheckBoxChecked).Sum(m => m.Count) ?? 0;
+
+                        this.TotalListedItemsListedPrice = this.MarketListedItemsList
+                            ?.Where(m => m.Checked.CheckBoxChecked).Sum(
+                                m =>
+                                    {
+                                        if (m.ListedPrice.HasValue == false) return 0;
+                                        return m.Count * m.ListedPrice.Value;
+                                    }).ToString(UiConstants.DoubleToStringFormat);
+
+                        this.TotalListedItemsRelistPrice = this.MarketListedItemsList
+                            ?.Where(m => m.Checked.CheckBoxChecked).Sum(
+                                m =>
+                                    {
+                                        if (m.RelistPrice.Value.HasValue == false) return 0;
+                                        return m.Count * m.RelistPrice.Value.Value;
+                                    }).ToString(UiConstants.DoubleToStringFormat);
+
+                        this.isTotalPriceRefreshPlanned = false;
+                    });
+        }
+
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
         {
             var task = Task.Run(
@@ -394,6 +467,16 @@
             this.priceLoadSubTasks.Add(task);
         }
 
+        private void RelistTextBox_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
+        private void RelistTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
         private void StartRelistButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (UiGlobalVariables.SteamManager == null)
@@ -407,7 +490,7 @@
             Task.Run(
                 () =>
                     {
-                        var itemsToSell = this.RelistItemsList.ToArray().Where(i => i.Checked.CheckBoxChecked)
+                        var itemsToSell = this.MarketListedItemsList.ToArray().Where(i => i.Checked.CheckBoxChecked)
                             .ToArray();
 
                         if (itemsToSell.Sum(i => i.Count) == 0)
@@ -425,6 +508,44 @@
                                         this.priceLoadSubTasks.ToArray(),
                                         itemsToSell,
                                         this.MarketSellStrategy,
+                                        this.MarketListedItemsList,
+                                        wp);
+                                });
+                    });
+        }
+
+        private void StartRemoveButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (UiGlobalVariables.SteamManager == null)
+            {
+                ErrorNotify.CriticalMessageBox("You should login first!");
+                return;
+            }
+
+            Task.Run(() => this.StopPriceLoadingTasks());
+
+            Task.Run(
+                () =>
+                    {
+                        var itemsToSell = this.MarketListedItemsList.ToArray().Where(i => i.Checked.CheckBoxChecked)
+                            .ToArray();
+
+                        if (itemsToSell.Sum(i => i.Count) == 0)
+                        {
+                            ErrorNotify.CriticalMessageBox(
+                                "No items was marked to relist! Mark items before starting relist process");
+                            return;
+                        }
+
+                        var wp = WorkingProcessProvider.GetNewInstance("Market listings remove");
+                        wp?.StartWorkingProcess(
+                            () =>
+                                {
+                                    wp.SteamManager.RemoveListings(
+                                        this.priceLoadSubTasks.ToArray(),
+                                        itemsToSell,
+                                        this.MarketSellStrategy,
+                                        this.MarketListedItemsList,
                                         wp);
                                 });
                     });
@@ -452,7 +573,7 @@
 
         private void UnmarkAllItemsButtonClick(object sender, RoutedEventArgs e)
         {
-            foreach (var item in this.RelistItemsList)
+            foreach (var item in this.MarketListedItemsList)
             {
                 item.Checked.CheckBoxChecked = false;
             }

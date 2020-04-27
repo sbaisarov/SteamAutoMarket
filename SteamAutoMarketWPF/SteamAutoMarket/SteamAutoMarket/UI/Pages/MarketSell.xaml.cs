@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading;
@@ -14,41 +13,41 @@
     using System.Windows.Input;
 
     using SteamAutoMarket.Core;
-    using SteamAutoMarket.Core.Waiter;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Models.Enums;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;
+    using SteamAutoMarket.UI.SteamIntegration.InventoryLoad;
     using SteamAutoMarket.UI.Utils;
+    using SteamAutoMarket.UI.Utils.ItemFilters;
     using SteamAutoMarket.UI.Utils.Logger;
 
     using Xceed.Wpf.DataGrid;
-    using Xceed.Wpf.Toolkit;
 
     /// <summary>
     /// Interaction logic for Account.xaml
     /// </summary>
     public partial class MarketSell : INotifyPropertyChanged
     {
-        private readonly List<Task> priceLoadSubTasks = new List<Task>();
-
-        private CancellationTokenSource cancellationTokenSource;
+        private bool isTotalPriceRefreshPlanned;
 
         private MarketSellModel marketSellSelectedItem;
 
         private MarketSellStrategy marketSellStrategy;
 
-        private Task priceLoadingTask;
+        private IEnumerable<string> rarityFilters;
 
-        private List<string> rarityFilters;
+        private IEnumerable<string> realGameFilters;
 
-        private List<string> realGameFilters;
+        private string totalListedItemsPrice = UiConstants.FractionalZeroString;
 
-        private List<string> tradabilityFilters;
+        private int totalSelectedItemsCount;
 
-        private List<string> typeFilters;
+        private IEnumerable<string> tradabilityFilters;
+
+        private IEnumerable<string> typeFilters;
 
         public MarketSell()
         {
@@ -92,7 +91,12 @@
 
             set
             {
-                if (SettingsProvider.GetInstance().SelectedAppid == value) return;
+                var appid = SettingsProvider.GetInstance().SelectedAppid;
+                if (appid != null && appid.Equals(value))
+                {
+                    return;
+                }
+
                 SettingsProvider.GetInstance().SelectedAppid = value;
                 this.OnPropertyChanged();
             }
@@ -121,7 +125,7 @@
             }
         }
 
-        public List<string> RarityFilters
+        public IEnumerable<string> RarityFilters
         {
             get => this.rarityFilters;
             set
@@ -133,7 +137,7 @@
 
         public string RaritySelectedFilter { get; set; }
 
-        public List<string> RealGameFilters
+        public IEnumerable<string> RealGameFilters
         {
             get => this.realGameFilters;
             set
@@ -145,7 +149,27 @@
 
         public string RealGameSelectedFilter { get; set; }
 
-        public List<string> TradabilityFilters
+        public string TotalListedItemsPrice
+        {
+            get => this.totalListedItemsPrice;
+            set
+            {
+                this.totalListedItemsPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int TotalSelectedItemsCount
+        {
+            get => this.totalSelectedItemsCount;
+            set
+            {
+                this.totalSelectedItemsCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<string> TradabilityFilters
         {
             get => this.tradabilityFilters;
             set
@@ -157,7 +181,7 @@
 
         public string TradabilitySelectedFilter { get; set; }
 
-        public List<string> TypeFilters
+        public IEnumerable<string> TypeFilters
         {
             get => this.typeFilters;
             set
@@ -173,46 +197,18 @@
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e)
-        {
-            foreach (var t in this.MarketItemsToSellGrid.SelectedItems)
-            {
-                ((MarketSellModel)t).NumericUpDown.AmountToSell++;
-            }
-        }
+        private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e) =>
+            FunctionalButtonsActions.AddPlusOneAmountToAllItems(
+                this.MarketItemsToSellGrid.SelectedItems.OfType<MarketSellModel>());
 
         private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
         {
             var resultView = this.MarketSellItems.ToList();
 
-            if (this.RealGameSelectedFilter != null)
-            {
-                resultView = resultView.Where(g => g.Game == this.RealGameSelectedFilter).ToList();
-            }
-
-            if (this.TypeSelectedFilter != null)
-            {
-                resultView = resultView.Where(g => g.Type == this.TypeSelectedFilter).ToList();
-            }
-
-            if (this.RaritySelectedFilter != null)
-            {
-                resultView = resultView.Where(
-                    model => model.ItemModel?.Description?.Tags
-                                 ?.FirstOrDefault(tag => tag.LocalizedCategoryName == "Rarity")?.LocalizedTagName
-                             == this.RaritySelectedFilter).ToList();
-            }
-
-            if (this.TradabilitySelectedFilter != null)
-            {
-                bool? value = null;
-                if (this.TradabilitySelectedFilter == "Tradable") value = true;
-                else if (this.TradabilitySelectedFilter == "Not tradable") value = false;
-                if (value != null)
-                {
-                    resultView = resultView.Where(g => g.ItemModel.Description.IsTradable == value).ToList();
-                }
-            }
+            SteamItemsFilters<MarketSellModel>.RealGameFilter.Process(this.RealGameSelectedFilter, resultView);
+            SteamItemsFilters<MarketSellModel>.TypeFilter.Process(this.TypeSelectedFilter, resultView);
+            SteamItemsFilters<MarketSellModel>.RarityFilter.Process(this.RaritySelectedFilter, resultView);
+            SteamItemsFilters<MarketSellModel>.TradabilityFilter.Process(this.TradabilitySelectedFilter, resultView);
 
             this.MarketItemsToSellGrid.ItemsSource = resultView;
         }
@@ -223,38 +219,24 @@
             switch (comboBox?.Name)
             {
                 case "RealGameComboBox":
-                    this.RealGameFilters = this.MarketSellItems.Select(model => model.Game).ToHashSet().OrderBy(q => q)
-                        .ToList();
+                    this.RealGameFilters = FiltersFormatter<MarketSellModel>.GetRealGameFilters(this.MarketSellItems);
                     break;
-                case "TypeComboBox":
-                    this.TypeFilters = this.MarketSellItems.Select(model => model.Type).ToHashSet().OrderBy(q => q)
-                        .ToList();
-                    break;
-                case "RarityComboBox":
-                    this.RarityFilters = this.MarketSellItems.Select(
-                            model => model.ItemModel?.Description?.Tags
-                                ?.FirstOrDefault(tag => tag.LocalizedCategoryName == "Rarity")?.LocalizedTagName)
-                        .ToHashSet().OrderBy(q => q).ToList();
-                    break;
-                case "TradabilityComboBox":
-                    this.TradabilityFilters = this.MarketSellItems.Select(
-                            model => (model.ItemModel?.Description.IsTradable == true) ? "Tradable" : "Not tradable")
-                        .ToHashSet().ToList();
-                    break;
-            }
-        }
 
-        private void FocusNumericUpDown(int rowIndex)
-        {
-            var cell =
-                (this.MarketItemsToSellGrid.GetContainerFromItem(this.MarketItemsToSellGrid.Items[rowIndex]) as DataRow)
-                ?.Cells[6];
-            if (cell != null)
-            {
-                var integerUpDown = UiElementsUtils.FindVisualChild<IntegerUpDown>(cell);
-                var textBoxView = UiElementsUtils.FindVisualChild<WatermarkTextBox>(integerUpDown);
-                textBoxView?.Focus();
-                textBoxView?.SelectAll();
+                case "TypeComboBox":
+                    this.TypeFilters = FiltersFormatter<MarketSellModel>.GetTypeFilters(this.MarketSellItems);
+                    break;
+
+                case "RarityComboBox":
+                    this.RarityFilters = FiltersFormatter<MarketSellModel>.GetRarityFilters(this.MarketSellItems);
+                    break;
+
+                case "TradabilityComboBox":
+                    this.TradabilityFilters = FiltersFormatter<MarketSellModel>.GetTradabilityFilters(this.MarketSellItems);
+                    break;
+
+                default:
+                    Logger.Log.Error($"{comboBox?.Name} is unknown filter type");
+                    return;
             }
         }
 
@@ -311,6 +293,14 @@
                 return;
             }
 
+            var selectedValue = ((SteamAppId)this.MarketAppidCombobox.SelectedValue);
+
+            if (selectedValue == null)
+            {
+                ErrorNotify.CriticalMessageBox($"Inventory type is not selected");
+                return;
+            }
+
             if (int.TryParse(this.MarketContextIdTextBox.Text, out var contextId) == false)
             {
                 ErrorNotify.CriticalMessageBox($"Incorrect context id provided - {contextId}");
@@ -318,15 +308,18 @@
             }
 
             this.MarketSellItems.Clear();
+            this.ResetFilters();
 
-            var wp = WorkingProcessProvider.GetNewInstance($"{this.MarketSellSelectedAppid.Name} inventory loading");
+
+            var wp = WorkingProcessProvider.GetNewInstance($"{selectedValue.Name} inventory loading");
             wp?.StartWorkingProcess(
                 () =>
                     {
-                        wp.SteamManager.LoadItemsToSaleWorkingProcess(
-                            this.MarketSellSelectedAppid,
+                        wp.SteamManager.LoadInventoryWorkingProcess(
+                            selectedValue,
                             contextId,
                             this.MarketSellItems,
+                            MarketSellInventoryProcessStrategy.MarketSellStrategy, 
                             wp);
                     });
         }
@@ -355,22 +348,8 @@
             }
         }
 
-        private void OpenOnSteamMarket_OnClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (this.MarketSellSelectedItem == null) return;
-
-                Process.Start(
-                    "https://"
-                    + $"steamcommunity.com/market/listings/{this.MarketSellSelectedItem.ItemModel.Asset.Appid}/"
-                    + this.MarketSellSelectedItem.ItemModel.Description.MarketHashName);
-            }
-            catch (Exception ex)
-            {
-                ErrorNotify.CriticalMessageBox(ex);
-            }
-        }
+        private void OpenOnSteamMarket_OnClick(object sender, RoutedEventArgs e) =>
+            FunctionalButtonsActions.OpenOnSteamMarket(this.MarketSellSelectedItem);
 
         private void PriceTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -404,133 +383,40 @@
             this.MarketSellStrategy = this.GetMarketSellStrategy();
         }
 
-        private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (this.priceLoadingTask?.IsCompleted == false)
-            {
-                ErrorNotify.InfoMessageBox("Price loading is already in progress");
-                return;
-            }
+        private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e) =>
+            GridPriceLoaderUtils.StartPriceLoading(
+                (IEnumerable<MarketSellModel>)this.MarketItemsToSellGrid.ItemsSource,
+                this.MarketSellStrategy);
 
-            this.cancellationTokenSource = new CancellationTokenSource();
-            this.priceLoadingTask = Task.Run(
+        private void RefreshSelectedItemsInfo()
+        {
+            if (this.isTotalPriceRefreshPlanned) return;
+
+            Task.Run(
                 () =>
                     {
-                        try
-                        {
-                            Logger.Log.Debug("Starting market sell price loading task");
+                        this.isTotalPriceRefreshPlanned = true;
+                        Thread.Sleep(300);
+                        this.TotalSelectedItemsCount =
+                            this.MarketSellItems?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
 
-                            var items = ((IEnumerable<MarketSellModel>)this.MarketItemsToSellGrid.ItemsSource).ToList();
-                            items.ForEach(i => i.CleanItemPrices());
+                        this.TotalListedItemsPrice = this.MarketSellItems?.Sum(
+                                                         m =>
+                                                             {
+                                                                 if (m.NumericUpDown.AmountToSell == 0
+                                                                     || m.SellPrice.Value.HasValue == false) return 0;
+                                                                 return m.NumericUpDown.AmountToSell
+                                                                        * m.SellPrice.Value;
+                                                             })?.ToString(UiConstants.DoubleToStringFormat) ?? UiConstants.FractionalZeroString;
 
-                            var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
-                            var sellStrategy = this.MarketSellStrategy;
-
-                            var priceLoadingSemaphore = new Semaphore(
-                                SettingsProvider.GetInstance().PriceLoadingThreads,
-                                SettingsProvider.GetInstance().PriceLoadingThreads);
-
-                            foreach (var item in items)
-                            {
-                                priceLoadingSemaphore.WaitOne();
-                                Logger.Log.Debug($"Processing price for {item.ItemName}");
-
-                                var task = Task.Run(
-                                    () =>
-                                        {
-                                            var price = UiGlobalVariables.SteamManager.GetCurrentPriceWithCache(
-                                                item.ItemModel.Asset.Appid,
-                                                item.ItemModel.Description.MarketHashName);
-
-                                            Logger.Log.Debug($"Current price for {item.ItemName} is - {price}");
-                                            item.CurrentPrice = price;
-                                            item.ProcessSellPrice(sellStrategy);
-                                            priceLoadingSemaphore.Release();
-                                        },
-                                    this.cancellationTokenSource.Token);
-                                this.priceLoadSubTasks.Add(task);
-
-                                priceLoadingSemaphore.WaitOne();
-                                task = Task.Run(
-                                    () =>
-                                        {
-                                            var price = UiGlobalVariables.SteamManager.GetAveragePriceWithCache(
-                                                item.ItemModel.Asset.Appid,
-                                                item.ItemModel.Description.MarketHashName,
-                                                averagePriceDays);
-
-                                            Logger.Log.Debug(
-                                                $"Average price for {averagePriceDays} days for {item.ItemName} is - {price}");
-
-                                            item.AveragePrice = price;
-                                            item.ProcessSellPrice(sellStrategy);
-                                            priceLoadingSemaphore.Release();
-                                        },
-                                    this.cancellationTokenSource.Token);
-                                this.priceLoadSubTasks.Add(task);
-
-                                if (this.cancellationTokenSource.Token.IsCancellationRequested)
-                                {
-                                    this.WaitForPriceLoadingSubTasksEnd();
-                                    Logger.Log.Debug("Market sell price loading was force stopped");
-                                    return;
-                                }
-                            }
-
-                            this.WaitForPriceLoadingSubTasksEnd();
-                            Logger.Log.Debug("Market sell price loading task is finished");
-                        }
-                        catch (Exception ex)
-                        {
-                            ErrorNotify.CriticalMessageBox("Error on items price update", ex);
-                        }
-                    },
-                this.cancellationTokenSource.Token);
-        }
-
-        private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var task = Task.Run(
-                () =>
-                    {
-                        var item = this.MarketSellSelectedItem;
-                        if (item == null) return;
-                        try
-                        {
-                            item.CleanItemPrices();
-
-                            var averagePriceDays = SettingsProvider.GetInstance().AveragePriceDays;
-
-                            var price = UiGlobalVariables.SteamManager.GetCurrentPrice(
-                                item.ItemModel.Asset.Appid,
-                                item.ItemModel.Description.MarketHashName);
-
-                            Logger.Log.Debug($"Current price for {item.ItemName} is - {price}");
-
-                            item.CurrentPrice = price;
-
-                            price = UiGlobalVariables.SteamManager.GetAveragePrice(
-                                item.ItemModel.Asset.Appid,
-                                item.ItemModel.Description.MarketHashName,
-                                averagePriceDays);
-
-                            Logger.Log.Debug(
-                                $"Average price for {averagePriceDays} days for {item.ItemName} is - {price}");
-
-                            item.AveragePrice = price;
-
-                            item.ProcessSellPrice(this.MarketSellStrategy);
-                        }
-                        catch (Exception ex)
-                        {
-                            ErrorNotify.CriticalMessageBox("Error on item price update", ex);
-                        }
+                        this.isTotalPriceRefreshPlanned = false;
                     });
-
-            this.priceLoadSubTasks.Add(task);
         }
 
-        private void ResetFiltersClick(object sender, RoutedEventArgs e)
+        private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e) =>
+            GridPriceLoaderUtils.RefreshSingleModelPrice(this.MarketSellSelectedItem, this.MarketSellStrategy);
+
+        private void ResetFilters()
         {
             this.RealGameSelectedFilter = null;
             this.RealGameComboBox.Text = null;
@@ -547,6 +433,21 @@
             this.MarketItemsToSellGrid.ItemsSource = this.MarketSellItems;
         }
 
+        private void ResetFiltersClick(object sender, RoutedEventArgs e)
+        {
+            this.ResetFilters();
+        }
+
+        private void SelectedItemsUpDownBase_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
+        private void SellingPriceTextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
         private void StartMarketSellButtonClick_OnClick(object sender, RoutedEventArgs e)
         {
             if (UiGlobalVariables.SteamManager == null)
@@ -555,7 +456,7 @@
                 return;
             }
 
-            Task.Run(() => this.StopPriceLoadingTasks());
+            GridPriceLoaderUtils.InvokePriceLoadingStop();
 
             Task.Run(
                 () =>
@@ -575,44 +476,16 @@
                             () =>
                                 {
                                     wp.SteamManager.SellOnMarketWorkingProcess(
-                                        this.priceLoadSubTasks.ToArray(),
+                                        GridPriceLoaderUtils.PriceLoadSubTasks.ToArray(),
                                         itemsToSell,
                                         this.MarketSellStrategy,
+                                        this.MarketSellItems,
                                         wp);
                                 });
                     });
         }
 
-        private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Task.Run(() => this.StopPriceLoadingTasks());
-        }
-
-        private void StopPriceLoadingTasks()
-        {
-            if (this.cancellationTokenSource == null || this.priceLoadingTask == null
-                                                     || this.priceLoadingTask.IsCompleted)
-            {
-                Logger.Log.Debug("No active market sell price loading task found. Nothing to stop");
-                return;
-            }
-
-            Logger.Log.Debug("Active market sell price loading task found. Trying to force stop it");
-            this.cancellationTokenSource.Cancel();
-            new Waiter().Until(() => this.priceLoadingTask.IsCompleted);
-            this.cancellationTokenSource = new CancellationTokenSource();
-        }
-
-        private void WaitForPriceLoadingSubTasksEnd()
-        {
-            if (this.priceLoadSubTasks.Any(t => t.IsCompleted == false))
-            {
-                Logger.Log.Debug(
-                    $"Waiting for {this.priceLoadSubTasks.Count(t => t.IsCompleted == false)} price loading threads to finish");
-                new Waiter().Until(() => this.priceLoadSubTasks.All(t => t.IsCompleted));
-            }
-
-            this.priceLoadSubTasks.Clear();
-        }
+        private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>
+            GridPriceLoaderUtils.InvokePriceLoadingStop();
     }
 }

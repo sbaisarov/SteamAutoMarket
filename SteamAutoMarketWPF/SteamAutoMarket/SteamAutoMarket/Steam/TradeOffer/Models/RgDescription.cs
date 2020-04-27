@@ -15,7 +15,7 @@
         public string BackgroundColor { get; set; }
 
         [JsonProperty("classid")]
-        public string Classid { get; set; }
+        public string ClassId { get; set; }
 
         [JsonProperty("descriptions")]
         public List<Description> Descriptions { get; set; }
@@ -61,5 +61,8 @@
 
         [JsonProperty("type")]
         public string Type { get; set; }
+
+        [JsonProperty("owner_actions")]
+        public List<OwnerAction> OwnerActions { get; set; }
     }
 }

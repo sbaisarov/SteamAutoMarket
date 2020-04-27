@@ -42,7 +42,7 @@
                     <CheckBox Content="Mafile info"
                               Name="MafileInfoCheckbox"
                               Height="20"
-                              Margin="1" />                    
+                              Margin="1" />
                     <CheckBox Content="Profile info"
                               Name="ProfileInfoCheckbox"
                               Height="20"
@@ -58,14 +58,14 @@
                     Content="Export to file"
                     Margin="0, 5, 0, 10"
                     Padding="0"
-                    Click="ExportToFileButton_OnClick"/>            
-            
+                    Click="ExportToFileButton_OnClick" />
+
             <Button Grid.Row="3"
                     Content="Refresh information"
                     Margin="0, 5, 0, 10"
-                    Padding="0" 
+                    Padding="0"
                     Click="RefreshAccountInfo_OnClick"
-                    IsEnabled="{Binding RefreshButtonIsEnabled}"/>
+                    IsEnabled="{Binding RefreshButtonIsEnabled}" />
         </Grid>
 
         <xcdg:DataGridControl x:Name="MarketItemsToSellGrid"

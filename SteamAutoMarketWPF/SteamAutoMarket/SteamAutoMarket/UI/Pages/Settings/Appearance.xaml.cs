@@ -1,5 +1,8 @@
-﻿namespace SteamAutoMarket.UI.Pages.Settings
+﻿using SteamAutoMarket.UI.Utils.Logger;
+
+namespace SteamAutoMarket.UI.Pages.Settings
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -7,6 +10,7 @@
 
     using FirstFloor.ModernUI.Presentation;
 
+    using SteamAutoMarket.Localization;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
@@ -26,6 +30,8 @@
             this.InitializeComponent();
 
             this.DataContext = this;
+
+            UiGlobalVariables.Appearance = this;
 
             this.AccentColors = UiDefaultValues.Colors.Values.ToArray();
 
@@ -74,6 +80,30 @@
                 SettingsProvider.GetInstance().WorkingChartMaxCount = value;
                 this.OnPropertyChanged();
             }
+        }
+
+        public IEnumerable<string> Languages { get; } = UiDefaultValues.Languages;
+
+        public string SelectedLanguage
+        {
+            get => SettingsProvider.GetInstance().Local;
+            set
+            {
+                if(SettingsProvider.GetInstance().Local == value) return;
+                SettingsProvider.GetInstance().Local = value;
+                this.OnPropertyChanged();
+                SettingsUpdated.ForceSettingsUpdate();
+                this.LocalizeApplication();
+                ErrorNotify.InfoMessageBox(StringsProvider.Strings.MessageBox_RestartToApplyChanges);
+            }
+        }
+
+        private void LocalizeApplication()
+        {
+            StringsProvider.UpdateLocal();
+
+            UiGlobalVariables.MainWindow?.LocalizeMenuLinks();
+            UiGlobalVariables.SettingsPage?.LocalizeMenuLinks();
         }
 
         [NotifyPropertyChangedInvocator]

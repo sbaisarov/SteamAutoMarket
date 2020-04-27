@@ -1,7 +1,6 @@
 ﻿namespace SteamAutoMarket.UI.SteamIntegration
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
@@ -12,13 +11,10 @@
     using SteamAutoMarket.Steam.Market;
     using SteamAutoMarket.Steam.Market.Enums;
     using SteamAutoMarket.Steam.Market.Models;
-    using SteamAutoMarket.Steam.TradeOffer;
-    using SteamAutoMarket.Steam.TradeOffer.Models;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Models;
-    using SteamAutoMarket.UI.Pages;
+    using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
-    using SteamAutoMarket.UI.Utils.Extension;
 
     [Obfuscation(Exclude = true)]
     public static class MarketSellUtils
@@ -184,7 +180,8 @@
             string exMessage,
             WorkingProcessDataContext wp)
         {
-            if (exMessage.Contains("There was a problem listing your item. Refresh the page and try again."))
+            if (exMessage.Contains("There was a problem listing your item. Refresh the page and try again.")
+                || exMessage.Contains("A connection that was expected to be kept alive was closed by the server"))
             {
                 RetryMarketSell(3, 0, marketSellModel, item, uiSteamManager, wp);
             }
@@ -210,38 +207,6 @@
             {
                 wp.AppendLog($"Unknown error on market sell - {exMessage}");
                 Logger.Log.Error($"Unknown error on market sell - {exMessage}");
-            }
-        }
-
-        public static void ProcessMarketSellInventoryPage(
-            ObservableCollection<MarketSellModel> marketSellItems,
-            InventoryRootModel inventoryPage,
-            Inventory inventory)
-        {
-            var items = inventory.ProcessInventoryPage(inventoryPage).ToArray();
-
-            items = inventory.FilterInventory(items, true, false);
-
-            var groupedItems = items.GroupBy(i => i.Description.MarketHashName).ToArray();
-
-            foreach (var group in groupedItems)
-            {
-                var existModel = marketSellItems.FirstOrDefault(
-                    item => item.ItemModel.Description.MarketHashName == group.Key);
-
-                if (existModel != null)
-                {
-                    foreach (var groupItem in group.ToArray())
-                    {
-                        existModel.ItemsList.Add(groupItem);
-                    }
-
-                    existModel.RefreshCount();
-                }
-                else
-                {
-                    marketSellItems.AddDispatch(new MarketSellModel(group.ToArray()));
-                }
             }
         }
 

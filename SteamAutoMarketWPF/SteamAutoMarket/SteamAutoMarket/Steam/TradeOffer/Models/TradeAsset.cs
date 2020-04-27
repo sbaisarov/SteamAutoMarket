@@ -44,8 +44,9 @@
 
         public bool Equals(TradeAsset other)
         {
-            return this.AppId == other.AppId && this.ContextId == other.ContextId && this.CurrencyId == other.CurrencyId
-                   && this.AssetId == other.AssetId && this.Amount == other.Amount;
+
+            return other != null && (this.AppId == other.AppId && this.ContextId == other.ContextId && this.CurrencyId == other.CurrencyId
+                                     && this.AssetId == other.AssetId && this.Amount == other.Amount);
         }
 
         public bool ShouldSerializeAssetId()

@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:oxy="http://oxyplot.org/wpf"
-             xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
+             xmlns:context="clr-namespace:SteamAutoMarket.UI.Repository.Context"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance pages:WorkingProcessDataContext}"
+             d:DataContext="{d:DesignInstance context:WorkingProcessDataContext}"
              d:DesignHeight="600" d:DesignWidth="900">
 
     <Grid>
@@ -48,13 +48,11 @@
                     <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
                 </Grid.RowDefinitions>
 
-                <DockPanel Grid.Row="0" Grid.Column="0">
-                    <ComboBox FontSize="20" Margin="0,0,0,10"
-                              Name="CurrentProcessComboBox"
-                              HorizontalAlignment="Stretch"
-                              ItemsSource="{Binding Path=WorkingProcessesList}"
-                              SelectionChanged="WorkingProcessOnSelectionChanged" />
-                </DockPanel>
+                <ComboBox Grid.Row="0" Grid.Column="0" FontSize="20" Margin="0,0,0,10"
+                          Name="CurrentProcessComboBox"
+                          HorizontalAlignment="Stretch"
+                          ItemsSource="{Binding Path=WorkingProcessesList}"
+                          SelectionChanged="WorkingProcessOnSelectionChanged" />
 
                 <Button Grid.Row="1"
                         Height="30"
@@ -139,7 +137,6 @@
                                Grid.Column="2"
                                Text="minutes"
                                Margin="2, 5, 2, 5" />
-
                 </Grid>
 
                 <oxy:Plot Name="Plot"
@@ -159,14 +156,13 @@
                           Content="Auto scroll to end"
                           Margin="0,10,0,10"
                           IsChecked="{Binding ScrollLogsToEnd}" />
-                
+
                 <Button Grid.Row="6"
                         Grid.Column="0"
                         Content="{Binding ButtonTitle}"
                         Padding="0"
                         Click="StopButton_OnClick" />
             </Grid>
-
         </Grid>
 
         <ProgressBar Name="ProgressBar"

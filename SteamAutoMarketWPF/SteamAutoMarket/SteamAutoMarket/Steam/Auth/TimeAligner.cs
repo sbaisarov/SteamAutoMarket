@@ -24,7 +24,7 @@
             {
                 try
                 {
-                    var response = SteamWeb.Request(APIEndpoints.TWO_FACTOR_TIME_QUERY, "POST", dataString: null);
+                    var response = SteamWeb.Request(ApiEndpoints.TwoFactorTimeQuery, "POST", dataString: null);
                     var query = JsonConvert.DeserializeObject<TimeQuery>(response);
                     _timeDifference = (int)(query.Response.ServerTime - Util.GetSystemUnixTime());
                     _aligned = true;
@@ -43,7 +43,7 @@
             try
             {
                 var response = await client.UploadStringTaskAsync(
-                                   new Uri(APIEndpoints.TWO_FACTOR_TIME_QUERY),
+                                   new Uri(ApiEndpoints.TwoFactorTimeQuery),
                                    "steamid=0");
                 var query = JsonConvert.DeserializeObject<TimeQuery>(response);
                 _timeDifference = (int)(query.Response.ServerTime - currentTime);

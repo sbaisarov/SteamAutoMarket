@@ -33,6 +33,7 @@
         {
             this.InitializeComponent();
             this.DataContext = this;
+            UiGlobalVariables.CacheSettings = this;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

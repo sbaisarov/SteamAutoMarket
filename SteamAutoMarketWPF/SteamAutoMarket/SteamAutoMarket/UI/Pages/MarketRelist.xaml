@@ -8,6 +8,7 @@
              xmlns:converter="clr-namespace:SteamAutoMarket.UI.Utils.Converter"
              xmlns:models="clr-namespace:SteamAutoMarket.UI.Models"
              xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:MarketRelist}">
 
@@ -17,7 +18,11 @@
         <converter:IfNullInvisibleConverter x:Key="IfNullInvisibleConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="5, 5, 5, 5">
+    <Grid Margin="15, 5, 5, 5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100*" />
@@ -27,10 +32,10 @@
         <xcdg:DataGridControl x:Name="MarketItemsToSellGrid"
                               Grid.Column="0"
                               Grid.Row="0"
-                              Margin="10, 10, 30, 10"
+                              Margin="0, 10, 30, 10"
                               AutoCreateColumns="False"
                               Style="{StaticResource GridStyle}"
-                              ItemsSource="{Binding Path=RelistItemsList, Mode=OneWay}"
+                              ItemsSource="{Binding Path=MarketListedItemsList, Mode=OneWay}"
                               SelectedItem="{Binding Path=RelistSelectedItem, Mode=TwoWay}">
 
             <xcdg:DataGridControl.View>
@@ -47,12 +52,13 @@
                     <xcdg:Column.CellContentTemplate>
                         <ItemContainerTemplate>
                             <CheckBox IsChecked="{Binding Path=(models:CheckedModel.CheckBoxChecked)}"
-                                      d:DataContext="{d:DesignData CheckedModel}" />
+                                      d:DataContext="{d:DesignData CheckedModel}"
+                                      Click="CheckBox_OnClick" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
 
-                <xcdg:Column Title="Item name"
+                <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_ItemName}"
                              Width="1*"
                              FieldName="ItemName"
                              ReadOnly="True"
@@ -68,7 +74,7 @@
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
 
-                <xcdg:Column Title="Type"
+                <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Type}"
                              Width="0.7*"
                              FieldName="Game"
                              ReadOnly="True"
@@ -84,7 +90,7 @@
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
 
-                <xcdg:Column Title="Count"
+                <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_Count}"
                              Width="0.5*"
                              FieldName="Count"
                              ReadOnly="True"
@@ -100,7 +106,7 @@
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
 
-                <xcdg:Column Title="Listed on"
+                <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_ListedDate}"
                              Width="0.7*"
                              FieldName="ListedDate"
                              ReadOnly="True"
@@ -116,7 +122,7 @@
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
 
-                <xcdg:Column Title="Listed price"
+                <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_ListedPrice}"
                              Width="0.7*"
                              FieldName="ListedPrice"
                              ReadOnly="True"
@@ -132,7 +138,7 @@
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
 
-                <xcdg:Column Title="Min price"
+                <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_MinPrice}"
                              Width="0.7*"
                              FieldName="CurrentPrice"
                              ReadOnly="True"
@@ -148,7 +154,7 @@
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
 
-                <xcdg:Column Title="Avr price"
+                <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).TextBox_AvrPrice}"
                              Width="0.7*"
                              FieldName="AveragePrice"
                              ReadOnly="True"
@@ -164,7 +170,7 @@
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
 
-                <xcdg:Column Title="Relist price"
+                <xcdg:Column Title="{Binding Path=(localization:StringsProvider.Strings).Button_RelistPrice}"
                              Width="0.7*"
                              FieldName="RelistPrice"
                              x:Name="SellingPriceColumn"
@@ -180,7 +186,9 @@
                                 Foreground="{DynamicResource ItemText}"
                                 Background="{DynamicResource DataGridBackground}"
                                 d:DataContext="{d:DesignData PriceModel}"
-                                PreviewKeyDown="PriceTextBox_OnPreviewKeyDown"/>
+                                PreviewKeyDown="PriceTextBox_OnPreviewKeyDown"
+                                TextChanged="RelistTextBox_OnTextChanged"
+                                LostFocus="RelistTextBox_OnLostFocus" />
                         </ItemContainerTemplate>
                     </xcdg:Column.CellContentTemplate>
                 </xcdg:Column>
@@ -188,7 +196,16 @@
             </xcdg:DataGridControl.Columns>
         </xcdg:DataGridControl>
 
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_SelectedItemsCount, Converter={StaticResource TextFieldDashConverter}}" />
+            <TextBlock Text="{Binding TotalSelectedItemsCount}" Margin="0,0,20,0" />
+            <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_SelectedTotalListedPrice, Converter={StaticResource TextFieldDashConverter}}" />
+            <TextBlock Text="{Binding TotalListedItemsListedPrice}" Margin="0,0,20,0" />
+            <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_SelectedItemsRelistPrice, Converter={StaticResource TextFieldDashConverter}}" />
+            <TextBlock Text="{Binding TotalListedItemsRelistPrice}" Margin="0,0,20,0" />
+        </StackPanel>
         <Grid Grid.Column="1"
+              Grid.RowSpan="2"
               Grid.Row="0"
               MinWidth="200"
               MaxWidth="250">
@@ -200,6 +217,7 @@
                 <RowDefinition MinHeight="49" MaxHeight="90" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" MinHeight="25" MaxHeight="55" />
+                <RowDefinition Height="*" MinHeight="40" MaxHeight="70" />
                 <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
                 <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
             </Grid.RowDefinitions>
@@ -215,7 +233,7 @@
                        Stretch="Uniform"
                        Name="ItemImage"
                        MaxHeight="200"
-                       Margin="0,0,0,5"/>
+                       Margin="0,0,0,5" />
 
                 <Path Grid.Row="0"
                       Style="{StaticResource Geometry}"
@@ -231,18 +249,18 @@
                          Foreground="{DynamicResource ItemText}"
                          IsReadOnly="True"
                          VerticalScrollBarVisibility="Visible"
-                         Text="{Binding Path=RelistSelectedItem.Description, Mode=OneWay}"
+                         Text="{Binding Path=RelistSelectedItem.Description.Value, Mode=OneWay}"
                          TextWrapping="Wrap" VerticalAlignment="Center" />
             </Grid>
 
             <Button Grid.Row="1"
                     Name="LoadMarketListingsButton"
-                    Content="Load market listings"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).Button_LoadMarketListings}"
                     Margin="0, 8, 0, 8"
                     Padding="0" Click="LoadMarketListingsButton_OnClick" />
 
             <Grid Grid.Row="2"
-                  VerticalAlignment="Center" Margin="0,5">
+                  VerticalAlignment="Center" Margin="0,5,0,0">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -262,7 +280,7 @@
                     Name="RecommendedPriceRb"
                     GroupName="MarketSellType"
                     Margin="1"
-                    Content="Recommended price"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).TextBox_RecommendedPrice}"
                     IsChecked="True"
                     Checked="ReformatSellStrategyOnControlStateChanged" />
 
@@ -272,7 +290,7 @@
                     Name="ManualPriceRb"
                     GroupName="MarketSellType"
                     Margin="1"
-                    Content="Manual price"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).TextBox_ManualPrice}"
                     Checked="ReformatSellStrategyOnControlStateChanged" />
 
                 <RadioButton
@@ -281,7 +299,7 @@
                     Name="AveragePriceRb"
                     GroupName="MarketSellType"
                     Margin="1,1,15,1"
-                    Content="Average price"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).TextBox_AveragePrice}"
                     Checked="ReformatSellStrategyOnControlStateChanged" />
 
                 <xctk:DoubleUpDown
@@ -301,7 +319,7 @@
                     Name="CurrentPriceRb"
                     GroupName="MarketSellType"
                     Margin="1,1,15,1"
-                    Content="Current price"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).TextBox_CurrentPrice}"
                     Checked="ReformatSellStrategyOnControlStateChanged" />
 
                 <xctk:DoubleUpDown
@@ -327,13 +345,13 @@
                 </Grid.ColumnDefinitions>
 
                 <Button
-                    Height="40"
-                    Width="40"
+                    Height="38"
+                    Width="38"
                     Grid.Column="0"
                     Padding="0"
-                    Margin="1,4,1,5"
+                    Margin="1,2,1,2"
                     Background="Transparent"
-                    ToolTip="Reload all prices"
+                    ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_ReloadAllPrices}"
                     Click="RefreshAllPricesPriceButton_OnClick">
 
                     <Path Style="{StaticResource Geometry}"
@@ -342,13 +360,13 @@
                 </Button>
 
                 <Button Name="RefreshSinglePriceButton"
-                        Height="40"
-                        Width="40"
+                        Height="38"
+                        Width="38"
                         Grid.Column="1"
                         Padding="0"
-                        Margin="1,4,1,5"
+                        Margin="1,2,1,2"
                         Background="Transparent"
-                        ToolTip="Reload selected item price"
+                        ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_ReloadSelectedItemPrice}"
                         Click="RefreshSinglePriceButton_OnClick">
 
                     <Path Style="{StaticResource Geometry}"
@@ -358,13 +376,13 @@
                 </Button>
 
                 <Button Name="StopPriceLoadingButton"
-                        Height="40"
-                        Width="40"
+                        Height="38"
+                        Width="38"
                         Grid.Column="2"
                         Padding="0"
-                        Margin="1,4,1,5"
+                        Margin="1,2,1,2"
                         Background="Transparent"
-                        ToolTip="Stop prices load"
+                        ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_StopPriceLoad}"
                         Click="StopPriceLoadingButton_OnClick">
 
                     <Path Style="{StaticResource Geometry}"
@@ -374,13 +392,13 @@
                 </Button>
 
                 <Button
-                    Height="40"
-                    Width="40"
+                    Height="38"
+                    Width="38"
                     Grid.Column="3"
                     Padding="0"
-                    Margin="1,4,1,5"
+                    Margin="1,2,1,2"
                     Background="Transparent"
-                    ToolTip="Find selected item on steam market"
+                    ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_FindSelectedItemOnSteamMarket}"
                     Click="OpenItemPageButton_OnClick">
 
                     <Path Style="{StaticResource Geometry}"
@@ -393,9 +411,9 @@
                   MinHeight="30">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
@@ -403,43 +421,50 @@
                         Margin="0,0,4,0"
                         Padding="0" Click="MarkAllItemsButtonClick">
                     <TextBlock TextAlignment="Center"
-                               VerticalAlignment="Center">
-                        Check<LineBreak />all
-                    </TextBlock>
+                               VerticalAlignment="Center"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).Button_CheckAll}" />
                 </Button>
                 <Button Grid.Column="1"
                         Name="MarketSellMarkSelectedItems"
                         Margin="2,0,2,0"
                         Padding="0" Click="MarkSelectedItemsButtonClick">
                     <TextBlock TextAlignment="Center"
-                               VerticalAlignment="Center">
-                        Check<LineBreak />selected
-                    </TextBlock>
+                               VerticalAlignment="Center"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).Button_CheckSelected}" />
                 </Button>
                 <Button Grid.Column="2"
                         Name="MarketSellUnmarkAllItems"
                         Margin="4,0,0,0"
                         Padding="0" Click="UnmarkAllItemsButtonClick">
                     <TextBlock TextAlignment="Center"
-                               VerticalAlignment="Center">
-                        Uncheck<LineBreak />all
-                    </TextBlock>
+                               VerticalAlignment="Center"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).Button_UncheckAll}" />
                 </Button>
             </Grid>
 
             <Button Grid.Row="6"
                     Name="MarkOverpricesButton"
-                    Content="Check overpriced items"
-                    Margin="0, 5, 0, 0"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).Button_CheckOverpricedItems}"
+                    Margin="0, 5, 0, 10"
                     Padding="0"
                     Click="MarkOverpricesButton_OnClick" />
 
             <Button Grid.Row="7"
-                    Name="StartRelistButton"
-                    Click="StartRelistButton_OnClick"
-                    Content="Remove selected"
+                    Name="StartRemoveButton"
+                    Click="StartRemoveButton_OnClick"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).Button_RemoveSelected}"
                     Margin="0, 5, 0, 0"
                     Padding="0" />
+
+            <Button Grid.Row="8"
+                    Name="StartRelistButton"
+                    Click="StartRelistButton_OnClick"
+                    Content="{Binding Path=(localization:StringsProvider.Strings).Button_RelistSelected}"
+                    Margin="0, 5, 0, 0"
+                    Padding="0"
+                    ToolTip="{Binding Path=(localization:StringsProvider.Strings).ToolTip_RelistTooltip}">
+                
+            </Button>
         </Grid>
 
     </Grid>

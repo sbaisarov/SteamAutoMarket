@@ -87,9 +87,6 @@ namespace SteamAutoMarket.Steam
                 this.TradeToken = tradeToken ?? this.FetchTradeToken();
             }
 
-            this.ApiKey = apiKey ?? this.FetchApiKey();
-            this.TradeToken = tradeToken ?? this.FetchTradeToken();
-
             this.Inventory = new Inventory(this.Proxy);
 
             Logger.Log.Debug("Initializing TradeOfferWebApi..");
@@ -156,7 +153,7 @@ namespace SteamAutoMarket.Steam
 
         protected bool IsSessionUpdated { get; set; }
 
-        private WebProxy Proxy { get; set; } = null;
+        public WebProxy Proxy { get; set; }
 
         public bool BuyOnMarket(
             double averagePrice,
@@ -514,26 +511,29 @@ namespace SteamAutoMarket.Steam
                     data: null,
                     cookies: this.Cookies,
                     proxy: this.Proxy);
-                var keyParse = Regex.Match(response, @"Key: (.+)</p").Groups[1].Value.Trim();
-                if (keyParse.Length != 0)
+
+                if (response != null)
                 {
-                    Logger.Log.Debug($"{keyParse} api key was successfully parsed");
-                    return keyParse;
+                    var keyParse = Regex.Match(response, @"Key: (.+)</p").Groups[1].Value.Trim();
+                    if (keyParse.Length != 0)
+                    {
+                        Logger.Log.Debug($"{keyParse} api key was successfully parsed");
+                        return keyParse;
+                    }
                 }
 
                 Logger.Log.Debug("Seems like account do not have api key. Trying to regenerate it");
-                var sessionid = this.SteamClient.Session.SessionID;
                 var data = new NameValueCollection
                                {
                                    { "domain", "domain.com" },
                                    { "agreeToTerms", "agreed" },
-                                   { "sessionid", sessionid },
+                                   { "sessionid", this.Guard.Session.SessionID },
                                    { "Submit", "Register" }
                                };
 
-                response = SteamWeb.Request(
+                SteamWeb.Request(
                     "https://steamcommunity.com/dev/registerkey",
-                    "GET",
+                    "POST",
                     data: data,
                     cookies: this.Cookies,
                     proxy: this.Proxy);
@@ -590,19 +590,20 @@ namespace SteamAutoMarket.Steam
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gguardcode",
+                    "http://shamanovski.pythonanywhere.com/api/gguardcode",
                     $"{this.Guard.SharedSecret},{TimeAligner.GetSteamTime()},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         private string GetDeviceId()
         {
             using (var wb = new WebClient())
             {
                 var response = wb.UploadString(
-                    "https://www.steambiz.store/api/gdevid",
-                    $"{this.SteamClient.SteamID.ToString()},{LicenseKey},{HwId}");
+                    "http://shamanovski.pythonanywhere.com/api/gdevid",
+                    $"{this.SteamClient.SteamID},{LicenseKey},{HwId}");
                 return JsonConvert.DeserializeObject<IDictionary<string, string>>(response)["result_0x23432"];
             }
         }

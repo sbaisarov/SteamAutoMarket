@@ -9,6 +9,7 @@
 
     using Newtonsoft.Json.Linq;
 
+    using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Utils.Logger;
 
     /// <summary>
@@ -26,6 +27,8 @@
         {
             this.DataContext = this;
             this.InitializeComponent();
+            UiGlobalVariables.License = this;
+
             this.LicenseKey = File.ReadAllText("license.txt").Trim('\r', '\n', ' ');
             this.LicenseDaysLeft = this.GetLicenseDaysLeft();
         }
@@ -74,7 +77,7 @@
                 {
                     wb.QueryString.Add("code", currentExtendKey);
                     wb.QueryString.Add("key", this.LicenseKey);
-                    var response = wb.UploadValues("https://www.steambiz.store/api/valcode", "POST", wb.QueryString);
+                    var response = wb.UploadValues("https://shamanovski.pythonanywhere.com/api/valcode", "POST", wb.QueryString);
                     var responseString = Encoding.UTF8.GetString(response);
                     if (responseString.Contains("OK"))
                     {
@@ -104,7 +107,7 @@
         {
             using (var wb = new WebClient())
             {
-                var response = wb.UploadString("https://www.steambiz.store/api/getlicensestatus", this.LicenseKey);
+                var response = wb.UploadString("https://shamanovski.pythonanywhere.com/api/getlicensestatus", this.LicenseKey);
                 var responseDeserialized = JObject.Parse(response);
                 return responseDeserialized[this.LicenseKey]["subscription_time"].ToString();
             }

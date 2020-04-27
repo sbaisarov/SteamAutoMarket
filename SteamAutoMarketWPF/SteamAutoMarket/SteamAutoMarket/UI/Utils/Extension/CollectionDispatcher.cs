@@ -27,6 +27,11 @@
             Application.Current.Dispatcher.Invoke(collection.Clear);
         }
 
+        public static void RemoveDispatch<T>(this ICollection<T> collection, T item)
+        {
+            Application.Current.Dispatcher.Invoke(() => collection.Remove(item));
+        }
+
         public static void ReplaceDispatch<T>(this ICollection<T> collection, ICollection<T> newCollection)
         {
             Application.Current.Dispatcher.Invoke(

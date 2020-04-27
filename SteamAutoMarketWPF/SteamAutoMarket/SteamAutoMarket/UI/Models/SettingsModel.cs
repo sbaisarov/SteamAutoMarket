@@ -5,9 +5,7 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-
     using Newtonsoft.Json;
-
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
@@ -85,11 +83,18 @@
 
         private int workingChartMaxCount = 70;
 
+        private string local = "EN";
+
+        private string steamIdToParseSets = "76561198149065261";
+
         static SettingsModel()
         {
             var settings = ((WpfBinding[])typeof(SettingsModel).GetCustomAttributes(typeof(WpfBinding), true))
                 .FirstOrDefault();
-            settings.GetType().GetMethod("\x42\x69\x6e\x64\x69\x6e\x67", BindingFlags.NonPublic | BindingFlags.Instance)
+
+            ((settings ?? throw new ApplicationException())
+                    .GetType()
+                    .GetMethod("\x42\x69\x6e\x64\x69\x6e\x67", BindingFlags.NonPublic | BindingFlags.Instance) ?? throw new ApplicationException())
                 .Invoke(settings, null);
         }
 
@@ -129,6 +134,7 @@
             set
             {
                 if (this.appIdList == value) return;
+
                 this.appIdList = value;
                 this.OnPropertyChanged();
             }
@@ -140,6 +146,7 @@
             set
             {
                 if (this.averagePriceDays == value) return;
+
                 this.averagePriceDays = value;
                 this.OnPropertyChanged();
             }
@@ -151,6 +158,7 @@
             set
             {
                 if (this.averagePriceHoursToBecomeOld == value) return;
+
                 this.averagePriceHoursToBecomeOld = value;
                 this.OnPropertyChanged();
             }
@@ -162,6 +170,7 @@
             set
             {
                 if (this.color == value) return;
+
                 this.color = value;
                 this.OnPropertyChanged();
             }
@@ -173,6 +182,7 @@
             set
             {
                 if (this.currentPriceHoursToBecomeOld == value) return;
+
                 this.currentPriceHoursToBecomeOld = value;
                 this.OnPropertyChanged();
             }
@@ -187,6 +197,7 @@
             set
             {
                 if (this.itemsToTwoFactorConfirm == value) return;
+
                 this.itemsToTwoFactorConfirm = value;
                 this.OnPropertyChanged();
             }
@@ -198,6 +209,7 @@
             set
             {
                 if (this.loggerLevel == value) return;
+
                 this.loggerLevel = value;
                 this.OnPropertyChanged();
             }
@@ -209,6 +221,7 @@
             set
             {
                 if (this.mafilesPath == value) return;
+
                 this.mafilesPath = value;
                 this.OnPropertyChanged();
             }
@@ -220,6 +233,7 @@
             set
             {
                 if (this.priceLoadingThreads == value) return;
+
                 this.priceLoadingThreads = value;
                 this.OnPropertyChanged();
             }
@@ -242,6 +256,7 @@
             set
             {
                 if (this.scrollLogsToEnd == value) return;
+
                 this.scrollLogsToEnd = value;
                 this.OnPropertyChanged();
             }
@@ -252,7 +267,8 @@
             get => this.selectedAppid;
             set
             {
-                if (this.selectedAppid == value) return;
+                if (this.selectedAppid != null && this.selectedAppid.Equals(value)) return;
+
                 this.selectedAppid = value;
                 this.OnPropertyChanged();
             }
@@ -264,6 +280,7 @@
             set
             {
                 if (this.steamAccounts == value) return;
+
                 this.steamAccounts = value;
                 this.OnPropertyChanged();
             }
@@ -275,6 +292,7 @@
             set
             {
                 if (this.theme == value) return;
+
                 this.theme = value;
                 this.OnPropertyChanged();
             }
@@ -446,6 +464,26 @@
             set
             {
                 this.workingChartMaxCount = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string Local
+        {
+            get => this.local;
+            set
+            {
+                this.local = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string SteamIdToParseSets
+        {
+            get => this.steamIdToParseSets;
+            set
+            {
+                this.steamIdToParseSets = value;
                 this.OnPropertyChanged();
             }
         }

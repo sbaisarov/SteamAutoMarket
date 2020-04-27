@@ -14,7 +14,11 @@
     [Serializable]
     public class SteamItemsModel : INotifyPropertyChanged
     {
+        private double? averagePrice;
+
         private int count;
+
+        private double? currentPrice;
 
         private string image;
 
@@ -24,7 +28,7 @@
 
             this.ItemModel = itemsList.FirstOrDefault();
 
-            this.Count = itemsList.Sum(i => int.Parse(i.Asset.Amount));
+            this.Count = itemsList.Select(i => int.Parse(i.Asset.Amount)).Sum();
 
             this.ItemName = this.ItemModel?.Description.MarketName;
 
@@ -33,12 +37,22 @@
 
             this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description?.Type);
 
-            this.Description = SteamUtils.GetClearDescription(this.ItemModel?.Description);
+            this.Description = new Lazy<string>(() => SteamUtils.GetClearDescription(this.ItemModel));
 
             this.NumericUpDown = new NumericUpDownModel(this.Count);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public double? AveragePrice
+        {
+            get => this.averagePrice;
+            set
+            {
+                this.averagePrice = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public int Count
         {
@@ -51,7 +65,17 @@
             }
         }
 
-        public string Description { get; }
+        public double? CurrentPrice
+        {
+            get => this.currentPrice;
+            set
+            {
+                this.currentPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public Lazy<string> Description { get; }
 
         public string Game { get; }
 
@@ -86,10 +110,20 @@
 
         public string Type { get; }
 
+        public virtual void CleanItemPrices()
+        {
+            this.CurrentPrice = null;
+            this.AveragePrice = null;
+        }
+
         public void RefreshCount()
         {
-            this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
+            this.Count = this.ItemsList.Count;
             this.NumericUpDown.MaxAllowedCount = this.Count;
+            if (this.NumericUpDown.AmountToSell > this.Count)
+            {
+                this.NumericUpDown.AmountToSell = 0;
+            }
         }
 
         [NotifyPropertyChangedInvocator]

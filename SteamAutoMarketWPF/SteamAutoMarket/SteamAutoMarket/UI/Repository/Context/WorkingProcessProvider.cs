@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using SteamAutoMarket.UI.Pages;
     using SteamAutoMarket.UI.Utils.Logger;
 
     [Obfuscation(Exclude = true)]

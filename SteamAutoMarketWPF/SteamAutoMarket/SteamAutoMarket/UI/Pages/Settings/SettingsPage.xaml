@@ -9,10 +9,10 @@
     <Grid Style="{StaticResource ContentRoot}">
         <mui:ModernTab Layout="List" SelectedSource="/UI/Pages/Settings/Appearance.xaml">
             <mui:ModernTab.Links>
-                <mui:Link DisplayName="appearance" Source="/UI/Pages/Settings/Appearance.xaml" />
-                <mui:Link DisplayName="license" Source="/UI/Pages/Settings/License.xaml" />
-                <mui:Link DisplayName="market" Source="/UI/Pages/Settings/MarketSettings.xaml" />
-                <mui:Link DisplayName="cache" Source="/UI/Pages/Settings/CacheSettings.xaml" />
+                <mui:Link x:Name="AppearanceMenuLink" DisplayName="Appearance" Source="/UI/Pages/Settings/Appearance.xaml" />
+                <mui:Link x:Name="LicenseMenuLink" DisplayName="license" Source="/UI/Pages/Settings/License.xaml" />
+                <mui:Link x:Name="MarketMenuLink" DisplayName="market" Source="/UI/Pages/Settings/MarketSettings.xaml" />
+                <mui:Link x:Name="CacheMenuLink" DisplayName="cache" Source="/UI/Pages/Settings/CacheSettings.xaml" />
             </mui:ModernTab.Links>
         </mui:ModernTab>
     </Grid>

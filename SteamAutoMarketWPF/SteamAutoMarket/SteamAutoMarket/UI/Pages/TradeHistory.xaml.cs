@@ -206,8 +206,10 @@
                         {
                             ErrorNotify.CriticalMessageBox("Error on getting trade offers history", ex);
                         }
-
-                        this.IsLoadButtonEnabled = true;
+                        finally
+                        {
+                            this.IsLoadButtonEnabled = true;
+                        }
                     });
         }
     }

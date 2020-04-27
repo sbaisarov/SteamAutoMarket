@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
+             xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance pages:Home}">
     <UserControl.Resources>
         <Style x:Key="FlatButton" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
             <Setter Property="Height" Value="150" />
@@ -23,7 +25,7 @@
     <Grid Style="{StaticResource ContentRoot}">
         <ScrollViewer>
             <StackPanel MinWidth="200" HorizontalAlignment="Left">
-                <TextBlock Style="{StaticResource Heading1}" Text="Find answers" />
+                <TextBlock Style="{StaticResource Heading1}" Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_UsefulLinks}" />
                 <WrapPanel Margin="0,20,0,0">
                     <Button Style="{StaticResource FlatButton}" Click="SteamLogin_OnClick">
                         <Grid>
@@ -36,63 +38,7 @@
                                   Stretch="Uniform"
                                   Data="{StaticResource SvgSteam}" />
 
-                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Steam login" />
-                        </Grid>
-                    </Button>                    
-                    <Button Style="{StaticResource FlatButton}" Click="LicenseStatus_OnClick">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Path Style="{StaticResource Geometry}"
-                                  Stretch="Uniform"
-                                  Data="{StaticResource SvgShield}" />
-
-                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="License status" />
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource FlatButton}" Click="Update_OnClick">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Path Style="{StaticResource Geometry}"
-                                  Stretch="Uniform"
-                                  Data="{StaticResource SvgUpdate}" />
-
-                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Update" />
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource FlatButton}" Click="Telegram_OnClick">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Path Style="{StaticResource Geometry}"
-                                  Stretch="Uniform"
-                                  Data="{StaticResource SvgTelegram}" />
-
-                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Telegram" />
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource FlatButton}" Click="Website_OnClick">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Path Style="{StaticResource Geometry}"
-                                  Stretch="Uniform"
-                                  Data="{StaticResource SvgInternet}" />
-
-                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Website" />
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="{Binding Path=(localization:StringsProvider.Strings).Button_SteamLogin}" />
                         </Grid>
                     </Button>
                     <Button Style="{StaticResource FlatButton}" Click="Documentation_OnClick">
@@ -106,9 +52,66 @@
                                   Stretch="Uniform"
                                   Data="{StaticResource SvgHelp}" />
 
-                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="Documentation" />
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="{Binding Path=(localization:StringsProvider.Strings).Button_Manual}" />
                         </Grid>
                     </Button>
+                    <Button Style="{StaticResource FlatButton}" Click="LicenseStatus_OnClick">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Path Style="{StaticResource Geometry}"
+                                  Stretch="Uniform"
+                                  Data="{StaticResource SvgShield}" />
+
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="{Binding Path=(localization:StringsProvider.Strings).Button_LicenseStatus}" />
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource FlatButton}" Click="Update_OnClick">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Path Style="{StaticResource Geometry}"
+                                  Stretch="Uniform"
+                                  Data="{StaticResource SvgUpdate}" />
+
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="{Binding Path=(localization:StringsProvider.Strings).Button_Update}" />
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource FlatButton}" Click="Telegram_OnClick">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Path Style="{StaticResource Geometry}"
+                                  Stretch="Uniform"
+                                  Data="{StaticResource SvgTelegram}" />
+
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="{Binding Path=(localization:StringsProvider.Strings).Button_Telegram}" />
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource FlatButton}" Click="Website_OnClick">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Path Style="{StaticResource Geometry}"
+                                  Stretch="Uniform"
+                                  Data="{StaticResource SvgInternet}" />
+
+                            <TextBlock Grid.Row="1" Style="{StaticResource FlatText}" Text="{Binding Path=(localization:StringsProvider.Strings).Button_Website}" />
+                        </Grid>
+                    </Button>
+                    
                 </WrapPanel>
             </StackPanel>
         </ScrollViewer>

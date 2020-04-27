@@ -18,8 +18,29 @@
             this.CurrentPrice = marketSellModel.CurrentPrice;
             this.AveragePrice = marketSellModel.AveragePrice;
             this.SellPrice = marketSellModel.SellPrice.Value;
-            this.ItemsList = marketSellModel.ItemsList.ToList().GetRange(0, marketSellModel.NumericUpDown.AmountToSell);
+
+            if (marketSellModel.ItemsList.ToList().Any(i => int.Parse(i.Asset.Amount) > 1))
+            {
+                this.ItemsList = marketSellModel.ItemsList.ToList();
+                foreach (var item in this.ItemsList)
+                {
+                    item.Asset.Amount = marketSellModel.NumericUpDown.AmountToSell.ToString();
+                }
+            }
+            else
+            {
+                this.ItemsList = marketSellModel.ItemsList.ToList().GetRange(0, marketSellModel.NumericUpDown.AmountToSell);
+            }
             this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
+        }
+
+        public MarketSellProcessModel(FullRgItem[] fullRgItems, PriceModel sellPrice)
+        {
+            this.ItemName = fullRgItems[0].Description.Name;
+            this.ItemModel = fullRgItems[0];
+            this.ItemsList = fullRgItems;
+            this.Count = this.ItemsList.Sum(i => int.Parse(i.Asset.Amount));
+            this.SellPrice = sellPrice.Value;
         }
 
         public double? AveragePrice { get; set; }
@@ -48,7 +69,7 @@
                         }
                         else if (this.CurrentPrice > this.AveragePrice)
                         {
-                            this.SellPrice = this.CurrentPrice - 0.01;
+                            this.SellPrice = this.CurrentPrice;
                         }
                         else
                         {

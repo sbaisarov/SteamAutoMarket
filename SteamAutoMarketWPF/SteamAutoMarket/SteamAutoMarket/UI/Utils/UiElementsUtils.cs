@@ -1,10 +1,14 @@
 ﻿namespace SteamAutoMarket.UI.Utils
 {
+    using System;
     using System.Windows;
     using System.Windows.Media;
+    using System.Windows.Threading;
 
     public static class UiElementsUtils
     {
+        private static readonly Action EmptyDelegate = delegate { };
+
         public static T FindVisualChild<T>(DependencyObject obj)
             where T : DependencyObject
         {
@@ -19,5 +23,7 @@
 
             return null;
         }
+
+        public static void Refresh(this UIElement uiElement) => uiElement.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
     }
 }

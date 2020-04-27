@@ -6,14 +6,20 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
-
+    using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
     using SteamAutoMarket.UI.Models;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Repository.Settings;
+    using SteamAutoMarket.UI.SteamIntegration;
+    using SteamAutoMarket.UI.SteamIntegration.InventoryLoad;
+    using SteamAutoMarket.UI.Utils;
+    using SteamAutoMarket.UI.Utils.ItemFilters;
     using SteamAutoMarket.UI.Utils.Logger;
 
     /// <summary>
@@ -21,15 +27,23 @@
     /// </summary>
     public partial class TradeSend : INotifyPropertyChanged
     {
-        private List<string> rarityFilters;
+        private bool isTotalPriceRefreshPlanned;
 
-        private List<string> realGameFilters;
+        private IEnumerable<string> rarityFilters;
 
-        private List<string> tradabilityFilters;
+        private IEnumerable<string> realGameFilters;
+
+        private string totalListedItemsAveragePrice = UiConstants.FractionalZeroString;
+
+        private string totalListedItemsCurrentPrice = UiConstants.FractionalZeroString;
+
+        private int totalSelectedItemsCount;
+
+        private IEnumerable<string> tradabilityFilters;
 
         private SteamItemsModel tradeSendSelectedItem;
 
-        private List<string> typeFilters;
+        private IEnumerable<string> typeFilters;
 
         public TradeSend()
         {
@@ -41,7 +55,7 @@
 
         public List<SteamAppId> AppIdList => SettingsProvider.GetInstance().AppIdList;
 
-        public List<string> MarketableFilters
+        public IEnumerable<string> MarketableFilters
         {
             get => this.tradabilityFilters;
             set
@@ -53,7 +67,7 @@
 
         public string MarketableSelectedFilter { get; set; }
 
-        public List<string> RarityFilters
+        public IEnumerable<string> RarityFilters
         {
             get => this.rarityFilters;
             set
@@ -65,7 +79,7 @@
 
         public string RaritySelectedFilter { get; set; }
 
-        public List<string> RealGameFilters
+        public IEnumerable<string> RealGameFilters
         {
             get => this.realGameFilters;
             set
@@ -76,6 +90,36 @@
         }
 
         public string RealGameSelectedFilter { get; set; }
+
+        public string TotalListedItemsAveragePrice
+        {
+            get => this.totalListedItemsAveragePrice;
+            set
+            {
+                this.totalListedItemsAveragePrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public string TotalListedItemsCurrentPrice
+        {
+            get => this.totalListedItemsCurrentPrice;
+            set
+            {
+                this.totalListedItemsCurrentPrice = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int TotalSelectedItemsCount
+        {
+            get => this.totalSelectedItemsCount;
+            set
+            {
+                this.totalSelectedItemsCount = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         public bool TradeSendConfirm2Fa
         {
@@ -129,6 +173,7 @@
             set
             {
                 if (this.tradeSendSelectedItem == value) return;
+
                 this.tradeSendSelectedItem = value;
                 this.OnPropertyChanged();
             }
@@ -137,7 +182,7 @@
         public ObservableCollection<SettingsSteamAccount> TradeSteamUserList =>
             new ObservableCollection<SettingsSteamAccount>(SettingsProvider.GetInstance().SteamAccounts);
 
-        public List<string> TypeFilters
+        public IEnumerable<string> TypeFilters
         {
             get => this.typeFilters;
             set
@@ -153,38 +198,23 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private void AddOneToAllSelectedButtonClick(object sender, RoutedEventArgs e) =>
+            FunctionalButtonsActions.AddPlusOneAmountToAllItems(
+                this.MarketItemsToTradeGrid.SelectedItems.OfType<SteamItemsModel>());
+
+        private void AmountToSend_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
         private void ApplyFiltersButtonClick(object sender, RoutedEventArgs e)
         {
             var resultView = this.TradeSendItemsList.ToList();
 
-            if (this.RealGameSelectedFilter != null)
-            {
-                resultView = resultView.Where(g => g.Game == this.RealGameSelectedFilter).ToList();
-            }
-
-            if (this.TypeSelectedFilter != null)
-            {
-                resultView = resultView.Where(g => g.Type == this.TypeSelectedFilter).ToList();
-            }
-
-            if (this.RaritySelectedFilter != null)
-            {
-                resultView = resultView.Where(
-                    model => model.ItemModel?.Description?.Tags
-                                 ?.FirstOrDefault(tag => tag.LocalizedCategoryName == "Rarity")?.LocalizedTagName
-                             == this.RaritySelectedFilter).ToList();
-            }
-
-            if (this.MarketableSelectedFilter != null)
-            {
-                bool? value = null;
-                if (this.MarketableSelectedFilter == "Marketable") value = true;
-                else if (this.MarketableSelectedFilter == "Not marketable") value = false;
-                if (value != null)
-                {
-                    resultView = resultView.Where(g => g.ItemModel.Description.IsMarketable == value).ToList();
-                }
-            }
+            SteamItemsFilters<SteamItemsModel>.RealGameFilter.Process(this.RealGameSelectedFilter, resultView);
+            SteamItemsFilters<SteamItemsModel>.TypeFilter.Process(this.TypeSelectedFilter, resultView);
+            SteamItemsFilters<SteamItemsModel>.RarityFilter.Process(this.RaritySelectedFilter, resultView);
+            SteamItemsFilters<SteamItemsModel>.MarketableFilter.Process(this.MarketableSelectedFilter, resultView);
 
             this.MarketItemsToTradeGrid.ItemsSource = resultView;
         }
@@ -195,26 +225,24 @@
             switch (comboBox?.Name)
             {
                 case "RealGameComboBox":
-                    this.RealGameFilters = this.TradeSendItemsList.Select(model => model.Game).ToHashSet()
-                        .OrderBy(q => q).ToList();
+                    this.RealGameFilters = FiltersFormatter<SteamItemsModel>.GetRealGameFilters(this.TradeSendItemsList);
                     break;
+
                 case "TypeComboBox":
-                    this.TypeFilters = this.TradeSendItemsList.Select(model => model.Type).ToHashSet().OrderBy(q => q)
-                        .ToList();
+                    this.TypeFilters = FiltersFormatter<SteamItemsModel>.GetTypeFilters(this.TradeSendItemsList);
                     break;
+
                 case "RarityComboBox":
-                    this.RarityFilters = this.TradeSendItemsList.Select(
-                            model => model.ItemModel?.Description?.Tags
-                                ?.FirstOrDefault(tag => tag.LocalizedCategoryName == "Rarity")?.LocalizedTagName)
-                        .ToHashSet().OrderBy(q => q).ToList();
+                    this.RarityFilters = FiltersFormatter<SteamItemsModel>.GetRarityFilters(this.TradeSendItemsList);
                     break;
+
                 case "MarketableComboBox":
-                    this.MarketableFilters = this.TradeSendItemsList.Select(
-                            model => (model.ItemModel?.Description.IsMarketable == true)
-                                         ? "Marketable"
-                                         : "Not marketable")
-                        .ToHashSet().ToList();
+                    this.MarketableFilters = FiltersFormatter<SteamItemsModel>.GetMarketableFilters(this.TradeSendItemsList);
                     break;
+
+                default:
+                    Logger.Log.Error($"{comboBox?.Name} is unknown filter type");
+                    return;
             }
         }
 
@@ -233,17 +261,19 @@
             }
 
             this.TradeSendItemsList.Clear();
+            this.ResetFilters();
 
             var wp = WorkingProcessProvider.GetNewInstance($"{this.TradeSendSelectedAppid.Name} inventory loading");
             wp?.StartWorkingProcess(
                 () =>
-                    {
-                        wp.SteamManager.LoadItemsToTradeWorkingProcess(
-                            this.TradeSendSelectedAppid,
-                            contextId,
-                            this.TradeSendItemsList,
-                            wp);
-                    });
+                {
+                    wp.SteamManager.LoadInventoryWorkingProcess(
+                        this.TradeSendSelectedAppid,
+                        contextId,
+                        this.TradeSendItemsList,
+                        TradeSendInventoryProcessStrategy.TradeSendStrategy,
+                        wp);
+                });
         }
 
         private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
@@ -271,7 +301,54 @@
             }
         }
 
-        private void ResetFiltersClick(object sender, RoutedEventArgs e)
+        private void OpenOnSteamMarket_OnClick(object sender, RoutedEventArgs e) =>
+            FunctionalButtonsActions.OpenOnSteamMarket(this.TradeSendSelectedItem);
+
+        private void PriceTextBox_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            this.RefreshSelectedItemsInfo();
+        }
+
+        private void RefreshAllPricesPriceButton_OnClick(object sender, RoutedEventArgs e) =>
+            GridPriceLoaderUtils.StartPriceLoading(
+                (IEnumerable<SteamItemsModel>)this.MarketItemsToTradeGrid.ItemsSource);
+
+        private void RefreshSelectedItemsInfo()
+        {
+            if (this.isTotalPriceRefreshPlanned) return;
+
+            Task.Run(
+                () =>
+                {
+                    this.isTotalPriceRefreshPlanned = true;
+                    Thread.Sleep(300);
+                    this.TotalSelectedItemsCount =
+                        this.TradeSendItemsList?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
+
+                    this.TotalListedItemsCurrentPrice = this.TradeSendItemsList?.Sum(
+                        m =>
+                        {
+                            if (m.NumericUpDown.AmountToSell == 0 || m.CurrentPrice.HasValue == false) return 0;
+
+                            return m.NumericUpDown.AmountToSell * m.CurrentPrice.Value;
+                        }).ToString(UiConstants.DoubleToStringFormat);
+
+                    this.TotalListedItemsAveragePrice = this.TradeSendItemsList?.Sum(
+                        m =>
+                        {
+                            if (m.NumericUpDown.AmountToSell == 0 || m.AveragePrice.HasValue == false) return 0;
+
+                            return m.NumericUpDown.AmountToSell * m.AveragePrice.Value;
+                        }).ToString(UiConstants.DoubleToStringFormat);
+
+                    this.isTotalPriceRefreshPlanned = false;
+                });
+        }
+
+        private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e) =>
+            GridPriceLoaderUtils.RefreshSingleModelPrice(this.TradeSendSelectedItem);
+
+        private void ResetFilters()
         {
             this.RealGameSelectedFilter = null;
             this.RealGameComboBox.Text = null;
@@ -286,6 +363,11 @@
             this.MarketableComboBox.Text = null;
 
             this.MarketItemsToTradeGrid.ItemsSource = this.TradeSendItemsList;
+        }
+
+        private void ResetFiltersClick(object sender, RoutedEventArgs e)
+        {
+            this.ResetFilters();
         }
 
         private void SendTradeOfferButtonOnClick(object sender, RoutedEventArgs e)
@@ -315,8 +397,17 @@
             foreach (var steamItemsModel in this.TradeSendItemsList.ToArray()
                 .Where(i => i.NumericUpDown.AmountToSell > 0))
             {
-                itemsToSell.AddRange(
-                    steamItemsModel.ItemsList.ToList().GetRange(0, steamItemsModel.NumericUpDown.AmountToSell));
+                if (int.TryParse(steamItemsModel.ItemsList.FirstOrDefault()?.Asset.Amount, out var amount) && amount > 1)
+                {
+                    var itemToAdd = steamItemsModel.ItemsList.First().CloneAsset();
+                    itemToAdd.Asset.Amount = steamItemsModel.NumericUpDown.AmountToSell.ToString();
+                    itemsToSell.Add(itemToAdd);
+                }
+                else
+                {
+                    itemsToSell.AddRange(
+                        steamItemsModel.ItemsList.ToList().GetRange(0, steamItemsModel.NumericUpDown.AmountToSell));
+                }
             }
 
             if (itemsToSell.Any() == false)
@@ -334,5 +425,8 @@
                     this.TradeSendConfirm2Fa,
                     wp));
         }
+
+        private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>
+            GridPriceLoaderUtils.InvokePriceLoadingStop();
     }
 }

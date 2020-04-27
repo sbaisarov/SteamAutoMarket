@@ -54,6 +54,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="45" />
                 <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="0,0,0,5">
@@ -159,6 +160,40 @@
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
 
+                    <xcdg:Column Title="Current price"
+                                 Width="1*"
+                                 FieldName="CurrentPrice"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}"
+                                    DataContextChanged="PriceTextBox_OnDataContextChanged" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
+                    <xcdg:Column Title="Average price"
+                                 Width="1*"
+                                 FieldName="AveragePrice"
+                                 ReadOnly="True"
+                                 CellHorizontalContentAlignment="Center"
+                                 CellVerticalContentAlignment="Center">
+                        <xcdg:Column.CellContentTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock
+                                    Text="{Binding}"
+                                    Foreground="{DynamicResource ItemText}"
+                                    Background="{DynamicResource DataGridBackground}"
+                                    DataContextChanged="PriceTextBox_OnDataContextChanged" />
+                            </ItemContainerTemplate>
+                        </xcdg:Column.CellContentTemplate>
+                    </xcdg:Column>
+
                     <xcdg:Column Title="Amount to send"
                                  MinWidth="110"
                                  MaxWidth="110"
@@ -173,17 +208,26 @@
                                     Style="{StaticResource UpDown}"
                                     Width="105"
                                     Background="{StaticResource DataGridBackground}"
-                                    Value="0"
                                     Increment="1"
                                     Maximum="{Binding Path=(models:NumericUpDownModel.MaxAllowedCount)}"
-                                    Text="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
+                                    Value="{Binding Path=(models:NumericUpDownModel.AmountToSell)}"
                                     Minimum="0"
-                                    MouseWheelActiveTrigger="Disabled" />
+                                    MouseWheelActiveTrigger="Disabled"
+                                    ValueChanged="AmountToSend_OnValueChanged" />
                             </ItemContainerTemplate>
                         </xcdg:Column.CellContentTemplate>
                     </xcdg:Column>
                 </xcdg:DataGridControl.Columns>
             </xcdg:DataGridControl>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="Selected items count - " />
+                <TextBlock Text="{Binding TotalSelectedItemsCount}" Margin="0,0,20,0" />
+                <TextBlock Text="Selected items total current price - " />
+                <TextBlock Text="{Binding TotalListedItemsCurrentPrice}" Margin="0,0,20,0" />
+                <TextBlock Text="Selected items total average price - " />
+                <TextBlock Text="{Binding TotalListedItemsAveragePrice}" Margin="0,0,20,0" />
+            </StackPanel>
         </Grid>
         <Grid Grid.Column="1"
               Grid.Row="0"
@@ -194,9 +238,10 @@
                 <RowDefinition Height="Auto" MinHeight="100" MaxHeight="400" SharedSizeGroup="Image" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
-                <RowDefinition Height="*" MinHeight="30" MaxHeight="60" />
+                <RowDefinition Height="*" MinHeight="35" MaxHeight="60" />
+                <RowDefinition Height="*" MinHeight="35" MaxHeight="60" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -226,7 +271,7 @@
                          Foreground="{DynamicResource ItemText}"
                          IsReadOnly="True"
                          VerticalScrollBarVisibility="Visible"
-                         Text="{Binding Path=TradeSendSelectedItem.Description, Mode=OneWay}"
+                         Text="{Binding Path=TradeSendSelectedItem.Description.Value, Mode=OneWay}"
                          TextWrapping="Wrap" VerticalAlignment="Center" />
             </Grid>
 
@@ -333,7 +378,7 @@
 
                 <TextBox Grid.Column="2"
                          Name="TradeSteamIdTextBox"
-                         Text="{Binding ElementName=TradeSteamAccountComboBox, Path=SelectedItem.AccountId, Mode=OneWay}"
+                         Text="{Binding ElementName=TradeSteamAccountComboBox, Path=SelectedItem.(models:SettingsSteamAccount.AccountId), Mode=OneWay}"
                          Height="22"
                          Grid.Row="1"
                          Margin="0, 4" />
@@ -353,7 +398,95 @@
                           IsChecked="{Binding TradeSendConfirm2Fa}" />
             </Grid>
 
-            <Grid Grid.Row="4"
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Height="38"
+                    Width="38"
+                    Grid.Column="0"
+                    Padding="0"
+                    Margin="1,4,1,5"
+                    Background="Transparent"
+                    ToolTip="Reload all prices"
+                    Click="RefreshAllPricesPriceButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefresh}" />
+                </Button>
+
+                <Button Name="RefreshSinglePriceButton"
+                        Height="38"
+                        Width="38"
+                        Grid.Column="1"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Reload selected item price"
+                        Click="RefreshSinglePriceButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgRefreshSingle}" />
+
+                </Button>
+
+                <Button Name="StopPriceLoadingButton"
+                        Height="38"
+                        Width="38"
+                        Grid.Column="2"
+                        Padding="0"
+                        Margin="1,4,1,5"
+                        Background="Transparent"
+                        ToolTip="Stop prices load"
+                        Click="StopPriceLoadingButton_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgStop}" />
+
+                </Button>
+
+                <Button
+                    Height="38"
+                    Width="38"
+                    Grid.Column="3"
+                    Padding="0"
+                    Margin="1,4,1,5"
+                    Background="Transparent"
+                    ToolTip="Find selected item on steam market"
+                    Click="OpenOnSteamMarket_OnClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgSteam}" />
+                </Button>
+
+                <RepeatButton Name="AddOneToAllSelectedItems"
+                              Height="38"
+                              Width="38"
+                              Grid.Column="4"
+                              Padding="0"
+                              Margin="1,4,1,5"
+                              Background="Transparent"
+                              ToolTip="Add +1 amount to sell to all selected items"
+                              Click="AddOneToAllSelectedButtonClick">
+
+                    <Path Style="{StaticResource Geometry}"
+                          Stretch="Fill"
+                          Data="{StaticResource SvgPlusOne}" />
+
+                </RepeatButton>
+            </Grid>
+
+            <Grid Grid.Row="5"
                   Margin="0, 0, 0, 5">
 
                 <Grid.ColumnDefinitions>
@@ -391,7 +524,7 @@
                 </Button>
             </Grid>
 
-            <Button Grid.Row="5"
+            <Button Grid.Row="6"
                     Content="Send trade offer"
                     Margin="0, 5, 0, 0"
                     Padding="0"

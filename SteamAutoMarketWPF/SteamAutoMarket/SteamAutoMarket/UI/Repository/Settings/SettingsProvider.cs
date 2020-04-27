@@ -43,11 +43,11 @@
 
         private static SettingsModel CreateNewSettingsInstance()
         {
-            var instance = new SettingsModel();
+            var newSettingsInstance = new SettingsModel();
 
-            File.WriteAllText(SettingsUpdated.SettingsPath, JsonConvert.SerializeObject(instance, Formatting.Indented));
+            File.WriteAllText(SettingsUpdated.SettingsPath, JsonConvert.SerializeObject(newSettingsInstance, Formatting.Indented));
 
-            return instance;
+            return newSettingsInstance;
         }
     }
 }

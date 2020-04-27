@@ -1,9 +1,7 @@
-﻿namespace Tests
+﻿namespace Tests.Core
 {
     using FluentAssertions;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using SteamAutoMarket.Core;
 
     [TestClass]

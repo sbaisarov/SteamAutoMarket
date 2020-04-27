@@ -19,24 +19,26 @@
 
         public SteamTradeItemsModel(IEnumerable<FullTradeItem> itemsList)
         {
-            this.ItemsList = new ObservableCollection<FullTradeItem>(itemsList);
+            IEnumerable<FullTradeItem> fullTradeItems = itemsList as FullTradeItem[] ?? itemsList.ToArray();
 
-            this.ItemModel = itemsList.FirstOrDefault();
+            this.ItemsList = new ObservableCollection<FullTradeItem>(fullTradeItems);
 
-            this.Count = itemsList.Sum(i => int.Parse(i.Asset.Amount));
+            this.ItemModel = fullTradeItems.FirstOrDefault();
+
+            this.Count = fullTradeItems.Sum(i => int.Parse(i.Asset.Amount));
 
             this.ItemName = this.ItemModel?.Description.MarketName;
 
             this.Type = SteamUtils.GetClearItemType(this.ItemModel?.Description.Type);
 
-            this.Description = SteamUtils.GetClearDescription(this.ItemModel?.Description);
+            this.Description = new Lazy<string>(() => SteamUtils.GetClearDescription(this.ItemModel));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int Count { get; }
 
-        public string Description { get; }
+        public Lazy<string> Description { get; }
 
         public string Image
         {

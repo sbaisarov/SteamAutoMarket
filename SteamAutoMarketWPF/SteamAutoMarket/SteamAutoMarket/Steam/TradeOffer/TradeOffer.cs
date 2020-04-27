@@ -23,9 +23,8 @@
         public TradeOffer(OfferSession session, Offer offer)
         {
             var myAssets = new List<TradeAsset>();
-            var myMissingAssets = new List<TradeAsset>();
             var theirAssets = new List<TradeAsset>();
-            var theirMissingAssets = new List<TradeAsset>();
+
             if (offer.ItemsToGive != null)
                 foreach (var asset in offer.ItemsToGive)
                 {
@@ -41,8 +40,6 @@
                     // todo: for missing assets we should store them somewhere else? if offer state is active we shouldn't be here though
                     if (!asset.IsMissing)
                         myAssets.Add(tradeAsset);
-                    else
-                        myMissingAssets.Add(tradeAsset);
                 }
 
             if (offer.ItemsToReceive != null)
@@ -56,8 +53,6 @@
                         Convert.ToInt64(asset.Amount));
                     if (!asset.IsMissing)
                         theirAssets.Add(tradeAsset);
-                    else
-                        theirMissingAssets.Add(tradeAsset);
                 }
 
             this.Session = session;
@@ -148,28 +143,6 @@
         }
 
         /// <summary>
-        ///     Counter an existing offer with an updated offer
-        /// </summary>
-        /// <param name="newTradeOfferId"></param>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        // public bool CounterOffer(out string newTradeOfferId, string message = "")
-        // {
-        // newTradeOfferId = string.Empty;
-        // if (!string.IsNullOrEmpty(this.TradeOfferId) && !this.IsOurOffer
-        // && this.OfferState == TradeOfferState.TradeOfferStateActive
-        // && this.Items.NewVersion)
-        // return this.Session.CounterOffer(
-        // message,
-        // this.PartnerSteamId,
-        // this.Items,
-        // out newTradeOfferId,
-        // this.TradeOfferId);
-        // Debug.WriteLine("Can't counter offer a trade that doesn't have an offerid, is ours or isn't active");
-        // return false;
-        // }
-
-        /// <summary>
         ///     Decline the current offer
         /// </summary>
         /// <returns>true if successful, otherwise false</returns>
@@ -188,24 +161,8 @@
         }
 
         /// <summary>
-        ///     Send a new trade offer
-        /// </summary>
-        /// <param name="offerId">The trade offer id if successully created</param>
-        /// <param name="message">Optional message to included with the trade offer</param>
-        /// <returns>true if successfully sent, otherwise false</returns>
-        // public string Send(out string offerId, string message = "")
-        // {
-        // offerId = string.Empty;
-        // if (this.TradeOfferId == null)
-        // return this.Session.SendTradeOffer(message, this.PartnerSteamId, this.Items);
-        // Debug.WriteLine("Can't send a trade offer that already exists.");
-        // return false;
-        // }
-
-        /// <summary>
         ///     Send a new trade offer using a token
         /// </summary>
-        /// <param name="offerId">The trade offer id if successully created</param>
         /// <param name="token">The token of the partner</param>
         /// <param name="message">Optional message to included with the trade offer</param>
         /// <returns></returns>

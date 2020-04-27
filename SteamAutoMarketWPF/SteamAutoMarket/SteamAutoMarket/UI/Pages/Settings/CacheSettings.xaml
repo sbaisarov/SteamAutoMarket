@@ -4,12 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:settings="clr-namespace:SteamAutoMarket.UI.Pages.Settings"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="500" d:DataContext="{d:DesignInstance settings:CacheSettings}">
     <Grid>
         <ScrollViewer>
             <StackPanel x:Name="Panel" MinWidth="150">
-                <TextBlock Text="CACHE" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+                <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).MenuLink_Cache}"
+                           Style="{StaticResource Heading2}" Margin="0,0,0,8" />
 
                 <Grid HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>
@@ -19,99 +21,108 @@
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="15*" />
+                        <RowDefinition Height="0*" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
                                Grid.Column="0"
-                               Text="Settings"
+                               Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_Settings, Converter={StaticResource TextFieldDashConverter}}"
                                VerticalAlignment="Center"
-                               Margin="0,0,20,8" />
+                               Margin="0,3,20,11" />
 
                     <Button Grid.Row="0"
                             Grid.Column="1"
                             Height="22"
-                            Width="80"
-                            Content="Open file"
+                            Width="100"
+                            Content="{Binding Path=(localization:StringsProvider.Strings).Button_OpenFile}"
                             Padding="0"
                             VerticalAlignment="Center"
                             Margin="0,0,0,8"
                             Click="SettingsButtonClick" />
 
                     <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Images - " VerticalAlignment="Center" Margin="0,0,0,4" />
+                        <TextBlock
+                            Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_Images, Converter={StaticResource TextFieldDashConverter}}"
+                            VerticalAlignment="Center" Margin="0,0,0,4" />
                         <TextBlock Text="{Binding Path=CachedImagesCount}" VerticalAlignment="Center" Margin="0,0,0,4" />
                     </StackPanel>
                     <Button Grid.Row="1"
                             Grid.Column="1"
                             Height="22"
-                            Width="80"
-                            Content="Open folder"
+                            Width="100"
+                            Content="{Binding Path=(localization:StringsProvider.Strings).Button_OpenFolder}"
                             Padding="0"
                             VerticalAlignment="Center"
                             Margin="0,0,0,8"
                             Click="ImagesOpenFolderOnClick" />
 
-                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Market id - " VerticalAlignment="Center" Margin="0,0,0,4" />
+                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8" Grid.RowSpan="2">
+                        <TextBlock
+                            Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_MarketId, Converter={StaticResource TextFieldDashConverter}}"
+                            VerticalAlignment="Center" Margin="0,0,0,4" />
                         <TextBlock Text="{Binding Path=MarketIdCount}" VerticalAlignment="Center" Margin="0,0,20,4" />
                     </StackPanel>
                     <Button Grid.Row="2"
                             Grid.Column="1"
                             Height="22"
-                            Width="80"
-                            Content="Open file"
+                            Width="100"
+                            Content="{Binding Path=(localization:StringsProvider.Strings).Button_OpenFile}"
                             Padding="0"
                             VerticalAlignment="Center"
                             Margin="0,0,0,8"
-                            Click="MarketIdClear" />
-
-                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Average prices - " VerticalAlignment="Center" Margin="0,0,0,4" />
-                        <TextBlock Text="{Binding Path=AveragePricesCount}" VerticalAlignment="Center"
-                                   Margin="0,0,20,4" />
-                    </StackPanel>
-
-                    <Button Grid.Row="3"
-                            Grid.Column="1"
-                            Height="22"
-                            Width="80"
-                            Content="Open file"
-                            Padding="0"
-                            VerticalAlignment="Center"
-                            Margin="0,0,0,8"
-                            Click="AveragePriceButtonOnClick" />
-
+                            Click="MarketIdClear" Grid.RowSpan="2" />
 
                     <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="Current price - " VerticalAlignment="Center" Margin="0,0,0,4" />
-                        <TextBlock Text="{Binding Path=CurrentPricesCount}" VerticalAlignment="Center"
+                        <TextBlock
+                            Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_AveragePrices, Converter={StaticResource TextFieldDashConverter}}"
+                            VerticalAlignment="Center" Margin="0,0,0,4" />
+                        <TextBlock Text="{Binding Path=AveragePricesCount}" VerticalAlignment="Center"
                                    Margin="0,0,20,4" />
                     </StackPanel>
 
                     <Button Grid.Row="4"
                             Grid.Column="1"
                             Height="22"
-                            Width="80"
-                            Content="Open file"
+                            Width="100"
+                            Content="{Binding Path=(localization:StringsProvider.Strings).Button_OpenFile}"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            Margin="0,0,0,8"
+                            Click="AveragePriceButtonOnClick" />
+
+
+                    <StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock
+                            Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_CurrentPrices, Converter={StaticResource TextFieldDashConverter}}"
+                            VerticalAlignment="Center" Margin="0,0,0,4" />
+                        <TextBlock Text="{Binding Path=CurrentPricesCount}" VerticalAlignment="Center"
+                                   Margin="0,0,20,4" />
+                    </StackPanel>
+
+                    <Button Grid.Row="5"
+                            Grid.Column="1"
+                            Height="22"
+                            Width="100"
+                            Content="{Binding Path=(localization:StringsProvider.Strings).Button_OpenFile}"
                             Padding="0"
                             VerticalAlignment="Center"
                             Margin="0,0,0,8"
                             Click="CurrentPriceButtonOnClick" />
 
-                    <Button Grid.Row="5" 
+                    <Button Grid.Row="6"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Height="50"
                             Margin="0, 20, 0, 20"
-                            Content="Reload"
-                            Click="ReloadButtonClick"/>
+                            Content="{Binding Path=(localization:StringsProvider.Strings).Button_Reload}"
+                            Click="ReloadButtonClick" />
                 </Grid>
 
             </StackPanel>

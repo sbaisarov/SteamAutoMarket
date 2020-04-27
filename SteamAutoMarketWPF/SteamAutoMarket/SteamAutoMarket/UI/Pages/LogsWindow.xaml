@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:pages="clr-namespace:SteamAutoMarket.UI.Pages"
+             xmlns:localization="clr-namespace:SteamAutoMarket.Localization"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance pages:LogsWindow}">
 
@@ -22,10 +23,10 @@
             Grid.Column="0"
             Grid.Row="0"
             Text="{Binding Path=Logs, Mode=OneWay}"
-            Foreground="{DynamicResource DataGridForeground}" 
+            Foreground="{DynamicResource DataGridForeground}"
             MaxLength="10000"
             TextWrapping="Wrap"
-            Focusable="False"/>
+            Focusable="False" />
 
         <Grid Grid.Column="1"
               Grid.Row="0"
@@ -48,7 +49,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Logging details"
+                <TextBlock Text="{Binding Path=(localization:StringsProvider.Strings).TextBox_LoggingDetails}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Left" Margin="0, 0, 10, 0" />
 
@@ -57,25 +58,25 @@
                           Margin="0,4"
                           Height="22"
                           Text="{Binding SelectedLoggerLevel}">
-                    <ComboBoxItem Content="DEBUG"/>
-                    <ComboBoxItem Content="INFO"/>
-                    <ComboBoxItem Content="ERROR"/>
-                    <ComboBoxItem Content="NONE"/>
+                    <ComboBoxItem Content="DEBUG" />
+                    <ComboBoxItem Content="INFO" />
+                    <ComboBoxItem Content="ERROR" />
+                    <ComboBoxItem Content="NONE" />
                 </ComboBox>
 
             </Grid>
 
             <CheckBox Grid.Row="1"
-                      Content="Auto scroll to end"
+                      Content="{Binding Path=(localization:StringsProvider.Strings).TextBox_AutoScrollToEnd}"
                       Margin="0,10,0,10"
-                      IsChecked="{Binding ScrollLogsToEnd}"/>
+                      IsChecked="{Binding ScrollLogsToEnd}" />
 
             <Button Name="OpenLogFileButton"
                     Click="OpenLogFileButton_OnClick"
                     Grid.Row="2"
                     Margin="0,10"
                     Height="50"
-                    Content="Open log file" />
+                    Content="{Binding Path=(localization:StringsProvider.Strings).Button_OpenLogFile}" />
         </Grid>
 
     </Grid>
