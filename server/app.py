@@ -9,6 +9,7 @@ import hmac
 import uuid
 from logging import handlers
 from pprint import pformat
+from urllib import parse
 
 import requests
 from flask import Flask, request, render_template, jsonify
@@ -166,8 +167,32 @@ def generate_confirmation_hash():
     if not success:
         return error, 402
     timestamp = int(timestamp)
-    buffer = struct.pack('>Q', timestamp) + tag.encode('ascii')
-    key = base64.b64encode(hmac.new(base64.b64decode(identity_secret), buffer, digestmod=hashlib.sha1).digest())
+    identity_secret = base64.b64decode(identity_secret)
+    n2 = 8
+    if tag is not None:
+        if (len(tag) > 32):
+            n2 = 8 + 32
+        else:
+            n2 = 8 + len(tag)
+
+    array = []
+    n3 = 8
+    while (True):
+        n4 = n3 - 1
+        if (n3 <= 0):
+            break
+
+        array[n4] = timestamp
+        timestamp = timestamp >> 8
+        n3 = n4
+        if tag is not None:
+            tag = tag[:8].encode("utf-8")
+            hashed_data = hmac.new(identity_secret, tag, digestmod=hashlib.sha1).digest()
+        try:
+            key = base64.b64encode(hashed_data)
+            key = parse.quote_from_bytes(key)
+        except Exception:
+            key = None
 
     return jsonify({'result_0x23432': key}), 200
 
@@ -263,6 +288,7 @@ def verify_password(username, password):
         return True
 
     return False
+
 
 if __name__ == '__main__':
     app.run(debug=True)
