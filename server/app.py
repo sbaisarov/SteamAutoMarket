@@ -9,6 +9,7 @@ import hmac
 import uuid
 from logging import handlers
 from pprint import pformat
+from urllib import parse
 
 import requests
 from flask import Flask, request, render_template, jsonify
@@ -144,8 +145,7 @@ def generate_guard_code():
     success, error = validate_license(key, ip, hwid)
     if not success:
         return error, 402
-    timestamp = int(timestamp)
-    time_buffer = struct.pack('>Q', timestamp // 30)  # pack as Big endian, uint64
+    time_buffer = struct.pack('>Q', int(timestamp) // 30)   # pack as Big endian, uint64
     time_hmac = hmac.new(base64.b64decode(shared_secret), time_buffer, digestmod=hashlib.sha1).digest()
     begin = ord(time_hmac[19:20]) & 0xf
     full_code = struct.unpack('>I', time_hmac[begin:begin + 4])[0] & 0x7fffffff  # unpack as Big endian uint32
@@ -167,8 +167,32 @@ def generate_confirmation_hash():
     if not success:
         return error, 402
     timestamp = int(timestamp)
-    buffer = struct.pack('>Q', timestamp) + tag.encode('ascii')
-    key = base64.b64encode(hmac.new(base64.b64decode(identity_secret), buffer, digestmod=hashlib.sha1).digest())
+    identity_secret = base64.b64decode(identity_secret)
+    n2 = 8
+    if tag is not None:
+        if (len(tag) > 32):
+            n2 = 8 + 32
+        else:
+            n2 = 8 + len(tag)
+
+    array = []
+    n3 = 8
+    while (True):
+        n4 = n3 - 1
+        if (n3 <= 0):
+            break
+
+        array[n4] = timestamp
+        timestamp = timestamp >> 8
+        n3 = n4
+        if tag is not None:
+            tag = tag[:8].encode("utf-8")
+            hashed_data = hmac.new(identity_secret, tag, digestmod=hashlib.sha1).digest()
+        try:
+            key = base64.b64encode(hashed_data)
+            key = parse.quote_from_bytes(key)
+        except Exception:
+            key = None
 
     return jsonify({'result_0x23432': key}), 200
 
@@ -220,16 +244,15 @@ def validate_code():
             del active_codes[code]  # remove code from repetative usage
             client["payments"].append(data)
             return ("<html><h2>Код активирован!</h2><p>Ваш ключ продукта: %s</p>"
-                    "<p>Скачать программу можно по ссылке: <a href=\"https://www.steambiz.store/release/sam.zip\">"
-                    "https://www.steambiz.store/release/sam.zip</a></p></html>" % key), 200
+                    "<p>Скачать программу можно по ссылке: <a href=\"https://shamanovski.pythonanywhere.com/sam\">"
+                    "Download" % key), 200
         else:
             return "code was not found", 404
 
 
 def validate_license(key, ip, hwid):
     key = key.strip()
-    with shelve.open("database/clients", writeback=True):
-        db = shelve.open("database/clients", writeback=True)
+    with shelve.open("database/clients", writeback=True) as db:
         try:
             client = db["clients"][key]
         except KeyError:
@@ -265,6 +288,7 @@ def verify_password(username, password):
         return True
 
     return False
+
 
 if __name__ == '__main__':
     app.run(debug=True)

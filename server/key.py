@@ -24,4 +24,4 @@ if __name__ == '__main__':
 	amount = int(sys.argv[1])
 	subscription_time = int(sys.argv[2])
 	keys = generate(subscription_time, amount)
-	print(", ".join(keys))
+	print(keys)
