@@ -1,5 +1,3 @@
-using SteamAutoMarket.AutoUpdater;
-
 namespace SteamAutoMarket.Steam
 {
     using System;
@@ -537,17 +535,6 @@ namespace SteamAutoMarket.Steam
                     data: data,
                     cookies: this.Cookies,
                     proxy: this.Proxy);
-            }
-        }
-
-        public void GetGemsValue(int appid, int assetid)
-        {
-            var data = new NameValueCollection
-            {
-                {"sessionid", this.SteamClient.Session.SessionID},
-                {"appid", appid},
-                {"contextid", 6),
-                {"assetid", assetid}
             }
         }
 
