@@ -223,7 +223,7 @@
 
         public string TextBox_SelectedItemsCount { get; } = "Selected items count";
 
-        public string TextBox_SelectedItemsTotalPrice { get; } = "Selected items total price";
+        public string TextBox_SelectedItemsTotalPrice { get; } = "Selected items total price (without commission)";
 
         public string TextBox_SelectedTotalListedPrice { get; } = "Selected items total price";
 

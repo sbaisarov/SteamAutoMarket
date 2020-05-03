@@ -11,7 +11,6 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Models;
@@ -23,7 +22,6 @@
     using SteamAutoMarket.UI.Utils;
     using SteamAutoMarket.UI.Utils.ItemFilters;
     using SteamAutoMarket.UI.Utils.Logger;
-
     using Xceed.Wpf.DataGrid;
 
     /// <summary>
@@ -109,6 +107,7 @@
             set
             {
                 if (this.marketSellSelectedItem == value) return;
+
                 this.marketSellSelectedItem = value;
                 this.OnPropertyChanged();
             }
@@ -120,6 +119,7 @@
             set
             {
                 if (this.marketSellStrategy != null && this.marketSellStrategy.Equals(value)) return;
+
                 this.marketSellStrategy = value;
                 this.ReformatAllSellPrices();
             }
@@ -310,18 +310,17 @@
             this.MarketSellItems.Clear();
             this.ResetFilters();
 
-
             var wp = WorkingProcessProvider.GetNewInstance($"{selectedValue.Name} inventory loading");
             wp?.StartWorkingProcess(
                 () =>
-                    {
-                        wp.SteamManager.LoadInventoryWorkingProcess(
-                            selectedValue,
-                            contextId,
-                            this.MarketSellItems,
-                            MarketSellInventoryProcessStrategy.MarketSellStrategy, 
-                            wp);
-                    });
+                {
+                    wp.SteamManager.LoadInventoryWorkingProcess(
+                        selectedValue,
+                        contextId,
+                        this.MarketSellItems,
+                        MarketSellInventoryProcessStrategy.MarketSellStrategy,
+                        wp);
+                });
         }
 
         private void MarketSellMarkAllItemsClick(object sender, RoutedEventArgs e)
@@ -359,11 +358,13 @@
             {
                 case Key.Down:
                     if (currentIndex + 1 == this.MarketItemsToSellGrid.Items.Count) return;
+
                     this.FocusTextBox(currentIndex + 1);
                     return;
 
                 case Key.Up:
                     if (currentIndex == 0) return;
+
                     this.FocusTextBox(currentIndex - 1);
                     return;
             }
@@ -388,29 +389,37 @@
                 (IEnumerable<MarketSellModel>)this.MarketItemsToSellGrid.ItemsSource,
                 this.MarketSellStrategy);
 
-        private void RefreshSelectedItemsInfo()
+        public void RefreshSelectedItemsInfo()
         {
             if (this.isTotalPriceRefreshPlanned) return;
 
             Task.Run(
                 () =>
+                {
+                    this.isTotalPriceRefreshPlanned = true;
+                    Thread.Sleep(300);
+                    this.TotalSelectedItemsCount =
+                        this.MarketSellItems?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
+
+                    var allItemsToSellWithPrice = this.MarketSellItems
+                        ?.Where(m => m.NumericUpDown.AmountToSell != 0 && m.SellPrice.Value.HasValue)
+                        .ToArray();
+
+                    // ReSharper disable once PossibleInvalidOperationException
+                    if (allItemsToSellWithPrice != null && allItemsToSellWithPrice.Any())
                     {
-                        this.isTotalPriceRefreshPlanned = true;
-                        Thread.Sleep(300);
-                        this.TotalSelectedItemsCount =
-                            this.MarketSellItems?.Sum(m => m.NumericUpDown.AmountToSell) ?? 0;
+                        this.TotalListedItemsPrice = allItemsToSellWithPrice.Sum(
+                                m => m.NumericUpDown.AmountToSell
+                                    * double.Parse(UiGlobalVariables.SteamManager.MarketClient.GetSellingSteamPriceWithoutFee(m.SellPrice.Value.Value)) / 100)
+                            .ToString(UiConstants.DoubleToStringFormat);
+                    }
+                    else
+                    {
+                        this.TotalListedItemsPrice = UiConstants.FractionalZeroString;
+                    }
 
-                        this.TotalListedItemsPrice = this.MarketSellItems?.Sum(
-                                                         m =>
-                                                             {
-                                                                 if (m.NumericUpDown.AmountToSell == 0
-                                                                     || m.SellPrice.Value.HasValue == false) return 0;
-                                                                 return m.NumericUpDown.AmountToSell
-                                                                        * m.SellPrice.Value;
-                                                             })?.ToString(UiConstants.DoubleToStringFormat) ?? UiConstants.FractionalZeroString;
-
-                        this.isTotalPriceRefreshPlanned = false;
-                    });
+                    this.isTotalPriceRefreshPlanned = false;
+                });
         }
 
         private void RefreshSinglePriceButton_OnClick(object sender, RoutedEventArgs e) =>
@@ -443,11 +452,6 @@
             this.RefreshSelectedItemsInfo();
         }
 
-        private void SellingPriceTextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            this.RefreshSelectedItemsInfo();
-        }
-
         private void StartMarketSellButtonClick_OnClick(object sender, RoutedEventArgs e)
         {
             if (UiGlobalVariables.SteamManager == null)
@@ -460,29 +464,29 @@
 
             Task.Run(
                 () =>
+                {
+                    var itemsToSell = this.MarketSellItems.ToArray().Where(i => i.NumericUpDown.AmountToSell > 0)
+                        .Select(i => new MarketSellProcessModel(i)).Where(i => i.Count > 0).ToArray();
+
+                    if (itemsToSell.Sum(i => i.Count) == 0)
                     {
-                        var itemsToSell = this.MarketSellItems.ToArray().Where(i => i.NumericUpDown.AmountToSell > 0)
-                            .Select(i => new MarketSellProcessModel(i)).Where(i => i.Count > 0).ToArray();
+                        ErrorNotify.CriticalMessageBox(
+                            "No items was marked to sell! Mark items before starting sell process");
+                        return;
+                    }
 
-                        if (itemsToSell.Sum(i => i.Count) == 0)
+                    var wp = WorkingProcessProvider.GetNewInstance("Market sell");
+                    wp?.StartWorkingProcess(
+                        () =>
                         {
-                            ErrorNotify.CriticalMessageBox(
-                                "No items was marked to sell! Mark items before starting sell process");
-                            return;
-                        }
-
-                        var wp = WorkingProcessProvider.GetNewInstance("Market sell");
-                        wp?.StartWorkingProcess(
-                            () =>
-                                {
-                                    wp.SteamManager.SellOnMarketWorkingProcess(
-                                        GridPriceLoaderUtils.PriceLoadSubTasks.ToArray(),
-                                        itemsToSell,
-                                        this.MarketSellStrategy,
-                                        this.MarketSellItems,
-                                        wp);
-                                });
-                    });
+                            wp.SteamManager.SellOnMarketWorkingProcess(
+                                GridPriceLoaderUtils.PriceLoadSubTasks.ToArray(),
+                                itemsToSell,
+                                this.MarketSellStrategy,
+                                this.MarketSellItems,
+                                wp);
+                        });
+                });
         }
 
         private void StopPriceLoadingButton_OnClick(object sender, RoutedEventArgs e) =>

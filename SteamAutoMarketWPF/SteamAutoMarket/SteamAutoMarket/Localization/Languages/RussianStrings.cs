@@ -185,7 +185,7 @@
 
         public string TextBox_SelectedItemsRelistPrice { get; } = "Цена перевыставления выбранных предметов";
 
-        public string TextBox_SelectedItemsTotalPrice { get; } = "Общая стоимость выбранных товаров";
+        public string TextBox_SelectedItemsTotalPrice { get; } = "Общая стоимость выбранных товаров (без комиссии)";
 
         public string TextBox_SelectedTotalListedPrice { get; } = "Цена выбранных предметов";
 

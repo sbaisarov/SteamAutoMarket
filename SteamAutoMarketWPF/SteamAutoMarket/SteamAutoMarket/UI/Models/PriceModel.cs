@@ -7,6 +7,7 @@
 
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
+    using SteamAutoMarket.UI.Repository.Context;
 
     [Serializable]
     public class PriceModel : INotifyPropertyChanged, IComparable
@@ -58,6 +59,7 @@
                 this.OnPropertyChanged();
                 // ReSharper disable once ExplicitCallerInfoArgument
                 this.OnPropertyChanged("StringValue");
+                UiGlobalVariables.MarketSellPage?.RefreshSelectedItemsInfo();
             }
         }
 
