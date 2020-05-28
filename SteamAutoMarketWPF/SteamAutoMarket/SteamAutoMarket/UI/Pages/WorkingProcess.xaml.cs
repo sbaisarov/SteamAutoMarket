@@ -7,6 +7,7 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Threading;
+    using Microsoft.WindowsAPICodePack.Taskbar;
     using SteamAutoMarket.Core;
     using SteamAutoMarket.UI.Repository.Context;
     using SteamAutoMarket.UI.Utils;
@@ -31,6 +32,30 @@
             AppUtils.OpenTab("/UI/Pages/WorkingProcess.xaml");
         }
 
+        public void UpdateStartBarProgress()
+        {
+            try
+            {
+                WorkingProcessDataContext context = null;
+
+                Application.Current.Dispatcher.Invoke(
+                    () => { context = GetContext(); });
+
+                if (context == null)
+                {
+                    TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
+                }
+                else
+                {
+                    TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal);
+                    TaskbarManager.Instance.SetProgressValue(context.ProgressBarValue * 100 / context.ProgressBarMaximum, 100);
+                }
+            }
+            catch
+            {
+            }
+        }
+
         public void ChangeDataContext(WorkingProcessDataContext wp)
         {
             Application.Current.Dispatcher.Invoke(
@@ -40,6 +65,7 @@
                     this.CurrentProcessComboBox.SelectedValue = wp.Title;
                     this.DataContext = wp;
                     this.Refresh();
+                    UpdateStartBarProgress();
                 },
                 DispatcherPriority.Send);
         }
@@ -57,6 +83,8 @@
                     {
                         this.CurrentProcessComboBox.SelectedValue = wp.Title;
                     }
+
+                    UpdateStartBarProgress();
                 },
                 DispatcherPriority.Send);
         }

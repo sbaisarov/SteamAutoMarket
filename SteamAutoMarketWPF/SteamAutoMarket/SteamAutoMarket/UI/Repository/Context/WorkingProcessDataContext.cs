@@ -187,6 +187,7 @@
             {
                 this.ProgressBarValue++;
             }
+            UiGlobalVariables.WorkingProcessTab.UpdateStartBarProgress();
 
             this.Timer.Stop();
 
@@ -241,37 +242,37 @@
 
             Task.Run(
                 () =>
+                {
+                    try
                     {
-                        try
-                        {
-                            this.ResetWorkingProcessToDefault();
-                            this.AppendLog($"{this.Title} working process started");
+                        this.ResetWorkingProcessToDefault();
+                        this.AppendLog($"{this.Title} working process started");
 
-                            this.CancellationTokenSource = new CancellationTokenSource();
-                            this.CancellationToken = this.CancellationTokenSource.Token;
+                        this.CancellationTokenSource = new CancellationTokenSource();
+                        this.CancellationToken = this.CancellationTokenSource.Token;
 
-                            this.Timer = Stopwatch.StartNew();
+                        this.Timer = Stopwatch.StartNew();
 
-                            this.WorkingAction = Task.Run(
-                                () =>
-                                    {
-                                        try
-                                        {
-                                            action();
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Logger.Log.Error($"Error on working process - {e.Message}", e);
-                                        }
+                        this.WorkingAction = Task.Run(
+                            () =>
+                            {
+                                try
+                                {
+                                    action();
+                                }
+                                catch (Exception e)
+                                {
+                                    Logger.Log.Error($"Error on working process - {e.Message}", e);
+                                }
 
-                                        this.AppendLog("Working process finished");
-                                    });
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Log.Error($"Error on working process - {e.Message}", e);
-                        }
-                    });
+                                this.AppendLog("Working process finished");
+                            });
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Log.Error($"Error on working process - {e.Message}", e);
+                    }
+                });
         }
 
         [NotifyPropertyChangedInvocator]
@@ -287,6 +288,39 @@
             var newChart = oldChart.GetRange(chartCenter, oldChart.Count - chartCenter);
 
             this.ChartModel.ReplaceDispatch(newChart);
+        }
+
+        private bool Equals(WorkingProcessDataContext other)
+        {
+            return Title == other.Title && Equals(WorkingAction, other.WorkingAction);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((WorkingProcessDataContext)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Title != null ? Title.GetHashCode() : 0) * 397) ^ (WorkingAction != null ? WorkingAction.GetHashCode() : 0);
+            }
         }
     }
 }
