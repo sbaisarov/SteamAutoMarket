@@ -6,7 +6,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
-
+    using System.Threading.Tasks;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam;
     using SteamAutoMarket.Steam.TradeOffer.Models.Full;
@@ -46,12 +46,31 @@
             {
                 if (this.image != null) return this.image;
 
-                this.image = ImageProvider.GetItemImage(
-                    a => this.Image = a,
-                    this.ItemModel?.Description?.MarketHashName,
-                    this.ItemModel?.Description?.IconUrlLarge ?? this.ItemModel?.Description?.IconUrl);
+                var imageHashName = this.ItemModel?.Description?.MarketHashName;
+                if (ImageCache.IsImageCached(imageHashName))
+                {
+                    ImageCache.TryGetImage(imageHashName, out this.image);
 
-                return this.image;
+                    // ReSharper disable once ExplicitCallerInfoArgument
+                    this.OnPropertyChanged("IsImageNotLoaded");
+                    return this.image;
+                }
+
+                Task.Run(
+                    () =>
+                    {
+                        var downloadedImage = ImageProvider.GetItemImage(
+                            imageHashName,
+                            this.ItemModel?.Description?.IconUrlLarge ?? this.ItemModel?.Description?.IconUrl);
+
+                        this.image = downloadedImage;
+                        this.OnPropertyChanged();
+
+                        // ReSharper disable once ExplicitCallerInfoArgument
+                        this.OnPropertyChanged("IsImageNotLoaded");
+                    });
+
+                return null;
             }
 
             set

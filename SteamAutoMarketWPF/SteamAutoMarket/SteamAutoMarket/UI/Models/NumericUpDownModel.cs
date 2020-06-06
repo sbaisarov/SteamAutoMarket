@@ -26,6 +26,11 @@
             get => this.amountToSell;
             set
             {
+                if (value > MaxAllowedCount)
+                {
+                    return;
+                }
+
                 this.amountToSell = value;
                 this.OnPropertyChanged();
             }

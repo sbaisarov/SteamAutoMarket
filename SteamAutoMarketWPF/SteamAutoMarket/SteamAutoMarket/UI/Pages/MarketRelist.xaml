@@ -14,7 +14,6 @@
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="B2V" />
-        <converter:IfNullVisibleConverter x:Key="IfNullVisibleConverter" />
         <converter:IfNullInvisibleConverter x:Key="IfNullInvisibleConverter" />
     </UserControl.Resources>
 
@@ -229,16 +228,16 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Image Source="{Binding Path=RelistSelectedItem.Image}"
+                <Image Source="{Binding Path=RelistSelectedItem.Image, TargetNullValue={x:Null}}"
                        Stretch="Uniform"
                        Name="ItemImage"
-                       MaxHeight="200"
+                       Height="200"
                        Margin="0,0,0,5" />
 
                 <Path Grid.Row="0"
                       Style="{StaticResource Geometry}"
                       Margin="0,0,0,5"
-                      Visibility="{Binding Path=RelistSelectedItem.Image, Converter={StaticResource IfNullVisibleConverter}}"
+                      Visibility="{Binding Path=RelistSelectedItem.IsImageNotLoaded, Converter={StaticResource BooleanToVisibilityConverter}}"
                       Data="{StaticResource SvgDefaultItemImage}" />
 
                 <TextBox Grid.Row="1"

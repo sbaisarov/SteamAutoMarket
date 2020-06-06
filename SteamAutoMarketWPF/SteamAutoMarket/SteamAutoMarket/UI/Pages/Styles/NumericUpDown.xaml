@@ -194,9 +194,6 @@
                                         BorderThickness="{TemplateBinding BorderThickness}"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         VerticalContentAlignment="Stretch"
-                                        AllowSpin="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                                        ShowButtonSpinner="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                                        ButtonSpinnerLocation="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                                         Style="{StaticResource ButtonSpinnerStyle}">
 
                         <xctk:WatermarkTextBox x:Name="PART_TextBox"
@@ -210,20 +207,13 @@
                                                FontWeight="{TemplateBinding FontWeight}"
                                                Foreground="{TemplateBinding Foreground}"
                                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                               IsUndoEnabled="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                                                IsTabStop="True"
                                                MinWidth="20"
                                                AcceptsReturn="False"
                                                Padding="{TemplateBinding Padding}"
-                                               AutoSelectBehavior="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                                               AutoMoveFocus="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                                               TextAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                                                TextWrapping="NoWrap"
                                                TabIndex="{TemplateBinding TabIndex}"
                                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                               Watermark="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                                               WatermarkTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                                               MaxLength="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                                                SelectionBrush="{DynamicResource DataGridCellBackgroundSelected}" />
                     </xctk:ButtonSpinner>
                     <ControlTemplate.Triggers>

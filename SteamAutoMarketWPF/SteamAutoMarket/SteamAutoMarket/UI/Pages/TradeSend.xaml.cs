@@ -153,6 +153,7 @@
 
                 this.TradeSendSelectedAppid = steamAppId;
             }
+            get => TradeSendSelectedAppid.Name;
         }
 
         public SteamAppId TradeSendSelectedAppid

@@ -6,7 +6,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
-
+    using System.Threading.Tasks;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.Steam;
     using SteamAutoMarket.Steam.Market.Models;
@@ -68,6 +68,7 @@
             private set
             {
                 if (value == this.count) return;
+
                 this.count = value;
                 this.OnPropertyChanged();
             }
@@ -87,18 +88,39 @@
 
         public string Game { get; }
 
+        public bool IsImageNotLoaded => this.image == null;
+
         public string Image
         {
             get
             {
                 if (this.image != null) return this.image;
 
-                this.image = ImageProvider.GetItemImage(
-                    a => this.Image = a,
-                    this.ItemModel?.HashName,
-                    this.ItemModel?.ImageUrl);
+                var imageHashName = this.ItemModel?.HashName;
+                if (ImageCache.IsImageCached(imageHashName))
+                {
+                    ImageCache.TryGetImage(imageHashName, out this.image);
 
-                return this.image;
+                    // ReSharper disable once ExplicitCallerInfoArgument
+                    this.OnPropertyChanged("IsImageNotLoaded");
+                    return this.image;
+                }
+
+                Task.Run(
+                    () =>
+                    {
+                        var downloadedImage = ImageProvider.GetItemImage(
+                            imageHashName,
+                            this.ItemModel?.ImageUrl);
+
+                        this.image = downloadedImage;
+                        this.OnPropertyChanged();
+
+                        // ReSharper disable once ExplicitCallerInfoArgument
+                        this.OnPropertyChanged("IsImageNotLoaded");
+                    });
+
+                return null;
             }
 
             set
@@ -132,81 +154,81 @@
             switch (strategy.SaleType)
             {
                 case EMarketSaleType.Recommended:
+                {
+                    if (this.CurrentPrice == null || this.AveragePrice == null)
                     {
-                        if (this.CurrentPrice == null || this.AveragePrice == null)
+                        this.RelistPrice.Value = null;
+                    }
+                    else if (this.CurrentPrice > this.AveragePrice)
+                    {
+                        if (this.CurrentPrice == this.ListedPrice)
                         {
-                            this.RelistPrice.Value = null;
-                        }
-                        else if (this.CurrentPrice > this.AveragePrice)
-                        {
-                            if (this.CurrentPrice == this.ListedPrice)
-                            {
-                                this.RelistPrice.Value = this.CurrentPrice;
-                            }
-                            else
-                            {
-                                this.RelistPrice.Value = this.CurrentPrice;
-                            }
+                            this.RelistPrice.Value = this.CurrentPrice;
                         }
                         else
                         {
-                            if (this.CurrentPrice == this.ListedPrice)
-                            {
-                                this.RelistPrice.Value = this.CurrentPrice;
-                            }
-                            else
-                            {
-                                this.RelistPrice.Value = this.AveragePrice;
-                            }
+                            this.RelistPrice.Value = this.CurrentPrice;
                         }
-
-                        break;
                     }
-
-                case EMarketSaleType.LowerThanCurrent:
+                    else
                     {
-                        if (this.CurrentPrice == null)
+                        if (this.CurrentPrice == this.ListedPrice)
                         {
-                            this.RelistPrice.Value = null;
+                            this.RelistPrice.Value = this.CurrentPrice;
                         }
                         else
-                        {
-                            if (this.CurrentPrice == this.ListedPrice)
-                            {
-                                this.RelistPrice.Value = this.CurrentPrice;
-                            }
-                            else
-                            {
-                                this.RelistPrice.Value = this.CurrentPrice + strategy.ChangeValue;
-                            }
-                        }
-
-                        break;
-                    }
-
-                case EMarketSaleType.LowerThanAverage:
-                    {
-                        if (this.AveragePrice == null)
-                        {
-                            this.RelistPrice.Value = null;
-                        }
-                        else if (this.AveragePrice == this.ListedPrice)
                         {
                             this.RelistPrice.Value = this.AveragePrice;
                         }
-                        else
-                        {
-                            this.RelistPrice.Value = this.AveragePrice + strategy.ChangeValue;
-                        }
-
-                        break;
                     }
 
-                default:
+                    break;
+                }
+
+                case EMarketSaleType.LowerThanCurrent:
+                {
+                    if (this.CurrentPrice == null)
                     {
                         this.RelistPrice.Value = null;
-                        return;
                     }
+                    else
+                    {
+                        if (this.CurrentPrice == this.ListedPrice)
+                        {
+                            this.RelistPrice.Value = this.CurrentPrice;
+                        }
+                        else
+                        {
+                            this.RelistPrice.Value = this.CurrentPrice + strategy.ChangeValue;
+                        }
+                    }
+
+                    break;
+                }
+
+                case EMarketSaleType.LowerThanAverage:
+                {
+                    if (this.AveragePrice == null)
+                    {
+                        this.RelistPrice.Value = null;
+                    }
+                    else if (this.AveragePrice == this.ListedPrice)
+                    {
+                        this.RelistPrice.Value = this.AveragePrice;
+                    }
+                    else
+                    {
+                        this.RelistPrice.Value = this.AveragePrice + strategy.ChangeValue;
+                    }
+
+                    break;
+                }
+
+                default:
+                {
+                    this.RelistPrice.Value = null;
+                    return;
+                }
             }
         }
 

@@ -1,38 +1,29 @@
 ﻿namespace SteamAutoMarket.UI.Repository.Image
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     using SteamAutoMarket.Core;
 
     public static class ImageProvider
     {
-        public static string GetItemImage(Action<string> setOutput, string marketHashName, string imageUrl)
+        public static string GetItemImage(string marketHashName, string imageUrl)
         {
-            var fileName = marketHashName;
+            if (imageUrl == null)
+            {
+                return null;
+            }
 
             if (ImageCache.TryGetImage(marketHashName, out var localImageUri))
             {
                 return localImageUri;
             }
 
-            if (imageUrl == null)
+            try
+            {
+                return ImageCache.CacheImage(marketHashName, $"https://steamcommunity-a.akamaihd.net/economy/image/{imageUrl}/192fx192f");
+            }
+            catch
             {
                 return null;
             }
-
-            Task.Run(
-                () =>
-                    {
-                        localImageUri = ImageCache.CacheImage(
-                            fileName,
-                            $"https://steamcommunity-a.akamaihd.net/economy/image/{imageUrl}/192fx192f");
-                        Thread.Sleep(500);
-                        setOutput(localImageUri);
-                    });
-
-            return null;
         }
 
         public static string GetSmallSteamProfileImage(string steamId, bool useCache)

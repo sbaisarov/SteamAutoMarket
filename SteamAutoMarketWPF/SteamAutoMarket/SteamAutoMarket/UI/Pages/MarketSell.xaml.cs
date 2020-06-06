@@ -81,6 +81,8 @@
 
                 this.MarketSellSelectedAppid = steamAppId;
             }
+
+            get => MarketSellSelectedAppid.Name;
         }
 
         public SteamAppId MarketSellSelectedAppid

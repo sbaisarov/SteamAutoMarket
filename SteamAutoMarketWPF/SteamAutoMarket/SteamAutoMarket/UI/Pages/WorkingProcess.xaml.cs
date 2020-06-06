@@ -48,7 +48,7 @@
                 else
                 {
                     TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal);
-                    TaskbarManager.Instance.SetProgressValue(context.ProgressBarValue * 100 / context.ProgressBarMaximum, 100);
+                    TaskbarManager.Instance.SetProgressValue(context.ProgressBarValue, context.ProgressBarMaximum);
                 }
             }
             catch

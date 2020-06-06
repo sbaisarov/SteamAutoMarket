@@ -8,7 +8,6 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Forms;
-
     using SteamAutoMarket.Core;
     using SteamAutoMarket.Properties;
     using SteamAutoMarket.UI.Models;
@@ -16,7 +15,6 @@
     using SteamAutoMarket.UI.Repository.Settings;
     using SteamAutoMarket.UI.SteamIntegration;
     using SteamAutoMarket.UI.Utils.Logger;
-
     using MessageBox = System.Windows.MessageBox;
 
     /// <summary>
@@ -128,7 +126,7 @@
             try
             {
                 if (this.SteamAccountList.FirstOrDefault(
-                        a => a.Login.Equals(this.NewAccountLogin, StringComparison.InvariantCultureIgnoreCase)) != null)
+                    a => a.Login.Equals(this.NewAccountLogin, StringComparison.InvariantCultureIgnoreCase)) != null)
                 {
                     ErrorNotify.CriticalMessageBox($"Account {this.NewAccountLogin} is already in accounts list.");
                     return;
@@ -179,32 +177,36 @@
 
             Task.Run(
                 () =>
+                {
+                    try
                     {
-                        try
+                        var login = this.SelectSteamAccount.Login;
+                        UiGlobalVariables.MainWindow.Account.DisplayName = $"Logging in - {login}";
+                        Logger.Log.Info($"Authentication web session for {login}");
+                        this.LoginButtonEnabled = false;
+
+                        UiGlobalVariables.SteamManager = new UiSteamManager(
+                            this.SelectSteamAccount,
+                            this.ForceSessionRefresh);
+
+                        if (this.ForceSessionRefresh)
                         {
-                            var login = this.SelectSteamAccount.Login;
-                            Logger.Log.Info($"Authentication web session for {login}");
-                            this.LoginButtonEnabled = false;
-
-                            UiGlobalVariables.SteamManager = new UiSteamManager(
-                                this.SelectSteamAccount,
-                                this.ForceSessionRefresh);
-
-                            if (this.ForceSessionRefresh)
-                            {
-                                this.selectSteamAccount.DownloadAvatarAsync(false);
-                            }
-
-                            UiGlobalVariables.MainWindow.Account.DisplayName = login;
-                            Logger.Log.Info($"{login} authentication success");
-                        }
-                        catch (Exception ex)
-                        {
-                            ErrorNotify.CriticalMessageBox("Failed to log in. Please check credentials provided.", ex);
+                            this.selectSteamAccount.DownloadAvatarAsync(false);
                         }
 
+                        UiGlobalVariables.MainWindow.Account.DisplayName = login;
+                        Logger.Log.Info($"{login} authentication success");
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorNotify.CriticalMessageBox("Failed to log in. Please check credentials provided.", ex);
+                        UiGlobalVariables.MainWindow.Account.DisplayName = "Not logged in";
+                    }
+                    finally
+                    {
                         this.LoginButtonEnabled = true;
-                    });
+                    }
+                });
         }
 
         private void RemoveSelectedAccountButtonClick(object sender, RoutedEventArgs e)
@@ -226,6 +228,7 @@
             {
                 this.SteamAccountList.Remove(account);
                 SettingsProvider.GetInstance().SteamAccounts.Remove(account);
+
                 // ReSharper disable once ExplicitCallerInfoArgument
                 SettingsProvider.GetInstance().OnPropertyChanged("SteamAccounts");
             }

@@ -46,6 +46,16 @@
             }
         }
 
+        public static bool IsImageCached(string name)
+        {
+            if (name == null)
+            {
+                return false;
+            }
+
+            return Cache.ContainsKey(name);
+        }
+
         public static bool TryGetImage(string name, out string localImageUri)
         {
             try
