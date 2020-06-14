@@ -47,8 +47,15 @@
                 }
                 else
                 {
-                    TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal);
-                    TaskbarManager.Instance.SetProgressValue(context.ProgressBarValue, context.ProgressBarMaximum);
+                    if (context.ProgressBarMaximum == context.ProgressBarValue)
+                    {
+                        TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
+                    }
+                    else
+                    {
+                        TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal);
+                        TaskbarManager.Instance.SetProgressValue(context.ProgressBarValue, context.ProgressBarMaximum);
+                    }
                 }
             }
             catch

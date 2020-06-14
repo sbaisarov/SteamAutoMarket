@@ -3,23 +3,33 @@
     using System;
     using System.Collections.Generic;
     using System.Net;
+    using System.Net.Security;
     using System.Security.Cryptography;
+    using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Text.RegularExpressions;
-
     using FluentAssertions;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Newtonsoft.Json;
 
     [TestClass]
     public class Tests
     {
+        public Tests()
+        {
+            ServicePointManager.ServerCertificateValidationCallback =
+                ValidateServerCertificate;
+        }
+
+        public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+
         private static readonly byte[] steamGuardCodeTranslations =
-            {
-                50, 51, 52, 53, 54, 55, 56, 57, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 86, 87, 88, 89
-            };
+        {
+            50, 51, 52, 53, 54, 55, 56, 57, 66, 67, 68, 70, 71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 86, 87, 88, 89
+        };
 
         [TestMethod]
         public void ConfirmationHashTest()
