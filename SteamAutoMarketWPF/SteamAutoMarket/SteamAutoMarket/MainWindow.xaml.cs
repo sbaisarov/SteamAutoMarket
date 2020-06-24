@@ -28,17 +28,6 @@
         {
             WindowTitle = $"SteamAutoMarket {Assembly.GetExecutingAssembly().GetName().Version}";
 
-            if (!File.Exists("license.txt"))
-            {
-                MessageBox.Show(
-                    @"license.txt file not found!",
-                    @"License check error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-                System.Windows.Application.Current.Shutdown();
-            }
-
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             ServicePointManager.ServerCertificateValidationCallback += OnServerCertificateValidationCallback;
 
@@ -54,7 +43,6 @@
             this.InitializeComponent();
             this.LocalizeMenuLinks();
 
-            this.UpdateProgram();
         }
 
         public string WindowTitle
