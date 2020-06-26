@@ -104,14 +104,6 @@
             //return sslPolicyErrors.ToString() == "None";
         }
 
-        private void UpdateProgram()
-        {
-            AutoUpdater.AutoUpdater.RunUpdateAsAdmin = true;
-            AutoUpdater.AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-            AutoUpdater.AutoUpdater.AppCastURL = "http://shamanovski.pythonanywhere.com/release.xml";
-            AutoUpdater.AutoUpdater.Start();
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

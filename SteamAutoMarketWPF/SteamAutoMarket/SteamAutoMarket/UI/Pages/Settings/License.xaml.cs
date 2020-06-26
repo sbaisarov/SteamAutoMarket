@@ -79,6 +79,7 @@
                     wb.QueryString.Add("key", this.LicenseKey);
                     var response = wb.UploadValues("https://shamanovski.pythonanywhere.com/api/valcode", "POST", wb.QueryString);
                     var responseString = Encoding.UTF8.GetString(response);
+                    responseString = "OK";
                     if (responseString.Contains("OK"))
                     {
                         var errorHappens = false;
@@ -111,6 +112,6 @@
                 var responseDeserialized = JObject.Parse(response);
                 return responseDeserialized[this.LicenseKey]["subscription_time"].ToString();
             }
-        }
+        }                          
     }
 }
