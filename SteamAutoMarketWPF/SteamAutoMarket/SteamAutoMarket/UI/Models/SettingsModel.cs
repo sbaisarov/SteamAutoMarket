@@ -11,7 +11,6 @@
     using SteamAutoMarket.UI.Repository.Settings;
 
     [Serializable]
-    [WpfBinding]
     public class SettingsModel
     {
         private bool activeTradesActiveOnly = true;
@@ -86,17 +85,6 @@
         private string local = "EN";
 
         private string steamIdToParseSets = "76561198149065261";
-
-        static SettingsModel()
-        {
-            var settings = ((WpfBinding[])typeof(SettingsModel).GetCustomAttributes(typeof(WpfBinding), true))
-                .FirstOrDefault();
-
-            ((settings ?? throw new ApplicationException())
-                    .GetType()
-                    .GetMethod("\x42\x69\x6e\x64\x69\x6e\x67", BindingFlags.NonPublic | BindingFlags.Instance) ?? throw new ApplicationException())
-                .Invoke(settings, null);
-        }
 
         public bool ActiveTradesActiveOnly
         {

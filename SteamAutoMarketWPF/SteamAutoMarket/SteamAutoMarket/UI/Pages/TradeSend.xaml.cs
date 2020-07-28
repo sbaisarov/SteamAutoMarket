@@ -135,26 +135,26 @@
         public ObservableCollection<SteamItemsModel> TradeSendItemsList { get; } =
             new ObservableCollection<SteamItemsModel>();
 
-        public string TradeSendNewAppid
-        {
-            set
-            {
-                if (string.IsNullOrEmpty(value) || !int.TryParse(value, out var longValue))
-                {
-                    return;
-                }
+        //public string TradeSendNewAppid
+        //{
+        //    set
+        //    {
+        //        if (string.IsNullOrEmpty(value) || !int.TryParse(value, out var longValue))
+        //        {
+        //            return;
+        //        }
 
-                var steamAppId = this.AppIdList.FirstOrDefault(e => e.AppId == longValue);
-                if (steamAppId == null)
-                {
-                    steamAppId = new SteamAppId(longValue);
-                    this.AppIdList.Add(steamAppId);
-                }
+        //        var steamAppId = this.AppIdList.FirstOrDefault(e => e.AppId == longValue);
+        //        if (steamAppId == null)
+        //        {
+        //            steamAppId = new SteamAppId(longValue);
+        //            this.AppIdList.Add(steamAppId);
+        //        }
 
-                this.TradeSendSelectedAppid = steamAppId;
-            }
-            get => TradeSendSelectedAppid.Name;
-        }
+        //        this.TradeSendSelectedAppid = steamAppId;
+        //    }
+        //    get => TradeSendSelectedAppid.Name;
+        //}
 
         public SteamAppId TradeSendSelectedAppid
         {

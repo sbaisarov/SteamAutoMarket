@@ -28,9 +28,6 @@
             this.DataContext = this;
             this.InitializeComponent();
             UiGlobalVariables.License = this;
-
-            this.LicenseKey = File.ReadAllText("license.txt").Trim('\r', '\n', ' ');
-            this.LicenseDaysLeft = this.GetLicenseDaysLeft();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

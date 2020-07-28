@@ -111,8 +111,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UpdateForm";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UpdateForm_FormClosed);
-            this.Load += new System.EventHandler(this.UpdateFormLoad);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

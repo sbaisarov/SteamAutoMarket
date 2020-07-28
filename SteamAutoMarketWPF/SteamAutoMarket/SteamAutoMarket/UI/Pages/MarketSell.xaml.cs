@@ -63,27 +63,27 @@
         public ObservableCollection<MarketSellModel> MarketSellItems { get; } =
             new ObservableCollection<MarketSellModel>();
 
-        public string MarketSellNewAppid
-        {
-            set
-            {
-                if (string.IsNullOrEmpty(value) || !int.TryParse(value, out var longValue))
-                {
-                    return;
-                }
+        //public string MarketSellNewAppid
+        //{
+        //    set
+        //    {
+        //        if (string.IsNullOrEmpty(value) || !int.TryParse(value, out var longValue))
+        //        {
+        //            return;
+        //        }
 
-                var steamAppId = this.AppIdList.FirstOrDefault(e => e.AppId == longValue);
-                if (steamAppId == null)
-                {
-                    steamAppId = new SteamAppId(longValue);
-                    this.AppIdList.Add(steamAppId);
-                }
+        //        var steamAppId = this.AppIdList.FirstOrDefault(e => e.AppId == longValue);
+        //        if (steamAppId == null)
+        //        {
+        //            steamAppId = new SteamAppId(longValue);
+        //            this.AppIdList.Add(steamAppId);
+        //        }
 
-                this.MarketSellSelectedAppid = steamAppId;
-            }
+        //        this.MarketSellSelectedAppid = steamAppId;
+        //    }
 
-            get => MarketSellSelectedAppid.Name;
-        }
+        //    get => MarketSellSelectedAppid.Name;
+        //}
 
         public SteamAppId MarketSellSelectedAppid
         {
